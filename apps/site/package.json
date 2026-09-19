@@ -1,0 +1,46 @@
+{
+	"name": "@baby-ui/site",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"prepare": "svelte-kit sync || echo ''",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
+	},
+	"devDependencies": {
+		"@baby-ui/registry-build": "workspace:*",
+		"@docvia/cli": "^1.0.0",
+		"@docvia/plugin-shiki": "^0.2.2",
+		"@docvia/plugin-vite": "^1.0.0",
+		"@sveltejs/adapter-cloudflare": "catalog:",
+		"@sveltejs/kit": "catalog:",
+		"@sveltejs/vite-plugin-svelte": "catalog:",
+		"@tailwindcss/vite": "catalog:",
+		"svelte": "catalog:",
+		"svelte-check": "catalog:",
+		"tailwindcss": "catalog:",
+		"typescript": "catalog:",
+		"vite": "catalog:",
+		"wrangler": "^4.135.0",
+		"yaml": "^2.9.1"
+	},
+	"dependencies": {
+		"@baby-ui/demos": "workspace:*",
+		"@baby-ui/registry-schema": "workspace:*",
+		"@baby-ui/svelte": "workspace:*",
+		"@baby-ui/tokens": "workspace:*",
+		"@docvia/renderer-core": "^0.2.3",
+		"@docvia/renderer-svelte": "^0.2.4",
+		"@docvia/source": "^0.4.0",
+		"@fontsource-variable/inter": "catalog:",
+		"@fontsource-variable/jetbrains-mono": "catalog:",
+		"clsx": "catalog:",
+		"detype": "^2.0.8",
+		"dialkit": "catalog:",
+		"shiki": "catalog:",
+		"tailwind-merge": "catalog:"
+	}
+}

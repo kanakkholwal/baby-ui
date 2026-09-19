@@ -1,0 +1,24 @@
+{
+	"name": "@baby-ui/playground-shell",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "vite --port 5173 --strictPort --open",
+		"build": "vite build",
+		"check": "svelte-check --tsconfig ./tsconfig.json"
+	},
+	"dependencies": {
+		"@baby-ui/demos": "workspace:*",
+		"@baby-ui/registry-schema": "workspace:*",
+		"@baby-ui/tokens": "workspace:*",
+		"dialkit": "catalog:"
+	},
+	"devDependencies": {
+		"@sveltejs/vite-plugin-svelte": "catalog:",
+		"@tailwindcss/vite": "catalog:",
+		"svelte": "catalog:",
+		"svelte-check": "catalog:",
+		"typescript": "catalog:",
+		"vite": "catalog:"
+	}
+}

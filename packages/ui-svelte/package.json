@@ -1,0 +1,28 @@
+{
+	"name": "@baby-ui/svelte",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"svelte": "./src/lib/index.ts",
+	"exports": {
+		".": {
+			"svelte": "./src/lib/index.ts",
+			"types": "./src/lib/index.ts"
+		}
+	},
+	"scripts": {
+		"check": "svelte-check --tsconfig ./tsconfig.json"
+	},
+	"dependencies": {
+		"clsx": "catalog:",
+		"svelte": "catalog:",
+		"tailwind-merge": "catalog:",
+		"tailwind-variants": "catalog:"
+	},
+	"devDependencies": {
+		"@sveltejs/vite-plugin-svelte": "catalog:",
+		"svelte-check": "catalog:",
+		"typescript": "catalog:",
+		"vite": "catalog:"
+	}
+}

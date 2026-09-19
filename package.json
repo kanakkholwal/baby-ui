@@ -1,0 +1,25 @@
+{
+	"name": "baby-ui",
+	"private": true,
+	"type": "module",
+	"packageManager": "pnpm@11.1.2",
+	"engines": {
+		"node": ">=22"
+	},
+	"scripts": {
+		"build": "turbo run build",
+		"check": "node scripts/check-comments.mjs && node scripts/check-esm-extensions.mjs && turbo run check",
+		"dev": "turbo run dev --filter=@baby-ui/site",
+		"playground": "turbo run dev --filter=@baby-ui/playground-*",
+		"registry": "node scripts/sync-fonts.mjs && turbo run registry",
+		"lint": "biome check .",
+		"format": "biome check --write .",
+		"fonts": "node scripts/sync-fonts.mjs"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.5.14",
+		"@types/node": "catalog:",
+		"turbo": "^2.11.1",
+		"typescript": "catalog:"
+	}
+}

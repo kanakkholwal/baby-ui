@@ -1,0 +1,23 @@
+{
+	"name": "@baby-ui/tokens",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"exports": {
+		".": "./src/index.ts",
+		"./tokens.css": "./src/tokens.css",
+		"./motion.css": "./src/motion.css",
+		"./theme.css": "./src/theme.css",
+		"./fonts.css": "./src/fonts.css"
+	},
+	"files": [
+		"src",
+		"fonts"
+	],
+	"scripts": {
+		"check": "tsc --noEmit"
+	},
+	"devDependencies": {
+		"typescript": "catalog:"
+	}
+}

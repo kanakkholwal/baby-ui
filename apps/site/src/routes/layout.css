@@ -1,0 +1,80 @@
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/jetbrains-mono";
+@import "@baby-ui/tokens/theme.css";
+@source "../../../../packages/ui-svelte/src/lib";
+
+@layer base {
+	* {
+		border-color: var(--border);
+	}
+	body {
+		background: var(--background);
+		color: var(--foreground);
+		font-family: var(--font-body);
+		font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+		-webkit-font-smoothing: antialiased;
+	}
+	h1,
+	h2,
+	h3 {
+		font-family: var(--font-heading);
+	}
+	code,
+	kbd,
+	pre,
+	samp {
+		font-family: var(--font-mono);
+	}
+	::selection {
+		background: color-mix(in oklch, var(--primary) 22%, transparent);
+	}
+}
+
+@layer components {
+	.prose-baby :where(h2) {
+		margin: 2rem 0 0.75rem;
+		font-size: 1.05rem;
+		font-weight: 600;
+		letter-spacing: -0.01em;
+	}
+	.prose-baby :where(p) {
+		margin: 0.75rem 0;
+		color: var(--muted-foreground);
+		line-height: 1.7;
+	}
+	.prose-baby :where(a) {
+		color: var(--foreground);
+		text-decoration: underline;
+		text-underline-offset: 2px;
+	}
+	.prose-baby :where(code):not(:where(pre *)) {
+		border-radius: var(--radius-sm);
+		background: var(--muted);
+		padding: 0.1em 0.35em;
+		font-size: 0.875em;
+	}
+	.prose-baby :where(kbd) {
+		border: 1px solid var(--border);
+		border-radius: var(--radius-sm);
+		padding: 0.1em 0.35em;
+		font-size: 0.8em;
+	}
+	.prose-baby :where(pre) {
+		overflow-x: auto;
+		margin: 1rem 0;
+		border: 1px solid var(--border);
+		border-radius: var(--radius-lg);
+		padding: 1rem;
+		font-size: 0.8125rem;
+		line-height: 1.6;
+	}
+}
+
+@layer utilities {
+	.scrollbar-hide {
+		scrollbar-width: none;
+	}
+	.scrollbar-hide::-webkit-scrollbar {
+		display: none;
+	}
+}

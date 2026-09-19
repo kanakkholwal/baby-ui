@@ -1,0 +1,29 @@
+{
+	"$schema": "https://turborepo.com/schema.json",
+	"ui": "tui",
+	"tasks": {
+		"build": {
+			"dependsOn": ["^build", "^registry"],
+			"outputs": ["dist/**", ".svelte-kit/**", "build/**", ".docvia/**"]
+		},
+		"registry": {
+			"dependsOn": ["^build"],
+			"inputs": [
+				"src/**",
+				"../registry-schema/src/**",
+				"../ui-react/src/**",
+				"../ui-svelte/src/**",
+				"../../apps/site/src/docs/**"
+			],
+			"outputs": ["../../apps/site/static/r/**", "../../apps/site/static/svelte/**"]
+		},
+		"check": {
+			"dependsOn": ["^build"]
+		},
+		"dev": {
+			"cache": false,
+			"persistent": true,
+			"dependsOn": ["^registry"]
+		}
+	}
+}

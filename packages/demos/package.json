@@ -1,0 +1,35 @@
+{
+	"name": "@baby-ui/demos",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"exports": {
+		"./react": "./src/react/index.tsx",
+		"./svelte": {
+			"svelte": "./src/svelte/index.ts",
+			"types": "./src/svelte/index.ts"
+		},
+		"./controls": {
+			"svelte": "./src/controls/spec-dials.svelte",
+			"types": "./src/controls/spec-dials.svelte"
+		}
+	},
+	"scripts": {
+		"check": "svelte-check --tsconfig ./tsconfig.json"
+	},
+	"dependencies": {
+		"@baby-ui/react": "workspace:*",
+		"@baby-ui/svelte": "workspace:*",
+		"@baby-ui/registry-schema": "workspace:*",
+		"dialkit": "catalog:"
+	},
+	"devDependencies": {
+		"@sveltejs/vite-plugin-svelte": "catalog:",
+		"@types/react": "catalog:",
+		"react": "catalog:",
+		"svelte": "catalog:",
+		"svelte-check": "catalog:",
+		"typescript": "catalog:",
+		"vite": "catalog:"
+	}
+}
