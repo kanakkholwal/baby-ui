@@ -35,10 +35,10 @@ const label = $derived(LANG_LABEL[lang] ?? lang.toUpperCase());
 						stroke-linejoin="round"
 					/>
 				</svg>
-				<span class="truncate font-mono text-muted-foreground">
-					{#if dir}<span class="text-foreground">{dir}/</span>{/if}
-					<span class="font-medium text-foreground">{name}</span>
-				</span>
+				<span class="truncate font-mono text-muted-foreground"
+					>{#if dir}<span class="text-foreground">{dir}/</span
+						>{/if}<span class="font-medium text-foreground">{name}</span></span
+				>
 			</div>
 			<CopyButton text={code} />
 		</div>

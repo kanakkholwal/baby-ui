@@ -1,35 +1,21 @@
-import type { Framework, RegistryItem } from "@baby-ui/registry-schema";
+import type { Framework } from "@baby-ui/registry-schema";
+import sources from "./generated/sources.json";
 
-/** The emitted items, so the Code tab shows exactly what the CLI installs. */
-const sources: Record<Framework, Record<string, unknown>> = {
-	react: import.meta.glob("../../static/r/*.json", { eager: true, import: "default" }),
-	svelte: import.meta.glob("../../static/svelte/r/*.json", {
-		eager: true,
-		import: "default",
-	}),
+export type SourceFile = {
+	path: string;
+	target: string;
+	ts: string;
+	js: string | null;
+	jsPath: string | null;
 };
 
-const INDEX_FILES = new Set(["registry.json", "specs.json"]);
+const BY_SLUG = sources as Record<string, Partial<Record<Framework, SourceFile[]>>>;
 
-function byslug(framework: Framework): Map<string, RegistryItem> {
-	const out = new Map<string, RegistryItem>();
-	for (const [path, value] of Object.entries(sources[framework])) {
-		const file = path.split("/").pop();
-		if (!file || INDEX_FILES.has(file)) continue;
-		out.set(file.replace(/\.json$/, ""), value as RegistryItem);
-	}
-	return out;
+export function sourceFiles(slug: string, framework: Framework): SourceFile[] {
+	return BY_SLUG[slug]?.[framework] ?? [];
 }
 
-const cache = { react: byslug("react"), svelte: byslug("svelte") } as const;
-
-export function registryItem(
-	slug: string,
-	framework: Framework,
-): RegistryItem | undefined {
-	return cache[framework].get(slug);
-}
-
+/** Namespaced form, matching what the install command shows. */
 export function installCommand(slug: string, framework: Framework, site: string): string {
 	return framework === "react"
 		? `npx shadcn@latest add ${site}/r/${slug}.json`

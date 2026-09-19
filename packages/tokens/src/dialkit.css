@@ -1,0 +1,60 @@
+/* DialKit ships `.dialkit-root[data-theme="..."]` rules, so a bare `.dialkit-root`
+   override loses on specificity. Qualifying with `html` wins in every mode, and the
+   values below are our own tokens, which already flip with `.dark`. */
+html .dialkit-root,
+html .dialkit-root[data-theme] {
+	--dial-radius: var(--radius);
+	--dial-surface: var(--card);
+	--dial-surface-subtle: color-mix(in oklch, var(--foreground) 4%, transparent);
+	--dial-surface-hover: color-mix(in oklch, var(--foreground) 6%, transparent);
+	--dial-surface-active: color-mix(in oklch, var(--foreground) 10%, transparent);
+	--dial-glass-bg: var(--glass-bg);
+	--dial-dropdown-bg: var(--popover);
+	--dial-backdrop-blur: 16px;
+
+	--dial-border: var(--border);
+	--dial-border-hover: var(--border-strong);
+	--dial-focus-ring: var(--ring);
+
+	--dial-text-root: var(--foreground);
+	--dial-text-primary: var(--foreground);
+	--dial-text-secondary: var(--muted-foreground);
+	--dial-text-tertiary: color-mix(in oklch, var(--muted-foreground) 70%, transparent);
+	--dial-text-label: var(--muted-foreground);
+	--dial-text-section: var(--muted-foreground);
+	--dial-text-gutter: var(--muted-foreground);
+	--dial-text-focus: var(--foreground);
+
+	--dial-color: var(--accent);
+	--dial-color-opaque: var(--accent);
+	--dial-color-thumb: var(--accent-foreground);
+	--dial-color-thumb-bg: var(--accent);
+	--dial-color-track-bg: color-mix(in oklch, var(--foreground) 10%, transparent);
+
+	--dial-shadow: none;
+	--dial-shadow-collapsed: none;
+	--dial-shadow-dropdown: 0 12px 32px -12px oklch(0 0 0 / 20%);
+
+	font-family: var(--font-body);
+}
+
+html.dark .dialkit-root,
+html.dark .dialkit-root[data-theme] {
+	--dial-shadow-dropdown: 0 12px 32px -12px oklch(0 0 0 / 55%);
+}
+
+html .dialkit-root :where(input, select, button, label, kbd) {
+	font-family: inherit;
+}
+
+html .dialkit-root :where(button, [role="button"], input[type="range"]) {
+	cursor: pointer;
+}
+
+/* Inline mode sits in our own rail, so the panel should not draw a second card. */
+html .dialkit-root[data-mode="inline"] .dialkit-panel {
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	background: color-mix(in oklch, var(--card) 40%, transparent);
+	box-shadow: none;
+}

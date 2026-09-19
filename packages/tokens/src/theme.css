@@ -2,6 +2,7 @@
 @import "./fonts.css";
 @import "./tokens.css";
 @import "./motion.css";
+@import "./dialkit.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -23,6 +24,11 @@
 	--color-destructive: var(--destructive);
 	--color-destructive-foreground: var(--destructive-foreground);
 	--color-border: var(--border);
+	--color-border-strong: var(--border-strong);
+	--color-neon: var(--neon);
+	--color-violet: var(--violet);
+	--color-success: var(--success);
+	--color-warning: var(--warning);
 	--color-input: var(--input);
 	--color-ring: var(--ring);
 
@@ -38,4 +44,9 @@
 	--ease-out: var(--ease-out);
 	--ease-in-out: var(--ease-in-out);
 	--ease-drawer: var(--ease-drawer);
+}
+
+@theme {
+	--background-image-brand-bg: var(--gradient-bg);
+	--background-image-brand-accent: var(--gradient-accent);
 }

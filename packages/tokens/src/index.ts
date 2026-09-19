@@ -1,6 +1,6 @@
 /** Easing curves, mirrored from motion.css for JS-driven animation. */
 export const easing = {
-	out: [0.23, 1, 0.32, 1],
+	out: [0.16, 1, 0.3, 1],
 	inOut: [0.77, 0, 0.175, 1],
 	drawer: [0.32, 0.72, 0, 1],
 } as const satisfies Record<string, readonly [number, number, number, number]>;

@@ -13,6 +13,7 @@
 	"dependencies": {
 		"@baby-ui/registry-schema": "workspace:*",
 		"@baby-ui/tokens": "workspace:*",
+		"detype": "^2.0.8",
 		"yaml": "^2.9.1"
 	},
 	"devDependencies": {

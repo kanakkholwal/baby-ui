@@ -1,5 +1,21 @@
-import type { ButtonSize, ButtonVariant, DockSpring } from "@baby-ui/react";
-import { Button, Dock, DockItem, DockSeparator } from "@baby-ui/react";
+import type {
+	ButtonSize,
+	ButtonVariant,
+	DockSpring,
+	FileTreeNode,
+	MorphSpring,
+} from "@baby-ui/react";
+import {
+	BentoCell,
+	BentoGrid,
+	Button,
+	Dock,
+	DockItem,
+	DockSeparator,
+	FileTree,
+	MorphingModal,
+	Navbar,
+} from "@baby-ui/react";
 import { useState } from "react";
 
 type Props = Record<string, unknown>;
@@ -69,7 +85,7 @@ function DockDemo({ props }: { props: Props }) {
 					active={active === icon.id}
 					onClick={() => setActive(icon.id)}
 					aria-label={icon.label}
-					className="hover:bg-accent/60"
+					className="hover:bg-foreground/[0.06]"
 				>
 					<svg
 						viewBox="0 0 20 20"
@@ -88,7 +104,7 @@ function DockDemo({ props }: { props: Props }) {
 				</DockItem>
 			))}
 			<DockSeparator />
-			<DockItem aria-label="Profile" className="hover:bg-accent/60">
+			<DockItem aria-label="Profile" className="hover:bg-foreground/[0.06]">
 				<span className="grid size-[55%] place-items-center rounded-full bg-primary/15 text-[0.7em] font-medium">
 					KK
 				</span>
@@ -97,7 +113,117 @@ function DockDemo({ props }: { props: Props }) {
 	);
 }
 
+const SAMPLE_TREE: FileTreeNode[] = [
+	{
+		name: "src",
+		children: [
+			{
+				name: "routes",
+				children: [{ name: "+layout.svelte" }, { name: "+page.svelte" }],
+			},
+			{ name: "lib", children: [{ name: "cn.ts" }, { name: "tokens.css" }] },
+			{ name: "app.html" },
+		],
+	},
+	{ name: "package.json" },
+	{ name: "vite.config.ts" },
+];
+
+const CELLS = [
+	{
+		span: "2x1" as const,
+		title: "Registry",
+		body: "shadcn and shadcn-svelte, one spec.",
+	},
+	{ span: "1x1" as const, title: "Tokens", body: "Shared colour and motion." },
+	{ span: "1x1" as const, title: "Agents", body: "llms.txt and specs.json." },
+	{ span: "1x1" as const, title: "Playground", body: "Both renders, side by side." },
+];
+
+const NAV_LINKS = [
+	{ href: "#product", label: "Product" },
+	{ href: "#pricing", label: "Pricing" },
+	{ href: "#docs", label: "Docs" },
+];
+
+function BentoGridDemo({ props }: { props: Props }) {
+	return (
+		<BentoGrid
+			columns={Number(props.columns ?? 3)}
+			gap={Number(props.gap ?? 16)}
+			rowHeight={Number(props.rowHeight ?? 160)}
+			className="w-full max-w-2xl"
+		>
+			{CELLS.map((cell) => (
+				<BentoCell
+					key={cell.title}
+					span={cell.span}
+					title={cell.title}
+					description={cell.body}
+				/>
+			))}
+		</BentoGrid>
+	);
+}
+
+function FileTreeDemo({ props }: { props: Props }) {
+	return (
+		<FileTree
+			tree={SAMPLE_TREE}
+			indent={Number(props.indent ?? 14)}
+			showGuides={props.showGuides !== false}
+			defaultExpanded={props.defaultExpanded !== false}
+			className="w-64"
+		/>
+	);
+}
+
+function NavbarDemo({ props }: { props: Props }) {
+	return (
+		<div className="w-full max-w-3xl overflow-hidden rounded-xl border border-border">
+			<Navbar
+				links={NAV_LINKS}
+				active="#product"
+				sticky={false}
+				blur={props.blur !== false}
+				className="border-border border-b bg-card"
+				brand={<span className="font-semibold text-sm tracking-tight">Acme</span>}
+				actions={
+					<span className="hidden rounded-full bg-primary px-3 py-1.5 font-medium text-primary-foreground text-xs sm:inline-flex">
+						Sign up
+					</span>
+				}
+			/>
+			<div className="h-24 bg-background" />
+		</div>
+	);
+}
+
+function MorphingModalDemo({ props }: { props: Props }) {
+	return (
+		<MorphingModal
+			title="Deploy to production"
+			spring={(props.spring as MorphSpring) ?? "gentle"}
+			dismissOnBackdrop={props.dismissOnBackdrop !== false}
+			backdropBlur={Number(props.backdropBlur ?? 8)}
+			trigger={
+				<div className="w-56 rounded-2xl border border-border bg-card p-4">
+					<p className="font-medium text-foreground text-sm">Deploy to production</p>
+					<p className="mt-1 text-muted-foreground text-xs">Click to expand</p>
+				</div>
+			}
+		>
+			This dialog grew out of the card&apos;s own box. Closing runs the same path in
+			reverse, a little faster.
+		</MorphingModal>
+	);
+}
+
 export const demos: Record<string, (p: { props: Props }) => React.ReactElement> = {
 	button: ButtonDemo,
+	navbar: NavbarDemo,
+	"bento-grid": BentoGridDemo,
+	"file-tree": FileTreeDemo,
+	"morphing-modal": MorphingModalDemo,
 	dock: DockDemo,
 };

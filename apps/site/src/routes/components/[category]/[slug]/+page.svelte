@@ -3,11 +3,12 @@ import { registry } from "virtual:docvia/source";
 import { demos } from "@baby-ui/demos/svelte";
 import type { Framework } from "@baby-ui/registry-schema";
 import { Renderer } from "@docvia/renderer-svelte";
-import CodeBlock from "$lib/components/code-block.svelte";
 import DemoPreview from "$lib/components/demo-preview.svelte";
 import InstallBlock from "$lib/components/install-block.svelte";
+import PageMenu from "$lib/components/page-menu.svelte";
 import PropsRail from "$lib/components/props-rail.svelte";
 import PropsTable from "$lib/components/props-table.svelte";
+import SourceFiles from "$lib/components/source-files.svelte";
 import Tabs from "$lib/components/tabs.svelte";
 import { CATEGORY_LABEL, defaultProps } from "$lib/registry";
 import type { PageProps } from "./$types";
@@ -16,6 +17,7 @@ let { data }: PageProps = $props();
 
 let tab = $state("preview");
 let framework = $state<Framework>("svelte");
+let dialect = $state("ts");
 let values = $state<Record<string, unknown>>({});
 
 $effect(() => {
@@ -56,18 +58,13 @@ const tabs = [
 					</span>
 				{/if}
 			</div>
-			<div class="flex items-center gap-0.5 rounded-full bg-card p-1 text-xs">
-				{#each data.ports as p (p.framework)}
-					<button
-						type="button"
-						aria-pressed={framework === p.framework}
-						onclick={() => (framework = p.framework)}
-						class="rounded-full px-2.5 py-1 text-muted-foreground transition-colors hover:text-foreground aria-pressed:bg-primary aria-pressed:text-primary-foreground"
-					>
-						{p.framework}
-					</button>
-				{/each}
-			</div>
+			<PageMenu
+				frameworks={data.ports.map((p) => p.framework)}
+				bind:framework
+				bind:dialect
+				markdownUrl="/components/{data.spec.category}/{data.spec.slug}.md"
+				copyText={data.spec.description}
+			/>
 		</div>
 
 		<p class="mt-2 max-w-2xl text-muted-foreground">{data.spec.description}</p>
@@ -79,17 +76,14 @@ const tabs = [
 			{#if tab === "preview"}
 				<DemoPreview {framework} slug={data.spec.slug} demo={demos[data.spec.slug]} props={values} />
 			{:else if tab === "code"}
-				<div class="flex flex-col gap-4">
-					{#each port?.files ?? [] as file (file.path)}
-						<CodeBlock code={file.code} html={file.html} lang={file.lang} filename={file.path} />
-					{/each}
-				</div>
+				<SourceFiles files={port?.files ?? []} {dialect} />
 			{:else if port}
 				<InstallBlock
-					install={port.install}
-					installHtml={port.installHtml}
+					slug={data.spec.slug}
 					dependencies={port.dependencies}
+					depsHtml={port.depsHtml}
 					files={port.files}
+					{dialect}
 				/>
 			{/if}
 		</div>

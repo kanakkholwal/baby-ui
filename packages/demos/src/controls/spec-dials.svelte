@@ -39,4 +39,4 @@ $effect(() => {
 });
 </script>
 
-<DialRoot mode="inline" theme="dark" productionEnabled />
+<DialRoot mode="inline" theme="system" productionEnabled />

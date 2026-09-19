@@ -3,7 +3,7 @@
 
 :root {
 	/* Built-in CSS easings are too weak to read as intentional. */
-	--ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+	--ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 	--ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
 	--ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
 
@@ -27,5 +27,75 @@
 		--stagger-step: 0ms;
 		--press-scale: 1;
 		--enter-scale: 1;
+	}
+}
+
+/* Shared by both file-tree ports so a revealed row enters identically. */
+.tree-row {
+	animation: tree-row-in 200ms var(--ease-out);
+}
+
+@keyframes tree-row-in {
+	from {
+		opacity: 0;
+		transform: translateY(-2px);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.tree-row {
+		animation: none;
+	}
+}
+
+/* Both morphing-modal ports rely on this; ::backdrop cannot be a Tailwind utility. */
+.morph-dialog::backdrop {
+	backdrop-filter: blur(var(--morph-blur, 8px));
+}
+
+/* Both navbar ports share this so the mobile sheet enters identically. */
+.nav-sheet {
+	animation: nav-sheet-in var(--duration-drawer) var(--ease-drawer);
+}
+
+@keyframes nav-sheet-in {
+	from {
+		transform: translateY(100%);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.nav-sheet {
+		animation: none;
+	}
+}
+
+/* The animated ring on a primary CTA, ported from beUI. */
+.rainbow-ring {
+	background-image: linear-gradient(
+		90deg,
+		var(--success),
+		var(--warning),
+		var(--accent),
+		var(--violet),
+		var(--success),
+		var(--warning),
+		var(--accent),
+		var(--violet),
+		var(--success)
+	);
+	background-size: 200% 100%;
+	animation: rainbow-ring 3s linear infinite;
+}
+
+@keyframes rainbow-ring {
+	to {
+		background-position: 200% 0;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.rainbow-ring {
+		animation: none;
 	}
 }

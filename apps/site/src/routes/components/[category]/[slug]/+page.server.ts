@@ -4,8 +4,7 @@ import { FRAMEWORKS } from "@baby-ui/registry-schema";
 import { error } from "@sveltejs/kit";
 import { highlight, langFor } from "$lib/highlight";
 import { findSpec } from "$lib/registry";
-import { installCommand, registryItem } from "$lib/registry-items";
-import { SITE_URL } from "$lib/site";
+import { sourceFiles } from "$lib/registry-items";
 import type { PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async ({ params }) => {
@@ -16,23 +15,26 @@ export const load: PageServerLoad = async ({ params }) => {
 
 	const ports = await Promise.all(
 		FRAMEWORKS.filter((f) => spec.impl[f]).map(async (framework: Framework) => {
-			const install = installCommand(spec.slug, framework, SITE_URL);
 			const files = await Promise.all(
-				(registryItem(spec.slug, framework)?.files ?? []).map(async (file) => {
-					const lang = langFor(file.path);
+				sourceFiles(spec.slug, framework).map(async (file) => {
+					const tsLang = langFor(file.path);
+					const jsLang = file.jsPath ? langFor(file.jsPath) : tsLang;
 					return {
 						path: file.path,
-						code: file.content,
-						lang,
-						html: await highlight(file.content, lang),
+						jsPath: file.jsPath,
+						ts: { code: file.ts, lang: tsLang, html: await highlight(file.ts, tsLang) },
+						js: file.js
+							? { code: file.js, lang: jsLang, html: await highlight(file.js, jsLang) }
+							: null,
 					};
 				}),
 			);
+			const dependencies = spec.impl[framework]?.dependencies ?? [];
+			const depCommand = `pnpm add ${dependencies.join(" ")}`;
 			return {
 				framework,
-				install,
-				installHtml: await highlight(install, "bash"),
-				dependencies: spec.impl[framework]?.dependencies ?? [],
+				dependencies,
+				depsHtml: await highlight(depCommand, "bash"),
 				files,
 			};
 		}),

@@ -1,0 +1,84 @@
+import { defineComponent } from "../index.js";
+
+export const morphingModal = defineComponent({
+	slug: "morphing-modal",
+	name: "Morphing Modal",
+	description:
+		"Card that expands into a dialog from its own position, measured with FLIP so the two frameworks travel identically.",
+	category: "advanced",
+	status: "experimental",
+
+	props: [
+		{
+			name: "spring",
+			type: '"snappy" | "gentle" | "bouncy"',
+			description: "Named spring that drives the morph in both directions.",
+			default: "gentle",
+			control: { kind: "select", options: ["snappy", "gentle", "bouncy"] },
+		},
+		{
+			name: "dismissOnBackdrop",
+			type: "boolean",
+			description: "Close when the backdrop is clicked.",
+			default: true,
+			control: { kind: "boolean" },
+		},
+		{
+			name: "backdropBlur",
+			type: "number",
+			description:
+				"Backdrop blur radius in pixels. Kept low; blur is expensive in Safari.",
+			default: 8,
+			control: { kind: "number", min: 0, max: 20, step: 1 },
+		},
+	],
+
+	motion: {
+		springs: ["snappy", "gentle", "bouncy"],
+		reducedMotion:
+			"No morph: the dialog crossfades in place at its final size and the backdrop fades.",
+		behaviour: [
+			"On open the trigger's bounding box is measured and the dialog is transformed from that box to its final box, so it appears to grow out of the card rather than over it.",
+			"The transform is applied to the dialog, never to width or height, so the morph stays off the layout path.",
+			"Closing runs the inverse and is faster than opening, because the user has already decided.",
+			"The trigger stays in the layout and is hidden with opacity, so the page does not reflow mid-morph.",
+			"The morph is FLIP against a measured rect, not a shared-layout animation, because Svelte has no equivalent of that.",
+		],
+	},
+
+	a11y: {
+		role: "dialog",
+		keyboard: [
+			"Escape closes the dialog",
+			"Tab cycles within the dialog while it is open",
+			"Focus returns to the trigger on close",
+		],
+		notes: [
+			"Rendered with the native <dialog> element, so the top layer and inertness come from the platform.",
+			"aria-labelledby points at the dialog's own heading, not the trigger's text.",
+		],
+	},
+
+	impl: {
+		react: {
+			entry: "MorphingModal",
+			files: [
+				{ path: "morphing-modal/morphing-modal.tsx", type: "registry:ui" },
+				{ path: "morphing-modal/use-morph.ts", type: "registry:hook" },
+				{ path: "lib/cn.ts", type: "registry:lib" },
+			],
+			dependencies: ["clsx", "tailwind-merge"],
+		},
+		svelte: {
+			entry: "MorphingModal",
+			files: [
+				{ path: "morphing-modal/morphing-modal.svelte", type: "registry:ui" },
+				{ path: "morphing-modal/morph.ts", type: "registry:ui" },
+				{ path: "lib/cn.ts", type: "registry:lib" },
+			],
+			dependencies: ["clsx", "tailwind-merge"],
+		},
+	},
+
+	keywords: ["modal", "dialog", "morph", "flip", "expand"],
+});

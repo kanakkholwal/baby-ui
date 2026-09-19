@@ -1,7 +1,14 @@
+export { default as BentoCell } from "./bento-grid/bento-cell.svelte";
+export { default as BentoGrid } from "./bento-grid/bento-grid.svelte";
 export { default as Button } from "./button/button.svelte";
 export type { ButtonSize, ButtonVariant } from "./button/variants.js";
 export type { DockSpring } from "./dock/context.js";
 export { default as Dock } from "./dock/dock.svelte";
 export { default as DockItem } from "./dock/dock-item.svelte";
 export { default as DockSeparator } from "./dock/dock-separator.svelte";
+export { default as FileTree } from "./file-tree/file-tree.svelte";
+export type { FileTreeNode } from "./file-tree/types.js";
 export { cn } from "./lib/cn.js";
+export type { MorphSpring } from "./morphing-modal/morph.js";
+export { default as MorphingModal } from "./morphing-modal/morphing-modal.svelte";
+export { default as Navbar } from "./navbar/navbar.svelte";

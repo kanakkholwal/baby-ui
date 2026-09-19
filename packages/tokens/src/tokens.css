@@ -1,26 +1,44 @@
-/* shadcn-compatible colour + radius contract. A consumer's existing shadcn theme
-   drops in unchanged; only the motion layer in motion.css is ours. */
+/* Palette ported from beUI. Base values first, shadcn semantics mapped onto them, so
+   a consumer's shadcn theme still fits while our own extensions stay available. */
 
 :root {
-	--background: oklch(1 0 0);
-	--foreground: oklch(0.145 0 0);
-	--card: oklch(1 0 0);
-	--card-foreground: oklch(0.145 0 0);
-	--popover: oklch(1 0 0);
-	--popover-foreground: oklch(0.145 0 0);
-	--primary: oklch(0.205 0 0);
-	--primary-foreground: oklch(0.985 0 0);
-	--secondary: oklch(0.97 0 0);
-	--secondary-foreground: oklch(0.205 0 0);
-	--muted: oklch(0.97 0 0);
-	--muted-foreground: oklch(0.556 0 0);
-	--accent: oklch(0.97 0 0);
-	--accent-foreground: oklch(0.205 0 0);
-	--destructive: oklch(0.577 0.245 27.325);
-	--destructive-foreground: oklch(0.985 0 0);
-	--border: oklch(0.922 0 0);
-	--input: oklch(0.922 0 0);
-	--ring: oklch(0.708 0 0);
+	--background: oklch(99% 0 0);
+	--foreground: oklch(15% 0 0);
+	--card: oklch(97% 0 0);
+	--muted-foreground: oklch(50% 0 0);
+	--border: oklch(15% 0 0 / 0.06);
+
+	--border-strong: oklch(15% 0 0 / 0.12);
+	--accent-fg: oklch(15% 0 0);
+	--neon: oklch(80% 0.22 145);
+	--violet: oklch(68% 0.22 295);
+	--danger: oklch(62% 0.22 25);
+	--success: oklch(70% 0.18 155);
+	--warning: oklch(78% 0.18 75);
+	--glass-bg: oklch(99% 0 0 / 0.55);
+	--glass-border: oklch(15% 0 0 / 0.08);
+	--gradient-bg: linear-gradient(135deg, oklch(99% 0 0) 0%, oklch(96% 0.008 210) 100%);
+	--gradient-accent: linear-gradient(
+		to right,
+		oklch(72% 0.18 195) 0%,
+		oklch(68% 0.22 295) 100%
+	);
+
+	--card-foreground: var(--foreground);
+	--popover: var(--card);
+	--popover-foreground: var(--foreground);
+	--primary: var(--foreground);
+	--primary-foreground: var(--background);
+	--secondary: var(--card);
+	--secondary-foreground: var(--foreground);
+	--muted: var(--card);
+	--accent: oklch(72% 0.18 195);
+	--accent-foreground: var(--accent-fg);
+	--destructive: var(--danger);
+	--destructive-foreground: oklch(99% 0 0);
+	--input: var(--border);
+	--ring: var(--border-strong);
+
 	--radius: 0.625rem;
 
 	/* All three are self-hosted: Inter and JetBrains Mono via fontsource, Satoshi vendored. */
@@ -30,23 +48,36 @@
 }
 
 .dark {
-	--background: oklch(0.145 0 0);
-	--foreground: oklch(0.985 0 0);
-	--card: oklch(0.205 0 0);
-	--card-foreground: oklch(0.985 0 0);
-	--popover: oklch(0.205 0 0);
-	--popover-foreground: oklch(0.985 0 0);
-	--primary: oklch(0.922 0 0);
-	--primary-foreground: oklch(0.205 0 0);
-	--secondary: oklch(0.269 0 0);
-	--secondary-foreground: oklch(0.985 0 0);
-	--muted: oklch(0.269 0 0);
-	--muted-foreground: oklch(0.708 0 0);
-	--accent: oklch(0.269 0 0);
-	--accent-foreground: oklch(0.985 0 0);
-	--destructive: oklch(0.704 0.191 22.216);
-	--destructive-foreground: oklch(0.985 0 0);
-	--border: oklch(1 0 0 / 10%);
-	--input: oklch(1 0 0 / 15%);
-	--ring: oklch(0.556 0 0);
+	--background: #151515;
+	--foreground: oklch(96% 0 0);
+	--card: #1c1c1c;
+	--muted-foreground: oklch(62% 0 0);
+	--border: rgb(255 255 255 / 0.05);
+
+	--border-strong: rgb(255 255 255 / 0.1);
+	--accent: oklch(80% 0.18 195);
+	--accent-fg: #151515;
+	--glass-bg: rgb(28 28 28 / 0.55);
+	--glass-border: rgb(255 255 255 / 0.08);
+	--gradient-bg: linear-gradient(135deg, oklch(19% 0 0) 0%, oklch(22% 0.008 210) 100%);
+	--gradient-accent: linear-gradient(
+		to right,
+		oklch(80% 0.18 195) 0%,
+		oklch(72% 0.18 295) 100%
+	);
+}
+
+/* Tailwind v4 preflight gives buttons `cursor: default`; every interactive control
+   in this system should read as clickable without repeating the utility. */
+@layer base {
+	button:not(:disabled),
+	[role="button"]:not([aria-disabled="true"]),
+	summary,
+	label:has(input[type="checkbox"], input[type="radio"]),
+	input[type="checkbox"],
+	input[type="radio"],
+	input[type="range"],
+	select {
+		cursor: pointer;
+	}
 }

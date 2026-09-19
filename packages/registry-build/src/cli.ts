@@ -6,6 +6,7 @@ import { buildItem } from "./build.js";
 import { FRAMEWORK, OUT_DIR, REGISTRY_NAME, REPO_ROOT, SITE_URL } from "./config.js";
 import { buildThirdPartyLicenses } from "./licenses.js";
 import { buildLlmsTxt } from "./llms.js";
+import { jsPath, toJavaScript } from "./tojs.js";
 import { verifyComponentDocs, verifySprings } from "./verify.js";
 
 async function writeJson(relative: string, value: unknown) {
@@ -57,6 +58,39 @@ async function main() {
 	}
 
 	written.push(await writeJson("r/specs.json", { site: SITE_URL, specs }));
+
+	// TS and its JS counterpart per file, generated here so prettier and babel never
+	// reach the Worker. The site imports this instead of re-reading the registry JSON.
+	const sources: Record<string, Record<string, unknown[]>> = {};
+	for (const spec of specs) {
+		const perFramework: Record<string, unknown[]> = {};
+		sources[spec.slug] = perFramework;
+		for (const framework of FRAMEWORKS as readonly Framework[]) {
+			const item = await buildItem(spec, framework);
+			if (!item) continue;
+			perFramework[framework] = await Promise.all(
+				item.files.map(async (file) => {
+					const js = await toJavaScript(file.content, file.path).catch(() => null);
+					return {
+						path: file.path,
+						target: file.target,
+						ts: file.content,
+						js,
+						jsPath: js ? jsPath(file.path) : null,
+					};
+				}),
+			);
+		}
+	}
+	const sourcesPath = resolve(REPO_ROOT, "apps/site/src/lib/generated/sources.json");
+	await mkdir(dirname(sourcesPath), { recursive: true });
+	await writeFile(
+		sourcesPath,
+		`${JSON.stringify(sources, null, 2)}
+`,
+		"utf8",
+	);
+	written.push("../src/lib/generated/sources.json");
 
 	await writeFile(resolve(OUT_DIR, "llms.txt"), buildLlmsTxt([...specs]), "utf8");
 	written.push("llms.txt");

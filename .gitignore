@@ -23,3 +23,4 @@ apps/playground/*/public/fonts/
 apps/site/static/r/
 apps/site/static/svelte/
 apps/site/static/llms.txt
+apps/site/src/lib/generated/

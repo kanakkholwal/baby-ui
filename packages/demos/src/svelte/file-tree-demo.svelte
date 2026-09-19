@@ -1,0 +1,14 @@
+<script lang="ts">
+import { FileTree } from "@baby-ui/svelte";
+import { SAMPLE_TREE } from "./sample-tree.js";
+
+let { props = {} }: { props?: Record<string, unknown> } = $props();
+</script>
+
+<FileTree
+	tree={SAMPLE_TREE}
+	indent={Number(props.indent ?? 14)}
+	showGuides={props.showGuides !== false}
+	defaultExpanded={props.defaultExpanded !== false}
+	class="w-64"
+/>

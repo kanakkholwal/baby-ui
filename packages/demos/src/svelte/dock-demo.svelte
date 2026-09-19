@@ -41,7 +41,7 @@ let active = $state("home");
 			active={active === item.id}
 			onclick={() => (active = item.id)}
 			aria-label={item.label}
-			class="hover:bg-accent/60"
+			class="hover:bg-foreground/[0.06]"
 		>
 			<svg
 				viewBox="0 0 20 20"
@@ -60,7 +60,7 @@ let active = $state("home");
 		</DockItem>
 	{/each}
 	<DockSeparator />
-	<DockItem aria-label="Profile" class="hover:bg-accent/60">
+	<DockItem aria-label="Profile" class="hover:bg-foreground/[0.06]">
 		<span
 			class="grid size-[55%] place-items-center rounded-full bg-primary/15 font-medium text-[0.7em] text-foreground"
 		>
