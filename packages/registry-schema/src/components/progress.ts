@@ -24,7 +24,7 @@ export const progress = defineComponent({
 		},
 		{
 			name: "size",
-			type: "\"sm\" | \"md\"",
+			type: '"sm" | "md"',
 			description: "Track thickness.",
 			default: "md",
 			control: { kind: "select", options: ["sm", "md"] },
@@ -32,7 +32,8 @@ export const progress = defineComponent({
 	],
 	motion: {
 		springs: [],
-		reducedMotion: "The indeterminate sweep stops and the track shows a static partial fill.",
+		reducedMotion:
+			"The indeterminate sweep stops and the track shows a static partial fill.",
 		behaviour: [
 			"A determinate bar eases its width over 280ms, so a jump from 10 to 90 reads as progress rather than a cut.",
 			"The indeterminate sweep is a 1.4s linear loop; easing it would imply progress that is not being measured.",

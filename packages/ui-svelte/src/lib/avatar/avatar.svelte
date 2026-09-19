@@ -1,33 +1,38 @@
 <script lang="ts">
-	import { cn } from "../lib/cn.js";
+import { cn } from "../lib/cn.js";
 
-	type Props = {
-		name: string;
-		src?: string;
-		class?: string;
-		size?: "xs" | "sm" | "md" | "lg";
-		shape?: "circle" | "square";
-	};
+type Props = {
+	name: string;
+	src?: string;
+	class?: string;
+	size?: "xs" | "sm" | "md" | "lg";
+	shape?: "circle" | "square";
+};
 
-	let { name, src, class: classProp, size = "md", shape = "circle" }: Props = $props();
+let { name, src, class: classProp, size = "md", shape = "circle" }: Props = $props();
 
-	const SIZE = { xs: "size-6 text-[10px]", sm: "size-8 text-xs", md: "size-10 text-sm", lg: "size-14 text-base" };
+const SIZE = {
+	xs: "size-6 text-[10px]",
+	sm: "size-8 text-xs",
+	md: "size-10 text-sm",
+	lg: "size-14 text-base",
+};
 
-	let failed = $state(false);
-	let loaded = $state(false);
+let failed = $state(false);
+let loaded = $state(false);
 
-	$effect(() => {
-		void src;
-		failed = false;
-		loaded = false;
-	});
+$effect(() => {
+	void src;
+	failed = false;
+	loaded = false;
+});
 
-	const initials = $derived.by(() => {
-		const words = name.trim().split(/\s+/);
-		const first = words[0]?.[0] ?? "";
-		const last = words.length > 1 ? (words[words.length - 1]?.[0] ?? "") : "";
-		return (first + last).toUpperCase();
-	});
+const initials = $derived.by(() => {
+	const words = name.trim().split(/\s+/);
+	const first = words[0]?.[0] ?? "";
+	const last = words.length > 1 ? (words[words.length - 1]?.[0] ?? "") : "";
+	return (first + last).toUpperCase();
+});
 </script>
 
 <span

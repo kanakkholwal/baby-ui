@@ -1,25 +1,25 @@
 <script lang="ts">
-	import { cn } from "../lib/cn.js";
+import { cn } from "../lib/cn.js";
 
-	type Props = {
-		checked?: boolean;
-		disabled?: boolean;
-		size?: "sm" | "md";
-		label?: string;
-		class?: string;
-	};
+type Props = {
+	checked?: boolean;
+	disabled?: boolean;
+	size?: "sm" | "md";
+	label?: string;
+	class?: string;
+};
 
-	let {
-		checked = $bindable(false),
-		disabled = false,
-		size = "md",
-		label,
-		class: classProp,
-	}: Props = $props();
+let {
+	checked = $bindable(false),
+	disabled = false,
+	size = "md",
+	label,
+	class: classProp,
+}: Props = $props();
 
-	const TRACK = { sm: "h-4 w-7", md: "h-5 w-9" };
-	const THUMB = { sm: "size-3", md: "size-4" };
-	const TRAVEL = { sm: "0.75rem", md: "1rem" };
+const TRACK = { sm: "h-4 w-7", md: "h-5 w-9" };
+const THUMB = { sm: "size-3", md: "size-4" };
+const TRAVEL = { sm: "0.75rem", md: "1rem" };
 </script>
 
 <button

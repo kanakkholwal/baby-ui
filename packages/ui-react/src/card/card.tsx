@@ -10,7 +10,12 @@ export interface CardProps {
 	interactive?: boolean;
 }
 
-export function Card({ children, className, padding = "md", interactive = false }: CardProps) {
+export function Card({
+	children,
+	className,
+	padding = "md",
+	interactive = false,
+}: CardProps) {
 	return (
 		<div
 			className={cn(
@@ -39,7 +44,9 @@ export function CardHeader({ title, description, actions, className }: CardHeade
 			<div className="min-w-0">
 				<h3 className="font-medium text-foreground text-sm">{title}</h3>
 				{description ? (
-					<p className="mt-1 text-muted-foreground text-xs leading-relaxed">{description}</p>
+					<p className="mt-1 text-muted-foreground text-xs leading-relaxed">
+						{description}
+					</p>
 				) : null}
 			</div>
 			{actions ? <div className="shrink-0">{actions}</div> : null}
@@ -50,9 +57,17 @@ export function CardHeader({ title, description, actions, className }: CardHeade
 export function CardFooter({
 	children,
 	className,
-}: { children: ReactNode; className?: string }) {
+}: {
+	children: ReactNode;
+	className?: string;
+}) {
 	return (
-		<div className={cn("mt-4 flex items-center gap-2 border-border/60 border-t pt-4", className)}>
+		<div
+			className={cn(
+				"mt-4 flex items-center gap-2 border-border/60 border-t pt-4",
+				className,
+			)}
+		>
 			{children}
 		</div>
 	);

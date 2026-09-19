@@ -17,6 +17,20 @@ import {
 	Navbar,
 } from "@baby-ui/react";
 import { useState } from "react";
+import {
+	AccordionDemo,
+	AlertDemo,
+	AvatarDemo,
+	BadgeDemo,
+	CardDemo,
+	CheckboxDemo,
+	InputDemo,
+	LabelDemo,
+	ProgressDemo,
+	SkeletonDemo,
+	SwitchDemo,
+	TextareaDemo,
+} from "./primitives.js";
 
 type Props = Record<string, unknown>;
 
@@ -220,7 +234,19 @@ function MorphingModalDemo({ props }: { props: Props }) {
 }
 
 export const demos: Record<string, (p: { props: Props }) => React.ReactElement> = {
+	accordion: AccordionDemo,
+	alert: AlertDemo,
+	avatar: AvatarDemo,
+	badge: BadgeDemo,
 	button: ButtonDemo,
+	card: CardDemo,
+	checkbox: CheckboxDemo,
+	input: InputDemo,
+	label: LabelDemo,
+	progress: ProgressDemo,
+	skeleton: SkeletonDemo,
+	switch: SwitchDemo,
+	textarea: TextareaDemo,
 	navbar: NavbarDemo,
 	"bento-grid": BentoGridDemo,
 	"file-tree": FileTreeDemo,

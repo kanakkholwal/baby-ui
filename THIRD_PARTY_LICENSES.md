@@ -17,4 +17,4 @@ notices are reproduced here as those licenses require.
 - Source: https://github.com/aidan-neel/sivir-ui
 - License: MIT
 - Copyright (c) 2026 Aidan Neel
-- Components derived: button
+- Components derived: accordion, alert, avatar, badge, button, card, checkbox, input, label, progress, skeleton, switch, textarea

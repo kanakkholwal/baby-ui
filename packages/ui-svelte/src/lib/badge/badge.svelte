@@ -1,17 +1,17 @@
 <script lang="ts">
-	import type { Snippet } from "svelte";
-	import { cn } from "../lib/cn.js";
-	import { type BadgeSize, type BadgeVariant, badge } from "./variants.js";
+import type { Snippet } from "svelte";
+import { cn } from "../lib/cn.js";
+import { type BadgeSize, type BadgeVariant, badge } from "./variants.js";
 
-	type Props = {
-		children?: Snippet;
-		class?: string;
-		variant?: BadgeVariant;
-		size?: BadgeSize;
-		dot?: boolean;
-	};
+type Props = {
+	children?: Snippet;
+	class?: string;
+	variant?: BadgeVariant;
+	size?: BadgeSize;
+	dot?: boolean;
+};
 
-	let { children, class: classProp, variant, size, dot = false }: Props = $props();
+let { children, class: classProp, variant, size, dot = false }: Props = $props();
 </script>
 
 <span class={cn(badge({ variant, size }), classProp)} data-variant={variant}>

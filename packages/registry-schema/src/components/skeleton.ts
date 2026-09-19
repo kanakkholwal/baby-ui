@@ -24,7 +24,7 @@ export const skeleton = defineComponent({
 		},
 		{
 			name: "shape",
-			type: "\"line\" | \"circle\" | \"block\"",
+			type: '"line" | "circle" | "block"',
 			description: "Corner treatment.",
 			default: "line",
 			control: { kind: "select", options: ["line", "circle", "block"] },

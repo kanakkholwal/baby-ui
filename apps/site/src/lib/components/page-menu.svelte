@@ -1,63 +1,70 @@
 <script lang="ts">
-	import type { Framework } from "@baby-ui/registry-schema";
+import type { Framework } from "@baby-ui/registry-schema";
 
-	let {
-		frameworks,
-		framework = $bindable(),
-		dialect = $bindable(),
-		markdownUrl,
-		copyText,
-	}: {
-		frameworks: Framework[];
-		framework: Framework;
-		dialect: string;
-		markdownUrl: string;
-		copyText: string;
-	} = $props();
+let {
+	frameworks,
+	framework = $bindable(),
+	dialect = $bindable(),
+	markdownUrl,
+	copyText,
+}: {
+	frameworks: Framework[];
+	framework: Framework;
+	dialect: string;
+	markdownUrl: string;
+	copyText: string;
+} = $props();
 
-	let open = $state(false);
-	let copied = $state(false);
-	let root = $state<HTMLDivElement>();
-	let timer: ReturnType<typeof setTimeout>;
+let open = $state(false);
+let copied = $state(false);
+let root = $state<HTMLDivElement>();
+let timer: ReturnType<typeof setTimeout>;
 
-	const absolute = $derived(
-		typeof location === "undefined" ? markdownUrl : new URL(markdownUrl, location.origin).href,
-	);
-	const ask = $derived(encodeURIComponent(`Read ${absolute} and help me use this component.`));
+const absolute = $derived(
+	typeof location === "undefined"
+		? markdownUrl
+		: new URL(markdownUrl, location.origin).href,
+);
+const ask = $derived(
+	encodeURIComponent(`Read ${absolute} and help me use this component.`),
+);
 
-	const agents = $derived([
-		{ label: "Open in v0", href: `https://v0.dev/chat/api/open?url=${encodeURIComponent(absolute)}` },
-		{ label: "Open in ChatGPT", href: `https://chatgpt.com/?hints=search&q=${ask}` },
-		{ label: "Open in Claude", href: `https://claude.ai/new?q=${ask}` },
-	]);
+const agents = $derived([
+	{
+		label: "Open in v0",
+		href: `https://v0.dev/chat/api/open?url=${encodeURIComponent(absolute)}`,
+	},
+	{ label: "Open in ChatGPT", href: `https://chatgpt.com/?hints=search&q=${ask}` },
+	{ label: "Open in Claude", href: `https://claude.ai/new?q=${ask}` },
+]);
 
-	$effect(() => {
-		if (!open) return;
-		const onPointer = (e: PointerEvent) => {
-			if (root && !root.contains(e.target as Node)) open = false;
-		};
-		const onKey = (e: KeyboardEvent) => {
-			if (e.key === "Escape") open = false;
-		};
-		window.addEventListener("pointerdown", onPointer);
-		window.addEventListener("keydown", onKey);
-		return () => {
-			window.removeEventListener("pointerdown", onPointer);
-			window.removeEventListener("keydown", onKey);
-		};
-	});
+$effect(() => {
+	if (!open) return;
+	const onPointer = (e: PointerEvent) => {
+		if (root && !root.contains(e.target as Node)) open = false;
+	};
+	const onKey = (e: KeyboardEvent) => {
+		if (e.key === "Escape") open = false;
+	};
+	window.addEventListener("pointerdown", onPointer);
+	window.addEventListener("keydown", onKey);
+	return () => {
+		window.removeEventListener("pointerdown", onPointer);
+		window.removeEventListener("keydown", onKey);
+	};
+});
 
-	async function copyPage() {
-		await navigator.clipboard.writeText(copyText);
-		copied = true;
-		clearTimeout(timer);
-		timer = setTimeout(() => (copied = false), 1600);
-	}
+async function copyPage() {
+	await navigator.clipboard.writeText(copyText);
+	copied = true;
+	clearTimeout(timer);
+	timer = setTimeout(() => (copied = false), 1600);
+}
 
-	const row =
-		"flex w-full items-center gap-2.5 rounded-md px-2 py-1.5 text-left text-[13px] text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground";
-	const heading =
-		"px-2 pt-2 pb-1 font-medium text-[10px] text-muted-foreground/70 uppercase tracking-wider";
+const row =
+	"flex w-full items-center gap-2.5 rounded-md px-2 py-1.5 text-left text-[13px] text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground";
+const heading =
+	"px-2 pt-2 pb-1 font-medium text-[10px] text-muted-foreground/70 uppercase tracking-wider";
 </script>
 
 <div bind:this={root} class="relative shrink-0">

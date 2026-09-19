@@ -31,7 +31,13 @@ export function Checkbox({
 	}, [indeterminate]);
 
 	return (
-		<div className={cn("inline-flex items-center gap-2", disabled && "opacity-50", className)}>
+		<div
+			className={cn(
+				"inline-flex items-center gap-2",
+				disabled && "opacity-50",
+				className,
+			)}
+		>
 			<span className="relative inline-grid size-4 shrink-0 place-items-center">
 				<input
 					ref={ref}
@@ -48,13 +54,24 @@ export function Checkbox({
 					className="pointer-events-none grid size-4 place-items-center rounded-[5px] border border-input bg-background transition-colors duration-150 peer-checked:border-primary peer-checked:bg-primary peer-indeterminate:border-primary peer-indeterminate:bg-primary peer-focus-visible:ring-2 peer-focus-visible:ring-ring"
 				>
 					{indeterminate ? (
-						<svg viewBox="0 0 12 12" fill="none" className="size-3 text-primary-foreground">
-							<path d="M3 6h6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+						<svg
+							viewBox="0 0 12 12"
+							fill="none"
+							aria-hidden
+							className="size-3 text-primary-foreground"
+						>
+							<path
+								d="M3 6h6"
+								stroke="currentColor"
+								strokeWidth="1.8"
+								strokeLinecap="round"
+							/>
 						</svg>
 					) : (
 						<svg
 							viewBox="0 0 12 12"
 							fill="none"
+							aria-hidden
 							data-on={checked}
 							className="checkbox-check size-3 text-primary-foreground"
 						>
@@ -70,7 +87,10 @@ export function Checkbox({
 				</span>
 			</span>
 			{label ? (
-				<label htmlFor={id} className="cursor-pointer select-none text-foreground text-sm">
+				<label
+					htmlFor={id}
+					className="cursor-pointer select-none text-foreground text-sm"
+				>
 					{label}
 				</label>
 			) : null}

@@ -10,7 +10,7 @@ export const alert = defineComponent({
 	props: [
 		{
 			name: "variant",
-			type: "\"info\" | \"success\" | \"warning\" | \"destructive\"",
+			type: '"info" | "success" | "warning" | "destructive"',
 			description: "Semantic colour and default icon.",
 			default: "info",
 			control: { kind: "select", options: ["info", "success", "warning", "destructive"] },

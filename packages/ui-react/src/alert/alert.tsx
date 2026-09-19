@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import type { ReactNode } from "react";
+import { useState } from "react";
 import { cn } from "../lib/cn.js";
 import { ALERT_ICON, ALERT_ROLE, type AlertVariant, alert } from "./variants.js";
 
@@ -31,7 +31,10 @@ export function Alert({
 	if (!open) return null;
 
 	return (
-		<div role={ALERT_ROLE[variant]} className={cn("alert-in", alert({ variant }), className)}>
+		<div
+			role={ALERT_ROLE[variant]}
+			className={cn("alert-in", alert({ variant }), className)}
+		>
 			<svg
 				viewBox="0 0 16 16"
 				fill="none"
@@ -61,7 +64,12 @@ export function Alert({
 					className="-mr-1 shrink-0 rounded-md p-1 text-muted-foreground transition-colors hover:text-foreground"
 				>
 					<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-3.5">
-						<path d="m4 4 8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+						<path
+							d="m4 4 8 8M12 4l-8 8"
+							stroke="currentColor"
+							strokeWidth="1.5"
+							strokeLinecap="round"
+						/>
 					</svg>
 				</button>
 			) : null}

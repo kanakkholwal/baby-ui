@@ -10,7 +10,7 @@ export const input = defineComponent({
 	props: [
 		{
 			name: "size",
-			type: "\"sm\" | \"md\" | \"lg\"",
+			type: '"sm" | "md" | "lg"',
 			description: "Height and horizontal padding.",
 			default: "md",
 			control: { kind: "select", options: ["sm", "md", "lg"] },

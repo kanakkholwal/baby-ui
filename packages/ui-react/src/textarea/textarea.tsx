@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import type { TextareaHTMLAttributes } from "react";
+import { useEffect, useRef } from "react";
 import { cn } from "../lib/cn.js";
 
 export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {

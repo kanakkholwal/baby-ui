@@ -54,7 +54,12 @@ function AccordionRow({
 	content,
 	open,
 	onToggle,
-}: { title: string; content: string; open: boolean; onToggle: () => void }) {
+}: {
+	title: string;
+	content: string;
+	open: boolean;
+	onToggle: () => void;
+}) {
 	const id = useId();
 
 	return (
@@ -74,7 +79,13 @@ function AccordionRow({
 					style={{ transform: open ? "rotate(180deg)" : undefined }}
 					className="size-4 shrink-0 text-muted-foreground transition-transform duration-200 ease-[var(--ease-out)] motion-reduce:transition-none"
 				>
-					<path d="m4 6 4 4 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+					<path
+						d="m4 6 4 4 4-4"
+						stroke="currentColor"
+						strokeWidth="1.4"
+						strokeLinecap="round"
+						strokeLinejoin="round"
+					/>
 				</svg>
 			</button>
 
@@ -84,7 +95,9 @@ function AccordionRow({
 				style={{ gridTemplateRows: open ? "1fr" : "0fr" }}
 			>
 				<div className="overflow-hidden">
-					<p className="px-4 pb-3 text-muted-foreground text-sm leading-relaxed">{content}</p>
+					<p className="px-4 pb-3 text-muted-foreground text-sm leading-relaxed">
+						{content}
+					</p>
 				</div>
 			</div>
 		</div>

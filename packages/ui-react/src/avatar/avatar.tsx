@@ -25,7 +25,13 @@ function initialsOf(name: string) {
 	return (first + last).toUpperCase();
 }
 
-export function Avatar({ name, src, className, size = "md", shape = "circle" }: AvatarProps) {
+export function Avatar({
+	name,
+	src,
+	className,
+	size = "md",
+	shape = "circle",
+}: AvatarProps) {
 	const [failed, setFailed] = useState(false);
 	const [loaded, setLoaded] = useState(false);
 

@@ -1,17 +1,17 @@
 <script lang="ts">
-	import type { Snippet } from "svelte";
-	import { cn } from "../lib/cn.js";
+import type { Snippet } from "svelte";
+import { cn } from "../lib/cn.js";
 
-	type Props = {
-		children: Snippet;
-		class?: string;
-		padding?: "sm" | "md" | "lg";
-		interactive?: boolean;
-	};
+type Props = {
+	children: Snippet;
+	class?: string;
+	padding?: "sm" | "md" | "lg";
+	interactive?: boolean;
+};
 
-	let { children, class: classProp, padding = "md", interactive = false }: Props = $props();
+let { children, class: classProp, padding = "md", interactive = false }: Props = $props();
 
-	const PAD = { sm: "p-3", md: "p-5", lg: "p-7" };
+const PAD = { sm: "p-3", md: "p-5", lg: "p-7" };
 </script>
 
 <div

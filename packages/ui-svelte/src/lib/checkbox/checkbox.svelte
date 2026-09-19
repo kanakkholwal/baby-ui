@@ -1,31 +1,31 @@
 <script lang="ts">
-	import { cn } from "../lib/cn.js";
+import { cn } from "../lib/cn.js";
 
-	type Props = {
-		checked?: boolean;
-		indeterminate?: boolean;
-		disabled?: boolean;
-		label?: string;
-		class?: string;
-		name?: string;
-	};
+type Props = {
+	checked?: boolean;
+	indeterminate?: boolean;
+	disabled?: boolean;
+	label?: string;
+	class?: string;
+	name?: string;
+};
 
-	let {
-		checked = $bindable(false),
-		indeterminate = false,
-		disabled = false,
-		label,
-		class: classProp,
-		name,
-	}: Props = $props();
+let {
+	checked = $bindable(false),
+	indeterminate = false,
+	disabled = false,
+	label,
+	class: classProp,
+	name,
+}: Props = $props();
 
-	const id = $props.id();
-	let el = $state<HTMLInputElement>();
+const id = $props.id();
+let el = $state<HTMLInputElement>();
 
-	// indeterminate is a DOM property, not an attribute, so it has to be set here.
-	$effect(() => {
-		if (el) el.indeterminate = indeterminate;
-	});
+// indeterminate is a DOM property, not an attribute, so it has to be set here.
+$effect(() => {
+	if (el) el.indeterminate = indeterminate;
+});
 </script>
 
 <div class={cn("inline-flex items-center gap-2", disabled && "opacity-50", classProp)}>

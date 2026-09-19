@@ -3,7 +3,8 @@ import { defineComponent } from "../index.js";
 export const avatar = defineComponent({
 	slug: "avatar",
 	name: "Avatar",
-	description: "User image with an initials fallback that shows only after the image actually fails.",
+	description:
+		"User image with an initials fallback that shows only after the image actually fails.",
 	category: "base",
 	status: "stable",
 	variants: { size: ["xs", "sm", "md", "lg"], shape: ["circle", "square"] },
@@ -11,7 +12,8 @@ export const avatar = defineComponent({
 		{
 			name: "src",
 			type: "string",
-			description: "Image URL. The fallback renders until it loads, and stays if it errors.",
+			description:
+				"Image URL. The fallback renders until it loads, and stays if it errors.",
 			control: { kind: "text", placeholder: "https://…" },
 		},
 		{

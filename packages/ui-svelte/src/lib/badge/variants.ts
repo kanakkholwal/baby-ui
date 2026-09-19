@@ -7,9 +7,12 @@ export const badge = tv({
 			default: "border-transparent bg-primary text-primary-foreground",
 			secondary: "border-transparent bg-card text-foreground",
 			outline: "border-border bg-transparent text-foreground",
-			success: "border-transparent bg-[color-mix(in_oklch,var(--success)_15%,transparent)] text-[var(--success)]",
-			warning: "border-transparent bg-[color-mix(in_oklch,var(--warning)_15%,transparent)] text-[var(--warning)]",
-			destructive: "border-transparent bg-[color-mix(in_oklch,var(--destructive)_15%,transparent)] text-[var(--destructive)]",
+			success:
+				"border-transparent bg-[color-mix(in_oklch,var(--success)_15%,transparent)] text-[var(--success)]",
+			warning:
+				"border-transparent bg-[color-mix(in_oklch,var(--warning)_15%,transparent)] text-[var(--warning)]",
+			destructive:
+				"border-transparent bg-[color-mix(in_oklch,var(--destructive)_15%,transparent)] text-[var(--destructive)]",
 		},
 		size: {
 			sm: "h-5 px-1.5 text-[11px]",

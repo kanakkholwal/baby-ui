@@ -1,26 +1,31 @@
 <script lang="ts">
-	import type { Snippet } from "svelte";
-	import { cn } from "../lib/cn.js";
-	import { ALERT_ICON, ALERT_ROLE, type AlertVariant, alert } from "./variants.js";
+import type { Snippet } from "svelte";
+import { cn } from "../lib/cn.js";
+import { ALERT_ICON, ALERT_ROLE, type AlertVariant, alert } from "./variants.js";
 
-	type Props = {
-		children?: Snippet;
-		variant?: AlertVariant;
-		title?: string;
-		dismissible?: boolean;
-		class?: string;
-	};
+type Props = {
+	children?: Snippet;
+	variant?: AlertVariant;
+	title?: string;
+	dismissible?: boolean;
+	class?: string;
+};
 
-	let { children, variant = "info", title, dismissible = false, class: classProp }: Props =
-		$props();
+let {
+	children,
+	variant = "info",
+	title,
+	dismissible = false,
+	class: classProp,
+}: Props = $props();
 
-	let open = $state(true);
-	const tone = {
-		info: "text-muted-foreground",
-		success: "text-[var(--success)]",
-		warning: "text-[var(--warning)]",
-		destructive: "text-[var(--destructive)]",
-	};
+let open = $state(true);
+const tone = {
+	info: "text-muted-foreground",
+	success: "text-[var(--success)]",
+	warning: "text-[var(--warning)]",
+	destructive: "text-[var(--destructive)]",
+};
 </script>
 
 {#if open}

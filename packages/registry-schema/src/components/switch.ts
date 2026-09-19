@@ -24,7 +24,7 @@ export const switchComponent = defineComponent({
 		},
 		{
 			name: "size",
-			type: "\"sm\" | \"md\"",
+			type: '"sm" | "md"',
 			description: "Track and thumb size.",
 			default: "md",
 			control: { kind: "select", options: ["sm", "md"] },
@@ -47,10 +47,7 @@ export const switchComponent = defineComponent({
 	},
 	a11y: {
 		role: "switch",
-		keyboard: [
-			"Space toggles the switch",
-			"Enter toggles the switch",
-		],
+		keyboard: ["Space toggles the switch", "Enter toggles the switch"],
 		notes: [
 			"Uses role=switch with aria-checked, not a checkbox: a switch takes effect immediately, a checkbox waits for submit.",
 		],

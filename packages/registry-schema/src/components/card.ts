@@ -3,14 +3,15 @@ import { defineComponent } from "../index.js";
 export const card = defineComponent({
 	slug: "card",
 	name: "Card",
-	description: "Surface with optional header, body and footer slots that keep consistent padding.",
+	description:
+		"Surface with optional header, body and footer slots that keep consistent padding.",
 	category: "base",
 	status: "stable",
 	variants: { padding: ["sm", "md", "lg"] },
 	props: [
 		{
 			name: "padding",
-			type: "\"sm\" | \"md\" | \"lg\"",
+			type: '"sm" | "md" | "lg"',
 			description: "Inner padding on every slot.",
 			default: "md",
 			control: { kind: "select", options: ["sm", "md", "lg"] },
@@ -18,7 +19,8 @@ export const card = defineComponent({
 		{
 			name: "interactive",
 			type: "boolean",
-			description: "Lift and brighten the border on hover. Only set this when the whole card is a link.",
+			description:
+				"Lift and brighten the border on hover. Only set this when the whole card is a link.",
 			default: false,
 			control: { kind: "boolean" },
 		},
@@ -48,8 +50,6 @@ export const card = defineComponent({
 			entry: "Card",
 			files: [
 				{ path: "card/card.tsx", type: "registry:ui" },
-				{ path: "card/card-header.tsx", type: "registry:ui" },
-				{ path: "card/card-footer.tsx", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge"],

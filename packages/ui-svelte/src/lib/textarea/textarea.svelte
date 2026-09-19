@@ -1,36 +1,36 @@
 <script lang="ts">
-	import type { HTMLTextareaAttributes } from "svelte/elements";
-	import { cn } from "../lib/cn.js";
+import type { HTMLTextareaAttributes } from "svelte/elements";
+import { cn } from "../lib/cn.js";
 
-	type Props = {
-		value?: string;
-		class?: string;
-		rows?: number;
-		autoGrow?: boolean;
-		maxRows?: number;
-		invalid?: boolean;
-	} & Omit<HTMLTextareaAttributes, "rows" | "value" | "class">;
+type Props = {
+	value?: string;
+	class?: string;
+	rows?: number;
+	autoGrow?: boolean;
+	maxRows?: number;
+	invalid?: boolean;
+} & Omit<HTMLTextareaAttributes, "rows" | "value" | "class">;
 
-	let {
-		value = $bindable(""),
-		class: classProp,
-		rows = 3,
-		autoGrow = true,
-		maxRows = 10,
-		invalid = false,
-		...rest
-	}: Props = $props();
+let {
+	value = $bindable(""),
+	class: classProp,
+	rows = 3,
+	autoGrow = true,
+	maxRows = 10,
+	invalid = false,
+	...rest
+}: Props = $props();
 
-	let el = $state<HTMLTextAreaElement>();
+let el = $state<HTMLTextAreaElement>();
 
-	// Height follows content, never eases: easing lags behind the character just typed.
-	$effect(() => {
-		void value;
-		if (!autoGrow || !el) return;
-		const line = Number.parseFloat(getComputedStyle(el).lineHeight) || 20;
-		el.style.height = "auto";
-		el.style.height = `${Math.min(el.scrollHeight, line * maxRows)}px`;
-	});
+// Height follows content, never eases: easing lags behind the character just typed.
+$effect(() => {
+	void value;
+	if (!autoGrow || !el) return;
+	const line = Number.parseFloat(getComputedStyle(el).lineHeight) || 20;
+	el.style.height = "auto";
+	el.style.height = `${Math.min(el.scrollHeight, line * maxRows)}px`;
+});
 </script>
 
 <textarea

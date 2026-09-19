@@ -1,13 +1,13 @@
 <script lang="ts">
-	import type { Snippet } from "svelte";
-	import { cn } from "../lib/cn.js";
+import type { Snippet } from "svelte";
+import { cn } from "../lib/cn.js";
 
-	let {
-		title,
-		description,
-		actions,
-		class: classProp,
-	}: { title: string; description?: string; actions?: Snippet; class?: string } = $props();
+let {
+	title,
+	description,
+	actions,
+	class: classProp,
+}: { title: string; description?: string; actions?: Snippet; class?: string } = $props();
 </script>
 
 <div class={cn("flex items-start justify-between gap-4", classProp)}>

@@ -57,7 +57,6 @@ export const accordion = defineComponent({
 			entry: "Accordion",
 			files: [
 				{ path: "accordion/accordion.tsx", type: "registry:ui" },
-				{ path: "accordion/accordion-item.tsx", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge"],

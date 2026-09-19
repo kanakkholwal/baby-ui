@@ -26,7 +26,11 @@ export function Progress({
 			aria-valuemin={0}
 			aria-valuemax={100}
 			aria-valuenow={indeterminate ? undefined : clamped}
-			className={cn("w-full overflow-hidden rounded-full bg-input", HEIGHT[size], className)}
+			className={cn(
+				"w-full overflow-hidden rounded-full bg-input",
+				HEIGHT[size],
+				className,
+			)}
 		>
 			{indeterminate ? (
 				<div className="progress-sweep h-full w-2/5 rounded-full bg-primary" />

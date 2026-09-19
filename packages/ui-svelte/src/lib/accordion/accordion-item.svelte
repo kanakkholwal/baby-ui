@@ -1,12 +1,12 @@
 <script lang="ts">
-	let {
-		title,
-		content,
-		open = false,
-		ontoggle,
-	}: { title: string; content: string; open?: boolean; ontoggle?: () => void } = $props();
+let {
+	title,
+	content,
+	open = false,
+	ontoggle,
+}: { title: string; content: string; open?: boolean; ontoggle?: () => void } = $props();
 
-	const id = $props.id();
+const id = $props.id();
 </script>
 
 <div>

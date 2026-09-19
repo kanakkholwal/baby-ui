@@ -3,7 +3,8 @@ import { defineComponent } from "../index.js";
 export const label = defineComponent({
 	slug: "label",
 	name: "Label",
-	description: "Form label with a required marker and a disabled state that matches its control.",
+	description:
+		"Form label with a required marker and a disabled state that matches its control.",
 	category: "base",
 	status: "stable",
 	props: [

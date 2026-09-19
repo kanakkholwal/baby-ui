@@ -5,7 +5,8 @@ const VARIANTS = ["default", "secondary", "outline", "success", "warning", "dest
 export const badge = defineComponent({
 	slug: "badge",
 	name: "Badge",
-	description: "Compact status label with semantic colour variants and an optional leading dot.",
+	description:
+		"Compact status label with semantic colour variants and an optional leading dot.",
 	category: "base",
 	status: "stable",
 	variants: { variant: VARIANTS, size: ["sm", "md"] },
@@ -13,7 +14,8 @@ export const badge = defineComponent({
 		{
 			name: "variant",
 			type: VARIANTS.map((v) => `"${v}"`).join(" | "),
-			description: "Semantic colour. `success`, `warning` and `destructive` carry meaning, not decoration.",
+			description:
+				"Semantic colour. `success`, `warning` and `destructive` carry meaning, not decoration.",
 			default: "secondary",
 			control: { kind: "select", options: VARIANTS },
 		},

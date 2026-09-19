@@ -9,6 +9,7 @@ export interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
 
 export function Label({ children, className, required, disabled, ...rest }: LabelProps) {
 	return (
+		// biome-ignore lint/a11y/noLabelWithoutControl: htmlFor is supplied by the caller
 		<label
 			{...rest}
 			className={cn(

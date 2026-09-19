@@ -1,20 +1,20 @@
 <script lang="ts">
-	import type { Snippet } from "svelte";
-	import { cn } from "../lib/cn.js";
+import type { Snippet } from "svelte";
+import { cn } from "../lib/cn.js";
 
-	let {
-		children,
-		for: htmlFor,
-		class: classProp,
-		required = false,
-		disabled = false,
-	}: {
-		children: Snippet;
-		for?: string;
-		class?: string;
-		required?: boolean;
-		disabled?: boolean;
-	} = $props();
+let {
+	children,
+	for: htmlFor,
+	class: classProp,
+	required = false,
+	disabled = false,
+}: {
+	children: Snippet;
+	for?: string;
+	class?: string;
+	required?: boolean;
+	disabled?: boolean;
+} = $props();
 </script>
 
 <label
