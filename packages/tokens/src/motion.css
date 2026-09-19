@@ -151,3 +151,21 @@
 		animation: none;
 	}
 }
+
+/* Shared by both checkbox ports: the tick draws rather than fades. */
+.checkbox-check path {
+	stroke-dasharray: 12;
+	stroke-dashoffset: 12;
+	transition: stroke-dashoffset 200ms var(--ease-out) 60ms;
+}
+
+.checkbox-check[data-on="true"] path {
+	stroke-dashoffset: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.checkbox-check path {
+		transition: none;
+		stroke-dashoffset: 0;
+	}
+}

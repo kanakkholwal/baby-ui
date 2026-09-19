@@ -48,7 +48,7 @@
 					<path d="M3 6h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
 				</svg>
 			{:else}
-				<svg viewBox="0 0 12 12" fill="none" class="check size-3 text-primary-foreground" data-on={checked}>
+				<svg viewBox="0 0 12 12" fill="none" class="checkbox-check size-3 text-primary-foreground" data-on={checked}>
 					<path
 						d="M2.5 6.2 4.8 8.5 9.5 3.6"
 						stroke="currentColor"
@@ -64,22 +64,3 @@
 		<label for={id} class="cursor-pointer text-foreground text-sm select-none">{label}</label>
 	{/if}
 </div>
-
-<style>
-	.check path {
-		stroke-dasharray: 12;
-		stroke-dashoffset: 12;
-		transition: stroke-dashoffset 200ms var(--ease-out) 60ms;
-	}
-
-	.check[data-on="true"] path {
-		stroke-dashoffset: 0;
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		.check path {
-			transition: none;
-			stroke-dashoffset: 0;
-		}
-	}
-</style>
