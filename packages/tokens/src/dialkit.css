@@ -8,7 +8,8 @@ html .dialkit-root[data-theme] {
 	--dial-surface-subtle: color-mix(in oklch, var(--foreground) 4%, transparent);
 	--dial-surface-hover: color-mix(in oklch, var(--foreground) 6%, transparent);
 	--dial-surface-active: color-mix(in oklch, var(--foreground) 10%, transparent);
-	--dial-glass-bg: var(--glass-bg);
+	/* The select dropdown paints with this and has no backdrop-filter, so it must be opaque. */
+	--dial-glass-bg: var(--popover);
 	--dial-dropdown-bg: var(--popover);
 	--dial-backdrop-blur: 16px;
 
