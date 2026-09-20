@@ -37,6 +37,7 @@
 		"@docvia/source": "^0.4.0",
 		"@fontsource-variable/inter": "catalog:",
 		"@fontsource-variable/jetbrains-mono": "catalog:",
+		"@tabler/icons-svelte": "^3.47.0",
 		"clsx": "catalog:",
 		"detype": "^2.0.8",
 		"dialkit": "catalog:",

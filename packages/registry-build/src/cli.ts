@@ -7,6 +7,7 @@ import { FRAMEWORK, OUT_DIR, REGISTRY_NAME, REPO_ROOT, SITE_URL } from "./config
 import { buildThirdPartyLicenses } from "./licenses";
 import { buildLlmsTxt } from "./llms";
 import { jsPath, toJavaScript } from "./tojs";
+import { buildUsage, verifyUsage } from "./usage";
 import { verifyComponentDocs, verifySprings } from "./verify";
 
 async function writeJson(relative: string, value: unknown) {
@@ -23,6 +24,7 @@ async function main() {
 			[...specs],
 			resolve(REPO_ROOT, "apps/site/src/docs/components"),
 		)),
+		...(await verifyUsage([...specs])),
 	];
 	if (errors.length) {
 		console.error("registry-build failed:");
@@ -82,6 +84,21 @@ async function main() {
 			);
 		}
 	}
+	const usage: Record<string, Record<string, unknown>> = {};
+	for (const spec of specs) {
+		const perFramework: Record<string, unknown> = {};
+		usage[spec.slug] = perFramework;
+		for (const framework of FRAMEWORKS as readonly Framework[]) {
+			const snippet = await buildUsage(spec, framework);
+			if (snippet) perFramework[framework] = snippet;
+		}
+	}
+	const usagePath = resolve(REPO_ROOT, "apps/site/src/lib/generated/usage.json");
+	await mkdir(dirname(usagePath), { recursive: true });
+	await writeFile(usagePath, `${JSON.stringify(usage, null, 2)}
+`, "utf8");
+	written.push("../src/lib/generated/usage.json");
+
 	const sourcesPath = resolve(REPO_ROOT, "apps/site/src/lib/generated/sources.json");
 	await mkdir(dirname(sourcesPath), { recursive: true });
 	await writeFile(

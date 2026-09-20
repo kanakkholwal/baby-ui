@@ -3,24 +3,25 @@ import type { Framework } from "@baby-ui/registry-schema";
 export type Appearance = "light" | "dark" | "system";
 export type Dialect = "ts" | "js";
 
-/** Each accent writes these two variables on <html>, overriding the token layer. */
-export const ACCENTS = [
-	{ id: "default", name: "Cyan", accent: "oklch(80% 0.18 195)", fg: "#151515" },
-	{ id: "violet", name: "Violet", accent: "oklch(68% 0.22 295)", fg: "oklch(98% 0 0)" },
-	{ id: "lime", name: "Lime", accent: "oklch(80% 0.22 145)", fg: "#151515" },
-	{ id: "amber", name: "Amber", accent: "oklch(78% 0.18 75)", fg: "#151515" },
-	{ id: "rose", name: "Rose", accent: "oklch(66% 0.21 18)", fg: "oklch(98% 0 0)" },
+/** Each entry overrides --primary on <html>, so every component recolours at once. */
+export const PRIMARIES = [
+	{ id: "default", name: "Default", primary: "", fg: "" },
+	{ id: "cyan", name: "Cyan", primary: "oklch(72% 0.15 195)", fg: "oklch(99% 0 0)" },
+	{ id: "violet", name: "Violet", primary: "oklch(58% 0.22 295)", fg: "oklch(99% 0 0)" },
+	{ id: "lime", name: "Lime", primary: "oklch(70% 0.19 145)", fg: "oklch(15% 0 0)" },
+	{ id: "amber", name: "Amber", primary: "oklch(76% 0.16 75)", fg: "oklch(15% 0 0)" },
+	{ id: "rose", name: "Rose", primary: "oklch(62% 0.21 18)", fg: "oklch(99% 0 0)" },
 ] as const;
 
-export type AccentId = (typeof ACCENTS)[number]["id"];
+export type PrimaryId = (typeof PRIMARIES)[number]["id"];
 
 const KEY = "baby-ui:preferences";
+const PRIMARY_KEY = "baby-ui:primary";
 
 type Stored = {
 	framework: Framework;
 	dialect: Dialect;
 	appearance: Appearance;
-	accent: AccentId;
 };
 
 function read(): Partial<Stored> {
@@ -35,7 +36,7 @@ class Preferences {
 	framework = $state<Framework>("svelte");
 	dialect = $state<Dialect>("ts");
 	appearance = $state<Appearance>("dark");
-	accent = $state<AccentId>("default");
+	primary = $state<PrimaryId>("default");
 	open = $state(false);
 
 	/** Called once from the root layout, where `document` exists. */
@@ -44,7 +45,12 @@ class Preferences {
 		if (saved.framework) this.framework = saved.framework;
 		if (saved.dialect) this.dialect = saved.dialect;
 		if (saved.appearance) this.appearance = saved.appearance;
-		if (saved.accent) this.accent = saved.accent;
+		try {
+			const session = sessionStorage.getItem(PRIMARY_KEY) as PrimaryId | null;
+			if (session && PRIMARIES.some((p) => p.id === session)) this.primary = session;
+		} catch {
+			// Storage can be blocked; the default primary still applies.
+		}
 		this.apply();
 	}
 
@@ -56,9 +62,10 @@ class Preferences {
 					framework: this.framework,
 					dialect: this.dialect,
 					appearance: this.appearance,
-					accent: this.accent,
 				}),
 			);
+			// Primary is a try-it-out control, so it lasts the tab and not longer.
+			sessionStorage.setItem(PRIMARY_KEY, this.primary);
 		} catch {
 			// A blocked storage API should not stop the preference taking effect.
 		}
@@ -73,12 +80,22 @@ class Preferences {
 		root.classList.toggle("dark", dark);
 		root.style.colorScheme = dark ? "dark" : "light";
 
-		const swatch = ACCENTS.find((a) => a.id === this.accent) ?? ACCENTS[0];
-		root.style.setProperty("--accent", swatch.accent);
-		root.style.setProperty("--accent-fg", swatch.fg);
+		const swatch = PRIMARIES.find((p) => p.id === this.primary) ?? PRIMARIES[0];
+		if (swatch.primary) {
+			root.style.setProperty("--primary", swatch.primary);
+			root.style.setProperty("--primary-foreground", swatch.fg);
+			root.style.setProperty("--ring", swatch.primary);
+		} else {
+			root.style.removeProperty("--primary");
+			root.style.removeProperty("--primary-foreground");
+			root.style.removeProperty("--ring");
+		}
 	}
 
-	set<K extends keyof Stored>(key: K, value: Stored[K]) {
+	set<K extends keyof Stored | "primary">(
+		key: K,
+		value: K extends keyof Stored ? Stored[K] : PrimaryId,
+	) {
 		this[key] = value as never;
 		this.apply();
 		this.save();

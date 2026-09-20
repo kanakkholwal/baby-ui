@@ -1,4 +1,7 @@
 <script lang="ts">
+import IconCheck from "@tabler/icons-svelte/icons/check";
+import IconCopy from "@tabler/icons-svelte/icons/copy";
+
 let {
 	text,
 	iconOnly = false,
@@ -27,21 +30,10 @@ async function copy() {
 	]}
 >
 	{#if copied}
-		<svg viewBox="0 0 14 14" fill="none" aria-hidden="true" class="size-3">
-			<path
-				d="M3 7.4 5.6 10 11 4.2"
-				stroke="currentColor"
-				stroke-width="1.6"
-				stroke-linecap="round"
-				stroke-linejoin="round"
-			/>
-		</svg>
+		<IconCheck size={13} stroke={2} />
 		{#if !iconOnly}Copied{/if}
 	{:else}
-		<svg viewBox="0 0 14 14" fill="none" aria-hidden="true" class="size-3">
-			<rect x="4.5" y="4.5" width="7.5" height="7.5" rx="1.6" stroke="currentColor" stroke-width="1.3" />
-			<path d="M9.5 2.5H3.1A1.6 1.6 0 0 0 1.5 4.1v6.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
-		</svg>
+		<IconCopy size={13} stroke={1.7} />
 		{#if !iconOnly}Copy{/if}
 	{/if}
 </button>

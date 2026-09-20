@@ -10,16 +10,33 @@ export const CATEGORY_LABEL: Record<Category, string> = {
 	agents: "Agents",
 };
 
+export const CATEGORY_BLURB: Record<Category, string> = {
+	base: "The controls every interface needs, with the motion already worked out.",
+	boilerplate: "Whole sections you would otherwise rebuild on every project.",
+	advanced: "Components with real interaction models behind them.",
+	animated: "Pieces where the motion is the point.",
+	agents: "Interface parts for products that talk back: messages, tools, reasoning.",
+};
+
 /** Nav entries, derived from the specs so a new component shows up without edits here. */
 export function navCategories(): { href: string; label: string; match: string }[] {
-	return CATEGORIES.filter((c) => specs.some((s) => s.category === c)).map((category) => {
-		const first = specs.find((s) => s.category === category);
-		return {
-			href: `/components/${category}/${first?.slug ?? ""}`,
-			label: CATEGORY_LABEL[category],
-			match: `/components/${category}`,
-		};
-	});
+	return CATEGORIES.filter((c) => specs.some((s) => s.category === c)).map((category) => ({
+		href: `/components/${category}`,
+		label: CATEGORY_LABEL[category],
+		match: `/components/${category}`,
+	}));
+}
+
+export type SearchItem = { href: string; name: string; group: string; description: string };
+
+/** Flat index for the command palette, rebuilt from the specs on every load. */
+export function searchItems(): SearchItem[] {
+	return specs.map((s) => ({
+		href: `/components/${s.category}/${s.slug}`,
+		name: s.name,
+		group: CATEGORY_LABEL[s.category],
+		description: s.description,
+	}));
 }
 
 export type SidebarGroup = {

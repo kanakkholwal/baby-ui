@@ -1,4 +1,5 @@
 <script lang="ts">
+import IconArrowRight from "@tabler/icons-svelte/icons/arrow-right";
 import { specs } from "@baby-ui/registry-schema/components";
 import ComponentCard from "$lib/components/component-card.svelte";
 import InstallCommand from "$lib/components/install-command.svelte";
@@ -47,9 +48,11 @@ const featured = specs.slice(0, 8);
 				class="group inline-flex items-center self-start font-medium text-muted-foreground text-sm transition-colors hover:text-foreground md:self-auto"
 			>
 				Browse all components
-				<svg viewBox="0 0 14 14" fill="none" aria-hidden="true" class="ml-1 size-3.5 transition-transform group-hover:translate-x-0.5">
-					<path d="M3 7h8M7.5 3.5 11 7l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
-				</svg>
+				<IconArrowRight
+					size={14}
+					stroke={1.7}
+					class="ml-1 transition-transform group-hover:translate-x-0.5"
+				/>
 			</a>
 		</div>
 

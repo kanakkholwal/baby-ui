@@ -172,6 +172,39 @@
 	}
 }
 
+/* Switch thumb: travel and press-squish in one transition, plus the refusal
+   shake a disabled switch plays instead of doing nothing. */
+.switch-thumb {
+	transition:
+		transform var(--duration-press) var(--ease-out),
+		scale var(--duration-press) var(--ease-out);
+}
+
+.switch-thumb[data-shake] {
+	animation: switch-refuse 420ms var(--ease-out);
+}
+
+@keyframes switch-refuse {
+	20% {
+		translate: -2px 0;
+	}
+	45% {
+		translate: 2px 0;
+	}
+	70% {
+		translate: -1px 0;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.switch-thumb {
+		transition: none;
+	}
+	.switch-thumb[data-shake] {
+		animation: none;
+	}
+}
+
 /* Shared across both ports of radio-group, slider, message, response-stream,
    reasoning and task-steps, so neither framework owns the timing. */
 .radio-dot {

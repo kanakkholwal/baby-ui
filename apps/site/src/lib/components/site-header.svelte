@@ -1,11 +1,16 @@
 <script lang="ts">
 import { page } from "$app/state";
+import IconArrowUpRight from "@tabler/icons-svelte/icons/arrow-up-right";
+import IconBrandGithub from "@tabler/icons-svelte/icons/brand-github";
+import IconSettings from "@tabler/icons-svelte/icons/settings";
+import SiteSearch from "$lib/components/site-search.svelte";
 import { prefs } from "$lib/preferences.svelte";
+import { navCategories } from "$lib/registry";
 
 const NAV = [
-	{ href: "/components/base/button", label: "Components", match: "/components" },
+	{ href: "/components", label: "Components", match: "/components" },
+	...navCategories().filter((c) => c.label === "Agents"),
 	{ href: "/docs", label: "Docs", match: "/docs" },
-	{ href: "/llms.txt", label: "Agents", match: "/llms" },
 ];
 
 let scrolled = $state(false);
@@ -16,6 +21,11 @@ $effect(() => {
 	window.addEventListener("scroll", onScroll, { passive: true });
 	return () => window.removeEventListener("scroll", onScroll);
 });
+
+function active(match: string) {
+	if (match === "/components") return page.url.pathname === "/components";
+	return page.url.pathname.startsWith(match);
+}
 </script>
 
 <header
@@ -26,9 +36,7 @@ $effect(() => {
 			: "border-transparent border-b bg-transparent",
 	]}
 >
-	<div
-		class="relative flex h-14 w-full items-center justify-between gap-4 px-4 md:px-6 xl:px-8"
-	>
+	<div class="relative flex h-14 w-full items-center justify-between gap-4 px-4 md:px-6 xl:px-8">
 		<div class="flex items-center gap-4">
 			<a
 				href="/"
@@ -47,9 +55,10 @@ $effect(() => {
 				{#each NAV as item (item.href)}
 					<a
 						href={item.href}
+						aria-current={active(item.match) ? "page" : undefined}
 						class={[
 							"rounded-md px-1.5 py-1.5 text-sm transition-colors lg:px-3",
-							page.url.pathname.startsWith(item.match)
+							active(item.match)
 								? "font-medium text-foreground"
 								: "text-muted-foreground hover:text-foreground",
 						]}
@@ -61,21 +70,7 @@ $effect(() => {
 		</div>
 
 		<nav class="flex items-center gap-2">
-			<button
-				type="button"
-				class="hidden h-9 items-center gap-2 rounded-2xl border border-border bg-card/20 px-3 text-muted-foreground text-xs transition-colors hover:border-border-strong hover:text-foreground sm:flex lg:w-44"
-			>
-				<svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class="size-3.5">
-					<circle cx="7.2" cy="7.2" r="4.2" stroke="currentColor" stroke-width="1.4" />
-					<path d="m10.4 10.4 3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
-				</svg>
-				<span class="hidden lg:inline">Search</span>
-				<kbd
-					class="ml-auto hidden rounded border border-border px-1 font-mono text-[10px] lg:inline"
-				>
-					⌘K
-				</kbd>
-			</button>
+			<SiteSearch />
 
 			<button
 				type="button"
@@ -83,15 +78,7 @@ $effect(() => {
 				aria-label="Settings"
 				class="gear hidden size-9 items-center justify-center rounded-2xl border border-border bg-card/20 text-muted-foreground transition-colors hover:border-border-strong hover:text-foreground sm:flex"
 			>
-				<svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class="size-4">
-					<circle cx="8" cy="8" r="2.2" stroke="currentColor" stroke-width="1.3" />
-					<path
-						d="M8 1.4v1.5M8 13.1v1.5M14.6 8h-1.5M2.9 8H1.4m10.6-4.6-1 1M5 11l-1 1m8 0-1-1M5 5l-1-1"
-						stroke="currentColor"
-						stroke-width="1.3"
-						stroke-linecap="round"
-					/>
-				</svg>
+				<IconSettings size={17} stroke={1.6} />
 			</button>
 
 			<a
@@ -100,11 +87,7 @@ $effect(() => {
 				target="_blank"
 				class="hidden h-9 items-center gap-1.5 rounded-2xl border border-border bg-card/20 px-3 font-medium text-foreground text-xs transition-colors hover:border-border-strong sm:inline-flex"
 			>
-				<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" class="size-3.5">
-					<path
-						d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38l-.01-1.34c-2.23.48-2.7-1.07-2.7-1.07-.36-.93-.89-1.18-.89-1.18-.73-.5.05-.49.05-.49.8.06 1.23.83 1.23.83.72 1.23 1.88.87 2.34.67.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48l-.01 2.2c0 .21.15.46.55.38A8 8 0 0 0 8 0Z"
-					/>
-				</svg>
+				<IconBrandGithub size={15} stroke={1.6} />
 				GitHub
 			</a>
 
@@ -113,12 +96,10 @@ $effect(() => {
 				class="rainbow-ring group inline-flex h-9 items-stretch overflow-hidden rounded-2xl p-0.5 font-medium text-xs transition-transform duration-[var(--duration-press)] ease-[var(--ease-out)] active:scale-[var(--press-scale)]"
 			>
 				<span
-					class="inline-flex flex-1 items-center gap-1.5 rounded-[calc(1rem-2px)] bg-background px-3 text-foreground transition-colors group-hover:bg-card"
+					class="inline-flex flex-1 items-center gap-1 rounded-[calc(1rem-2px)] bg-background px-3 text-foreground transition-colors group-hover:bg-card"
 				>
 					Browse
-					<svg viewBox="0 0 14 14" fill="none" aria-hidden="true" class="size-3">
-						<path d="M4 10 10 4M10 4H5M10 4v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
-					</svg>
+					<IconArrowUpRight size={14} stroke={1.8} />
 				</span>
 			</a>
 		</nav>
@@ -126,16 +107,16 @@ $effect(() => {
 </header>
 
 <style>
-	.gear svg {
+	.gear :global(svg) {
 		transition: transform 420ms var(--ease-out);
 	}
 
-	.gear:hover svg {
+	.gear:hover :global(svg) {
 		transform: rotate(90deg);
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.gear svg {
+		.gear :global(svg) {
 			transition: none;
 		}
 	}

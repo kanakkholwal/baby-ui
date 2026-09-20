@@ -1,13 +1,14 @@
 <script lang="ts">
 import { registry } from "virtual:docvia/source";
+import IconChevronRight from "@tabler/icons-svelte/icons/chevron-right";
 import { demos } from "@baby-ui/demos/svelte";
 import { Renderer } from "@docvia/renderer-svelte";
 import DemoPreview from "$lib/components/demo-preview.svelte";
 import InstallBlock from "$lib/components/install-block.svelte";
 import PageMenu from "$lib/components/page-menu.svelte";
 import PropsRail from "$lib/components/props-rail.svelte";
+import CodeBlock from "$lib/components/code-block.svelte";
 import PropsTable from "$lib/components/props-table.svelte";
-import SourceFiles from "$lib/components/source-files.svelte";
 import Tabs from "$lib/components/tabs.svelte";
 import { prefs } from "$lib/preferences.svelte";
 import { CATEGORY_LABEL, defaultProps } from "$lib/registry";
@@ -29,9 +30,12 @@ $effect(() => {
 const port = $derived(data.ports.find((p) => p.framework === framework) ?? data.ports[0]);
 const tabs = [
 	{ id: "preview", label: "Preview" },
-	{ id: "code", label: "Code" },
+	{ id: "usage", label: "Usage" },
 	{ id: "install", label: "Install" },
 ];
+const usage = $derived(
+	dialect === "js" && port?.usage?.js ? port.usage.js : (port?.usage?.ts ?? null),
+);
 </script>
 
 <svelte:head>
@@ -42,18 +46,19 @@ const tabs = [
 <div class="min-w-0 py-8">
 	<div id="overview" class="scroll-mt-24">
 		<nav aria-label="Breadcrumb" class="flex items-center gap-1.5 text-sm">
-			<a href="/components" class="text-muted-foreground transition-colors hover:text-foreground">
+			<a
+				href="/components/{data.spec.category}"
+				class="text-muted-foreground transition-colors hover:text-foreground"
+			>
 				{CATEGORY_LABEL[data.spec.category]}
 			</a>
-			<svg viewBox="0 0 14 14" fill="none" aria-hidden="true" class="h-3.5 w-3.5 text-muted-foreground">
-				<path d="M5.5 3.5 9 7l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
-			</svg>
+			<IconChevronRight size={14} stroke={1.6} class="text-muted-foreground" />
 			<span class="font-medium text-foreground">{data.spec.name}</span>
 		</nav>
 
 		<div class="mt-4 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
 			<div class="flex items-center gap-3">
-				<h1 class="font-medium text-3xl text-foreground tracking-tight">{data.spec.name}</h1>
+				<h1 class="font-semibold text-3xl text-foreground tracking-tight">{data.spec.name}</h1>
 				{#if data.spec.status !== "stable"}
 					<span class="mt-1 rounded-full border border-border px-2 py-0.5 text-[11px] text-muted-foreground">
 						{data.spec.status}
@@ -70,12 +75,14 @@ const tabs = [
 	</div>
 
 	<section id="preview" class="mt-8 scroll-mt-24">
-		<Tabs {tabs} bind:active={tab} />
+		<Tabs {tabs} bind:active={tab} variant="underline" class="w-full" />
 		<div id="panel-{tab}" role="tabpanel" aria-labelledby="tab-{tab}" class="mt-4">
 			{#if tab === "preview"}
 				<DemoPreview {framework} slug={data.spec.slug} demo={demos[data.spec.slug]} props={values} />
-			{:else if tab === "code"}
-				<SourceFiles files={port?.files ?? []} {dialect} />
+			{:else if tab === "usage"}
+				{#if usage}
+					<CodeBlock code={usage.code} html={usage.html} lang={usage.lang} maxHeight="none" />
+				{/if}
 			{:else if port}
 				<InstallBlock
 					slug={data.spec.slug}

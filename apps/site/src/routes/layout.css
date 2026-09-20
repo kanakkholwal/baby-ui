@@ -70,6 +70,17 @@
 	}
 }
 
+/* Shiki emits both themes as variables; pick one per colour mode. */
+.shiki,
+.shiki span {
+	color: var(--shiki-light);
+}
+
+.dark .shiki,
+.dark .shiki span {
+	color: var(--shiki-dark);
+}
+
 @layer utilities {
 	.scrollbar-hide {
 		scrollbar-width: none;

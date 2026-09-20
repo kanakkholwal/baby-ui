@@ -1,4 +1,6 @@
 <script lang="ts">
+import IconArrowRight from "@tabler/icons-svelte/icons/arrow-right";
+import IconArrowUpRight from "@tabler/icons-svelte/icons/arrow-up-right";
 let { count }: { count: number } = $props();
 
 const HEADLINE = ["One spec,", "two frameworks."];
@@ -14,9 +16,11 @@ const words = HEADLINE.flatMap((line, i) =>
 	>
 		<span class="size-1.5 rounded-full bg-primary"></span>
 		{count} components · React 19 + Svelte 5
-		<svg viewBox="0 0 14 14" fill="none" aria-hidden="true" class="size-3 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
-			<path d="M4 10 10 4M10 4H5M10 4v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
-		</svg>
+		<IconArrowUpRight
+			size={13}
+			stroke={1.7}
+			class="text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+		/>
 	</a>
 
 	<h1
@@ -47,9 +51,7 @@ const words = HEADLINE.flatMap((line, i) =>
 			class="group inline-flex min-h-10 items-center gap-2 rounded-full bg-primary px-4 font-medium text-primary-foreground text-sm transition-transform duration-[var(--duration-press)] ease-[var(--ease-out)] active:scale-[var(--press-scale)]"
 		>
 			Browse components
-			<svg viewBox="0 0 14 14" fill="none" aria-hidden="true" class="size-4 transition-transform group-hover:translate-x-0.5">
-				<path d="M3 7h8M7.5 3.5 11 7l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
-			</svg>
+			<IconArrowRight size={16} stroke={1.7} class="transition-transform group-hover:translate-x-0.5" />
 		</a>
 		<a
 			href="/docs"

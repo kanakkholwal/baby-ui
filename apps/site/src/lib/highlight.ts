@@ -28,10 +28,14 @@ export function langFor(path: string): string {
 	return ext in LANG ? ext : "ts";
 }
 
-/** Runs at build/request time so no highlighter ships to the browser. */
+/**
+ * Runs at build/request time so no highlighter ships to the browser. Both themes are
+ * emitted as CSS variables; layout.css picks one per colour mode.
+ */
 export function highlight(code: string, lang: string) {
 	return codeToHtml(code, {
 		lang: LANG[lang] ?? "typescript",
-		theme: "github-dark-default",
+		themes: { light: "github-light-default", dark: "github-dark-default" },
+		defaultColor: false,
 	});
 }

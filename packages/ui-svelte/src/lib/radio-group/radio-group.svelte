@@ -1,23 +1,48 @@
 <script lang="ts">
 import { cn } from "../lib/cn";
 
-type Option = { value: string; label: string };
+type Size = "sm" | "md" | "lg" | "xl";
+type Variant = "default" | "card";
+export type RadioOption = { value: string; label: string; description?: string };
 
 let {
 	options,
 	value = $bindable(""),
 	orientation = "vertical",
+	variant = "default",
+	size = "md",
 	disabled = false,
 	class: classProp,
 	name,
 }: {
-	options: Option[];
+	options: RadioOption[];
 	value?: string;
 	orientation?: "vertical" | "horizontal";
+	variant?: Variant;
+	size?: Size;
 	disabled?: boolean;
 	class?: string;
 	name?: string;
 } = $props();
+
+const RING: Record<Size, string> = {
+	sm: "size-3.5",
+	md: "size-4",
+	lg: "size-5",
+	xl: "size-6",
+};
+const DOT: Record<Size, string> = {
+	sm: "size-1.5",
+	md: "size-2",
+	lg: "size-2.5",
+	xl: "size-3",
+};
+const TEXT: Record<Size, string> = {
+	sm: "text-xs",
+	md: "text-sm",
+	lg: "text-sm",
+	xl: "text-base",
+};
 
 let root = $state<HTMLDivElement>();
 const group = $props.id();
@@ -44,15 +69,20 @@ function onkeydown(event: KeyboardEvent, index: number) {
 	aria-orientation={orientation}
 	class={cn(
 		"flex gap-2",
-		orientation === "vertical" ? "flex-col" : "flex-row flex-wrap items-center",
+		orientation === "vertical" ? "flex-col" : "flex-row flex-wrap items-start",
 		disabled && "opacity-50",
 		classProp,
 	)}
 >
 	{#each options as option, i (option.value)}
 		<label
-			class="inline-flex cursor-pointer items-center gap-2 text-foreground text-sm"
 			for="{group}-{option.value}"
+			class={cn(
+				"inline-flex cursor-pointer items-start gap-2.5 text-foreground",
+				variant === "card" &&
+					"rounded-xl border border-border bg-card px-3.5 py-3 transition-colors hover:border-border-strong has-checked:border-primary",
+				TEXT[size],
+			)}
 		>
 			<input
 				id="{group}-{option.value}"
@@ -68,14 +98,24 @@ function onkeydown(event: KeyboardEvent, index: number) {
 			/>
 			<span
 				aria-hidden="true"
-				class="grid size-4 shrink-0 place-items-center rounded-full border border-input bg-background transition-colors peer-checked:border-primary peer-focus-visible:ring-2 peer-focus-visible:ring-ring"
+				class={cn(
+					"mt-0.5 grid shrink-0 place-items-center rounded-full border-2 border-muted-foreground/50 bg-background transition-colors peer-checked:border-primary peer-focus-visible:ring-2 peer-focus-visible:ring-ring peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-background",
+					RING[size],
+				)}
 			>
 				<span
-					class="radio-dot size-2 rounded-full bg-primary"
 					data-on={value === option.value}
+					class={cn("radio-dot rounded-full bg-primary", DOT[size])}
 				></span>
 			</span>
-			{option.label}
+			<span class="min-w-0">
+				<span class="block">{option.label}</span>
+				{#if option.description}
+					<span class="block text-muted-foreground text-xs leading-relaxed">
+						{option.description}
+					</span>
+				{/if}
+			</span>
 		</label>
 	{/each}
 </div>

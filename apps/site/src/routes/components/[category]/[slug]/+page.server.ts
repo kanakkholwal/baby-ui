@@ -5,6 +5,7 @@ import { error } from "@sveltejs/kit";
 import { highlight, langFor } from "$lib/highlight";
 import { findSpec } from "$lib/registry";
 import { sourceFiles } from "$lib/registry-items";
+import { usageSnippet } from "$lib/usage";
 import type { PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async ({ params }) => {
@@ -29,10 +30,32 @@ export const load: PageServerLoad = async ({ params }) => {
 					};
 				}),
 			);
+			const snippet = usageSnippet(spec.slug, framework);
+			const usage = snippet
+				? {
+						path: snippet.path,
+						ts: {
+							code: snippet.ts,
+							lang: langFor(snippet.path),
+							html: await highlight(snippet.ts, langFor(snippet.path)),
+						},
+						js: snippet.js
+							? {
+									code: snippet.js,
+									lang: langFor(snippet.path) === "tsx" ? "jsx" : langFor(snippet.path),
+									html: await highlight(
+										snippet.js,
+										langFor(snippet.path) === "tsx" ? "jsx" : langFor(snippet.path),
+									),
+								}
+							: null,
+					}
+				: null;
 			const dependencies = spec.impl[framework]?.dependencies ?? [];
 			const depCommand = `pnpm add ${dependencies.join(" ")}`;
 			return {
 				framework,
+				usage,
 				dependencies,
 				depsHtml: await highlight(depCommand, "bash"),
 				files,

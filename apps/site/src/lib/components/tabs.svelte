@@ -1,6 +1,6 @@
 <script lang="ts">
 type Tab = { id: string; label: string };
-type Variant = "pill" | "segment";
+type Variant = "pill" | "segment" | "underline";
 
 let {
 	tabs,
@@ -51,6 +51,22 @@ const clips = $derived.by(() => {
 	}
 	return out;
 });
+
+function move(delta: number) {
+	const i = tabs.findIndex((t) => t.id === active);
+	const next = tabs[(i + delta + tabs.length) % tabs.length];
+	if (next) active = next.id;
+}
+
+function onkeydown(event: KeyboardEvent) {
+	if (event.key === "ArrowRight") {
+		event.preventDefault();
+		move(1);
+	} else if (event.key === "ArrowLeft") {
+		event.preventDefault();
+		move(-1);
+	}
+}
 </script>
 
 <div
@@ -58,16 +74,19 @@ const clips = $derived.by(() => {
 	role="tablist"
 	class={[
 		"relative inline-flex items-center",
-		variant === "pill" ? "gap-1 rounded-full bg-card p-1" : "gap-0.5 rounded-lg p-0.5",
+		variant === "pill" && "gap-1 rounded-full bg-card p-1",
+		variant === "segment" && "gap-0.5 rounded-lg p-0.5",
+		variant === "underline" && "-mb-px gap-1 border-border border-b",
 		classProp,
 	]}
 >
 	<span
 		aria-hidden="true"
 		class={[
-			"pointer-events-none absolute top-0.5 bottom-0.5 left-0 transition-[transform,width] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none",
-			radius,
-			variant === "pill" ? "top-1 bottom-1 bg-primary" : "border border-border bg-background",
+			"pointer-events-none absolute left-0 transition-[transform,width] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none",
+			variant === "pill" && "top-1 bottom-1 rounded-full bg-primary",
+			variant === "segment" && "top-0.5 bottom-0.5 rounded-md border border-border bg-background",
+			variant === "underline" && "-bottom-px h-0.5 rounded-full bg-primary",
 		]}
 		style:transform="translateX({pill.left}px)"
 		style:width="{pill.width}px"
@@ -81,27 +100,31 @@ const clips = $derived.by(() => {
 			data-tab={tab.id}
 			aria-selected={active === tab.id}
 			aria-controls="panel-{tab.id}"
+			tabindex={active === tab.id ? 0 : -1}
 			onclick={() => (active = tab.id)}
+			{onkeydown}
 			class={[
-				"relative z-10 inline-flex shrink-0 items-center justify-center whitespace-nowrap bg-transparent font-medium outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring",
+				"relative z-10 inline-flex shrink-0 items-center justify-center whitespace-nowrap bg-transparent font-medium text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring",
 				radius,
-				variant === "pill"
-					? "px-3.5 py-1.5 text-muted-foreground text-sm"
-					: "h-7 px-2.5 text-muted-foreground text-xs aria-selected:text-foreground",
+				variant === "pill" && "px-3.5 py-1.5 text-sm",
+				variant === "segment" && "h-7 px-2.5 text-xs aria-selected:text-foreground",
+				variant === "underline" && "px-3 pt-1 pb-2.5 text-sm aria-selected:text-foreground",
 			]}
 		>
 			{tab.label}
-			<span
-				aria-hidden="true"
-				class={[
-					"pointer-events-none absolute inset-0 inline-flex items-center justify-center transition-[clip-path] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none",
-					radius,
-					variant === "pill" ? "text-primary-foreground" : "text-foreground",
-				]}
-				style:clip-path={clips[tab.id] ?? "inset(0 100% 0 0)"}
-			>
-				{tab.label}
-			</span>
+			{#if variant !== "underline"}
+				<span
+					aria-hidden="true"
+					class={[
+						"pointer-events-none absolute inset-0 inline-flex items-center justify-center transition-[clip-path] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none",
+						radius,
+						variant === "pill" ? "text-primary-foreground" : "text-foreground",
+					]}
+					style:clip-path={clips[tab.id] ?? "inset(0 100% 0 0)"}
+				>
+					{tab.label}
+				</span>
+			{/if}
 		</button>
 	{/each}
 </div>

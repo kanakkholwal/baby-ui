@@ -1,4 +1,5 @@
 <script lang="ts">
+import IconChevronDown from "@tabler/icons-svelte/icons/chevron-down";
 import type { PropSpec } from "@baby-ui/registry-schema";
 import { prefersReducedMotion } from "svelte/motion";
 import { slide } from "svelte/transition";
@@ -44,21 +45,12 @@ const duration = $derived(prefersReducedMotion.current ? 0 : 200);
 									{prop.type}
 								</span>
 								<span class="flex justify-center px-2 text-muted-foreground">
-									<svg
-										viewBox="0 0 16 16"
-										fill="none"
-										aria-hidden="true"
-										class="size-4 transition-transform duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none"
-										style:transform={expanded ? "rotate(180deg)" : "none"}
-									>
-										<path
-											d="m4 6 4 4 4-4"
-											stroke="currentColor"
-											stroke-width="1.4"
-											stroke-linecap="round"
-											stroke-linejoin="round"
-										/>
-									</svg>
+									<IconChevronDown
+										size={16}
+										stroke={1.6}
+										class="transition-transform duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none"
+										style={expanded ? "transform: rotate(180deg)" : undefined}
+									/>
 								</span>
 							</button>
 

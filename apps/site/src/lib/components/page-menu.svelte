@@ -1,4 +1,8 @@
 <script lang="ts">
+import IconArrowUpRight from "@tabler/icons-svelte/icons/arrow-up-right";
+import IconChevronDown from "@tabler/icons-svelte/icons/chevron-down";
+import IconCopy from "@tabler/icons-svelte/icons/copy";
+import IconMarkdown from "@tabler/icons-svelte/icons/markdown";
 let { markdownUrl, copyText }: { markdownUrl: string; copyText: string } = $props();
 
 let open = $state(false);
@@ -58,10 +62,7 @@ const row =
 			onclick={copyPage}
 			class="inline-flex h-8 items-center gap-1.5 rounded-l-xl px-2.5 font-medium text-foreground text-xs transition-colors hover:bg-foreground/[0.06]"
 		>
-			<svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class="size-3.5">
-				<rect x="5.5" y="5.5" width="8" height="8" rx="1.8" stroke="currentColor" stroke-width="1.3" />
-				<path d="M10.5 2.5H3.6A1.6 1.6 0 0 0 2 4.1V11" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
-			</svg>
+			<IconCopy size={14} stroke={1.6} />
 			{copied ? "Copied" : "Copy Page"}
 		</button>
 		<button
@@ -71,15 +72,12 @@ const row =
 			onclick={() => (open = !open)}
 			class="grid h-8 w-7 place-items-center rounded-r-xl border-border border-l text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground"
 		>
-			<svg
-				viewBox="0 0 16 16"
-				fill="none"
-				aria-hidden="true"
-				class="size-3.5 transition-transform duration-[var(--duration-dropdown)] ease-[var(--ease-out)]"
-				style:transform={open ? "rotate(180deg)" : "none"}
-			>
-				<path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
-			</svg>
+			<IconChevronDown
+				size={14}
+				stroke={1.6}
+				class="transition-transform duration-[var(--duration-dropdown)] ease-[var(--ease-out)]"
+				style={open ? "transform: rotate(180deg)" : undefined}
+			/>
 		</button>
 	</div>
 
@@ -89,16 +87,12 @@ const row =
 		>
 
 			<a href={markdownUrl} class={row}>
-				<svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class="size-3.5 shrink-0">
-					<path d="M9 1.5H4A1.5 1.5 0 0 0 2.5 3v10A1.5 1.5 0 0 0 4 14.5h8a1.5 1.5 0 0 0 1.5-1.5V6L9 1.5zM9 1.5V6h4.5" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" />
-				</svg>
+				<IconMarkdown size={14} stroke={1.5} class="shrink-0" />
 				View as Markdown
 			</a>
 			{#each agents as agent (agent.href)}
 				<a href={agent.href} target="_blank" rel="noreferrer noopener" class={row}>
-					<svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class="size-3.5 shrink-0">
-						<path d="M4 10 10 4M10 4H5.5M10 4v4.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
-					</svg>
+					<IconArrowUpRight size={14} stroke={1.6} class="shrink-0" />
 					{agent.label}
 				</a>
 			{/each}
