@@ -1,8 +1,8 @@
 <script lang="ts">
-import { page } from "$app/state";
 import IconArrowUpRight from "@tabler/icons-svelte/icons/arrow-up-right";
 import IconBrandGithub from "@tabler/icons-svelte/icons/brand-github";
 import IconSettings from "@tabler/icons-svelte/icons/settings";
+import { page } from "$app/state";
 import SiteSearch from "$lib/components/site-search.svelte";
 import { prefs } from "$lib/preferences.svelte";
 import { navCategories } from "$lib/registry";

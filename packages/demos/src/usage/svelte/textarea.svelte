@@ -1,10 +1,15 @@
 <script lang="ts">
-import { Label, Textarea } from "@baby-ui/svelte";
+import { Textarea } from "@baby-ui/svelte";
 
 let value = $state("");
 </script>
 
-<div class="flex flex-col gap-1.5">
-	<Label for="notes">Release notes</Label>
-	<Textarea id="notes" bind:value rows={3} autoGrow />
-</div>
+<Textarea
+	bind:value
+	label="Release notes"
+	description="Markdown is supported."
+	rows={3}
+	maxlength={280}
+	showCount
+	autoGrow
+/>

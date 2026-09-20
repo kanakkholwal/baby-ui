@@ -5,9 +5,9 @@ let {
 	size = "md",
 	label = "Loading",
 	class: classProp,
-}: { size?: "sm" | "md" | "lg"; label?: string; class?: string } = $props();
+}: { size?: "sm" | "md" | "lg" | "xl"; label?: string; class?: string } = $props();
 
-const SIZE = { sm: "size-3.5", md: "size-5", lg: "size-8" };
+const SIZE = { sm: "size-3.5", md: "size-5", lg: "size-8", xl: "size-12" };
 </script>
 
 <span role="status" aria-label={label} class={cn("inline-flex", classProp)}>

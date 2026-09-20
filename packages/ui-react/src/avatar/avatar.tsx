@@ -7,15 +7,15 @@ export interface AvatarProps {
 	name: string;
 	src?: string;
 	className?: string;
-	size?: "xs" | "sm" | "md" | "lg";
+	size?: "sm" | "md" | "lg" | "xl";
 	shape?: "circle" | "square";
 }
 
 const SIZE = {
-	xs: "size-6 text-[10px]",
 	sm: "size-8 text-xs",
 	md: "size-10 text-sm",
 	lg: "size-14 text-base",
+	xl: "size-20 text-xl",
 };
 
 function initialsOf(name: string) {

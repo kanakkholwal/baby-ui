@@ -15,6 +15,19 @@ export const checkbox = defineComponent({
 			control: { kind: "boolean" },
 		},
 		{
+			name: "size",
+			type: '"sm" | "md" | "lg" | "xl"',
+			description: "Control size.",
+			default: "md",
+			control: { kind: "select", options: ["sm", "md", "lg", "xl"] },
+		},
+		{
+			name: "description",
+			type: "string",
+			description: "Secondary line under the label.",
+			control: { kind: "text" },
+		},
+		{
 			name: "indeterminate",
 			type: "boolean",
 			description: "Partial state for a parent of mixed children.",

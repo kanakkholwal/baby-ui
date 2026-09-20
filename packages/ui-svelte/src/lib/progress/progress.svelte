@@ -4,7 +4,7 @@ import { cn } from "../lib/cn";
 type Props = {
 	value?: number;
 	indeterminate?: boolean;
-	size?: "sm" | "md";
+	size?: "sm" | "md" | "lg" | "xl";
 	class?: string;
 	label?: string;
 };
@@ -18,7 +18,7 @@ let {
 }: Props = $props();
 
 const clamped = $derived(Math.min(100, Math.max(0, value)));
-const HEIGHT = { sm: "h-1", md: "h-2" };
+const HEIGHT = { sm: "h-1", md: "h-2", lg: "h-3", xl: "h-4" };
 </script>
 
 <div

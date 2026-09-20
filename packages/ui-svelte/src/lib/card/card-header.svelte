@@ -1,21 +1,15 @@
 <script lang="ts">
 import type { Snippet } from "svelte";
+import type { HTMLAttributes } from "svelte/elements";
 import { cn } from "../lib/cn";
 
 let {
-	title,
-	description,
-	actions,
+	children,
 	class: classProp,
-}: { title: string; description?: string; actions?: Snippet; class?: string } = $props();
+	...rest
+}: { children?: Snippet; class?: string } & HTMLAttributes<HTMLDivElement> = $props();
 </script>
 
-<div class={cn("flex items-start justify-between gap-4", classProp)}>
-	<div class="min-w-0">
-		<h3 class="font-medium text-foreground text-sm">{title}</h3>
-		{#if description}
-			<p class="mt-1 text-muted-foreground text-xs leading-relaxed">{description}</p>
-		{/if}
-	</div>
-	{#if actions}<div class="shrink-0">{@render actions()}</div>{/if}
+<div {...rest} data-slot="card-header" class={cn("@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6", classProp)}>
+	{@render children?.()}
 </div>

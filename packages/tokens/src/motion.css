@@ -220,6 +220,41 @@
 	opacity: 1;
 }
 
+/* Range inputs cannot be styled with utilities alone, so both color-picker ports
+   share this. --thumb carries the current colour. */
+.color-slider {
+	appearance: none;
+	border-radius: 9999px;
+	background: var(--border-strong);
+	outline: none;
+	cursor: pointer;
+}
+
+.color-slider::-webkit-slider-thumb {
+	appearance: none;
+	width: 0.75rem;
+	height: 0.75rem;
+	border: 2px solid var(--background);
+	border-radius: 9999px;
+	background: var(--thumb, var(--primary));
+	box-shadow: 0 1px 3px rgb(0 0 0 / 0.2);
+	cursor: pointer;
+}
+
+.color-slider::-moz-range-thumb {
+	width: 0.75rem;
+	height: 0.75rem;
+	border: 2px solid var(--background);
+	border-radius: 9999px;
+	background: var(--thumb, var(--primary));
+	box-shadow: 0 1px 3px rgb(0 0 0 / 0.2);
+	cursor: pointer;
+}
+
+.color-slider:focus-visible {
+	box-shadow: 0 0 0 3px var(--ring);
+}
+
 .slider-thumb {
 	transition: transform var(--duration-press) var(--ease-out);
 }
@@ -421,16 +456,42 @@
 	}
 }
 
-/* show-more: the fade is the signal that content continues. */
-.show-more-fade::after {
+/* show-more: the veil is the signal that content continues, and the region
+   animates its measured height so collapse and expand are one movement. */
+.show-more-region {
+	transition: height var(--duration-overlay) var(--ease-out);
+}
+
+.show-more-veil {
 	position: absolute;
 	right: 0;
 	bottom: 0;
 	left: 0;
-	height: 3rem;
+	height: 2.5rem;
 	background: linear-gradient(to top, var(--background), transparent);
-	content: "";
+	opacity: 0;
+	transition: opacity var(--duration-press) var(--ease-out);
 	pointer-events: none;
+}
+
+.show-more-veil[data-on="true"] {
+	opacity: 1;
+}
+
+.show-more-chevron {
+	transition: rotate var(--duration-press) var(--ease-out);
+}
+
+.show-more-chevron[data-on="true"] {
+	rotate: 180deg;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.show-more-region,
+	.show-more-veil,
+	.show-more-chevron {
+		transition: none;
+	}
 }
 
 /* scroll-area uses a thin scrollbar rather than hiding it; a hidden scrollbar
@@ -438,6 +499,15 @@
 .scroll-area {
 	scrollbar-width: thin;
 	scrollbar-color: var(--border-strong) transparent;
+}
+
+/* Tabs scroll under a faded edge with arrow buttons, so the bar itself is noise. */
+.scrollbar-none {
+	scrollbar-width: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+	display: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

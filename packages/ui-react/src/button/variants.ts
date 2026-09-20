@@ -24,6 +24,7 @@ export const button = tv({
 			sm: "h-8 px-3 text-xs [&_svg]:size-3.5",
 			md: "h-9 px-4 [&_svg]:size-4",
 			lg: "h-10 px-6 [&_svg]:size-4",
+			xl: "h-12 px-8 text-base [&_svg]:size-5",
 			icon: "size-9 p-0 [&_svg]:size-4",
 		},
 	},

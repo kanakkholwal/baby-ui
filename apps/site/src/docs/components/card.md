@@ -1,13 +1,24 @@
 ---
 title: Card
-description: Surface with optional header, body and footer slots that keep consistent padding.
+description: Surface composed from header, title, description, action, content and footer parts.
 component: card
 category: base
 tags: [card, surface, panel]
 ---
 
-Three padding steps, applied consistently to header, body and footer so nested cards
-do not drift out of alignment.
+Seven parts, each a plain element that takes `class` and every other attribute:
+`Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardAction`, `CardContent`
+and `CardFooter`.
+
+## Drop-in for shadcn
+
+The part names, the `data-slot` values and the class shape are shadcn/ui's. Adding
+this over an existing `card` in a shadcn project replaces the file without touching a
+single call site, and the `interactive` prop is the only thing that is ours.
+
+That constraint is why the header is a grid rather than a flex row: `CardAction`
+places itself in the second column through `has-data-[slot=card-action]`, so a card
+with no action never pays for the column.
 
 ## interactive is a promise
 

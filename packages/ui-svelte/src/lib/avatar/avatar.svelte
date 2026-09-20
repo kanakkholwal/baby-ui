@@ -5,17 +5,17 @@ type Props = {
 	name: string;
 	src?: string;
 	class?: string;
-	size?: "xs" | "sm" | "md" | "lg";
+	size?: "sm" | "md" | "lg" | "xl";
 	shape?: "circle" | "square";
 };
 
 let { name, src, class: classProp, size = "md", shape = "circle" }: Props = $props();
 
 const SIZE = {
-	xs: "size-6 text-[10px]",
 	sm: "size-8 text-xs",
 	md: "size-10 text-sm",
 	lg: "size-14 text-base",
+	xl: "size-20 text-xl",
 };
 
 let failed = $state(false);

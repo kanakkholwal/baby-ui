@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { TagInput } from "@baby-ui/react";
+import { useState } from "react";
 
 export function Example() {
 	const [tags, setTags] = useState(["react", "svelte"]);

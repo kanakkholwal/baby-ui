@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { Button, Modal } from "@baby-ui/react";
+import { useState } from "react";
 
 export function Example() {
 	const [open, setOpen] = useState(false);
@@ -20,7 +20,9 @@ export function Example() {
 					</Button>
 				}
 			>
-				<p className="text-muted-foreground text-sm">Send an invite link to their work email.</p>
+				<p className="text-muted-foreground text-sm">
+					Send an invite link to their work email.
+				</p>
 			</Modal>
 		</>
 	);

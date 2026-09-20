@@ -7,7 +7,10 @@ export const tabs = defineComponent({
 		"Tab list with an indicator that slides between tabs and a clipped label swap.",
 	category: "base",
 	status: "stable",
-	variants: { variant: ["pill", "underline"] },
+	variants: {
+		variant: ["pill", "underline", "segment"],
+		size: ["sm", "md", "lg", "xl"],
+	},
 	props: [
 		{
 			name: "value",
@@ -17,10 +20,17 @@ export const tabs = defineComponent({
 		},
 		{
 			name: "variant",
-			type: '"pill" | "underline"',
+			type: '"pill" | "underline" | "segment"',
 			description: "Indicator treatment.",
 			default: "pill",
-			control: { kind: "select", options: ["pill", "underline"] },
+			control: { kind: "select", options: ["pill", "underline", "segment"] },
+		},
+		{
+			name: "size",
+			type: '"sm" | "md" | "lg" | "xl"',
+			description: "Control size.",
+			default: "md",
+			control: { kind: "select", options: ["sm", "md", "lg", "xl"] },
 		},
 		{
 			name: "tabs",
@@ -35,6 +45,8 @@ export const tabs = defineComponent({
 		behaviour: [
 			"The indicator is measured from the active tab's box and slides over 200ms, so it tracks font loading and resize.",
 			"A duplicate label clipped to the indicator carries the active colour, so the text recolours exactly as the indicator passes rather than cross-fading.",
+			"When the list is wider than its container it scrolls, the overflowing edges fade under a mask, and arrow buttons appear over the fade.",
+			"Selecting or focusing a tab scrolls it clear of those arrows rather than under them.",
 		],
 	},
 	a11y: {

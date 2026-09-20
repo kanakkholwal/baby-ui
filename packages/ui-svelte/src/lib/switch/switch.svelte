@@ -49,7 +49,7 @@ function refuse() {
 }
 </script>
 
-<span class={cn("inline-flex items-center gap-2.5", classProp)}>
+{#snippet control()}
 	<button
 		{id}
 		type="button"
@@ -66,6 +66,7 @@ function refuse() {
 			"outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
 			"aria-checked:bg-primary aria-disabled:cursor-not-allowed aria-disabled:opacity-50",
 			TRACK[size],
+			!label && classProp,
 		)}
 	>
 		<span
@@ -80,9 +81,16 @@ function refuse() {
 			)}
 		></span>
 	</button>
-	{#if label}
+{/snippet}
+
+<!-- Bare, so this can replace a shadcn switch; the wrapper only appears with a label. -->
+{#if label}
+	<span class={cn("inline-flex items-center gap-2.5", classProp)}>
+		{@render control()}
 		<label for={id} class={cn("text-foreground text-sm", disabled && "opacity-50")}>
 			{label}
 		</label>
-	{/if}
-</span>
+	</span>
+{:else}
+	{@render control()}
+{/if}

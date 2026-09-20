@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { FullscreenNav } from "@baby-ui/react";
+import { useState } from "react";
 
 const links = [
 	{ href: "/work", label: "Work" },

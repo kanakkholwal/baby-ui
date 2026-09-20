@@ -3,6 +3,7 @@ import IconArrowUpRight from "@tabler/icons-svelte/icons/arrow-up-right";
 import IconChevronDown from "@tabler/icons-svelte/icons/chevron-down";
 import IconCopy from "@tabler/icons-svelte/icons/copy";
 import IconMarkdown from "@tabler/icons-svelte/icons/markdown";
+
 let { markdownUrl, copyText }: { markdownUrl: string; copyText: string } = $props();
 
 let open = $state(false);

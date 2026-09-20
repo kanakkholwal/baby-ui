@@ -18,7 +18,15 @@ export {
 } from "./breadcrumb/breadcrumb";
 export { Button, type ButtonProps } from "./button/button";
 export type { ButtonSize, ButtonVariant } from "./button/variants";
-export { Card, CardFooter, CardHeader, type CardProps } from "./card/card";
+export {
+	Card,
+	CardAction,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from "./card/card";
 export { Checkbox, type CheckboxProps } from "./checkbox/checkbox";
 export { CodeBlock, type CodeBlockProps } from "./code-block/code-block";
 export { Collapsible, type CollapsibleProps } from "./collapsible/collapsible";

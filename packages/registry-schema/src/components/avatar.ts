@@ -7,7 +7,7 @@ export const avatar = defineComponent({
 		"User image with an initials fallback that shows only after the image actually fails.",
 	category: "base",
 	status: "stable",
-	variants: { size: ["xs", "sm", "md", "lg"], shape: ["circle", "square"] },
+	variants: { size: ["sm", "md", "lg", "xl"], shape: ["circle", "square"] },
 	props: [
 		{
 			name: "src",
@@ -25,10 +25,10 @@ export const avatar = defineComponent({
 		},
 		{
 			name: "size",
-			type: '"xs" | "sm" | "md" | "lg"',
+			type: '"sm" | "md" | "lg" | "xl"',
 			description: "Diameter of the avatar.",
 			default: "md",
-			control: { kind: "select", options: ["xs", "sm", "md", "lg"] },
+			control: { kind: "select", options: ["sm", "md", "lg", "xl"] },
 		},
 		{
 			name: "shape",

@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { Composer } from "@baby-ui/react";
+import { useState } from "react";
 
 export function Example() {
 	const [value, setValue] = useState("");

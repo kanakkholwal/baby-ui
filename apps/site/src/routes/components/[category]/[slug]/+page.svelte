@@ -1,13 +1,13 @@
 <script lang="ts">
 import { registry } from "virtual:docvia/source";
-import IconChevronRight from "@tabler/icons-svelte/icons/chevron-right";
 import { demos } from "@baby-ui/demos/svelte";
 import { Renderer } from "@docvia/renderer-svelte";
+import IconChevronRight from "@tabler/icons-svelte/icons/chevron-right";
+import CodeBlock from "$lib/components/code-block.svelte";
 import DemoPreview from "$lib/components/demo-preview.svelte";
 import InstallBlock from "$lib/components/install-block.svelte";
 import PageMenu from "$lib/components/page-menu.svelte";
 import PropsRail from "$lib/components/props-rail.svelte";
-import CodeBlock from "$lib/components/code-block.svelte";
 import PropsTable from "$lib/components/props-table.svelte";
 import Tabs from "$lib/components/tabs.svelte";
 import { prefs } from "$lib/preferences.svelte";
@@ -39,7 +39,7 @@ const usage = $derived(
 </script>
 
 <svelte:head>
-	<title>{data.spec.name} — baby-ui</title>
+	<title>{data.spec.name} · Baby UI</title>
 	<meta name="description" content={data.spec.description} />
 </svelte:head>
 

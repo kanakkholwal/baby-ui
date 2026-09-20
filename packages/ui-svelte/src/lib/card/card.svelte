@@ -1,27 +1,30 @@
 <script lang="ts">
 import type { Snippet } from "svelte";
+import type { HTMLAttributes } from "svelte/elements";
 import { cn } from "../lib/cn";
 
-type Props = {
-	children: Snippet;
+// Slot names and class shape follow shadcn-svelte, so this drops into an existing project.
+let {
+	children,
+	class: classProp,
+	interactive = false,
+	...rest
+}: {
+	children?: Snippet;
 	class?: string;
-	padding?: "sm" | "md" | "lg";
 	interactive?: boolean;
-};
-
-let { children, class: classProp, padding = "md", interactive = false }: Props = $props();
-
-const PAD = { sm: "p-3", md: "p-5", lg: "p-7" };
+} & HTMLAttributes<HTMLDivElement> = $props();
 </script>
 
 <div
+	{...rest}
+	data-slot="card"
 	class={cn(
-		"rounded-2xl border border-border bg-card",
+		"flex flex-col gap-6 rounded-2xl border border-border bg-card py-6 text-card-foreground",
 		interactive &&
 			"transition-[transform,border-color] duration-200 ease-[var(--ease-out)] hover:-translate-y-0.5 hover:border-border-strong motion-reduce:hover:translate-y-0",
-		PAD[padding],
 		classProp,
 	)}
 >
-	{@render children()}
+	{@render children?.()}
 </div>

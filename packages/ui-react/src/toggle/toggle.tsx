@@ -3,13 +3,18 @@
 import type { ReactNode } from "react";
 import { cn } from "../lib/cn";
 
-const SIZE = { sm: "h-7 min-w-7 px-2 text-xs", md: "h-9 min-w-9 px-2.5 text-sm" };
+const SIZE = {
+	sm: "h-7 min-w-7 px-2 text-xs",
+	md: "h-9 min-w-9 px-2.5 text-sm",
+	lg: "h-10 min-w-10 px-3 text-sm",
+	xl: "h-12 min-w-12 px-4 text-base",
+};
 
 export interface ToggleProps {
 	children?: ReactNode;
 	pressed?: boolean;
 	disabled?: boolean;
-	size?: "sm" | "md";
+	size?: "sm" | "md" | "lg" | "xl";
 	label?: string;
 	className?: string;
 	onPressedChange?: (pressed: boolean) => void;

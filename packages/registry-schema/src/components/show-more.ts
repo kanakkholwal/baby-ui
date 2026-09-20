@@ -4,16 +4,30 @@ export const showMore = defineComponent({
 	slug: "show-more",
 	name: "Show More",
 	description:
-		"Clamps long content to a height and offers an expander only when it overflows.",
+		"Clamps long content to a line count and offers an expander only when it overflows.",
 	category: "base",
 	status: "stable",
 	props: [
 		{
-			name: "collapsedHeight",
+			name: "lines",
 			type: "number",
-			description: "Height of the clamped state, in pixels.",
-			default: 120,
-			control: { kind: "number", min: 60, max: 400, step: 10 },
+			description: "Lines of content visible when collapsed.",
+			default: 3,
+			control: { kind: "number", min: 1, max: 12, step: 1 },
+		},
+		{
+			name: "maxHeight",
+			type: "number",
+			description: "Cap on the expanded height, in pixels. Past it the region scrolls.",
+			default: 320,
+			control: { kind: "number", min: 120, max: 800, step: 20 },
+		},
+		{
+			name: "expanded",
+			type: "boolean",
+			description: "Whether the content is expanded. Bindable.",
+			default: false,
+			control: { kind: "boolean" },
 		},
 		{
 			name: "moreLabel",
@@ -32,17 +46,18 @@ export const showMore = defineComponent({
 	],
 	motion: {
 		springs: [],
-		reducedMotion: "Unchanged; the fade is not motion.",
+		reducedMotion: "Height and veil snap; the chevron still turns.",
 		behaviour: [
-			"A gradient fade at the bottom signals that the text continues. Without it a hard cut reads as the end of the content.",
-			"Height is not animated: the jump is honest and an eased expansion of unknown length is worse than none.",
+			"A gradient veil at the bottom signals that the text continues. Without it a hard cut reads as the end of the content.",
+			"Height animates between the measured collapsed and full heights, so expansion is one movement rather than a jump.",
+			"Past maxHeight the expanded region scrolls instead of growing, and the veil stays to show there is more.",
 		],
 	},
 	a11y: {
 		keyboard: ["Enter and Space toggle the content"],
 		notes: [
 			"The control is only rendered when the content actually overflows, so there is never a Show more that does nothing.",
-			"aria-expanded points at the clamped region.",
+			"aria-expanded points at the clamped region, and that region only becomes a focusable scroll landmark when it actually scrolls.",
 		],
 	},
 	licenseOrigin: {

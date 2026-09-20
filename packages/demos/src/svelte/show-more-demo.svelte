@@ -6,7 +6,8 @@ let { props = {} }: { props?: Record<string, unknown> } = $props();
 
 <div class="w-80">
 	<ShowMore
-		collapsedHeight={Number(props.collapsedHeight ?? 72)}
+		lines={Number(props.lines ?? 3)}
+		maxHeight={Number(props.maxHeight ?? 320)}
 		moreLabel={(props.moreLabel as string) || "Show more"}
 		lessLabel={(props.lessLabel as string) || "Show less"}
 	>

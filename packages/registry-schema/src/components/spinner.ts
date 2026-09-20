@@ -9,10 +9,10 @@ export const spinner = defineComponent({
 	props: [
 		{
 			name: "size",
-			type: '"sm" | "md" | "lg"',
+			type: '"sm" | "md" | "lg" | "xl"',
 			description: "Diameter.",
 			default: "md",
-			control: { kind: "select", options: ["sm", "md", "lg"] },
+			control: { kind: "select", options: ["sm", "md", "lg", "xl"] },
 		},
 		{
 			name: "label",

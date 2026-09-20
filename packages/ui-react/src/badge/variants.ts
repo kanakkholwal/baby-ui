@@ -17,6 +17,8 @@ export const badge = tv({
 		size: {
 			sm: "h-5 px-1.5 text-[11px]",
 			md: "h-6 px-2 text-xs",
+			lg: "h-7 px-2.5 text-sm",
+			xl: "h-8 px-3 text-sm",
 		},
 	},
 	defaultVariants: { variant: "secondary", size: "md" },

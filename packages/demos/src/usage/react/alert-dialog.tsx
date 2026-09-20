@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { AlertDialog, Button } from "@baby-ui/react";
+import { useState } from "react";
 
 export function Example() {
 	const [open, setOpen] = useState(false);

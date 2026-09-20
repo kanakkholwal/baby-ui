@@ -9,7 +9,13 @@ let {
 	lang = "ts",
 	filename,
 	maxHeight = "32rem",
-}: { code: string; html: string; lang?: string; filename?: string; maxHeight?: string } = $props();
+}: {
+	code: string;
+	html: string;
+	lang?: string;
+	filename?: string;
+	maxHeight?: string;
+} = $props();
 
 const dir = $derived(filename ? filename.split("/").slice(0, -1).join("/") : null);
 const name = $derived(filename ? filename.split("/").pop() : null);

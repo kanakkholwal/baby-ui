@@ -1,6 +1,6 @@
 <script lang="ts">
-import IconArrowRight from "@tabler/icons-svelte/icons/arrow-right";
 import { specs } from "@baby-ui/registry-schema/components";
+import IconArrowRight from "@tabler/icons-svelte/icons/arrow-right";
 import ComponentCard from "$lib/components/component-card.svelte";
 import InstallCommand from "$lib/components/install-command.svelte";
 import LandingHero from "$lib/components/landing-hero.svelte";

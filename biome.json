@@ -62,6 +62,16 @@
 					}
 				}
 			}
+		},
+		{
+			"includes": ["packages/demos/src/usage/react/**"],
+			"linter": {
+				"rules": {
+					"a11y": {
+						"useValidAriaRole": "off"
+					}
+				}
+			}
 		}
 	]
 }

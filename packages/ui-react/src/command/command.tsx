@@ -44,7 +44,8 @@ export function Command({
 		const q = query.trim().toLowerCase();
 		if (!q) return items;
 		return items.filter(
-			(i) => i.label.toLowerCase().includes(q) || i.description?.toLowerCase().includes(q),
+			(i) =>
+				i.label.toLowerCase().includes(q) || i.description?.toLowerCase().includes(q),
 		);
 	}, [items, query]);
 

@@ -1,15 +1,25 @@
 <script lang="ts">
-import { goto } from "$app/navigation";
 import { Command } from "@baby-ui/svelte";
 import IconSearch from "@tabler/icons-svelte/icons/search";
+import { goto } from "$app/navigation";
 import { searchItems } from "$lib/registry";
 
 let open = $state(false);
 let mac = $state(false);
 
 const items = [
-	{ id: "/docs", label: "Getting started", group: "Guides", description: "Install and set up" },
-	{ id: "/components", label: "All components", group: "Guides", description: "Browse the registry" },
+	{
+		id: "/docs",
+		label: "Getting started",
+		group: "Guides",
+		description: "Install and set up",
+	},
+	{
+		id: "/components",
+		label: "All components",
+		group: "Guides",
+		description: "Browse the registry",
+	},
 	...searchItems().map((item) => ({
 		id: item.href,
 		label: item.name,

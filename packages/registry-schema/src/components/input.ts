@@ -6,14 +6,14 @@ export const input = defineComponent({
 	description: "Text field with invalid and disabled states that stay legible together.",
 	category: "base",
 	status: "stable",
-	variants: { size: ["sm", "md", "lg"] },
+	variants: { size: ["sm", "md", "lg", "xl"] },
 	props: [
 		{
 			name: "size",
-			type: '"sm" | "md" | "lg"',
+			type: '"sm" | "md" | "lg" | "xl"',
 			description: "Height and horizontal padding.",
 			default: "md",
-			control: { kind: "select", options: ["sm", "md", "lg"] },
+			control: { kind: "select", options: ["sm", "md", "lg", "xl"] },
 		},
 		{
 			name: "invalid",

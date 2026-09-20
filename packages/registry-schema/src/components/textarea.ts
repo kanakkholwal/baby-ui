@@ -15,10 +15,44 @@ export const textarea = defineComponent({
 			control: { kind: "number", min: 2, max: 12, step: 1 },
 		},
 		{
+			name: "size",
+			type: '"sm" | "md" | "lg" | "xl"',
+			description: "Control size.",
+			default: "md",
+			control: { kind: "select", options: ["sm", "md", "lg", "xl"] },
+		},
+		{
+			name: "variant",
+			type: '"outline" | "soft"',
+			description: "Field treatment.",
+			default: "outline",
+			control: { kind: "select", options: ["outline", "soft"] },
+		},
+		{
+			name: "label",
+			type: "string",
+			description: "Visible label. Adds a wrapper; without it the textarea is the root.",
+			control: { kind: "text" },
+		},
+		{
+			name: "description",
+			type: "string",
+			description: "Help text below the field, linked with aria-describedby.",
+			control: { kind: "text" },
+		},
+		{
+			name: "showCount",
+			type: "boolean",
+			description: "Show a character count, against maxlength when one is set.",
+			default: false,
+			control: { kind: "boolean" },
+		},
+		{
 			name: "autoGrow",
 			type: "boolean",
-			description: "Grow to fit content up to maxRows, then scroll.",
-			default: true,
+			description:
+				"Grow to fit content up to maxRows, then scroll. Removes the resize grip.",
+			default: false,
 			control: { kind: "boolean" },
 		},
 		{

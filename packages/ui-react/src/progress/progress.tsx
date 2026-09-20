@@ -1,11 +1,11 @@
 import { cn } from "../lib/cn";
 
-const HEIGHT = { sm: "h-1", md: "h-2" };
+const HEIGHT = { sm: "h-1", md: "h-2", lg: "h-3", xl: "h-4" };
 
 export interface ProgressProps {
 	value?: number;
 	indeterminate?: boolean;
-	size?: "sm" | "md";
+	size?: "sm" | "md" | "lg" | "xl";
 	label?: string;
 	className?: string;
 }

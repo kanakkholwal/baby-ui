@@ -31,10 +31,10 @@ export const modal = defineComponent({
 		},
 		{
 			name: "size",
-			type: '"sm" | "md" | "lg"',
+			type: '"sm" | "md" | "lg" | "xl"',
 			description: "Maximum width.",
 			default: "md",
-			control: { kind: "select", options: ["sm", "md", "lg"] },
+			control: { kind: "select", options: ["sm", "md", "lg", "xl"] },
 		},
 		{
 			name: "dismissOnBackdrop",

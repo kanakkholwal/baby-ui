@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import { useEffect, useId, useRef } from "react";
 import { cn } from "../lib/cn";
 
-const WIDTH = { sm: "max-w-sm", md: "max-w-lg", lg: "max-w-2xl" };
+const WIDTH = { sm: "max-w-sm", md: "max-w-lg", lg: "max-w-2xl", xl: "max-w-4xl" };
 
 export interface ModalProps {
 	children?: ReactNode;
@@ -12,7 +12,7 @@ export interface ModalProps {
 	open: boolean;
 	title: string;
 	description?: string;
-	size?: "sm" | "md" | "lg";
+	size?: "sm" | "md" | "lg" | "xl";
 	dismissOnBackdrop?: boolean;
 	className?: string;
 	onOpenChange: (open: boolean) => void;

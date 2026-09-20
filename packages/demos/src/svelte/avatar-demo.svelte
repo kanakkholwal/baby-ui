@@ -8,7 +8,7 @@ let { props = {} }: { props?: Record<string, unknown> } = $props();
 	<Avatar
 		name={(props.name as string) || "Kanak Kholwal"}
 		src={(props.src as string) || undefined}
-		size={(props.size as "xs" | "sm" | "md" | "lg") ?? "md"}
+		size={(props.size as "sm" | "md" | "lg" | "xl") ?? "md"}
 		shape={(props.shape as "circle" | "square") ?? "circle"}
 	/>
 	<div class="text-sm">

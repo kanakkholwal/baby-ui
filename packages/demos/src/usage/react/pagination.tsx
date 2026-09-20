@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { Pagination } from "@baby-ui/react";
+import { useState } from "react";
 
 export function Example() {
 	const [page, setPage] = useState(3);

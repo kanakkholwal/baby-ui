@@ -10,6 +10,6 @@ let {
 }: { children?: Snippet; class?: string } & HTMLAttributes<HTMLDivElement> = $props();
 </script>
 
-<div {...rest} data-slot="card-footer" class={cn("flex items-center gap-2 px-6 [.border-t]:pt-6", classProp)}>
+<div {...rest} data-slot="card-action" class={cn("col-start-2 row-span-2 row-start-1 self-start justify-self-end", classProp)}>
 	{@render children?.()}
 </div>

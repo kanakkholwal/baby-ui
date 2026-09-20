@@ -18,6 +18,20 @@ export const toast = defineComponent({
 			},
 		},
 		{
+			name: "variant",
+			type: '"soft" | "solid" | "outline"',
+			description: "Surface treatment.",
+			default: "soft",
+			control: { kind: "select", options: ["soft", "solid", "outline"] },
+		},
+		{
+			name: "max",
+			type: "number",
+			description: "How many toasts render at once. The rest wait their turn.",
+			default: 4,
+			control: { kind: "number", min: 1, max: 8, step: 1 },
+		},
+		{
 			name: "toasts",
 			type: "ToastItem[]",
 			description: "Active notifications. Owned by the caller so dismissal is explicit.",

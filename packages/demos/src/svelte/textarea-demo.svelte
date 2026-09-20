@@ -1,19 +1,24 @@
 <script lang="ts">
-import { Label, Textarea } from "@baby-ui/svelte";
+import { Textarea } from "@baby-ui/svelte";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
 
-let value = $state("Type a few lines and watch the field grow with the content.");
+let value = $state(
+	"Same field tokens as Input, so labels and focus rings stay consistent.",
+);
 </script>
 
-<div class="flex w-80 flex-col gap-1.5">
-	<Label for="demo-textarea">Release notes</Label>
+<div class="w-full max-w-md">
 	<Textarea
-		id="demo-textarea"
 		bind:value
-		rows={Number(props.rows ?? 3)}
-		autoGrow={props.autoGrow !== false}
+		label={(props.label as string) ?? "Message"}
+		description={props.description as string}
+		size={(props.size as "sm" | "md" | "lg" | "xl") ?? "md"}
+		variant={(props.variant as "outline" | "soft") ?? "outline"}
+		rows={Number(props.rows ?? 4)}
+		autoGrow={Boolean(props.autoGrow)}
 		maxRows={Number(props.maxRows ?? 10)}
+		showCount={Boolean(props.showCount)}
 		invalid={Boolean(props.invalid)}
 		disabled={Boolean(props.disabled)}
 	/>

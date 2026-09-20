@@ -1,29 +1,28 @@
 <script lang="ts">
 import type { Framework } from "@baby-ui/registry-schema";
+import { Select } from "@baby-ui/svelte";
 import type { Icon } from "@tabler/icons-svelte";
 import IconBrandJavascript from "@tabler/icons-svelte/icons/brand-javascript";
 import IconBrandReact from "@tabler/icons-svelte/icons/brand-react";
 import IconBrandSvelte from "@tabler/icons-svelte/icons/brand-svelte";
 import IconBrandTypescript from "@tabler/icons-svelte/icons/brand-typescript";
 import IconCheck from "@tabler/icons-svelte/icons/check";
-import IconChevronDown from "@tabler/icons-svelte/icons/chevron-down";
-import IconDeviceDesktop from "@tabler/icons-svelte/icons/device-desktop";
-import IconMoon from "@tabler/icons-svelte/icons/moon";
-import IconSun from "@tabler/icons-svelte/icons/sun";
 import IconX from "@tabler/icons-svelte/icons/x";
 import { type Appearance, type Dialect, PRIMARIES, prefs } from "$lib/preferences.svelte";
 
 type Option = { id: string; label: string; icon: Icon };
 
-const APPEARANCE: { id: Appearance; label: string; icon: Icon }[] = [
-	{ id: "light", label: "Light", icon: IconSun },
-	{ id: "dark", label: "Dark", icon: IconMoon },
-	{ id: "system", label: "System", icon: IconDeviceDesktop },
+const APPEARANCE: { value: Appearance; label: string }[] = [
+	{ value: "light", label: "Light" },
+	{ value: "dark", label: "Dark" },
+	{ value: "system", label: "System" },
 ];
 
-const AppearanceGlyph = $derived(
-	APPEARANCE.find((a) => a.id === prefs.appearance)?.icon ?? IconSun,
-);
+let appearance = $state<string>(prefs.appearance);
+
+$effect(() => {
+	if (appearance !== prefs.appearance) prefs.set("appearance", appearance as Appearance);
+});
 
 const FRAMEWORKS: { id: Framework; label: string; icon: Icon }[] = [
 	{ id: "react", label: "React", icon: IconBrandReact },
@@ -98,31 +97,13 @@ $effect(() => {
 
 			<div class="flex flex-col divide-y divide-border">
 				<div class="flex items-center justify-between gap-3 px-4 py-2.5">
-					<label for="appearance" class="text-foreground text-xs">Appearance</label>
-					<div
-						class="relative inline-flex h-8 items-center gap-1.5 rounded-lg border border-border bg-card pr-2 pl-2.5 text-xs"
-					>
-						<AppearanceGlyph
-							size={14}
-							stroke={1.6}
-							class="pointer-events-none text-muted-foreground"
-						/>
-						<select
-							id="appearance"
-							value={prefs.appearance}
-							onchange={(e) => prefs.set("appearance", e.currentTarget.value as Appearance)}
-							class="appearance-none bg-transparent pr-4 font-medium text-foreground outline-none"
-						>
-							{#each APPEARANCE as option (option.id)}
-								<option value={option.id}>{option.label}</option>
-							{/each}
-						</select>
-						<IconChevronDown
-							size={14}
-							stroke={1.6}
-							class="pointer-events-none absolute right-2 text-muted-foreground"
-						/>
-					</div>
+					<span class="text-foreground text-xs">Appearance</span>
+					<Select
+						bind:value={appearance}
+						label="Appearance"
+						options={APPEARANCE}
+						class="h-8 w-32 rounded-lg text-xs"
+					/>
 				</div>
 
 				<div class="flex items-center justify-between gap-3 px-4 py-2.5">

@@ -95,8 +95,12 @@ async function main() {
 	}
 	const usagePath = resolve(REPO_ROOT, "apps/site/src/lib/generated/usage.json");
 	await mkdir(dirname(usagePath), { recursive: true });
-	await writeFile(usagePath, `${JSON.stringify(usage, null, 2)}
-`, "utf8");
+	await writeFile(
+		usagePath,
+		`${JSON.stringify(usage, null, 2)}
+`,
+		"utf8",
+	);
 	written.push("../src/lib/generated/usage.json");
 
 	const sourcesPath = resolve(REPO_ROOT, "apps/site/src/lib/generated/sources.json");

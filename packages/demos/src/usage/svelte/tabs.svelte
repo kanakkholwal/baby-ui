@@ -9,7 +9,7 @@ const tabs = [
 ];
 </script>
 
-<Tabs bind:value {tabs}>
+<Tabs bind:value {tabs} variant="underline" size="md">
 	{#snippet panel(active)}
 		<p class="text-muted-foreground text-sm">Showing {active}.</p>
 	{/snippet}

@@ -6,58 +6,124 @@ import { cn } from "../lib/cn";
 
 export interface ShowMoreProps {
 	children: ReactNode;
-	collapsedHeight?: number;
+	lines?: number;
+	maxHeight?: number;
+	expanded?: boolean;
 	moreLabel?: string;
 	lessLabel?: string;
+	label?: string;
 	className?: string;
+	onExpandedChange?: (expanded: boolean) => void;
 }
 
 export function ShowMore({
 	children,
-	collapsedHeight = 120,
+	lines = 3,
+	maxHeight = 320,
+	expanded: expandedProp,
 	moreLabel = "Show more",
 	lessLabel = "Show less",
+	label = "Details",
 	className,
+	onExpandedChange,
 }: ShowMoreProps) {
-	const id = useId();
-	const [open, setOpen] = useState(false);
-	const [overflows, setOverflows] = useState(false);
+	const uid = useId();
 	const content = useRef<HTMLDivElement>(null);
+	const region = useRef<HTMLDivElement>(null);
+	const [internal, setInternal] = useState(false);
+	const [lineHeight, setLineHeight] = useState<number>();
+	const [fullHeight, setFullHeight] = useState<number>();
+	const expanded = expandedProp ?? internal;
 
-	// Only offer the control when the content actually exceeds the collapsed height.
 	useEffect(() => {
 		const el = content.current;
 		if (!el) return;
-		const measure = () => setOverflows(el.scrollHeight > collapsedHeight + 8);
+		const measure = () => {
+			const styles = getComputedStyle(el);
+			const parsed = Number.parseFloat(styles.lineHeight);
+			setLineHeight(
+				Number.isFinite(parsed) ? parsed : Number.parseFloat(styles.fontSize) * 1.5,
+			);
+			setFullHeight(el.scrollHeight);
+		};
 		measure();
 		const observer = new ResizeObserver(measure);
 		observer.observe(el);
 		return () => observer.disconnect();
-	}, [collapsedHeight]);
+	}, []);
+
+	const collapsedHeight =
+		lineHeight === undefined || fullHeight === undefined
+			? undefined
+			: Math.min(lineHeight * lines, fullHeight);
+	const expandable =
+		lineHeight === undefined || fullHeight === undefined
+			? false
+			: fullHeight - lineHeight * lines > 1;
+	const open = expanded && expandable;
+	const scrollable = open && fullHeight !== undefined && fullHeight > maxHeight;
+	const height = open
+		? fullHeight === undefined
+			? undefined
+			: Math.min(fullHeight, maxHeight)
+		: collapsedHeight;
+	const veiled = expandable && (!open || scrollable);
+	// role and aria-label have to arrive together, or neither is valid on the div.
+	const regionRole = scrollable
+		? { role: "region" as const, "aria-label": label, tabIndex: 0 }
+		: {};
+
+	function toggle() {
+		if (open) region.current?.scrollTo({ top: 0 });
+		const next = !expanded;
+		if (expandedProp === undefined) setInternal(next);
+		onExpandedChange?.(next);
+	}
 
 	return (
-		<div className={cn("w-full", className)}>
-			<div
-				id={id}
-				ref={content}
-				style={{ maxHeight: open || !overflows ? "none" : collapsedHeight }}
-				className={cn(
-					"relative overflow-hidden text-muted-foreground text-sm",
-					!open && overflows && "show-more-fade",
-				)}
-			>
-				{children}
+		<div className={cn("w-full text-foreground", className)}>
+			<div className="relative">
+				<div
+					ref={region}
+					id={`${uid}-region`}
+					{...regionRole}
+					style={{
+						height: height === undefined ? undefined : `${height}px`,
+						maxHeight: height === undefined ? `${lines}lh` : undefined,
+						overflowY: scrollable ? "auto" : "hidden",
+						scrollbarGutter: scrollable ? "stable" : undefined,
+					}}
+					className="show-more-region scroll-area overscroll-contain rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+				>
+					<div ref={content}>{children}</div>
+				</div>
+				<div aria-hidden data-on={veiled} className="show-more-veil" />
 			</div>
 
-			{overflows ? (
+			{expandable ? (
 				<button
 					type="button"
+					onClick={toggle}
 					aria-expanded={open}
-					aria-controls={id}
-					onClick={() => setOpen((v) => !v)}
-					className="mt-2 font-medium text-foreground text-sm underline underline-offset-4 transition-colors hover:text-muted-foreground"
+					aria-controls={`${uid}-region`}
+					className="-ml-2 mt-2 inline-flex h-8 items-center gap-1.5 rounded-md px-2 font-medium text-muted-foreground text-sm transition-colors hover:bg-foreground/[0.06] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
 				>
 					{open ? lessLabel : moreLabel}
+					<svg
+						viewBox="0 0 12 12"
+						fill="none"
+						aria-hidden
+						data-on={open}
+						className="show-more-chevron size-3"
+					>
+						<path
+							d="m2.5 4.25 3.5 3.5 3.5-3.5"
+							stroke="currentColor"
+							strokeWidth="1.5"
+							strokeLinecap="round"
+							strokeLinejoin="round"
+						/>
+					</svg>
 				</button>
 			) : null}
 		</div>

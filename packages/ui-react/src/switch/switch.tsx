@@ -51,42 +51,51 @@ export function Switch({
 		requestAnimationFrame(() => setShaking(true));
 	}
 
+	const control = (
+		<button
+			id={id}
+			type="button"
+			role="switch"
+			aria-checked={checked}
+			aria-label={label ? undefined : "Toggle"}
+			aria-disabled={disabled || undefined}
+			onClick={() => (disabled ? refuse() : onCheckedChange?.(!checked))}
+			onPointerDown={() => setPressed(true)}
+			onPointerUp={() => setPressed(false)}
+			onPointerLeave={() => setPressed(false)}
+			className={cn(
+				"relative inline-flex shrink-0 items-center rounded-full border border-transparent bg-input p-0.5 transition-colors duration-[var(--duration-press)] ease-[var(--ease-out)]",
+				"outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+				"aria-checked:bg-primary aria-disabled:cursor-not-allowed aria-disabled:opacity-50",
+				TRACK[size],
+				!label && className,
+			)}
+		>
+			<span
+				aria-hidden
+				data-shake={shaking || undefined}
+				onAnimationEnd={() => setShaking(false)}
+				style={{
+					transform: checked ? `translateX(${TRAVEL[size]})` : "translateX(0)",
+					scale: pressed && !disabled ? "0.9" : "1",
+				}}
+				className={cn("switch-thumb rounded-full bg-background shadow-sm", THUMB[size])}
+			/>
+		</button>
+	);
+
+	// Bare, so this can replace a shadcn switch; the wrapper only appears with a label.
+	if (!label) return control;
+
 	return (
 		<span className={cn("inline-flex items-center gap-2.5", className)}>
-			<button
-				id={id}
-				type="button"
-				role="switch"
-				aria-checked={checked}
-				aria-label={label ? undefined : "Toggle"}
-				aria-disabled={disabled || undefined}
-				onClick={() => (disabled ? refuse() : onCheckedChange?.(!checked))}
-				onPointerDown={() => setPressed(true)}
-				onPointerUp={() => setPressed(false)}
-				onPointerLeave={() => setPressed(false)}
-				className={cn(
-					"relative inline-flex shrink-0 items-center rounded-full border border-transparent bg-input p-0.5 transition-colors duration-[var(--duration-press)] ease-[var(--ease-out)]",
-					"outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-					"aria-checked:bg-primary aria-disabled:cursor-not-allowed aria-disabled:opacity-50",
-					TRACK[size],
-				)}
+			{control}
+			<label
+				htmlFor={id}
+				className={cn("text-foreground text-sm", disabled && "opacity-50")}
 			>
-				<span
-					aria-hidden
-					data-shake={shaking || undefined}
-					onAnimationEnd={() => setShaking(false)}
-					style={{
-						transform: checked ? `translateX(${TRAVEL[size]})` : "translateX(0)",
-						scale: pressed && !disabled ? "0.9" : "1",
-					}}
-					className={cn("switch-thumb rounded-full bg-background shadow-sm", THUMB[size])}
-				/>
-			</button>
-			{label ? (
-				<label htmlFor={id} className={cn("text-foreground text-sm", disabled && "opacity-50")}>
-					{label}
-				</label>
-			) : null}
+				{label}
+			</label>
 		</span>
 	);
 }

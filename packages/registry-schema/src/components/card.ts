@@ -4,18 +4,10 @@ export const card = defineComponent({
 	slug: "card",
 	name: "Card",
 	description:
-		"Surface with optional header, body and footer slots that keep consistent padding.",
+		"Surface composed from header, title, description, action, content and footer parts.",
 	category: "base",
 	status: "stable",
-	variants: { padding: ["sm", "md", "lg"] },
 	props: [
-		{
-			name: "padding",
-			type: '"sm" | "md" | "lg"',
-			description: "Inner padding on every slot.",
-			default: "md",
-			control: { kind: "select", options: ["sm", "md", "lg"] },
-		},
 		{
 			name: "interactive",
 			type: "boolean",
@@ -37,6 +29,7 @@ export const card = defineComponent({
 		keyboard: [],
 		notes: [
 			"`interactive` is presentation only. Put a real link or button inside; a hover style is not an affordance.",
+			"Part names and `data-slot` values match shadcn/ui, so this replaces an existing card without touching call sites.",
 		],
 	},
 	licenseOrigin: {
@@ -59,6 +52,10 @@ export const card = defineComponent({
 			files: [
 				{ path: "card/card.svelte", type: "registry:ui" },
 				{ path: "card/card-header.svelte", type: "registry:ui" },
+				{ path: "card/card-title.svelte", type: "registry:ui" },
+				{ path: "card/card-description.svelte", type: "registry:ui" },
+				{ path: "card/card-action.svelte", type: "registry:ui" },
+				{ path: "card/card-content.svelte", type: "registry:ui" },
 				{ path: "card/card-footer.svelte", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],

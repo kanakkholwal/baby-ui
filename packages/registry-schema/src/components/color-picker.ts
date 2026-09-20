@@ -3,7 +3,7 @@ import { defineComponent } from "../index";
 export const colorPicker = defineComponent({
 	slug: "color-picker",
 	name: "Color Picker",
-	description: "Swatches plus the native colour input and a hex field.",
+	description: "Saturation square, hue strip, hex field and HSV/HSL/RGB channel sliders.",
 	category: "base",
 	status: "stable",
 	props: [
@@ -13,6 +13,13 @@ export const colorPicker = defineComponent({
 			description: "Current colour as hex. Bindable.",
 			default: "#7dd3fc",
 			control: { kind: "color" },
+		},
+		{
+			name: "format",
+			type: '"hsv" | "hsl" | "rgb"',
+			description: "Which channel sliders the panel shows. Bindable.",
+			default: "hsv",
+			control: { kind: "select", options: ["hsv", "hsl", "rgb"] },
 		},
 		{
 			name: "swatches",
@@ -28,10 +35,21 @@ export const colorPicker = defineComponent({
 			control: { kind: "text" },
 		},
 	],
+	motion: {
+		springs: [],
+		reducedMotion: "Unchanged: dragging is direct manipulation, not animation.",
+		behaviour: [
+			"The square and the strip track the pointer with no easing, because a lagging handle reads as a dropped input.",
+			"A pointer capture keeps the drag alive when the pointer leaves the square, so the colour never freezes mid-gesture.",
+		],
+	},
 	a11y: {
-		keyboard: ["Tab reaches the swatch, the hex field and each preset"],
+		keyboard: [
+			"Tab reaches the hex field, each channel slider and each preset",
+			"Arrow keys move the focused channel slider",
+		],
 		notes: [
-			"Built on a real colour input, so the platform picker, the eyedropper and any OS-level accessibility come free.",
+			"The square and the hue strip are pointer-only by design; the three channel sliders are their keyboard equivalent and reach every colour.",
 			"The hex field is editable and labelled, which is the only path for anyone who cannot use a visual picker.",
 		],
 	},
@@ -46,6 +64,7 @@ export const colorPicker = defineComponent({
 			entry: "ColorPicker",
 			files: [
 				{ path: "color-picker/color-picker.tsx", type: "registry:ui" },
+				{ path: "lib/color.ts", type: "registry:lib" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge"],
@@ -54,6 +73,7 @@ export const colorPicker = defineComponent({
 			entry: "ColorPicker",
 			files: [
 				{ path: "color-picker/color-picker.svelte", type: "registry:ui" },
+				{ path: "lib/color.ts", type: "registry:lib" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge"],

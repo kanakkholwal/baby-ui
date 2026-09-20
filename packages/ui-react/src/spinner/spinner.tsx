@@ -1,9 +1,9 @@
 import { cn } from "../lib/cn";
 
-const SIZE = { sm: "size-3.5", md: "size-5", lg: "size-8" };
+const SIZE = { sm: "size-3.5", md: "size-5", lg: "size-8", xl: "size-12" };
 
 export interface SpinnerProps {
-	size?: "sm" | "md" | "lg";
+	size?: "sm" | "md" | "lg" | "xl";
 	label?: string;
 	className?: string;
 }

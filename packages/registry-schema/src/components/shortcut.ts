@@ -15,10 +15,10 @@ export const shortcut = defineComponent({
 		},
 		{
 			name: "size",
-			type: '"sm" | "md"',
+			type: '"sm" | "md" | "lg" | "xl"',
 			description: "Key cap size.",
 			default: "md",
-			control: { kind: "select", options: ["sm", "md"] },
+			control: { kind: "select", options: ["sm", "md", "lg", "xl"] },
 		},
 	],
 	a11y: {

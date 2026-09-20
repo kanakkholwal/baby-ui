@@ -20,14 +20,21 @@ export const CATEGORY_BLURB: Record<Category, string> = {
 
 /** Nav entries, derived from the specs so a new component shows up without edits here. */
 export function navCategories(): { href: string; label: string; match: string }[] {
-	return CATEGORIES.filter((c) => specs.some((s) => s.category === c)).map((category) => ({
-		href: `/components/${category}`,
-		label: CATEGORY_LABEL[category],
-		match: `/components/${category}`,
-	}));
+	return CATEGORIES.filter((c) => specs.some((s) => s.category === c)).map(
+		(category) => ({
+			href: `/components/${category}`,
+			label: CATEGORY_LABEL[category],
+			match: `/components/${category}`,
+		}),
+	);
 }
 
-export type SearchItem = { href: string; name: string; group: string; description: string };
+export type SearchItem = {
+	href: string;
+	name: string;
+	group: string;
+	description: string;
+};
 
 /** Flat index for the command palette, rebuilt from the specs on every load. */
 export function searchItems(): SearchItem[] {

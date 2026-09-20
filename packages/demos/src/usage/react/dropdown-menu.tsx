@@ -8,6 +8,10 @@ const items = [
 
 export function Example() {
 	return (
-		<DropdownMenu items={items} trigger={<span>Account</span>} onSelect={(id) => console.log(id)} />
+		<DropdownMenu
+			items={items}
+			trigger={<span>Account</span>}
+			onSelect={(id) => console.log(id)}
+		/>
 	);
 }

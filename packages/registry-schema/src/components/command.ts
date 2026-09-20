@@ -29,6 +29,12 @@ export const command = defineComponent({
 			control: { kind: "text" },
 		},
 		{
+			name: "footer",
+			type: "string",
+			description: "Hint pinned below the list.",
+			control: { kind: "text" },
+		},
+		{
 			name: "emptyLabel",
 			type: "string",
 			description: "Shown when nothing matches.",

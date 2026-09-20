@@ -9,7 +9,7 @@ export const badge = defineComponent({
 		"Compact status label with semantic colour variants and an optional leading dot.",
 	category: "base",
 	status: "stable",
-	variants: { variant: VARIANTS, size: ["sm", "md"] },
+	variants: { variant: VARIANTS, size: ["sm", "md", "lg", "xl"] },
 	props: [
 		{
 			name: "variant",
@@ -21,10 +21,10 @@ export const badge = defineComponent({
 		},
 		{
 			name: "size",
-			type: '"sm" | "md"',
+			type: '"sm" | "md" | "lg" | "xl"',
 			description: "Height and horizontal padding.",
 			default: "md",
-			control: { kind: "select", options: ["sm", "md"] },
+			control: { kind: "select", options: ["sm", "md", "lg", "xl"] },
 		},
 		{
 			name: "dot",

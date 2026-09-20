@@ -15,6 +15,20 @@ export const radioGroup = defineComponent({
 			control: { kind: "text" },
 		},
 		{
+			name: "size",
+			type: '"sm" | "md" | "lg" | "xl"',
+			description: "Control size.",
+			default: "md",
+			control: { kind: "select", options: ["sm", "md", "lg", "xl"] },
+		},
+		{
+			name: "variant",
+			type: '"default" | "card"',
+			description: "Bare rows, or each option in its own bordered card.",
+			default: "default",
+			control: { kind: "select", options: ["default", "card"] },
+		},
+		{
 			name: "orientation",
 			type: '"vertical" | "horizontal"',
 			description: "Layout direction.",

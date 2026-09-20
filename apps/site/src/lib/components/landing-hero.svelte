@@ -1,6 +1,7 @@
 <script lang="ts">
 import IconArrowRight from "@tabler/icons-svelte/icons/arrow-right";
 import IconArrowUpRight from "@tabler/icons-svelte/icons/arrow-up-right";
+
 let { count }: { count: number } = $props();
 
 const HEADLINE = ["One spec,", "two frameworks."];

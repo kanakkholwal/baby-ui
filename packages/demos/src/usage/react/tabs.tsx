@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { Tabs } from "@baby-ui/react";
+import { useState } from "react";
 
 const tabs = [
 	{ id: "overview", label: "Overview" },
@@ -17,7 +17,11 @@ export function Example() {
 			tabs={tabs}
 			value={value}
 			onValueChange={setValue}
-			panel={(active) => <p className="text-muted-foreground text-sm">Showing {active}.</p>}
+			variant="underline"
+			size="md"
+			panel={(active) => (
+				<p className="text-muted-foreground text-sm">Showing {active}.</p>
+			)}
 		/>
 	);
 }

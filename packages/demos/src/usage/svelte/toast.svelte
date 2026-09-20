@@ -11,6 +11,7 @@ function notify() {
 			title: "Deployment ready",
 			description: "acme-web is live.",
 			tone: "success",
+			action: { label: "View deployment", onclick: () => console.log("open") },
 		},
 	];
 }
@@ -18,4 +19,4 @@ function notify() {
 
 <Button onclick={notify}>Notify</Button>
 
-<Toast bind:toasts position="bottom-right" />
+<Toast bind:toasts position="bottom-right" variant="soft" max={4} />

@@ -8,8 +8,11 @@ import {
 	Badge,
 	Button,
 	Card,
+	CardContent,
+	CardDescription,
 	CardFooter,
 	CardHeader,
+	CardTitle,
 	Checkbox,
 	Input,
 	Label,
@@ -41,7 +44,7 @@ export function AvatarDemo({ props }: { props: Props }) {
 			<Avatar
 				name={name}
 				src={(props.src as string) || undefined}
-				size={(props.size as "xs" | "sm" | "md" | "lg") ?? "md"}
+				size={(props.size as "sm" | "md" | "lg" | "xl") ?? "md"}
 				shape={(props.shape as "circle" | "square") ?? "circle"}
 			/>
 			<div className="text-sm">
@@ -56,22 +59,17 @@ export function AvatarDemo({ props }: { props: Props }) {
 
 export function CardDemo({ props }: { props: Props }) {
 	return (
-		<Card
-			padding={(props.padding as "sm" | "md" | "lg") ?? "md"}
-			interactive={Boolean(props.interactive)}
-			className="w-80"
-		>
-			<CardHeader
-				title="Deploy preview"
-				description="Builds on every push to a branch."
-			/>
-			<p className="mt-3 text-muted-foreground text-sm">
-				Previews are torn down when the branch is deleted.
-			</p>
+		<Card interactive={props.interactive !== false} className="w-72">
+			<CardHeader>
+				<CardTitle>Deploy preview</CardTitle>
+				<CardDescription>Builds on every push to a branch.</CardDescription>
+			</CardHeader>
+			<CardContent>
+				<p className="text-muted-foreground text-sm">Ready in about 40 seconds.</p>
+			</CardContent>
 			<CardFooter>
-				<Button size="sm">Open</Button>
-				<Button size="sm" variant="ghost">
-					Settings
+				<Button size="sm" variant="outline">
+					Open
 				</Button>
 			</CardFooter>
 		</Card>
@@ -119,20 +117,22 @@ export function LabelDemo({ props }: { props: Props }) {
 }
 
 export function TextareaDemo({ props }: { props: Props }) {
-	const id = useId();
 	const [value, setValue] = useState(
-		"Type a few lines and watch the field grow with the content.",
+		"Same field tokens as Input, so labels and focus rings stay consistent.",
 	);
 	return (
-		<div className="flex w-80 flex-col gap-1.5">
-			<Label htmlFor={id}>Release notes</Label>
+		<div className="w-full max-w-md">
 			<Textarea
-				id={id}
 				value={value}
 				onChange={(e) => setValue(e.currentTarget.value)}
-				rows={Number(props.rows ?? 3)}
-				autoGrow={props.autoGrow !== false}
+				label={(props.label as string) ?? "Message"}
+				description={props.description as string}
+				size={(props.size as "sm" | "md" | "lg" | "xl") ?? "md"}
+				variant={(props.variant as "outline" | "soft") ?? "outline"}
+				rows={Number(props.rows ?? 4)}
+				autoGrow={Boolean(props.autoGrow)}
 				maxRows={Number(props.maxRows ?? 10)}
+				showCount={Boolean(props.showCount)}
 				invalid={Boolean(props.invalid)}
 				disabled={Boolean(props.disabled)}
 			/>
@@ -205,7 +205,7 @@ export function SkeletonDemo({ props }: { props: Props }) {
 export function AlertDemo({ props }: { props: Props }) {
 	const variant = (props.variant as AlertVariant) ?? "info";
 	return (
-		<div className="w-96">
+		<div className="w-full max-w-md">
 			<Alert
 				key={`${variant}-${String(props.dismissible)}`}
 				variant={variant}
@@ -240,7 +240,7 @@ const ACCORDION_ITEMS = [
 
 export function AccordionDemo({ props }: { props: Props }) {
 	return (
-		<div className="w-96">
+		<div className="w-full max-w-md">
 			<Accordion
 				items={ACCORDION_ITEMS}
 				multiple={Boolean(props.multiple)}

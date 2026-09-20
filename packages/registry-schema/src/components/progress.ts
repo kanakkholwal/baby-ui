@@ -6,7 +6,7 @@ export const progress = defineComponent({
 	description: "Determinate and indeterminate progress bar sharing one track.",
 	category: "base",
 	status: "stable",
-	variants: { size: ["sm", "md"] },
+	variants: { size: ["sm", "md", "lg", "xl"] },
 	props: [
 		{
 			name: "value",
@@ -24,10 +24,10 @@ export const progress = defineComponent({
 		},
 		{
 			name: "size",
-			type: '"sm" | "md"',
+			type: '"sm" | "md" | "lg" | "xl"',
 			description: "Track thickness.",
 			default: "md",
-			control: { kind: "select", options: ["sm", "md"] },
+			control: { kind: "select", options: ["sm", "md", "lg", "xl"] },
 		},
 	],
 	motion: {

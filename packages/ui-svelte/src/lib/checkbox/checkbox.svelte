@@ -53,8 +53,8 @@ $effect(() => {
 });
 </script>
 
-<div class={cn("inline-flex items-start gap-2.5", disabled && "opacity-50", classProp)}>
-	<span class={cn("relative inline-grid shrink-0 place-items-center", BOX[size])}>
+{#snippet control()}
+	<span class={cn("relative inline-grid shrink-0 place-items-center", BOX[size], !label && !description && classProp)}>
 		<input
 			bind:this={el}
 			bind:checked
@@ -76,13 +76,19 @@ $effect(() => {
 			)}
 		>
 			{#if indeterminate}
-				<svg viewBox="0 0 12 12" fill="none" class={cn("text-primary-foreground", MARK[size])}>
+				<svg
+					viewBox="0 0 12 12"
+					fill="none"
+					aria-hidden="true"
+					class={cn("text-primary-foreground", MARK[size])}
+				>
 					<path d="M3 6h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
 				</svg>
 			{:else}
 				<svg
 					viewBox="0 0 12 12"
 					fill="none"
+					aria-hidden="true"
 					data-on={checked}
 					class={cn("checkbox-check text-primary-foreground", MARK[size])}
 				>
@@ -97,12 +103,19 @@ $effect(() => {
 			{/if}
 		</span>
 	</span>
-	{#if label || description}
+{/snippet}
+
+<!-- Bare, so this can replace a shadcn checkbox; the wrapper only appears with a label. -->
+{#if label || description}
+	<div class={cn("inline-flex items-start gap-2.5", disabled && "opacity-50", classProp)}>
+		{@render control()}
 		<label for={id} class="cursor-pointer select-none">
 			{#if label}<span class={cn("block text-foreground", TEXT[size])}>{label}</span>{/if}
 			{#if description}
 				<span class="block text-muted-foreground text-xs leading-relaxed">{description}</span>
 			{/if}
 		</label>
-	{/if}
-</div>
+	</div>
+{:else}
+	{@render control()}
+{/if}

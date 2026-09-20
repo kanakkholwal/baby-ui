@@ -10,7 +10,7 @@ export const button = defineComponent({
 
 	variants: {
 		variant: ["default", "secondary", "outline", "ghost", "destructive"],
-		size: ["sm", "md", "lg", "icon"],
+		size: ["sm", "md", "lg", "xl", "icon"],
 	},
 
 	props: [
@@ -26,10 +26,10 @@ export const button = defineComponent({
 		},
 		{
 			name: "size",
-			type: '"sm" | "md" | "lg" | "icon"',
+			type: '"sm" | "md" | "lg" | "xl" | "icon"',
 			description: "Height and horizontal padding. `icon` renders a square.",
 			default: "md",
-			control: { kind: "select", options: ["sm", "md", "lg", "icon"] },
+			control: { kind: "select", options: ["sm", "md", "lg", "xl", "icon"] },
 		},
 		{
 			name: "href",

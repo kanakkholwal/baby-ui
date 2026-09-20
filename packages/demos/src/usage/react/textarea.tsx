@@ -1,21 +1,21 @@
 "use client";
 
+import { Textarea } from "@baby-ui/react";
 import { useState } from "react";
-import { Label, Textarea } from "@baby-ui/react";
 
 export function Example() {
 	const [value, setValue] = useState("");
 
 	return (
-		<div className="flex flex-col gap-1.5">
-			<Label htmlFor="notes">Release notes</Label>
-			<Textarea
-				id="notes"
-				value={value}
-				onChange={(e) => setValue(e.currentTarget.value)}
-				rows={3}
-				autoGrow
-			/>
-		</div>
+		<Textarea
+			value={value}
+			onChange={(e) => setValue(e.currentTarget.value)}
+			label="Release notes"
+			description="Markdown is supported."
+			rows={3}
+			maxLength={280}
+			showCount
+			autoGrow
+		/>
 	);
 }
