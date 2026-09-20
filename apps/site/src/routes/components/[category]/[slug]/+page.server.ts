@@ -1,12 +1,17 @@
 import { components } from "virtual:docvia/source";
 import type { Framework } from "@baby-ui/registry-schema";
 import { FRAMEWORKS } from "@baby-ui/registry-schema";
+import { specs } from "@baby-ui/registry-schema/components";
 import { error } from "@sveltejs/kit";
 import { highlight, langFor } from "$lib/highlight";
 import { findSpec } from "$lib/registry";
 import { sourceFiles } from "$lib/registry-items";
 import { usageSnippet } from "$lib/usage";
-import type { PageServerLoad } from "./$types";
+import type { EntryGenerator, PageServerLoad } from "./$types";
+
+// Listed rather than crawled, so a component that nothing links to still gets built.
+export const entries: EntryGenerator = () =>
+	specs.map((spec) => ({ category: spec.category, slug: spec.slug }));
 
 export const load: PageServerLoad = async ({ params }) => {
 	const spec = findSpec(params.category, params.slug);

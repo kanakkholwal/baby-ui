@@ -31,6 +31,9 @@ export default defineConfig({
 		tailwindcss(),
 		docvia(docviaConfig),
 		sveltekit({
+			// The navbar and fullscreen-nav demos ship placeholder anchors like #product,
+			// which have no target on the page that previews them. Warn, do not fail.
+			prerender: { handleMissingId: "warn" },
 			compilerOptions: {
 				// Force runes mode for the project, except for libraries. Can be removed in svelte 6.
 				runes: ({ filename }) =>

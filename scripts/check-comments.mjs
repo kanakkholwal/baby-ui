@@ -9,6 +9,7 @@ const SKIP = new Set([
 	".docvia",
 	"build",
 	".turbo",
+	".wrangler",
 	"static",
 ]);
 const EXT = /\.(ts|tsx|js|jsx|mjs|svelte)$/;
