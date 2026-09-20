@@ -1,4 +1,4 @@
-import { defineComponent } from "../index.js";
+import { defineComponent } from "../index";
 
 export const accordion = defineComponent({
 	slug: "accordion",

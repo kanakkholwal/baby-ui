@@ -1,7 +1,7 @@
 <script lang="ts">
 import SpecDials from "@baby-ui/demos/controls";
 import { specs } from "@baby-ui/registry-schema/components";
-import { broadcast, RUNNERS } from "./runners.js";
+import { broadcast, RUNNERS } from "./runners";
 
 let slug = $state(specs[0]?.slug ?? "button");
 let values = $state<Record<string, unknown>>({});

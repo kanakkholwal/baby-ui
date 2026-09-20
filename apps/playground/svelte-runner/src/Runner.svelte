@@ -1,6 +1,6 @@
 <script lang="ts">
 import { demos } from "@baby-ui/demos/svelte";
-import { connect, initialState, type RunnerState } from "./runner-state.js";
+import { connect, initialState, type RunnerState } from "./runner-state";
 
 let state = $state<RunnerState>(initialState());
 $effect(() => connect("svelte", (next) => (state = next)));

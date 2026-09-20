@@ -8,16 +8,14 @@
 			"types": "./dist/index.d.ts",
 			"default": "./dist/index.js"
 		},
-		"./components": {
-			"types": "./dist/components/index.d.ts",
-			"default": "./dist/components/index.js"
-		}
+		"./components": "./src/components/index.ts"
 	},
 	"files": [
+		"src",
 		"dist"
 	],
 	"scripts": {
-		"build": "tsc -p tsconfig.build.json",
+		"build": "bun build ./src/index.ts ./src/components/index.ts --outdir dist --target node --format esm --root src --external zod && tsc -p tsconfig.build.json --emitDeclarationOnly",
 		"check": "tsc --noEmit"
 	},
 	"dependencies": {

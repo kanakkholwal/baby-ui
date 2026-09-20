@@ -1,4 +1,4 @@
-import { defineComponent } from "../index.js";
+import { defineComponent } from "../index";
 
 export const navbar = defineComponent({
 	slug: "navbar",

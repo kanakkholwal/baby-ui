@@ -1,7 +1,7 @@
 <script lang="ts">
 import type { Snippet } from "svelte";
-import { cn } from "../lib/cn.js";
-import { type BadgeSize, type BadgeVariant, badge } from "./variants.js";
+import { cn } from "../lib/cn";
+import { type BadgeSize, type BadgeVariant, badge } from "./variants";
 
 type Props = {
 	children?: Snippet;

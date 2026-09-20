@@ -8,7 +8,7 @@
 	},
 	"scripts": {
 		"build": "turbo run build",
-		"check": "node scripts/check-comments.mjs && node scripts/check-esm-extensions.mjs && turbo run check",
+		"check": "node scripts/check-comments.mjs && node scripts/check-import-extensions.mjs && turbo run check",
 		"dev": "turbo run dev --filter=@baby-ui/site",
 		"playground": "turbo run dev --filter=@baby-ui/playground-*",
 		"registry": "node scripts/sync-fonts.mjs && turbo run registry",

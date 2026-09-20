@@ -1,4 +1,4 @@
-import { defineComponent } from "../index.js";
+import { defineComponent } from "../index";
 
 export const checkbox = defineComponent({
 	slug: "checkbox",

@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "../lib/cn.js";
+import { cn } from "../lib/cn";
 
 const TRACK = { sm: "h-4 w-7", md: "h-5 w-9" };
 const THUMB = { sm: "size-3", md: "size-4" };

@@ -1,6 +1,6 @@
 <script lang="ts">
 import { page } from "$app/state";
-import ThemeToggle from "./theme-toggle.svelte";
+import { prefs } from "$lib/preferences.svelte";
 
 const NAV = [
 	{ href: "/components/base/button", label: "Components", match: "/components" },
@@ -77,7 +77,22 @@ $effect(() => {
 				</kbd>
 			</button>
 
-			<ThemeToggle />
+			<button
+				type="button"
+				onclick={() => (prefs.open = true)}
+				aria-label="Settings"
+				class="gear hidden size-9 items-center justify-center rounded-2xl border border-border bg-card/20 text-muted-foreground transition-colors hover:border-border-strong hover:text-foreground sm:flex"
+			>
+				<svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class="size-4">
+					<circle cx="8" cy="8" r="2.2" stroke="currentColor" stroke-width="1.3" />
+					<path
+						d="M8 1.4v1.5M8 13.1v1.5M14.6 8h-1.5M2.9 8H1.4m10.6-4.6-1 1M5 11l-1 1m8 0-1-1M5 5l-1-1"
+						stroke="currentColor"
+						stroke-width="1.3"
+						stroke-linecap="round"
+					/>
+				</svg>
+			</button>
 
 			<a
 				href="https://github.com/kanakkholwal"
@@ -109,3 +124,19 @@ $effect(() => {
 		</nav>
 	</div>
 </header>
+
+<style>
+	.gear svg {
+		transition: transform 420ms var(--ease-out);
+	}
+
+	.gear:hover svg {
+		transform: rotate(90deg);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.gear svg {
+			transition: none;
+		}
+	}
+</style>

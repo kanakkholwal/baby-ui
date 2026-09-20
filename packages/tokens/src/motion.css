@@ -48,8 +48,10 @@
 	}
 }
 
-/* Both morphing-modal ports rely on this; ::backdrop cannot be a Tailwind utility. */
+/* Both morphing-modal ports rely on this; ::backdrop cannot be a Tailwind utility.
+   Safari needed the prefix until 18, and an unprefixed-only rule silently does nothing. */
 .morph-dialog::backdrop {
+	-webkit-backdrop-filter: blur(var(--morph-blur, 8px));
 	backdrop-filter: blur(var(--morph-blur, 8px));
 }
 
@@ -167,5 +169,246 @@
 	.checkbox-check path {
 		transition: none;
 		stroke-dashoffset: 0;
+	}
+}
+
+/* Shared across both ports of radio-group, slider, message, response-stream,
+   reasoning and task-steps, so neither framework owns the timing. */
+.radio-dot {
+	transform: scale(0.6);
+	opacity: 0;
+	transition:
+		transform var(--duration-press) var(--ease-out),
+		opacity var(--duration-press) var(--ease-out);
+}
+
+.radio-dot[data-on="true"] {
+	transform: scale(1);
+	opacity: 1;
+}
+
+.slider-thumb {
+	transition: transform var(--duration-press) var(--ease-out);
+}
+
+.slider:hover .slider-thumb {
+	transform: scale(1.15);
+}
+
+.slider:active .slider-thumb {
+	transform: scale(1.25);
+}
+
+.typing-dot {
+	animation: typing-dot 1.2s ease-in-out infinite;
+}
+
+@keyframes typing-dot {
+	30% {
+		opacity: 1;
+		transform: translateY(-2px);
+	}
+}
+
+.stream-caret {
+	animation: stream-caret 1s steps(2) infinite;
+}
+
+@keyframes stream-caret {
+	50% {
+		opacity: 0;
+	}
+}
+
+.reasoning-shimmer {
+	background: linear-gradient(
+			90deg,
+			var(--muted-foreground) 0%,
+			var(--foreground) 50%,
+			var(--muted-foreground) 100%
+		)
+		0 0 / 200% 100%;
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+	animation: reasoning-shimmer 2s linear infinite;
+}
+
+@keyframes reasoning-shimmer {
+	to {
+		background-position: -200% 0;
+	}
+}
+
+.step-spinner {
+	animation: step-spinner 850ms linear infinite;
+}
+
+@keyframes step-spinner {
+	to {
+		rotate: 360deg;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.radio-dot,
+	.slider-thumb {
+		transition: none;
+	}
+
+	.typing-dot,
+	.stream-caret,
+	.reasoning-shimmer,
+	.step-spinner {
+		animation: none;
+	}
+}
+
+/* Every anchored surface (popover, select, menu, tooltip) enters the same way, growing
+   from the edge nearest its trigger. transform-origin is set by the anchor primitive. */
+.anchored {
+	animation: anchored-in var(--duration-dropdown) var(--ease-out);
+}
+
+@keyframes anchored-in {
+	from {
+		opacity: 0;
+		transform-origin: inherit;
+		scale: 0.96;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.anchored {
+		animation: none;
+	}
+}
+
+/* Dialog surfaces. The backdrop cannot be a Tailwind utility, and both ports need
+   the same entry, so it lives here rather than in either framework's file. */
+.modal-dialog::backdrop,
+.command-dialog::backdrop {
+	-webkit-backdrop-filter: blur(4px);
+	backdrop-filter: blur(4px);
+}
+
+.modal-panel {
+	animation: modal-in var(--duration-overlay) var(--ease-out);
+}
+
+@keyframes modal-in {
+	from {
+		opacity: 0;
+		scale: 0.96;
+	}
+}
+
+.sheet-panel {
+	animation: sheet-in var(--duration-drawer) var(--ease-drawer);
+}
+
+.sheet-panel[data-side="left"] {
+	--sheet-from: translateX(-100%);
+}
+
+.sheet-panel[data-side="right"] {
+	--sheet-from: translateX(100%);
+}
+
+.sheet-panel[data-side="top"] {
+	--sheet-from: translateY(-100%);
+}
+
+.sheet-panel[data-side="bottom"] {
+	--sheet-from: translateY(100%);
+}
+
+@keyframes sheet-in {
+	from {
+		transform: var(--sheet-from, translateX(100%));
+	}
+}
+
+.toast-in {
+	animation: toast-in var(--duration-overlay) var(--ease-out);
+}
+
+@keyframes toast-in {
+	from {
+		opacity: 0;
+		transform: translateY(8px);
+	}
+}
+
+.fullscreen-nav {
+	animation: fullscreen-nav-in var(--duration-overlay) var(--ease-out);
+}
+
+@keyframes fullscreen-nav-in {
+	from {
+		opacity: 0;
+	}
+}
+
+.fullscreen-nav-link {
+	opacity: 0;
+	animation: fullscreen-nav-link-in 420ms var(--ease-out) forwards;
+}
+
+@keyframes fullscreen-nav-link-in {
+	from {
+		opacity: 0;
+		transform: translateY(0.3em);
+	}
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.modal-panel,
+	.sheet-panel,
+	.toast-in,
+	.fullscreen-nav,
+	.fullscreen-nav-link {
+		animation: none;
+		opacity: 1;
+	}
+}
+
+/* Shared by both spinner ports. */
+.spinner {
+	animation: spinner 850ms linear infinite;
+}
+
+@keyframes spinner {
+	to {
+		rotate: 360deg;
+	}
+}
+
+/* show-more: the fade is the signal that content continues. */
+.show-more-fade::after {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	height: 3rem;
+	background: linear-gradient(to top, var(--background), transparent);
+	content: "";
+	pointer-events: none;
+}
+
+/* scroll-area uses a thin scrollbar rather than hiding it; a hidden scrollbar
+   removes the only affordance a mouse user has. */
+.scroll-area {
+	scrollbar-width: thin;
+	scrollbar-color: var(--border-strong) transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.spinner {
+		animation-duration: 2s;
 	}
 }

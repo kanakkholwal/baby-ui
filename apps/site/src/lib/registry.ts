@@ -7,7 +7,20 @@ export const CATEGORY_LABEL: Record<Category, string> = {
 	boilerplate: "Boilerplate",
 	advanced: "Advanced",
 	animated: "Animated",
+	agents: "Agents",
 };
+
+/** Nav entries, derived from the specs so a new component shows up without edits here. */
+export function navCategories(): { href: string; label: string; match: string }[] {
+	return CATEGORIES.filter((c) => specs.some((s) => s.category === c)).map((category) => {
+		const first = specs.find((s) => s.category === category);
+		return {
+			href: `/components/${category}/${first?.slug ?? ""}`,
+			label: CATEGORY_LABEL[category],
+			match: `/components/${category}`,
+		};
+	});
+}
 
 export type SidebarGroup = {
 	category: Category;

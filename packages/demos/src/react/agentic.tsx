@@ -1,0 +1,168 @@
+"use client";
+
+import {
+	Breadcrumb,
+	Message,
+	RadioGroup,
+	Reasoning,
+	ResponseStream,
+	Slider,
+	Tabs,
+	TaskSteps,
+} from "@baby-ui/react";
+import { useEffect, useState } from "react";
+
+type Props = Record<string, unknown>;
+
+const TRAIL = [
+	{ href: "/", label: "Home" },
+	{ href: "/components", label: "Components" },
+	{ href: "/components/base", label: "Base" },
+	{ href: "/components/base/nav", label: "Navigation" },
+	{ label: "Breadcrumb" },
+];
+
+export function BreadcrumbDemo({ props }: { props: Props }) {
+	return <Breadcrumb items={TRAIL} maxVisible={Number(props.maxVisible ?? 4)} />;
+}
+
+const RADIO_OPTIONS = [
+	{ value: "daily", label: "Daily digest" },
+	{ value: "weekly", label: "Weekly summary" },
+	{ value: "never", label: "Never" },
+];
+
+export function RadioGroupDemo({ props }: { props: Props }) {
+	const [value, setValue] = useState("weekly");
+	return (
+		<RadioGroup
+			options={RADIO_OPTIONS}
+			value={value}
+			onValueChange={setValue}
+			orientation={(props.orientation as "vertical" | "horizontal") ?? "vertical"}
+			disabled={Boolean(props.disabled)}
+			name="demo-radio"
+		/>
+	);
+}
+
+export function SliderDemo({ props }: { props: Props }) {
+	const [value, setValue] = useState(50);
+	useEffect(() => setValue(Number(props.value ?? 50)), [props.value]);
+	return (
+		<div className="flex w-72 flex-col gap-2">
+			<div className="flex items-baseline justify-between text-sm">
+				<span className="text-muted-foreground">Volume</span>
+				<span className="font-mono text-foreground text-xs tabular-nums">{value}</span>
+			</div>
+			<Slider
+				value={value}
+				onValueChange={setValue}
+				min={Number(props.min ?? 0)}
+				max={Number(props.max ?? 100)}
+				step={Number(props.step ?? 1)}
+				disabled={Boolean(props.disabled)}
+				label="Volume"
+			/>
+		</div>
+	);
+}
+
+const TABS = [
+	{ id: "overview", label: "Overview" },
+	{ id: "activity", label: "Activity" },
+	{ id: "settings", label: "Settings" },
+];
+
+const TAB_COPY: Record<string, string> = {
+	overview: "Deployment health, traffic and recent errors at a glance.",
+	activity: "Every deploy, who triggered it and how long it took.",
+	settings: "Build command, environment variables and domains.",
+};
+
+export function TabsDemo({ props }: { props: Props }) {
+	const [value, setValue] = useState("overview");
+	return (
+		<div className="w-96">
+			<Tabs
+				tabs={TABS}
+				value={value}
+				onValueChange={setValue}
+				variant={(props.variant as "pill" | "underline") ?? "pill"}
+				panel={(active) => (
+					<p className="text-muted-foreground text-sm">{TAB_COPY[active]}</p>
+				)}
+			/>
+		</div>
+	);
+}
+
+export function MessageDemo({ props }: { props: Props }) {
+	return (
+		<div className="flex w-96 flex-col gap-4">
+			{/* biome-ignore lint/a11y/useValidAriaRole: Message.role is the chat sender, not an ARIA role */}
+			<Message role="user" name="Kanak Kholwal" showActions={false}>
+				Why is the dock magnifying from the wrong centre?
+			</Message>
+			<Message
+				role={(props.role as "user" | "assistant") ?? "assistant"}
+				name={(props.name as string) || "Assistant"}
+				pending={Boolean(props.pending)}
+				showActions={props.showActions !== false}
+			>
+				Because the item&apos;s own width grows as it magnifies, so its measured centre
+				moves with it. Measure from the resting rect instead.
+			</Message>
+		</div>
+	);
+}
+
+export function ResponseStreamDemo({ props }: { props: Props }) {
+	const text =
+		(props.text as string) ||
+		"Streaming reveals text at a steady rate so the reader is never chasing it.";
+	return (
+		<div className="w-96 rounded-xl border border-border bg-card p-4">
+			<ResponseStream
+				key={`${text}-${String(props.speed)}`}
+				text={text}
+				speed={Number(props.speed ?? 60)}
+				streaming={props.streaming !== false}
+			/>
+		</div>
+	);
+}
+
+export function ReasoningDemo({ props }: { props: Props }) {
+	return (
+		<div className="w-96">
+			<Reasoning
+				thinking={props.thinking !== false}
+				duration={Number(props.duration ?? 4)}
+				defaultOpen={Boolean(props.defaultOpen)}
+			>
+				The measured centre shifts because the element&apos;s own width is part of the
+				measurement. Using the resting rect keeps the falloff symmetric.
+			</Reasoning>
+		</div>
+	);
+}
+
+const STEPS = [
+	{ id: "read", label: "Read the component spec", status: "done" as const },
+	{ id: "port", label: "Author the Svelte port", status: "done" as const },
+	{ id: "check", label: "Run svelte-check", status: "active" as const },
+	{ id: "docs", label: "Write the doc page", status: "pending" as const },
+];
+
+export function TaskStepsDemo({ props }: { props: Props }) {
+	return (
+		<div className="w-80">
+			<TaskSteps
+				steps={STEPS}
+				showConnector={props.showConnector !== false}
+				compact={Boolean(props.compact)}
+			/>
+		</div>
+	);
+}

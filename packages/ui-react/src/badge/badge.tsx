@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import { cn } from "../lib/cn.js";
-import { type BadgeSize, type BadgeVariant, badge } from "./variants.js";
+import { cn } from "../lib/cn";
+import { type BadgeSize, type BadgeVariant, badge } from "./variants";
 
 export interface BadgeProps {
 	children?: ReactNode;

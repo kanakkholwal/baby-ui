@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef } from "react";
-import { cn } from "../lib/cn.js";
+import { cn } from "../lib/cn";
 
 export interface CheckboxProps {
 	checked?: boolean;

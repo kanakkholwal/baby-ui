@@ -1,8 +1,8 @@
 import { demos } from "@baby-ui/demos/react";
 import { StrictMode, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { connect, initialState, type RunnerState } from "./runner-state.js";
 import "./index.css";
+import { connect, initialState, type RunnerState } from "./runner-state";
 
 function Runner() {
 	const [state, setState] = useState<RunnerState>(initialState);

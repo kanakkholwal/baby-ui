@@ -1,5 +1,5 @@
 <script lang="ts">
-import { cn } from "../lib/cn.js";
+import { cn } from "../lib/cn";
 
 type Props = {
 	value?: number;

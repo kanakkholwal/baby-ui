@@ -2,8 +2,8 @@
 
 import type { ReactNode } from "react";
 import { useState } from "react";
-import { cn } from "../lib/cn.js";
-import { ALERT_ICON, ALERT_ROLE, type AlertVariant, alert } from "./variants.js";
+import { cn } from "../lib/cn";
+import { ALERT_ICON, ALERT_ROLE, type AlertVariant, alert } from "./variants";
 
 const TONE: Record<AlertVariant, string> = {
 	info: "text-muted-foreground",

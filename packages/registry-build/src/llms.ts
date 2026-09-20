@@ -1,5 +1,5 @@
 import type { ComponentSpec } from "@baby-ui/registry-schema";
-import { REGISTRY_NAME, SITE_URL } from "./config.js";
+import { REGISTRY_NAME, SITE_URL } from "./config";
 
 export function buildLlmsTxt(specs: ComponentSpec[]): string {
 	const lines = [

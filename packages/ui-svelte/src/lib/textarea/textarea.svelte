@@ -1,6 +1,6 @@
 <script lang="ts">
 import type { HTMLTextareaAttributes } from "svelte/elements";
-import { cn } from "../lib/cn.js";
+import { cn } from "../lib/cn";
 
 type Props = {
 	value?: string;

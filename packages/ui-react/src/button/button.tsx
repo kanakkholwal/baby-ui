@@ -1,6 +1,6 @@
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "react";
-import { cn } from "../lib/cn.js";
-import { type ButtonSize, type ButtonVariant, button } from "./variants.js";
+import { cn } from "../lib/cn";
+import { type ButtonSize, type ButtonVariant, button } from "./variants";
 
 type Base = {
 	variant?: ButtonVariant;

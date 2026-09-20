@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { CategorySchema } from "./spec.js";
+import { CategorySchema } from "./spec";
 
 const SLUG = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 

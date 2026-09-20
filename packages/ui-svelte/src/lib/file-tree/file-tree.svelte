@@ -1,6 +1,6 @@
 <script lang="ts">
-import { cn } from "../lib/cn.js";
-import { type FileTreeNode, flatten } from "./types.js";
+import { cn } from "../lib/cn";
+import { type FileTreeNode, flatten } from "./types";
 
 type Props = {
 	tree: FileTreeNode[];

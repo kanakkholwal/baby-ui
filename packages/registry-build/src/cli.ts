@@ -2,12 +2,12 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { FRAMEWORKS, type Framework } from "@baby-ui/registry-schema";
 import { specs } from "@baby-ui/registry-schema/components";
-import { buildItem } from "./build.js";
-import { FRAMEWORK, OUT_DIR, REGISTRY_NAME, REPO_ROOT, SITE_URL } from "./config.js";
-import { buildThirdPartyLicenses } from "./licenses.js";
-import { buildLlmsTxt } from "./llms.js";
-import { jsPath, toJavaScript } from "./tojs.js";
-import { verifyComponentDocs, verifySprings } from "./verify.js";
+import { buildItem } from "./build";
+import { FRAMEWORK, OUT_DIR, REGISTRY_NAME, REPO_ROOT, SITE_URL } from "./config";
+import { buildThirdPartyLicenses } from "./licenses";
+import { buildLlmsTxt } from "./llms";
+import { jsPath, toJavaScript } from "./tojs";
+import { verifyComponentDocs, verifySprings } from "./verify";
 
 async function writeJson(relative: string, value: unknown) {
 	const path = resolve(OUT_DIR, relative);

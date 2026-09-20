@@ -1,5 +1,5 @@
 import type { Framework } from "@baby-ui/registry-schema";
-import { FRAMEWORK } from "./config.js";
+import { FRAMEWORK } from "./config";
 
 const RELATIVE_IMPORT = /(from\s+|import\s+)(["'])(\.[^"']+)\2/g;
 

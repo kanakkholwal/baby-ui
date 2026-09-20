@@ -1,7 +1,7 @@
 <script lang="ts">
 import type { Snippet } from "svelte";
-import { cn } from "../lib/cn.js";
-import { ALERT_ICON, ALERT_ROLE, type AlertVariant, alert } from "./variants.js";
+import { cn } from "../lib/cn";
+import { ALERT_ICON, ALERT_ROLE, type AlertVariant, alert } from "./variants";
 
 type Props = {
 	children?: Snippet;

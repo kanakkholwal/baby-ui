@@ -1,4 +1,4 @@
-import { cn } from "../lib/cn.js";
+import { cn } from "../lib/cn";
 
 const HEIGHT = { sm: "h-1", md: "h-2" };
 

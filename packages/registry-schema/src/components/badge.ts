@@ -1,4 +1,4 @@
-import { defineComponent } from "../index.js";
+import { defineComponent } from "../index";
 
 const VARIANTS = ["default", "secondary", "outline", "success", "warning", "destructive"];
 

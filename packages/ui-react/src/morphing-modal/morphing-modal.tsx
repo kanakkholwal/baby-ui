@@ -2,8 +2,8 @@
 
 import type { ReactNode } from "react";
 import { useId, useRef, useState } from "react";
-import { cn } from "../lib/cn.js";
-import { invert, MORPH_EASE, MORPH_MS, type MorphSpring } from "./use-morph.js";
+import { cn } from "../lib/cn";
+import { invert, MORPH_EASE, MORPH_MS, type MorphSpring } from "./use-morph";
 
 export interface MorphingModalProps {
 	trigger: ReactNode;

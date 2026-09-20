@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode } from "react";
-import { cn } from "../lib/cn.js";
+import { cn } from "../lib/cn";
 
 export type BentoSpan = "1x1" | "2x1" | "1x2" | "2x2";
 

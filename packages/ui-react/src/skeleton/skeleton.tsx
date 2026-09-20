@@ -1,4 +1,4 @@
-import { cn } from "../lib/cn.js";
+import { cn } from "../lib/cn";
 
 const SHAPE = { line: "rounded-md", circle: "rounded-full", block: "rounded-xl" };
 

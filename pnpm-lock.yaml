@@ -6,6 +6,9 @@ settings:
 
 catalogs:
   default:
+    '@floating-ui/dom':
+      specifier: ^1.8.0
+      version: 1.8.0
     '@fontsource-variable/inter':
       specifier: ^5.3.0
       version: 5.3.0
@@ -375,6 +378,9 @@ importers:
 
   packages/ui-react:
     dependencies:
+      '@floating-ui/dom':
+        specifier: 'catalog:'
+        version: 1.8.0
       clsx:
         specifier: 'catalog:'
         version: 2.1.1
@@ -406,6 +412,9 @@ importers:
 
   packages/ui-svelte:
     dependencies:
+      '@floating-ui/dom':
+        specifier: 'catalog:'
+        version: 1.8.0
       clsx:
         specifier: 'catalog:'
         version: 2.1.1
@@ -881,6 +890,15 @@ packages:
     engines: {node: '>=18'}
     cpu: [x64]
     os: [win32]
+
+  '@floating-ui/core@1.8.0':
+    resolution: {integrity: sha512-0CIZ5itps/8x7BG8dEIhs53BvCUH2PCoogtakwRTut+Arm58sJooJ0AuZhLw2HJYIR5cMLNPBSS728sPho2khQ==}
+
+  '@floating-ui/dom@1.8.0':
+    resolution: {integrity: sha512-yXSrzeHZBTZadLOlfyhCkJHNeLJnHRnRInwdZ40L7ZiaAtrBwoYlsDrX3v5zB1Utk7CLfzcOVnVVWoXEky7Ceg==}
+
+  '@floating-ui/utils@0.2.12':
+    resolution: {integrity: sha512-HpCo8tmWzLVad5s2d19EhAz5zqrrQ6s69qd6moPMQvkOuSwDT1YgRfWSVuc4ennqrgv3OHppiOGMQ7oC13yIww==}
 
   '@fontsource-variable/inter@5.3.0':
     resolution: {integrity: sha512-OupL48va4JNofb97w6NYeF9S7W/kHNKM0Er8Dem5nqi4jeOLrVJDoE8tZEpnMJmtkvNbB1EIPPwHcdkF6b1oUA==}
@@ -3037,6 +3055,17 @@ snapshots:
 
   '@esbuild/win32-x64@0.28.1':
     optional: true
+
+  '@floating-ui/core@1.8.0':
+    dependencies:
+      '@floating-ui/utils': 0.2.12
+
+  '@floating-ui/dom@1.8.0':
+    dependencies:
+      '@floating-ui/core': 1.8.0
+      '@floating-ui/utils': 0.2.12
+
+  '@floating-ui/utils@0.2.12': {}
 
   '@fontsource-variable/inter@5.3.0': {}
 

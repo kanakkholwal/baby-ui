@@ -1,6 +1,6 @@
 <script lang="ts">
 import type { Snippet } from "svelte";
-import { cn } from "../lib/cn.js";
+import { cn } from "../lib/cn";
 
 let {
 	children,

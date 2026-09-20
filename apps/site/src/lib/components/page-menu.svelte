@@ -1,19 +1,5 @@
 <script lang="ts">
-import type { Framework } from "@baby-ui/registry-schema";
-
-let {
-	frameworks,
-	framework = $bindable(),
-	dialect = $bindable(),
-	markdownUrl,
-	copyText,
-}: {
-	frameworks: Framework[];
-	framework: Framework;
-	dialect: string;
-	markdownUrl: string;
-	copyText: string;
-} = $props();
+let { markdownUrl, copyText }: { markdownUrl: string; copyText: string } = $props();
 
 let open = $state(false);
 let copied = $state(false);
@@ -63,8 +49,6 @@ async function copyPage() {
 
 const row =
 	"flex w-full items-center gap-2.5 rounded-md px-2 py-1.5 text-left text-[13px] text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground";
-const heading =
-	"px-2 pt-2 pb-1 font-medium text-[10px] text-muted-foreground/70 uppercase tracking-wider";
 </script>
 
 <div bind:this={root} class="relative shrink-0">
@@ -103,23 +87,6 @@ const heading =
 		<div
 			class="menu absolute top-full right-0 z-50 mt-1.5 w-52 rounded-xl border border-border bg-popover p-1 shadow-2xl"
 		>
-			<p class={heading}>Framework</p>
-			{#each frameworks as f (f)}
-				<button type="button" class={row} onclick={() => (framework = f)}>
-					{@render check(framework === f)}
-					{f === "react" ? "React" : "Svelte"}
-				</button>
-			{/each}
-
-			<p class={heading}>Language</p>
-			{#each [{ id: "ts", label: "TypeScript" }, { id: "js", label: "JavaScript" }] as option (option.id)}
-				<button type="button" class={row} onclick={() => (dialect = option.id)}>
-					{@render check(dialect === option.id)}
-					{option.label}
-				</button>
-			{/each}
-
-			<div class="my-1 border-border/60 border-t"></div>
 
 			<a href={markdownUrl} class={row}>
 				<svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class="size-3.5 shrink-0">
@@ -139,15 +106,6 @@ const heading =
 	{/if}
 </div>
 
-{#snippet check(on: boolean)}
-	<span class="grid size-3.5 shrink-0 place-items-center">
-		{#if on}
-			<svg viewBox="0 0 14 14" fill="none" aria-hidden="true" class="size-3.5 text-foreground">
-				<path d="M3 7.4 5.6 10 11 4.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
-			</svg>
-		{/if}
-	</span>
-{/snippet}
 
 <style>
 	.menu {

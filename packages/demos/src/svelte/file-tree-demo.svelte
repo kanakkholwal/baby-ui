@@ -1,6 +1,6 @@
 <script lang="ts">
 import { FileTree } from "@baby-ui/svelte";
-import { SAMPLE_TREE } from "./sample-tree.js";
+import { SAMPLE_TREE } from "./sample-tree";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
 </script>

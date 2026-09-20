@@ -26,12 +26,13 @@ const command = $derived(`${runner} shadcn add ${namespace}/${slug}`);
 
 	<div class="overflow-x-auto">
 		<div class="min-w-max whitespace-nowrap px-5 py-4 font-mono text-[13px]">
-			<span class="select-none text-[#6e7781] dark:text-[#8b949e]">$ </span
+			<span class="select-none text-[#6e7781] dark:text-[#8b949e]">$&nbsp;</span
 			><span class="text-[#1f6feb] dark:text-[#ffa657]">{parts[0]}</span
-			>{#if parts[1]}<span class="text-[#6f42c1] dark:text-[#d2a8ff]"> {parts[1]}</span
-				>{/if}<span class="text-[#24292f] dark:text-[#e6edf3]"> shadcn </span
+			>{#if parts[1]}<span class="text-[#6f42c1] dark:text-[#d2a8ff]"
+					>&nbsp;{parts[1]}</span
+				>{/if}<span class="text-[#24292f] dark:text-[#e6edf3]">&nbsp;shadcn&nbsp;</span
 			><span class="text-[#0550ae] dark:text-[#79c0ff]">add</span
-			><span class="text-[#24292f]/70 dark:text-[#e6edf3]/60"> {namespace}/</span
+			><span class="text-[#24292f]/70 dark:text-[#e6edf3]/60">&nbsp;{namespace}/</span
 			><span class="font-medium text-[#0a3069] dark:text-[#a5d6ff]">{slug}</span>
 		</div>
 	</div>

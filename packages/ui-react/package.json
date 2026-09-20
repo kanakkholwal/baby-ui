@@ -10,6 +10,7 @@
 		"check": "tsc --noEmit"
 	},
 	"dependencies": {
+		"@floating-ui/dom": "catalog:",
 		"clsx": "catalog:",
 		"motion": "catalog:",
 		"tailwind-merge": "catalog:",

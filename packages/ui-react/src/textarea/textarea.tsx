@@ -2,7 +2,7 @@
 
 import type { TextareaHTMLAttributes } from "react";
 import { useEffect, useRef } from "react";
-import { cn } from "../lib/cn.js";
+import { cn } from "../lib/cn";
 
 export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
 	autoGrow?: boolean;

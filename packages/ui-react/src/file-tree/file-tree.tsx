@@ -2,8 +2,8 @@
 
 import type { KeyboardEvent } from "react";
 import { useMemo, useRef, useState } from "react";
-import { cn } from "../lib/cn.js";
-import { type FileTreeNode, flatten } from "./types.js";
+import { cn } from "../lib/cn";
+import { type FileTreeNode, flatten } from "./types";
 
 export interface FileTreeProps {
 	tree: FileTreeNode[];

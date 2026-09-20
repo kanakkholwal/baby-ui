@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { cn } from "../lib/cn.js";
+import { cn } from "../lib/cn";
 
 const PAD = { sm: "p-3", md: "p-5", lg: "p-7" };
 

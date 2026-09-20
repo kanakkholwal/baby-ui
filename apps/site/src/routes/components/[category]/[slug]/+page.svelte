@@ -1,7 +1,6 @@
 <script lang="ts">
 import { registry } from "virtual:docvia/source";
 import { demos } from "@baby-ui/demos/svelte";
-import type { Framework } from "@baby-ui/registry-schema";
 import { Renderer } from "@docvia/renderer-svelte";
 import DemoPreview from "$lib/components/demo-preview.svelte";
 import InstallBlock from "$lib/components/install-block.svelte";
@@ -10,14 +9,17 @@ import PropsRail from "$lib/components/props-rail.svelte";
 import PropsTable from "$lib/components/props-table.svelte";
 import SourceFiles from "$lib/components/source-files.svelte";
 import Tabs from "$lib/components/tabs.svelte";
+import { prefs } from "$lib/preferences.svelte";
 import { CATEGORY_LABEL, defaultProps } from "$lib/registry";
 import type { PageProps } from "./$types";
 
 let { data }: PageProps = $props();
 
 let tab = $state("preview");
-let framework = $state<Framework>("svelte");
-let dialect = $state("ts");
+
+// Framework and language are global preferences, set from the header settings drawer.
+const framework = $derived(prefs.framework);
+const dialect = $derived(prefs.dialect);
 let values = $state<Record<string, unknown>>({});
 
 $effect(() => {
@@ -59,9 +61,6 @@ const tabs = [
 				{/if}
 			</div>
 			<PageMenu
-				frameworks={data.ports.map((p) => p.framework)}
-				bind:framework
-				bind:dialect
 				markdownUrl="/components/{data.spec.category}/{data.spec.slug}.md"
 				copyText={data.spec.description}
 			/>

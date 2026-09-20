@@ -7,7 +7,7 @@ import {
 } from "@baby-ui/registry-schema";
 import { type SpringName, spring } from "@baby-ui/tokens";
 import { parse as parseYaml } from "yaml";
-import { FRAMEWORK } from "./config.js";
+import { FRAMEWORK } from "./config";
 
 const ENTRY = /\b(snappy|gentle|bouncy)\s*:\s*\{([^}]*)\}/g;
 const FIELD = /(\w+)\s*:\s*(-?[\d.]+)/g;

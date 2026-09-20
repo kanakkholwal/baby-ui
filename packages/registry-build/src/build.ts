@@ -7,8 +7,8 @@ import {
 	type RegistryItem,
 	RegistryItemSchema,
 } from "@baby-ui/registry-schema";
-import { FRAMEWORK, SITE_URL } from "./config.js";
-import { rewriteImports } from "./rewrite.js";
+import { FRAMEWORK, SITE_URL } from "./config";
+import { rewriteImports } from "./rewrite";
 
 function targetFor(framework: Framework, path: string, type: string): string {
 	const { uiTarget, libTarget } = FRAMEWORK[framework];

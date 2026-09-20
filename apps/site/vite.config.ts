@@ -5,7 +5,7 @@ import adapter from "@sveltejs/adapter-cloudflare";
 import { sveltekit } from "@sveltejs/kit/vite";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
-import docviaConfig from "./docvia.config.js";
+import docviaConfig from "./docvia.config";
 
 // yaml (via @docvia/schema) resolves to CJS under the SSR node condition; Rolldown
 // wraps that in createRequire(import.meta.url), undefined in Workers. Use its ESM build.

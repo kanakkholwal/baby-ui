@@ -1,6 +1,6 @@
 import type { InputHTMLAttributes } from "react";
-import { cn } from "../lib/cn.js";
-import { type InputSize, input } from "./variants.js";
+import { cn } from "../lib/cn";
+import { type InputSize, input } from "./variants";
 
 export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
 	size?: InputSize;

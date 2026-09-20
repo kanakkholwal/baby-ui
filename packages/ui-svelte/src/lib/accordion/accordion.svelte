@@ -1,5 +1,5 @@
 <script lang="ts">
-import { cn } from "../lib/cn.js";
+import { cn } from "../lib/cn";
 import AccordionItem from "./accordion-item.svelte";
 
 type Item = { id: string; title: string; content: string };

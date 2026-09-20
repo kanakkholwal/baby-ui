@@ -1,8 +1,8 @@
 <script lang="ts">
 import type { Snippet } from "svelte";
 import { prefersReducedMotion } from "svelte/motion";
-import { cn } from "../lib/cn.js";
-import { invert, MORPH_EASE, MORPH_MS, type MorphSpring } from "./morph.js";
+import { cn } from "../lib/cn";
+import { invert, MORPH_EASE, MORPH_MS, type MorphSpring } from "./morph";
 
 type Props = {
 	trigger: Snippet;
@@ -118,9 +118,3 @@ async function close() {
 		<div class="mt-3 text-muted-foreground text-sm">{@render children()}</div>
 	</div>
 </dialog>
-
-<style>
-	.morph-dialog::backdrop {
-		backdrop-filter: blur(var(--morph-blur));
-	}
-</style>

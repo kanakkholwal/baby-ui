@@ -10,7 +10,7 @@ import {
 } from "motion/react";
 import type { ReactNode } from "react";
 import { createContext, useContext, useRef } from "react";
-import { cn } from "../lib/cn.js";
+import { cn } from "../lib/cn";
 
 export type DockSpring = "snappy" | "gentle" | "bouncy";
 

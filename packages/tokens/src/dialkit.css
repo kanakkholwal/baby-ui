@@ -4,6 +4,10 @@
 html .dialkit-root,
 html .dialkit-root[data-theme] {
 	--dial-radius: var(--radius);
+	--dial-row-height: 26px;
+	--dial-row-gap: 4px;
+	--dial-panel-header-height: 30px;
+	--dial-section-header-height: 22px;
 	--dial-surface: var(--card);
 	--dial-surface-subtle: color-mix(in oklch, var(--foreground) 4%, transparent);
 	--dial-surface-hover: color-mix(in oklch, var(--foreground) 6%, transparent);
@@ -37,6 +41,7 @@ html .dialkit-root[data-theme] {
 	--dial-shadow-dropdown: 0 12px 32px -12px oklch(0 0 0 / 20%);
 
 	font-family: var(--font-body);
+	font-size: 12px;
 }
 
 html.dark .dialkit-root,
@@ -58,4 +63,20 @@ html .dialkit-root[data-mode="inline"] .dialkit-panel {
 	border-radius: var(--radius);
 	background: color-mix(in oklch, var(--card) 40%, transparent);
 	box-shadow: none;
+}
+
+/* The rail is narrow, so the stock control spacing wastes most of it. */
+html .dialkit-root[data-mode="inline"] .dialkit-panel-inner {
+	padding: 6px;
+}
+
+html .dialkit-root :where(.dialkit-select-trigger, .dialkit-select-option) {
+	min-height: 26px;
+	padding-block: 2px;
+	font-size: 12px;
+}
+
+html .dialkit-root .dialkit-select-label,
+html .dialkit-root :where([class*="label"]) {
+	font-size: 11px;
 }
