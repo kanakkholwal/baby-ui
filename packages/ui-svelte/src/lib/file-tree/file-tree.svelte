@@ -112,7 +112,7 @@ function select(id: string, isFolder: boolean, expanded: boolean) {
 					viewBox="0 0 16 16"
 					fill="none"
 					aria-hidden="true"
-					class="size-3.5 shrink-0 transition-transform duration-200 ease-[var(--ease-out)] motion-reduce:transition-none"
+					class="size-3.5 shrink-0 transition-[transform,scale,translate] duration-200 ease-[var(--ease-out)] motion-reduce:transition-none"
 					style:transform={row.expanded ? "rotate(90deg)" : "none"}
 				>
 					<path d="m6 4 4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />

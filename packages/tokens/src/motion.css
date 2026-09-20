@@ -12,11 +12,15 @@
 	--duration-dropdown: 200ms;
 	--duration-overlay: 280ms;
 	--duration-drawer: 420ms;
+	/* Leaving is never the moment the user waits on, so every exit undercuts its entrance. */
+	--duration-exit: 120ms;
 
 	--stagger-step: 45ms;
 
 	--press-scale: 0.97;
+	--hover-scale: 1.02;
 	--enter-scale: 0.95;
+	--enter-lift: 8px;
 }
 
 /* Reduced motion means gentler, not none: keep opacity and colour, drop travel. */
@@ -26,7 +30,9 @@
 		--duration-drawer: 160ms;
 		--stagger-step: 0ms;
 		--press-scale: 1;
+		--hover-scale: 1;
 		--enter-scale: 1;
+		--enter-lift: 0px;
 	}
 }
 
@@ -53,23 +59,6 @@
 .morph-dialog::backdrop {
 	-webkit-backdrop-filter: blur(var(--morph-blur, 8px));
 	backdrop-filter: blur(var(--morph-blur, 8px));
-}
-
-/* Both navbar ports share this so the mobile sheet enters identically. */
-.nav-sheet {
-	animation: nav-sheet-in var(--duration-drawer) var(--ease-drawer);
-}
-
-@keyframes nav-sheet-in {
-	from {
-		transform: translateY(100%);
-	}
-}
-
-@media (prefers-reduced-motion: reduce) {
-	.nav-sheet {
-		animation: none;
-	}
 }
 
 /* The animated ring on a primary CTA, ported from beUI. */
@@ -329,119 +318,6 @@
 	.reasoning-shimmer,
 	.step-spinner {
 		animation: none;
-	}
-}
-
-/* Every anchored surface (popover, select, menu, tooltip) enters the same way, growing
-   from the edge nearest its trigger. transform-origin is set by the anchor primitive. */
-.anchored {
-	animation: anchored-in var(--duration-dropdown) var(--ease-out);
-}
-
-@keyframes anchored-in {
-	from {
-		opacity: 0;
-		transform-origin: inherit;
-		scale: 0.96;
-	}
-}
-
-@media (prefers-reduced-motion: reduce) {
-	.anchored {
-		animation: none;
-	}
-}
-
-/* Dialog surfaces. The backdrop cannot be a Tailwind utility, and both ports need
-   the same entry, so it lives here rather than in either framework's file. */
-.modal-dialog::backdrop,
-.command-dialog::backdrop {
-	-webkit-backdrop-filter: blur(4px);
-	backdrop-filter: blur(4px);
-}
-
-.modal-panel {
-	animation: modal-in var(--duration-overlay) var(--ease-out);
-}
-
-@keyframes modal-in {
-	from {
-		opacity: 0;
-		scale: 0.96;
-	}
-}
-
-.sheet-panel {
-	animation: sheet-in var(--duration-drawer) var(--ease-drawer);
-}
-
-.sheet-panel[data-side="left"] {
-	--sheet-from: translateX(-100%);
-}
-
-.sheet-panel[data-side="right"] {
-	--sheet-from: translateX(100%);
-}
-
-.sheet-panel[data-side="top"] {
-	--sheet-from: translateY(-100%);
-}
-
-.sheet-panel[data-side="bottom"] {
-	--sheet-from: translateY(100%);
-}
-
-@keyframes sheet-in {
-	from {
-		transform: var(--sheet-from, translateX(100%));
-	}
-}
-
-.toast-in {
-	animation: toast-in var(--duration-overlay) var(--ease-out);
-}
-
-@keyframes toast-in {
-	from {
-		opacity: 0;
-		transform: translateY(8px);
-	}
-}
-
-.fullscreen-nav {
-	animation: fullscreen-nav-in var(--duration-overlay) var(--ease-out);
-}
-
-@keyframes fullscreen-nav-in {
-	from {
-		opacity: 0;
-	}
-}
-
-.fullscreen-nav-link {
-	opacity: 0;
-	animation: fullscreen-nav-link-in 420ms var(--ease-out) forwards;
-}
-
-@keyframes fullscreen-nav-link-in {
-	from {
-		opacity: 0;
-		transform: translateY(0.3em);
-	}
-	to {
-		opacity: 1;
-		transform: none;
-	}
-}
-
-@media (prefers-reduced-motion: reduce) {
-	.modal-panel,
-	.sheet-panel,
-	.toast-in,
-	.fullscreen-nav,
-	.fullscreen-nav-link {
-		animation: none;
-		opacity: 1;
 	}
 }
 

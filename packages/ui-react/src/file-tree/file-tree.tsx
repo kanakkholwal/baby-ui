@@ -93,7 +93,6 @@ export function FileTree({
 			className={cn("select-none font-mono text-[13px]", className)}
 		>
 			{rows.map((row) => (
-				// biome-ignore lint/a11y/useSemanticElements: treeitem has no HTML element
 				<div
 					key={row.id}
 					role="treeitem"
@@ -120,7 +119,7 @@ export function FileTree({
 							viewBox="0 0 16 16"
 							fill="none"
 							aria-hidden
-							className="size-3.5 shrink-0 transition-transform duration-200 ease-[var(--ease-out)] motion-reduce:transition-none"
+							className="size-3.5 shrink-0 transition-[transform,scale,translate] duration-200 ease-[var(--ease-out)] motion-reduce:transition-none"
 							style={{ transform: row.expanded ? "rotate(90deg)" : undefined }}
 						>
 							<path

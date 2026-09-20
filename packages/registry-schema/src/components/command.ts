@@ -3,8 +3,7 @@ import { defineComponent } from "../index";
 export const command = defineComponent({
 	slug: "command",
 	name: "Command Palette",
-	description:
-		"Command, CommandDialog, CommandInput, CommandList, CommandGroup and CommandItem, driven entirely from the keyboard.",
+	description: "Searchable action list driven entirely from the keyboard.",
 	category: "base",
 	status: "beta",
 	props: [

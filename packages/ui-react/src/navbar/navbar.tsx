@@ -4,6 +4,16 @@ import type { ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "../lib/cn";
 
+/** Mobile sheet, both ways: only the closed state translates, so nothing competes. */
+const SHEET_MOTION =
+	"transition-transform duration-[var(--duration-drawer)] ease-[var(--ease-drawer)] starting:translate-y-full data-[state=closed]:translate-y-full data-[state=closed]:duration-[var(--duration-overlay)] motion-reduce:transition-none";
+
+const VEIL_MOTION =
+	"transition-opacity duration-[var(--duration-overlay)] ease-[var(--ease-out)] starting:opacity-0 data-[state=closed]:opacity-0 data-[state=closed]:duration-[var(--duration-exit)] motion-reduce:transition-none";
+
+const LAYER_MOTION =
+	"transition-[visibility] duration-0 data-[state=closed]:invisible data-[state=closed]:delay-[var(--duration-overlay)]";
+
 export type NavbarLink = { href: string; label: string };
 
 export interface NavbarProps {
@@ -30,6 +40,8 @@ export function Navbar({
 	const [pill, setPill] = useState({ left: 0, width: 0 });
 	const list = useRef<HTMLDivElement>(null);
 	const sheet = useRef<HTMLDivElement>(null);
+	// Kept mounted after the first open so the sheet can slide out as well as in.
+	const [sheetMounted, setSheetMounted] = useState(false);
 
 	useEffect(() => {
 		if (!sticky) return;
@@ -56,6 +68,7 @@ export function Navbar({
 	// Focus moves into the sheet on open so Escape and Tab behave as the spec says.
 	useEffect(() => {
 		if (!sheetOpen) return;
+		setSheetMounted(true);
 		sheet.current?.querySelector<HTMLElement>("a")?.focus();
 		const onKey = (e: globalThis.KeyboardEvent) => {
 			if (e.key === "Escape") setSheetOpen(false);
@@ -87,7 +100,7 @@ export function Navbar({
 						<div ref={list} className="relative hidden items-center gap-0.5 md:flex">
 							<span
 								aria-hidden
-								className="pointer-events-none absolute inset-y-1 left-0 rounded-md bg-foreground/[0.06] transition-[transform,width,opacity] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none"
+								className="pointer-events-none absolute inset-y-1 left-0 rounded-md bg-foreground/[0.06] transition-[transform,scale,translate,width,opacity] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none"
 								style={{
 									transform: `translateX(${pill.left}px)`,
 									width: pill.width,
@@ -129,20 +142,29 @@ export function Navbar({
 				</nav>
 			</header>
 
-			{sheetOpen ? (
-				<div className="fixed inset-0 z-50 md:hidden">
+			{sheetMounted ? (
+				<div
+					className={cn(LAYER_MOTION, "fixed inset-0 z-50 md:hidden")}
+					data-state={sheetOpen ? "open" : "closed"}
+					inert={!sheetOpen}
+				>
 					<button
 						type="button"
 						aria-label="Close menu"
+						data-state={sheetOpen ? "open" : "closed"}
 						onClick={() => setSheetOpen(false)}
-						className="absolute inset-0 bg-black/40"
+						className={cn(VEIL_MOTION, "absolute inset-0 bg-black/40")}
 					/>
 					<div
 						ref={sheet}
 						role="dialog"
 						aria-modal="true"
 						aria-label="Menu"
-						className="nav-sheet absolute inset-x-0 bottom-0 rounded-t-2xl border-border border-t bg-card p-4"
+						data-state={sheetOpen ? "open" : "closed"}
+						className={cn(
+							SHEET_MOTION,
+							"absolute inset-x-0 bottom-0 rounded-t-2xl border-border border-t bg-card p-4",
+						)}
 					>
 						<div className="mx-auto mb-3 h-1 w-10 rounded-full bg-border" />
 						{links.map((link) => (

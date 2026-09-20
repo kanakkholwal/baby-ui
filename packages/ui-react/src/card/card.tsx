@@ -13,7 +13,7 @@ export function Card({
 			className={cn(
 				"flex flex-col gap-6 rounded-2xl border border-border bg-card py-6 text-card-foreground",
 				interactive &&
-					"transition-[transform,border-color] duration-200 ease-[var(--ease-out)] hover:-translate-y-0.5 hover:border-border-strong motion-reduce:hover:translate-y-0",
+					"transition-[transform,scale,translate,border-color] duration-200 ease-[var(--ease-out)] hover:-translate-y-0.5 hover:border-border-strong motion-reduce:hover:translate-y-0",
 				className,
 			)}
 			{...props}

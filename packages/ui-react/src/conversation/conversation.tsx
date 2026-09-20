@@ -59,7 +59,7 @@ export function Conversation({
 							behavior: "smooth",
 						})
 					}
-					className="anchored absolute inset-x-0 bottom-3 mx-auto grid size-8 place-items-center rounded-full border border-border bg-popover text-muted-foreground shadow-lg transition-colors hover:text-foreground"
+					className="absolute inset-x-0 bottom-3 mx-auto grid size-8 place-items-center rounded-full border border-border bg-popover text-muted-foreground shadow-lg transition-colors hover:text-foreground duration-[var(--duration-dropdown)] ease-[var(--ease-out)] starting:scale-[var(--enter-scale)] starting:opacity-0"
 				>
 					<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-3.5">
 						<path

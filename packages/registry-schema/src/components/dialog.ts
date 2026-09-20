@@ -4,7 +4,7 @@ export const dialog = defineComponent({
 	slug: "dialog",
 	name: "Dialog",
 	description:
-		"Centred dialog on the platform top layer, composed from trigger, content, header, title, description and footer.",
+		"Centred dialog on the platform top layer, so the browser traps focus for you.",
 	category: "base",
 	status: "stable",
 	props: [

@@ -52,7 +52,7 @@ function toBottom() {
 		<button
 			type="button"
 			onclick={toBottom}
-			class="anchored absolute inset-x-0 bottom-3 mx-auto grid size-8 place-items-center rounded-full border border-border bg-popover text-muted-foreground shadow-lg transition-colors hover:text-foreground"
+			class="absolute inset-x-0 bottom-3 mx-auto grid size-8 place-items-center rounded-full border border-border bg-popover text-muted-foreground shadow-lg transition-colors hover:text-foreground duration-[var(--duration-dropdown)] ease-[var(--ease-out)] starting:scale-[var(--enter-scale)] starting:opacity-0"
 			aria-label="Scroll to latest"
 		>
 			<svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class="size-3.5">

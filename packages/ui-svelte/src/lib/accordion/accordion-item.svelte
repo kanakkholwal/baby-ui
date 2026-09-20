@@ -22,7 +22,7 @@ const id = $props.id();
 			viewBox="0 0 16 16"
 			fill="none"
 			aria-hidden="true"
-			class="size-4 shrink-0 text-muted-foreground transition-transform duration-200 ease-[var(--ease-out)] motion-reduce:transition-none"
+			class="size-4 shrink-0 text-muted-foreground transition-[transform,scale,translate] duration-200 ease-[var(--ease-out)] motion-reduce:transition-none"
 			style:transform={open ? "rotate(180deg)" : "none"}
 		>
 			<path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />

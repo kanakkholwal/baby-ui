@@ -3,8 +3,7 @@ import { defineComponent } from "../index";
 export const card = defineComponent({
 	slug: "card",
 	name: "Card",
-	description:
-		"Surface composed from header, title, description, action, content and footer parts.",
+	description: "Content surface with header, body and footer slots.",
 	category: "base",
 	status: "stable",
 	props: [

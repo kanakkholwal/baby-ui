@@ -83,7 +83,7 @@ function onkeydown(event: KeyboardEvent) {
 	<span
 		aria-hidden="true"
 		class={[
-			"pointer-events-none absolute left-0 transition-[transform,width] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none",
+			"pointer-events-none absolute left-0 transition-[transform,scale,translate,width] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none",
 			variant === "pill" && "top-1 bottom-1 rounded-full bg-primary",
 			variant === "segment" && "top-0.5 bottom-0.5 rounded-md border border-border bg-background",
 			variant === "underline" && "-bottom-px h-0.5 rounded-full bg-primary",

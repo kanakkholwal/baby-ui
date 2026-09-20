@@ -3,8 +3,7 @@ import { defineComponent } from "../index";
 export const avatar = defineComponent({
 	slug: "avatar",
 	name: "Avatar",
-	description:
-		"Avatar, AvatarImage and AvatarFallback, where the fallback shows until the image really loads.",
+	description: "User image with initials underneath, shown until the image really loads.",
 	category: "base",
 	status: "stable",
 	variants: { size: ["sm", "md", "lg", "xl"], shape: ["circle", "square"] },

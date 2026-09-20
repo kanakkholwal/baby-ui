@@ -4,7 +4,7 @@ export const collapsible = defineComponent({
 	slug: "collapsible",
 	name: "Collapsible",
 	description:
-		"Collapsible, CollapsibleTrigger and CollapsibleContent, with animated height and no measurement.",
+		"Single disclosure with animated height and nothing measured in JavaScript.",
 	category: "base",
 	status: "stable",
 	props: [

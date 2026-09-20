@@ -20,8 +20,7 @@
 	"dependencies": {
 		"@baby-ui/react": "workspace:*",
 		"@baby-ui/svelte": "workspace:*",
-		"@baby-ui/registry-schema": "workspace:*",
-		"dialkit": "catalog:"
+		"@baby-ui/registry-schema": "workspace:*"
 	},
 	"devDependencies": {
 		"@sveltejs/vite-plugin-svelte": "catalog:",

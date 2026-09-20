@@ -11,6 +11,7 @@ import {
 	useRef,
 	useState,
 } from "react";
+import { DIALOG_PANEL, DIALOG_SURFACE } from "../dialog/dialog";
 import { cn } from "../lib/cn";
 
 type Ctx = {
@@ -111,12 +112,14 @@ export function AlertDialogContent({ className, children }: ComponentProps<"div"
 				event.preventDefault();
 				dialog.setOpen(false);
 			}}
-			className="modal-dialog m-auto bg-transparent p-0 text-foreground backdrop:bg-black/50"
+			className={DIALOG_SURFACE}
 		>
 			<div
 				data-slot="alert-dialog-content"
+				data-state={dialog.open ? "open" : "closed"}
 				className={cn(
-					"modal-panel w-[min(26rem,calc(100vw-2rem))] rounded-2xl border border-border bg-card p-6 shadow-2xl",
+					DIALOG_PANEL,
+					"w-[min(26rem,calc(100vw-2rem))] rounded-2xl border border-border bg-card p-6 shadow-2xl",
 					className,
 				)}
 			>
@@ -207,7 +210,7 @@ export function AlertDialogAction({
 				dialog.setOpen(false);
 			}}
 			className={cn(
-				"inline-flex h-9 items-center rounded-lg px-3 font-medium text-sm transition-transform duration-[var(--duration-press)] ease-[var(--ease-out)] active:scale-[var(--press-scale)]",
+				"inline-flex h-9 items-center rounded-lg px-3 font-medium text-sm transition-[transform,scale,translate] duration-[var(--duration-press)] ease-[var(--ease-out)] active:scale-[var(--press-scale)]",
 				destructive
 					? "bg-[var(--destructive)] text-white"
 					: "bg-primary text-primary-foreground",

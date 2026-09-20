@@ -1,7 +1,14 @@
 "use client";
 
-import { useEffect, useId, useRef } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { cn } from "../lib/cn";
+
+/** The overlay fades both ways; each link follows on a delay set inline, so it cascades. */
+const NAV_MOTION =
+	"transition-[opacity,visibility] duration-[var(--duration-overlay)] ease-[var(--ease-out)] starting:opacity-0 data-[state=closed]:invisible data-[state=closed]:opacity-0 data-[state=closed]:duration-[var(--duration-exit)] motion-reduce:transition-none";
+
+const NAV_LINK_MOTION =
+	"transition-[opacity,translate] duration-[var(--duration-drawer)] ease-[var(--ease-out)] starting:translate-y-[0.3em] starting:opacity-0 data-[state=closed]:translate-y-[0.3em] data-[state=closed]:opacity-0 data-[state=closed]:delay-0 data-[state=closed]:duration-[var(--duration-exit)] motion-reduce:transition-none";
 
 export type NavLink = { href: string; label: string };
 
@@ -22,9 +29,12 @@ export function FullscreenNav({
 }: FullscreenNavProps) {
 	const id = useId();
 	const panel = useRef<HTMLDivElement>(null);
+	// Kept mounted after the first open so the overlay can fade out as well as in.
+	const [mounted, setMounted] = useState(false);
 
 	useEffect(() => {
 		if (!open) return;
+		setMounted(true);
 		panel.current?.querySelector<HTMLElement>("a")?.focus();
 		const previous = document.body.style.overflow;
 		document.body.style.overflow = "hidden";
@@ -38,7 +48,7 @@ export function FullscreenNav({
 		};
 	}, [open, onOpenChange]);
 
-	if (!open) return null;
+	if (!mounted) return null;
 
 	return (
 		<div
@@ -46,10 +56,9 @@ export function FullscreenNav({
 			role="dialog"
 			aria-modal="true"
 			aria-labelledby={id}
-			className={cn(
-				"fullscreen-nav fixed inset-0 z-50 flex flex-col bg-background",
-				className,
-			)}
+			data-state={open ? "open" : "closed"}
+			inert={!open}
+			className={cn(NAV_MOTION, "fixed inset-0 z-50 flex flex-col bg-background", className)}
 		>
 			<div className="flex h-14 items-center justify-between px-4 md:px-6">
 				<h2 id={id} className="font-semibold text-foreground text-sm">
@@ -78,8 +87,12 @@ export function FullscreenNav({
 						key={link.href}
 						href={link.href}
 						onClick={() => onOpenChange(false)}
-						style={{ animationDelay: `${60 + i * 45}ms` }}
-						className="fullscreen-nav-link font-heading font-semibold text-4xl text-foreground tracking-tight transition-colors hover:text-muted-foreground sm:text-5xl"
+						data-state={open ? "open" : "closed"}
+						style={{ transitionDelay: `${60 + i * 45}ms` }}
+						className={cn(
+							NAV_LINK_MOTION,
+							"font-heading font-semibold text-4xl text-foreground tracking-tight hover:text-muted-foreground sm:text-5xl",
+						)}
 					>
 						{link.label}
 					</a>

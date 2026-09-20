@@ -28,7 +28,7 @@ const dialog = getAlertDialog();
 		dialog.setOpen(false);
 	}}
 	class={cn(
-		"inline-flex h-9 items-center rounded-lg px-3 font-medium text-sm transition-transform duration-[var(--duration-press)] ease-[var(--ease-out)] active:scale-[var(--press-scale)]",
+		"inline-flex h-9 items-center rounded-lg px-3 font-medium text-sm transition-[transform,scale,translate] duration-[var(--duration-press)] ease-[var(--ease-out)] active:scale-[var(--press-scale)]",
 		destructive ? "bg-[var(--destructive)] text-white" : "bg-primary text-primary-foreground",
 		classProp,
 	)}

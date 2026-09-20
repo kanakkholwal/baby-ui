@@ -10,8 +10,7 @@
 	"dependencies": {
 		"@baby-ui/demos": "workspace:*",
 		"@baby-ui/registry-schema": "workspace:*",
-		"@baby-ui/tokens": "workspace:*",
-		"dialkit": "catalog:"
+		"@baby-ui/tokens": "workspace:*"
 	},
 	"devDependencies": {
 		"@sveltejs/vite-plugin-svelte": "catalog:",

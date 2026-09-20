@@ -26,7 +26,7 @@ const featured = specs.slice(0, 8);
 
 	<section class="mx-auto max-w-2xl px-4 pb-16">
 		<p class="mb-5 text-center text-muted-foreground text-sm">
-			One ComponentSpec. Distributed via shadcn and shadcn-svelte.
+			Installs with the shadcn CLI, in either framework.
 		</p>
 		<InstallCommand slug={featured[0]?.slug ?? "button"} />
 	</section>
@@ -53,7 +53,7 @@ const featured = specs.slice(0, 8);
 				<IconArrowRight
 					size={14}
 					stroke={1.7}
-					class="ml-1 transition-transform group-hover:translate-x-0.5"
+					class="ml-1 transition-[transform,scale,translate] group-hover:translate-x-0.5"
 				/>
 			</a>
 		</div>

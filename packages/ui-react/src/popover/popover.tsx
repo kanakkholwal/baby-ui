@@ -10,7 +10,7 @@ import {
 	useMemo,
 	useState,
 } from "react";
-import { type AnchorPlacement, anchor, dismissable } from "../lib/anchor";
+import { ANCHORED, type AnchorPlacement, anchor, dismissable } from "../lib/anchor";
 import { cn } from "../lib/cn";
 
 type Ctx = {
@@ -102,7 +102,14 @@ export function PopoverTrigger({ className, ...props }: ComponentProps<"button">
 
 export function PopoverContent({ className, ...props }: ComponentProps<"div">) {
 	const popover = usePopover();
-	if (!popover.open) return null;
+	// Kept mounted after the first open so the surface can animate out as well as in.
+	const [mounted, setMounted] = useState(false);
+
+	useEffect(() => {
+		if (popover.open) setMounted(true);
+	}, [popover.open]);
+
+	if (!mounted) return null;
 
 	return (
 		<div
@@ -110,9 +117,11 @@ export function PopoverContent({ className, ...props }: ComponentProps<"div">) {
 			id={popover.contentId}
 			role="dialog"
 			data-slot="popover-content"
-			data-state="open"
+			data-state={popover.open ? "open" : "closed"}
+			inert={!popover.open}
 			className={cn(
-				"anchored z-50 w-72 rounded-xl border border-border bg-popover p-3 text-sm shadow-2xl",
+				ANCHORED,
+				"w-72 rounded-xl border border-border bg-popover p-3 text-sm shadow-2xl",
 				className,
 			)}
 			{...props}

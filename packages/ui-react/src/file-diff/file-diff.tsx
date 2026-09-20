@@ -39,7 +39,6 @@ export function FileDiff({
 
 			<div className="overflow-x-auto font-mono text-[13px] leading-relaxed">
 				{lines.map((line, i) => (
-					// biome-ignore lint/suspicious/noArrayIndexKey: diff lines have no stable id
 					<div key={i} className={cn("flex whitespace-pre px-4", TONE[line.kind])}>
 						{showLineNumbers ? (
 							<span

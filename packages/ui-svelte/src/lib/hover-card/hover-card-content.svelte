@@ -1,6 +1,7 @@
 <script lang="ts">
 import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
+import { ANCHORED } from "../lib/anchor";
 import { cn } from "../lib/cn";
 import { getHoverCard } from "./context";
 
@@ -12,6 +13,12 @@ let {
 
 const card = getHoverCard();
 let el = $state<HTMLDivElement>();
+// Kept mounted after the first open so the surface can animate out as well as in.
+let mounted = $state(false);
+
+$effect(() => {
+	if (card.open) mounted = true;
+});
 
 $effect(() => {
 	card.setContent(el);
@@ -19,7 +26,7 @@ $effect(() => {
 });
 </script>
 
-{#if card.open}
+{#if mounted}
 	<div
 		{...rest}
 		bind:this={el}
@@ -27,11 +34,13 @@ $effect(() => {
 		role="dialog"
 		tabindex="-1"
 		data-slot="hover-card-content"
-		data-state="open"
+		data-state={card.open ? "open" : "closed"}
+		inert={!card.open}
 		onpointerenter={() => card.schedule(true)}
 		onpointerleave={() => card.schedule(false)}
 		class={cn(
-			"anchored z-50 w-64 rounded-xl border border-border bg-popover p-3 text-sm shadow-2xl",
+			ANCHORED,
+			"w-64 rounded-xl border border-border bg-popover p-3 text-sm shadow-2xl",
 			classProp,
 		)}
 	>

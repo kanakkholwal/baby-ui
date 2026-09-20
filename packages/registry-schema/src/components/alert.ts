@@ -3,8 +3,7 @@ import { defineComponent } from "../index";
 export const alert = defineComponent({
 	slug: "alert",
 	name: "Alert",
-	description:
-		"Inline message composed from Alert, AlertTitle and AlertDescription, with an optional dismiss.",
+	description: "Inline status message with a semantic tone and an optional dismiss.",
 	category: "base",
 	status: "stable",
 	variants: { variant: ["info", "success", "warning", "destructive"] },

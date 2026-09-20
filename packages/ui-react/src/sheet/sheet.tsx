@@ -13,6 +13,34 @@ import {
 } from "react";
 import { cn } from "../lib/cn";
 
+/** Visibility, delayed by the exit, is what keeps a non-dialog overlay on screen to slide out. */
+const SHEET_OVERLAY = [
+	"fixed inset-0 z-50 transition-[visibility] duration-0",
+	"data-[state=closed]:invisible data-[state=closed]:delay-[var(--duration-overlay)]",
+].join(" ");
+
+const SHEET_VEIL = [
+	"absolute inset-0 bg-black/50 transition-opacity duration-[var(--duration-overlay)] ease-[var(--ease-out)]",
+	"data-[state=closed]:opacity-0 data-[state=closed]:duration-[var(--duration-exit)]",
+	"starting:data-[state=open]:opacity-0",
+].join(" ");
+
+/** Only the closed state translates, so the open state needs no competing utility. */
+const SHEET_PANEL = [
+	"absolute flex flex-col gap-4 overflow-y-auto border-border bg-background p-6",
+	"transition-transform duration-[var(--duration-drawer)] ease-[var(--ease-drawer)]",
+	"data-[state=closed]:duration-[var(--duration-overlay)]",
+	"data-[state=closed]:data-[side=left]:-translate-x-full",
+	"data-[state=closed]:data-[side=right]:translate-x-full",
+	"data-[state=closed]:data-[side=top]:-translate-y-full",
+	"data-[state=closed]:data-[side=bottom]:translate-y-full",
+	"starting:data-[state=open]:data-[side=left]:-translate-x-full",
+	"starting:data-[state=open]:data-[side=right]:translate-x-full",
+	"starting:data-[state=open]:data-[side=top]:-translate-y-full",
+	"starting:data-[state=open]:data-[side=bottom]:translate-y-full",
+	"motion-reduce:transition-none",
+].join(" ");
+
 export type SheetSide = "left" | "right" | "top" | "bottom";
 
 const SIDE: Record<SheetSide, string> = {
@@ -97,9 +125,12 @@ export function SheetContent({
 	const sheet = useSheet();
 	const panel = useRef<HTMLDivElement>(null);
 	const { open, setOpen } = sheet;
+	// Nothing renders until the first open, and from then on the panel stays so it can slide out.
+	const [mounted, setMounted] = useState(false);
 
 	useEffect(() => {
 		if (!open) return;
+		setMounted(true);
 		panel.current?.querySelector<HTMLElement>("button, a, input, [tabindex]")?.focus();
 		const onKey = (event: KeyboardEvent) => {
 			if (event.key === "Escape") setOpen(false);
@@ -108,15 +139,16 @@ export function SheetContent({
 		return () => window.removeEventListener("keydown", onKey);
 	}, [open, setOpen]);
 
-	if (!open) return null;
+	if (!mounted) return null;
 
 	return (
-		<div className="fixed inset-0 z-50">
+		<div className={SHEET_OVERLAY} data-state={open ? "open" : "closed"} inert={!open}>
 			<button
 				type="button"
 				aria-label="Close"
+				data-state={open ? "open" : "closed"}
 				onClick={() => setOpen(false)}
-				className="absolute inset-0 bg-black/50"
+				className={SHEET_VEIL}
 			/>
 			<div
 				ref={panel}
@@ -125,11 +157,8 @@ export function SheetContent({
 				aria-labelledby={sheet.titleId}
 				data-slot="sheet-content"
 				data-side={side}
-				className={cn(
-					"sheet-panel absolute flex flex-col gap-4 overflow-y-auto border-border bg-background p-6",
-					SIDE[side],
-					className,
-				)}
+				data-state={open ? "open" : "closed"}
+				className={cn(SHEET_PANEL, SIDE[side], className)}
 			>
 				{children}
 			</div>

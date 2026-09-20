@@ -37,7 +37,7 @@ export function Toggle({
 			disabled={disabled}
 			onClick={() => onPressedChange?.(!pressed)}
 			className={cn(
-				"inline-flex items-center justify-center gap-1.5 rounded-lg border border-transparent font-medium transition-[background-color,color,transform] duration-[var(--duration-press)] ease-[var(--ease-out)]",
+				"inline-flex items-center justify-center gap-1.5 rounded-lg border border-transparent font-medium transition-[background-color,color,transform,scale,translate] duration-[var(--duration-press)] ease-[var(--ease-out)]",
 				"text-muted-foreground hover:bg-foreground/[0.06] hover:text-foreground",
 				"aria-pressed:border-border aria-pressed:bg-foreground/[0.08] aria-pressed:text-foreground",
 				"outline-none focus-visible:ring-2 focus-visible:ring-ring",

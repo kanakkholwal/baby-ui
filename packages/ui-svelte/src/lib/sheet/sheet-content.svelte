@@ -1,7 +1,14 @@
 <script lang="ts">
 import type { Snippet } from "svelte";
 import { cn } from "../lib/cn";
-import { getSheet, SHEET_SIDE, type SheetSide } from "./context";
+import {
+	getSheet,
+	SHEET_OVERLAY,
+	SHEET_PANEL,
+	SHEET_SIDE,
+	SHEET_VEIL,
+	type SheetSide,
+} from "./context";
 
 let {
 	children,
@@ -11,9 +18,12 @@ let {
 
 const sheet = getSheet();
 let panel = $state<HTMLDivElement>();
+// Nothing renders until the first open, and from then on the panel stays so it can slide out.
+let mounted = $state(false);
 
 $effect(() => {
 	if (!sheet.open) return;
+	mounted = true;
 	panel?.querySelector<HTMLElement>("button, a, input, [tabindex]")?.focus();
 	const onKey = (event: KeyboardEvent) => {
 		if (event.key === "Escape") sheet.setOpen(false);
@@ -23,13 +33,14 @@ $effect(() => {
 });
 </script>
 
-{#if sheet.open}
-	<div class="fixed inset-0 z-50">
+{#if mounted}
+	<div class={SHEET_OVERLAY} data-state={sheet.open ? "open" : "closed"} inert={!sheet.open}>
 		<button
 			type="button"
 			aria-label="Close"
+			data-state={sheet.open ? "open" : "closed"}
 			onclick={() => sheet.setOpen(false)}
-			class="absolute inset-0 bg-black/50"
+			class={SHEET_VEIL}
 		></button>
 
 		<div
@@ -39,11 +50,8 @@ $effect(() => {
 			aria-labelledby={sheet.titleId}
 			data-slot="sheet-content"
 			data-side={side}
-			class={cn(
-				"sheet-panel absolute flex flex-col gap-4 overflow-y-auto border-border bg-background p-6",
-				SHEET_SIDE[side],
-				classProp,
-			)}
+			data-state={sheet.open ? "open" : "closed"}
+			class={cn(SHEET_PANEL, SHEET_SIDE[side], classProp)}
 		>
 			{@render children?.()}
 		</div>

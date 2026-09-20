@@ -1,7 +1,7 @@
 <script lang="ts">
 import type { Snippet } from "svelte";
 import { cn } from "../lib/cn";
-import { DIALOG_WIDTH, getDialog } from "./context";
+import { DIALOG_PANEL, DIALOG_SURFACE, DIALOG_WIDTH, getDialog } from "./context";
 
 let { children, class: classProp }: { children?: Snippet; class?: string } = $props();
 
@@ -28,12 +28,14 @@ $effect(() => {
 	onclick={(event) => {
 		if (dialog.dismissOnBackdrop && event.target === el) dialog.setOpen(false);
 	}}
-	class="modal-dialog m-auto bg-transparent p-0 text-foreground backdrop:bg-black/50"
+	class={DIALOG_SURFACE}
 >
 	<div
 		data-slot="dialog-content"
+		data-state={dialog.open ? "open" : "closed"}
 		class={cn(
-			"modal-panel w-[min(32rem,calc(100vw-2rem))] rounded-2xl border border-border bg-card p-6 shadow-2xl",
+			DIALOG_PANEL,
+			"w-[min(32rem,calc(100vw-2rem))] rounded-2xl border border-border bg-card p-6 shadow-2xl",
 			DIALOG_WIDTH[dialog.size],
 			classProp,
 		)}

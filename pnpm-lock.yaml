@@ -42,9 +42,6 @@ catalogs:
     clsx:
       specifier: ^2.1.1
       version: 2.1.1
-    dialkit:
-      specifier: ^2.0.2
-      version: 2.0.2
     motion:
       specifier: ^13.4.0
       version: 13.4.0
@@ -153,9 +150,6 @@ importers:
       '@baby-ui/tokens':
         specifier: workspace:*
         version: link:../../../packages/tokens
-      dialkit:
-        specifier: 'catalog:'
-        version: 2.0.2(motion@13.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(svelte@5.57.1)
     devDependencies:
       '@sveltejs/vite-plugin-svelte':
         specifier: 'catalog:'
@@ -248,9 +242,6 @@ importers:
       detype:
         specifier: ^2.0.8
         version: 2.0.8
-      dialkit:
-        specifier: 'catalog:'
-        version: 2.0.2(motion@13.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(svelte@5.57.1)
       shiki:
         specifier: 'catalog:'
         version: 4.4.3
@@ -315,9 +306,6 @@ importers:
       '@baby-ui/svelte':
         specifier: workspace:*
         version: link:../ui-svelte
-      dialkit:
-        specifier: 'catalog:'
-        version: 2.0.2(motion@13.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(svelte@5.57.1)
     devDependencies:
       '@sveltejs/vite-plugin-svelte':
         specifier: 'catalog:'
@@ -1709,32 +1697,6 @@ packages:
 
   devlop@1.1.0:
     resolution: {integrity: sha512-RWmIqhcFf1lRYBvNmr7qTNuyCt/7/ns2jbpp1+PalgE/rDQcBT0fioSMUpJ93irlUhC5hrg4cYqe6U+0ImW0rA==}
-
-  dialkit@2.0.2:
-    resolution: {integrity: sha512-D5ZFLBhcB8WVxI6Q8e7HuPPA4SKQBPfLHpvgZQ5V0ZrqohHjYjTR5JoLfXSCeN8tKvUdemyGnVHy/3EtsaliUw==}
-    peerDependencies:
-      motion: '>=11.0.0'
-      motion-v: '>=2.0.0'
-      react: '>=18.0.0'
-      react-dom: '>=18.0.0'
-      solid-js: '>=1.6.0'
-      svelte: '>=5.8.0'
-      vue: '>=3.3.0'
-    peerDependenciesMeta:
-      motion:
-        optional: true
-      motion-v:
-        optional: true
-      react:
-        optional: true
-      react-dom:
-        optional: true
-      solid-js:
-        optional: true
-      svelte:
-        optional: true
-      vue:
-        optional: true
 
   electron-to-chromium@1.5.432:
     resolution: {integrity: sha512-4qa5o+sI3qFR+p1C6wZvY99x6q/3tR34n+ezZvWiJ9s0HJaaKwN6h1HTupFfv4fiSdQYMZWtVFBuzHdAXo1BnA==}
@@ -3697,13 +3659,6 @@ snapshots:
   devlop@1.1.0:
     dependencies:
       dequal: 2.0.3
-
-  dialkit@2.0.2(motion@13.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(svelte@5.57.1):
-    optionalDependencies:
-      motion: 13.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
-      svelte: 5.57.1
 
   electron-to-chromium@1.5.432: {}
 

@@ -7,9 +7,10 @@ const variant = $derived((props.variant as TypographyVariant) ?? "body");
 </script>
 
 <div class="flex w-80 flex-col gap-3">
-	<Typography variant="h2">Ship it twice</Typography>
+	<Typography variant="h2">Release 0.4</Typography>
+	<Typography variant="muted">Shipped 20 September 2026</Typography>
 	<Typography {variant}>
-		One spec, two implementations, one token layer. Change the variant control to see
-		each level.
+		Overlays now animate out as well as in, and every anchored surface grows from the edge
+		nearest its trigger.
 	</Typography>
 </div>

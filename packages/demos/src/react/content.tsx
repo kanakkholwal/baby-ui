@@ -26,13 +26,17 @@ const SAMPLE_MD =
 	"## Installing\nComponents are copied into your project rather than installed.\n\n- You own the source\n- Nothing is imported at runtime\n- Updates are a diff, not a version bump\n\n```\nnpx shadcn add button\n```";
 
 export function CopyButtonDemo({ props }: { props: Props }) {
+	const text = (props.text as string) || "npx shadcn@latest add button";
 	return (
-		<CopyButton
-			text={(props.text as string) || "npx shadcn add button"}
-			label={(props.label as string) || "Copy"}
-			copiedLabel={(props.copiedLabel as string) || "Copied"}
-			iconOnly={Boolean(props.iconOnly)}
-		/>
+		<div className="flex w-[22rem] items-center justify-between gap-3 rounded-xl border border-border bg-card px-3 py-2">
+			<code className="truncate font-mono text-foreground text-xs">{text}</code>
+			<CopyButton
+				text={text}
+				label={(props.label as string) || "Copy"}
+				copiedLabel={(props.copiedLabel as string) || "Copied"}
+				iconOnly={props.iconOnly !== false}
+			/>
+		</div>
 	);
 }
 
@@ -189,8 +193,6 @@ export function ConversationDemo({ props }: { props: Props }) {
 		<div className="w-96 rounded-xl border border-border bg-card/40 p-2">
 			<Conversation maxHeight={(props.maxHeight as string) || "16rem"}>
 				{TURNS.map((turn, i) => (
-					// biome-ignore lint/suspicious/noArrayIndexKey: transcript turns have no id
-					// biome-ignore lint/a11y/useValidAriaRole: Message.role is the chat sender
 					<Message
 						key={i}
 						role={turn.role}

@@ -26,7 +26,7 @@ const SPAN: Record<BentoSpan, string> = {
 <div
 	class={cn(
 		"group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card p-5",
-		"transition-[transform,border-color] duration-200 ease-[var(--ease-out)]",
+		"transition-[transform,scale,translate,border-color] duration-200 ease-[var(--ease-out)]",
 		"hover:-translate-y-0.5 hover:border-ring motion-reduce:hover:translate-y-0",
 		SPAN[span],
 		classProp,

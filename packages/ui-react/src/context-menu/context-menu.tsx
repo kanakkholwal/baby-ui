@@ -11,11 +11,10 @@ import {
 	useRef,
 	useState,
 } from "react";
-import { dismissable } from "../lib/anchor";
+import { ANCHORED, dismissable } from "../lib/anchor";
 import { cn } from "../lib/cn";
 
-const SURFACE =
-	"anchored z-50 min-w-44 rounded-xl border border-border bg-popover p-1 shadow-2xl";
+const SURFACE = "min-w-44 rounded-xl border border-border bg-popover p-1 shadow-2xl";
 
 type Ctx = {
 	open: boolean;
@@ -78,6 +77,12 @@ export function ContextMenuContent({
 }: ComponentProps<"div">) {
 	const menu = useContextMenu();
 	const el = useRef<HTMLDivElement>(null);
+	// Kept mounted after the first open so the surface can animate out as well as in.
+	const [mounted, setMounted] = useState(false);
+
+	useEffect(() => {
+		if (menu.open) setMounted(true);
+	}, [menu.open]);
 
 	// Positioned from a point rather than an element, so it clamps rather than flips.
 	useEffect(() => {
@@ -90,7 +95,7 @@ export function ContextMenuContent({
 		return dismissable([node], menu.close);
 	}, [menu.open, menu.point, menu.close]);
 
-	if (!menu.open) return null;
+	if (!mounted) return null;
 
 	return (
 		<div
@@ -99,9 +104,10 @@ export function ContextMenuContent({
 			role="menu"
 			tabIndex={-1}
 			data-slot="context-menu-content"
-			data-state="open"
-			style={{ position: "fixed", left: 0, top: 0, transformOrigin: "top left" }}
-			className={cn(SURFACE, className)}
+			data-state={menu.open ? "open" : "closed"}
+			inert={!menu.open}
+			style={{ transformOrigin: "top left" }}
+			className={cn(ANCHORED, SURFACE, className)}
 			{...props}
 		>
 			{children}

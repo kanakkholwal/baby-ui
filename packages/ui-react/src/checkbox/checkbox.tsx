@@ -76,7 +76,7 @@ export function Checkbox({
 			<span
 				aria-hidden
 				className={cn(
-					"pointer-events-none grid size-full place-items-center border-2 border-muted-foreground/50 bg-background transition-[background-color,border-color,transform] duration-150 ease-[var(--ease-out)]",
+					"pointer-events-none grid size-full place-items-center border-2 border-muted-foreground/50 bg-background transition-[background-color,border-color,transform,scale,translate] duration-150 ease-[var(--ease-out)]",
 					"peer-hover:border-muted-foreground peer-active:scale-[0.92]",
 					"peer-checked:border-primary peer-checked:bg-primary peer-indeterminate:border-primary peer-indeterminate:bg-primary",
 					"peer-focus-visible:ring-2 peer-focus-visible:ring-ring peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-background",

@@ -44,7 +44,7 @@ $effect(() => {
 		fill="none"
 		aria-hidden="true"
 		style:transform={select.open ? "rotate(180deg)" : "none"}
-		class="size-3.5 shrink-0 text-muted-foreground transition-transform duration-200 ease-[var(--ease-out)]"
+		class="size-3.5 shrink-0 text-muted-foreground transition-[transform,scale,translate] duration-200 ease-[var(--ease-out)]"
 	>
 		<path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
 	</svg>

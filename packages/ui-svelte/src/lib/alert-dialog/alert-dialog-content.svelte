@@ -1,5 +1,6 @@
 <script lang="ts">
 import type { Snippet } from "svelte";
+import { DIALOG_PANEL, DIALOG_SURFACE } from "../dialog/context";
 import { cn } from "../lib/cn";
 import { getAlertDialog } from "./context";
 
@@ -26,12 +27,14 @@ $effect(() => {
 		event.preventDefault();
 		dialog.setOpen(false);
 	}}
-	class="modal-dialog m-auto bg-transparent p-0 text-foreground backdrop:bg-black/50"
+	class={DIALOG_SURFACE}
 >
 	<div
 		data-slot="alert-dialog-content"
+		data-state={dialog.open ? "open" : "closed"}
 		class={cn(
-			"modal-panel w-[min(26rem,calc(100vw-2rem))] rounded-2xl border border-border bg-card p-6 shadow-2xl",
+			DIALOG_PANEL,
+			"w-[min(26rem,calc(100vw-2rem))] rounded-2xl border border-border bg-card p-6 shadow-2xl",
 			classProp,
 		)}
 	>

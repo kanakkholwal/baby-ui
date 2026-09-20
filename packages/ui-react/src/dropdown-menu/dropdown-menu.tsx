@@ -11,11 +11,10 @@ import {
 	useRef,
 	useState,
 } from "react";
-import { type AnchorPlacement, anchor, dismissable, rove } from "../lib/anchor";
+import { ANCHORED, type AnchorPlacement, anchor, dismissable, rove } from "../lib/anchor";
 import { cn } from "../lib/cn";
 
-const SURFACE =
-	"anchored z-50 min-w-44 rounded-xl border border-border bg-popover p-1 shadow-2xl";
+const SURFACE = "min-w-44 rounded-xl border border-border bg-popover p-1 shadow-2xl";
 
 type Ctx = {
 	open: boolean;
@@ -124,8 +123,11 @@ export function DropdownMenuContent({
 		[],
 	);
 
+	const [mounted, setMounted] = useState(false);
+
 	useEffect(() => {
 		if (!menu.open) return;
+		setMounted(true);
 		setIndex(0);
 		rows()[0]?.focus();
 	}, [menu.open, rows]);
@@ -139,7 +141,8 @@ export function DropdownMenuContent({
 		all[next]?.focus();
 	}
 
-	if (!menu.open) return null;
+	// Kept mounted after the first open so the surface can animate out as well as in.
+	if (!mounted) return null;
 
 	return (
 		<div
@@ -151,9 +154,10 @@ export function DropdownMenuContent({
 			role="menu"
 			tabIndex={-1}
 			data-slot="dropdown-menu-content"
-			data-state="open"
+			data-state={menu.open ? "open" : "closed"}
+			inert={!menu.open}
 			onKeyDown={onKeyDown}
-			className={cn(SURFACE, className)}
+			className={cn(ANCHORED, SURFACE, className)}
 			{...props}
 		>
 			{children}

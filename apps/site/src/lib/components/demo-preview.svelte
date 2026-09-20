@@ -24,7 +24,7 @@ const iframeSrc = $derived(
 </script>
 
 <div
-	class="grid min-h-[22rem] place-items-center overflow-hidden rounded-xl border border-border bg-[radial-gradient(var(--border)_1px,transparent_1px)] [background-size:16px_16px] p-8"
+	class="grid min-h-88 place-items-center overflow-hidden rounded-xl border border-border bg-[radial-gradient(var(--border)_1px,transparent_1px)] [background-size:16px_16px] p-8"
 >
 	{#if framework === "svelte"}
 		{#if Demo}
@@ -40,12 +40,9 @@ const iframeSrc = $derived(
 			sandbox="allow-scripts"
 		></iframe>
 	{:else}
-		<div class="max-w-sm text-center text-muted-foreground text-sm">
-			<p>The React implementation renders live in the dev playground.</p>
-			<p class="mt-2 text-xs">
-				Both ports read the same token layer, so this preview is what the React one looks
-				like. Use the Usage tab for its source.
-			</p>
-		</div>
+		<p class="max-w-xs text-center text-muted-foreground text-sm">
+			Both ports read the same tokens, so the Svelte preview is what React renders. Its source
+			is under Usage.
+		</p>
 	{/if}
 </div>

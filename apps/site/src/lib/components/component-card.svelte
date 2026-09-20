@@ -20,7 +20,7 @@ const demoProps = $derived(defaultProps(spec));
 	>
 		<div class="grid flex-1 place-items-center overflow-hidden p-6">
 			{#if Demo}
-				<div class="pointer-events-none scale-90 opacity-90 transition-[transform,opacity] duration-300 ease-[var(--ease-out)] group-hover/card:scale-95 group-hover/card:opacity-100 motion-reduce:transition-none">
+				<div class="pointer-events-none scale-90 opacity-90 transition-[transform,scale,translate,opacity] duration-300 ease-[var(--ease-out)] group-hover/card:scale-95 group-hover/card:opacity-100 motion-reduce:transition-none">
 					<Demo props={demoProps} />
 				</div>
 			{/if}

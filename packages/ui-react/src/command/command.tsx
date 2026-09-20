@@ -11,7 +11,25 @@ import {
 	useRef,
 	useState,
 } from "react";
+import { DIALOG_SURFACE } from "../dialog/dialog";
 import { cn } from "../lib/cn";
+
+/** Same choreography as a dialog panel, but the palette drops from above its shortcut. */
+const COMMAND_PANEL = [
+	"transition-[opacity,scale,translate] duration-[var(--duration-overlay)] ease-[var(--ease-out)]",
+	"data-[state=closed]:opacity-0 data-[state=closed]:scale-[var(--enter-scale)]",
+	"data-[state=closed]:-translate-y-[var(--enter-lift)] data-[state=closed]:duration-[var(--duration-exit)]",
+	"starting:data-[state=open]:opacity-0 starting:data-[state=open]:scale-[var(--enter-scale)]",
+	"starting:data-[state=open]:-translate-y-[var(--enter-lift)]",
+	"motion-reduce:transition-none",
+].join(" ");
+
+/** One marker glides between rows, so an arrow-key run reads as a single object moving. */
+const COMMAND_MARKER = [
+	"pointer-events-none absolute top-0 left-0 rounded-md bg-foreground/[0.06]",
+	"transition-[translate,width,height] duration-[var(--duration-press)] ease-[var(--ease-out)]",
+	"motion-reduce:transition-none",
+].join(" ");
 
 type Ctx = {
 	query: string;
@@ -170,12 +188,18 @@ export function CommandDialog({
 			onClick={(event) => {
 				if (event.target === el.current) onOpenChange(false);
 			}}
-			className="command-dialog mx-auto mt-[12vh] mb-auto bg-transparent p-0 text-foreground backdrop:bg-black/50"
+			className={cn(
+				DIALOG_SURFACE,
+				"mx-auto mt-[14vh] mb-auto",
+				"backdrop:bg-background/10 backdrop:backdrop-blur-md backdrop:backdrop-saturate-150",
+			)}
 		>
 			<div
 				data-slot="command-dialog"
+				data-state={open ? "open" : "closed"}
 				className={cn(
-					"flex max-h-[min(30rem,70dvh)] w-[min(34rem,calc(100vw-2rem))] flex-col overflow-hidden rounded-2xl border border-border bg-popover shadow-2xl",
+					COMMAND_PANEL,
+					"flex max-h-[min(30rem,70dvh)] w-[min(36rem,calc(100vw-2rem))] flex-col overflow-hidden rounded-2xl border border-border bg-popover shadow-2xl",
 					className,
 				)}
 			>
@@ -256,19 +280,53 @@ export function CommandInput({
 
 export function CommandList({ className, children, ...props }: ComponentProps<"div">) {
 	const command = useCommand();
+	const el = useRef<HTMLDivElement | null>(null);
+	const [box, setBox] = useState<{ x: number; y: number; w: number; h: number } | null>(
+		null,
+	);
+
+	const setList = useCallback(
+		(node: HTMLDivElement | null) => {
+			el.current = node;
+			command.setList(node);
+		},
+		[command.setList],
+	);
+
+	useEffect(() => {
+		const row = command.activeId
+			? el.current?.querySelector<HTMLElement>(`#${CSS.escape(command.activeId)}`)
+			: null;
+		setBox(
+			row
+				? { x: row.offsetLeft, y: row.offsetTop, w: row.offsetWidth, h: row.offsetHeight }
+				: null,
+		);
+	}, [command.activeId, children]);
 
 	return (
 		<div
-			ref={command.setList}
+			ref={setList}
 			id={command.listId}
 			role="listbox"
 			data-slot="command-list"
 			className={cn(
-				"scroll-area min-h-0 flex-1 overflow-y-auto overscroll-contain py-1.5",
+				"scroll-area relative min-h-0 flex-1 overflow-y-auto overscroll-contain py-1.5",
 				className,
 			)}
 			{...props}
 		>
+			{box ? (
+				<span
+					aria-hidden
+					className={COMMAND_MARKER}
+					style={{
+						translate: `${box.x}px ${box.y}px`,
+						width: box.w,
+						height: box.h,
+					}}
+				/>
+			) : null}
 			{children}
 		</div>
 	);
@@ -336,8 +394,8 @@ export function CommandItem({
 			aria-selected={active}
 			onPointerMove={() => command.setActive(uid)}
 			className={cn(
-				"flex w-full items-center justify-between gap-3 rounded-lg px-2.5 py-2 text-left text-sm transition-colors",
-				active ? "bg-foreground/[0.06] text-foreground" : "text-muted-foreground",
+				"relative flex w-full items-center justify-between gap-3 rounded-lg px-2.5 py-2 text-left text-sm transition-colors",
+				active ? "text-foreground" : "text-muted-foreground",
 				className,
 			)}
 			{...props}

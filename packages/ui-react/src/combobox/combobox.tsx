@@ -2,7 +2,7 @@
 
 import type { KeyboardEvent } from "react";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
-import { anchor, dismissable, rove } from "../lib/anchor";
+import { ANCHORED, anchor, dismissable, rove } from "../lib/anchor";
 import { cn } from "../lib/cn";
 
 export type ComboOption = { value: string; label: string };
@@ -30,6 +30,8 @@ export function Combobox({
 	const [open, setOpen] = useState(false);
 	const [query, setQuery] = useState("");
 	const [index, setIndex] = useState(0);
+	// Kept mounted after the first open so the list can animate out as well as in.
+	const [mounted, setMounted] = useState(false);
 	const input = useRef<HTMLInputElement>(null);
 	const floating = useRef<HTMLDivElement>(null);
 
@@ -48,6 +50,7 @@ export function Combobox({
 
 	useEffect(() => {
 		if (!open || !input.current || !floating.current) return;
+		setMounted(true);
 		const stopAnchor = anchor(input.current, floating.current, {
 			gap: 6,
 			matchWidth: true,
@@ -128,13 +131,18 @@ export function Combobox({
 				/>
 			</div>
 
-			{open ? (
+			{mounted ? (
 				<div
 					ref={floating}
 					id={id}
 					role="listbox"
+					data-state={open ? "open" : "closed"}
+					inert={!open}
 					style={{ maxHeight: "min(14rem, var(--anchor-available-height, 14rem))" }}
-					className="anchored scroll-area z-50 overflow-y-auto rounded-xl border border-border bg-popover p-1 shadow-2xl"
+					className={cn(
+						ANCHORED,
+						"scroll-area overflow-y-auto rounded-xl border border-border bg-popover p-1 shadow-2xl",
+					)}
 				>
 					{matches.length === 0 ? (
 						<p className="px-2.5 py-2 text-muted-foreground text-sm">{emptyLabel}</p>

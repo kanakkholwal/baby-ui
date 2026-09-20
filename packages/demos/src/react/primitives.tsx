@@ -12,6 +12,7 @@ import {
 	Badge,
 	Button,
 	Card,
+	CardAction,
 	CardContent,
 	CardDescription,
 	CardFooter,
@@ -29,15 +30,34 @@ import { useEffect, useId, useState } from "react";
 
 type Props = Record<string, unknown>;
 
+const SERVICES = [
+	{ name: "image-resizer", tone: "warning", state: "Degraded" },
+	{ name: "legacy-billing", tone: "destructive", state: "Down" },
+] as const;
+
 export function BadgeDemo({ props }: { props: Props }) {
+	const size = (props.size as BadgeSize) ?? "md";
 	return (
-		<Badge
-			variant={(props.variant as BadgeVariant) ?? "secondary"}
-			size={(props.size as BadgeSize) ?? "md"}
-			dot={Boolean(props.dot)}
-		>
-			Production
-		</Badge>
+		<div className="flex w-72 flex-col gap-3 text-sm">
+			<div className="flex items-center justify-between gap-4">
+				<span className="text-muted-foreground">api-gateway</span>
+				<Badge
+					variant={(props.variant as BadgeVariant) ?? "success"}
+					size={size}
+					dot={props.dot !== false}
+				>
+					Healthy
+				</Badge>
+			</div>
+			{SERVICES.map((service) => (
+				<div key={service.name} className="flex items-center justify-between gap-4">
+					<span className="text-muted-foreground">{service.name}</span>
+					<Badge variant={service.tone} size={size} dot>
+						{service.state}
+					</Badge>
+				</div>
+			))}
+		</div>
 	);
 }
 
@@ -71,17 +91,26 @@ export function AvatarDemo({ props }: { props: Props }) {
 
 export function CardDemo({ props }: { props: Props }) {
 	return (
-		<Card interactive={props.interactive !== false} className="w-72">
-			<CardHeader>
+		<Card interactive={props.interactive !== false} className="w-80">
+			<CardHeader className="border-b">
 				<CardTitle>Deploy preview</CardTitle>
-				<CardDescription>Builds on every push to a branch.</CardDescription>
+				<CardDescription>feat/command-palette</CardDescription>
+				<CardAction>
+					<Badge variant="success" dot>
+						Ready
+					</Badge>
+				</CardAction>
 			</CardHeader>
-			<CardContent>
-				<p className="text-muted-foreground text-sm">Ready in about 40 seconds.</p>
+			<CardContent className="grid grid-cols-2 gap-y-3 text-sm">
+				<span className="text-muted-foreground">Build time</span>
+				<span className="text-right text-foreground tabular-nums">41s</span>
+				<span className="text-muted-foreground">Commit</span>
+				<span className="text-right font-mono text-foreground text-xs">20a9de6</span>
 			</CardContent>
-			<CardFooter>
-				<Button size="sm" variant="outline">
-					Open
+			<CardFooter className="border-t">
+				<Button size="sm">Visit preview</Button>
+				<Button size="sm" variant="ghost">
+					Logs
 				</Button>
 			</CardFooter>
 		</Card>
@@ -152,47 +181,106 @@ export function TextareaDemo({ props }: { props: Props }) {
 	);
 }
 
+const SCOPES = ["Read repositories", "Write issues", "Manage webhooks"];
+
 export function CheckboxDemo({ props }: { props: Props }) {
 	const [checked, setChecked] = useState(false);
+	const [scopes, setScopes] = useState([true, false, false]);
 	useEffect(() => setChecked(Boolean(props.checked)), [props.checked]);
-	return (
-		<Checkbox
-			checked={checked}
-			onCheckedChange={setChecked}
-			indeterminate={Boolean(props.indeterminate)}
-			disabled={Boolean(props.disabled)}
-			label={(props.label as string) || "Accept terms"}
-		/>
-	);
-}
+	const granted = scopes.filter(Boolean).length;
 
-export function SwitchDemo({ props }: { props: Props }) {
-	const [checked, setChecked] = useState(false);
-	useEffect(() => setChecked(Boolean(props.checked)), [props.checked]);
-	const label = (props.label as string) || "Notifications";
 	return (
-		<div className="flex items-center gap-3">
-			<Switch
+		<div className="flex w-72 flex-col gap-3">
+			<Checkbox
+				checked={granted === SCOPES.length}
+				indeterminate={granted > 0 && granted < SCOPES.length}
+				onCheckedChange={(next) => setScopes(SCOPES.map(() => next))}
+				label="All permissions"
+			/>
+			<div className="flex flex-col gap-3 border-border border-l pl-4">
+				{SCOPES.map((scope, i) => (
+					<Checkbox
+						key={scope}
+						checked={scopes[i]}
+						onCheckedChange={(next) =>
+							setScopes(scopes.map((on, j) => (i === j ? next : on)))
+						}
+						label={scope}
+					/>
+				))}
+			</div>
+			<Checkbox
 				checked={checked}
 				onCheckedChange={setChecked}
 				disabled={Boolean(props.disabled)}
-				size={(props.size as "sm" | "md") ?? "md"}
-				label={label}
+				label={(props.label as string) || "Remember this grant"}
+				description="Skips the prompt for the next 30 days."
 			/>
-			<span className="text-muted-foreground text-sm">{label}</span>
+		</div>
+	);
+}
+
+// Switch renders its own label; reversing the row puts the text first without a second one.
+const SWITCH_ROW = "flex w-full flex-row-reverse items-center justify-between gap-6";
+
+export function SwitchDemo({ props }: { props: Props }) {
+	const [checked, setChecked] = useState(false);
+	const [digest, setDigest] = useState(true);
+	useEffect(() => setChecked(Boolean(props.checked)), [props.checked]);
+	const size = (props.size as "sm" | "md" | "lg" | "xl") ?? "md";
+
+	return (
+		<div className="flex w-72 flex-col divide-y divide-border rounded-xl border border-border">
+			<div className="px-4 py-3">
+				<Switch
+					checked={checked}
+					onCheckedChange={setChecked}
+					disabled={Boolean(props.disabled)}
+					size={size}
+					label={(props.label as string) || "Push notifications"}
+					className={SWITCH_ROW}
+				/>
+			</div>
+			<div className="px-4 py-3">
+				<Switch
+					checked={digest}
+					onCheckedChange={setDigest}
+					size={size}
+					label="Weekly digest"
+					className={SWITCH_ROW}
+				/>
+			</div>
+			<div className="px-4 py-3">
+				<Switch
+					checked={false}
+					size={size}
+					disabled
+					label="SMS alerts"
+					className={SWITCH_ROW}
+				/>
+			</div>
 		</div>
 	);
 }
 
 export function ProgressDemo({ props }: { props: Props }) {
+	const value = Number(props.value ?? 68);
+	const indeterminate = Boolean(props.indeterminate);
 	return (
-		<div className="w-72">
+		<div className="flex w-72 flex-col gap-2">
+			<div className="flex items-baseline justify-between gap-4 text-sm">
+				<span className="truncate text-foreground">design-system.zip</span>
+				<span className="shrink-0 text-muted-foreground text-xs tabular-nums">
+					{indeterminate ? "Preparing…" : `${value}%`}
+				</span>
+			</div>
 			<Progress
-				value={Number(props.value ?? 40)}
-				indeterminate={Boolean(props.indeterminate)}
-				size={(props.size as "sm" | "md") ?? "md"}
+				value={value}
+				indeterminate={indeterminate}
+				size={(props.size as "sm" | "md" | "lg" | "xl") ?? "md"}
 				label="Upload progress"
 			/>
+			<p className="text-muted-foreground text-xs">12.4 MB of 18.2 MB · 6s remaining</p>
 		</div>
 	);
 }

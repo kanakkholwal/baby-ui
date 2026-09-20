@@ -181,7 +181,7 @@ const ARROW =
 				style:transform="translateX({indicator.left}px)"
 				style:width="{indicator.width}px"
 				class={cn(
-					"pointer-events-none absolute left-0 transition-[transform,width] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none",
+					"pointer-events-none absolute left-0 transition-[transform,scale,translate,width] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none",
 					tabs.variant === "pill" && "top-1 bottom-1 rounded-full bg-primary",
 					tabs.variant === "segment" && "top-0.5 bottom-0.5 rounded-md bg-primary",
 					tabs.variant === "underline" && "-bottom-px h-0.5 rounded-full bg-primary",

@@ -9,6 +9,9 @@ export const load: PageServerLoad = ({ params }) => {
 		throw error(404, `No category named "${params.category}"`);
 	return {
 		category,
-		slugs: specs.filter((s) => s.category === category).map((s) => s.slug),
+		slugs: specs
+			.filter((s) => s.category === category)
+			.sort((a, b) => a.name.localeCompare(b.name))
+			.map((s) => s.slug),
 	};
 };

@@ -10,6 +10,23 @@ import {
 
 export type AnchorPlacement = Placement;
 
+/**
+ * Class contract every anchored surface shares, so a popover, a menu and a select
+ * open and close identically. `anchor()` owns transform-origin; this owns the rest.
+ */
+export const ANCHORED = [
+	"fixed top-0 left-0 z-50 pointer-events-none scale-[var(--enter-scale)] opacity-0",
+	"transition-[opacity,scale,translate] duration-[var(--duration-exit)] ease-[var(--ease-out)]",
+	// The closed state leans toward its trigger, so opening reads as unfolding from it.
+	"data-[state=closed]:data-[placement^=bottom]:-translate-y-1",
+	"data-[state=closed]:data-[placement^=top]:translate-y-1",
+	"data-[state=open]:pointer-events-auto data-[state=open]:scale-100 data-[state=open]:opacity-100",
+	"data-[state=open]:duration-[var(--duration-dropdown)]",
+	// The first open mounts the element already open, so only @starting-style can animate it.
+	"starting:data-[state=open]:scale-[var(--enter-scale)] starting:data-[state=open]:opacity-0",
+	"motion-reduce:transition-none",
+].join(" ");
+
 export type AnchorOptions = {
 	placement?: AnchorPlacement;
 	/** Gap between anchor and floating element, in pixels. */
@@ -53,6 +70,16 @@ export function anchor(
 			},
 		}),
 	];
+
+	// computePosition resolves a microtask later; seed the position now so the surface
+	// never paints a frame at the viewport corner and appear to fly in from there.
+	const seed = anchorEl.getBoundingClientRect();
+	Object.assign(floating.style, {
+		position: "fixed",
+		left: "0",
+		top: "0",
+		transform: `translate(${Math.round(seed.left)}px, ${Math.round(seed.bottom + gap)}px)`,
+	});
 
 	return autoUpdate(anchorEl, floating, () => {
 		computePosition(anchorEl, floating, {

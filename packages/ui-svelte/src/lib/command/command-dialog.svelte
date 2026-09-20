@@ -1,6 +1,8 @@
 <script lang="ts">
 import type { Snippet } from "svelte";
+import { DIALOG_SURFACE } from "../dialog/context";
 import { cn } from "../lib/cn";
+import { COMMAND_PANEL } from "./context";
 
 let {
 	children,
@@ -29,12 +31,18 @@ $effect(() => {
 	onclick={(event) => {
 		if (event.target === el) open = false;
 	}}
-	class="command-dialog mx-auto mt-[12vh] mb-auto bg-transparent p-0 text-foreground backdrop:bg-black/50"
+	class={cn(
+		DIALOG_SURFACE,
+		"mx-auto mt-[14vh] mb-auto",
+		"backdrop:bg-background/10 backdrop:backdrop-blur-md backdrop:backdrop-saturate-150",
+	)}
 >
 	<div
 		data-slot="command-dialog"
+		data-state={open ? "open" : "closed"}
 		class={cn(
-			"flex max-h-[min(30rem,70dvh)] w-[min(34rem,calc(100vw-2rem))] flex-col overflow-hidden rounded-2xl border border-border bg-popover shadow-2xl",
+			COMMAND_PANEL,
+			"flex max-h-[min(30rem,70dvh)] w-[min(36rem,calc(100vw-2rem))] flex-col overflow-hidden rounded-2xl border border-border bg-popover shadow-2xl",
 			classProp,
 		)}
 	>

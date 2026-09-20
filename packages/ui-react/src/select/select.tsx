@@ -11,7 +11,7 @@ import {
 	useRef,
 	useState,
 } from "react";
-import { type AnchorPlacement, anchor, dismissable, rove } from "../lib/anchor";
+import { ANCHORED, type AnchorPlacement, anchor, dismissable, rove } from "../lib/anchor";
 import { cn } from "../lib/cn";
 
 type Ctx = {
@@ -140,7 +140,7 @@ export function SelectTrigger({
 				fill="none"
 				aria-hidden
 				style={{ transform: select.open ? "rotate(180deg)" : "none" }}
-				className="size-3.5 shrink-0 text-muted-foreground transition-transform duration-200 ease-[var(--ease-out)]"
+				className="size-3.5 shrink-0 text-muted-foreground transition-[transform,scale,translate] duration-200 ease-[var(--ease-out)]"
 			>
 				<path
 					d="m4 6 4 4 4-4"
@@ -206,8 +206,8 @@ export function SelectContent({ className, children, ...props }: ComponentProps<
 		all[next]?.focus();
 	}
 
-	if (!select.open) return null;
-
+	// Never unmounted: items register their label on mount, and the trigger has to echo
+	// the current one before the list has ever been opened.
 	return (
 		<div
 			ref={(node) => {
@@ -218,11 +218,13 @@ export function SelectContent({ className, children, ...props }: ComponentProps<
 			role="listbox"
 			tabIndex={-1}
 			data-slot="select-content"
-			data-state="open"
+			data-state={select.open ? "open" : "closed"}
+			inert={!select.open}
 			onKeyDown={onKeyDown}
 			style={{ maxHeight: "min(16rem, var(--anchor-available-height, 16rem))" }}
 			className={cn(
-				"anchored scroll-area z-50 overflow-y-auto rounded-xl border border-border bg-popover p-1 shadow-2xl",
+				ANCHORED,
+				"scroll-area overflow-y-auto rounded-xl border border-border bg-popover p-1 shadow-2xl",
 				className,
 			)}
 			{...props}

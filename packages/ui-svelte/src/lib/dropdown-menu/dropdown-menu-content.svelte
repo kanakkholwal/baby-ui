@@ -1,7 +1,7 @@
 <script lang="ts">
 import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
-import { rove } from "../lib/anchor";
+import { ANCHORED, rove } from "../lib/anchor";
 import { cn } from "../lib/cn";
 import { getDropdownMenu } from "./context";
 
@@ -13,6 +13,12 @@ let {
 
 const menu = getDropdownMenu();
 let el = $state<HTMLDivElement>();
+// Kept mounted after the first open so the surface can animate out as well as in.
+let mounted = $state(false);
+
+$effect(() => {
+	if (menu.open) mounted = true;
+});
 let index = $state(0);
 
 $effect(() => {
@@ -42,7 +48,7 @@ function onkeydown(event: KeyboardEvent) {
 }
 </script>
 
-{#if menu.open}
+{#if mounted}
 	<!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -->
 	<div
 		{...rest}
@@ -51,9 +57,14 @@ function onkeydown(event: KeyboardEvent) {
 		role="menu"
 		tabindex="-1"
 		data-slot="dropdown-menu-content"
-		data-state="open"
+		data-state={menu.open ? "open" : "closed"}
+		inert={!menu.open}
 		{onkeydown}
-		class={cn("anchored z-50 min-w-44 rounded-xl border border-border bg-popover p-1 shadow-2xl", classProp)}
+		class={cn(
+			ANCHORED,
+			"min-w-44 rounded-xl border border-border bg-popover p-1 shadow-2xl",
+			classProp,
+		)}
 	>
 		{@render children?.()}
 	</div>

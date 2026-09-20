@@ -3,6 +3,7 @@
 import {
 	Avatar,
 	AvatarFallback,
+	Button,
 	Combobox,
 	ContextMenu,
 	ContextMenuContent,
@@ -18,6 +19,7 @@ import {
 	HoverCard,
 	HoverCardContent,
 	HoverCardTrigger,
+	Label,
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
@@ -26,6 +28,7 @@ import {
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
+	Switch,
 	Tooltip,
 	TooltipContent,
 	TooltipTrigger,
@@ -37,37 +40,89 @@ type Props = Record<string, unknown>;
 const TRIGGER =
 	"inline-flex h-9 items-center rounded-lg border border-border bg-card px-3 font-medium text-foreground text-sm";
 
+// Switch renders its own label; reversing the row puts the text first without a second one.
+const SWITCH_ROW = "flex w-full flex-row-reverse items-center justify-between gap-4";
+
 export function PopoverDemo({ props }: { props: Props }) {
+	const [autoDeploy, setAutoDeploy] = useState(true);
+	const [comments, setComments] = useState(false);
+
 	return (
 		<Popover
 			placement={(props.placement as never) ?? "bottom-start"}
 			gap={Number(props.gap ?? 6)}
 		>
-			<PopoverTrigger className={TRIGGER}>Open popover</PopoverTrigger>
-			<PopoverContent>
-				<p className="font-medium text-foreground">Deploy settings</p>
-				<p className="mt-1 text-muted-foreground">
-					Scroll the page with this open: it repositions and flips rather than drifting
-					away.
-				</p>
+			<PopoverTrigger className={TRIGGER}>Deploy settings</PopoverTrigger>
+			<PopoverContent className="w-72">
+				<div className="flex flex-col gap-3">
+					<Label>Preview branches</Label>
+					<Switch
+						checked={autoDeploy}
+						onCheckedChange={setAutoDeploy}
+						size="sm"
+						label="Auto deploy"
+						className={SWITCH_ROW}
+					/>
+					<Switch
+						checked={comments}
+						onCheckedChange={setComments}
+						size="sm"
+						label="Comment on PRs"
+						className={SWITCH_ROW}
+					/>
+					<Button size="sm" className="mt-1 w-full">
+						Save
+					</Button>
+				</div>
 			</PopoverContent>
 		</Popover>
 	);
 }
 
+const ACTIONS = [
+	{
+		id: "copy",
+		hint: "Copy to clipboard",
+		path: "M6 6V4.5A1.5 1.5 0 0 1 7.5 3h4A1.5 1.5 0 0 1 13 4.5v4A1.5 1.5 0 0 1 11.5 10H10M4.5 6h4A1.5 1.5 0 0 1 10 7.5v4A1.5 1.5 0 0 1 8.5 13h-4A1.5 1.5 0 0 1 3 11.5v-4A1.5 1.5 0 0 1 4.5 6",
+	},
+	{
+		id: "share",
+		hint: "Copy a public link",
+		path: "M8 10.5V3m0 0L5.5 5.5M8 3l2.5 2.5M3.5 10v2A1.5 1.5 0 0 0 5 13.5h6a1.5 1.5 0 0 0 1.5-1.5v-2",
+	},
+	{
+		id: "delete",
+		hint: "Move to trash",
+		path: "M3.5 4.5h9M6.5 4.5V3h3v1.5M5 4.5l.5 8h5l.5-8",
+	},
+];
+
 export function TooltipDemo({ props }: { props: Props }) {
 	return (
-		<Tooltip
-			placement={(props.placement as never) ?? "top"}
-			delay={Number(props.delay ?? 400)}
-		>
-			<TooltipTrigger>
-				<button type="button" className={TRIGGER}>
-					Hover or focus me
-				</button>
-			</TooltipTrigger>
-			<TooltipContent>{(props.label as string) || "Copy to clipboard"}</TooltipContent>
-		</Tooltip>
+		<div className="inline-flex items-center gap-1 rounded-xl border border-border p-1">
+			{ACTIONS.map((action) => (
+				<Tooltip
+					key={action.id}
+					placement={(props.placement as never) ?? "top"}
+					delay={Number(props.delay ?? 400)}
+				>
+					<TooltipTrigger className="grid size-8 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground">
+						<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-4">
+							<path
+								d={action.path}
+								stroke="currentColor"
+								strokeWidth="1.3"
+								strokeLinecap="round"
+								strokeLinejoin="round"
+							/>
+						</svg>
+					</TooltipTrigger>
+					<TooltipContent>
+						{action.id === "copy" ? (props.label as string) || action.hint : action.hint}
+					</TooltipContent>
+				</Tooltip>
+			))}
+		</div>
 	);
 }
 

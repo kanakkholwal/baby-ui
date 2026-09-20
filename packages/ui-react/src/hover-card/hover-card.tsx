@@ -11,7 +11,7 @@ import {
 	useRef,
 	useState,
 } from "react";
-import { type AnchorPlacement, anchor } from "../lib/anchor";
+import { ANCHORED, type AnchorPlacement, anchor } from "../lib/anchor";
 import { cn } from "../lib/cn";
 
 type Ctx = {
@@ -91,7 +91,14 @@ export function HoverCardTrigger({ className, ...props }: ComponentProps<"span">
 
 export function HoverCardContent({ className, ...props }: ComponentProps<"div">) {
 	const card = useHoverCard();
-	if (!card.open) return null;
+	// Kept mounted after the first open so the surface can animate out as well as in.
+	const [mounted, setMounted] = useState(false);
+
+	useEffect(() => {
+		if (card.open) setMounted(true);
+	}, [card.open]);
+
+	if (!mounted) return null;
 
 	return (
 		<div
@@ -100,11 +107,13 @@ export function HoverCardContent({ className, ...props }: ComponentProps<"div">)
 			role="dialog"
 			tabIndex={-1}
 			data-slot="hover-card-content"
-			data-state="open"
+			data-state={card.open ? "open" : "closed"}
+			inert={!card.open}
 			onPointerEnter={() => card.schedule(true)}
 			onPointerLeave={() => card.schedule(false)}
 			className={cn(
-				"anchored z-50 w-64 rounded-xl border border-border bg-popover p-3 text-sm shadow-2xl",
+				ANCHORED,
+				"w-64 rounded-xl border border-border bg-popover p-3 text-sm shadow-2xl",
 				className,
 			)}
 			{...props}

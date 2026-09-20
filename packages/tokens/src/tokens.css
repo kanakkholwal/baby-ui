@@ -37,7 +37,8 @@
 	--destructive: var(--danger);
 	--destructive-foreground: oklch(99% 0 0);
 	--input: var(--border);
-	--ring: var(--border-strong);
+	/* Derived, so focus reads as the brand colour in every theme without a second knob. */
+	--ring: color-mix(in oklch, var(--primary) 50%, transparent);
 
 	--radius: 0.625rem;
 

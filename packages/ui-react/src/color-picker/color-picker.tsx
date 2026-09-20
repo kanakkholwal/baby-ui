@@ -326,7 +326,7 @@ export function ColorPicker({
 						aria-pressed={value.toLowerCase() === swatch.toLowerCase()}
 						onClick={() => apply(swatch)}
 						style={{ background: swatch }}
-						className="grid size-6 place-items-center rounded-md ring-1 ring-foreground/10 ring-inset transition-transform hover:scale-110"
+						className="grid size-6 place-items-center rounded-md ring-1 ring-foreground/10 ring-inset transition-[transform,scale,translate] hover:scale-110"
 					>
 						{value.toLowerCase() === swatch.toLowerCase() ? (
 							<svg

@@ -49,7 +49,6 @@ export function CodeBlock({
 			>
 				<code>
 					{lines.map((line, i) => (
-						// biome-ignore lint/suspicious/noArrayIndexKey: lines have no stable id
 						<span key={i} className="flex px-5">
 							{showLineNumbers ? (
 								<span

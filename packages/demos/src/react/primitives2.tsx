@@ -1,6 +1,7 @@
 "use client";
 
 import {
+	Button,
 	Collapsible,
 	CollapsibleContent,
 	CollapsibleTrigger,
@@ -31,35 +32,67 @@ const LOREM =
 	"Components here are copied into your project rather than installed, which means you own the source and can change anything. The registry only decides what the first version looks like. Every port satisfies the same ComponentSpec, so the React and Svelte builds behave identically even though neither is generated from the other.";
 
 export function SpinnerDemo({ props }: { props: Props }) {
-	const label = (props.label as string) || "Loading results";
+	const label = (props.label as string) || "Checking availability";
 	return (
-		<div className="flex items-center gap-3 text-muted-foreground">
-			<Spinner size={(props.size as "sm" | "md" | "lg") ?? "md"} label={label} />
-			<span className="text-sm">{label}</span>
+		<div className="flex w-64 flex-col items-center gap-4">
+			<div className="flex items-center gap-2.5 text-muted-foreground">
+				<Spinner size={(props.size as "sm" | "md" | "lg" | "xl") ?? "md"} label={label} />
+				<span className="text-sm">{label}</span>
+			</div>
+			<Button loading loadingLabel="Reserving…" className="w-full">
+				Reserve name
+			</Button>
 		</div>
 	);
 }
 
+const MARKS = [
+	{
+		id: "bold",
+		label: "Bold",
+		path: "M5 3h4.5a2.5 2.5 0 0 1 0 5H5zm0 5h5a2.5 2.5 0 0 1 0 5H5z",
+	},
+	{ id: "italic", label: "Italic", path: "M10 3H6.5m3 10H6m4-10L8 13" },
+	{
+		id: "underline",
+		label: "Underline",
+		path: "M4.5 2.5v5a3.5 3.5 0 0 0 7 0v-5M4 13.5h8",
+	},
+];
+
 export function ToggleDemo({ props }: { props: Props }) {
 	const [pressed, setPressed] = useState(false);
+	const [on, setOn] = useState<Record<string, boolean>>({});
 	useEffect(() => setPressed(Boolean(props.pressed)), [props.pressed]);
+	const size = (props.size as "sm" | "md" | "lg" | "xl") ?? "md";
+
 	return (
-		<Toggle
-			pressed={pressed}
-			onPressedChange={setPressed}
-			size={(props.size as "sm" | "md") ?? "md"}
-			disabled={Boolean(props.disabled)}
-			label={(props.label as string) || "Bold"}
-		>
-			<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-4">
-				<path
-					d="M5 3h4.5a2.5 2.5 0 0 1 0 5H5zm0 5h5a2.5 2.5 0 0 1 0 5H5z"
-					stroke="currentColor"
-					strokeWidth="1.4"
-					strokeLinejoin="round"
-				/>
-			</svg>
-		</Toggle>
+		<div className="inline-flex items-center gap-1 rounded-xl border border-border p-1">
+			{MARKS.map((mark) => (
+				<Toggle
+					key={mark.id}
+					size={size}
+					label={mark.label}
+					disabled={mark.id === "bold" && Boolean(props.disabled)}
+					pressed={mark.id === "bold" ? pressed : Boolean(on[mark.id])}
+					onPressedChange={(next) =>
+						mark.id === "bold"
+							? setPressed(next)
+							: setOn((prev) => ({ ...prev, [mark.id]: next }))
+					}
+				>
+					<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-4">
+						<path
+							d={mark.path}
+							stroke="currentColor"
+							strokeWidth="1.4"
+							strokeLinecap="round"
+							strokeLinejoin="round"
+						/>
+					</svg>
+				</Toggle>
+			))}
+		</div>
 	);
 }
 
@@ -137,10 +170,11 @@ export function ShortcutDemo({ props }: { props: Props }) {
 export function TypographyDemo({ props }: { props: Props }) {
 	return (
 		<div className="flex w-80 flex-col gap-3">
-			<Typography variant="h2">Ship it twice</Typography>
+			<Typography variant="h2">Release 0.4</Typography>
+			<Typography variant="muted">Shipped 20 September 2026</Typography>
 			<Typography variant={(props.variant as TypographyVariant) ?? "body"}>
-				One spec, two implementations, one token layer. Change the variant control to see
-				each level.
+				Overlays now animate out as well as in, and every anchored surface grows from the
+				edge nearest its trigger.
 			</Typography>
 		</div>
 	);

@@ -93,7 +93,7 @@ function active(match: string) {
 
 			<a
 				href="/components"
-				class="rainbow-ring group inline-flex h-9 items-stretch overflow-hidden rounded-2xl p-0.5 font-medium text-xs transition-transform duration-[var(--duration-press)] ease-[var(--ease-out)] active:scale-[var(--press-scale)]"
+				class="rainbow-ring group inline-flex h-9 items-stretch overflow-hidden rounded-2xl p-0.5 font-medium text-xs transition-[transform,scale,translate] duration-[var(--duration-press)] ease-[var(--ease-out)] active:scale-[var(--press-scale)]"
 			>
 				<span
 					class="inline-flex flex-1 items-center gap-1 rounded-[calc(1rem-2px)] bg-background px-3 text-foreground transition-colors group-hover:bg-card"

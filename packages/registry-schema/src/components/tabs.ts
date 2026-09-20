@@ -4,7 +4,7 @@ export const tabs = defineComponent({
 	slug: "tabs",
 	name: "Tabs",
 	description:
-		"Tabs, TabsList, TabsTrigger and TabsContent, with a sliding indicator and a scrolling list.",
+		"Panel switcher with a sliding indicator and a list that scrolls when it overflows.",
 	category: "base",
 	status: "stable",
 	variants: {

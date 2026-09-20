@@ -292,7 +292,7 @@ const FORMATS: ColorFormat[] = ["hsv", "hsl", "rgb"];
 				aria-pressed={value.toLowerCase() === swatch.toLowerCase()}
 				onclick={() => apply(swatch)}
 				style:background={swatch}
-				class="grid size-6 place-items-center rounded-md ring-1 ring-foreground/10 ring-inset transition-transform hover:scale-110"
+				class="grid size-6 place-items-center rounded-md ring-1 ring-foreground/10 ring-inset transition-[transform,scale,translate] hover:scale-110"
 			>
 				{#if value.toLowerCase() === swatch.toLowerCase()}
 					<svg viewBox="0 0 12 12" fill="none" aria-hidden="true" class="size-3 text-white drop-shadow-[0_1px_1px_rgb(0_0_0/0.6)]">

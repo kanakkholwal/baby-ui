@@ -1,6 +1,12 @@
 <script lang="ts">
 import { cn } from "../lib/cn";
 
+/** Mirrors its entrance: --duration-exit is 120ms, which EXIT_MS has to match. */
+const TOAST_MOTION =
+	"transition-[opacity,translate] duration-[var(--duration-overlay)] ease-[var(--ease-out)] starting:translate-y-2 starting:opacity-0 data-[state=closed]:translate-y-2 data-[state=closed]:opacity-0 data-[state=closed]:duration-[var(--duration-exit)] motion-reduce:transition-none";
+
+const EXIT_MS = 120;
+
 export type ToastTone = "info" | "success" | "warning" | "error";
 export type ToastVariant = "soft" | "solid" | "outline";
 export type ToastPosition =
@@ -64,9 +70,16 @@ const MARK: Record<ToastTone, string> = {
 const fromTop = $derived(position.startsWith("top"));
 const shown = $derived(fromTop ? toasts.slice(0, max) : toasts.slice(-max));
 
+let leaving = $state<string[]>([]);
+
 function dismiss(id: string) {
-	toasts = toasts.filter((t) => t.id !== id);
-	ondismiss?.(id);
+	if (leaving.includes(id)) return;
+	leaving = [...leaving, id];
+	setTimeout(() => {
+		toasts = toasts.filter((t) => t.id !== id);
+		leaving = leaving.filter((other) => other !== id);
+		ondismiss?.(id);
+	}, EXIT_MS);
 }
 
 // Opt-in only: a timer that removes text the reader is still on is hostile.
@@ -86,8 +99,10 @@ $effect(() => {
 		{@const tone = toast.tone ?? "info"}
 		<div
 			style:--toast-accent={ACCENT[tone]}
+			data-state={leaving.includes(toast.id) ? "closed" : "open"}
 			class={cn(
-				"toast-in pointer-events-auto flex w-[min(22rem,calc(100vw-2rem))] items-start gap-2.5 rounded-xl border p-3 shadow-2xl",
+				TOAST_MOTION,
+				"pointer-events-auto flex w-[min(22rem,calc(100vw-2rem))] items-start gap-2.5 rounded-xl border p-3 shadow-2xl",
 				variant === "soft" &&
 					"border-[color-mix(in_oklch,var(--toast-accent)_30%,transparent)] bg-popover",
 				variant === "outline" && "border-[var(--toast-accent)] bg-background",

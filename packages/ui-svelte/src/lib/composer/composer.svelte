@@ -73,7 +73,7 @@ function onkeydown(event: KeyboardEvent) {
 			onclick={submit}
 			disabled={busy || value.trim() === ""}
 			aria-label={busy ? "Sending" : "Send message"}
-			class="grid size-8 shrink-0 place-items-center rounded-lg bg-primary text-primary-foreground transition-transform duration-[var(--duration-press)] ease-[var(--ease-out)] active:scale-[var(--press-scale)] disabled:pointer-events-none disabled:opacity-40"
+			class="grid size-8 shrink-0 place-items-center rounded-lg bg-primary text-primary-foreground transition-[transform,scale,translate] duration-[var(--duration-press)] ease-[var(--ease-out)] active:scale-[var(--press-scale)] disabled:pointer-events-none disabled:opacity-40"
 		>
 			{#if busy}
 				<svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class="spinner size-3.5">

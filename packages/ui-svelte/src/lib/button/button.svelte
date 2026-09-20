@@ -27,7 +27,7 @@ let {
 }: Props = $props();
 
 const FACE =
-	"col-start-1 row-start-1 flex items-center justify-center gap-2 transition-[opacity,transform,filter] duration-200 ease-[var(--ease-out)] motion-reduce:transition-none data-[on=false]:pointer-events-none data-[on=false]:translate-y-[3px] data-[on=false]:opacity-0 data-[on=false]:blur-[3px]";
+	"col-start-1 row-start-1 flex items-center justify-center gap-2 transition-[opacity,transform,scale,translate,filter] duration-200 ease-[var(--ease-out)] motion-reduce:transition-none data-[on=false]:pointer-events-none data-[on=false]:translate-y-[3px] data-[on=false]:opacity-0 data-[on=false]:blur-[3px]";
 
 const classes = $derived(cn(button({ variant, size }), classProp));
 

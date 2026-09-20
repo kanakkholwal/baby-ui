@@ -2,7 +2,6 @@
 @import "./fonts.css";
 @import "./tokens.css";
 @import "./motion.css";
-@import "./dialkit.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -44,6 +43,11 @@
 	--ease-out: var(--ease-out);
 	--ease-in-out: var(--ease-in-out);
 	--ease-drawer: var(--ease-drawer);
+
+	/* Without these a bare `transition-colors` uses Tailwind's own curve, which
+	   is most hovers in the system quietly ignoring the motion layer. */
+	--default-transition-duration: 150ms;
+	--default-transition-timing-function: var(--ease-out);
 }
 
 @theme {

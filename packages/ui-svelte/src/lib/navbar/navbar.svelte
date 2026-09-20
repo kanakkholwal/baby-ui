@@ -2,6 +2,16 @@
 import type { Snippet } from "svelte";
 import { cn } from "../lib/cn";
 
+/** Mobile sheet, both ways: only the closed state translates, so nothing competes. */
+const SHEET_MOTION =
+	"transition-transform duration-[var(--duration-drawer)] ease-[var(--ease-drawer)] starting:translate-y-full data-[state=closed]:translate-y-full data-[state=closed]:duration-[var(--duration-overlay)] motion-reduce:transition-none";
+
+const VEIL_MOTION =
+	"transition-opacity duration-[var(--duration-overlay)] ease-[var(--ease-out)] starting:opacity-0 data-[state=closed]:opacity-0 data-[state=closed]:duration-[var(--duration-exit)] motion-reduce:transition-none";
+
+const LAYER_MOTION =
+	"transition-[visibility] duration-0 data-[state=closed]:invisible data-[state=closed]:delay-[var(--duration-overlay)]";
+
 type Link = { href: string; label: string };
 
 type Props = {
@@ -28,6 +38,8 @@ let scrolled = $state(false);
 let sheetOpen = $state(false);
 let list = $state<HTMLDivElement>();
 let sheet = $state<HTMLDivElement>();
+// Kept mounted after the first open so the sheet can slide out as well as in.
+let sheetMounted = $state(false);
 let pill = $state({ left: 0, width: 0 });
 
 $effect(() => {
@@ -59,6 +71,7 @@ $effect(() => {
 // Focus moves into the sheet on open so Escape and Tab behave as the spec says.
 $effect(() => {
 	if (!sheetOpen) return;
+	sheetMounted = true;
 	sheet?.querySelector<HTMLElement>("a")?.focus();
 	const onKey = (e: KeyboardEvent) => {
 		if (e.key === "Escape") sheetOpen = false;
@@ -90,7 +103,7 @@ $effect(() => {
 			<div bind:this={list} class="relative hidden items-center gap-0.5 md:flex">
 				<span
 					aria-hidden="true"
-					class="pointer-events-none absolute inset-y-1 left-0 rounded-md bg-foreground/[0.06] transition-[transform,width,opacity] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none"
+					class="pointer-events-none absolute inset-y-1 left-0 rounded-md bg-foreground/[0.06] transition-[transform,scale,translate,width,opacity] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none"
 					style:transform="translateX({pill.left}px)"
 					style:width="{pill.width}px"
 					style:opacity={pill.width ? 1 : 0}
@@ -124,20 +137,29 @@ $effect(() => {
 	</nav>
 </header>
 
-{#if sheetOpen}
-	<div class="fixed inset-0 z-50 md:hidden">
+{#if sheetMounted}
+	<div
+		class={cn(LAYER_MOTION, "fixed inset-0 z-50 md:hidden")}
+		data-state={sheetOpen ? "open" : "closed"}
+		inert={!sheetOpen}
+	>
 		<button
 			type="button"
 			aria-label="Close menu"
+			data-state={sheetOpen ? "open" : "closed"}
 			onclick={() => (sheetOpen = false)}
-			class="absolute inset-0 bg-black/40"
+			class={cn(VEIL_MOTION, "absolute inset-0 bg-black/40")}
 		></button>
 		<div
 			bind:this={sheet}
 			role="dialog"
 			aria-modal="true"
 			aria-label="Menu"
-			class="nav-sheet absolute inset-x-0 bottom-0 rounded-t-2xl border-border border-t bg-card p-4"
+			data-state={sheetOpen ? "open" : "closed"}
+			class={cn(
+				SHEET_MOTION,
+				"absolute inset-x-0 bottom-0 rounded-t-2xl border-border border-t bg-card p-4",
+			)}
 		>
 			<div class="mx-auto mb-3 h-1 w-10 rounded-full bg-border"></div>
 			{#each links as link (link.href)}

@@ -11,7 +11,7 @@ import {
 	useRef,
 	useState,
 } from "react";
-import { type AnchorPlacement, anchor } from "../lib/anchor";
+import { ANCHORED, type AnchorPlacement, anchor } from "../lib/anchor";
 import { cn } from "../lib/cn";
 
 type Ctx = {
@@ -110,7 +110,14 @@ export function TooltipTrigger({ className, ...props }: ComponentProps<"span">) 
 
 export function TooltipContent({ className, ...props }: ComponentProps<"div">) {
 	const tooltip = useTooltip();
-	if (!tooltip.open) return null;
+	// Kept mounted after the first open so the surface can animate out as well as in.
+	const [mounted, setMounted] = useState(false);
+
+	useEffect(() => {
+		if (tooltip.open) setMounted(true);
+	}, [tooltip.open]);
+
+	if (!mounted) return null;
 
 	return (
 		<div
@@ -118,9 +125,12 @@ export function TooltipContent({ className, ...props }: ComponentProps<"div">) {
 			id={tooltip.contentId}
 			role="tooltip"
 			data-slot="tooltip-content"
-			data-state="open"
+			data-state={tooltip.open ? "open" : "closed"}
+			inert={!tooltip.open}
 			className={cn(
-				"anchored pointer-events-none z-50 rounded-md border border-border bg-popover px-2 py-1 text-foreground text-xs shadow-lg",
+				ANCHORED,
+				"rounded-md border border-border bg-popover px-2 py-1 text-foreground text-xs shadow-lg",
+				"data-[state=open]:pointer-events-none",
 				className,
 			)}
 			{...props}

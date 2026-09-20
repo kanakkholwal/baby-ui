@@ -2,7 +2,7 @@
 import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 import { cn } from "../lib/cn";
-import { getCommand } from "./context";
+import { COMMAND_MARKER, getCommand } from "./context";
 
 let {
 	children,
@@ -12,10 +12,20 @@ let {
 
 const command = getCommand();
 let el = $state<HTMLDivElement>();
+let box = $state<{ x: number; y: number; w: number; h: number }>();
 
 $effect(() => {
 	command.setList(el);
 	return () => command.setList(undefined);
+});
+
+$effect(() => {
+	const row = command.activeId
+		? el?.querySelector<HTMLElement>(`#${CSS.escape(command.activeId)}`)
+		: null;
+	box = row
+		? { x: row.offsetLeft, y: row.offsetTop, w: row.offsetWidth, h: row.offsetHeight }
+		: undefined;
 });
 </script>
 
@@ -26,7 +36,19 @@ $effect(() => {
 	id={command.listId}
 	role="listbox"
 	data-slot="command-list"
-	class={cn("scroll-area min-h-0 flex-1 overflow-y-auto overscroll-contain py-1.5", classProp)}
+	class={cn(
+		"scroll-area relative min-h-0 flex-1 overflow-y-auto overscroll-contain py-1.5",
+		classProp,
+	)}
 >
+	{#if box}
+		<span
+			aria-hidden="true"
+			class={COMMAND_MARKER}
+			style:translate="{box.x}px {box.y}px"
+			style:width="{box.w}px"
+			style:height="{box.h}px"
+		></span>
+	{/if}
 	{@render children?.()}
 </div>

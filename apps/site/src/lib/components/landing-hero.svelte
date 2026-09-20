@@ -20,7 +20,7 @@ const words = HEADLINE.flatMap((line, i) =>
 		<IconArrowUpRight
 			size={13}
 			stroke={1.7}
-			class="text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+			class="text-muted-foreground transition-[transform,scale,translate] group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
 		/>
 	</a>
 
@@ -42,17 +42,16 @@ const words = HEADLINE.flatMap((line, i) =>
 	</h1>
 
 	<p class="mx-auto mt-6 max-w-md text-pretty text-base text-muted-foreground leading-7">
-		Copy-paste components for React and Svelte that share one token layer, so both
-		renders match without hand-tuning either.
+		Copy-paste components for React and Svelte, built from one spec and one token layer.
 	</p>
 
 	<div class="mt-8 flex flex-wrap items-center justify-center gap-3">
 		<a
 			href="/components"
-			class="group inline-flex min-h-10 items-center gap-2 rounded-full bg-primary px-4 font-medium text-primary-foreground text-sm transition-transform duration-[var(--duration-press)] ease-[var(--ease-out)] active:scale-[var(--press-scale)]"
+			class="group inline-flex min-h-10 items-center gap-2 rounded-full bg-primary px-4 font-medium text-primary-foreground text-sm transition-[transform,scale,translate] duration-[var(--duration-press)] ease-[var(--ease-out)] active:scale-[var(--press-scale)]"
 		>
 			Browse components
-			<IconArrowRight size={16} stroke={1.7} class="transition-transform group-hover:translate-x-0.5" />
+			<IconArrowRight size={16} stroke={1.7} class="transition-[transform,scale,translate] group-hover:translate-x-0.5" />
 		</a>
 		<a
 			href="/docs"

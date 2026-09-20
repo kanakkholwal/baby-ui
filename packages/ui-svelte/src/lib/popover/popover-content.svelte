@@ -1,6 +1,7 @@
 <script lang="ts">
 import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
+import { ANCHORED } from "../lib/anchor";
 import { cn } from "../lib/cn";
 import { getPopover } from "./context";
 
@@ -12,6 +13,12 @@ let {
 
 const popover = getPopover();
 let el = $state<HTMLDivElement>();
+// Kept mounted after the first open so the surface can animate out as well as in.
+let mounted = $state(false);
+
+$effect(() => {
+	if (popover.open) mounted = true;
+});
 
 $effect(() => {
 	popover.setContent(el);
@@ -19,16 +26,18 @@ $effect(() => {
 });
 </script>
 
-{#if popover.open}
+{#if mounted}
 	<div
 		{...rest}
 		bind:this={el}
 		id={popover.contentId}
 		role="dialog"
 		data-slot="popover-content"
-		data-state="open"
+		data-state={popover.open ? "open" : "closed"}
+		inert={!popover.open}
 		class={cn(
-			"anchored z-50 w-72 rounded-xl border border-border bg-popover p-3 text-sm shadow-2xl",
+			ANCHORED,
+			"w-72 rounded-xl border border-border bg-popover p-3 text-sm shadow-2xl",
 			classProp,
 		)}
 	>

@@ -38,12 +38,14 @@ export type SearchItem = {
 
 /** Flat index for the command palette, rebuilt from the specs on every load. */
 export function searchItems(): SearchItem[] {
-	return specs.map((s) => ({
-		href: `/components/${s.category}/${s.slug}`,
-		name: s.name,
-		group: CATEGORY_LABEL[s.category],
-		description: s.description,
-	}));
+	return specs
+		.map((s) => ({
+			href: `/components/${s.category}/${s.slug}`,
+			name: s.name,
+			group: CATEGORY_LABEL[s.category],
+			description: s.description,
+		}))
+		.sort((a, b) => a.name.localeCompare(b.name));
 }
 
 export type SidebarGroup = {
@@ -56,6 +58,7 @@ export function sidebarGroups(): SidebarGroup[] {
 	return CATEGORIES.map((category) => ({
 		category,
 		label: CATEGORY_LABEL[category],
+		// Alphabetical: the sidebar is for finding a known name, not for browsing.
 		items: specs
 			.filter((s) => s.category === category)
 			.map((s) => ({
@@ -63,7 +66,8 @@ export function sidebarGroups(): SidebarGroup[] {
 				name: s.name,
 				href: `/components/${s.category}/${s.slug}`,
 				status: s.status,
-			})),
+			}))
+			.sort((a, b) => a.name.localeCompare(b.name)),
 	})).filter((g) => g.items.length > 0);
 }
 

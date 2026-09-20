@@ -1,5 +1,5 @@
 <script lang="ts">
-import { anchor, dismissable, rove } from "../lib/anchor";
+import { ANCHORED, anchor, dismissable, rove } from "../lib/anchor";
 import { cn } from "../lib/cn";
 
 export type ComboOption = { value: string; label: string };
@@ -26,6 +26,12 @@ let query = $state("");
 let input = $state<HTMLInputElement>();
 let floating = $state<HTMLDivElement>();
 let index = $state(0);
+// Kept mounted after the first open so the list can animate out as well as in.
+let mounted = $state(false);
+
+$effect(() => {
+	if (open) mounted = true;
+});
 
 const selected = $derived(options.find((o) => o.value === value));
 const matches = $derived(
@@ -120,13 +126,18 @@ function onkeydown(event: KeyboardEvent) {
 	/>
 </div>
 
-{#if open}
+{#if mounted}
 	<div
 		bind:this={floating}
 		{id}
 		role="listbox"
+		data-state={open ? "open" : "closed"}
+		inert={!open}
 		style:max-height="min(14rem, var(--anchor-available-height, 14rem))"
-		class="anchored scroll-area z-50 overflow-y-auto rounded-xl border border-border bg-popover p-1 shadow-2xl"
+		class={cn(
+			ANCHORED,
+			"scroll-area overflow-y-auto rounded-xl border border-border bg-popover p-1 shadow-2xl",
+		)}
 	>
 		{#each matches as option, i (option.value)}
 			<button

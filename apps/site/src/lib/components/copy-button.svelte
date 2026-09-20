@@ -24,7 +24,7 @@ async function copy() {
 	onclick={copy}
 	aria-label={copied ? "Copied" : "Copy to clipboard"}
 	class={[
-		"inline-flex h-7 shrink-0 items-center gap-1.5 rounded-md border border-border bg-card font-medium text-[11px] text-muted-foreground transition-[color,transform] duration-[var(--duration-press)] ease-[var(--ease-out)] hover:text-foreground active:scale-[var(--press-scale)]",
+		"inline-flex h-7 shrink-0 items-center gap-1.5 rounded-md border border-border bg-card font-medium text-[11px] text-muted-foreground transition-[color,transform,scale,translate] duration-[var(--duration-press)] ease-[var(--ease-out)] hover:text-foreground active:scale-[var(--press-scale)]",
 		iconOnly ? "w-7 justify-center" : "px-2",
 		classProp,
 	]}

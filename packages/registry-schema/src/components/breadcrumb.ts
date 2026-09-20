@@ -4,7 +4,7 @@ export const breadcrumb = defineComponent({
 	slug: "breadcrumb",
 	name: "Breadcrumb",
 	description:
-		"Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator and BreadcrumbEllipsis.",
+		"Trail to the current page that collapses its middle when it runs out of room.",
 	category: "base",
 	status: "stable",
 	props: [

@@ -3,7 +3,7 @@ import { defineComponent } from "../index";
 export const toggleGroup = defineComponent({
 	slug: "toggle-group",
 	name: "Toggle Group",
-	description: "ToggleGroup and ToggleGroupItem, in single or multiple mode.",
+	description: "Row of toggles in single or multiple mode, sharing one tab stop.",
 	category: "base",
 	status: "stable",
 	props: [

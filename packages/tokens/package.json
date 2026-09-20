@@ -8,8 +8,7 @@
 		"./tokens.css": "./src/tokens.css",
 		"./motion.css": "./src/motion.css",
 		"./theme.css": "./src/theme.css",
-		"./fonts.css": "./src/fonts.css",
-		"./dialkit.css": "./src/dialkit.css"
+		"./fonts.css": "./src/fonts.css"
 	},
 	"files": [
 		"src",

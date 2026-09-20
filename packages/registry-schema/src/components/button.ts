@@ -77,8 +77,8 @@ export const button = defineComponent({
 		role: "button",
 		keyboard: [
 			"Space and Enter activate the button",
-			"Space activates the anchor form, which browsers do not do natively",
-			"Activation is refused while loading, but focus is retained",
+			"Space activates the anchor form, which browsers do not",
+			"Activation is refused while loading; focus stays put",
 		],
 		notes: [
 			"`aria-busy` is set while loading.",

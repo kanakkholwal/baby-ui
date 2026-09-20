@@ -77,7 +77,7 @@ function AccordionRow({
 					fill="none"
 					aria-hidden
 					style={{ transform: open ? "rotate(180deg)" : undefined }}
-					className="size-4 shrink-0 text-muted-foreground transition-transform duration-200 ease-[var(--ease-out)] motion-reduce:transition-none"
+					className="size-4 shrink-0 text-muted-foreground transition-[transform,scale,translate] duration-200 ease-[var(--ease-out)] motion-reduce:transition-none"
 				>
 					<path
 						d="m4 6 4 4 4-4"

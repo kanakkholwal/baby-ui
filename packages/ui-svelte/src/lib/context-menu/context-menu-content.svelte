@@ -1,7 +1,7 @@
 <script lang="ts">
 import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
-import { dismissable } from "../lib/anchor";
+import { ANCHORED, dismissable } from "../lib/anchor";
 import { cn } from "../lib/cn";
 import { getContextMenu } from "./context";
 
@@ -13,6 +13,12 @@ let {
 
 const menu = getContextMenu();
 let el = $state<HTMLDivElement>();
+// Kept mounted after the first open so the surface can animate out as well as in.
+let mounted = $state(false);
+
+$effect(() => {
+	if (menu.open) mounted = true;
+});
 
 // Positioned from a point rather than an element, so it clamps rather than flips.
 $effect(() => {
@@ -25,7 +31,7 @@ $effect(() => {
 });
 </script>
 
-{#if menu.open}
+{#if mounted}
 	<!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -->
 	<div
 		{...rest}
@@ -34,12 +40,14 @@ $effect(() => {
 		role="menu"
 		tabindex="-1"
 		data-slot="context-menu-content"
-		data-state="open"
-		style:position="fixed"
-		style:left="0"
-		style:top="0"
+		data-state={menu.open ? "open" : "closed"}
+		inert={!menu.open}
 		style:transform-origin="top left"
-		class={cn("anchored z-50 min-w-44 rounded-xl border border-border bg-popover p-1 shadow-2xl", classProp)}
+		class={cn(
+			ANCHORED,
+			"min-w-44 rounded-xl border border-border bg-popover p-1 shadow-2xl",
+			classProp,
+		)}
 	>
 		{@render children?.()}
 	</div>

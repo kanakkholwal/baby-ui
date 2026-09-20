@@ -4,7 +4,7 @@ export const pagination = defineComponent({
 	slug: "pagination",
 	name: "Pagination",
 	description:
-		"Pagination parts plus paginationRange, a sliding window with first and last always shown.",
+		"Page links in a sliding window, with the first and last always reachable.",
 	category: "base",
 	status: "stable",
 	props: [

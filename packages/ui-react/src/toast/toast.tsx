@@ -1,7 +1,13 @@
 "use client";
 
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { cn } from "../lib/cn";
+
+/** Mirrors its entrance: --duration-exit is 120ms, which EXIT_MS has to match. */
+const TOAST_MOTION =
+	"transition-[opacity,translate] duration-[var(--duration-overlay)] ease-[var(--ease-out)] starting:translate-y-2 starting:opacity-0 data-[state=closed]:translate-y-2 data-[state=closed]:opacity-0 data-[state=closed]:duration-[var(--duration-exit)] motion-reduce:transition-none";
+
+const EXIT_MS = 120;
 
 export type ToastTone = "info" | "success" | "warning" | "error";
 export type ToastVariant = "soft" | "solid" | "outline";
@@ -66,14 +72,27 @@ export function Toast({
 }: ToastProps) {
 	const fromTop = position.startsWith("top");
 	const shown = fromTop ? toasts.slice(0, max) : toasts.slice(-max);
+	const [leaving, setLeaving] = useState<string[]>([]);
+
+	// The consumer owns the list, so the exit has to play before it hears about the dismiss.
+	const dismiss = useCallback(
+		(id: string) => {
+			setLeaving((prev) => (prev.includes(id) ? prev : [...prev, id]));
+			setTimeout(() => {
+				setLeaving((prev) => prev.filter((other) => other !== id));
+				onDismiss?.(id);
+			}, EXIT_MS);
+		},
+		[onDismiss],
+	);
 
 	// Opt-in only: a timer that removes text the reader is still on is hostile.
 	useEffect(() => {
 		const timers = shown
 			.filter((toast) => toast.duration && toast.duration > 0)
-			.map((toast) => setTimeout(() => onDismiss?.(toast.id), toast.duration));
+			.map((toast) => setTimeout(() => dismiss(toast.id), toast.duration));
 		return () => timers.forEach(clearTimeout);
-	}, [shown, onDismiss]);
+	}, [shown, dismiss]);
 
 	return (
 		<div
@@ -90,8 +109,10 @@ export function Toast({
 					<div
 						key={toast.id}
 						style={{ ["--toast-accent" as string]: ACCENT[tone] }}
+						data-state={leaving.includes(toast.id) ? "closed" : "open"}
 						className={cn(
-							"toast-in pointer-events-auto flex w-[min(22rem,calc(100vw-2rem))] items-start gap-2.5 rounded-xl border p-3 shadow-2xl",
+							TOAST_MOTION,
+							"pointer-events-auto flex w-[min(22rem,calc(100vw-2rem))] items-start gap-2.5 rounded-xl border p-3 shadow-2xl",
 							variant === "soft" &&
 								"border-[color-mix(in_oklch,var(--toast-accent)_30%,transparent)] bg-popover",
 							variant === "outline" && "border-[var(--toast-accent)] bg-background",
@@ -145,7 +166,7 @@ export function Toast({
 							<button
 								type="button"
 								aria-label="Dismiss"
-								onClick={() => onDismiss?.(toast.id)}
+								onClick={() => dismiss(toast.id)}
 								className={cn(
 									"-mr-1 shrink-0 rounded-md p-1 transition-colors",
 									variant === "solid"

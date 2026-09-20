@@ -1,6 +1,13 @@
 <script lang="ts">
 import { cn } from "../lib/cn";
 
+/** The overlay fades both ways; each link follows on a delay set inline, so it cascades. */
+const NAV_MOTION =
+	"transition-[opacity,visibility] duration-[var(--duration-overlay)] ease-[var(--ease-out)] starting:opacity-0 data-[state=closed]:invisible data-[state=closed]:opacity-0 data-[state=closed]:duration-[var(--duration-exit)] motion-reduce:transition-none";
+
+const NAV_LINK_MOTION =
+	"transition-[opacity,translate] duration-[var(--duration-drawer)] ease-[var(--ease-out)] starting:translate-y-[0.3em] starting:opacity-0 data-[state=closed]:translate-y-[0.3em] data-[state=closed]:opacity-0 data-[state=closed]:delay-0 data-[state=closed]:duration-[var(--duration-exit)] motion-reduce:transition-none";
+
 export type NavLink = { href: string; label: string };
 
 let {
@@ -12,9 +19,12 @@ let {
 
 const id = $props.id();
 let panel = $state<HTMLDivElement>();
+// Kept mounted after the first open so the overlay can fade out as well as in.
+let mounted = $state(false);
 
 $effect(() => {
 	if (!open) return;
+	mounted = true;
 	panel?.querySelector<HTMLElement>("a")?.focus();
 	const previous = document.body.style.overflow;
 	document.body.style.overflow = "hidden";
@@ -29,13 +39,15 @@ $effect(() => {
 });
 </script>
 
-{#if open}
+{#if mounted}
 	<div
 		bind:this={panel}
 		role="dialog"
 		aria-modal="true"
 		aria-labelledby={id}
-		class={cn("fullscreen-nav fixed inset-0 z-50 flex flex-col bg-background", classProp)}
+		data-state={open ? "open" : "closed"}
+		inert={!open}
+		class={cn(NAV_MOTION, "fixed inset-0 z-50 flex flex-col bg-background", classProp)}
 	>
 		<div class="flex h-14 items-center justify-between px-4 md:px-6">
 			<h2 {id} class="font-semibold text-foreground text-sm">{title}</h2>
@@ -56,8 +68,12 @@ $effect(() => {
 				<a
 					href={link.href}
 					onclick={() => (open = false)}
-					style:animation-delay="{60 + i * 45}ms"
-					class="fullscreen-nav-link font-heading font-semibold text-4xl text-foreground tracking-tight transition-colors hover:text-muted-foreground sm:text-5xl"
+					data-state={open ? "open" : "closed"}
+					style:transition-delay="{60 + i * 45}ms"
+					class={cn(
+						NAV_LINK_MOTION,
+						"font-heading font-semibold text-4xl text-foreground tracking-tight hover:text-muted-foreground sm:text-5xl",
+					)}
 				>
 					{link.label}
 				</a>

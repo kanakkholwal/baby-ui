@@ -76,7 +76,7 @@ const row =
 			<IconChevronDown
 				size={14}
 				stroke={1.6}
-				class="transition-transform duration-[var(--duration-dropdown)] ease-[var(--ease-out)]"
+				class="transition-[transform,scale,translate] duration-[var(--duration-dropdown)] ease-[var(--ease-out)]"
 				style={open ? "transform: rotate(180deg)" : undefined}
 			/>
 		</button>

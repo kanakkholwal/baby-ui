@@ -4,8 +4,8 @@ export const button = tv({
 	base: [
 		"relative inline-flex shrink-0 select-none items-center justify-center gap-2",
 		"whitespace-nowrap rounded-md font-medium text-sm",
-		"transition-[transform,background-color,border-color,color] duration-[var(--duration-press)] ease-[var(--ease-out)]",
-		"active:scale-[var(--press-scale)]",
+		"transition-[transform,scale,translate,background-color,border-color,color] duration-[var(--duration-press)] ease-[var(--ease-out)]",
+		"hover:scale-[var(--hover-scale)] active:scale-[var(--press-scale)]",
 		"outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
 		"disabled:pointer-events-none disabled:opacity-50",
 		"aria-busy:cursor-progress",

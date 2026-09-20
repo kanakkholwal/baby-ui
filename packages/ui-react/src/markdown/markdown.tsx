@@ -67,7 +67,6 @@ export function Markdown({ content, className }: MarkdownProps) {
 	return (
 		<div className={cn("flex flex-col gap-3 text-sm leading-relaxed", className)}>
 			{parse(content).map((block, i) => {
-				// biome-ignore lint/suspicious/noArrayIndexKey: blocks have no stable id
 				const key = i;
 				if (block.kind === "heading" && block.level === 2) {
 					return (

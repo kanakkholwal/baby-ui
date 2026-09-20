@@ -36,8 +36,8 @@ const active = $derived(command.activeId === uid);
 		onpointermove={() => command.setActive(uid)}
 		{onclick}
 		class={cn(
-			"flex w-full items-center justify-between gap-3 rounded-lg px-2.5 py-2 text-left text-sm transition-colors",
-			active ? "bg-foreground/[0.06] text-foreground" : "text-muted-foreground",
+			"relative flex w-full items-center justify-between gap-3 rounded-lg px-2.5 py-2 text-left text-sm transition-colors",
+			active ? "text-foreground" : "text-muted-foreground",
 			classProp,
 		)}
 	>

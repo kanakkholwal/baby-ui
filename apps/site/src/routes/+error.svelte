@@ -73,7 +73,7 @@ const message = $derived(
 	<div class="mt-10 flex flex-wrap gap-3 text-sm">
 		<a
 			href="/"
-			class="inline-flex min-h-10 items-center rounded-full bg-primary px-4 font-medium text-primary-foreground transition-transform duration-[var(--duration-press)] ease-[var(--ease-out)] active:scale-[var(--press-scale)]"
+			class="inline-flex min-h-10 items-center rounded-full bg-primary px-4 font-medium text-primary-foreground transition-[transform,scale,translate] duration-[var(--duration-press)] ease-[var(--ease-out)] active:scale-[var(--press-scale)]"
 		>
 			Back home
 		</a>

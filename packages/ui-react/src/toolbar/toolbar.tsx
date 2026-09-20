@@ -52,7 +52,6 @@ export function Toolbar({
 	});
 
 	return (
-		// biome-ignore lint/a11y/useSemanticElements: toolbar has no HTML element
 		<div
 			ref={root}
 			role="toolbar"
