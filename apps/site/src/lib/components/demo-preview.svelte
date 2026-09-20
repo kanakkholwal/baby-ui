@@ -44,7 +44,7 @@ const iframeSrc = $derived(
 			<p>The React implementation renders live in the dev playground.</p>
 			<p class="mt-2 text-xs">
 				Both ports read the same token layer, so this preview is what the React one looks
-				like. Use the Code tab for its source.
+				like. Use the Usage tab for its source.
 			</p>
 		</div>
 	{/if}
