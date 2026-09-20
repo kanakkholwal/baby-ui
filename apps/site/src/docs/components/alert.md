@@ -1,10 +1,20 @@
 ---
 title: Alert
-description: Inline message with a semantic variant, an icon and optional dismissal.
+description: Inline message composed from Alert, AlertTitle and AlertDescription, with an optional dismiss.
 component: alert
 category: base
 tags: [alert, callout, notice]
 ---
+
+## Drop-in for shadcn
+
+`Alert`, `AlertTitle` and `AlertDescription`, with shadcn's `data-slot` values and grid
+layout. An `<svg>` placed directly inside the root takes the first column; without one
+the root collapses that column to zero, so an alert with no icon has no dead space.
+
+`variant` and `dismissible` are the only additions.
+
+## The variant picks the role
 
 The variant picks more than a colour. `warning` and `destructive` render with
 `role="alert"`, which interrupts a screen reader immediately. `info` and `success` use

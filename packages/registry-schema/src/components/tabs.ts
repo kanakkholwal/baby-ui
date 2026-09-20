@@ -4,7 +4,7 @@ export const tabs = defineComponent({
 	slug: "tabs",
 	name: "Tabs",
 	description:
-		"Tab list with an indicator that slides between tabs and a clipped label swap.",
+		"Tabs, TabsList, TabsTrigger and TabsContent, with a sliding indicator and a scrolling list.",
 	category: "base",
 	status: "stable",
 	variants: {
@@ -32,12 +32,6 @@ export const tabs = defineComponent({
 			default: "md",
 			control: { kind: "select", options: ["sm", "md", "lg", "xl"] },
 		},
-		{
-			name: "tabs",
-			type: "{ id: string; label: string }[]",
-			description: "Tabs, in order.",
-			control: { kind: "none" },
-		},
 	],
 	motion: {
 		springs: [],
@@ -58,6 +52,7 @@ export const tabs = defineComponent({
 		notes: [
 			"Each tab is aria-controls linked to its panel, and the panel is aria-labelledby its tab.",
 			"Selection follows focus, which is correct only because panels are already rendered; it would be wrong if switching fetched data.",
+			"Part names and data-slot values match shadcn/ui, so this replaces an existing tabs without touching call sites.",
 		],
 	},
 	licenseOrigin: {
@@ -79,6 +74,10 @@ export const tabs = defineComponent({
 			entry: "Tabs",
 			files: [
 				{ path: "tabs/tabs.svelte", type: "registry:ui" },
+				{ path: "tabs/tabs-list.svelte", type: "registry:ui" },
+				{ path: "tabs/tabs-trigger.svelte", type: "registry:ui" },
+				{ path: "tabs/tabs-content.svelte", type: "registry:ui" },
+				{ path: "tabs/context.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge"],

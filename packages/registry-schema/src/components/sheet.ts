@@ -18,16 +18,9 @@ export const sheet = defineComponent({
 		{
 			name: "side",
 			type: '"left" | "right" | "top" | "bottom"',
-			description: "Edge it slides from.",
+			description: "SheetContent: the edge it slides from.",
 			default: "right",
 			control: { kind: "select", options: ["left", "right", "top", "bottom"] },
-		},
-		{
-			name: "title",
-			type: "string",
-			description: "Accessible name and visible heading.",
-			default: "Filters",
-			control: { kind: "text" },
 		},
 	],
 	motion: {
@@ -65,6 +58,14 @@ export const sheet = defineComponent({
 			entry: "Sheet",
 			files: [
 				{ path: "sheet/sheet.svelte", type: "registry:ui" },
+				{ path: "sheet/sheet-trigger.svelte", type: "registry:ui" },
+				{ path: "sheet/sheet-content.svelte", type: "registry:ui" },
+				{ path: "sheet/sheet-header.svelte", type: "registry:ui" },
+				{ path: "sheet/sheet-title.svelte", type: "registry:ui" },
+				{ path: "sheet/sheet-description.svelte", type: "registry:ui" },
+				{ path: "sheet/sheet-footer.svelte", type: "registry:ui" },
+				{ path: "sheet/sheet-close.svelte", type: "registry:ui" },
+				{ path: "sheet/context.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge"],

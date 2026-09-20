@@ -4,7 +4,11 @@ import type { AlertVariant, BadgeSize, BadgeVariant, InputSize } from "@baby-ui/
 import {
 	Accordion,
 	Alert,
+	AlertDescription,
+	AlertTitle,
 	Avatar,
+	AvatarFallback,
+	AvatarImage,
 	Badge,
 	Button,
 	Card,
@@ -39,14 +43,22 @@ export function BadgeDemo({ props }: { props: Props }) {
 
 export function AvatarDemo({ props }: { props: Props }) {
 	const name = (props.name as string) || "Kanak Kholwal";
+	const initials = name
+		.trim()
+		.split(/\s+/)
+		.map((word) => word[0] ?? "")
+		.slice(0, 2)
+		.join("")
+		.toUpperCase();
 	return (
 		<div className="flex items-center gap-3">
 			<Avatar
-				name={name}
-				src={(props.src as string) || undefined}
 				size={(props.size as "sm" | "md" | "lg" | "xl") ?? "md"}
 				shape={(props.shape as "circle" | "square") ?? "circle"}
-			/>
+			>
+				<AvatarFallback>{initials}</AvatarFallback>
+				<AvatarImage src={(props.src as string) || undefined} alt={name} />
+			</Avatar>
 			<div className="text-sm">
 				<p className="font-medium text-foreground">{name}</p>
 				<p className="text-muted-foreground text-xs">
@@ -202,6 +214,13 @@ export function SkeletonDemo({ props }: { props: Props }) {
 	);
 }
 
+const ALERT_ICON: Record<AlertVariant, string> = {
+	info: "M8 7.2v4M8 5.1h.01",
+	success: "M4.8 8.3 7 10.5l4.2-4.6",
+	warning: "M8 5.6v3.2M8 11.1h.01",
+	destructive: "M5.6 5.6l4.8 4.8M10.4 5.6l-4.8 4.8",
+};
+
 export function AlertDemo({ props }: { props: Props }) {
 	const variant = (props.variant as AlertVariant) ?? "info";
 	return (
@@ -209,10 +228,22 @@ export function AlertDemo({ props }: { props: Props }) {
 			<Alert
 				key={`${variant}-${String(props.dismissible)}`}
 				variant={variant}
-				title={(props.title as string) || undefined}
 				dismissible={Boolean(props.dismissible)}
 			>
-				Your last deploy finished 4 minutes ago and is serving traffic.
+				<svg viewBox="0 0 16 16" fill="none" aria-hidden>
+					<circle cx="8" cy="8" r="6.4" stroke="currentColor" strokeWidth="1.3" />
+					<path
+						d={ALERT_ICON[variant]}
+						stroke="currentColor"
+						strokeWidth="1.5"
+						strokeLinecap="round"
+						strokeLinejoin="round"
+					/>
+				</svg>
+				<AlertTitle>Deployment finished</AlertTitle>
+				<AlertDescription>
+					Your last deploy finished 4 minutes ago and is serving traffic.
+				</AlertDescription>
 			</Alert>
 		</div>
 	);

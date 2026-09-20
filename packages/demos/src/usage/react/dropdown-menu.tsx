@@ -1,17 +1,23 @@
-import { DropdownMenu } from "@baby-ui/react";
-
-const items = [
-	{ id: "profile", label: "Profile" },
-	{ id: "team", label: "Team settings" },
-	{ id: "logout", label: "Sign out" },
-];
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from "@baby-ui/react";
 
 export function Example() {
 	return (
-		<DropdownMenu
-			items={items}
-			trigger={<span>Account</span>}
-			onSelect={(id) => console.log(id)}
-		/>
+		<DropdownMenu>
+			<DropdownMenuTrigger>Account</DropdownMenuTrigger>
+			<DropdownMenuContent>
+				<DropdownMenuLabel>Signed in as ada</DropdownMenuLabel>
+				<DropdownMenuItem>Profile</DropdownMenuItem>
+				<DropdownMenuItem>Team settings</DropdownMenuItem>
+				<DropdownMenuSeparator />
+				<DropdownMenuItem destructive>Sign out</DropdownMenuItem>
+			</DropdownMenuContent>
+		</DropdownMenu>
 	);
 }

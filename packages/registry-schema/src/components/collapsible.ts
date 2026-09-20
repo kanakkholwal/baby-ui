@@ -3,17 +3,11 @@ import { defineComponent } from "../index";
 export const collapsible = defineComponent({
 	slug: "collapsible",
 	name: "Collapsible",
-	description: "Single disclosure with animated height and no measurement.",
+	description:
+		"Collapsible, CollapsibleTrigger and CollapsibleContent, with animated height and no measurement.",
 	category: "base",
 	status: "stable",
 	props: [
-		{
-			name: "label",
-			type: "string",
-			description: "Trigger text.",
-			default: "Advanced options",
-			control: { kind: "text" },
-		},
 		{
 			name: "open",
 			type: "boolean",
@@ -53,6 +47,9 @@ export const collapsible = defineComponent({
 			entry: "Collapsible",
 			files: [
 				{ path: "collapsible/collapsible.svelte", type: "registry:ui" },
+				{ path: "collapsible/collapsible-trigger.svelte", type: "registry:ui" },
+				{ path: "collapsible/collapsible-content.svelte", type: "registry:ui" },
+				{ path: "collapsible/context.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge"],

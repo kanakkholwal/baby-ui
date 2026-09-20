@@ -1,11 +1,21 @@
 <script lang="ts">
-import { Button, Sheet } from "@baby-ui/svelte";
-
-let open = $state(false);
+import {
+	Sheet,
+	SheetClose,
+	SheetContent,
+	SheetHeader,
+	SheetTitle,
+	SheetTrigger,
+} from "@baby-ui/svelte";
 </script>
 
-<Button onclick={() => (open = true)}>Open sheet</Button>
-
-<Sheet bind:open side="right" title="Filters">
-	<p class="text-muted-foreground text-sm">Anything can live in the panel.</p>
+<Sheet>
+	<SheetTrigger>Open sheet</SheetTrigger>
+	<SheetContent side="right">
+		<SheetHeader>
+			<SheetTitle>Filters</SheetTitle>
+			<SheetClose />
+		</SheetHeader>
+		<p class="text-muted-foreground text-sm">Anything can live in the panel.</p>
+	</SheetContent>
 </Sheet>

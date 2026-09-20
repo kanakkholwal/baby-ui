@@ -1,7 +1,7 @@
 import { tv } from "tailwind-variants";
 
 export const alert = tv({
-	base: "flex items-start gap-3 rounded-xl border p-3.5 text-sm",
+	base: "relative grid w-full grid-cols-[0_1fr] items-start gap-y-0.5 rounded-xl border px-4 py-3 text-sm has-[>svg]:grid-cols-[1rem_1fr] has-[>svg]:gap-x-3 [&>svg]:size-4 [&>svg]:translate-y-0.5 [&>svg]:text-current",
 	variants: {
 		variant: {
 			info: "border-border bg-card text-foreground",

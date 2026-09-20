@@ -1,23 +1,16 @@
 "use client";
 
-import { ToggleGroup } from "@baby-ui/react";
+import { ToggleGroup, ToggleGroupItem } from "@baby-ui/react";
 import { useState } from "react";
-
-const options = [
-	{ value: "left", label: "Left" },
-	{ value: "center", label: "Center" },
-	{ value: "right", label: "Right" },
-];
 
 export function Example() {
 	const [value, setValue] = useState<string | string[]>("left");
 
 	return (
-		<ToggleGroup
-			value={value}
-			onValueChange={setValue}
-			options={options}
-			label="Alignment"
-		/>
+		<ToggleGroup value={value} onValueChange={setValue} type="single" label="Alignment">
+			<ToggleGroupItem value="left">Left</ToggleGroupItem>
+			<ToggleGroupItem value="center">Center</ToggleGroupItem>
+			<ToggleGroupItem value="right">Right</ToggleGroupItem>
+		</ToggleGroup>
 	);
 }

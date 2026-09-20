@@ -6,14 +6,7 @@ export const contextMenu = defineComponent({
 	description: "Right-click menu positioned at the pointer, clamped to the viewport.",
 	category: "base",
 	status: "beta",
-	props: [
-		{
-			name: "items",
-			type: "ContextItem[]",
-			description: "Actions, in order.",
-			control: { kind: "none" },
-		},
-	],
+	props: [],
 	motion: {
 		springs: [],
 		reducedMotion: "The menu appears without the scale.",
@@ -50,6 +43,12 @@ export const contextMenu = defineComponent({
 			entry: "ContextMenu",
 			files: [
 				{ path: "context-menu/context-menu.svelte", type: "registry:ui" },
+				{ path: "context-menu/context-menu-trigger.svelte", type: "registry:ui" },
+				{ path: "context-menu/context-menu-content.svelte", type: "registry:ui" },
+				{ path: "context-menu/context-menu-item.svelte", type: "registry:ui" },
+				{ path: "context-menu/context-menu-label.svelte", type: "registry:ui" },
+				{ path: "context-menu/context-menu-separator.svelte", type: "registry:ui" },
+				{ path: "context-menu/context.ts", type: "registry:ui" },
 				{ path: "lib/anchor.ts", type: "registry:lib" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],

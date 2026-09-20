@@ -42,12 +42,6 @@ export const radioGroup = defineComponent({
 			default: false,
 			control: { kind: "boolean" },
 		},
-		{
-			name: "options",
-			type: "{ value: string; label: string }[]",
-			description: "Options, in order.",
-			control: { kind: "none" },
-		},
 	],
 	motion: {
 		springs: [],
@@ -86,6 +80,8 @@ export const radioGroup = defineComponent({
 			entry: "RadioGroup",
 			files: [
 				{ path: "radio-group/radio-group.svelte", type: "registry:ui" },
+				{ path: "radio-group/radio-group-item.svelte", type: "registry:ui" },
+				{ path: "radio-group/context.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge"],

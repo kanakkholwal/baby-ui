@@ -1,10 +1,12 @@
 <script lang="ts">
-import { HoverCard } from "@baby-ui/svelte";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@baby-ui/svelte";
 </script>
 
 <HoverCard>
-	{#snippet trigger()}
+	<HoverCardTrigger>
 		<a href="/about">baby-ui</a>
-	{/snippet}
-	<p class="text-sm">A registry of React and Svelte components built from one spec.</p>
+	</HoverCardTrigger>
+	<HoverCardContent>
+		<p class="text-sm">A registry of React and Svelte components built from one spec.</p>
+	</HoverCardContent>
 </HoverCard>

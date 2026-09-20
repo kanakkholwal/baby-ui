@@ -3,16 +3,10 @@ import { defineComponent } from "../index";
 export const toggleGroup = defineComponent({
 	slug: "toggle-group",
 	name: "Toggle Group",
-	description: "Segmented set of toggles in single or multiple mode.",
+	description: "ToggleGroup and ToggleGroupItem, in single or multiple mode.",
 	category: "base",
 	status: "stable",
 	props: [
-		{
-			name: "options",
-			type: "ToggleOption[]",
-			description: "Options, in order.",
-			control: { kind: "none" },
-		},
 		{
 			name: "value",
 			type: "string | string[]",
@@ -20,11 +14,18 @@ export const toggleGroup = defineComponent({
 			control: { kind: "text" },
 		},
 		{
-			name: "multiple",
-			type: "boolean",
-			description: "Allow more than one option at a time.",
-			default: false,
-			control: { kind: "boolean" },
+			name: "type",
+			type: '"single" | "multiple"',
+			description: "Whether more than one item can be pressed at once.",
+			default: "single",
+			control: { kind: "select", options: ["single", "multiple"] },
+		},
+		{
+			name: "size",
+			type: '"sm" | "md" | "lg" | "xl"',
+			description: "Item size.",
+			default: "md",
+			control: { kind: "select", options: ["sm", "md", "lg", "xl"] },
 		},
 		{
 			name: "disabled",
@@ -60,6 +61,8 @@ export const toggleGroup = defineComponent({
 			entry: "ToggleGroup",
 			files: [
 				{ path: "toggle-group/toggle-group.svelte", type: "registry:ui" },
+				{ path: "toggle-group/toggle-group-item.svelte", type: "registry:ui" },
+				{ path: "toggle-group/context.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge"],

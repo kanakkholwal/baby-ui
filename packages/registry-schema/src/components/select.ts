@@ -9,12 +9,6 @@ export const select = defineComponent({
 	status: "stable",
 	props: [
 		{
-			name: "options",
-			type: "SelectOption[]",
-			description: "Options, in order.",
-			control: { kind: "none" },
-		},
-		{
 			name: "value",
 			type: "string",
 			description: "Selected value. Bindable.",
@@ -85,6 +79,14 @@ export const select = defineComponent({
 			entry: "Select",
 			files: [
 				{ path: "select/select.svelte", type: "registry:ui" },
+				{ path: "select/select-trigger.svelte", type: "registry:ui" },
+				{ path: "select/select-value.svelte", type: "registry:ui" },
+				{ path: "select/select-content.svelte", type: "registry:ui" },
+				{ path: "select/select-item.svelte", type: "registry:ui" },
+				{ path: "select/select-group.svelte", type: "registry:ui" },
+				{ path: "select/select-label.svelte", type: "registry:ui" },
+				{ path: "select/select-separator.svelte", type: "registry:ui" },
+				{ path: "select/context.ts", type: "registry:ui" },
 				{ path: "lib/anchor.ts", type: "registry:lib" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],

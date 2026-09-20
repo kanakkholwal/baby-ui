@@ -3,7 +3,8 @@ import { defineComponent } from "../index";
 export const pagination = defineComponent({
 	slug: "pagination",
 	name: "Pagination",
-	description: "Page links with a sliding window and always-visible first and last.",
+	description:
+		"Pagination parts plus paginationRange, a sliding window with first and last always shown.",
 	category: "base",
 	status: "stable",
 	props: [
@@ -34,6 +35,8 @@ export const pagination = defineComponent({
 		notes: [
 			"A nav labelled Pagination; the current page carries aria-current=page.",
 			"The arrows have accessible names, because a bare chevron is announced as button.",
+			"Part names and data-slot values match shadcn/ui, so this replaces an existing pagination without touching call sites.",
+			"`paginationRange` is a plain function, not a component, so the window logic is reusable without adopting the markup.",
 		],
 	},
 	licenseOrigin: {
@@ -47,6 +50,7 @@ export const pagination = defineComponent({
 			entry: "Pagination",
 			files: [
 				{ path: "pagination/pagination.tsx", type: "registry:ui" },
+				{ path: "pagination/range.ts", type: "registry:lib" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge"],
@@ -55,6 +59,13 @@ export const pagination = defineComponent({
 			entry: "Pagination",
 			files: [
 				{ path: "pagination/pagination.svelte", type: "registry:ui" },
+				{ path: "pagination/pagination-content.svelte", type: "registry:ui" },
+				{ path: "pagination/pagination-item.svelte", type: "registry:ui" },
+				{ path: "pagination/pagination-link.svelte", type: "registry:ui" },
+				{ path: "pagination/pagination-previous.svelte", type: "registry:ui" },
+				{ path: "pagination/pagination-next.svelte", type: "registry:ui" },
+				{ path: "pagination/pagination-ellipsis.svelte", type: "registry:ui" },
+				{ path: "pagination/range.ts", type: "registry:lib" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge"],

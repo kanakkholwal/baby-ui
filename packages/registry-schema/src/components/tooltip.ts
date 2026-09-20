@@ -11,7 +11,8 @@ export const tooltip = defineComponent({
 		{
 			name: "label",
 			type: "string",
-			description: "Text to show. Keep it short; a tooltip is not a paragraph.",
+			description:
+				"Demo only: the TooltipContent text. Keep it short; a tooltip is not a paragraph.",
 			default: "Copy to clipboard",
 			control: { kind: "text" },
 		},
@@ -81,6 +82,10 @@ export const tooltip = defineComponent({
 			entry: "Tooltip",
 			files: [
 				{ path: "tooltip/tooltip.svelte", type: "registry:ui" },
+				{ path: "tooltip/tooltip-trigger.svelte", type: "registry:ui" },
+				{ path: "tooltip/tooltip-content.svelte", type: "registry:ui" },
+				{ path: "tooltip/tooltip-provider.svelte", type: "registry:ui" },
+				{ path: "tooltip/context.ts", type: "registry:ui" },
 				{ path: "lib/anchor.ts", type: "registry:lib" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],

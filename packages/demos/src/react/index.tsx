@@ -44,8 +44,8 @@ import {
 import {
 	AlertDialogDemo,
 	CommandDemo,
+	DialogDemo,
 	FullscreenNavDemo,
-	ModalDemo,
 	SheetDemo,
 	ToastDemo,
 	ToolbarDemo,
@@ -328,7 +328,7 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	gauge: GaugeDemo,
 	pagination: PaginationDemo,
 	"scroll-area": ScrollAreaDemo,
-	modal: ModalDemo,
+	dialog: DialogDemo,
 	"alert-dialog": AlertDialogDemo,
 	sheet: SheetDemo,
 	toast: ToastDemo,

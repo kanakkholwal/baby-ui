@@ -1,16 +1,14 @@
 <script lang="ts">
-import { Tabs } from "@baby-ui/svelte";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@baby-ui/svelte";
 
 let value = $state("overview");
-const tabs = [
-	{ id: "overview", label: "Overview" },
-	{ id: "activity", label: "Activity" },
-	{ id: "settings", label: "Settings" },
-];
 </script>
 
-<Tabs bind:value {tabs} variant="underline" size="md">
-	{#snippet panel(active)}
-		<p class="text-muted-foreground text-sm">Showing {active}.</p>
-	{/snippet}
+<Tabs bind:value variant="underline">
+	<TabsList>
+		<TabsTrigger value="overview">Overview</TabsTrigger>
+		<TabsTrigger value="activity">Activity</TabsTrigger>
+	</TabsList>
+	<TabsContent value="overview">Deployment health and traffic.</TabsContent>
+	<TabsContent value="activity">Every deploy and who triggered it.</TabsContent>
 </Tabs>

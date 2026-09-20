@@ -1,6 +1,6 @@
 ---
 title: Command Palette
-description: Filtering command list in a modal dialog, driven entirely from the keyboard.
+description: Command, CommandDialog, CommandInput, CommandList, CommandGroup and CommandItem, driven entirely from the keyboard.
 component: command
 category: base
 tags: [command]

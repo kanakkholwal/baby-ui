@@ -1,11 +1,21 @@
 <script lang="ts">
-import { Breadcrumb } from "@baby-ui/svelte";
-
-const items = [
-	{ href: "/", label: "Home" },
-	{ href: "/components", label: "Components" },
-	{ label: "Breadcrumb" },
-];
+import {
+	Breadcrumb,
+	BreadcrumbEllipsis,
+	BreadcrumbItem,
+	BreadcrumbLink,
+	BreadcrumbList,
+	BreadcrumbPage,
+	BreadcrumbSeparator,
+} from "@baby-ui/svelte";
 </script>
 
-<Breadcrumb {items} maxVisible={4} />
+<Breadcrumb>
+	<BreadcrumbList>
+		<BreadcrumbItem><BreadcrumbLink href="/">Home</BreadcrumbLink></BreadcrumbItem>
+		<BreadcrumbSeparator />
+		<BreadcrumbItem><BreadcrumbEllipsis /></BreadcrumbItem>
+		<BreadcrumbSeparator />
+		<BreadcrumbItem><BreadcrumbPage>Breadcrumb</BreadcrumbPage></BreadcrumbItem>
+	</BreadcrumbList>
+</Breadcrumb>

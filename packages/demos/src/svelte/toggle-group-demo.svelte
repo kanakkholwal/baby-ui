@@ -1,21 +1,23 @@
 <script lang="ts">
-import { ToggleGroup } from "@baby-ui/svelte";
+import { ToggleGroup, ToggleGroupItem } from "@baby-ui/svelte";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
 
 let value = $state<string | string[]>("grid");
 
-const options = [
-	{ value: "list", label: "List" },
-	{ value: "grid", label: "Grid" },
-	{ value: "board", label: "Board" },
-];
+$effect(() => {
+	value = props.type === "multiple" ? ["grid"] : "grid";
+});
 </script>
 
 <ToggleGroup
-	{options}
 	bind:value
-	multiple={Boolean(props.multiple)}
+	type={(props.type as "single" | "multiple") ?? "single"}
+	size={(props.size as "sm" | "md" | "lg" | "xl") ?? "md"}
 	disabled={Boolean(props.disabled)}
 	label="View"
-/>
+>
+	<ToggleGroupItem value="list">List</ToggleGroupItem>
+	<ToggleGroupItem value="grid">Grid</ToggleGroupItem>
+	<ToggleGroupItem value="board">Board</ToggleGroupItem>
+</ToggleGroup>

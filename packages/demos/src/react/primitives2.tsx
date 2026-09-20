@@ -2,14 +2,24 @@
 
 import {
 	Collapsible,
+	CollapsibleContent,
+	CollapsibleTrigger,
 	Gauge,
 	Pagination,
+	PaginationContent,
+	PaginationEllipsis,
+	PaginationItem,
+	PaginationLink,
+	PaginationNext,
+	PaginationPrevious,
+	paginationRange,
 	ScrollArea,
 	Shortcut,
 	ShowMore,
 	Spinner,
 	Toggle,
 	ToggleGroup,
+	ToggleGroupItem,
 	Typography,
 	type TypographyVariant,
 } from "@baby-ui/react";
@@ -63,22 +73,31 @@ export function ToggleGroupDemo({ props }: { props: Props }) {
 	const [value, setValue] = useState<string | string[]>("grid");
 	return (
 		<ToggleGroup
-			options={VIEWS}
 			value={value}
 			onValueChange={setValue}
-			multiple={Boolean(props.multiple)}
+			type={(props.type as "single" | "multiple") ?? "single"}
+			size={(props.size as "sm" | "md" | "lg" | "xl") ?? "md"}
 			disabled={Boolean(props.disabled)}
 			label="View"
-		/>
+		>
+			{VIEWS.map((view) => (
+				<ToggleGroupItem key={view.value} value={view.value}>
+					{view.label}
+				</ToggleGroupItem>
+			))}
+		</ToggleGroup>
 	);
 }
 
 export function CollapsibleDemo({ props }: { props: Props }) {
 	return (
 		<div className="w-80">
-			<Collapsible label={(props.label as string) || "Advanced options"}>
-				Build command, install command and the output directory. Changing these rebuilds
-				every preview deployment.
+			<Collapsible defaultOpen={Boolean(props.open)}>
+				<CollapsibleTrigger>Advanced options</CollapsibleTrigger>
+				<CollapsibleContent>
+					Build command, install command and the output directory. Changing these rebuilds
+					every preview deployment.
+				</CollapsibleContent>
 			</Collapsible>
 		</div>
 	);
@@ -147,13 +166,32 @@ export function GaugeDemo({ props }: { props: Props }) {
 export function PaginationDemo({ props }: { props: Props }) {
 	const [page, setPage] = useState(4);
 	useEffect(() => setPage(Number(props.page ?? 4)), [props.page]);
+	const total = Number(props.total ?? 12);
+	const entries = paginationRange(page, total, Number(props.siblings ?? 1));
 	return (
-		<Pagination
-			page={page}
-			onPageChange={setPage}
-			total={Number(props.total ?? 12)}
-			siblings={Number(props.siblings ?? 1)}
-		/>
+		<Pagination>
+			<PaginationPrevious
+				disabled={page <= 1}
+				onClick={() => setPage((p) => Math.max(1, p - 1))}
+			/>
+			<PaginationContent>
+				{entries.map((entry, i) => (
+					<PaginationItem key={typeof entry === "number" ? entry : `gap-${i}`}>
+						{entry === "gap" ? (
+							<PaginationEllipsis />
+						) : (
+							<PaginationLink active={entry === page} onClick={() => setPage(entry)}>
+								{entry}
+							</PaginationLink>
+						)}
+					</PaginationItem>
+				))}
+			</PaginationContent>
+			<PaginationNext
+				disabled={page >= total}
+				onClick={() => setPage((p) => Math.min(total, p + 1))}
+			/>
+		</Pagination>
 	);
 }
 

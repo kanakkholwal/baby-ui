@@ -1,14 +1,21 @@
 <script lang="ts">
-import { Collapsible } from "@baby-ui/svelte";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@baby-ui/svelte";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
 
 let open = $state(false);
+
+$effect(() => {
+	open = Boolean(props.open);
+});
 </script>
 
 <div class="w-80">
-	<Collapsible bind:open label={(props.label as string) || "Advanced options"}>
-		Build command, install command and the output directory. Changing these rebuilds
-		every preview deployment.
+	<Collapsible bind:open>
+		<CollapsibleTrigger>Advanced options</CollapsibleTrigger>
+		<CollapsibleContent>
+			Build command, install command and the output directory. Changing these rebuilds every
+			preview deployment.
+		</CollapsibleContent>
 	</Collapsible>
 </div>

@@ -2,13 +2,44 @@
 
 import {
 	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
 	Button,
 	Command,
+	CommandDialog,
+	CommandEmpty,
+	CommandGroup,
+	CommandInput,
+	CommandItem,
+	CommandList,
+	CommandShortcut,
+	Dialog,
+	DialogClose,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
 	FullscreenNav,
 	Label,
-	Modal,
 	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
 	Sheet,
+	SheetClose,
+	SheetContent,
+	SheetHeader,
+	SheetTitle,
+	SheetTrigger,
 	Toast,
 	type ToastItem,
 	type ToastTone,
@@ -21,61 +52,66 @@ type Props = Record<string, unknown>;
 const BTN =
 	"inline-flex h-9 items-center rounded-lg border border-border bg-card px-3 font-medium text-foreground text-sm";
 
-export function ModalDemo({ props }: { props: Props }) {
+export function DialogDemo({ props }: { props: Props }) {
 	const [open, setOpen] = useState(false);
 	return (
-		<>
-			<button type="button" className={BTN} onClick={() => setOpen(true)}>
-				Open modal
-			</button>
-			<Modal
-				open={open}
-				onOpenChange={setOpen}
-				title={(props.title as string) || "Deploy to production"}
-				description={
-					(props.description as string) || "This will replace the current build."
-				}
-				size={(props.size as "sm" | "md" | "lg") ?? "md"}
-				dismissOnBackdrop={props.dismissOnBackdrop !== false}
-				footer={
-					<>
-						<Button variant="ghost" size="sm" onClick={() => setOpen(false)}>
-							Cancel
-						</Button>
-						<Button size="sm" onClick={() => setOpen(false)}>
-							Deploy
-						</Button>
-					</>
-				}
-			>
-				Traffic shifts as soon as the build is healthy. The previous deployment stays
-				available for instant rollback.
-			</Modal>
-		</>
+		<Dialog
+			open={open}
+			onOpenChange={setOpen}
+			size={(props.size as "sm" | "md" | "lg" | "xl") ?? "md"}
+			dismissOnBackdrop={props.dismissOnBackdrop !== false}
+		>
+			<DialogTrigger className={BTN}>Open dialog</DialogTrigger>
+			<DialogContent>
+				<DialogHeader>
+					<div className="min-w-0">
+						<DialogTitle>Deploy to production</DialogTitle>
+						<DialogDescription>This will replace the current build.</DialogDescription>
+					</div>
+					<DialogClose />
+				</DialogHeader>
+				<p className="mt-4 text-muted-foreground text-sm">
+					Traffic shifts as soon as the build is healthy. The previous deployment stays
+					available for instant rollback.
+				</p>
+				<DialogFooter>
+					<Button variant="ghost" size="sm" onClick={() => setOpen(false)}>
+						Cancel
+					</Button>
+					<Button size="sm" onClick={() => setOpen(false)}>
+						Deploy
+					</Button>
+				</DialogFooter>
+			</DialogContent>
+		</Dialog>
 	);
 }
 
 export function AlertDialogDemo({ props }: { props: Props }) {
-	const [open, setOpen] = useState(false);
 	const [done, setDone] = useState(false);
 	return (
 		<div className="flex flex-col items-center gap-3">
-			<button type="button" className={BTN} onClick={() => setOpen(true)}>
-				Delete project
-			</button>
+			<AlertDialog>
+				<AlertDialogTrigger className={BTN}>Delete project</AlertDialogTrigger>
+				<AlertDialogContent>
+					<AlertDialogHeader>
+						<AlertDialogTitle>Delete this project?</AlertDialogTitle>
+						<AlertDialogDescription>
+							This removes every deployment and cannot be undone.
+						</AlertDialogDescription>
+					</AlertDialogHeader>
+					<AlertDialogFooter>
+						<AlertDialogCancel>Cancel</AlertDialogCancel>
+						<AlertDialogAction
+							destructive={props.destructive !== false}
+							onClick={() => setDone(true)}
+						>
+							Delete
+						</AlertDialogAction>
+					</AlertDialogFooter>
+				</AlertDialogContent>
+			</AlertDialog>
 			{done ? <p className="text-muted-foreground text-xs">Confirmed</p> : null}
-			<AlertDialog
-				open={open}
-				onOpenChange={setOpen}
-				title={(props.title as string) || "Delete this project?"}
-				description={
-					(props.description as string) ||
-					"This removes every deployment and cannot be undone."
-				}
-				confirmLabel={(props.confirmLabel as string) || "Delete"}
-				destructive={props.destructive !== false}
-				onConfirm={() => setDone(true)}
-			/>
 		</div>
 	);
 }
@@ -87,34 +123,36 @@ const REGIONS = [
 ];
 
 export function SheetDemo({ props }: { props: Props }) {
-	const [open, setOpen] = useState(false);
 	const [region, setRegion] = useState("fra");
 	const id = useId();
 	return (
-		<>
-			<button type="button" className={BTN} onClick={() => setOpen(true)}>
-				Open sheet
-			</button>
-			<Sheet
-				open={open}
-				onOpenChange={setOpen}
-				side={(props.side as "left" | "right" | "top" | "bottom") ?? "right"}
-				title={(props.title as string) || "Filters"}
-			>
+		<Sheet>
+			<SheetTrigger className={BTN}>Open sheet</SheetTrigger>
+			<SheetContent side={(props.side as "left" | "right" | "top" | "bottom") ?? "right"}>
+				<SheetHeader>
+					<SheetTitle>Filters</SheetTitle>
+					<SheetClose />
+				</SheetHeader>
 				<div className="flex flex-col gap-1.5">
 					<Label htmlFor={id}>Region</Label>
-					<Select
-						options={REGIONS}
-						value={region}
-						onValueChange={setRegion}
-						label="Region"
-					/>
+					<Select value={region} onValueChange={setRegion}>
+						<SelectTrigger id={id} aria-label="Region">
+							<SelectValue placeholder="Pick a region" />
+						</SelectTrigger>
+						<SelectContent>
+							{REGIONS.map((item) => (
+								<SelectItem key={item.value} value={item.value}>
+									{item.label}
+								</SelectItem>
+							))}
+						</SelectContent>
+					</Select>
 				</div>
 				<p className="text-muted-foreground text-sm">
 					Escape closes the sheet and restores focus.
 				</p>
-			</Sheet>
-		</>
+			</SheetContent>
+		</Sheet>
 	);
 }
 
@@ -162,31 +200,53 @@ export function ToastDemo({ props }: { props: Props }) {
 	);
 }
 
-const COMMANDS = [
-	{ id: "deploy", label: "Deploy to production", shortcut: "D" },
-	{ id: "rollback", label: "Roll back last deploy", shortcut: "R" },
-	{ id: "logs", label: "Open runtime logs", shortcut: "L" },
-	{ id: "settings", label: "Project settings" },
-	{ id: "invite", label: "Invite a teammate" },
-];
-
 export function CommandDemo({ props }: { props: Props }) {
 	const [open, setOpen] = useState(false);
 	const [last, setLast] = useState("");
+
+	function run(id: string) {
+		setLast(id);
+		setOpen(false);
+	}
+
 	return (
 		<div className="flex flex-col items-center gap-3">
 			<button type="button" className={BTN} onClick={() => setOpen(true)}>
 				Open palette
 			</button>
 			{last ? <p className="text-muted-foreground text-xs">Ran: {last}</p> : null}
-			<Command
-				items={COMMANDS}
-				open={open}
-				onOpenChange={setOpen}
-				placeholder={(props.placeholder as string) || "Type a command or search…"}
-				emptyLabel={(props.emptyLabel as string) || "No results"}
-				onSelect={setLast}
-			/>
+			<CommandDialog open={open} onOpenChange={setOpen}>
+				<Command>
+					<CommandInput
+						placeholder={(props.placeholder as string) || "Type a command or search…"}
+					/>
+					<CommandList>
+						<CommandEmpty>{(props.emptyLabel as string) || "No results"}</CommandEmpty>
+						<CommandGroup heading="Actions">
+							<CommandItem value="New project" onClick={() => run("new")}>
+								New project
+								<CommandShortcut>N</CommandShortcut>
+							</CommandItem>
+							<CommandItem
+								value="Deploy"
+								keywords="ship release"
+								onClick={() => run("deploy")}
+							>
+								Deploy
+								<CommandShortcut>D</CommandShortcut>
+							</CommandItem>
+						</CommandGroup>
+						<CommandGroup heading="Go to">
+							<CommandItem value="Documentation" onClick={() => run("docs")}>
+								Documentation
+							</CommandItem>
+							<CommandItem value="Settings" onClick={() => run("settings")}>
+								Settings
+							</CommandItem>
+						</CommandGroup>
+					</CommandList>
+				</Command>
+			</CommandDialog>
 		</div>
 	);
 }

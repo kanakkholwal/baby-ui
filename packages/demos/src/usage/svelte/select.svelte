@@ -1,12 +1,22 @@
 <script lang="ts">
-import { Select } from "@baby-ui/svelte";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@baby-ui/svelte";
 
 let value = $state("");
-const options = [
-	{ value: "node", label: "Node 22" },
-	{ value: "bun", label: "Bun 1.2" },
-	{ value: "deno", label: "Deno 2", disabled: true },
-];
 </script>
 
-<Select bind:value {options} label="Runtime" placeholder="Pick a runtime" />
+<Select bind:value>
+	<SelectTrigger aria-label="Runtime">
+		<SelectValue placeholder="Pick a runtime" />
+	</SelectTrigger>
+	<SelectContent>
+		<SelectItem value="node">Node 22</SelectItem>
+		<SelectItem value="bun">Bun 1.2</SelectItem>
+		<SelectItem value="deno" disabled>Deno 2</SelectItem>
+	</SelectContent>
+</Select>

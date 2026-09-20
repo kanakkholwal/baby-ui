@@ -1,6 +1,6 @@
 ---
 title: Breadcrumb
-description: Trail of ancestor links that collapses the middle when it runs out of room.
+description: Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator and BreadcrumbEllipsis.
 component: breadcrumb
 category: base
 tags: [breadcrumb, navigation]

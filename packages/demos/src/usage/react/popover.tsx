@@ -1,9 +1,14 @@
-import { Popover } from "@baby-ui/react";
+import { Popover, PopoverContent, PopoverTrigger } from "@baby-ui/react";
 
 export function Example() {
 	return (
-		<Popover placement="bottom-start" trigger={<span>Filters</span>}>
-			<p className="text-sm">Anything you put here is positioned against the trigger.</p>
+		<Popover placement="bottom-start">
+			<PopoverTrigger>Filters</PopoverTrigger>
+			<PopoverContent>
+				<p className="text-sm">
+					Anything you put here is positioned against the trigger.
+				</p>
+			</PopoverContent>
 		</Popover>
 	);
 }

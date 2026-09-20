@@ -1,76 +1,56 @@
 <script lang="ts">
 import type { Snippet } from "svelte";
 import { type AnchorPlacement, anchor } from "../lib/anchor";
-import { cn } from "../lib/cn";
+import { setTooltip } from "./context";
 
 let {
 	children,
-	label,
+	open = $bindable(false),
 	placement = "top",
 	delay = 400,
-	class: classProp,
 }: {
-	children: Snippet;
-	label: string;
+	children?: Snippet;
+	open?: boolean;
 	placement?: AnchorPlacement;
 	delay?: number;
-	class?: string;
 } = $props();
 
-const id = $props.id();
-let open = $state(false);
-let wrapper = $state<HTMLSpanElement>();
-let floating = $state<HTMLDivElement>();
+const contentId = $props.id();
+let triggerEl = $state<HTMLElement>();
+let contentEl = $state<HTMLElement>();
 let timer: ReturnType<typeof setTimeout>;
 
-function show(immediate = false) {
-	clearTimeout(timer);
-	timer = setTimeout(() => (open = true), immediate ? 0 : delay);
-}
-
-function hide() {
-	clearTimeout(timer);
-	open = false;
-}
+setTooltip({
+	get open() {
+		return open;
+	},
+	contentId,
+	// Keyboard focus skips the delay: the user has already committed to the control.
+	show: (immediate = false) => {
+		clearTimeout(timer);
+		timer = setTimeout(() => (open = true), immediate ? 0 : delay);
+	},
+	hide: () => {
+		clearTimeout(timer);
+		open = false;
+	},
+	setTrigger: (el) => (triggerEl = el),
+	setContent: (el) => (contentEl = el),
+});
 
 $effect(() => {
-	if (!open || !wrapper || !floating) return;
-	return anchor(wrapper, floating, { placement, gap: 6 });
+	if (!open || !triggerEl || !contentEl) return;
+	return anchor(triggerEl, contentEl, { placement, gap: 6 });
 });
 
 $effect(() => {
 	if (!open) return;
 	const onKey = (e: KeyboardEvent) => {
-		if (e.key === "Escape") hide();
+		if (e.key === "Escape") open = false;
 	};
 	window.addEventListener("keydown", onKey);
 	return () => window.removeEventListener("keydown", onKey);
 });
 </script>
 
-<!-- svelte-ignore a11y_no_static_element_interactions -->
-<span
-	bind:this={wrapper}
-	class="inline-flex"
-	onpointerenter={() => show()}
-	onpointerleave={hide}
-	onfocusin={() => show(true)}
-	onfocusout={hide}
-	aria-describedby={open ? id : undefined}
->
-	{@render children()}
-</span>
-
-{#if open}
-	<div
-		bind:this={floating}
-		{id}
-		role="tooltip"
-		class={cn(
-			"anchored pointer-events-none z-50 rounded-md border border-border bg-popover px-2 py-1 text-foreground text-xs shadow-lg",
-			classProp,
-		)}
-	>
-		{label}
-	</div>
-{/if}
+{@render children?.()}

@@ -1,0 +1,208 @@
+<script lang="ts">
+import type { Snippet } from "svelte";
+import type { HTMLAttributes } from "svelte/elements";
+import { cn } from "../lib/cn";
+import { getTabs, TABS_LIST } from "./context";
+
+let {
+	children,
+	class: classProp,
+	...rest
+}: { children?: Snippet; class?: string } & HTMLAttributes<HTMLDivElement> = $props();
+
+const tabs = getTabs();
+
+let root = $state<HTMLDivElement>();
+let viewport = $state<HTMLDivElement>();
+let list = $state<HTMLDivElement>();
+let rects = $state<Record<string, { left: number; width: number }>>({});
+let edges = $state({ overflow: false, left: false, right: false });
+
+const indicator = $derived(rects[tabs.value] ?? { left: 0, width: 0 });
+
+function measure() {
+	if (!list || !viewport || !root) return;
+	const next: Record<string, { left: number; width: number }> = {};
+	for (const el of list.querySelectorAll<HTMLElement>("[data-tab]")) {
+		const id = el.dataset.tab;
+		if (id) next[id] = { left: el.offsetLeft, width: el.offsetWidth };
+	}
+	rects = next;
+
+	// Overlay arrows sit above the viewport, so they never shrink its scroll range.
+	const max = Math.max(0, viewport.scrollWidth - viewport.clientWidth);
+	const from = Math.max(0, Math.min(max, Math.abs(viewport.scrollLeft)));
+	edges = {
+		overflow: viewport.scrollWidth > root.clientWidth + 1,
+		left: from > 1,
+		right: from < max - 1,
+	};
+}
+
+$effect(() => {
+	if (!root || !viewport || !list) return;
+	measure();
+	const observer = new ResizeObserver(measure);
+	observer.observe(root);
+	observer.observe(list);
+	const port = viewport;
+	port.addEventListener("scroll", measure, { passive: true });
+	return () => {
+		observer.disconnect();
+		port.removeEventListener("scroll", measure);
+	};
+});
+
+/** Clip each duplicate label to the indicator so the colour travels with it. */
+$effect(() => {
+	if (!list) return;
+	for (const label of list.querySelectorAll<HTMLElement>("[data-tabs-label]")) {
+		const trigger = label.closest<HTMLElement>("[data-tab]");
+		const rect = trigger ? rects[trigger.dataset.tab ?? ""] : undefined;
+		if (!rect) continue;
+		const left = Math.max(0, indicator.left - rect.left);
+		const right = Math.max(
+			0,
+			rect.left + rect.width - (indicator.left + indicator.width),
+		);
+		label.style.clipPath =
+			left + right >= rect.width
+				? "inset(0 100% 0 0)"
+				: `inset(0 ${right}px 0 ${left}px)`;
+	}
+});
+
+/** Keep the selected tab clear of the arrows that overlay the faded edges. */
+$effect(() => {
+	const el = list?.querySelector<HTMLElement>(`[data-tab="${CSS.escape(tabs.value)}"]`);
+	if (!el || !viewport || !edges.overflow) return;
+	const frame = viewport.getBoundingClientRect();
+	const item = el.getBoundingClientRect();
+	const left = frame.left + (edges.left ? 36 : 0);
+	const right = frame.right - (edges.right ? 36 : 0);
+	const delta =
+		item.left < left ? item.left - left : item.right > right ? item.right - right : 0;
+	if (delta) viewport.scrollBy({ left: delta, behavior: "smooth" });
+});
+
+const mask = $derived(
+	edges.overflow
+		? `linear-gradient(to right, ${edges.left ? "transparent, black 40px" : "black, black 0"}, ${
+				edges.right ? "black calc(100% - 40px), transparent" : "black 100%"
+			})`
+		: undefined,
+);
+
+function move(delta: number) {
+	const ids = [...(list?.querySelectorAll<HTMLElement>("[data-tab]") ?? [])].map(
+		(el) => el.dataset.tab ?? "",
+	);
+	const i = ids.indexOf(tabs.value);
+	const next = ids[(i + delta + ids.length) % ids.length];
+	if (next) tabs.setValue(next);
+}
+
+function onkeydown(event: KeyboardEvent) {
+	const ids = [...(list?.querySelectorAll<HTMLElement>("[data-tab]") ?? [])].map(
+		(el) => el.dataset.tab ?? "",
+	);
+	if (event.key === "ArrowRight") {
+		event.preventDefault();
+		move(1);
+	} else if (event.key === "ArrowLeft") {
+		event.preventDefault();
+		move(-1);
+	} else if (event.key === "Home") {
+		event.preventDefault();
+		if (ids[0]) tabs.setValue(ids[0]);
+	} else if (event.key === "End") {
+		event.preventDefault();
+		const last = ids[ids.length - 1];
+		if (last) tabs.setValue(last);
+	}
+}
+
+function scroll(direction: number) {
+	viewport?.scrollBy({
+		left: direction * viewport.clientWidth * 0.8,
+		behavior: "smooth",
+	});
+}
+
+const ARROW =
+	"absolute inset-y-0 z-20 inline-flex w-9 items-center justify-center text-foreground transition-opacity hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-0";
+</script>
+
+<div
+	bind:this={root}
+	class={cn(
+		"relative isolate flex w-full min-w-0 max-w-full items-center",
+		edges.overflow && tabs.variant === "pill" && "rounded-full bg-card",
+		edges.overflow && tabs.variant === "segment" && "rounded-lg bg-card",
+	)}
+>
+	{#if edges.overflow}
+		<button
+			type="button"
+			aria-label="Scroll tabs left"
+			disabled={!edges.left}
+			onclick={() => scroll(-1)}
+			class={cn(ARROW, "left-0 rounded-l-full")}
+		>
+			<svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class="size-4">
+				<path d="M10 3.5 5.5 8l4.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+			</svg>
+		</button>
+	{/if}
+
+	<div
+		bind:this={viewport}
+		style:mask-image={mask}
+		style:-webkit-mask-image={mask}
+		class={cn(
+			"scrollbar-none w-full min-w-0 overflow-x-auto",
+			edges.overflow && "[border-radius:inherit]",
+		)}
+	>
+		<div
+			{...rest}
+			bind:this={list}
+			role="tablist"
+			data-slot="tabs-list"
+			{onkeydown}
+			class={cn(
+				"relative inline-flex w-max items-center",
+				TABS_LIST[tabs.variant],
+				classProp,
+			)}
+		>
+			<span
+				aria-hidden="true"
+				style:transform="translateX({indicator.left}px)"
+				style:width="{indicator.width}px"
+				class={cn(
+					"pointer-events-none absolute left-0 transition-[transform,width] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none",
+					tabs.variant === "pill" && "top-1 bottom-1 rounded-full bg-primary",
+					tabs.variant === "segment" && "top-0.5 bottom-0.5 rounded-md bg-primary",
+					tabs.variant === "underline" && "-bottom-px h-0.5 rounded-full bg-primary",
+				)}
+			></span>
+
+			{@render children?.()}
+		</div>
+	</div>
+
+	{#if edges.overflow}
+		<button
+			type="button"
+			aria-label="Scroll tabs right"
+			disabled={!edges.right}
+			onclick={() => scroll(1)}
+			class={cn(ARROW, "right-0 rounded-r-full")}
+		>
+			<svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class="size-4">
+				<path d="M6 3.5 10.5 8 6 12.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+			</svg>
+		</button>
+	{/if}
+</div>

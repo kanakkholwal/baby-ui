@@ -19,6 +19,7 @@ import { composer } from "./composer";
 import { contextMenu } from "./context-menu";
 import { conversation } from "./conversation";
 import { copyButton } from "./copy-button";
+import { dialog } from "./dialog";
 import { dock } from "./dock";
 import { dropdownMenu } from "./dropdown-menu";
 import { fileDiff } from "./file-diff";
@@ -30,7 +31,6 @@ import { input } from "./input";
 import { label } from "./label";
 import { markdown } from "./markdown";
 import { message } from "./message";
-import { modal } from "./modal";
 import { morphingModal } from "./morphing-modal";
 import { navbar } from "./navbar";
 import { pagination } from "./pagination";
@@ -89,7 +89,6 @@ export const specs: ComponentSpec[] = [
 	tooltip,
 	alertDialog,
 	command,
-	modal,
 	sheet,
 	toast,
 	toolbar,
@@ -115,6 +114,7 @@ export const specs: ComponentSpec[] = [
 	fullscreenNav,
 	fileTree,
 	morphingModal,
+	dialog,
 	dock,
 	message,
 	responseStream,

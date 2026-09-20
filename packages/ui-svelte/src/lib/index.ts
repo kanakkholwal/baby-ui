@@ -1,15 +1,33 @@
 export { default as Accordion } from "./accordion/accordion.svelte";
 export { default as AccordionItem } from "./accordion/accordion-item.svelte";
 export { default as Alert } from "./alert/alert.svelte";
+export { default as AlertDescription } from "./alert/alert-description.svelte";
+export { default as AlertTitle } from "./alert/alert-title.svelte";
 export type { AlertVariant } from "./alert/variants";
 export { default as AlertDialog } from "./alert-dialog/alert-dialog.svelte";
+export { default as AlertDialogAction } from "./alert-dialog/alert-dialog-action.svelte";
+export { default as AlertDialogCancel } from "./alert-dialog/alert-dialog-cancel.svelte";
+export { default as AlertDialogContent } from "./alert-dialog/alert-dialog-content.svelte";
+export { default as AlertDialogDescription } from "./alert-dialog/alert-dialog-description.svelte";
+export { default as AlertDialogFooter } from "./alert-dialog/alert-dialog-footer.svelte";
+export { default as AlertDialogHeader } from "./alert-dialog/alert-dialog-header.svelte";
+export { default as AlertDialogTitle } from "./alert-dialog/alert-dialog-title.svelte";
+export { default as AlertDialogTrigger } from "./alert-dialog/alert-dialog-trigger.svelte";
 export { default as Attachment } from "./attachment/attachment.svelte";
 export { default as Avatar } from "./avatar/avatar.svelte";
+export { default as AvatarFallback } from "./avatar/avatar-fallback.svelte";
+export { default as AvatarImage } from "./avatar/avatar-image.svelte";
 export { default as Badge } from "./badge/badge.svelte";
 export type { BadgeSize, BadgeVariant } from "./badge/variants";
 export { default as BentoCell } from "./bento-grid/bento-cell.svelte";
 export { default as BentoGrid } from "./bento-grid/bento-grid.svelte";
 export { default as Breadcrumb } from "./breadcrumb/breadcrumb.svelte";
+export { default as BreadcrumbEllipsis } from "./breadcrumb/breadcrumb-ellipsis.svelte";
+export { default as BreadcrumbItem } from "./breadcrumb/breadcrumb-item.svelte";
+export { default as BreadcrumbLink } from "./breadcrumb/breadcrumb-link.svelte";
+export { default as BreadcrumbList } from "./breadcrumb/breadcrumb-list.svelte";
+export { default as BreadcrumbPage } from "./breadcrumb/breadcrumb-page.svelte";
+export { default as BreadcrumbSeparator } from "./breadcrumb/breadcrumb-separator.svelte";
 export { default as Button } from "./button/button.svelte";
 export type { ButtonSize, ButtonVariant } from "./button/variants";
 export { default as Card } from "./card/card.svelte";
@@ -22,24 +40,46 @@ export { default as CardTitle } from "./card/card-title.svelte";
 export { default as Checkbox } from "./checkbox/checkbox.svelte";
 export { default as CodeBlock } from "./code-block/code-block.svelte";
 export { default as Collapsible } from "./collapsible/collapsible.svelte";
+export { default as CollapsibleContent } from "./collapsible/collapsible-content.svelte";
+export { default as CollapsibleTrigger } from "./collapsible/collapsible-trigger.svelte";
 export { default as ColorPicker } from "./color-picker/color-picker.svelte";
 export { type ComboOption, default as Combobox } from "./combobox/combobox.svelte";
-export { type CommandItem, default as Command } from "./command/command.svelte";
+export { default as Command } from "./command/command.svelte";
+export { default as CommandDialog } from "./command/command-dialog.svelte";
+export { default as CommandEmpty } from "./command/command-empty.svelte";
+export { default as CommandGroup } from "./command/command-group.svelte";
+export { default as CommandInput } from "./command/command-input.svelte";
+export { default as CommandItem } from "./command/command-item.svelte";
+export { default as CommandList } from "./command/command-list.svelte";
+export { default as CommandSeparator } from "./command/command-separator.svelte";
+export { default as CommandShortcut } from "./command/command-shortcut.svelte";
 export { default as Composer } from "./composer/composer.svelte";
-export {
-	type ContextItem,
-	default as ContextMenu,
-} from "./context-menu/context-menu.svelte";
+export { default as ContextMenu } from "./context-menu/context-menu.svelte";
+export { default as ContextMenuContent } from "./context-menu/context-menu-content.svelte";
+export { default as ContextMenuItem } from "./context-menu/context-menu-item.svelte";
+export { default as ContextMenuLabel } from "./context-menu/context-menu-label.svelte";
+export { default as ContextMenuSeparator } from "./context-menu/context-menu-separator.svelte";
+export { default as ContextMenuTrigger } from "./context-menu/context-menu-trigger.svelte";
 export { default as Conversation } from "./conversation/conversation.svelte";
 export { default as CopyButton } from "./copy-button/copy-button.svelte";
+export { default as Dialog } from "./dialog/dialog.svelte";
+export { default as DialogClose } from "./dialog/dialog-close.svelte";
+export { default as DialogContent } from "./dialog/dialog-content.svelte";
+export { default as DialogDescription } from "./dialog/dialog-description.svelte";
+export { default as DialogFooter } from "./dialog/dialog-footer.svelte";
+export { default as DialogHeader } from "./dialog/dialog-header.svelte";
+export { default as DialogTitle } from "./dialog/dialog-title.svelte";
+export { default as DialogTrigger } from "./dialog/dialog-trigger.svelte";
 export type { DockSpring } from "./dock/context";
 export { default as Dock } from "./dock/dock.svelte";
 export { default as DockItem } from "./dock/dock-item.svelte";
 export { default as DockSeparator } from "./dock/dock-separator.svelte";
-export {
-	default as DropdownMenu,
-	type MenuItem,
-} from "./dropdown-menu/dropdown-menu.svelte";
+export { default as DropdownMenu } from "./dropdown-menu/dropdown-menu.svelte";
+export { default as DropdownMenuContent } from "./dropdown-menu/dropdown-menu-content.svelte";
+export { default as DropdownMenuItem } from "./dropdown-menu/dropdown-menu-item.svelte";
+export { default as DropdownMenuLabel } from "./dropdown-menu/dropdown-menu-label.svelte";
+export { default as DropdownMenuSeparator } from "./dropdown-menu/dropdown-menu-separator.svelte";
+export { default as DropdownMenuTrigger } from "./dropdown-menu/dropdown-menu-trigger.svelte";
 export { type DiffLine, default as FileDiff } from "./file-diff/file-diff.svelte";
 export { default as FileTree } from "./file-tree/file-tree.svelte";
 export type { FileTreeNode } from "./file-tree/types";
@@ -49,6 +89,8 @@ export {
 } from "./fullscreen-nav/fullscreen-nav.svelte";
 export { default as Gauge } from "./gauge/gauge.svelte";
 export { default as HoverCard } from "./hover-card/hover-card.svelte";
+export { default as HoverCardContent } from "./hover-card/hover-card-content.svelte";
+export { default as HoverCardTrigger } from "./hover-card/hover-card-trigger.svelte";
 export { default as Input } from "./input/input.svelte";
 export type { InputSize } from "./input/variants";
 export { default as Label } from "./label/label.svelte";
@@ -57,15 +99,24 @@ export { cn } from "./lib/cn";
 export { default as Markdown } from "./markdown/markdown.svelte";
 export { default as Message } from "./message/message.svelte";
 export { default as MessageActions } from "./message/message-actions.svelte";
-export { default as Modal } from "./modal/modal.svelte";
 export type { MorphSpring } from "./morphing-modal/morph";
 export { default as MorphingModal } from "./morphing-modal/morphing-modal.svelte";
 export { default as Navbar } from "./navbar/navbar.svelte";
 export { default as Pagination } from "./pagination/pagination.svelte";
+export { default as PaginationContent } from "./pagination/pagination-content.svelte";
+export { default as PaginationEllipsis } from "./pagination/pagination-ellipsis.svelte";
+export { default as PaginationItem } from "./pagination/pagination-item.svelte";
+export { default as PaginationLink } from "./pagination/pagination-link.svelte";
+export { default as PaginationNext } from "./pagination/pagination-next.svelte";
+export { default as PaginationPrevious } from "./pagination/pagination-previous.svelte";
+export { paginationRange } from "./pagination/range";
 export { default as Popover } from "./popover/popover.svelte";
+export { default as PopoverContent } from "./popover/popover-content.svelte";
+export { default as PopoverTrigger } from "./popover/popover-trigger.svelte";
 export { default as Progress } from "./progress/progress.svelte";
 export { default as Question, type QuestionOption } from "./question/question.svelte";
 export { default as RadioGroup } from "./radio-group/radio-group.svelte";
+export { default as RadioGroupItem } from "./radio-group/radio-group-item.svelte";
 export { default as Reasoning } from "./reasoning/reasoning.svelte";
 export {
 	default as ReorderList,
@@ -73,27 +124,46 @@ export {
 } from "./reorder-list/reorder-list.svelte";
 export { default as ResponseStream } from "./response-stream/response-stream.svelte";
 export { default as ScrollArea } from "./scroll-area/scroll-area.svelte";
-export { default as Select, type SelectOption } from "./select/select.svelte";
+export { default as Select } from "./select/select.svelte";
+export { default as SelectContent } from "./select/select-content.svelte";
+export { default as SelectGroup } from "./select/select-group.svelte";
+export { default as SelectItem } from "./select/select-item.svelte";
+export { default as SelectLabel } from "./select/select-label.svelte";
+export { default as SelectSeparator } from "./select/select-separator.svelte";
+export { default as SelectTrigger } from "./select/select-trigger.svelte";
+export { default as SelectValue } from "./select/select-value.svelte";
 export { default as Sheet } from "./sheet/sheet.svelte";
+export { default as SheetClose } from "./sheet/sheet-close.svelte";
+export { default as SheetContent } from "./sheet/sheet-content.svelte";
+export { default as SheetDescription } from "./sheet/sheet-description.svelte";
+export { default as SheetFooter } from "./sheet/sheet-footer.svelte";
+export { default as SheetHeader } from "./sheet/sheet-header.svelte";
+export { default as SheetTitle } from "./sheet/sheet-title.svelte";
+export { default as SheetTrigger } from "./sheet/sheet-trigger.svelte";
 export { default as Shortcut } from "./shortcut/shortcut.svelte";
 export { default as ShowMore } from "./show-more/show-more.svelte";
 export { default as Skeleton } from "./skeleton/skeleton.svelte";
 export { default as Slider } from "./slider/slider.svelte";
 export { default as Spinner } from "./spinner/spinner.svelte";
 export { default as Switch } from "./switch/switch.svelte";
+export type { TabsSize, TabsVariant } from "./tabs/context";
 export { default as Tabs } from "./tabs/tabs.svelte";
+export { default as TabsContent } from "./tabs/tabs-content.svelte";
+export { default as TabsList } from "./tabs/tabs-list.svelte";
+export { default as TabsTrigger } from "./tabs/tabs-trigger.svelte";
 export { default as TagInput } from "./tag-input/tag-input.svelte";
 export { default as TaskSteps, type TaskStatus } from "./task-steps/task-steps.svelte";
 export { default as Textarea } from "./textarea/textarea.svelte";
 export { default as Toast, type ToastItem, type ToastTone } from "./toast/toast.svelte";
 export { default as Toggle } from "./toggle/toggle.svelte";
-export {
-	default as ToggleGroup,
-	type ToggleOption,
-} from "./toggle-group/toggle-group.svelte";
+export { default as ToggleGroup } from "./toggle-group/toggle-group.svelte";
+export { default as ToggleGroupItem } from "./toggle-group/toggle-group-item.svelte";
 export { default as Tool, type ToolState } from "./tool/tool.svelte";
 export { default as Toolbar } from "./toolbar/toolbar.svelte";
 export { default as Tooltip } from "./tooltip/tooltip.svelte";
+export { default as TooltipContent } from "./tooltip/tooltip-content.svelte";
+export { default as TooltipProvider } from "./tooltip/tooltip-provider.svelte";
+export { default as TooltipTrigger } from "./tooltip/tooltip-trigger.svelte";
 export {
 	default as Typography,
 	type TypographyVariant,

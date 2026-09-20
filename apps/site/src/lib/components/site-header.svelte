@@ -82,7 +82,7 @@ function active(match: string) {
 			</button>
 
 			<a
-				href="https://github.com/kanakkholwal"
+				href="https://github.com/kanakkholwal/baby-ui"
 				rel="noreferrer noopener"
 				target="_blank"
 				class="hidden h-9 items-center gap-1.5 rounded-2xl border border-border bg-card/20 px-3 font-medium text-foreground text-xs transition-colors hover:border-border-strong sm:inline-flex"

@@ -1,24 +1,29 @@
 "use client";
 
-import { Select } from "@baby-ui/react";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@baby-ui/react";
 import { useState } from "react";
-
-const options = [
-	{ value: "node", label: "Node 22" },
-	{ value: "bun", label: "Bun 1.2" },
-	{ value: "deno", label: "Deno 2", disabled: true },
-];
 
 export function Example() {
 	const [value, setValue] = useState("");
 
 	return (
-		<Select
-			value={value}
-			onValueChange={setValue}
-			options={options}
-			label="Runtime"
-			placeholder="Pick a runtime"
-		/>
+		<Select value={value} onValueChange={setValue}>
+			<SelectTrigger aria-label="Runtime">
+				<SelectValue placeholder="Pick a runtime" />
+			</SelectTrigger>
+			<SelectContent>
+				<SelectItem value="node">Node 22</SelectItem>
+				<SelectItem value="bun">Bun 1.2</SelectItem>
+				<SelectItem value="deno" disabled>
+					Deno 2
+				</SelectItem>
+			</SelectContent>
+		</Select>
 	);
 }

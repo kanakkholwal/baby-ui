@@ -19,6 +19,7 @@ import ComposerDemo from "./composer-demo.svelte";
 import ContextMenuDemo from "./context-menu-demo.svelte";
 import ConversationDemo from "./conversation-demo.svelte";
 import CopyButtonDemo from "./copy-button-demo.svelte";
+import DialogDemo from "./dialog-demo.svelte";
 import DockDemo from "./dock-demo.svelte";
 import DropdownMenuDemo from "./dropdown-menu-demo.svelte";
 import FileDiffDemo from "./file-diff-demo.svelte";
@@ -30,7 +31,6 @@ import InputDemo from "./input-demo.svelte";
 import LabelDemo from "./label-demo.svelte";
 import MarkdownDemo from "./markdown-demo.svelte";
 import MessageDemo from "./message-demo.svelte";
-import ModalDemo from "./modal-demo.svelte";
 import MorphingModalDemo from "./morphing-modal-demo.svelte";
 import NavbarDemo from "./navbar-demo.svelte";
 import PaginationDemo from "./pagination-demo.svelte";
@@ -108,7 +108,7 @@ export const demos: Record<string, DemoComponent> = {
 	gauge: as(GaugeDemo),
 	pagination: as(PaginationDemo),
 	"scroll-area": as(ScrollAreaDemo),
-	modal: as(ModalDemo),
+	dialog: as(DialogDemo),
 	"alert-dialog": as(AlertDialogDemo),
 	sheet: as(SheetDemo),
 	toast: as(ToastDemo),

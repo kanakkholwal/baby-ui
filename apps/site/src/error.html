@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>%sveltekit.status% — baby-ui</title>
+		<style>
+			:root {
+				color-scheme: light dark;
+				--bg: #fbfbfb;
+				--fg: #151515;
+				--muted: #6b6b6b;
+				--line: rgb(0 0 0 / 0.08);
+			}
+
+			@media (prefers-color-scheme: dark) {
+				:root {
+					--bg: #151515;
+					--fg: #f5f5f5;
+					--muted: #9a9a9a;
+					--line: rgb(255 255 255 / 0.1);
+				}
+			}
+
+			* {
+				box-sizing: border-box;
+			}
+
+			body {
+				display: grid;
+				min-height: 100dvh;
+				margin: 0;
+				background:
+					radial-gradient(var(--line) 1px, transparent 1px) 0 0 / 16px 16px,
+					var(--bg);
+				color: var(--fg);
+				font-family: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+				place-items: center;
+				padding: 2rem 1rem;
+			}
+
+			main {
+				max-width: 28rem;
+				text-align: center;
+			}
+
+			.mark {
+				display: inline-grid;
+				width: 1.5rem;
+				height: 1.5rem;
+				border-radius: 0.5rem;
+				background: var(--fg);
+				place-items: center;
+			}
+
+			.mark span {
+				width: 0.625rem;
+				height: 0.625rem;
+				border: 2px solid var(--bg);
+				border-radius: 999px;
+			}
+
+			.status {
+				margin: 1.75rem 0 0;
+				font-size: clamp(3rem, 12vw, 4.5rem);
+				font-weight: 600;
+				letter-spacing: -0.04em;
+				line-height: 1;
+			}
+
+			.message {
+				margin: 0.75rem 0 0;
+				color: var(--muted);
+				font-size: 0.9375rem;
+				line-height: 1.6;
+			}
+
+			.actions {
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: center;
+				gap: 0.5rem;
+				margin-top: 1.75rem;
+			}
+
+			a {
+				display: inline-flex;
+				height: 2.25rem;
+				align-items: center;
+				border: 1px solid var(--line);
+				border-radius: 1rem;
+				padding: 0 0.875rem;
+				color: var(--fg);
+				font-size: 0.8125rem;
+				font-weight: 500;
+				text-decoration: none;
+				transition: border-color 200ms cubic-bezier(0.16, 1, 0.3, 1);
+			}
+
+			a:hover {
+				border-color: var(--fg);
+			}
+		</style>
+	</head>
+	<body>
+		<main>
+			<span class="mark" aria-hidden="true"><span></span></span>
+			<h1 class="status">%sveltekit.status%</h1>
+			<p class="message">%sveltekit.error.message%</p>
+			<p class="message">
+				This one did not reach the app, so there is nothing clever to suggest. Reloading is
+				worth a try.
+			</p>
+			<div class="actions">
+				<a href="/">Home</a>
+				<a href="/components">Components</a>
+				<a href="/docs">Docs</a>
+			</div>
+		</main>
+	</body>
+</html>

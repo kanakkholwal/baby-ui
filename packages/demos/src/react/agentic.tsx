@@ -2,28 +2,60 @@
 
 import {
 	Breadcrumb,
+	BreadcrumbEllipsis,
+	BreadcrumbItem,
+	BreadcrumbLink,
+	BreadcrumbList,
+	BreadcrumbPage,
+	BreadcrumbSeparator,
 	Message,
 	RadioGroup,
+	RadioGroupItem,
 	Reasoning,
 	ResponseStream,
 	Slider,
 	Tabs,
+	TabsContent,
+	TabsList,
+	TabsTrigger,
+	type TabsVariant,
 	TaskSteps,
 } from "@baby-ui/react";
 import { useEffect, useState } from "react";
 
 type Props = Record<string, unknown>;
 
-const TRAIL = [
-	{ href: "/", label: "Home" },
-	{ href: "/components", label: "Components" },
-	{ href: "/components/base", label: "Base" },
-	{ href: "/components/base/nav", label: "Navigation" },
-	{ label: "Breadcrumb" },
-];
-
 export function BreadcrumbDemo({ props }: { props: Props }) {
-	return <Breadcrumb items={TRAIL} maxVisible={Number(props.maxVisible ?? 4)} />;
+	const collapsed = props.collapsed !== false;
+	return (
+		<Breadcrumb>
+			<BreadcrumbList>
+				<BreadcrumbItem>
+					<BreadcrumbLink href="/">Home</BreadcrumbLink>
+				</BreadcrumbItem>
+				<BreadcrumbSeparator />
+				{collapsed ? (
+					<BreadcrumbItem>
+						<BreadcrumbEllipsis />
+					</BreadcrumbItem>
+				) : (
+					<>
+						<BreadcrumbItem>
+							<BreadcrumbLink href="/components">Components</BreadcrumbLink>
+						</BreadcrumbItem>
+						<BreadcrumbSeparator />
+						<BreadcrumbItem>
+							<BreadcrumbLink href="/components/base">Base</BreadcrumbLink>
+						</BreadcrumbItem>
+					</>
+				)}
+				<BreadcrumbSeparator />
+				<BreadcrumbItem>
+					<BreadcrumbPage>Breadcrumb</BreadcrumbPage>
+				</BreadcrumbItem>
+			</BreadcrumbList>
+		</Breadcrumb>
+	);
 }
 
 const RADIO_OPTIONS = [
@@ -36,13 +68,18 @@ export function RadioGroupDemo({ props }: { props: Props }) {
 	const [value, setValue] = useState("weekly");
 	return (
 		<RadioGroup
-			options={RADIO_OPTIONS}
 			value={value}
 			onValueChange={setValue}
 			orientation={(props.orientation as "vertical" | "horizontal") ?? "vertical"}
+			variant={(props.variant as "default" | "card") ?? "default"}
+			size={(props.size as "sm" | "md" | "lg" | "xl") ?? "md"}
 			disabled={Boolean(props.disabled)}
 			name="demo-radio"
-		/>
+		>
+			{RADIO_OPTIONS.map((option) => (
+				<RadioGroupItem key={option.value} value={option.value} label={option.label} />
+			))}
+		</RadioGroup>
 	);
 }
 
@@ -85,14 +122,24 @@ export function TabsDemo({ props }: { props: Props }) {
 	return (
 		<div className="w-96">
 			<Tabs
-				tabs={TABS}
 				value={value}
 				onValueChange={setValue}
-				variant={(props.variant as "pill" | "underline") ?? "pill"}
-				panel={(active) => (
-					<p className="text-muted-foreground text-sm">{TAB_COPY[active]}</p>
-				)}
-			/>
+				variant={(props.variant as TabsVariant) ?? "pill"}
+				size={(props.size as "sm" | "md" | "lg" | "xl") ?? "md"}
+			>
+				<TabsList>
+					{TABS.map((tab) => (
+						<TabsTrigger key={tab.id} value={tab.id}>
+							{tab.label}
+						</TabsTrigger>
+					))}
+				</TabsList>
+				{TABS.map((tab) => (
+					<TabsContent key={tab.id} value={tab.id}>
+						<p className="text-muted-foreground text-sm">{TAB_COPY[tab.id]}</p>
+					</TabsContent>
+				))}
+			</Tabs>
 		</div>
 	);
 }

@@ -1,83 +1,129 @@
 "use client";
 
-import type { ReactNode } from "react";
-import { useEffect, useId, useRef, useState } from "react";
+import type { ComponentProps, ReactNode } from "react";
+import {
+	createContext,
+	useCallback,
+	useContext,
+	useEffect,
+	useId,
+	useMemo,
+	useRef,
+	useState,
+} from "react";
 import { type AnchorPlacement, anchor } from "../lib/anchor";
 import { cn } from "../lib/cn";
 
-export interface TooltipProps {
-	children: ReactNode;
-	label: string;
-	placement?: AnchorPlacement;
-	delay?: number;
-	className?: string;
+type Ctx = {
+	open: boolean;
+	contentId: string;
+	show: (immediate?: boolean) => void;
+	hide: () => void;
+	setTrigger: (el: HTMLElement | null) => void;
+	setContent: (el: HTMLElement | null) => void;
+};
+
+const TooltipCtx = createContext<Ctx | null>(null);
+
+function useTooltip() {
+	const ctx = useContext(TooltipCtx);
+	if (!ctx) throw new Error("Tooltip parts must be used inside <Tooltip>");
+	return ctx;
+}
+
+// shadcn wraps tooltips in a provider; ours needs no shared state, so this exists
+// only so the same markup compiles here.
+export function TooltipProvider({ children }: { children?: ReactNode }) {
+	return <>{children}</>;
 }
 
 export function Tooltip({
 	children,
-	label,
 	placement = "top",
 	delay = 400,
-	className,
-}: TooltipProps) {
-	const id = useId();
+}: {
+	children?: ReactNode;
+	placement?: AnchorPlacement;
+	delay?: number;
+}) {
+	const contentId = useId();
 	const [open, setOpen] = useState(false);
-	const wrapper = useRef<HTMLSpanElement>(null);
-	const floating = useRef<HTMLDivElement>(null);
-	const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
+	const [triggerEl, setTrigger] = useState<HTMLElement | null>(null);
+	const [contentEl, setContent] = useState<HTMLElement | null>(null);
+	const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
-	function show(immediate = false) {
-		clearTimeout(timer.current);
-		timer.current = setTimeout(() => setOpen(true), immediate ? 0 : delay);
-	}
+	// Keyboard focus skips the delay: the user has already committed to the control.
+	const show = useCallback(
+		(immediate = false) => {
+			clearTimeout(timer.current);
+			timer.current = setTimeout(() => setOpen(true), immediate ? 0 : delay);
+		},
+		[delay],
+	);
 
-	function hide() {
+	const hide = useCallback(() => {
 		clearTimeout(timer.current);
 		setOpen(false);
-	}
+	}, []);
 
 	useEffect(() => {
-		if (!open || !wrapper.current || !floating.current) return;
-		return anchor(wrapper.current, floating.current, { placement, gap: 6 });
-	}, [open, placement]);
+		if (!open || !triggerEl || !contentEl) return;
+		return anchor(triggerEl, contentEl, { placement, gap: 6 });
+	}, [open, triggerEl, contentEl, placement]);
 
 	useEffect(() => {
 		if (!open) return;
-		const onKey = (e: globalThis.KeyboardEvent) => {
+		const onKey = (e: KeyboardEvent) => {
 			if (e.key === "Escape") setOpen(false);
 		};
 		window.addEventListener("keydown", onKey);
 		return () => window.removeEventListener("keydown", onKey);
 	}, [open]);
 
-	return (
-		<>
-			{/* biome-ignore lint/a11y/noStaticElementInteractions: the child carries the semantics; this only measures */}
-			<span
-				ref={wrapper}
-				className="inline-flex"
-				aria-describedby={open ? id : undefined}
-				onPointerEnter={() => show()}
-				onPointerLeave={hide}
-				onFocus={() => show(true)}
-				onBlur={hide}
-			>
-				{children}
-			</span>
+	const ctx = useMemo(
+		() => ({ open, contentId, show, hide, setTrigger, setContent }),
+		[open, contentId, show, hide],
+	);
 
-			{open ? (
-				<div
-					ref={floating}
-					id={id}
-					role="tooltip"
-					className={cn(
-						"anchored pointer-events-none z-50 rounded-md border border-border bg-popover px-2 py-1 text-foreground text-xs shadow-lg",
-						className,
-					)}
-				>
-					{label}
-				</div>
-			) : null}
-		</>
+	return <TooltipCtx.Provider value={ctx}>{children}</TooltipCtx.Provider>;
+}
+
+export function TooltipTrigger({ className, ...props }: ComponentProps<"span">) {
+	const tooltip = useTooltip();
+
+	return (
+		// biome-ignore lint/a11y/noStaticElementInteractions: the wrapper only listens; the real control is its child
+		<span
+			ref={tooltip.setTrigger}
+			data-slot="tooltip-trigger"
+			data-state={tooltip.open ? "open" : "closed"}
+			aria-describedby={tooltip.open ? tooltip.contentId : undefined}
+			onPointerEnter={() => tooltip.show()}
+			onPointerLeave={tooltip.hide}
+			onFocus={() => tooltip.show(true)}
+			onBlur={tooltip.hide}
+			className={cn("inline-flex", className)}
+			{...props}
+		/>
+	);
+}
+
+export function TooltipContent({ className, ...props }: ComponentProps<"div">) {
+	const tooltip = useTooltip();
+	if (!tooltip.open) return null;
+
+	return (
+		<div
+			ref={tooltip.setContent}
+			id={tooltip.contentId}
+			role="tooltip"
+			data-slot="tooltip-content"
+			data-state="open"
+			className={cn(
+				"anchored pointer-events-none z-50 rounded-md border border-border bg-popover px-2 py-1 text-foreground text-xs shadow-lg",
+				className,
+			)}
+			{...props}
+		/>
 	);
 }

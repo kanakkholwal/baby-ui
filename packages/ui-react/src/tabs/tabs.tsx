@@ -1,22 +1,20 @@
 "use client";
 
-import type { KeyboardEvent, ReactNode } from "react";
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import type { ComponentProps, KeyboardEvent } from "react";
+import {
+	createContext,
+	useCallback,
+	useContext,
+	useEffect,
+	useLayoutEffect,
+	useMemo,
+	useRef,
+	useState,
+} from "react";
 import { cn } from "../lib/cn";
 
-export type TabItem = { id: string; label: string };
 export type TabsVariant = "pill" | "underline" | "segment";
 export type TabsSize = "sm" | "md" | "lg" | "xl";
-
-export interface TabsProps {
-	tabs: TabItem[];
-	value?: string;
-	variant?: TabsVariant;
-	size?: TabsSize;
-	className?: string;
-	onValueChange?: (id: string) => void;
-	panel?: (id: string) => ReactNode;
-}
 
 const LIST: Record<TabsVariant, string> = {
 	pill: "gap-1 rounded-full bg-card p-1",
@@ -40,16 +38,64 @@ const RADIUS: Record<TabsVariant, string> = {
 const ARROW =
 	"absolute inset-y-0 z-20 inline-flex w-9 items-center justify-center text-foreground transition-opacity hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-0";
 
+type Ctx = {
+	value: string;
+	variant: TabsVariant;
+	size: TabsSize;
+	setValue: (value: string) => void;
+};
+
+const TabsCtx = createContext<Ctx | null>(null);
+
+function useTabs() {
+	const ctx = useContext(TabsCtx);
+	if (!ctx) throw new Error("Tabs parts must be used inside <Tabs>");
+	return ctx;
+}
+
 export function Tabs({
-	tabs,
-	value,
+	className,
+	value: valueProp,
+	defaultValue = "",
 	variant = "pill",
 	size = "md",
-	className,
 	onValueChange,
-	panel,
-}: TabsProps) {
-	const active = value || tabs[0]?.id || "";
+	children,
+	...props
+}: Omit<ComponentProps<"div">, "onChange"> & {
+	value?: string;
+	defaultValue?: string;
+	variant?: TabsVariant;
+	size?: TabsSize;
+	onValueChange?: (value: string) => void;
+}) {
+	const [internal, setInternal] = useState(defaultValue);
+	const value = valueProp ?? internal;
+
+	const setValue = useCallback(
+		(next: string) => {
+			if (valueProp === undefined) setInternal(next);
+			onValueChange?.(next);
+		},
+		[valueProp, onValueChange],
+	);
+
+	const ctx = useMemo(
+		() => ({ value, variant, size, setValue }),
+		[value, variant, size, setValue],
+	);
+
+	return (
+		<TabsCtx.Provider value={ctx}>
+			<div data-slot="tabs" className={cn("flex flex-col", className)} {...props}>
+				{children}
+			</div>
+		</TabsCtx.Provider>
+	);
+}
+
+export function TabsList({ className, children, ...props }: ComponentProps<"div">) {
+	const tabs = useTabs();
 	const root = useRef<HTMLDivElement>(null);
 	const viewport = useRef<HTMLDivElement>(null);
 	const list = useRef<HTMLDivElement>(null);
@@ -93,10 +139,31 @@ export function Tabs({
 		};
 	}, [measure]);
 
+	const indicator = rects[tabs.value] ?? { left: 0, width: 0 };
+
+	/** Clip each duplicate label to the indicator so the colour travels with it. */
+	useEffect(() => {
+		if (!list.current) return;
+		for (const label of list.current.querySelectorAll<HTMLElement>("[data-tabs-label]")) {
+			const trigger = label.closest<HTMLElement>("[data-tab]");
+			const rect = trigger ? rects[trigger.dataset.tab ?? ""] : undefined;
+			if (!rect) continue;
+			const left = Math.max(0, indicator.left - rect.left);
+			const right = Math.max(
+				0,
+				rect.left + rect.width - (indicator.left + indicator.width),
+			);
+			label.style.clipPath =
+				left + right >= rect.width
+					? "inset(0 100% 0 0)"
+					: `inset(0 ${right}px 0 ${left}px)`;
+		}
+	}, [rects, indicator.left, indicator.width]);
+
 	/** Keep the selected tab clear of the arrows that overlay the faded edges. */
 	useEffect(() => {
 		const el = list.current?.querySelector<HTMLElement>(
-			`[data-tab="${CSS.escape(active)}"]`,
+			`[data-tab="${CSS.escape(tabs.value)}"]`,
 		);
 		const port = viewport.current;
 		if (!el || !port || !edges.overflow) return;
@@ -107,20 +174,7 @@ export function Tabs({
 		const delta =
 			item.left < left ? item.left - left : item.right > right ? item.right - right : 0;
 		if (delta) port.scrollBy({ left: delta, behavior: "smooth" });
-	}, [active, edges]);
-
-	const indicator = rects[active] ?? { left: 0, width: 0 };
-
-	function clipFor(id: string) {
-		const rect = rects[id];
-		if (!rect) return "inset(0 100% 0 0)";
-		const left = Math.max(0, indicator.left - rect.left);
-		const right = Math.max(
-			0,
-			rect.left + rect.width - (indicator.left + indicator.width),
-		);
-		return `inset(0 ${right}px 0 ${left}px)`;
-	}
+	}, [tabs.value, edges]);
 
 	const mask = edges.overflow
 		? `linear-gradient(to right, ${edges.left ? "transparent, black 40px" : "black, black 0"}, ${
@@ -128,13 +182,21 @@ export function Tabs({
 			})`
 		: undefined;
 
+	function ids() {
+		return [...(list.current?.querySelectorAll<HTMLElement>("[data-tab]") ?? [])].map(
+			(el) => el.dataset.tab ?? "",
+		);
+	}
+
 	function move(delta: number) {
-		const i = tabs.findIndex((t) => t.id === active);
-		const next = tabs[(i + delta + tabs.length) % tabs.length];
-		if (next) onValueChange?.(next.id);
+		const all = ids();
+		const i = all.indexOf(tabs.value);
+		const next = all[(i + delta + all.length) % all.length];
+		if (next) tabs.setValue(next);
 	}
 
 	function onKeyDown(event: KeyboardEvent) {
+		const all = ids();
 		if (event.key === "ArrowRight") {
 			event.preventDefault();
 			move(1);
@@ -143,10 +205,11 @@ export function Tabs({
 			move(-1);
 		} else if (event.key === "Home") {
 			event.preventDefault();
-			onValueChange?.(tabs[0]?.id ?? active);
+			if (all[0]) tabs.setValue(all[0]);
 		} else if (event.key === "End") {
 			event.preventDefault();
-			onValueChange?.(tabs[tabs.length - 1]?.id ?? active);
+			const last = all[all.length - 1];
+			if (last) tabs.setValue(last);
 		}
 	}
 
@@ -157,127 +220,157 @@ export function Tabs({
 	}
 
 	return (
-		<div className={className}>
+		<div
+			ref={root}
+			className={cn(
+				"relative isolate flex w-full min-w-0 max-w-full items-center",
+				edges.overflow && tabs.variant === "pill" && "rounded-full bg-card",
+				edges.overflow && tabs.variant === "segment" && "rounded-lg bg-card",
+			)}
+		>
+			{edges.overflow ? (
+				<button
+					type="button"
+					aria-label="Scroll tabs left"
+					disabled={!edges.left}
+					onClick={() => scroll(-1)}
+					className={cn(ARROW, "left-0 rounded-l-full")}
+				>
+					<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-4">
+						<path
+							d="M10 3.5 5.5 8l4.5 4.5"
+							stroke="currentColor"
+							strokeWidth="1.5"
+							strokeLinecap="round"
+							strokeLinejoin="round"
+						/>
+					</svg>
+				</button>
+			) : null}
+
 			<div
-				ref={root}
+				ref={viewport}
+				style={{ maskImage: mask, WebkitMaskImage: mask }}
 				className={cn(
-					"relative isolate flex w-full min-w-0 max-w-full items-center",
-					edges.overflow && variant === "pill" && "rounded-full bg-card",
-					edges.overflow && variant === "segment" && "rounded-lg bg-card",
+					"scrollbar-none w-full min-w-0 overflow-x-auto",
+					edges.overflow && "[border-radius:inherit]",
 				)}
 			>
-				{edges.overflow ? (
-					<button
-						type="button"
-						aria-label="Scroll tabs left"
-						disabled={!edges.left}
-						onClick={() => scroll(-1)}
-						className={cn(ARROW, "left-0 rounded-l-full")}
-					>
-						<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-4">
-							<path
-								d="M10 3.5 5.5 8l4.5 4.5"
-								stroke="currentColor"
-								strokeWidth="1.5"
-								strokeLinecap="round"
-								strokeLinejoin="round"
-							/>
-						</svg>
-					</button>
-				) : null}
-
 				<div
-					ref={viewport}
-					style={{ maskImage: mask, WebkitMaskImage: mask }}
+					ref={list}
+					role="tablist"
+					data-slot="tabs-list"
+					onKeyDown={onKeyDown}
 					className={cn(
-						"scrollbar-none w-full min-w-0 overflow-x-auto",
-						edges.overflow && "[border-radius:inherit]",
+						"relative inline-flex w-max items-center",
+						LIST[tabs.variant],
+						className,
 					)}
+					{...props}
 				>
-					<div
-						ref={list}
-						role="tablist"
-						className={cn("relative inline-flex w-max items-center", LIST[variant])}
-					>
-						<span
-							aria-hidden
-							style={{
-								transform: `translateX(${indicator.left}px)`,
-								width: indicator.width,
-							}}
-							className={cn(
-								"pointer-events-none absolute left-0 transition-[transform,width] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none",
-								variant === "pill" && "top-1 bottom-1 rounded-full bg-primary",
-								variant === "segment" && "top-0.5 bottom-0.5 rounded-md bg-primary",
-								variant === "underline" && "-bottom-px h-0.5 rounded-full bg-primary",
-							)}
-						/>
-
-						{tabs.map((tab) => (
-							<button
-								key={tab.id}
-								type="button"
-								role="tab"
-								data-tab={tab.id}
-								id={`tab-${tab.id}`}
-								aria-selected={active === tab.id}
-								aria-controls={`panel-${tab.id}`}
-								tabIndex={active === tab.id ? 0 : -1}
-								onClick={() => onValueChange?.(tab.id)}
-								onKeyDown={onKeyDown}
-								className={cn(
-									"relative z-10 inline-flex shrink-0 items-center justify-center whitespace-nowrap font-medium text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring",
-									variant === "underline" && "aria-selected:text-foreground",
-									RADIUS[variant],
-									TRIGGER[size],
-								)}
-							>
-								{tab.label}
-								{variant !== "underline" ? (
-									<span
-										aria-hidden
-										style={{ clipPath: clipFor(tab.id) }}
-										className="pointer-events-none absolute inset-0 inline-flex items-center justify-center text-primary-foreground transition-[clip-path] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none"
-									>
-										{tab.label}
-									</span>
-								) : null}
-							</button>
-						))}
-					</div>
+					<span
+						aria-hidden
+						style={{
+							transform: `translateX(${indicator.left}px)`,
+							width: indicator.width,
+						}}
+						className={cn(
+							"pointer-events-none absolute left-0 transition-[transform,width] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none",
+							tabs.variant === "pill" && "top-1 bottom-1 rounded-full bg-primary",
+							tabs.variant === "segment" && "top-0.5 bottom-0.5 rounded-md bg-primary",
+							tabs.variant === "underline" && "-bottom-px h-0.5 rounded-full bg-primary",
+						)}
+					/>
+					{children}
 				</div>
-
-				{edges.overflow ? (
-					<button
-						type="button"
-						aria-label="Scroll tabs right"
-						disabled={!edges.right}
-						onClick={() => scroll(1)}
-						className={cn(ARROW, "right-0 rounded-r-full")}
-					>
-						<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-4">
-							<path
-								d="M6 3.5 10.5 8 6 12.5"
-								stroke="currentColor"
-								strokeWidth="1.5"
-								strokeLinecap="round"
-								strokeLinejoin="round"
-							/>
-						</svg>
-					</button>
-				) : null}
 			</div>
 
-			{panel ? (
-				<div
-					id={`panel-${active}`}
-					role="tabpanel"
-					aria-labelledby={`tab-${active}`}
-					className="mt-4"
+			{edges.overflow ? (
+				<button
+					type="button"
+					aria-label="Scroll tabs right"
+					disabled={!edges.right}
+					onClick={() => scroll(1)}
+					className={cn(ARROW, "right-0 rounded-r-full")}
 				>
-					{panel(active)}
-				</div>
+					<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-4">
+						<path
+							d="M6 3.5 10.5 8 6 12.5"
+							stroke="currentColor"
+							strokeWidth="1.5"
+							strokeLinecap="round"
+							strokeLinejoin="round"
+						/>
+					</svg>
+				</button>
 			) : null}
 		</div>
+	);
+}
+
+export function TabsTrigger({
+	className,
+	value,
+	children,
+	...props
+}: ComponentProps<"button"> & { value: string }) {
+	const tabs = useTabs();
+	const active = tabs.value === value;
+
+	return (
+		<button
+			type="button"
+			role="tab"
+			data-slot="tabs-trigger"
+			data-tab={value}
+			data-state={active ? "active" : "inactive"}
+			id={`tab-${value}`}
+			aria-selected={active}
+			aria-controls={`panel-${value}`}
+			tabIndex={active ? 0 : -1}
+			onClick={() => tabs.setValue(value)}
+			className={cn(
+				"relative z-10 inline-flex shrink-0 items-center justify-center whitespace-nowrap font-medium text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring",
+				tabs.variant === "underline" && "aria-selected:text-foreground",
+				RADIUS[tabs.variant],
+				TRIGGER[tabs.size],
+				className,
+			)}
+			{...props}
+		>
+			{children}
+			{tabs.variant !== "underline" ? (
+				<span
+					aria-hidden
+					data-tabs-label=""
+					className="pointer-events-none absolute inset-0 inline-flex items-center justify-center text-primary-foreground transition-[clip-path] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] [clip-path:inset(0_100%_0_0)] motion-reduce:transition-none"
+				>
+					{children}
+				</span>
+			) : null}
+		</button>
+	);
+}
+
+export function TabsContent({
+	className,
+	value,
+	...props
+}: ComponentProps<"div"> & { value: string }) {
+	const tabs = useTabs();
+	const active = tabs.value === value;
+
+	// Inactive panels stay in the DOM so their content is still findable and crawlable.
+	return (
+		<div
+			id={`panel-${value}`}
+			role="tabpanel"
+			data-slot="tabs-content"
+			data-state={active ? "active" : "inactive"}
+			aria-labelledby={`tab-${value}`}
+			hidden={!active}
+			className={cn("mt-4", className)}
+			{...props}
+		/>
 	);
 }

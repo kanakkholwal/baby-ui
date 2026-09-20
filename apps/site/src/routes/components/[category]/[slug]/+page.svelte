@@ -31,7 +31,7 @@ const port = $derived(data.ports.find((p) => p.framework === framework) ?? data.
 const tabs = [
 	{ id: "preview", label: "Preview" },
 	{ id: "usage", label: "Usage" },
-	{ id: "install", label: "Install" },
+	{ id: "install", label: "Installation" },
 ];
 const usage = $derived(
 	dialect === "js" && port?.usage?.js ? port.usage.js : (port?.usage?.ts ?? null),

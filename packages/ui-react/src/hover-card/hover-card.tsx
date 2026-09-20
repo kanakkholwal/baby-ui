@@ -1,74 +1,113 @@
 "use client";
 
-import type { ReactNode } from "react";
-import { useEffect, useId, useRef, useState } from "react";
+import type { ComponentProps, ReactNode } from "react";
+import {
+	createContext,
+	useCallback,
+	useContext,
+	useEffect,
+	useId,
+	useMemo,
+	useRef,
+	useState,
+} from "react";
 import { type AnchorPlacement, anchor } from "../lib/anchor";
 import { cn } from "../lib/cn";
 
-export interface HoverCardProps {
-	trigger: ReactNode;
-	children: ReactNode;
-	placement?: AnchorPlacement;
-	openDelay?: number;
-	closeDelay?: number;
-	className?: string;
+type Ctx = {
+	open: boolean;
+	contentId: string;
+	schedule: (open: boolean) => void;
+	setTrigger: (el: HTMLElement | null) => void;
+	setContent: (el: HTMLElement | null) => void;
+};
+
+const HoverCardCtx = createContext<Ctx | null>(null);
+
+function useHoverCard() {
+	const ctx = useContext(HoverCardCtx);
+	if (!ctx) throw new Error("HoverCard parts must be used inside <HoverCard>");
+	return ctx;
 }
 
 export function HoverCard({
-	trigger,
 	children,
 	placement = "bottom-start",
 	openDelay = 300,
 	closeDelay = 150,
-	className,
-}: HoverCardProps) {
-	const id = useId();
+}: {
+	children?: ReactNode;
+	placement?: AnchorPlacement;
+	openDelay?: number;
+	closeDelay?: number;
+}) {
+	const contentId = useId();
 	const [open, setOpen] = useState(false);
-	const wrapper = useRef<HTMLSpanElement>(null);
-	const floating = useRef<HTMLDivElement>(null);
-	const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
+	const [triggerEl, setTrigger] = useState<HTMLElement | null>(null);
+	const [contentEl, setContent] = useState<HTMLElement | null>(null);
+	const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
-	function schedule(next: boolean) {
-		clearTimeout(timer.current);
-		timer.current = setTimeout(() => setOpen(next), next ? openDelay : closeDelay);
-	}
+	// The close delay is what lets the pointer cross the gap into the card.
+	const schedule = useCallback(
+		(next: boolean) => {
+			clearTimeout(timer.current);
+			timer.current = setTimeout(() => setOpen(next), next ? openDelay : closeDelay);
+		},
+		[openDelay, closeDelay],
+	);
 
 	useEffect(() => {
-		if (!open || !wrapper.current || !floating.current) return;
-		return anchor(wrapper.current, floating.current, { placement, gap: 8 });
-	}, [open, placement]);
+		if (!open || !triggerEl || !contentEl) return;
+		return anchor(triggerEl, contentEl, { placement, gap: 8 });
+	}, [open, triggerEl, contentEl, placement]);
+
+	const ctx = useMemo(
+		() => ({ open, contentId, schedule, setTrigger, setContent }),
+		[open, contentId, schedule],
+	);
+
+	return <HoverCardCtx.Provider value={ctx}>{children}</HoverCardCtx.Provider>;
+}
+
+export function HoverCardTrigger({ className, ...props }: ComponentProps<"span">) {
+	const card = useHoverCard();
 
 	return (
-		<>
-			{/* biome-ignore lint/a11y/noStaticElementInteractions: the child carries the semantics; this only measures */}
-			<span
-				ref={wrapper}
-				className="inline-flex"
-				aria-describedby={open ? id : undefined}
-				onPointerEnter={() => schedule(true)}
-				onPointerLeave={() => schedule(false)}
-				onFocus={() => schedule(true)}
-				onBlur={() => schedule(false)}
-			>
-				{trigger}
-			</span>
+		// biome-ignore lint/a11y/noStaticElementInteractions: the wrapper only listens; the real control is its child
+		<span
+			ref={card.setTrigger}
+			data-slot="hover-card-trigger"
+			data-state={card.open ? "open" : "closed"}
+			aria-describedby={card.open ? card.contentId : undefined}
+			onPointerEnter={() => card.schedule(true)}
+			onPointerLeave={() => card.schedule(false)}
+			onFocus={() => card.schedule(true)}
+			onBlur={() => card.schedule(false)}
+			className={cn("inline-flex", className)}
+			{...props}
+		/>
+	);
+}
 
-			{open ? (
-				<div
-					ref={floating}
-					id={id}
-					role="dialog"
-					tabIndex={-1}
-					onPointerEnter={() => schedule(true)}
-					onPointerLeave={() => schedule(false)}
-					className={cn(
-						"anchored z-50 w-64 rounded-xl border border-border bg-popover p-3 text-sm shadow-2xl",
-						className,
-					)}
-				>
-					{children}
-				</div>
-			) : null}
-		</>
+export function HoverCardContent({ className, ...props }: ComponentProps<"div">) {
+	const card = useHoverCard();
+	if (!card.open) return null;
+
+	return (
+		<div
+			ref={card.setContent}
+			id={card.contentId}
+			role="dialog"
+			tabIndex={-1}
+			data-slot="hover-card-content"
+			data-state="open"
+			onPointerEnter={() => card.schedule(true)}
+			onPointerLeave={() => card.schedule(false)}
+			className={cn(
+				"anchored z-50 w-64 rounded-xl border border-border bg-popover p-3 text-sm shadow-2xl",
+				className,
+			)}
+			{...props}
+		/>
 	);
 }

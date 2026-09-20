@@ -1,6 +1,6 @@
 ---
 title: Pagination
-description: Page links with a sliding window and always-visible first and last.
+description: Pagination parts plus paginationRange, a sliding window with first and last always shown.
 component: pagination
 category: base
 tags: [pagination]

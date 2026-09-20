@@ -1,6 +1,12 @@
 <script lang="ts">
 import type { Framework } from "@baby-ui/registry-schema";
-import { Select } from "@baby-ui/svelte";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@baby-ui/svelte";
 import type { Icon } from "@tabler/icons-svelte";
 import IconBrandJavascript from "@tabler/icons-svelte/icons/brand-javascript";
 import IconBrandReact from "@tabler/icons-svelte/icons/brand-react";
@@ -98,12 +104,16 @@ $effect(() => {
 			<div class="flex flex-col divide-y divide-border">
 				<div class="flex items-center justify-between gap-3 px-4 py-2.5">
 					<span class="text-foreground text-xs">Appearance</span>
-					<Select
-						bind:value={appearance}
-						label="Appearance"
-						options={APPEARANCE}
-						class="h-8 w-32 rounded-lg text-xs"
-					/>
+					<Select bind:value={appearance}>
+						<SelectTrigger aria-label="Appearance" class="h-8 w-32 rounded-lg text-xs">
+							<SelectValue />
+						</SelectTrigger>
+						<SelectContent>
+							{#each APPEARANCE as option (option.value)}
+								<SelectItem value={option.value}>{option.label}</SelectItem>
+							{/each}
+						</SelectContent>
+					</Select>
 				</div>
 
 				<div class="flex items-center justify-between gap-3 px-4 py-2.5">

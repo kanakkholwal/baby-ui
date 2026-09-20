@@ -4,22 +4,17 @@ export const breadcrumb = defineComponent({
 	slug: "breadcrumb",
 	name: "Breadcrumb",
 	description:
-		"Trail of ancestor links that collapses the middle when it runs out of room.",
+		"Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator and BreadcrumbEllipsis.",
 	category: "base",
 	status: "stable",
 	props: [
 		{
-			name: "items",
-			type: "{ href?: string; label: string }[]",
-			description: "Trail, root first. The last item is the current page.",
-			control: { kind: "none" },
-		},
-		{
-			name: "maxVisible",
-			type: "number",
-			description: "Items shown before the middle collapses behind an ellipsis.",
-			default: 4,
-			control: { kind: "number", min: 2, max: 8, step: 1 },
+			name: "collapsed",
+			type: "boolean",
+			description:
+				"Demo only: whether the middle of the trail is replaced with BreadcrumbEllipsis.",
+			default: true,
+			control: { kind: "boolean" },
 		},
 	],
 	a11y: {
@@ -28,6 +23,7 @@ export const breadcrumb = defineComponent({
 			"A nav labelled Breadcrumb wrapping an ordered list, so the order is conveyed rather than implied by the separators.",
 			"The last item is aria-current=page and is not a link, because it goes nowhere.",
 			"Separators are aria-hidden; they are punctuation, not content.",
+			"Part names and data-slot values match shadcn/ui, so this replaces an existing breadcrumb without touching call sites.",
 		],
 	},
 	licenseOrigin: {
@@ -49,6 +45,12 @@ export const breadcrumb = defineComponent({
 			entry: "Breadcrumb",
 			files: [
 				{ path: "breadcrumb/breadcrumb.svelte", type: "registry:ui" },
+				{ path: "breadcrumb/breadcrumb-list.svelte", type: "registry:ui" },
+				{ path: "breadcrumb/breadcrumb-item.svelte", type: "registry:ui" },
+				{ path: "breadcrumb/breadcrumb-link.svelte", type: "registry:ui" },
+				{ path: "breadcrumb/breadcrumb-page.svelte", type: "registry:ui" },
+				{ path: "breadcrumb/breadcrumb-separator.svelte", type: "registry:ui" },
+				{ path: "breadcrumb/breadcrumb-ellipsis.svelte", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge"],

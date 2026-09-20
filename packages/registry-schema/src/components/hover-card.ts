@@ -76,6 +76,9 @@ export const hoverCard = defineComponent({
 			entry: "HoverCard",
 			files: [
 				{ path: "hover-card/hover-card.svelte", type: "registry:ui" },
+				{ path: "hover-card/hover-card-trigger.svelte", type: "registry:ui" },
+				{ path: "hover-card/hover-card-content.svelte", type: "registry:ui" },
+				{ path: "hover-card/context.ts", type: "registry:ui" },
 				{ path: "lib/anchor.ts", type: "registry:lib" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],

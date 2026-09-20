@@ -1,15 +1,21 @@
 <script lang="ts">
-import { DropdownMenu } from "@baby-ui/svelte";
-
-const items = [
-	{ id: "profile", label: "Profile" },
-	{ id: "team", label: "Team settings" },
-	{ id: "logout", label: "Sign out" },
-];
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from "@baby-ui/svelte";
 </script>
 
-<DropdownMenu {items} onselect={(id) => console.log(id)}>
-	{#snippet trigger()}
-		Account
-	{/snippet}
+<DropdownMenu>
+	<DropdownMenuTrigger>Account</DropdownMenuTrigger>
+	<DropdownMenuContent>
+		<DropdownMenuLabel>Signed in as ada</DropdownMenuLabel>
+		<DropdownMenuItem>Profile</DropdownMenuItem>
+		<DropdownMenuItem>Team settings</DropdownMenuItem>
+		<DropdownMenuSeparator />
+		<DropdownMenuItem destructive>Sign out</DropdownMenuItem>
+	</DropdownMenuContent>
 </DropdownMenu>

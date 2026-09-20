@@ -1,0 +1,40 @@
+<script lang="ts">
+import type { Snippet } from "svelte";
+import type { HTMLButtonAttributes } from "svelte/elements";
+import { cn } from "../lib/cn";
+import { getContextMenu } from "./context";
+
+let {
+	children,
+	destructive = false,
+	class: classProp,
+	onclick,
+	...rest
+}: {
+	children?: Snippet;
+	destructive?: boolean;
+	class?: string;
+} & HTMLButtonAttributes = $props();
+
+const menu = getContextMenu();
+</script>
+
+<button
+	{...rest}
+	type="button"
+	role="menuitem"
+	data-slot="context-menu-item"
+	onclick={(event) => {
+		onclick?.(event);
+		menu.close();
+	}}
+	class={cn(
+		"flex w-full items-center gap-2 rounded-md px-2.5 py-1.5 text-left text-sm outline-none transition-colors",
+		"hover:bg-foreground/[0.06] focus-visible:bg-foreground/[0.06]",
+		"disabled:pointer-events-none disabled:opacity-50",
+		destructive ? "text-[var(--destructive)]" : "text-foreground",
+		classProp,
+	)}
+>
+	{@render children?.()}
+</button>

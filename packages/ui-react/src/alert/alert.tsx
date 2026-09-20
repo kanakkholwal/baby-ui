@@ -1,67 +1,34 @@
 "use client";
 
-import type { ReactNode } from "react";
+import type { ComponentProps } from "react";
 import { useState } from "react";
 import { cn } from "../lib/cn";
-import { ALERT_ICON, ALERT_ROLE, type AlertVariant, alert } from "./variants";
-
-const TONE: Record<AlertVariant, string> = {
-	info: "text-muted-foreground",
-	success: "text-[var(--success)]",
-	warning: "text-[var(--warning)]",
-	destructive: "text-[var(--destructive)]",
-};
-
-export interface AlertProps {
-	children?: ReactNode;
-	variant?: AlertVariant;
-	title?: string;
-	dismissible?: boolean;
-	className?: string;
-}
+import { ALERT_ROLE, type AlertVariant, alert } from "./variants";
 
 export function Alert({
-	children,
-	variant = "info",
-	title,
-	dismissible = false,
 	className,
-}: AlertProps) {
+	variant = "info",
+	dismissible = false,
+	children,
+	...props
+}: ComponentProps<"div"> & { variant?: AlertVariant; dismissible?: boolean }) {
 	const [open, setOpen] = useState(true);
 	if (!open) return null;
 
 	return (
 		<div
+			data-slot="alert"
 			role={ALERT_ROLE[variant]}
-			className={cn("alert-in", alert({ variant }), className)}
+			className={cn("alert-in", alert({ variant }), dismissible && "pr-10", className)}
+			{...props}
 		>
-			<svg
-				viewBox="0 0 16 16"
-				fill="none"
-				aria-hidden
-				className={cn("mt-px size-4 shrink-0", TONE[variant])}
-			>
-				<circle cx="8" cy="8" r="6.4" stroke="currentColor" strokeWidth="1.3" />
-				<path
-					d={ALERT_ICON[variant]}
-					stroke="currentColor"
-					strokeWidth="1.5"
-					strokeLinecap="round"
-					strokeLinejoin="round"
-				/>
-			</svg>
-			<div className="min-w-0 flex-1">
-				{title ? <p className="font-medium text-foreground">{title}</p> : null}
-				{children ? (
-					<div className={cn("text-muted-foreground", title && "mt-1")}>{children}</div>
-				) : null}
-			</div>
+			{children}
 			{dismissible ? (
 				<button
 					type="button"
 					aria-label="Dismiss"
 					onClick={() => setOpen(false)}
-					className="-mr-1 shrink-0 rounded-md p-1 text-muted-foreground transition-colors hover:text-foreground"
+					className="absolute top-2.5 right-2.5 rounded-md p-1 text-muted-foreground transition-colors hover:text-foreground"
 				>
 					<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-3.5">
 						<path
@@ -74,5 +41,31 @@ export function Alert({
 				</button>
 			) : null}
 		</div>
+	);
+}
+
+export function AlertTitle({ className, ...props }: ComponentProps<"div">) {
+	return (
+		<div
+			data-slot="alert-title"
+			className={cn(
+				"col-start-2 min-h-4 font-medium text-foreground tracking-tight",
+				className,
+			)}
+			{...props}
+		/>
+	);
+}
+
+export function AlertDescription({ className, ...props }: ComponentProps<"div">) {
+	return (
+		<div
+			data-slot="alert-description"
+			className={cn(
+				"col-start-2 grid justify-items-start gap-1 text-muted-foreground text-sm [&_p]:leading-relaxed",
+				className,
+			)}
+			{...props}
+		/>
 	);
 }

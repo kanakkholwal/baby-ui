@@ -1,25 +1,33 @@
-"use client";
-
-import { AlertDialog, Button } from "@baby-ui/react";
-import { useState } from "react";
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from "@baby-ui/react";
 
 export function Example() {
-	const [open, setOpen] = useState(false);
-
 	return (
-		<>
-			<Button variant="destructive" onClick={() => setOpen(true)}>
-				Delete project
-			</Button>
-			<AlertDialog
-				open={open}
-				onOpenChange={setOpen}
-				title="Delete this project?"
-				description="Every deployment and build log goes with it. This cannot be undone."
-				confirmLabel="Delete"
-				destructive
-				onConfirm={() => console.log("deleted")}
-			/>
-		</>
+		<AlertDialog>
+			<AlertDialogTrigger>Delete project</AlertDialogTrigger>
+			<AlertDialogContent>
+				<AlertDialogHeader>
+					<AlertDialogTitle>Delete this project?</AlertDialogTitle>
+					<AlertDialogDescription>
+						Every deployment and build log goes with it. This cannot be undone.
+					</AlertDialogDescription>
+				</AlertDialogHeader>
+				<AlertDialogFooter>
+					<AlertDialogCancel>Cancel</AlertDialogCancel>
+					<AlertDialogAction destructive onClick={() => console.log("deleted")}>
+						Delete
+					</AlertDialogAction>
+				</AlertDialogFooter>
+			</AlertDialogContent>
+		</AlertDialog>
 	);
 }

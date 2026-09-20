@@ -9,12 +9,6 @@ export const dropdownMenu = defineComponent({
 	status: "stable",
 	props: [
 		{
-			name: "items",
-			type: "MenuItem[]",
-			description: "Actions, in order. A disabled item is skipped by the arrow keys.",
-			control: { kind: "none" },
-		},
-		{
 			name: "placement",
 			type: "Placement",
 			description: "Preferred side. Flips automatically when there is not room.",
@@ -79,6 +73,12 @@ export const dropdownMenu = defineComponent({
 			entry: "DropdownMenu",
 			files: [
 				{ path: "dropdown-menu/dropdown-menu.svelte", type: "registry:ui" },
+				{ path: "dropdown-menu/dropdown-menu-trigger.svelte", type: "registry:ui" },
+				{ path: "dropdown-menu/dropdown-menu-content.svelte", type: "registry:ui" },
+				{ path: "dropdown-menu/dropdown-menu-item.svelte", type: "registry:ui" },
+				{ path: "dropdown-menu/dropdown-menu-label.svelte", type: "registry:ui" },
+				{ path: "dropdown-menu/dropdown-menu-separator.svelte", type: "registry:ui" },
+				{ path: "dropdown-menu/context.ts", type: "registry:ui" },
 				{ path: "lib/anchor.ts", type: "registry:lib" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],

@@ -4,7 +4,7 @@ export const avatar = defineComponent({
 	slug: "avatar",
 	name: "Avatar",
 	description:
-		"User image with an initials fallback that shows only after the image actually fails.",
+		"Avatar, AvatarImage and AvatarFallback, where the fallback shows until the image really loads.",
 	category: "base",
 	status: "stable",
 	variants: { size: ["sm", "md", "lg", "xl"], shape: ["circle", "square"] },
@@ -13,15 +13,8 @@ export const avatar = defineComponent({
 			name: "src",
 			type: "string",
 			description:
-				"Image URL. The fallback renders until it loads, and stays if it errors.",
+				"AvatarImage source. The fallback renders until it loads, and stays if it errors.",
 			control: { kind: "text", placeholder: "https://…" },
-		},
-		{
-			name: "name",
-			type: "string",
-			description: "Full name. Supplies the alt text and the initials fallback.",
-			required: true,
-			control: { kind: "text" },
 		},
 		{
 			name: "size",
@@ -71,6 +64,9 @@ export const avatar = defineComponent({
 			entry: "Avatar",
 			files: [
 				{ path: "avatar/avatar.svelte", type: "registry:ui" },
+				{ path: "avatar/avatar-image.svelte", type: "registry:ui" },
+				{ path: "avatar/avatar-fallback.svelte", type: "registry:ui" },
+				{ path: "avatar/context.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge"],

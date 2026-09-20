@@ -10,7 +10,9 @@ const featured = specs.slice(0, 8);
 </script>
 
 <svelte:head>
-	<title>baby-ui — multi-framework component registry</title>
+	<title>
+		Animated, accessible, and customizable components for React and Svelte. · Baby UI
+	</title>
 	<meta
 		name="description"
 		content="Copy-paste components for React and Svelte that share one token layer."

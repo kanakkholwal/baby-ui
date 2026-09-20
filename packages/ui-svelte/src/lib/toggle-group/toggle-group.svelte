@@ -1,40 +1,52 @@
 <script lang="ts">
+import type { Snippet } from "svelte";
+import type { HTMLAttributes } from "svelte/elements";
 import { cn } from "../lib/cn";
-
-export type ToggleOption = { value: string; label: string; disabled?: boolean };
+import { setToggleGroup, type ToggleGroupSize } from "./context";
 
 let {
-	options,
+	children,
 	value = $bindable<string | string[]>(""),
-	multiple = false,
+	type = "single",
+	size = "md",
 	disabled = false,
 	label = "Options",
 	class: classProp,
+	...rest
 }: {
-	options: ToggleOption[];
+	children?: Snippet;
 	value?: string | string[];
-	multiple?: boolean;
+	type?: "single" | "multiple";
+	size?: ToggleGroupSize;
 	disabled?: boolean;
 	label?: string;
 	class?: string;
-} = $props();
+} & HTMLAttributes<HTMLDivElement> = $props();
 
-function isOn(option: string) {
-	return multiple ? (value as string[]).includes(option) : value === option;
-}
-
-function toggle(option: string) {
-	if (!multiple) {
-		value = value === option ? "" : option;
-		return;
-	}
-	const list = value as string[];
-	value = list.includes(option) ? list.filter((v) => v !== option) : [...list, option];
-}
+setToggleGroup({
+	get size() {
+		return size;
+	},
+	get disabled() {
+		return disabled;
+	},
+	isOn: (item) =>
+		type === "multiple" ? (value as string[]).includes(item) : value === item,
+	toggle: (item) => {
+		if (type === "single") {
+			value = value === item ? "" : item;
+			return;
+		}
+		const list = value as string[];
+		value = list.includes(item) ? list.filter((v) => v !== item) : [...list, item];
+	},
+});
 </script>
 
 <div
+	{...rest}
 	role="group"
+	data-slot="toggle-group"
 	aria-label={label}
 	class={cn(
 		"inline-flex items-center gap-0.5 rounded-xl border border-border bg-card p-1",
@@ -42,15 +54,5 @@ function toggle(option: string) {
 		classProp,
 	)}
 >
-	{#each options as option (option.value)}
-		<button
-			type="button"
-			aria-pressed={isOn(option.value)}
-			disabled={disabled || option.disabled}
-			onclick={() => toggle(option.value)}
-			class="inline-flex h-7 items-center rounded-lg px-2.5 font-medium text-muted-foreground text-xs outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring aria-pressed:bg-foreground/[0.08] aria-pressed:text-foreground disabled:pointer-events-none disabled:opacity-50"
-		>
-			{option.label}
-		</button>
-	{/each}
+	{@render children?.()}
 </div>

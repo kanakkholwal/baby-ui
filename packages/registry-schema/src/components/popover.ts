@@ -76,6 +76,9 @@ export const popover = defineComponent({
 			entry: "Popover",
 			files: [
 				{ path: "popover/popover.svelte", type: "registry:ui" },
+				{ path: "popover/popover-trigger.svelte", type: "registry:ui" },
+				{ path: "popover/popover-content.svelte", type: "registry:ui" },
+				{ path: "popover/context.ts", type: "registry:ui" },
 				{ path: "lib/anchor.ts", type: "registry:lib" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],

@@ -3,7 +3,8 @@ import { defineComponent } from "../index";
 export const alert = defineComponent({
 	slug: "alert",
 	name: "Alert",
-	description: "Inline message with a semantic variant, an icon and optional dismissal.",
+	description:
+		"Inline message composed from Alert, AlertTitle and AlertDescription, with an optional dismiss.",
 	category: "base",
 	status: "stable",
 	variants: { variant: ["info", "success", "warning", "destructive"] },
@@ -11,16 +12,9 @@ export const alert = defineComponent({
 		{
 			name: "variant",
 			type: '"info" | "success" | "warning" | "destructive"',
-			description: "Semantic colour and default icon.",
+			description: "Semantic colour and the role the alert announces with.",
 			default: "info",
 			control: { kind: "select", options: ["info", "success", "warning", "destructive"] },
-		},
-		{
-			name: "title",
-			type: "string",
-			description: "Short headline. Omit for a single-line alert.",
-			default: "Heads up",
-			control: { kind: "text" },
 		},
 		{
 			name: "dismissible",
@@ -65,6 +59,8 @@ export const alert = defineComponent({
 			entry: "Alert",
 			files: [
 				{ path: "alert/alert.svelte", type: "registry:ui" },
+				{ path: "alert/alert-title.svelte", type: "registry:ui" },
+				{ path: "alert/alert-description.svelte", type: "registry:ui" },
 				{ path: "alert/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],

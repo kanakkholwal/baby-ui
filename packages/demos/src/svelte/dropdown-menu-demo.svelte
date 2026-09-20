@@ -1,27 +1,29 @@
 <script lang="ts">
-import { DropdownMenu } from "@baby-ui/svelte";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from "@baby-ui/svelte";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
 
 let last = $state("");
-
-const items = [
-	{ id: "rename", label: "Rename" },
-	{ id: "duplicate", label: "Duplicate" },
-	{ id: "archive", label: "Archive", disabled: true },
-	{ id: "delete", label: "Delete", destructive: true },
-];
 </script>
 
 <div class="flex flex-col items-center gap-3">
-	<DropdownMenu
-		{items}
-		placement={(props.placement as never) ?? "bottom-start"}
-		onselect={(id) => (last = id)}
-	>
-		{#snippet trigger()}
-			<span class="inline-flex h-9 items-center rounded-lg border border-border bg-card px-3 font-medium text-foreground text-sm">Actions</span>
-		{/snippet}
+	<DropdownMenu placement={(props.placement as never) ?? "bottom-start"}>
+		<DropdownMenuTrigger class="inline-flex h-9 items-center rounded-lg border border-border bg-card px-3 font-medium text-foreground text-sm">Actions</DropdownMenuTrigger>
+		<DropdownMenuContent>
+			<DropdownMenuLabel>This file</DropdownMenuLabel>
+			<DropdownMenuItem onclick={() => (last = "rename")}>Rename</DropdownMenuItem>
+			<DropdownMenuItem onclick={() => (last = "duplicate")}>Duplicate</DropdownMenuItem>
+			<DropdownMenuItem disabled>Archive</DropdownMenuItem>
+			<DropdownMenuSeparator />
+			<DropdownMenuItem destructive onclick={() => (last = "delete")}>Delete</DropdownMenuItem>
+		</DropdownMenuContent>
 	</DropdownMenu>
 	{#if last}<p class="text-muted-foreground text-xs">Selected: {last}</p>{/if}
 </div>

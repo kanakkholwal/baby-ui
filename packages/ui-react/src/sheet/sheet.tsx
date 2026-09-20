@@ -1,45 +1,112 @@
 "use client";
 
-import type { ReactNode } from "react";
-import { useEffect, useId, useRef } from "react";
+import type { ComponentProps, ReactNode } from "react";
+import {
+	createContext,
+	useCallback,
+	useContext,
+	useEffect,
+	useId,
+	useMemo,
+	useRef,
+	useState,
+} from "react";
 import { cn } from "../lib/cn";
 
-const SIDE = {
+export type SheetSide = "left" | "right" | "top" | "bottom";
+
+const SIDE: Record<SheetSide, string> = {
 	left: "inset-y-0 left-0 h-full w-[min(22rem,100vw)] border-r",
 	right: "inset-y-0 right-0 h-full w-[min(22rem,100vw)] border-l",
 	top: "inset-x-0 top-0 w-full max-h-[80vh] border-b",
 	bottom: "inset-x-0 bottom-0 w-full max-h-[80vh] rounded-t-2xl border-t",
 };
 
-export interface SheetProps {
-	children?: ReactNode;
+type Ctx = {
 	open: boolean;
-	side?: "left" | "right" | "top" | "bottom";
-	title: string;
-	className?: string;
-	onOpenChange: (open: boolean) => void;
+	titleId: string;
+	descriptionId: string;
+	setOpen: (open: boolean) => void;
+};
+
+const SheetCtx = createContext<Ctx | null>(null);
+
+function useSheet() {
+	const ctx = useContext(SheetCtx);
+	if (!ctx) throw new Error("Sheet parts must be used inside <Sheet>");
+	return ctx;
 }
 
 export function Sheet({
 	children,
-	open,
-	side = "right",
-	title,
-	className,
+	open: openProp,
+	defaultOpen = false,
 	onOpenChange,
-}: SheetProps) {
-	const id = useId();
+}: {
+	children?: ReactNode;
+	open?: boolean;
+	defaultOpen?: boolean;
+	onOpenChange?: (open: boolean) => void;
+}) {
+	const uid = useId();
+	const [internal, setInternal] = useState(defaultOpen);
+	const open = openProp ?? internal;
+
+	const setOpen = useCallback(
+		(next: boolean) => {
+			if (openProp === undefined) setInternal(next);
+			onOpenChange?.(next);
+		},
+		[openProp, onOpenChange],
+	);
+
+	const ctx = useMemo(
+		() => ({
+			open,
+			titleId: `${uid}-title`,
+			descriptionId: `${uid}-description`,
+			setOpen,
+		}),
+		[open, uid, setOpen],
+	);
+
+	return <SheetCtx.Provider value={ctx}>{children}</SheetCtx.Provider>;
+}
+
+export function SheetTrigger({ className, ...props }: ComponentProps<"button">) {
+	const sheet = useSheet();
+
+	return (
+		<button
+			type="button"
+			data-slot="sheet-trigger"
+			aria-haspopup="dialog"
+			aria-expanded={sheet.open}
+			onClick={() => sheet.setOpen(true)}
+			className={cn("inline-flex", className)}
+			{...props}
+		/>
+	);
+}
+
+export function SheetContent({
+	className,
+	side = "right",
+	children,
+}: ComponentProps<"div"> & { side?: SheetSide }) {
+	const sheet = useSheet();
 	const panel = useRef<HTMLDivElement>(null);
+	const { open, setOpen } = sheet;
 
 	useEffect(() => {
 		if (!open) return;
 		panel.current?.querySelector<HTMLElement>("button, a, input, [tabindex]")?.focus();
-		const onKey = (e: globalThis.KeyboardEvent) => {
-			if (e.key === "Escape") onOpenChange(false);
+		const onKey = (event: KeyboardEvent) => {
+			if (event.key === "Escape") setOpen(false);
 		};
 		window.addEventListener("keydown", onKey);
 		return () => window.removeEventListener("keydown", onKey);
-	}, [open, onOpenChange]);
+	}, [open, setOpen]);
 
 	if (!open) return null;
 
@@ -48,15 +115,15 @@ export function Sheet({
 			<button
 				type="button"
 				aria-label="Close"
-				onClick={() => onOpenChange(false)}
+				onClick={() => setOpen(false)}
 				className="absolute inset-0 bg-black/50"
 			/>
-
 			<div
 				ref={panel}
 				role="dialog"
-				aria-modal="true"
-				aria-labelledby={id}
+				aria-modal
+				aria-labelledby={sheet.titleId}
+				data-slot="sheet-content"
 				data-side={side}
 				className={cn(
 					"sheet-panel absolute flex flex-col gap-4 overflow-y-auto border-border bg-background p-6",
@@ -64,28 +131,83 @@ export function Sheet({
 					className,
 				)}
 			>
-				<div className="flex items-center justify-between gap-4">
-					<h2 id={id} className="font-semibold text-foreground text-sm">
-						{title}
-					</h2>
-					<button
-						type="button"
-						aria-label="Close"
-						onClick={() => onOpenChange(false)}
-						className="grid size-8 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-card hover:text-foreground"
-					>
-						<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-4">
-							<path
-								d="m4 4 8 8M12 4l-8 8"
-								stroke="currentColor"
-								strokeWidth="1.5"
-								strokeLinecap="round"
-							/>
-						</svg>
-					</button>
-				</div>
 				{children}
 			</div>
 		</div>
+	);
+}
+
+export function SheetHeader({ className, ...props }: ComponentProps<"div">) {
+	return (
+		<div
+			data-slot="sheet-header"
+			className={cn("flex items-center justify-between gap-4", className)}
+			{...props}
+		/>
+	);
+}
+
+export function SheetFooter({ className, ...props }: ComponentProps<"div">) {
+	return (
+		<div
+			data-slot="sheet-footer"
+			className={cn("mt-auto flex items-center justify-end gap-2", className)}
+			{...props}
+		/>
+	);
+}
+
+export function SheetTitle({ className, ...props }: ComponentProps<"h2">) {
+	const sheet = useSheet();
+
+	return (
+		<h2
+			id={sheet.titleId}
+			data-slot="sheet-title"
+			className={cn("font-semibold text-foreground text-sm", className)}
+			{...props}
+		/>
+	);
+}
+
+export function SheetDescription({ className, ...props }: ComponentProps<"p">) {
+	const sheet = useSheet();
+
+	return (
+		<p
+			id={sheet.descriptionId}
+			data-slot="sheet-description"
+			className={cn("text-muted-foreground text-sm", className)}
+			{...props}
+		/>
+	);
+}
+
+export function SheetClose({ className, children, ...props }: ComponentProps<"button">) {
+	const sheet = useSheet();
+
+	return (
+		<button
+			type="button"
+			data-slot="sheet-close"
+			aria-label={children ? undefined : "Close"}
+			onClick={() => sheet.setOpen(false)}
+			className={cn(
+				"grid size-8 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-card hover:text-foreground",
+				className,
+			)}
+			{...props}
+		>
+			{children ?? (
+				<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-4">
+					<path
+						d="m4 4 8 8M12 4l-8 8"
+						stroke="currentColor"
+						strokeWidth="1.5"
+						strokeLinecap="round"
+					/>
+				</svg>
+			)}
+		</button>
 	);
 }

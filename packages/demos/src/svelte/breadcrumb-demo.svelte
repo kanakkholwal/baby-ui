@@ -1,15 +1,35 @@
 <script lang="ts">
-import { Breadcrumb } from "@baby-ui/svelte";
+import {
+	Breadcrumb,
+	BreadcrumbEllipsis,
+	BreadcrumbItem,
+	BreadcrumbLink,
+	BreadcrumbList,
+	BreadcrumbPage,
+	BreadcrumbSeparator,
+} from "@baby-ui/svelte";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
 
-const items = [
-	{ href: "/", label: "Home" },
-	{ href: "/components", label: "Components" },
-	{ href: "/components/base", label: "Base" },
-	{ href: "/components/base/nav", label: "Navigation" },
-	{ label: "Breadcrumb" },
-];
+const collapsed = $derived(props.collapsed !== false);
 </script>
 
-<Breadcrumb {items} maxVisible={Number(props.maxVisible ?? 4)} />
+<Breadcrumb>
+	<BreadcrumbList>
+		<BreadcrumbItem><BreadcrumbLink href="/">Home</BreadcrumbLink></BreadcrumbItem>
+		<BreadcrumbSeparator />
+		{#if collapsed}
+			<BreadcrumbItem><BreadcrumbEllipsis /></BreadcrumbItem>
+		{:else}
+			<BreadcrumbItem>
+				<BreadcrumbLink href="/components">Components</BreadcrumbLink>
+			</BreadcrumbItem>
+			<BreadcrumbSeparator />
+			<BreadcrumbItem>
+				<BreadcrumbLink href="/components/base">Base</BreadcrumbLink>
+			</BreadcrumbItem>
+		{/if}
+		<BreadcrumbSeparator />
+		<BreadcrumbItem><BreadcrumbPage>Breadcrumb</BreadcrumbPage></BreadcrumbItem>
+	</BreadcrumbList>
+</Breadcrumb>

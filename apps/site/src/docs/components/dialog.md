@@ -1,9 +1,9 @@
 ---
-title: Modal
-description: Centred dialog on the platform top layer, with sizes and an optional footer.
-component: modal
+title: Dialog
+description: Centred dialog on the platform top layer, composed from trigger, content, header, title, description and footer.
+component: dialog
 category: base
-tags: [modal]
+tags: [dialog, modal]
 ---
 
 Built on the native `<dialog>` element. The top layer, the backdrop, and making the rest

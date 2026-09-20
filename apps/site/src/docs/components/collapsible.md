@@ -1,6 +1,6 @@
 ---
 title: Collapsible
-description: Single disclosure with animated height and no measurement.
+description: Collapsible, CollapsibleTrigger and CollapsibleContent, with animated height and no measurement.
 component: collapsible
 category: base
 tags: [collapsible]

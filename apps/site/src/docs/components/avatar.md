@@ -1,14 +1,17 @@
 ---
 title: Avatar
-description: User image with an initials fallback that shows only after the image actually fails.
+description: Avatar, AvatarImage and AvatarFallback, where the fallback shows until the image really loads.
 component: avatar
 category: base
 tags: [avatar, profile, user]
 ---
 
-The initials render first and the image fades in over them once it loads. That order
-matters: the alternative is an empty box that pops, which looks like a bug on a slow
-connection.
+Three parts, shadcn's: `Avatar`, `AvatarImage`, `AvatarFallback`. The fallback is your
+content, not a string we derive, because initials are not the only sensible fallback.
+
+Put the fallback first in the markup. It renders immediately and the image fades in over
+it once it loads; the alternative is an empty box that pops, which looks like a bug on a
+slow connection.
 
 ## The fallback is not a placeholder
 

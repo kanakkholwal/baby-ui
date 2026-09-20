@@ -1,69 +1,121 @@
 "use client";
 
-import type { ReactNode } from "react";
-import { useEffect, useId, useRef, useState } from "react";
+import type { ComponentProps, ReactNode } from "react";
+import {
+	createContext,
+	useCallback,
+	useContext,
+	useEffect,
+	useId,
+	useMemo,
+	useState,
+} from "react";
 import { type AnchorPlacement, anchor, dismissable } from "../lib/anchor";
 import { cn } from "../lib/cn";
 
-export interface PopoverProps {
-	trigger: ReactNode;
-	children: ReactNode;
-	placement?: AnchorPlacement;
-	gap?: number;
-	className?: string;
+type Ctx = {
+	open: boolean;
+	contentId: string;
+	setOpen: (open: boolean) => void;
+	setTrigger: (el: HTMLElement | null) => void;
+	setContent: (el: HTMLElement | null) => void;
+};
+
+const PopoverCtx = createContext<Ctx | null>(null);
+
+function usePopover() {
+	const ctx = useContext(PopoverCtx);
+	if (!ctx) throw new Error("Popover parts must be used inside <Popover>");
+	return ctx;
 }
 
 export function Popover({
-	trigger,
 	children,
+	open: openProp,
+	defaultOpen = false,
 	placement = "bottom-start",
 	gap = 6,
-	className,
-}: PopoverProps) {
-	const id = useId();
-	const [open, setOpen] = useState(false);
-	const triggerRef = useRef<HTMLButtonElement>(null);
-	const floating = useRef<HTMLDivElement>(null);
+	onOpenChange,
+}: {
+	children?: ReactNode;
+	open?: boolean;
+	defaultOpen?: boolean;
+	placement?: AnchorPlacement;
+	gap?: number;
+	onOpenChange?: (open: boolean) => void;
+}) {
+	const contentId = useId();
+	const [internal, setInternal] = useState(defaultOpen);
+	const [triggerEl, setTrigger] = useState<HTMLElement | null>(null);
+	const [contentEl, setContent] = useState<HTMLElement | null>(null);
+	const open = openProp ?? internal;
+
+	const setOpen = useCallback(
+		(next: boolean) => {
+			if (openProp === undefined) setInternal(next);
+			onOpenChange?.(next);
+		},
+		[openProp, onOpenChange],
+	);
 
 	useEffect(() => {
-		if (!open || !triggerRef.current || !floating.current) return;
-		const stopAnchor = anchor(triggerRef.current, floating.current, { placement, gap });
-		const stopDismiss = dismissable([triggerRef.current, floating.current], () => {
+		if (!open || !triggerEl || !contentEl) return;
+		const stopAnchor = anchor(triggerEl, contentEl, { placement, gap });
+		const stopDismiss = dismissable([triggerEl, contentEl], () => {
 			setOpen(false);
-			triggerRef.current?.focus();
+			triggerEl.focus();
 		});
 		return () => {
 			stopAnchor();
 			stopDismiss();
 		};
-	}, [open, placement, gap]);
+	}, [open, triggerEl, contentEl, placement, gap, setOpen]);
+
+	const ctx = useMemo(
+		() => ({ open, contentId, setOpen, setTrigger, setContent }),
+		[open, contentId, setOpen],
+	);
+
+	return <PopoverCtx.Provider value={ctx}>{children}</PopoverCtx.Provider>;
+}
+
+export function PopoverTrigger({ className, ...props }: ComponentProps<"button">) {
+	const popover = usePopover();
 
 	return (
-		<>
-			<button
-				ref={triggerRef}
-				type="button"
-				aria-expanded={open}
-				aria-controls={open ? id : undefined}
-				onClick={() => setOpen((v) => !v)}
-				className="inline-flex rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-ring"
-			>
-				{trigger}
-			</button>
+		<button
+			ref={popover.setTrigger}
+			type="button"
+			data-slot="popover-trigger"
+			data-state={popover.open ? "open" : "closed"}
+			aria-expanded={popover.open}
+			aria-controls={popover.open ? popover.contentId : undefined}
+			onClick={() => popover.setOpen(!popover.open)}
+			className={cn(
+				"inline-flex rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-ring",
+				className,
+			)}
+			{...props}
+		/>
+	);
+}
 
-			{open ? (
-				<div
-					ref={floating}
-					id={id}
-					role="dialog"
-					className={cn(
-						"anchored z-50 w-72 rounded-xl border border-border bg-popover p-3 text-sm shadow-2xl",
-						className,
-					)}
-				>
-					{children}
-				</div>
-			) : null}
-		</>
+export function PopoverContent({ className, ...props }: ComponentProps<"div">) {
+	const popover = usePopover();
+	if (!popover.open) return null;
+
+	return (
+		<div
+			ref={popover.setContent}
+			id={popover.contentId}
+			role="dialog"
+			data-slot="popover-content"
+			data-state="open"
+			className={cn(
+				"anchored z-50 w-72 rounded-xl border border-border bg-popover p-3 text-sm shadow-2xl",
+				className,
+			)}
+			{...props}
+		/>
 	);
 }

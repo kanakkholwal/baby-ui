@@ -1,32 +1,38 @@
 <script lang="ts">
 import type { Snippet } from "svelte";
 import { type AnchorPlacement, anchor, dismissable } from "../lib/anchor";
-import { cn } from "../lib/cn";
+import { setPopover } from "./context";
 
 let {
-	trigger,
 	children,
 	open = $bindable(false),
 	placement = "bottom-start",
 	gap = 6,
-	class: classProp,
 }: {
-	trigger: Snippet;
-	children: Snippet;
+	children?: Snippet;
 	open?: boolean;
 	placement?: AnchorPlacement;
 	gap?: number;
-	class?: string;
 } = $props();
 
-const id = $props.id();
-let triggerEl = $state<HTMLButtonElement>();
-let floating = $state<HTMLDivElement>();
+const contentId = $props.id();
+let triggerEl = $state<HTMLElement>();
+let contentEl = $state<HTMLElement>();
+
+setPopover({
+	get open() {
+		return open;
+	},
+	contentId,
+	setOpen: (next) => (open = next),
+	setTrigger: (el) => (triggerEl = el),
+	setContent: (el) => (contentEl = el),
+});
 
 $effect(() => {
-	if (!open || !triggerEl || !floating) return;
-	const stopAnchor = anchor(triggerEl, floating, { placement, gap });
-	const stopDismiss = dismissable([triggerEl, floating], () => {
+	if (!open || !triggerEl || !contentEl) return;
+	const stopAnchor = anchor(triggerEl, contentEl, { placement, gap });
+	const stopDismiss = dismissable([triggerEl, contentEl], () => {
 		open = false;
 		triggerEl?.focus();
 	});
@@ -37,27 +43,4 @@ $effect(() => {
 });
 </script>
 
-<button
-	bind:this={triggerEl}
-	type="button"
-	aria-expanded={open}
-	aria-controls={open ? id : undefined}
-	onclick={() => (open = !open)}
-	class="inline-flex rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-ring"
->
-	{@render trigger()}
-</button>
-
-{#if open}
-	<div
-		bind:this={floating}
-		{id}
-		role="dialog"
-		class={cn(
-			"anchored z-50 w-72 rounded-xl border border-border bg-popover p-3 text-sm shadow-2xl",
-			classProp,
-		)}
-	>
-		{@render children()}
-	</div>
-{/if}
+{@render children?.()}

@@ -1,10 +1,10 @@
 import { defineComponent } from "../index";
 
-export const modal = defineComponent({
-	slug: "modal",
-	name: "Modal",
+export const dialog = defineComponent({
+	slug: "dialog",
+	name: "Dialog",
 	description:
-		"Centred dialog on the platform top layer, with sizes and an optional footer.",
+		"Centred dialog on the platform top layer, composed from trigger, content, header, title, description and footer.",
 	category: "base",
 	status: "stable",
 	props: [
@@ -16,23 +16,9 @@ export const modal = defineComponent({
 			control: { kind: "boolean" },
 		},
 		{
-			name: "title",
-			type: "string",
-			description: "Accessible name and visible heading.",
-			default: "Deploy to production",
-			control: { kind: "text" },
-		},
-		{
-			name: "description",
-			type: "string",
-			description: "Optional supporting line under the title.",
-			default: "This will replace the current build.",
-			control: { kind: "text" },
-		},
-		{
 			name: "size",
 			type: '"sm" | "md" | "lg" | "xl"',
-			description: "Maximum width.",
+			description: "Maximum width of the content panel.",
 			default: "md",
 			control: { kind: "select", options: ["sm", "md", "lg", "xl"] },
 		},
@@ -60,7 +46,8 @@ export const modal = defineComponent({
 		],
 		notes: [
 			"Rendered with the native dialog element, so the top layer, the backdrop and inertness of the rest of the page come from the browser rather than a focus-trap library.",
-			"aria-labelledby points at the dialog's own heading.",
+			"DialogTitle and DialogDescription own the ids that the dialog is labelled and described by, so the wiring cannot drift.",
+			"Part names and data-slot values match shadcn/ui, so this replaces an existing dialog without touching call sites.",
 		],
 	},
 	licenseOrigin: {
@@ -71,21 +58,29 @@ export const modal = defineComponent({
 	},
 	impl: {
 		react: {
-			entry: "Modal",
+			entry: "Dialog",
 			files: [
-				{ path: "modal/modal.tsx", type: "registry:ui" },
+				{ path: "dialog/dialog.tsx", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge"],
 		},
 		svelte: {
-			entry: "Modal",
+			entry: "Dialog",
 			files: [
-				{ path: "modal/modal.svelte", type: "registry:ui" },
+				{ path: "dialog/dialog.svelte", type: "registry:ui" },
+				{ path: "dialog/dialog-trigger.svelte", type: "registry:ui" },
+				{ path: "dialog/dialog-content.svelte", type: "registry:ui" },
+				{ path: "dialog/dialog-header.svelte", type: "registry:ui" },
+				{ path: "dialog/dialog-title.svelte", type: "registry:ui" },
+				{ path: "dialog/dialog-description.svelte", type: "registry:ui" },
+				{ path: "dialog/dialog-footer.svelte", type: "registry:ui" },
+				{ path: "dialog/dialog-close.svelte", type: "registry:ui" },
+				{ path: "dialog/context.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge"],
 		},
 	},
-	keywords: ["modal"],
+	keywords: ["dialog", "modal"],
 });

@@ -2,13 +2,33 @@
 
 import {
 	Avatar,
+	AvatarFallback,
 	Combobox,
 	ContextMenu,
+	ContextMenuContent,
+	ContextMenuItem,
+	ContextMenuSeparator,
+	ContextMenuTrigger,
 	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
 	HoverCard,
+	HoverCardContent,
+	HoverCardTrigger,
 	Popover,
+	PopoverContent,
+	PopoverTrigger,
 	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
 	Tooltip,
+	TooltipContent,
+	TooltipTrigger,
 } from "@baby-ui/react";
 import { useState } from "react";
 
@@ -22,13 +42,15 @@ export function PopoverDemo({ props }: { props: Props }) {
 		<Popover
 			placement={(props.placement as never) ?? "bottom-start"}
 			gap={Number(props.gap ?? 6)}
-			trigger={<span className={TRIGGER}>Open popover</span>}
 		>
-			<p className="font-medium text-foreground">Deploy settings</p>
-			<p className="mt-1 text-muted-foreground">
-				Scroll the page with this open: it repositions and flips rather than drifting
-				away.
-			</p>
+			<PopoverTrigger className={TRIGGER}>Open popover</PopoverTrigger>
+			<PopoverContent>
+				<p className="font-medium text-foreground">Deploy settings</p>
+				<p className="mt-1 text-muted-foreground">
+					Scroll the page with this open: it repositions and flips rather than drifting
+					away.
+				</p>
+			</PopoverContent>
 		</Popover>
 	);
 }
@@ -36,53 +58,63 @@ export function PopoverDemo({ props }: { props: Props }) {
 export function TooltipDemo({ props }: { props: Props }) {
 	return (
 		<Tooltip
-			label={(props.label as string) || "Copy to clipboard"}
 			placement={(props.placement as never) ?? "top"}
 			delay={Number(props.delay ?? 400)}
 		>
-			<button type="button" className={TRIGGER}>
-				Hover or focus me
-			</button>
+			<TooltipTrigger>
+				<button type="button" className={TRIGGER}>
+					Hover or focus me
+				</button>
+			</TooltipTrigger>
+			<TooltipContent>{(props.label as string) || "Copy to clipboard"}</TooltipContent>
 		</Tooltip>
 	);
 }
-
-const MENU_ITEMS = [
-	{ id: "rename", label: "Rename" },
-	{ id: "duplicate", label: "Duplicate" },
-	{ id: "archive", label: "Archive", disabled: true },
-	{ id: "delete", label: "Delete", destructive: true },
-];
 
 export function DropdownMenuDemo({ props }: { props: Props }) {
 	const [last, setLast] = useState("");
 	return (
 		<div className="flex flex-col items-center gap-3">
-			<DropdownMenu
-				items={MENU_ITEMS}
-				placement={(props.placement as never) ?? "bottom-start"}
-				onSelect={setLast}
-				trigger={<span className={TRIGGER}>Actions</span>}
-			/>
+			<DropdownMenu placement={(props.placement as never) ?? "bottom-start"}>
+				<DropdownMenuTrigger className={TRIGGER}>Actions</DropdownMenuTrigger>
+				<DropdownMenuContent>
+					<DropdownMenuLabel>This file</DropdownMenuLabel>
+					<DropdownMenuItem onClick={() => setLast("rename")}>Rename</DropdownMenuItem>
+					<DropdownMenuItem onClick={() => setLast("duplicate")}>
+						Duplicate
+					</DropdownMenuItem>
+					<DropdownMenuItem disabled>Archive</DropdownMenuItem>
+					<DropdownMenuSeparator />
+					<DropdownMenuItem destructive onClick={() => setLast("delete")}>
+						Delete
+					</DropdownMenuItem>
+				</DropdownMenuContent>
+			</DropdownMenu>
 			{last ? <p className="text-muted-foreground text-xs">Selected: {last}</p> : null}
 		</div>
 	);
 }
 
-const CONTEXT_ITEMS = [
-	{ id: "open", label: "Open in editor" },
-	{ id: "copy", label: "Copy path" },
-	{ id: "delete", label: "Delete", destructive: true },
-];
-
 export function ContextMenuDemo(_: { props: Props }) {
 	const [last, setLast] = useState("");
 	return (
 		<div className="flex flex-col items-center gap-3">
-			<ContextMenu items={CONTEXT_ITEMS} onSelect={setLast}>
-				<div className="grid h-28 w-64 place-items-center rounded-xl border border-border border-dashed text-muted-foreground text-sm">
-					Right-click anywhere here
-				</div>
+			<ContextMenu>
+				<ContextMenuTrigger>
+					<div className="grid h-28 w-64 place-items-center rounded-xl border border-border border-dashed text-muted-foreground text-sm">
+						Right-click anywhere here
+					</div>
+				</ContextMenuTrigger>
+				<ContextMenuContent>
+					<ContextMenuItem onClick={() => setLast("open")}>
+						Open in editor
+					</ContextMenuItem>
+					<ContextMenuItem onClick={() => setLast("copy")}>Copy path</ContextMenuItem>
+					<ContextMenuSeparator />
+					<ContextMenuItem destructive onClick={() => setLast("delete")}>
+						Delete
+					</ContextMenuItem>
+				</ContextMenuContent>
 			</ContextMenu>
 			{last ? <p className="text-muted-foreground text-xs">Selected: {last}</p> : null}
 		</div>
@@ -95,25 +127,29 @@ export function HoverCardDemo({ props }: { props: Props }) {
 			placement={(props.placement as never) ?? "bottom-start"}
 			openDelay={Number(props.openDelay ?? 300)}
 			closeDelay={Number(props.closeDelay ?? 150)}
-			trigger={
+		>
+			<HoverCardTrigger>
 				<button
 					type="button"
 					className="font-medium text-foreground text-sm underline underline-offset-4"
 				>
 					@kanakkholwal
 				</button>
-			}
-		>
-			<div className="flex items-start gap-3">
-				<Avatar name="Kanak Kholwal" size="sm" />
-				<div>
-					<p className="font-medium text-foreground">Kanak Kholwal</p>
-					<p className="mt-1 text-muted-foreground text-xs">
-						Building docvia and this registry. Move the pointer onto this card: it stays
-						open.
-					</p>
+			</HoverCardTrigger>
+			<HoverCardContent>
+				<div className="flex items-start gap-3">
+					<Avatar size="sm">
+						<AvatarFallback>KK</AvatarFallback>
+					</Avatar>
+					<div>
+						<p className="font-medium text-foreground">Kanak Kholwal</p>
+						<p className="mt-1 text-muted-foreground text-xs">
+							Building docvia and this registry. Move the pointer onto this card: it stays
+							open.
+						</p>
+					</div>
 				</div>
-			</div>
+			</HoverCardContent>
 		</HoverCard>
 	);
 }
@@ -130,13 +166,27 @@ export function SelectDemo({ props }: { props: Props }) {
 	return (
 		<div className="w-64">
 			<Select
-				options={RUNTIMES}
 				value={value}
 				onValueChange={setValue}
-				placeholder={(props.placeholder as string) || "Select an option"}
 				placement={(props.placement as never) ?? "bottom-start"}
-				label="Runtime"
-			/>
+			>
+				<SelectTrigger aria-label="Runtime">
+					<SelectValue
+						placeholder={(props.placeholder as string) || "Select an option"}
+					/>
+				</SelectTrigger>
+				<SelectContent>
+					{RUNTIMES.map((runtime) => (
+						<SelectItem
+							key={runtime.value}
+							value={runtime.value}
+							disabled={runtime.disabled}
+						>
+							{runtime.label}
+						</SelectItem>
+					))}
+				</SelectContent>
+			</Select>
 		</div>
 	);
 }
