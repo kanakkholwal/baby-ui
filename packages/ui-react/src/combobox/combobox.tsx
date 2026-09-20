@@ -49,8 +49,11 @@ export function Combobox({
 	}, []);
 
 	useEffect(() => {
+		if (open) setMounted(true);
+	}, [open]);
+
+	useEffect(() => {
 		if (!open || !input.current || !floating.current) return;
-		setMounted(true);
 		const stopAnchor = anchor(input.current, floating.current, {
 			gap: 6,
 			matchWidth: true,
@@ -60,7 +63,8 @@ export function Combobox({
 			stopAnchor();
 			stopDismiss();
 		};
-	}, [open, close]);
+		// mounted is a dependency: the list only exists on the render after it flips.
+	}, [open, mounted, close]);
 
 	function show() {
 		if (open) return;

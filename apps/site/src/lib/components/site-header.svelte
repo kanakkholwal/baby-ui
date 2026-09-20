@@ -3,6 +3,7 @@ import IconArrowUpRight from "@tabler/icons-svelte/icons/arrow-up-right";
 import IconBrandGithub from "@tabler/icons-svelte/icons/brand-github";
 import IconSettings from "@tabler/icons-svelte/icons/settings";
 import { page } from "$app/state";
+import Logo from "$lib/components/logo.svelte";
 import SiteSearch from "$lib/components/site-search.svelte";
 import { prefs } from "$lib/preferences.svelte";
 import { navCategories } from "$lib/registry";
@@ -42,13 +43,8 @@ function active(match: string) {
 				href="/"
 				class="group flex items-center gap-2.5 font-semibold text-foreground text-sm tracking-tight"
 			>
-				<span
-					class="grid size-6 place-items-center rounded-lg bg-foreground text-background"
-					aria-hidden="true"
-				>
-					<span class="size-2.5 rounded-full border-2 border-current"></span>
-				</span>
-				<span>baby-ui</span>
+				<Logo class="size-6 text-foreground" />
+				<span class="font-semibold font-display">Baby UI</span>
 			</a>
 
 			<nav class="hidden items-center gap-0.5 md:flex">

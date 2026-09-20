@@ -46,7 +46,8 @@ export function FullscreenNav({
 			document.body.style.overflow = previous;
 			window.removeEventListener("keydown", onKey);
 		};
-	}, [open, onOpenChange]);
+		// mounted is a dependency: the panel only exists on the render after it flips.
+	}, [open, mounted, onOpenChange]);
 
 	if (!mounted) return null;
 
@@ -58,7 +59,11 @@ export function FullscreenNav({
 			aria-labelledby={id}
 			data-state={open ? "open" : "closed"}
 			inert={!open}
-			className={cn(NAV_MOTION, "fixed inset-0 z-50 flex flex-col bg-background", className)}
+			className={cn(
+				NAV_MOTION,
+				"fixed inset-0 z-50 flex flex-col bg-background",
+				className,
+			)}
 		>
 			<div className="flex h-14 items-center justify-between px-4 md:px-6">
 				<h2 id={id} className="font-semibold text-foreground text-sm">

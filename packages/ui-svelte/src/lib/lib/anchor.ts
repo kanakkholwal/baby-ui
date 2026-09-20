@@ -47,7 +47,7 @@ export function anchor(
 	options: AnchorOptions = {},
 ): () => void {
 	const {
-		placement = "bottom-start",
+		placement = "bottom",
 		gap = 6,
 		padding = 8,
 		matchWidth = false,

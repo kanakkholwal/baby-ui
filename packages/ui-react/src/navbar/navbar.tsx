@@ -75,7 +75,8 @@ export function Navbar({
 		};
 		window.addEventListener("keydown", onKey);
 		return () => window.removeEventListener("keydown", onKey);
-	}, [sheetOpen]);
+		// sheetMounted is a dependency: the panel only exists on the render after it flips.
+	}, [sheetOpen, sheetMounted]);
 
 	return (
 		<>

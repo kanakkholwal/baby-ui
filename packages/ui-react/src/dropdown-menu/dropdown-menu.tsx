@@ -130,7 +130,8 @@ export function DropdownMenuContent({
 		setMounted(true);
 		setIndex(0);
 		rows()[0]?.focus();
-	}, [menu.open, rows]);
+		// mounted is a dependency: the rows only exist on the render after it flips.
+	}, [menu.open, mounted, rows]);
 
 	function onKeyDown(event: KeyboardEvent) {
 		const all = rows();

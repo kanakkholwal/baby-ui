@@ -93,7 +93,8 @@ export function ContextMenuContent({
 		const y = Math.min(menu.point.y, window.innerHeight - rect.height - 8);
 		node.style.transform = `translate(${Math.max(8, x)}px, ${Math.max(8, y)}px)`;
 		return dismissable([node], menu.close);
-	}, [menu.open, menu.point, menu.close]);
+		// mounted is a dependency: the surface only exists on the render after it flips.
+	}, [menu.open, mounted, menu.point, menu.close]);
 
 	if (!mounted) return null;
 

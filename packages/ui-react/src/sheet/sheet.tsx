@@ -137,7 +137,8 @@ export function SheetContent({
 		};
 		window.addEventListener("keydown", onKey);
 		return () => window.removeEventListener("keydown", onKey);
-	}, [open, setOpen]);
+		// mounted is a dependency: the panel only exists on the render after it flips.
+	}, [open, mounted, setOpen]);
 
 	if (!mounted) return null;
 

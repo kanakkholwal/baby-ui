@@ -7,6 +7,8 @@ import IconMarkdown from "@tabler/icons-svelte/icons/markdown";
 let { markdownUrl, copyText }: { markdownUrl: string; copyText: string } = $props();
 
 let open = $state(false);
+// Kept mounted after the first open so the menu can scale out as well as in.
+let mounted = $state(false);
 let copied = $state(false);
 let root = $state<HTMLDivElement>();
 let timer: ReturnType<typeof setTimeout>;
@@ -31,6 +33,7 @@ const agents = $derived([
 
 $effect(() => {
 	if (!open) return;
+	mounted = true;
 	const onPointer = (e: PointerEvent) => {
 		if (root && !root.contains(e.target as Node)) open = false;
 	};
@@ -82,11 +85,12 @@ const row =
 		</button>
 	</div>
 
-	{#if open}
+	{#if mounted}
 		<div
-			class="menu absolute top-full right-0 z-50 mt-1.5 w-52 rounded-xl border border-border bg-popover p-1 shadow-2xl"
+			data-state={open ? "open" : "closed"}
+			inert={!open}
+			class="absolute top-full right-0 z-50 mt-1.5 w-52 origin-top-right rounded-xl border border-border bg-popover p-1 shadow-2xl transition-[opacity,scale] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] starting:scale-[var(--enter-scale)] starting:opacity-0 data-[state=closed]:scale-[var(--enter-scale)] data-[state=closed]:opacity-0 data-[state=closed]:duration-[var(--duration-exit)] motion-reduce:transition-none"
 		>
-
 			<a href={markdownUrl} class={row}>
 				<IconMarkdown size={14} stroke={1.5} class="shrink-0" />
 				View as Markdown
@@ -101,23 +105,3 @@ const row =
 	{/if}
 </div>
 
-
-<style>
-	.menu {
-		transform-origin: top right;
-		animation: menu-in var(--duration-dropdown) var(--ease-out);
-	}
-
-	@keyframes menu-in {
-		from {
-			opacity: 0;
-			transform: scale(0.96);
-		}
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		.menu {
-			animation: none;
-		}
-	}
-</style>
