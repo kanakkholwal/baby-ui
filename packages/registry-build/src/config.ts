@@ -4,10 +4,21 @@ import type { Framework } from "@baby-ui/registry-schema";
 
 export const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
 
-/** Baked into every emitted item, so it must be the real deploy origin. */
-export const SITE_URL = (
-	process.env.BABY_UI_SITE_URL ?? "https://baby-ui.pages.dev"
-).replace(/\/$/, "");
+function origin(value: string | undefined, fallback: string) {
+	return (value ?? fallback).replace(/\/$/, "");
+}
+
+/** Where the docs live. Baked into every item's `docs` link. */
+export const SITE_URL = origin(
+	process.env.BABY_UI_SITE_URL,
+	"https://baby-ui.nexonauts.com",
+);
+
+/** Where the JSON is served. A separate Pages project, so the CLI never hits the Worker. */
+export const REGISTRY_URL = origin(
+	process.env.BABY_UI_REGISTRY_URL,
+	"https://baby-ui.pages.dev",
+);
 
 export const REGISTRY_NAME = "baby-ui";
 

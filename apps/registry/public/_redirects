@@ -1,0 +1,3 @@
+/ https://baby-ui.nexonauts.com 302
+/components/* https://baby-ui.nexonauts.com/components/:splat 302
+/docs/* https://baby-ui.nexonauts.com/docs/:splat 302

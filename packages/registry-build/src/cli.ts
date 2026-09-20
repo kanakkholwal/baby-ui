@@ -3,7 +3,14 @@ import { dirname, resolve } from "node:path";
 import { FRAMEWORKS, type Framework } from "@baby-ui/registry-schema";
 import { specs } from "@baby-ui/registry-schema/components";
 import { buildItem } from "./build";
-import { FRAMEWORK, OUT_DIR, REGISTRY_NAME, REPO_ROOT, SITE_URL } from "./config";
+import {
+	FRAMEWORK,
+	OUT_DIR,
+	REGISTRY_NAME,
+	REGISTRY_URL,
+	REPO_ROOT,
+	SITE_URL,
+} from "./config";
 import { buildThirdPartyLicenses } from "./licenses";
 import { buildLlmsTxt } from "./llms";
 import { jsPath, toJavaScript } from "./tojs";
@@ -59,7 +66,9 @@ async function main() {
 		);
 	}
 
-	written.push(await writeJson("r/specs.json", { site: SITE_URL, specs }));
+	written.push(
+		await writeJson("r/specs.json", { site: SITE_URL, registry: REGISTRY_URL, specs }),
+	);
 
 	// TS and its JS counterpart per file, generated here so prettier and babel never
 	// reach the Worker. The site imports this instead of re-reading the registry JSON.

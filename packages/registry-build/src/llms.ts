@@ -1,5 +1,5 @@
 import type { ComponentSpec } from "@baby-ui/registry-schema";
-import { REGISTRY_NAME, SITE_URL } from "./config";
+import { REGISTRY_NAME, REGISTRY_URL, SITE_URL } from "./config";
 
 export function buildLlmsTxt(specs: ComponentSpec[]): string {
 	const lines = [
@@ -10,17 +10,17 @@ export function buildLlmsTxt(specs: ComponentSpec[]): string {
 		"",
 		"## Endpoints",
 		"",
-		`- Specs, the full source of truth (JSON): ${SITE_URL}/r/specs.json`,
-		`- shadcn registry index (JSON): ${SITE_URL}/r/registry.json`,
-		`- shadcn component item (JSON): ${SITE_URL}/r/{slug}.json`,
-		`- shadcn-svelte registry index (JSON): ${SITE_URL}/svelte/r/registry.json`,
-		`- shadcn-svelte component item (JSON): ${SITE_URL}/svelte/r/{slug}.json`,
+		`- Specs, the full source of truth (JSON): ${REGISTRY_URL}/r/specs.json`,
+		`- shadcn registry index (JSON): ${REGISTRY_URL}/r/registry.json`,
+		`- shadcn component item (JSON): ${REGISTRY_URL}/r/{slug}.json`,
+		`- shadcn-svelte registry index (JSON): ${REGISTRY_URL}/svelte/r/registry.json`,
+		`- shadcn-svelte component item (JSON): ${REGISTRY_URL}/svelte/r/{slug}.json`,
 		"",
 		"## Install",
 		"",
 		"```bash",
-		`npx shadcn@latest add ${SITE_URL}/r/{slug}.json`,
-		`npx shadcn-svelte@latest add ${SITE_URL}/svelte/r/{slug}.json`,
+		`npx shadcn@latest add ${REGISTRY_URL}/r/{slug}.json`,
+		`npx shadcn-svelte@latest add ${REGISTRY_URL}/svelte/r/{slug}.json`,
 		"```",
 		"",
 		"## Components",

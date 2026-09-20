@@ -1,0 +1,12 @@
+{
+	"name": "@baby-ui/registry-site",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"build": "node build.mjs"
+	},
+	"devDependencies": {
+		"@baby-ui/registry-build": "workspace:*",
+		"wrangler": "^4.135.0"
+	}
+}

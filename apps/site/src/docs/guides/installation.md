@@ -11,6 +11,26 @@ npx shadcn@latest add https://baby-ui.pages.dev/r/button.json
 npx shadcn-svelte@latest add https://baby-ui.pages.dev/svelte/r/button.json
 ```
 
+The JSON lives on `baby-ui.pages.dev` and the docs on `baby-ui.nexonauts.com`. Two
+origins, one build: the CLI never waits on the docs site, and the docs site never
+serves a cold registry.
+
+## Namespaced installs
+
+Register the origin once in `components.json` and every install is a short name:
+
+```json
+{
+	"registries": {
+		"@baby-ui": "https://baby-ui.pages.dev/r/{name}.json"
+	}
+}
+```
+
+```bash
+npx shadcn@latest add @baby-ui/button
+```
+
 Every component page has an Install tab with the exact command, the dependencies it
 needs and the files it writes, so nothing arrives unannounced.
 

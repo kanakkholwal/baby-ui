@@ -46,12 +46,7 @@ export function anchor(
 	floating: HTMLElement,
 	options: AnchorOptions = {},
 ): () => void {
-	const {
-		placement = "bottom",
-		gap = 6,
-		padding = 8,
-		matchWidth = false,
-	} = options;
+	const { placement = "bottom", gap = 6, padding = 8, matchWidth = false } = options;
 
 	const middleware = [
 		offset(gap),

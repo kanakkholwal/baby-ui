@@ -1,0 +1,76 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Two Cloudflare projects, one build: the site Worker and the registry Pages project
+# must never serve JSON from different commits.
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+env:
+  BABY_UI_SITE_URL: https://baby-ui.nexonauts.com
+  BABY_UI_REGISTRY_URL: https://baby-ui.pages.dev
+  WRANGLER_VERSION: "4.135.0"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Lint and format
+        run: pnpm lint
+
+      - name: Comment and import gates, type-check
+        run: pnpm check
+
+      - name: Build site and registry
+        run: pnpm build
+
+      - name: Worker bundle budget
+        run: pnpm size
+
+      - name: Deploy registry to Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          wranglerVersion: ${{ env.WRANGLER_VERSION }}
+          workingDirectory: apps/registry
+          command: pages deploy --branch=main
+
+      - name: Deploy site Worker
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          wranglerVersion: ${{ env.WRANGLER_VERSION }}
+          workingDirectory: apps/site
+          command: deploy
+
+      - name: Smoke-test both origins
+        run: |
+          set -euo pipefail
+          for url in \
+            "$BABY_UI_REGISTRY_URL/r/registry.json" \
+            "$BABY_UI_REGISTRY_URL/svelte/r/button.json" \
+            "$BABY_UI_SITE_URL/" \
+            "$BABY_UI_SITE_URL/components/base/button"; do
+            code=$(curl -sS -o /dev/null -w '%{http_code}' --retry 5 --retry-delay 5 --retry-all-errors "$url")
+            echo "$code  $url"
+            [ "$code" = "200" ]
+          done
