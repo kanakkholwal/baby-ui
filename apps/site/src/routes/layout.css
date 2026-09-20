@@ -7,9 +7,14 @@
 	* {
 		border-color: var(--border);
 	}
-	/* A modal <dialog> makes the UA hide the page scrollbar; reserving it stops the jump. */
+	/* A modal <dialog> makes the UA hide the page scrollbar; reserving it stops the jump.
+	   scrollbar-color inherits to every scroll container, scrollbar-width does not. */
 	html {
 		scrollbar-gutter: stable;
+		scrollbar-color: var(--border-strong) transparent;
+	}
+	* {
+		scrollbar-width: thin;
 	}
 	body {
 		background: var(--background);
@@ -83,6 +88,25 @@
 .dark .shiki,
 .dark .shiki span {
 	color: var(--shiki-dark);
+}
+
+/* Safari only learned the standard properties in 18.2; older builds need the prefix. */
+@supports not (scrollbar-width: thin) {
+	::-webkit-scrollbar {
+		width: 8px;
+		height: 8px;
+	}
+	::-webkit-scrollbar-track,
+	::-webkit-scrollbar-corner {
+		background: transparent;
+	}
+	::-webkit-scrollbar-thumb {
+		border-radius: 9999px;
+		background: var(--border-strong);
+	}
+	::-webkit-scrollbar-thumb:hover {
+		background: var(--muted-foreground);
+	}
 }
 
 @layer utilities {

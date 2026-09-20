@@ -15,10 +15,16 @@
 				"../ui-svelte/src/**",
 				"../../apps/site/src/docs/**"
 			],
-			"outputs": ["../../apps/site/static/r/**", "../../apps/site/static/svelte/**"]
+			"outputs": [
+				"../../apps/site/static/r/**",
+				"../../apps/site/static/svelte/**",
+				"../../apps/site/static/llms.txt",
+				"../../apps/site/src/lib/generated/**",
+				"../../THIRD_PARTY_LICENSES.md"
+			]
 		},
 		"check": {
-			"dependsOn": ["^build"]
+			"dependsOn": ["^build", "^registry"]
 		},
 		"dev": {
 			"cache": false,

@@ -15,21 +15,19 @@ The JSON lives on `baby-ui.pages.dev` and the docs on `baby-ui.nexonauts.com`. T
 origins, one build: the CLI never waits on the docs site, and the docs site never
 serves a cold registry.
 
-## Namespaced installs
+## Four routes
 
-Register the origin once in `components.json` and every install is a short name:
+Framework picks the CLI and the path; language picks whether the files arrive typed.
 
-```json
-{
-	"registries": {
-		"@baby-ui": "https://baby-ui.pages.dev/r/{name}.json"
-	}
-}
-```
+| | TypeScript | JavaScript |
+| --- | --- | --- |
+| React | `/r/{slug}.json` | `/r/js/{slug}.json` |
+| Svelte | `/svelte/r/{slug}.json` | `/svelte/r/js/{slug}.json` |
 
-```bash
-npx shadcn@latest add @baby-ui/button
-```
+The JS route is the same source with the types stripped and the extensions renamed, so
+`button.tsx` arrives as `button.jsx` and a Svelte SFC loses its `lang="ts"`. The
+Install tab on any component page tracks the framework and language you have selected,
+so the command shown is the one you want.
 
 Every component page has an Install tab with the exact command, the dependencies it
 needs and the files it writes, so nothing arrives unannounced.

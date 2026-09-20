@@ -15,6 +15,7 @@ export function buildLlmsTxt(specs: ComponentSpec[]): string {
 		`- shadcn component item (JSON): ${REGISTRY_URL}/r/{slug}.json`,
 		`- shadcn-svelte registry index (JSON): ${REGISTRY_URL}/svelte/r/registry.json`,
 		`- shadcn-svelte component item (JSON): ${REGISTRY_URL}/svelte/r/{slug}.json`,
+		`- JavaScript instead of TypeScript: insert /js before the slug in either route`,
 		"",
 		"## Install",
 		"",

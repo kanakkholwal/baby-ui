@@ -9,6 +9,7 @@ import {
 } from "@baby-ui/registry-schema";
 import { FRAMEWORK, SITE_URL } from "./config";
 import { rewriteImports } from "./rewrite";
+import { jsPath, toJavaScript } from "./tojs";
 
 function targetFor(framework: Framework, path: string, type: string): string {
 	const { uiTarget, libTarget } = FRAMEWORK[framework];
@@ -62,4 +63,22 @@ export async function buildItem(
 			...(spec.licenseOrigin ? { licenseOrigin: spec.licenseOrigin } : {}),
 		},
 	});
+}
+
+/** The same item with every file transpiled. Null when any file has no JS counterpart. */
+export async function toJsItem(item: RegistryItem): Promise<RegistryItem | null> {
+	const files = await Promise.all(
+		item.files.map(async (file) => {
+			const content = await toJavaScript(file.content, file.path).catch(() => null);
+			if (!content) return null;
+			return {
+				...file,
+				path: jsPath(file.path),
+				target: file.target ? jsPath(file.target) : undefined,
+				content,
+			};
+		}),
+	);
+	if (files.some((file) => file === null)) return null;
+	return { ...item, files: files as RegistryItem["files"] };
 }

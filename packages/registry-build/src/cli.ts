@@ -2,7 +2,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { FRAMEWORKS, type Framework } from "@baby-ui/registry-schema";
 import { specs } from "@baby-ui/registry-schema/components";
-import { buildItem } from "./build";
+import { buildItem, toJsItem } from "./build";
 import {
 	FRAMEWORK,
 	OUT_DIR,
@@ -44,6 +44,7 @@ async function main() {
 	for (const framework of FRAMEWORKS as readonly Framework[]) {
 		const { routePrefix } = FRAMEWORK[framework];
 		const index: unknown[] = [];
+		const jsIndex: unknown[] = [];
 
 		for (const spec of specs) {
 			const item = await buildItem(spec, framework);
@@ -51,19 +52,33 @@ async function main() {
 			written.push(await writeJson(`${routePrefix}/${spec.slug}.json`, item));
 			const { $schema: _, files: __, ...summary } = item;
 			index.push(summary);
+
+			// A JS route, so the site's language switch changes what the CLI actually writes.
+			const js = await toJsItem(item);
+			if (js) {
+				written.push(await writeJson(`${routePrefix}/js/${spec.slug}.json`, js));
+				jsIndex.push(summary);
+			}
 		}
 
-		written.push(
-			await writeJson(`${routePrefix}/registry.json`, {
-				$schema:
-					framework === "react"
-						? "https://ui.shadcn.com/schema/registry.json"
-						: "https://shadcn-svelte.com/schema/registry.json",
-				name: REGISTRY_NAME,
-				homepage: SITE_URL,
-				items: index,
-			}),
-		);
+		const schema =
+			framework === "react"
+				? "https://ui.shadcn.com/schema/registry.json"
+				: "https://shadcn-svelte.com/schema/registry.json";
+
+		for (const [prefix, items] of [
+			[routePrefix, index],
+			[`${routePrefix}/js`, jsIndex],
+		] as const) {
+			written.push(
+				await writeJson(`${prefix}/registry.json`, {
+					$schema: schema,
+					name: REGISTRY_NAME,
+					homepage: SITE_URL,
+					items,
+				}),
+			);
+		}
 	}
 
 	written.push(
@@ -111,6 +126,16 @@ async function main() {
 		"utf8",
 	);
 	written.push("../src/lib/generated/usage.json");
+
+	const originsPath = resolve(REPO_ROOT, "apps/site/src/lib/generated/origins.json");
+	await mkdir(dirname(originsPath), { recursive: true });
+	await writeFile(
+		originsPath,
+		`${JSON.stringify({ site: SITE_URL, registry: REGISTRY_URL }, null, 2)}
+`,
+		"utf8",
+	);
+	written.push("../src/lib/generated/origins.json");
 
 	const sourcesPath = resolve(REPO_ROOT, "apps/site/src/lib/generated/sources.json");
 	await mkdir(dirname(sourcesPath), { recursive: true });

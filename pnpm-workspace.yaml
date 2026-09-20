@@ -3,9 +3,11 @@ packages:
   - "apps/playground/*"
   - "packages/*"
 
+# pnpm writes these as a placeholder and then refuses the install until they are
+# booleans. esbuild links its platform binary here; workerd is what wrangler runs.
 allowBuilds:
-  esbuild: set this to true or false
-  workerd: set this to true or false
+  esbuild: true
+  workerd: true
 
 # One version of everything, declared once. Packages reference these as
 # `catalog:` so a component copied out of here can't pick up a stale peer.
