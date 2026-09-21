@@ -20,7 +20,6 @@ import ContextMenuDemo from "./context-menu-demo.svelte";
 import ConversationDemo from "./conversation-demo.svelte";
 import CopyButtonDemo from "./copy-button-demo.svelte";
 import DialogDemo from "./dialog-demo.svelte";
-import DockDemo from "./dock-demo.svelte";
 import DropdownMenuDemo from "./dropdown-menu-demo.svelte";
 import FileDiffDemo from "./file-diff-demo.svelte";
 import FileTreeDemo from "./file-tree-demo.svelte";
@@ -85,7 +84,6 @@ export const demos: Record<string, DemoComponent> = {
 	"bento-grid": as(BentoGridDemo),
 	"file-tree": as(FileTreeDemo),
 	"morphing-modal": as(MorphingModalDemo),
-	dock: as(DockDemo),
 	"copy-button": as(CopyButtonDemo),
 	"code-block": as(CodeBlockDemo),
 	markdown: as(MarkdownDemo),

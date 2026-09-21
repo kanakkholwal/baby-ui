@@ -37,6 +37,10 @@ Standing instructions for every session in this repo. The long form with reasons
 - Python heredocs mangle `\n`, `\s` and non-ASCII; edit files with the Edit tool or node.
   Files may be CRLF: preserve line endings, never mix.
 - Verify claims with measurement (headless Edge harness in the scratchpad) before reporting.
+- Never screenshot pages to judge them; the user reviews visually and sends screenshots.
+  Headless runs are for numbers: timelines, boxes, contrast, console errors, control probes.
+- Motion libraries: none in base components; elsewhere prefer CSS, then vaul / sonner
+  (the shadcn choices) over framer-motion.
 
 ## Gates before saying done
 

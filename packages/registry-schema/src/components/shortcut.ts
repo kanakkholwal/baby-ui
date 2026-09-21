@@ -24,6 +24,21 @@ export const shortcut = defineComponent({
 			control: { kind: "none" },
 		},
 		{
+			name: "variant",
+			type: '"default" | "ghost" | "solid" | "outline"',
+			description:
+				"Cap treatment. Inside a primary button the cap takes the button's foreground.",
+			default: "default",
+			control: { kind: "select", options: ["default", "ghost", "solid", "outline"] },
+		},
+		{
+			name: "joined",
+			type: "boolean",
+			description: "One cap reading ⌘K instead of a cap per key.",
+			default: false,
+			control: { kind: "boolean" },
+		},
+		{
 			name: "size",
 			type: '"sm" | "md" | "lg" | "xl"',
 			description: "Key cap size.",

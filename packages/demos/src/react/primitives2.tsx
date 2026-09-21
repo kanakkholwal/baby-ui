@@ -151,27 +151,50 @@ export function ShowMoreDemo({ props }: { props: Props }) {
 	);
 }
 
+const ROWS: [string, string][] = [
+	["Search", "cmd+k"],
+	["Toggle sidebar", "cmd+b"],
+	["Settings", "cmd+,"],
+];
+
 export function ShortcutDemo({ props }: { props: Props }) {
-	const [last, setLast] = useState("");
+	const variant =
+		(props.variant as "default" | "ghost" | "solid" | "outline") ?? "default";
 	const size = (props.size as "sm" | "md" | "lg" | "xl") ?? "md";
+	const [log, setLog] = useState<string[]>([]);
+	const note = (action: string) => setLog((prev) => [action, ...prev].slice(0, 3));
 	return (
-		<div className="flex flex-col items-center gap-3">
-			<div className="flex flex-wrap items-center gap-2">
-				<Button variant="outline" size="sm" onClick={() => setLast("New file")}>
+		<div className="flex w-80 flex-col gap-3 text-sm">
+			<div className="flex items-center gap-2">
+				<Button variant="outline" size="sm" onClick={() => note("New file")}>
 					New file
-					<Shortcut shortcut={(props.shortcut as string) || "cmd+n"} size={size} />
+					<Shortcut
+						shortcut={(props.shortcut as string) || "cmd+n"}
+						variant={variant}
+						size={size}
+						joined={Boolean(props.joined)}
+					/>
 				</Button>
-				<Button variant="outline" size="sm" onClick={() => setLast("Saved")}>
-					Save
-					<Shortcut shortcut="cmd+s" />
-				</Button>
-				<Button size="sm" onClick={() => setLast("Sent")}>
+				<Button size="sm" onClick={() => note("Sent")}>
 					Send
 					<Shortcut shortcut="cmd+enter" />
 				</Button>
 			</div>
-			<p className="text-muted-foreground text-xs">
-				{last ? `${last} via keyboard or click` : "Press a shortcut"}
+			<div className="divide-y divide-border rounded-xl border border-border">
+				{ROWS.map(([label, keys]) => (
+					<button
+						key={keys}
+						type="button"
+						onClick={() => note(label)}
+						className="flex w-full items-center justify-between px-3 py-2 text-left text-foreground transition-colors hover:bg-foreground/[0.04]"
+					>
+						{label}
+						<Shortcut shortcut={keys} variant="ghost" />
+					</button>
+				))}
+			</div>
+			<p className="min-h-4 text-muted-foreground text-xs">
+				{log.length ? `Fired: ${log.join(", ")}` : "Press a shortcut or click a row"}
 			</p>
 		</div>
 	);

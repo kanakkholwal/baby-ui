@@ -17,7 +17,8 @@
 			"!apps/site/static",
 			"!pnpm-lock.yaml",
 			"!**/*.css",
-			"!**/docvia-env.d.ts"
+			"!**/docvia-env.d.ts",
+			"!.vscode"
 		]
 	},
 	"formatter": {

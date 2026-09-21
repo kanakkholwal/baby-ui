@@ -86,14 +86,6 @@ export {
 	DialogTrigger,
 } from "./dialog/dialog";
 export {
-	Dock,
-	DockItem,
-	type DockItemProps,
-	type DockProps,
-	DockSeparator,
-	type DockSpring,
-} from "./dock/dock";
-export {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
