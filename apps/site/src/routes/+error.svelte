@@ -1,6 +1,6 @@
 <script lang="ts">
-import { page } from "$app/state";
 import { specs } from "@baby-ui/registry-schema/components";
+import { page } from "$app/state";
 
 const status = $derived(page.status);
 const notFound = $derived(status === 404);

@@ -1,23 +1,49 @@
 import type { ComponentProps } from "react";
 import { cn } from "../lib/cn";
 
+const LIFT =
+	"transition-[transform,scale,translate,border-color] duration-200 ease-[var(--ease-out)] hover:-translate-y-0.5 hover:border-border-strong motion-reduce:hover:translate-y-0";
+
 /** Slot names and class shape follow shadcn/ui, so this drops into an existing project. */
 export function Card({
 	className,
 	interactive = false,
+	variant = "default",
+	children,
 	...props
-}: ComponentProps<"div"> & { interactive?: boolean }) {
+}: ComponentProps<"div"> & { interactive?: boolean; variant?: "default" | "framed" }) {
+	if (variant === "framed") {
+		// Inset frame, same treatment as Dialog: a rim in bg-background around a bg-card body.
+		return (
+			<div
+				data-slot="card"
+				data-variant="framed"
+				className={cn(
+					"rounded-2xl border border-border bg-background p-1",
+					interactive && LIFT,
+					className,
+				)}
+				{...props}
+			>
+				<div className="flex flex-col gap-6 rounded-[11px] bg-card py-6 text-card-foreground">
+					{children}
+				</div>
+			</div>
+		);
+	}
+
 	return (
 		<div
 			data-slot="card"
 			className={cn(
 				"flex flex-col gap-6 rounded-2xl border border-border bg-card py-6 text-card-foreground",
-				interactive &&
-					"transition-[transform,scale,translate,border-color] duration-200 ease-[var(--ease-out)] hover:-translate-y-0.5 hover:border-border-strong motion-reduce:hover:translate-y-0",
+				interactive && LIFT,
 				className,
 			)}
 			{...props}
-		/>
+		>
+			{children}
+		</div>
 	);
 }
 

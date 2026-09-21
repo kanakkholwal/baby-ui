@@ -51,6 +51,7 @@ export { default as Command } from "./command/command.svelte";
 export { default as CommandDialog } from "./command/command-dialog.svelte";
 export { default as CommandEmpty } from "./command/command-empty.svelte";
 export { default as CommandGroup } from "./command/command-group.svelte";
+export { default as CommandHeader } from "./command/command-header.svelte";
 export { default as CommandInput } from "./command/command-input.svelte";
 export { default as CommandItem } from "./command/command-item.svelte";
 export { default as CommandList } from "./command/command-list.svelte";

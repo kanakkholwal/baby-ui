@@ -1,6 +1,7 @@
 "use client";
 
 import { Toaster as Sonner, type ToasterProps } from "sonner";
+import { cn } from "../lib/cn";
 import { TOAST_CLASSES } from "../lib/toast-classes";
 
 export type { ToasterProps } from "sonner";
@@ -59,6 +60,7 @@ export function Toaster({
 	gap = 8,
 	offset = { top: 16, right: 16, bottom: 24, left: 16 },
 	toastOptions,
+	className,
 	...props
 }: ToasterProps) {
 	return (
@@ -70,6 +72,7 @@ export function Toaster({
 			expand={expand}
 			gap={gap}
 			offset={offset}
+			className={cn("font-sans!", className)}
 			icons={ICONS}
 			toastOptions={{ unstyled: true, classNames: TOAST_CLASSES, ...toastOptions }}
 			{...props}

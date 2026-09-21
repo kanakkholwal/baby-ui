@@ -11,9 +11,22 @@ let {
 
 const command = getCommand();
 let el = $state<HTMLInputElement>();
+let spoken = $state("");
 
 $effect(() => {
 	el?.focus();
+});
+
+// Debounced so a live region does not narrate every keystroke, only where it settles.
+$effect(() => {
+	const count = command.resultCount;
+	const timer = setTimeout(() => {
+		spoken =
+			count === 0
+				? "No commands match."
+				: `${count} ${count === 1 ? "command" : "commands"} available.`;
+	}, 400);
+	return () => clearTimeout(timer);
 });
 
 function onkeydown(event: KeyboardEvent) {
@@ -59,4 +72,11 @@ function onkeydown(event: KeyboardEvent) {
 			classProp,
 		)}
 	/>
+	<span
+		class="min-w-[2ch] shrink-0 text-right font-mono text-[11px] text-muted-foreground tabular-nums"
+		aria-hidden="true"
+	>
+		{command.resultCount}
+	</span>
+	<span role="status" aria-live="polite" class="sr-only">{spoken}</span>
 </div>

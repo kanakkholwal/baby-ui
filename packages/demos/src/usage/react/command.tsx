@@ -5,6 +5,7 @@ import {
 	CommandDialog,
 	CommandEmpty,
 	CommandGroup,
+	CommandHeader,
 	CommandInput,
 	CommandItem,
 	CommandList,
@@ -22,6 +23,7 @@ export function Example() {
 			</button>
 			<CommandDialog open={open} onOpenChange={setOpen}>
 				<Command>
+					<CommandHeader>Command</CommandHeader>
 					<CommandInput />
 					<CommandList>
 						<CommandEmpty>Nothing matches that.</CommandEmpty>

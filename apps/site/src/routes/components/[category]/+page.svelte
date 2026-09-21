@@ -1,7 +1,7 @@
 <script lang="ts">
+import { specs } from "@baby-ui/registry-schema/components";
 import ComponentCard from "$lib/components/component-card.svelte";
 import { CATEGORY_BLURB, CATEGORY_LABEL } from "$lib/registry";
-import { specs } from "@baby-ui/registry-schema/components";
 import type { PageProps } from "./$types";
 
 let { data }: PageProps = $props();

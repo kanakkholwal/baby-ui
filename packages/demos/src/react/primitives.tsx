@@ -96,6 +96,7 @@ export function CardDemo({ props }: { props: Props }) {
 	return (
 		<Card
 			interactive={props.interactive !== false}
+			variant={(props.variant as "default" | "framed") ?? "default"}
 			className="w-[min(28rem,calc(100vw-4rem))]"
 		>
 			<CardHeader>

@@ -57,6 +57,7 @@ export {
 	CommandDialog,
 	CommandEmpty,
 	CommandGroup,
+	CommandHeader,
 	CommandInput,
 	CommandItem,
 	CommandList,

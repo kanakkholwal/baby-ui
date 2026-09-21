@@ -2,7 +2,7 @@
 import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 import { cn } from "../lib/cn";
-import { setCommand } from "./context";
+import { getCommandDialogState, hasCommandDialogState, setCommand } from "./context";
 
 let {
 	children,
@@ -19,6 +19,8 @@ const listId = $props.id();
 let query = $state("");
 let activeId = $state("");
 let listEl = $state<HTMLElement>();
+let resultCount = $state(0);
+const dialogState = hasCommandDialogState() ? getCommandDialogState() : undefined;
 
 function options() {
 	return [...(listEl?.querySelectorAll<HTMLElement>("[role='option']") ?? [])];
@@ -46,7 +48,11 @@ setCommand({
 		const row = rows.find((r) => r.id === activeId) ?? rows[0];
 		row?.click();
 	},
+	get resultCount() {
+		return resultCount;
+	},
 	setList: (el) => (listEl = el),
+	setResultCount: (count) => (resultCount = count),
 	move: (delta) => {
 		const rows = options();
 		if (!rows.length) return;
@@ -80,12 +86,24 @@ $effect(() => {
 $effect(() => {
 	void value;
 });
+
+// The native <dialog> stays mounted through a close for the exit transition, so a stale
+// search would otherwise survive into the next open; clear it the moment one starts.
+$effect(() => {
+	if (dialogState?.open) {
+		query = "";
+		activeId = "";
+	}
+});
 </script>
 
 <div
 	{...rest}
 	data-slot="command"
-	class={cn("flex min-h-0 flex-col overflow-hidden bg-popover text-foreground", classProp)}
+	class={cn(
+		"relative flex min-h-0 flex-col overflow-hidden rounded-[11px] bg-card text-foreground",
+		classProp,
+	)}
 >
 	{@render children?.()}
 </div>

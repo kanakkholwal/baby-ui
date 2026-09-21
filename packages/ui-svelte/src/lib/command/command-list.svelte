@@ -27,6 +27,13 @@ $effect(() => {
 		? { x: row.offsetLeft, y: row.offsetTop, w: row.offsetWidth, h: row.offsetHeight }
 		: undefined;
 });
+
+// Query changes hide and show items synchronously, so the DOM is settled by the time
+// this effect's own dependency (query) has flushed.
+$effect(() => {
+	void command.query;
+	command.setResultCount(el?.querySelectorAll("[role='option']").length ?? 0);
+});
 </script>
 
 <!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -->

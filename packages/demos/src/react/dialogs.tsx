@@ -15,6 +15,7 @@ import {
 	CommandDialog,
 	CommandEmpty,
 	CommandGroup,
+	CommandHeader,
 	CommandInput,
 	CommandItem,
 	CommandList,
@@ -283,6 +284,25 @@ export function ToastDemo({ props }: { props: Props }) {
 	);
 }
 
+function CommandIcon({ d }: { d: string }) {
+	return (
+		<svg
+			viewBox="0 0 16 16"
+			fill="none"
+			aria-hidden
+			className="size-4 shrink-0 text-muted-foreground"
+		>
+			<path
+				d={d}
+				stroke="currentColor"
+				strokeWidth="1.4"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+			/>
+		</svg>
+	);
+}
+
 export function CommandDemo({ props }: { props: Props }) {
 	const [open, setOpen] = useState(false);
 	const [last, setLast] = useState("");
@@ -300,6 +320,7 @@ export function CommandDemo({ props }: { props: Props }) {
 			{last ? <p className="text-muted-foreground text-xs">Ran: {last}</p> : null}
 			<CommandDialog open={open} onOpenChange={setOpen}>
 				<Command>
+					<CommandHeader>Command</CommandHeader>
 					<CommandInput
 						placeholder={(props.placeholder as string) || "Type a command or search…"}
 					/>
@@ -307,7 +328,10 @@ export function CommandDemo({ props }: { props: Props }) {
 						<CommandEmpty>{(props.emptyLabel as string) || "No results"}</CommandEmpty>
 						<CommandGroup heading="Actions">
 							<CommandItem value="New project" onClick={() => run("new")}>
-								New project
+								<span className="flex min-w-0 items-center gap-2">
+									<CommandIcon d="M8 3.5v9M3.5 8h9" />
+									New project
+								</span>
 								<CommandShortcut>N</CommandShortcut>
 							</CommandItem>
 							<CommandItem
@@ -315,16 +339,44 @@ export function CommandDemo({ props }: { props: Props }) {
 								keywords="ship release"
 								onClick={() => run("deploy")}
 							>
-								Deploy
+								<span className="flex min-w-0 items-center gap-2">
+									<CommandIcon d="M8 12.5v-9m0 0L4.5 7m3.5-3.5L11.5 7" />
+									Deploy
+								</span>
 								<CommandShortcut>D</CommandShortcut>
 							</CommandItem>
 						</CommandGroup>
 						<CommandGroup heading="Go to">
 							<CommandItem value="Documentation" onClick={() => run("docs")}>
-								Documentation
+								<span className="flex min-w-0 items-center gap-2">
+									<CommandIcon d="M3.5 3.5h5.5a2 2 0 0 1 2 2v7h-7.5a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2Zm0 0v9" />
+									Documentation
+								</span>
 							</CommandItem>
 							<CommandItem value="Settings" onClick={() => run("settings")}>
-								Settings
+								<span className="flex min-w-0 items-center gap-2">
+									<svg
+										viewBox="0 0 16 16"
+										fill="none"
+										aria-hidden
+										className="size-4 shrink-0 text-muted-foreground"
+									>
+										<circle
+											cx="8"
+											cy="8"
+											r="2.2"
+											stroke="currentColor"
+											strokeWidth="1.4"
+										/>
+										<path
+											d="M12.8 8a4.7 4.7 0 0 1-.06.75l1.16.9-1.1 1.9-1.36-.46a4.8 4.8 0 0 1-1.3.75l-.2 1.42H7.06l-.2-1.42a4.8 4.8 0 0 1-1.3-.75l-1.36.46-1.1-1.9 1.16-.9A4.7 4.7 0 0 1 4.2 8c0-.26.02-.5.06-.75l-1.16-.9 1.1-1.9 1.36.46c.39-.32.83-.57 1.3-.75l.2-1.42h1.88l.2 1.42c.47.18.91.43 1.3.75l1.36-.46 1.1 1.9-1.16.9c.04.25.06.49.06.75Z"
+											stroke="currentColor"
+											strokeWidth="1.4"
+											strokeLinejoin="round"
+										/>
+									</svg>
+									Settings
+								</span>
 							</CommandItem>
 						</CommandGroup>
 					</CommandList>

@@ -20,6 +20,12 @@ That constraint is why the header is a grid rather than a flex row: `CardAction`
 places itself in the second column through `has-data-[slot=card-action]`, so a card
 with no action never pays for the column.
 
+## The `framed` variant
+
+`variant="framed"` wraps the card body in the same inset frame as Dialog and Command:
+a thin `bg-background` rim around a `bg-card` surface, instead of a flat bordered box.
+It adds one wrapping element, so it isn't a shadcn drop-in the way the default variant is.
+
 ## interactive is a promise
 
 Setting `interactive` adds a hover lift. Only set it when the entire card is a link or

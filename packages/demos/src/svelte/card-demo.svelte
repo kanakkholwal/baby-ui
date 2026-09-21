@@ -14,7 +14,11 @@ import {
 let { props = {} }: { props?: Record<string, unknown> } = $props();
 </script>
 
-<Card interactive={props.interactive !== false} class="w-[min(28rem,calc(100vw-4rem))]">
+<Card
+	interactive={props.interactive !== false}
+	variant={(props.variant as "default" | "framed") ?? "default"}
+	class="w-[min(28rem,calc(100vw-4rem))]"
+>
 	<CardHeader>
 		<CardTitle class="text-base">baby-ui</CardTitle>
 		<CardDescription>baby-ui.nexonauts.com</CardDescription>

@@ -6,7 +6,7 @@ export const drawer = defineComponent({
 	description:
 		"Draggable sheet on vaul, with snap points, an inset surface and the same rim as Dialog.",
 	category: "base",
-	status: "beta",
+	status: "stable",
 	variants: { direction: ["bottom", "top", "left", "right"] },
 	props: [
 		{

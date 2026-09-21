@@ -1,21 +1,34 @@
-import { createContext } from "svelte";
+import { createContext, type Snippet } from "svelte";
 
 export type CommandContext = {
 	readonly query: string;
 	readonly listId: string;
 	readonly activeId: string;
+	/** Visible rows after filtering, for the count next to the search input. */
+	readonly resultCount: number;
 	setQuery: (query: string) => void;
 	setActive: (id: string) => void;
 	/** True when an item's value or keywords contain the current query. */
 	matches: (haystack: string) => boolean;
 	select: () => void;
 	setList: (el: HTMLElement | undefined) => void;
+	setResultCount: (count: number) => void;
 	move: (delta: number) => void;
 	first: () => void;
 	last: () => void;
 };
 
 export const [getCommand, setCommand] = createContext<CommandContext>();
+
+/** Bridges CommandDialog's open state to Command, so a fresh open starts with an empty
+ * search. Optional: standalone Command usage outside a CommandDialog just skips it. */
+export type CommandDialogState = {
+	readonly open: boolean;
+	/** CommandHeader hoists here so CommandDialog can render it in the rim above the card. */
+	header: { children?: Snippet; class?: string } | undefined;
+};
+export const [getCommandDialogState, setCommandDialogState, hasCommandDialogState] =
+	createContext<CommandDialogState>();
 
 /** Same choreography as a dialog panel, but the palette drops from above its shortcut. */
 export const COMMAND_PANEL = [

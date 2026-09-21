@@ -31,9 +31,11 @@ export const command = defineComponent({
 	],
 	motion: {
 		springs: [],
-		reducedMotion: "Unchanged: there is no animation to reduce.",
+		reducedMotion:
+			"The panel fades in place instead of dropping from above its shortcut.",
 		behaviour: [
-			"No open or close animation. A palette is opened dozens of times a day, and at that frequency any animation is pure latency.",
+			"The panel scales and drops from above its shortcut, same duration tokens as Dialog.",
+			"A single marker glides between rows on arrow keys, rather than repainting a background per row.",
 			"The highlight resets to the first result on every keystroke.",
 		],
 	},
@@ -47,7 +49,10 @@ export const command = defineComponent({
 			"aria-activedescendant keeps focus in the input while the list is navigated.",
 			"The palette is a native dialog, so the page behind it is inert without extra work.",
 			"Filtering hides items rather than rebuilding the list, and `:has()` hides an empty group and reveals CommandEmpty, so nothing counts matches in JavaScript.",
+			"The result count next to the input and a debounced live region both read from the same filtered count, so a screen reader and a sighted user see the same number.",
+			"Reopening always starts from an empty search, even though the panel stays mounted through the close transition.",
 			"Part names and data-slot values match shadcn/ui, so this replaces an existing command without touching call sites.",
+			"CommandHeader hoists into the dialog's rim (the same inset-frame treatment as Dialog and the new Card `framed` variant); the card below it holds the search input and results.",
 		],
 	},
 	licenseOrigin: {
@@ -64,12 +69,15 @@ export const command = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge"],
+			// CommandHeader's "esc close" hint is our own Shortcut, fetched as its own item.
+			registryDependencies: ["shortcut"],
 		},
 		svelte: {
 			entry: "Command",
 			files: [
 				{ path: "command/command.svelte", type: "registry:ui" },
 				{ path: "command/command-dialog.svelte", type: "registry:ui" },
+				{ path: "command/command-header.svelte", type: "registry:ui" },
 				{ path: "command/command-input.svelte", type: "registry:ui" },
 				{ path: "command/command-list.svelte", type: "registry:ui" },
 				{ path: "command/command-empty.svelte", type: "registry:ui" },
@@ -81,6 +89,7 @@ export const command = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge"],
+			registryDependencies: ["shortcut"],
 		},
 	},
 	keywords: ["command"],

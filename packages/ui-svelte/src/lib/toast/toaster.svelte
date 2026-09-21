@@ -1,6 +1,7 @@
 <script lang="ts">
 import type { ComponentProps } from "svelte";
 import { Toaster as Sonner, type ToasterProps } from "svelte-sonner";
+import { cn } from "../lib/cn";
 import { TOAST_CLASSES } from "../lib/toast-classes";
 
 // svelte-sonner's `Snippet` and this file's resolve to the same runtime shape but a
@@ -16,6 +17,7 @@ let {
 	gap = 8,
 	offset = { top: 16, right: 16, bottom: 24, left: 16 },
 	toastOptions,
+	class: classProp,
 	...rest
 }: ToasterProps = $props();
 
@@ -64,6 +66,7 @@ const STROKE = {
 	{expand}
 	{gap}
 	{offset}
+	class={cn("font-sans!", classProp)}
 	successIcon={successIcon as unknown as IconProp}
 	errorIcon={errorIcon as unknown as IconProp}
 	warningIcon={warningIcon as unknown as IconProp}

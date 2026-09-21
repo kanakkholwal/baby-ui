@@ -4,6 +4,7 @@ import {
 	CommandDialog,
 	CommandEmpty,
 	CommandGroup,
+	CommandHeader,
 	CommandInput,
 	CommandItem,
 	CommandList,
@@ -17,6 +18,7 @@ let open = $state(false);
 
 <CommandDialog bind:open>
 	<Command>
+		<CommandHeader>Command</CommandHeader>
 		<CommandInput />
 		<CommandList>
 			<CommandEmpty>Nothing matches that.</CommandEmpty>

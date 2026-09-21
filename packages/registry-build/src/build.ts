@@ -8,10 +8,18 @@ import {
 	RegistryItemSchema,
 } from "@baby-ui/registry-schema";
 import { cssFor } from "./component-css";
-import { FRAMEWORK, SITE_URL } from "./config";
+import { FRAMEWORK, REGISTRY_URL, SITE_URL } from "./config";
 import { rewriteImports } from "./rewrite";
 import { tokensUrl } from "./theme";
 import { jsPath, toJavaScript } from "./tojs";
+
+/** A bare slug in a spec's `registryDependencies` resolves to that item's own URL,
+ * so `add command` also fetches `shortcut`; an already-qualified URL passes through. */
+function resolveRegistryDep(framework: Framework, dep: string): string {
+	return dep.startsWith("http")
+		? dep
+		: `${REGISTRY_URL}/${FRAMEWORK[framework].routePrefix}/${dep}.json`;
+}
 
 function targetFor(framework: Framework, path: string, type: string): string {
 	const { uiTarget, libTarget } = FRAMEWORK[framework];
@@ -54,7 +62,10 @@ export async function buildItem(
 		description: spec.description,
 		dependencies: impl.dependencies,
 		// Every component reads the motion variables, so the CLI has to bring them along.
-		registryDependencies: [...impl.registryDependencies, tokensUrl(framework)],
+		registryDependencies: [
+			...impl.registryDependencies.map((dep) => resolveRegistryDep(framework, dep)),
+			tokensUrl(framework),
+		],
 		files,
 		cssVars: Object.keys(spec.cssVars).length ? { theme: spec.cssVars } : undefined,
 		css: await cssFor(files.map((f) => f.content)),

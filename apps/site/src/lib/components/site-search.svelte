@@ -4,6 +4,7 @@ import {
 	CommandDialog,
 	CommandEmpty,
 	CommandGroup,
+	CommandHeader,
 	CommandInput,
 	CommandItem,
 	CommandList,
@@ -63,6 +64,7 @@ function go(href: string) {
 
 <CommandDialog bind:open>
 	<Command>
+		<CommandHeader>Search</CommandHeader>
 		<CommandInput placeholder="Search components and guides…" />
 		<CommandList>
 			<CommandEmpty>Nothing matches that.</CommandEmpty>

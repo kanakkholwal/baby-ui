@@ -13,6 +13,7 @@ import {
 } from "react";
 import { DIALOG_SURFACE } from "../dialog/dialog";
 import { cn } from "../lib/cn";
+import { Shortcut } from "../shortcut/shortcut";
 
 /** Same choreography as a dialog panel, but the palette drops from above its shortcut. */
 const COMMAND_PANEL = [
@@ -35,12 +36,15 @@ type Ctx = {
 	query: string;
 	listId: string;
 	activeId: string;
+	/** Visible rows after filtering, for the count next to the search input. */
+	resultCount: number;
 	setQuery: (query: string) => void;
 	setActive: (id: string) => void;
 	/** True when an item's value or keywords contain the current query. */
 	matches: (haystack: string) => boolean;
 	select: () => void;
 	setList: (el: HTMLElement | null) => void;
+	setResultCount: (count: number) => void;
 	move: (delta: number) => void;
 	first: () => void;
 	last: () => void;
@@ -54,11 +58,24 @@ function useCommand() {
 	return ctx;
 }
 
+/** Bridges CommandDialog's open state to Command, so a fresh open starts with an empty
+ * search. `null` outside a CommandDialog, where Command just skips the reset. */
+const CommandDialogCtx = createContext<boolean | null>(null);
+
+type CommandHeaderContent = { children?: ReactNode; className?: string } | null;
+
+/** CommandHeader hoists here so CommandDialog can render it in the rim above the card. */
+const CommandHeaderCtx = createContext<((header: CommandHeaderContent) => void) | null>(
+	null,
+);
+
 export function Command({ className, children, ...props }: ComponentProps<"div">) {
 	const listId = useId();
 	const [query, setQueryState] = useState("");
 	const [activeId, setActive] = useState("");
+	const [resultCount, setResultCount] = useState(0);
 	const listEl = useRef<HTMLElement | null>(null);
+	const dialogOpen = useContext(CommandDialogCtx);
 
 	const options = useCallback(
 		() => [...(listEl.current?.querySelectorAll<HTMLElement>("[role='option']") ?? [])],
@@ -120,21 +137,44 @@ export function Command({ className, children, ...props }: ComponentProps<"div">
 		if (row) setActive(row.id);
 	}, [activeId]);
 
+	// The native <dialog> stays mounted through a close for the exit transition, so a stale
+	// search would otherwise survive into the next open; clear it the moment one starts.
+	useEffect(() => {
+		if (dialogOpen) {
+			setQueryState("");
+			setActive("");
+		}
+	}, [dialogOpen]);
+
 	const ctx = useMemo(
 		() => ({
 			query,
 			listId,
 			activeId,
+			resultCount,
 			setQuery,
 			setActive,
+			matches,
+			select,
+			setList,
+			setResultCount,
+			move,
+			first,
+			last,
+		}),
+		[
+			query,
+			listId,
+			activeId,
+			resultCount,
+			setQuery,
 			matches,
 			select,
 			setList,
 			move,
 			first,
 			last,
-		}),
-		[query, listId, activeId, setQuery, matches, select, setList, move, first, last],
+		],
 	);
 
 	return (
@@ -142,7 +182,7 @@ export function Command({ className, children, ...props }: ComponentProps<"div">
 			<div
 				data-slot="command"
 				className={cn(
-					"flex min-h-0 flex-col overflow-hidden bg-popover text-foreground",
+					"relative flex min-h-0 flex-col overflow-hidden rounded-[11px] bg-card text-foreground",
 					className,
 				)}
 				{...props}
@@ -167,6 +207,7 @@ export function CommandDialog({
 	onOpenChange: (open: boolean) => void;
 }) {
 	const el = useRef<HTMLDialogElement>(null);
+	const [header, setHeader] = useState<CommandHeaderContent>(null);
 
 	useEffect(() => {
 		const node = el.current;
@@ -199,11 +240,31 @@ export function CommandDialog({
 				data-state={open ? "open" : "closed"}
 				className={cn(
 					COMMAND_PANEL,
-					"flex max-h-[min(30rem,70dvh)] w-[min(36rem,calc(100vw-2rem))] flex-col overflow-hidden rounded-2xl border border-border bg-popover shadow-2xl",
+					"flex max-h-[min(30rem,70dvh)] w-[min(36rem,calc(100vw-2rem))] flex-col overflow-hidden rounded-2xl border border-border bg-background p-1 shadow-2xl",
 					className,
 				)}
 			>
-				{children}
+				{/* Inset frame: header sits in the rim, the card below it holds input and results. */}
+				{header ? (
+					<div
+						data-slot="command-header"
+						className={cn(
+							"flex items-center justify-between gap-3 px-3.5 pt-1.5 pb-2",
+							header.className,
+						)}
+					>
+						<p className="font-medium text-foreground text-sm">{header.children}</p>
+						<span className="flex shrink-0 items-center gap-1.5 text-muted-foreground text-xs">
+							<Shortcut shortcut="esc" size="sm" />
+							close
+						</span>
+					</div>
+				) : null}
+				<CommandDialogCtx.Provider value={open}>
+					<CommandHeaderCtx.Provider value={setHeader}>
+						{children}
+					</CommandHeaderCtx.Provider>
+				</CommandDialogCtx.Provider>
 			</div>
 		</dialog>
 	);
@@ -216,10 +277,24 @@ export function CommandInput({
 }: ComponentProps<"input">) {
 	const command = useCommand();
 	const el = useRef<HTMLInputElement>(null);
+	const [spoken, setSpoken] = useState("");
 
 	useEffect(() => {
 		el.current?.focus();
 	}, []);
+
+	// Debounced so a live region does not narrate every keystroke, only where it settles.
+	useEffect(() => {
+		const count = command.resultCount;
+		const timer = setTimeout(() => {
+			setSpoken(
+				count === 0
+					? "No commands match."
+					: `${count} ${count === 1 ? "command" : "commands"} available.`,
+			);
+		}, 400);
+		return () => clearTimeout(timer);
+	}, [command.resultCount]);
 
 	function onKeyDown(event: KeyboardEvent) {
 		if (event.key === "ArrowDown") {
@@ -274,6 +349,15 @@ export function CommandInput({
 				)}
 				{...props}
 			/>
+			<span
+				className="min-w-[2ch] shrink-0 text-right font-mono text-[11px] text-muted-foreground tabular-nums"
+				aria-hidden
+			>
+				{command.resultCount}
+			</span>
+			<span role="status" aria-live="polite" className="sr-only">
+				{spoken}
+			</span>
 		</div>
 	);
 }
@@ -303,6 +387,12 @@ export function CommandList({ className, children, ...props }: ComponentProps<"d
 				: null,
 		);
 	}, [command.activeId, children]);
+
+	// Query changes hide and show items synchronously, so the DOM is settled by the time
+	// this effect's own dependency (query) has flushed.
+	useEffect(() => {
+		command.setResultCount(el.current?.querySelectorAll("[role='option']").length ?? 0);
+	}, [command.query, command.setResultCount, children]);
 
 	return (
 		<div
@@ -425,5 +515,31 @@ export function CommandSeparator({ className, ...props }: ComponentProps<"hr">) 
 			className={cn("my-1 border-border", className)}
 			{...props}
 		/>
+	);
+}
+
+export function CommandHeader({ className, children, ...props }: ComponentProps<"div">) {
+	const setHeader = useContext(CommandHeaderCtx);
+
+	// Rendered by CommandDialog in the rim above the card, so nothing is emitted here.
+	useEffect(() => {
+		if (!setHeader) return;
+		setHeader({ children, className });
+		return () => setHeader(null);
+	}, [setHeader, children, className]);
+
+	if (setHeader) return null;
+
+	return (
+		<div
+			data-slot="command-header"
+			className={cn(
+				"flex items-center justify-between gap-3 px-3.5 pt-2.5 pb-1.5",
+				className,
+			)}
+			{...props}
+		>
+			<p className="font-medium text-foreground text-sm">{children}</p>
+		</div>
 	);
 }
