@@ -33,7 +33,7 @@ $effect(() => {
 	onclick={() => select.setOpen(!select.open)}
 	class={cn(
 		"inline-flex h-9 w-full items-center justify-between gap-2 rounded-lg border border-input bg-background px-3 text-sm outline-none transition-colors",
-		"focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/40",
+		"focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring",
 		"disabled:cursor-not-allowed disabled:opacity-50",
 		classProp,
 	)}

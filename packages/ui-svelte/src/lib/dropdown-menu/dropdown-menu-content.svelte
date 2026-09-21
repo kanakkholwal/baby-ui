@@ -1,7 +1,7 @@
 <script lang="ts">
 import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
-import { ANCHORED, rove } from "../lib/anchor";
+import { rove, stagger, UNFOLD } from "../lib/anchor";
 import { cn } from "../lib/cn";
 import { getDropdownMenu } from "./context";
 
@@ -32,10 +32,14 @@ function rows() {
 	];
 }
 
+// Focus forces layout, and the parent anchors after this child effect. One microtask
+// later the placement is set, so the entry animation still knows which way to lean.
 $effect(() => {
 	if (!menu.open) return;
 	index = 0;
-	rows()[0]?.focus();
+	const all = rows();
+	stagger(all);
+	queueMicrotask(() => all[0]?.focus());
 });
 
 function onkeydown(event: KeyboardEvent) {
@@ -61,7 +65,7 @@ function onkeydown(event: KeyboardEvent) {
 		inert={!menu.open}
 		{onkeydown}
 		class={cn(
-			ANCHORED,
+			UNFOLD,
 			"min-w-44 rounded-xl border border-border bg-popover p-1 shadow-2xl",
 			classProp,
 		)}

@@ -16,7 +16,7 @@ export const tabs = defineComponent({
 			name: "value",
 			type: "string",
 			description: "Active tab id. Bindable.",
-			control: { kind: "text" },
+			control: { kind: "none" },
 		},
 		{
 			name: "variant",

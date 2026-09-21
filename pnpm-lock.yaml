@@ -361,6 +361,9 @@ importers:
       detype:
         specifier: ^2.0.8
         version: 2.0.8
+      postcss:
+        specifier: ^8.5.28
+        version: 8.5.28
       yaml:
         specifier: ^2.9.1
         version: 2.9.1

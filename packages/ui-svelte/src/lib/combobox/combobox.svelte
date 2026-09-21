@@ -1,5 +1,5 @@
 <script lang="ts">
-import { ANCHORED, anchor, dismissable, rove } from "../lib/anchor";
+import { anchor, dismissable, rove, UNFOLD, UNFOLD_ITEM } from "../lib/anchor";
 import { cn } from "../lib/cn";
 
 export type ComboOption = { value: string; label: string };
@@ -122,7 +122,7 @@ function onkeydown(event: KeyboardEvent) {
 			query = e.currentTarget.value;
 		}}
 		{onkeydown}
-		class="h-9 w-full rounded-lg border border-input bg-background px-3 text-foreground text-sm outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/40"
+		class="h-9 w-full rounded-lg border border-input bg-background px-3 text-foreground text-sm outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring"
 	/>
 </div>
 
@@ -135,7 +135,7 @@ function onkeydown(event: KeyboardEvent) {
 		inert={!open}
 		style:max-height="min(14rem, var(--anchor-available-height, 14rem))"
 		class={cn(
-			ANCHORED,
+			UNFOLD,
 			"scroll-area overflow-y-auto rounded-xl border border-border bg-popover p-1 shadow-2xl",
 		)}
 	>
@@ -147,8 +147,10 @@ function onkeydown(event: KeyboardEvent) {
 				aria-selected={i === index}
 				onpointermove={() => (index = i)}
 				onclick={() => commit(option)}
+				style:--i={i}
 				class={cn(
-					"flex w-full items-center justify-between gap-2 rounded-md px-2.5 py-1.5 text-left text-foreground text-sm transition-colors",
+					UNFOLD_ITEM,
+					"flex w-full items-center justify-between gap-2 rounded-md px-2.5 py-1.5 text-left text-foreground text-sm",
 					i === index && "bg-foreground/[0.06]",
 				)}
 			>

@@ -7,6 +7,7 @@ import {
 	useContext,
 	useEffect,
 	useId,
+	useLayoutEffect,
 	useMemo,
 	useRef,
 	useState,
@@ -65,7 +66,7 @@ export function DropdownMenu({
 		triggerEl?.focus();
 	}, [setOpen, triggerEl]);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		if (!open || !triggerEl || !contentEl) return;
 		const stopAnchor = anchor(triggerEl, contentEl, { placement, gap: 6 });
 		const stopDismiss = dismissable([triggerEl, contentEl], close);

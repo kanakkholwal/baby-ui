@@ -1,58 +1,74 @@
 ---
 title: Installation
-description: Add a component to a React or Svelte project with the shadcn CLI.
+description: Add a component with the shadcn CLI, or copy the files by hand.
 ---
 
-Components are distributed through the registry, not npm. Point the CLI at a component's
-JSON and it copies the source into your project.
+## Prerequisites
+
+- Tailwind CSS v4.
+- React: a project set up with `npx shadcn@latest init`.
+- Svelte: a project set up with `npx shadcn-svelte@latest init`.
+
+`init` writes the `components.json` the CLI reads for paths and aliases. Nothing else is
+required: there is no package to install.
+
+## Add a component
+
+Point the CLI at the component's JSON.
 
 ```bash
 npx shadcn@latest add https://baby-ui.pages.dev/r/button.json
+```
+
+```bash
 npx shadcn-svelte@latest add https://baby-ui.pages.dev/svelte/r/button.json
 ```
 
-The JSON lives on `baby-ui.pages.dev` and the docs on `baby-ui.nexonauts.com`. Two
-origins, one build: the CLI never waits on the docs site, and the docs site never
-serves a cold registry.
+The CLI copies the source files into your `ui` folder, installs the npm dependencies the
+component needs, and pulls in `tokens` (below) the first time. Every component page has
+an Install tab with this command filled in for the framework and language you selected in
+the header.
 
-## Four routes
+## Tokens
 
-Framework picks the CLI and the path; language picks whether the files arrive typed.
+Each component depends on a registry item named `tokens`, so the CLI adds it for you. It
+writes into your global stylesheet:
+
+- the motion variables (`--duration-*`, `--ease-*`, `--press-scale` and friends) and their
+  reduced-motion overrides,
+- the keyframes and helper classes components reference,
+- colour names shadcn does not define (`--success`, `--warning`, `--border-strong`,
+  `--neon`, `--violet`).
+
+It never touches `--background`, `--primary` or any other variable your shadcn theme
+already owns, so an installed component takes on your palette.
+
+## Theme
+
+To adopt the Baby UI look wholesale, add `theme`. It replaces the shadcn palette, radius
+and type stack in both colour modes.
+
+```bash
+npx shadcn@latest add https://baby-ui.pages.dev/r/theme.json
+```
+
+```bash
+npx shadcn-svelte@latest add https://baby-ui.pages.dev/svelte/r/theme.json
+```
+
+Dark mode is the `.dark` class on `<html>`, the same convention shadcn uses.
+
+## Routes
 
 | | TypeScript | JavaScript |
 | --- | --- | --- |
 | React | `/r/{slug}.json` | `/r/js/{slug}.json` |
 | Svelte | `/svelte/r/{slug}.json` | `/svelte/r/js/{slug}.json` |
 
-The JS route is the same source with the types stripped and the extensions renamed, so
-`button.tsx` arrives as `button.jsx` and a Svelte SFC loses its `lang="ts"`. The
-Install tab on any component page tracks the framework and language you have selected,
-so the command shown is the one you want.
+The JS route ships the same files with types stripped. The index for each route is at
+`registry.json`, for example `https://baby-ui.pages.dev/r/registry.json`.
 
-Every component page has an Install tab with the exact command, the dependencies it
-needs and the files it writes, so nothing arrives unannounced.
+## Manual
 
-## Prerequisites
-
-Tailwind v4 and a shadcn-style `components.json`. If you already run shadcn/ui or
-shadcn-svelte, you have both, and base components will land on top of what is there
-without breaking call sites.
-
-## The token layer
-
-Components read CSS variables rather than hard-coded colours. Add the token layer once:
-
-```css
-@import "@baby-ui/tokens/theme.css";
-```
-
-Without it a component still renders, but it falls back to whatever `--primary`,
-`--border` and the rest already mean in your project. That is usually what you want when
-dropping one component into an existing design system, and not what you want when
-adopting the set.
-
-## Manual install
-
-The Install tab's Manual view lists every file and its destination path. Copying by hand
-is a supported route, not a fallback: the registry JSON is just a description of the
-same copy.
+The Install tab's Manual view lists the dependencies and every file with its destination
+path. Copy them, then add `tokens` once with the command above.

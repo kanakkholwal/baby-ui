@@ -259,7 +259,7 @@ export function ColorPicker({
 							className="-translate-x-1/2 -translate-y-1/2 pointer-events-none absolute top-1/2 size-3.5 rounded-full border-2 border-white shadow-[0_1px_4px_rgb(0_0_0/0.5)]"
 						/>
 					</div>
-					<div className="flex items-center gap-1 rounded-md border border-border bg-background px-1.5 transition-[border-color,box-shadow] focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/40">
+					<div className="flex items-center gap-1 rounded-md border border-border bg-background px-1.5 transition-[border-color,box-shadow] focus-within:border-ring focus-within:ring-2 focus-within:ring-ring">
 						<span className="font-mono text-[0.78rem] text-muted-foreground">#</span>
 						<input
 							id={`${uid}-hex`}

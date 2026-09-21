@@ -1,7 +1,7 @@
 <script lang="ts">
 import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
-import { ANCHORED, rove } from "../lib/anchor";
+import { rove, stagger, UNFOLD } from "../lib/anchor";
 import { cn } from "../lib/cn";
 import { getSelect } from "./context";
 
@@ -26,6 +26,8 @@ function rows() {
 	];
 }
 
+// Focus forces layout, and the parent anchors after this child effect. One microtask
+// later the placement is set, so the entry animation still knows which way to lean.
 $effect(() => {
 	if (!select.open) return;
 	const all = rows();
@@ -33,7 +35,8 @@ $effect(() => {
 		0,
 		all.findIndex((row) => row.dataset.value === select.value),
 	);
-	all[index]?.focus();
+	stagger(all);
+	queueMicrotask(() => all[index]?.focus());
 });
 
 function onkeydown(event: KeyboardEvent) {
@@ -57,11 +60,12 @@ function onkeydown(event: KeyboardEvent) {
 	tabindex="-1"
 	data-slot="select-content"
 	data-state={select.open ? "open" : "closed"}
+	data-placement={select.placement}
 	inert={!select.open}
 	{onkeydown}
 	style:max-height="min(16rem, var(--anchor-available-height, 16rem))"
 	class={cn(
-		ANCHORED,
+		UNFOLD,
 		"scroll-area overflow-y-auto rounded-xl border border-border bg-popover p-1 shadow-2xl",
 		classProp,
 	)}

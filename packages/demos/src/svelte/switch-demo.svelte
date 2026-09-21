@@ -27,9 +27,9 @@ const ROW = "flex w-full flex-row-reverse items-center justify-between gap-6";
 		/>
 	</div>
 	<div class="px-4 py-3">
-		<Switch bind:checked={digest} {size} label="Weekly digest" class={ROW} />
+		<Switch bind:checked={digest} label="Weekly digest" class={ROW} />
 	</div>
 	<div class="px-4 py-3">
-		<Switch checked={false} {size} disabled label="SMS alerts" class={ROW} />
+		<Switch checked={false} disabled label="SMS alerts" class={ROW} />
 	</div>
 </div>

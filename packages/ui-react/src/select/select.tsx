@@ -7,6 +7,7 @@ import {
 	useContext,
 	useEffect,
 	useId,
+	useLayoutEffect,
 	useMemo,
 	useRef,
 	useState,
@@ -19,6 +20,8 @@ type Ctx = {
 	value: string;
 	contentId: string;
 	disabled: boolean;
+	/** Requested side; the anchor overwrites it with the side flip settled on. */
+	placement: string;
 	/** Item labels, registered on mount so the trigger can echo the selection. */
 	labels: Record<string, string>;
 	register: (value: string, label: string) => void;
@@ -74,7 +77,7 @@ export function Select({
 		[onValueChange, close],
 	);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		if (!open || !triggerEl || !contentEl) return;
 		const stopAnchor = anchor(triggerEl, contentEl, {
 			placement,
@@ -94,6 +97,7 @@ export function Select({
 			value,
 			contentId,
 			disabled,
+			placement,
 			labels,
 			register,
 			setOpen,
@@ -101,7 +105,7 @@ export function Select({
 			setTrigger,
 			setContent,
 		}),
-		[open, value, contentId, disabled, labels, register, commit],
+		[open, value, contentId, disabled, placement, labels, register, commit],
 	);
 
 	return <SelectCtx.Provider value={ctx}>{children}</SelectCtx.Provider>;
@@ -128,7 +132,7 @@ export function SelectTrigger({
 			onClick={() => select.setOpen(!select.open)}
 			className={cn(
 				"inline-flex h-9 w-full items-center justify-between gap-2 rounded-lg border border-input bg-background px-3 text-sm outline-none transition-colors",
-				"focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/40",
+				"focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring",
 				"disabled:cursor-not-allowed disabled:opacity-50",
 				className,
 			)}
@@ -219,6 +223,7 @@ export function SelectContent({ className, children, ...props }: ComponentProps<
 			tabIndex={-1}
 			data-slot="select-content"
 			data-state={select.open ? "open" : "closed"}
+			data-placement={select.placement}
 			inert={!select.open}
 			onKeyDown={onKeyDown}
 			style={{ maxHeight: "min(16rem, var(--anchor-available-height, 16rem))" }}

@@ -1,6 +1,7 @@
 <script lang="ts">
 import type { Snippet } from "svelte";
 import type { HTMLButtonAttributes } from "svelte/elements";
+import { UNFOLD_ITEM } from "../lib/anchor";
 import { cn } from "../lib/cn";
 import { getSelect } from "./context";
 
@@ -38,7 +39,8 @@ $effect(() => {
 	{disabled}
 	onclick={() => select.commit(value)}
 	class={cn(
-		"flex w-full items-center justify-between gap-2 rounded-md px-2.5 py-1.5 text-left text-foreground text-sm outline-none transition-colors",
+		UNFOLD_ITEM,
+		"flex w-full items-center justify-between gap-2 rounded-md px-2.5 py-1.5 text-left text-foreground text-sm outline-none",
 		"hover:bg-foreground/[0.06] focus-visible:bg-foreground/[0.06]",
 		"disabled:pointer-events-none disabled:opacity-50",
 		classProp,

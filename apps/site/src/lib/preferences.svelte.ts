@@ -2,6 +2,7 @@ import type { Framework } from "@baby-ui/registry-schema";
 
 export type Appearance = "light" | "dark" | "system";
 export type Dialect = "ts" | "js";
+export type PackageManager = "bun" | "npm" | "pnpm" | "yarn";
 
 type Ramp = { primary: string; fg: string };
 
@@ -95,6 +96,7 @@ type Stored = {
 	framework: Framework;
 	dialect: Dialect;
 	appearance: Appearance;
+	pm: PackageManager;
 };
 
 function read(): Partial<Stored> {
@@ -108,6 +110,7 @@ function read(): Partial<Stored> {
 class Preferences {
 	framework = $state<Framework>("svelte");
 	dialect = $state<Dialect>("ts");
+	pm = $state<PackageManager>("bun");
 	appearance = $state<Appearance>("dark");
 	theme = $state<ThemeId>("default");
 	open = $state(false);
@@ -117,6 +120,7 @@ class Preferences {
 		const saved = read();
 		if (saved.framework) this.framework = saved.framework;
 		if (saved.dialect) this.dialect = saved.dialect;
+		if (saved.pm) this.pm = saved.pm;
 		if (saved.appearance) this.appearance = saved.appearance;
 		try {
 			const session = sessionStorage.getItem(THEME_KEY) as ThemeId | null;
@@ -134,6 +138,7 @@ class Preferences {
 				JSON.stringify({
 					framework: this.framework,
 					dialect: this.dialect,
+					pm: this.pm,
 					appearance: this.appearance,
 				}),
 			);

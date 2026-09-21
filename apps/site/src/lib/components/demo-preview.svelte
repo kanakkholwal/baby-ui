@@ -24,25 +24,26 @@ const iframeSrc = $derived(
 </script>
 
 <div
-	class="grid min-h-88 place-items-center overflow-hidden rounded-xl border border-border bg-[radial-gradient(var(--border)_1px,transparent_1px)] [background-size:16px_16px] p-8"
+	class="relative grid min-h-88 place-items-center overflow-hidden rounded-xl border border-border bg-[radial-gradient(var(--border)_1px,transparent_1px)] [background-size:16px_16px] p-8"
 >
-	{#if framework === "svelte"}
-		{#if Demo}
-			<Demo {props} />
-		{:else}
-			<p class="text-muted-foreground text-sm">No Svelte demo for this component yet.</p>
-		{/if}
-	{:else if iframeSrc}
-		<iframe
-			src={iframeSrc}
-			title="React preview of {slug}"
-			class="h-full min-h-[18rem] w-full border-0 bg-transparent"
-			sandbox="allow-scripts"
-		></iframe>
+	{#if Demo}
+		<Demo {props} />
 	{:else}
-		<p class="max-w-xs text-center text-muted-foreground text-sm">
-			Both ports read the same tokens, so the Svelte preview is what React renders. Its source
-			is under Usage.
-		</p>
+		<p class="text-muted-foreground text-sm">No demo for this component yet.</p>
+	{/if}
+	{#if framework === "react" && Demo}
+		{#if iframeSrc}
+			<iframe
+				src={iframeSrc}
+				title="React preview of {slug}"
+				class="h-full min-h-[18rem] w-full border-0 bg-transparent"
+				sandbox="allow-scripts"
+			></iframe>
+		{:else}
+			<!-- Same tokens, same spec: the Svelte render stands in until the React runner ships. -->
+			<p class="absolute right-3 bottom-2 text-[10px] text-muted-foreground">
+				Rendered by the Svelte port
+			</p>
+		{/if}
 	{/if}
 </div>

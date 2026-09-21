@@ -1,43 +1,54 @@
 <script lang="ts">
 import SpecDials from "@baby-ui/demos/controls";
 import type { ComponentSpec } from "@baby-ui/registry-schema";
+import type { Heading } from "$lib/docs-nodes";
+import { productFor } from "$lib/products";
+import KeyboardList from "./keyboard-list.svelte";
+import OutlineNav from "./outline-nav.svelte";
+import PromoCard from "./promo-card.svelte";
+import Tabs from "./tabs.svelte";
 
 let {
 	spec,
 	values = $bindable(),
-}: { spec: ComponentSpec; values: Record<string, unknown> } = $props();
+	outline = [],
+}: {
+	spec: ComponentSpec;
+	values: Record<string, unknown>;
+	outline?: Heading[];
+} = $props();
 
 const hasControls = $derived(spec.props.some((p) => p.control.kind !== "none"));
+const hasKeys = $derived(spec.a11y.keyboard.length > 0);
+const tabs = $derived(
+	[
+		{ id: "outline", label: "On this page" },
+		hasControls && { id: "controls", label: "Controls" },
+		hasKeys && { id: "keyboard", label: "Keyboard" },
+	].filter((t): t is { id: string; label: string } => Boolean(t)),
+);
+
+let tab = $state("outline");
+$effect(() => {
+	if (!tabs.some((t) => t.id === tab)) tab = tabs[0]?.id ?? "outline";
+});
 </script>
 
-{#snippet heading(text: string)}
-	<p class="mb-2 px-1 font-medium text-[10px] text-muted-foreground uppercase tracking-[0.14em]">
-		{text}
-	</p>
-{/snippet}
-
 <div class="flex flex-col gap-5">
-	{#if hasControls}
-		<section>
-			{@render heading("Controls")}
-			{#key spec.slug}
-				<SpecDials {spec} bind:values />
-			{/key}
-		</section>
-	{/if}
-
-	{#if spec.a11y.keyboard.length}
-		<section>
-			{@render heading("Keyboard")}
-			<ul
-				class="divide-y divide-border rounded-xl border border-border bg-card/40 text-muted-foreground text-xs"
-			>
-				{#each spec.a11y.keyboard as rule (rule)}
-					<li class="px-3 py-2 leading-relaxed">{rule}</li>
-				{/each}
-			</ul>
-		</section>
-	{/if}
+	<div>
+		<Tabs {tabs} bind:active={tab} variant="underline" class="w-full" />
+		<div class="mt-3">
+			{#if tab === "controls"}
+				{#key spec.slug}
+					<SpecDials {spec} bind:values />
+				{/key}
+			{:else if tab === "keyboard"}
+				<KeyboardList rules={spec.a11y.keyboard} />
+			{:else}
+				<OutlineNav headings={outline} />
+			{/if}
+		</div>
+	</div>
 
 	<!-- Base components all trace to the same MIT sources, so the credit belongs in
 	     THIRD_PARTY_LICENSES, not on 47 pages. Ported specialities still name theirs. -->
@@ -52,4 +63,6 @@ const hasControls = $derived(spec.props.some((p) => p.control.kind !== "none"));
 			· {spec.licenseOrigin.license} · {spec.licenseOrigin.copyright}
 		</p>
 	{/if}
+
+	<PromoCard product={productFor(spec.slug)} />
 </div>

@@ -47,67 +47,69 @@ function label(prop: PropSpec) {
 
 {#snippet dial(prop: PropSpec)}
 	{@const control = prop.control}
-	<div class="flex min-h-8 items-center justify-between gap-3 px-3 py-1.5">
-		<label
-			for="dial-{prop.name}"
-			class="truncate font-medium text-muted-foreground text-xs capitalize"
-		>
-			{label(prop)}
-		</label>
-
-		{#if control.kind === "boolean"}
+	{@const row = "flex min-h-8 items-center justify-between gap-3 px-3 py-1.5"}
+	{@const text = "truncate font-medium text-muted-foreground text-xs capitalize"}
+	{#if control.kind === "boolean"}
+		<!-- The row is the label: a wrapping <label> names and toggles the bare switch. -->
+		<label class={row}>
+			<span class={text}>{label(prop)}</span>
 			<Switch
 				size="sm"
-				label={label(prop)}
 				bind:checked={() => Boolean(state[prop.name]), (next) => (state[prop.name] = next)}
 			/>
-		{:else if control.kind === "select"}
-			<Select
-				bind:value={() => String(state[prop.name] ?? ""), (next) => (state[prop.name] = next)}
-			>
-				<SelectTrigger aria-label={label(prop)} class="h-7 w-32 rounded-md text-xs">
-					<SelectValue />
-				</SelectTrigger>
-				<SelectContent>
-					{#each control.options as option (option)}
-						<SelectItem value={option}>{option}</SelectItem>
-					{/each}
-				</SelectContent>
-			</Select>
-		{:else if control.kind === "number"}
-			<div class="flex w-32 items-center gap-2">
-				<Slider
-					label={label(prop)}
-					min={control.min ?? 0}
-					max={control.max ?? 100}
-					step={control.step}
-					bind:value={() => Number(state[prop.name] ?? 0), (next) => (state[prop.name] = next)}
+		</label>
+	{:else}
+		<div class={row}>
+			<label for="dial-{prop.name}" class={text}>{label(prop)}</label>
+
+			{#if control.kind === "select"}
+				<Select
+					bind:value={() => String(state[prop.name] ?? ""), (next) => (state[prop.name] = next)}
+				>
+					<SelectTrigger aria-label={label(prop)} class="h-7 w-32 rounded-md text-xs">
+						<SelectValue />
+					</SelectTrigger>
+					<SelectContent>
+						{#each control.options as option (option)}
+							<SelectItem value={option}>{option}</SelectItem>
+						{/each}
+					</SelectContent>
+				</Select>
+			{:else if control.kind === "number"}
+				<div class="flex w-32 items-center gap-2">
+					<Slider
+						label={label(prop)}
+						min={control.min ?? 0}
+						max={control.max ?? 100}
+						step={control.step}
+						bind:value={() => Number(state[prop.name] ?? 0), (next) => (state[prop.name] = next)}
+					/>
+					<span class="w-8 shrink-0 text-right text-muted-foreground text-xs tabular-nums">
+						{state[prop.name]}
+					</span>
+				</div>
+			{:else if control.kind === "color"}
+				<input
+					id="dial-{prop.name}"
+					type="color"
+					aria-label={label(prop)}
+					value={String(state[prop.name] ?? "#a78bfa")}
+					oninput={(event) => {
+						state[prop.name] = event.currentTarget.value;
+					}}
+					class="size-7 cursor-pointer rounded-md border border-border bg-transparent p-0.5"
 				/>
-				<span class="w-8 shrink-0 text-right text-muted-foreground text-xs tabular-nums">
-					{state[prop.name]}
-				</span>
-			</div>
-		{:else if control.kind === "color"}
-			<input
-				id="dial-{prop.name}"
-				type="color"
-				aria-label={label(prop)}
-				value={String(state[prop.name] ?? "#a78bfa")}
-				oninput={(event) => {
-					state[prop.name] = event.currentTarget.value;
-				}}
-				class="size-7 cursor-pointer rounded-md border border-border bg-transparent p-0.5"
-			/>
-		{:else if control.kind === "text"}
-			<Input
-				id="dial-{prop.name}"
-				size="sm"
-				placeholder={control.placeholder}
-				bind:value={() => String(state[prop.name] ?? ""), (next) => (state[prop.name] = next)}
-				class="h-7 w-32 text-xs"
-			/>
-		{/if}
-	</div>
+			{:else if control.kind === "text"}
+				<Input
+					id="dial-{prop.name}"
+					size="sm"
+					placeholder={control.placeholder}
+					bind:value={() => String(state[prop.name] ?? ""), (next) => (state[prop.name] = next)}
+					class="h-7 w-32 text-xs"
+				/>
+			{/if}
+		</div>
+	{/if}
 {/snippet}
 
 <div class="divide-y divide-border rounded-xl border border-border bg-card/40 py-0.5">

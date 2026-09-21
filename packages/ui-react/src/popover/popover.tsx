@@ -7,6 +7,7 @@ import {
 	useContext,
 	useEffect,
 	useId,
+	useLayoutEffect,
 	useMemo,
 	useState,
 } from "react";
@@ -58,7 +59,7 @@ export function Popover({
 		[openProp, onOpenChange],
 	);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		if (!open || !triggerEl || !contentEl) return;
 		const stopAnchor = anchor(triggerEl, contentEl, { placement, gap });
 		const stopDismiss = dismissable([triggerEl, contentEl], () => {

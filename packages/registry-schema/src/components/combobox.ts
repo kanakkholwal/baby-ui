@@ -18,7 +18,7 @@ export const combobox = defineComponent({
 			name: "value",
 			type: "string",
 			description: "Selected value. Bindable.",
-			control: { kind: "text" },
+			control: { kind: "none" },
 		},
 		{
 			name: "placeholder",

@@ -40,7 +40,7 @@ export const input = defineComponent({
 			name: "value",
 			type: "string",
 			description: "Current value. Bindable.",
-			control: { kind: "text" },
+			control: { kind: "none" },
 		},
 	],
 	motion: {

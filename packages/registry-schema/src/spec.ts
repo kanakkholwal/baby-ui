@@ -24,6 +24,8 @@ export const FileTypeSchema = z.enum([
 	"registry:block",
 	"registry:page",
 	"registry:file",
+	"registry:style",
+	"registry:theme",
 ]);
 
 export const SpecFileSchema = z.object({

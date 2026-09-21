@@ -13,6 +13,7 @@ import {
 } from "./config";
 import { buildThirdPartyLicenses } from "./licenses";
 import { buildLlmsTxt } from "./llms";
+import { buildThemeItems } from "./theme";
 import { jsPath, toJavaScript } from "./tojs";
 import { buildUsage, verifyUsage } from "./usage";
 import { verifyComponentDocs, verifySprings } from "./verify";
@@ -45,6 +46,15 @@ async function main() {
 		const { routePrefix } = FRAMEWORK[framework];
 		const index: unknown[] = [];
 		const jsIndex: unknown[] = [];
+
+		// No files to transpile, so the JS route gets the same JSON.
+		for (const item of await buildThemeItems(framework)) {
+			written.push(await writeJson(`${routePrefix}/${item.name}.json`, item));
+			written.push(await writeJson(`${routePrefix}/js/${item.name}.json`, item));
+			const { $schema: _, files: __, ...summary } = item;
+			index.push(summary);
+			jsIndex.push(summary);
+		}
 
 		for (const spec of specs) {
 			const item = await buildItem(spec, framework);

@@ -71,7 +71,7 @@ export function ToggleDemo({ props }: { props: Props }) {
 			{MARKS.map((mark) => (
 				<Toggle
 					key={mark.id}
-					size={size}
+					size={mark.id === "bold" ? size : "md"}
 					label={mark.label}
 					disabled={mark.id === "bold" && Boolean(props.disabled)}
 					pressed={mark.id === "bold" ? pressed : Boolean(on[mark.id])}
@@ -161,7 +161,7 @@ export function ShortcutDemo({ props }: { props: Props }) {
 			</div>
 			<div className="flex items-center justify-between gap-6">
 				<span className="text-muted-foreground">Save</span>
-				<Shortcut keys={["⌘", "S"]} size={size} />
+				<Shortcut keys={["⌘", "S"]} />
 			</div>
 		</div>
 	);

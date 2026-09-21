@@ -5,6 +5,8 @@ export type SelectContext = {
 	readonly value: string;
 	readonly contentId: string;
 	readonly disabled: boolean;
+	/** Requested side; the anchor overwrites it with the side flip settled on. */
+	readonly placement: string;
 	/** Item labels, registered on mount so the trigger can echo the selection. */
 	readonly labels: Record<string, string>;
 	register: (value: string, label: string) => void;

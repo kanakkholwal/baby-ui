@@ -20,10 +20,10 @@ const size = $derived((props.size as BadgeSize) ?? "md");
 	</div>
 	<div class="flex items-center justify-between gap-4">
 		<span class="text-muted-foreground">image-resizer</span>
-		<Badge variant="warning" {size} dot>Degraded</Badge>
+		<Badge variant="warning" dot>Degraded</Badge>
 	</div>
 	<div class="flex items-center justify-between gap-4">
 		<span class="text-muted-foreground">legacy-billing</span>
-		<Badge variant="destructive" {size} dot>Down</Badge>
+		<Badge variant="destructive" dot>Down</Badge>
 	</div>
 </div>

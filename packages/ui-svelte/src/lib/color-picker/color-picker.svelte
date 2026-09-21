@@ -230,7 +230,7 @@ const FORMATS: ColorFormat[] = ["hsv", "hsl", "rgb"];
 				></span>
 			</div>
 			<div
-				class="flex items-center gap-1 rounded-md border border-border bg-background px-1.5 transition-[border-color,box-shadow] focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/40"
+				class="flex items-center gap-1 rounded-md border border-border bg-background px-1.5 transition-[border-color,box-shadow] focus-within:border-ring focus-within:ring-2 focus-within:ring-ring"
 			>
 				<span class="font-mono text-[0.78rem] text-muted-foreground">#</span>
 				<input

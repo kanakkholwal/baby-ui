@@ -37,6 +37,9 @@ setSelect({
 	get disabled() {
 		return disabled;
 	},
+	get placement() {
+		return placement;
+	},
 	get labels() {
 		return labels;
 	},

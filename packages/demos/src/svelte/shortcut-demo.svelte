@@ -11,6 +11,6 @@ let { props = {} }: { props?: Record<string, unknown> } = $props();
 	</div>
 	<div class="flex items-center justify-between gap-6">
 		<span class="text-muted-foreground">Save</span>
-		<Shortcut keys={["⌘", "S"]} size={(props.size as "sm" | "md") ?? "md"} />
+		<Shortcut keys={["⌘", "S"]} />
 	</div>
 </div>

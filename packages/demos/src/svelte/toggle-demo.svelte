@@ -30,7 +30,7 @@ const size = $derived((props.size as "sm" | "md" | "lg" | "xl") ?? "md");
 <div class="inline-flex items-center gap-1 rounded-xl border border-border p-1">
 	{#each MARKS as mark (mark.id)}
 		<Toggle
-			{size}
+			size={mark.id === "bold" ? size : "md"}
 			label={mark.label}
 			disabled={mark.id === "bold" && Boolean(props.disabled)}
 			bind:pressed={

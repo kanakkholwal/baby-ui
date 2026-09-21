@@ -68,14 +68,37 @@
 		padding: 0.1em 0.35em;
 		font-size: 0.8em;
 	}
-	.prose-baby :where(pre) {
-		overflow-x: auto;
+	.prose-baby :where(.docvia-component-wrapper) {
 		margin: 1rem 0;
-		border: 1px solid var(--border);
-		border-radius: var(--radius-lg);
-		padding: 1rem;
-		font-size: 0.8125rem;
-		line-height: 1.6;
+	}
+	.prose-baby :where(ol, ul) {
+		margin: 0.75rem 0;
+		padding-left: 1.25rem;
+		color: var(--muted-foreground);
+		line-height: 1.7;
+	}
+	.prose-baby :where(ol) {
+		list-style: decimal;
+	}
+	.prose-baby :where(ul) {
+		list-style: disc;
+	}
+	.prose-baby :where(table) {
+		margin: 1rem 0;
+		width: 100%;
+		border-collapse: collapse;
+		font-size: 0.875rem;
+	}
+	.prose-baby :where(th, td) {
+		border-bottom: 1px solid var(--border);
+		padding: 0.5rem 0.75rem;
+		text-align: left;
+	}
+	.prose-baby :where(th) {
+		font-weight: 500;
+	}
+	.prose-baby :where(td) {
+		color: var(--muted-foreground);
 	}
 }
 

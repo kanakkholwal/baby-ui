@@ -1,6 +1,6 @@
 <script lang="ts">
-import CodeBlock from "./code-block.svelte";
 import InstallCommand from "./install-command.svelte";
+import PmCommand from "./pm-command.svelte";
 import SourceFiles from "./source-files.svelte";
 import Tabs from "./tabs.svelte";
 
@@ -11,13 +11,11 @@ let {
 	slug,
 	dependencies,
 	files,
-	depsHtml,
 	dialect = "ts",
 }: {
 	slug: string;
 	dependencies: string[];
 	files: File[];
-	depsHtml: string;
 	dialect?: string;
 } = $props();
 
@@ -26,7 +24,6 @@ const tabs = [
 	{ id: "cli", label: "CLI" },
 	{ id: "manual", label: "Manual" },
 ];
-const depCommand = $derived(`pnpm add ${dependencies.join(" ")}`);
 </script>
 
 <Tabs {tabs} bind:active={mode} variant="segment" class="self-start" />
@@ -35,17 +32,17 @@ const depCommand = $derived(`pnpm add ${dependencies.join(" ")}`);
 	{#if mode === "cli"}
 		<InstallCommand {slug} />
 	{:else}
-		<div class="flex flex-col gap-4">
+		<ol class="flex flex-col gap-6">
 			{#if dependencies.length}
-				<div>
-					<p class="mb-2 text-muted-foreground text-sm">Install dependencies.</p>
-					<CodeBlock code={depCommand} html={depsHtml} lang="bash" />
-				</div>
+				<li>
+					<p class="mb-2 text-foreground text-sm">Install the dependencies.</p>
+					<PmCommand kind="add" args={dependencies.join(" ")} />
+				</li>
 			{/if}
-			<p class="text-muted-foreground text-sm">
-				Then copy each file into your project at the listed path.
-			</p>
-			<SourceFiles {files} {dialect} />
-		</div>
+			<li>
+				<p class="mb-2 text-foreground text-sm">Copy each file to the path shown.</p>
+				<SourceFiles {files} {dialect} />
+			</li>
+		</ol>
 	{/if}
 </div>

@@ -3,6 +3,7 @@ import type { Framework } from "@baby-ui/registry-schema";
 import { FRAMEWORKS } from "@baby-ui/registry-schema";
 import { specs } from "@baby-ui/registry-schema/components";
 import { error } from "@sveltejs/kit";
+import { prepare } from "$lib/docs-nodes";
 import { highlight, langFor } from "$lib/highlight";
 import { findSpec } from "$lib/registry";
 import { sourceFiles } from "$lib/registry-items";
@@ -57,16 +58,20 @@ export const load: PageServerLoad = async ({ params }) => {
 					}
 				: null;
 			const dependencies = spec.impl[framework]?.dependencies ?? [];
-			const depCommand = `pnpm add ${dependencies.join(" ")}`;
 			return {
 				framework,
 				usage,
 				dependencies,
-				depsHtml: await highlight(depCommand, "bash"),
 				files,
 			};
 		}),
 	);
 
-	return { spec, ports, prose: doc?.content ?? null };
+	const prose = doc ? await prepare(doc.content) : null;
+	return {
+		spec,
+		ports,
+		prose: prose?.content ?? null,
+		proseHeadings: prose?.headings ?? [],
+	};
 };

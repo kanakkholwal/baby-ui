@@ -12,7 +12,7 @@ export const composer = defineComponent({
 			name: "value",
 			type: "string",
 			description: "Draft text. Bindable.",
-			control: { kind: "text" },
+			control: { kind: "none" },
 		},
 		{
 			name: "placeholder",

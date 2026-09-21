@@ -12,7 +12,7 @@ export const radioGroup = defineComponent({
 			name: "value",
 			type: "string",
 			description: "Selected option value. Bindable.",
-			control: { kind: "text" },
+			control: { kind: "none" },
 		},
 		{
 			name: "size",

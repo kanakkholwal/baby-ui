@@ -1,6 +1,5 @@
 import { ComponentDocExtrasSchema } from "@baby-ui/registry-schema";
 import { defineConfig } from "@docvia/cli";
-import { shiki } from "@docvia/plugin-shiki";
 import { createSvelteRenderer } from "@docvia/renderer-svelte/node";
 
 export default defineConfig({
@@ -18,26 +17,14 @@ export default defineConfig({
 			path: "../../packages/demos/src/svelte/button-demo.svelte",
 			hydrate: true,
 		},
+		"code-block": {
+			path: "./src/lib/components/code-block.svelte",
+			hydrate: true,
+		},
 		"dock-demo": {
 			path: "../../packages/demos/src/svelte/dock-demo.svelte",
 			hydrate: true,
 		},
 	},
 	renderer: createSvelteRenderer(),
-	plugins: [
-		shiki({
-			theme: "github-dark",
-			langs: [
-				"typescript",
-				"javascript",
-				"svelte",
-				"tsx",
-				"jsx",
-				"html",
-				"css",
-				"bash",
-				"json",
-			],
-		}),
-	],
 });

@@ -76,7 +76,7 @@ $effect(() => {
 			"min-h-16 w-full rounded-lg border text-foreground leading-relaxed",
 			"placeholder:text-muted-foreground",
 			"transition-[box-shadow,border-color] duration-[var(--duration-press)] ease-[var(--ease-out)]",
-			"outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/40",
+			"outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring",
 			"disabled:cursor-not-allowed disabled:opacity-50",
 			"aria-[invalid=true]:border-[var(--destructive)] aria-[invalid=true]:focus-visible:ring-[color-mix(in_oklch,var(--destructive)_40%,transparent)]",
 			autoGrow ? "resize-none overflow-y-hidden" : "resize-y",

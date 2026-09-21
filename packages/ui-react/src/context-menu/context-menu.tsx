@@ -7,6 +7,7 @@ import {
 	useContext,
 	useEffect,
 	useId,
+	useLayoutEffect,
 	useMemo,
 	useRef,
 	useState,
@@ -85,7 +86,7 @@ export function ContextMenuContent({
 	}, [menu.open]);
 
 	// Positioned from a point rather than an element, so it clamps rather than flips.
-	useEffect(() => {
+	useLayoutEffect(() => {
 		const node = el.current;
 		if (!menu.open || !node) return;
 		const rect = node.getBoundingClientRect();

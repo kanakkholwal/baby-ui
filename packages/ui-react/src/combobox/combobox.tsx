@@ -1,7 +1,7 @@
 "use client";
 
 import type { KeyboardEvent } from "react";
-import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { ANCHORED, anchor, dismissable, rove } from "../lib/anchor";
 import { cn } from "../lib/cn";
 
@@ -52,7 +52,7 @@ export function Combobox({
 		if (open) setMounted(true);
 	}, [open]);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		if (!open || !input.current || !floating.current) return;
 		const stopAnchor = anchor(input.current, floating.current, {
 			gap: 6,
@@ -131,7 +131,7 @@ export function Combobox({
 						setIndex(0);
 					}}
 					onKeyDown={onKeyDown}
-					className="h-9 w-full rounded-lg border border-input bg-background px-3 text-foreground text-sm outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/40"
+					className="h-9 w-full rounded-lg border border-input bg-background px-3 text-foreground text-sm outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring"
 				/>
 			</div>
 

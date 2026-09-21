@@ -52,7 +52,7 @@ export function BadgeDemo({ props }: { props: Props }) {
 			{SERVICES.map((service) => (
 				<div key={service.name} className="flex items-center justify-between gap-4">
 					<span className="text-muted-foreground">{service.name}</span>
-					<Badge variant={service.tone} size={size} dot>
+					<Badge variant={service.tone} dot>
 						{service.state}
 					</Badge>
 				</div>
@@ -245,19 +245,12 @@ export function SwitchDemo({ props }: { props: Props }) {
 				<Switch
 					checked={digest}
 					onCheckedChange={setDigest}
-					size={size}
 					label="Weekly digest"
 					className={SWITCH_ROW}
 				/>
 			</div>
 			<div className="px-4 py-3">
-				<Switch
-					checked={false}
-					size={size}
-					disabled
-					label="SMS alerts"
-					className={SWITCH_ROW}
-				/>
+				<Switch checked={false} disabled label="SMS alerts" className={SWITCH_ROW} />
 			</div>
 		</div>
 	);
@@ -296,7 +289,7 @@ export function SkeletonDemo({ props }: { props: Props }) {
 					height={(props.height as string) || "1rem"}
 					shape={shape}
 				/>
-				<Skeleton width="60%" height="0.75rem" shape={shape} />
+				<Skeleton width="60%" height="0.75rem" />
 			</div>
 		</div>
 	);

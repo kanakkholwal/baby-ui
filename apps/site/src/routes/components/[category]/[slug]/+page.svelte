@@ -33,6 +33,15 @@ const tabs = [
 	{ id: "usage", label: "Usage" },
 	{ id: "install", label: "Installation" },
 ];
+const outline = $derived(
+	[
+		{ id: "overview", label: "Overview" },
+		{ id: "preview", label: "Preview" },
+		...data.proseHeadings,
+		data.spec.motion && { id: "behaviour", label: "Behaviour" },
+		data.spec.props.length > 0 && { id: "api-reference", label: "API reference" },
+	].filter((h): h is { id: string; label: string } => Boolean(h)),
+);
 const usage = $derived(
 	dialect === "js" && port?.usage?.js ? port.usage.js : (port?.usage?.ts ?? null),
 );
@@ -87,7 +96,6 @@ const usage = $derived(
 				<InstallBlock
 					slug={data.spec.slug}
 					dependencies={port.dependencies}
-					depsHtml={port.depsHtml}
 					files={port.files}
 					{dialect}
 				/>
@@ -128,6 +136,6 @@ const usage = $derived(
 	<div
 		class="scrollbar-hide fixed top-24 right-8 z-10 max-h-[calc(100dvh-8rem)] w-(--right-sidebar-width) overflow-y-auto pb-1"
 	>
-		<PropsRail spec={data.spec} bind:values />
+		<PropsRail spec={data.spec} bind:values {outline} />
 	</div>
 </aside>

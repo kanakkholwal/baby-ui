@@ -9,6 +9,7 @@ import {
 } from "@baby-ui/registry-schema";
 import { FRAMEWORK, SITE_URL } from "./config";
 import { rewriteImports } from "./rewrite";
+import { tokensUrl } from "./theme";
 import { jsPath, toJavaScript } from "./tojs";
 
 function targetFor(framework: Framework, path: string, type: string): string {
@@ -51,7 +52,8 @@ export async function buildItem(
 		title: spec.name,
 		description: spec.description,
 		dependencies: impl.dependencies,
-		registryDependencies: impl.registryDependencies,
+		// Every component reads the motion variables, so the CLI has to bring them along.
+		registryDependencies: [...impl.registryDependencies, tokensUrl(framework)],
 		files,
 		cssVars: Object.keys(spec.cssVars).length ? { theme: spec.cssVars } : undefined,
 		categories: [spec.category],

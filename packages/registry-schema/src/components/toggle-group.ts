@@ -11,7 +11,7 @@ export const toggleGroup = defineComponent({
 			name: "value",
 			type: "string | string[]",
 			description: "Selected value, or values when multiple. Bindable.",
-			control: { kind: "text" },
+			control: { kind: "none" },
 		},
 		{
 			name: "type",

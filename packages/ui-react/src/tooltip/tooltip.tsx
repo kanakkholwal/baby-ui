@@ -7,6 +7,7 @@ import {
 	useContext,
 	useEffect,
 	useId,
+	useLayoutEffect,
 	useMemo,
 	useRef,
 	useState,
@@ -66,7 +67,7 @@ export function Tooltip({
 		setOpen(false);
 	}, []);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		if (!open || !triggerEl || !contentEl) return;
 		return anchor(triggerEl, contentEl, { placement, gap: 6 });
 	}, [open, triggerEl, contentEl, placement]);

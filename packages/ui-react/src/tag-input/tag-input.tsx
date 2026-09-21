@@ -52,7 +52,7 @@ export function TagInput({
 		<div
 			className={cn(
 				"flex w-full flex-wrap items-center gap-1.5 rounded-lg border border-input bg-background p-1.5",
-				"focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/40",
+				"focus-within:border-ring focus-within:ring-2 focus-within:ring-ring",
 				disabled && "pointer-events-none opacity-50",
 				className,
 			)}

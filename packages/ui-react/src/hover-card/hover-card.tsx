@@ -7,6 +7,7 @@ import {
 	useContext,
 	useEffect,
 	useId,
+	useLayoutEffect,
 	useMemo,
 	useRef,
 	useState,
@@ -56,7 +57,7 @@ export function HoverCard({
 		[openDelay, closeDelay],
 	);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		if (!open || !triggerEl || !contentEl) return;
 		return anchor(triggerEl, contentEl, { placement, gap: 8 });
 	}, [open, triggerEl, contentEl, placement]);

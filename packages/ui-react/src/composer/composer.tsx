@@ -56,7 +56,7 @@ export function Composer({
 		<div
 			className={cn(
 				"flex w-full flex-col gap-2 rounded-2xl border border-input bg-background p-2",
-				"focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/40",
+				"focus-within:border-ring focus-within:ring-2 focus-within:ring-ring",
 				disabled && "pointer-events-none opacity-50",
 				className,
 			)}
