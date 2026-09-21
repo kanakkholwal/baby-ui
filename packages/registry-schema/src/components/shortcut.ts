@@ -67,19 +67,21 @@ export const shortcut = defineComponent({
 			entry: "Shortcut",
 			files: [
 				{ path: "shortcut/shortcut.tsx", type: "registry:ui" },
+				{ path: "shortcut/variants.ts", type: "registry:ui" },
 				{ path: "lib/shortcut.ts", type: "registry:lib" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 		svelte: {
 			entry: "Shortcut",
 			files: [
 				{ path: "shortcut/shortcut.svelte", type: "registry:ui" },
+				{ path: "shortcut/variants.ts", type: "registry:ui" },
 				{ path: "lib/shortcut.ts", type: "registry:lib" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 	},
 	keywords: ["shortcut"],

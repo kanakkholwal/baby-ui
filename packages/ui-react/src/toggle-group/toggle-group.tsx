@@ -3,15 +3,9 @@
 import type { ComponentProps } from "react";
 import { createContext, useContext, useMemo } from "react";
 import { cn } from "../lib/cn";
+import { type ToggleGroupSize, toggleGroupItem } from "./variants";
 
-export type ToggleGroupSize = "sm" | "md" | "lg" | "xl";
-
-const ITEM: Record<ToggleGroupSize, string> = {
-	sm: "h-6 px-2 text-[11px]",
-	md: "h-7 px-2.5 text-xs",
-	lg: "h-9 px-3 text-sm",
-	xl: "h-11 px-4 text-base",
-};
+export type { ToggleGroupSize };
 
 type Ctx = {
 	size: ToggleGroupSize;
@@ -101,11 +95,7 @@ export function ToggleGroupItem({
 			aria-pressed={group.isOn(value)}
 			disabled={disabled || group.disabled}
 			onClick={() => group.toggle(value)}
-			className={cn(
-				"inline-flex items-center rounded-lg font-medium text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring aria-pressed:bg-foreground/[0.08] aria-pressed:text-foreground disabled:pointer-events-none disabled:opacity-50",
-				ITEM[group.size],
-				className,
-			)}
+			className={cn(toggleGroupItem({ size: group.size }), className)}
 			{...props}
 		/>
 	);

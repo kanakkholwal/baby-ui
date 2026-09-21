@@ -3,30 +3,9 @@
 import type { ComponentProps, KeyboardEvent, ReactNode } from "react";
 import { createContext, useCallback, useContext, useId, useMemo, useRef } from "react";
 import { cn } from "../lib/cn";
+import { type RadioSize, type RadioVariant, radioGroup } from "./variants";
 
-export type RadioSize = "sm" | "md" | "lg" | "xl";
-export type RadioVariant = "default" | "card";
-
-const RING: Record<RadioSize, string> = {
-	sm: "size-3.5",
-	md: "size-4",
-	lg: "size-5",
-	xl: "size-6",
-};
-
-const DOT: Record<RadioSize, string> = {
-	sm: "size-1.5",
-	md: "size-2",
-	lg: "size-2.5",
-	xl: "size-3",
-};
-
-const TEXT: Record<RadioSize, string> = {
-	sm: "text-xs",
-	md: "text-sm",
-	lg: "text-sm",
-	xl: "text-base",
-};
+export type { RadioSize, RadioVariant };
 
 type Ctx = {
 	value: string;
@@ -129,6 +108,7 @@ export function RadioGroupItem({
 	const id = useId();
 	const checked = group.value === value;
 	const off = disabled || group.disabled;
+	const frame = radioGroup({ variant: group.variant, size: group.size });
 
 	function onKeyDown(event: KeyboardEvent) {
 		const forward = event.key === "ArrowDown" || event.key === "ArrowRight";
@@ -142,13 +122,7 @@ export function RadioGroupItem({
 		<label
 			htmlFor={id}
 			data-slot="radio-group-item"
-			className={cn(
-				"inline-flex cursor-pointer items-start gap-2.5 text-foreground",
-				group.variant === "card" &&
-					"rounded-xl border border-border bg-card px-3.5 py-3 transition-colors hover:border-border-strong has-checked:border-primary",
-				TEXT[group.size],
-				className,
-			)}
+			className={cn(frame.label(), className)}
 		>
 			<input
 				id={id}
@@ -162,17 +136,8 @@ export function RadioGroupItem({
 				onKeyDown={onKeyDown}
 				className="peer sr-only"
 			/>
-			<span
-				aria-hidden
-				className={cn(
-					"mt-0.5 grid shrink-0 place-items-center rounded-full border-2 border-muted-foreground/50 bg-background transition-colors peer-checked:border-primary peer-focus-visible:ring-2 peer-focus-visible:ring-ring peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-background",
-					RING[group.size],
-				)}
-			>
-				<span
-					data-on={checked}
-					className={cn("radio-dot rounded-full bg-primary", DOT[group.size])}
-				/>
+			<span aria-hidden className={frame.ring()}>
+				<span data-on={checked} className={frame.dot()} />
 			</span>
 			<span className="min-w-0">
 				{children ?? (label ? <span className="block">{label}</span> : null)}

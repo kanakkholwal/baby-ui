@@ -61,17 +61,19 @@ export const toggle = defineComponent({
 			entry: "Toggle",
 			files: [
 				{ path: "toggle/toggle.tsx", type: "registry:ui" },
+				{ path: "toggle/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 		svelte: {
 			entry: "Toggle",
 			files: [
 				{ path: "toggle/toggle.svelte", type: "registry:ui" },
+				{ path: "toggle/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 	},
 	keywords: ["toggle"],

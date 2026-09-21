@@ -1,12 +1,11 @@
 <script lang="ts">
 import { cn } from "../lib/cn";
-
-type Size = "sm" | "md" | "lg" | "xl";
+import { SWITCH_TRAVEL, type SwitchSize, switchThumb, switchTrack } from "./variants";
 
 type Props = {
 	checked?: boolean;
 	disabled?: boolean;
-	size?: Size;
+	size?: SwitchSize;
 	label?: string;
 	class?: string;
 };
@@ -18,25 +17,6 @@ let {
 	label,
 	class: classProp,
 }: Props = $props();
-
-const TRACK: Record<Size, string> = {
-	sm: "h-4 w-7",
-	md: "h-5 w-9",
-	lg: "h-6 w-11",
-	xl: "h-7 w-[3.25rem]",
-};
-const THUMB: Record<Size, string> = {
-	sm: "size-3",
-	md: "size-4",
-	lg: "size-5",
-	xl: "size-6",
-};
-const TRAVEL: Record<Size, string> = {
-	sm: "0.75rem",
-	md: "1rem",
-	lg: "1.25rem",
-	xl: "1.5rem",
-};
 
 const id = $props.id();
 let pressed = $state(false);
@@ -61,24 +41,15 @@ function refuse() {
 		onpointerdown={() => (pressed = true)}
 		onpointerup={() => (pressed = false)}
 		onpointerleave={() => (pressed = false)}
-		class={cn(
-			"relative inline-flex shrink-0 items-center rounded-full border border-transparent bg-input p-0.5 transition-colors duration-[var(--duration-press)] ease-[var(--ease-out)]",
-			"outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-			"aria-checked:bg-primary aria-disabled:cursor-not-allowed aria-disabled:opacity-50",
-			TRACK[size],
-			!label && classProp,
-		)}
+		class={cn(switchTrack({ size }), !label && classProp)}
 	>
 		<span
 			aria-hidden="true"
 			data-shake={shaking || undefined}
 			onanimationend={() => (shaking = false)}
-			style:transform={checked ? `translateX(${TRAVEL[size]})` : "translateX(0)"}
+			style:transform={checked ? `translateX(${SWITCH_TRAVEL[size]})` : "translateX(0)"}
 			style:scale={pressed && !disabled ? "0.9" : "1"}
-			class={cn(
-				"switch-thumb rounded-full bg-background shadow-sm",
-				THUMB[size],
-			)}
+			class={switchThumb({ size })}
 		></span>
 	</button>
 {/snippet}

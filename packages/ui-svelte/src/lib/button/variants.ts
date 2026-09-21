@@ -1,4 +1,4 @@
-import { tv } from "tailwind-variants";
+import { tv, type VariantProps } from "tailwind-variants";
 
 export const button = tv({
 	base: [
@@ -51,8 +51,8 @@ export const button = tv({
 	defaultVariants: { variant: "default", size: "md" },
 });
 
-export type ButtonVariant = keyof typeof button.variants.variant;
-export type ButtonSize = keyof typeof button.variants.size;
+export type ButtonVariant = NonNullable<VariantProps<typeof button>["variant"]>;
+export type ButtonSize = NonNullable<VariantProps<typeof button>["size"]>;
 
 /** Square sizes show the spinner alone while loading; the label goes to assistive tech. */
 export function isIconSize(size: ButtonSize | undefined): boolean {

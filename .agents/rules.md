@@ -20,6 +20,17 @@ Any agent (Claude Code, Codex, Cursor, Copilot) should read this file first.
 
 - Base components are shadcn drop-ins: shadcn part names, `data-slot` values, `type` /
   `collapsible` / `value` style props. Check the shadcn API before designing one.
+- **HARD RULE (P1):** a component's `variant`/`size`-style prop types are *derived*, never
+  hand-typed literal unions. One `variants.ts` per component (or shared, when two components
+  genuinely share an axis, e.g. Dialog/AlertDialog/Command's inset-rim treatment):
+  `export const x = tv({...}); export type XVariant = NonNullable<VariantProps<typeof
+  x>["variant"]>;` (import `VariantProps` from `"tailwind-variants"`) — matches
+  `button/variants.ts` and `badge/variants.ts` in both ports, and shadcn-svelte's own
+  generated components. Never re-type the union inline in a demo or another component;
+  import the derived type instead. Applies to **every base component, no exceptions** — a
+  `Record<string, string>` or ternary class-lookup for ANY internal state axis (checked,
+  open, tone, whatever) converts to `tv()` too, even when that axis isn't a public prop.
+  Enforce on every new component (any category) from the start.
 - React and Svelte ports change together, same spec, same classes, same measured motion.
 - Motion is CSS-only: `--duration-*`, `--ease-*`, `--enter-scale`, `--press-scale`. Exits
   mirror entrances and use `--duration-exit`. Anchored surfaces grow from the trigger edge

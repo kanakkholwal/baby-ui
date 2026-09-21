@@ -2,19 +2,15 @@
 
 import type { ReactNode } from "react";
 import { cn } from "../lib/cn";
+import { type ToggleSize, toggleButton } from "./variants";
 
-const SIZE = {
-	sm: "h-7 min-w-7 px-2 text-xs",
-	md: "h-9 min-w-9 px-2.5 text-sm",
-	lg: "h-10 min-w-10 px-3 text-sm",
-	xl: "h-12 min-w-12 px-4 text-base",
-};
+export type { ToggleSize };
 
 export interface ToggleProps {
 	children?: ReactNode;
 	pressed?: boolean;
 	disabled?: boolean;
-	size?: "sm" | "md" | "lg" | "xl";
+	size?: ToggleSize;
 	label?: string;
 	className?: string;
 	onPressedChange?: (pressed: boolean) => void;
@@ -36,15 +32,7 @@ export function Toggle({
 			aria-label={label}
 			disabled={disabled}
 			onClick={() => onPressedChange?.(!pressed)}
-			className={cn(
-				"inline-flex items-center justify-center gap-1.5 rounded-lg border border-transparent font-medium transition-[background-color,color,transform,scale,translate] duration-[var(--duration-press)] ease-[var(--ease-out)]",
-				"text-muted-foreground hover:bg-foreground/[0.06] hover:text-foreground",
-				"aria-pressed:border-border aria-pressed:bg-foreground/[0.08] aria-pressed:text-foreground",
-				"outline-none focus-visible:ring-2 focus-visible:ring-ring",
-				"active:scale-[var(--press-scale)] disabled:pointer-events-none disabled:opacity-50",
-				SIZE[size],
-				className,
-			)}
+			className={cn(toggleButton({ size }), className)}
 		>
 			{children}
 		</button>

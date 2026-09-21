@@ -9,6 +9,7 @@ import {
 	CardFooter,
 	CardHeader,
 	CardTitle,
+	type CardVariant,
 } from "@baby-ui/svelte";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
@@ -16,7 +17,7 @@ let { props = {} }: { props?: Record<string, unknown> } = $props();
 
 <Card
 	interactive={props.interactive !== false}
-	variant={(props.variant as "default" | "framed") ?? "default"}
+	variant={(props.variant as CardVariant) ?? "default"}
 	class="w-[min(28rem,calc(100vw-4rem))]"
 >
 	<CardHeader>

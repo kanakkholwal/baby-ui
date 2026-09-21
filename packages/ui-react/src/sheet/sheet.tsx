@@ -12,6 +12,9 @@ import {
 	useState,
 } from "react";
 import { cn } from "../lib/cn";
+import { type SheetSide, sheetPanel } from "./variants";
+
+export type { SheetSide };
 
 /** Visibility, delayed by the exit, is what keeps a non-dialog overlay on screen to slide out. */
 const SHEET_OVERLAY = [
@@ -24,31 +27,6 @@ const SHEET_VEIL = [
 	"data-[state=closed]:opacity-0 data-[state=closed]:duration-[var(--duration-exit)]",
 	"starting:data-[state=open]:opacity-0",
 ].join(" ");
-
-/** Only the closed state translates, so the open state needs no competing utility. */
-const SHEET_PANEL = [
-	"absolute flex flex-col gap-4 overflow-y-auto border-border bg-background p-6",
-	"transition-transform duration-[var(--duration-drawer)] ease-[var(--ease-drawer)]",
-	"data-[state=closed]:duration-[var(--duration-overlay)]",
-	"data-[state=closed]:data-[side=left]:-translate-x-full",
-	"data-[state=closed]:data-[side=right]:translate-x-full",
-	"data-[state=closed]:data-[side=top]:-translate-y-full",
-	"data-[state=closed]:data-[side=bottom]:translate-y-full",
-	"starting:data-[state=open]:data-[side=left]:-translate-x-full",
-	"starting:data-[state=open]:data-[side=right]:translate-x-full",
-	"starting:data-[state=open]:data-[side=top]:-translate-y-full",
-	"starting:data-[state=open]:data-[side=bottom]:translate-y-full",
-	"motion-reduce:transition-none",
-].join(" ");
-
-export type SheetSide = "left" | "right" | "top" | "bottom";
-
-const SIDE: Record<SheetSide, string> = {
-	left: "inset-y-0 left-0 h-full w-[min(22rem,100vw)] border-r",
-	right: "inset-y-0 right-0 h-full w-[min(22rem,100vw)] border-l",
-	top: "inset-x-0 top-0 w-full max-h-[80vh] border-b",
-	bottom: "inset-x-0 bottom-0 w-full max-h-[80vh] rounded-t-2xl border-t",
-};
 
 type Ctx = {
 	open: boolean;
@@ -159,7 +137,7 @@ export function SheetContent({
 				data-slot="sheet-content"
 				data-side={side}
 				data-state={open ? "open" : "closed"}
-				className={cn(SHEET_PANEL, SIDE[side], className)}
+				className={cn(sheetPanel({ side }), className)}
 			>
 				{children}
 			</div>

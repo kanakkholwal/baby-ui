@@ -42,17 +42,19 @@ export const typography = defineComponent({
 			entry: "Typography",
 			files: [
 				{ path: "typography/typography.tsx", type: "registry:ui" },
+				{ path: "typography/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 		svelte: {
 			entry: "Typography",
 			files: [
 				{ path: "typography/typography.svelte", type: "registry:ui" },
+				{ path: "typography/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 	},
 	keywords: ["typography"],

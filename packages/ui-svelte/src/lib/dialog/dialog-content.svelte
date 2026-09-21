@@ -1,7 +1,8 @@
 <script lang="ts">
 import type { Snippet } from "svelte";
 import { cn } from "../lib/cn";
-import { DIALOG_PANEL, DIALOG_SURFACE, DIALOG_WIDTH, getDialog } from "./context";
+import { DIALOG_PANEL, DIALOG_SURFACE, getDialog } from "./context";
+import { dialogFrame, dialogWidth } from "./variants";
 
 let { children, class: classProp }: { children?: Snippet; class?: string } = $props();
 
@@ -33,24 +34,38 @@ $effect(() => {
 	<div
 		data-slot="dialog-content"
 		data-state={dialog.open ? "open" : "closed"}
+		data-variant={dialog.variant}
 		class={cn(
 			DIALOG_PANEL,
-			"w-[min(32rem,calc(100vw-2rem))] rounded-2xl border border-border bg-background p-1 shadow-2xl",
-			DIALOG_WIDTH[dialog.size],
+			dialogFrame({ variant: dialog.variant }).panel(),
+			"w-[min(32rem,calc(100vw-2rem))]",
+			dialogWidth({ size: dialog.size }),
 			classProp,
 		)}
 	>
-		<!-- Inset frame: the body sits on a lighter surface, the footer in the rim below it. -->
-		<div class="relative overflow-hidden rounded-[11px] bg-card p-5">
-			{@render children?.()}
-		</div>
-		{#if dialog.footer}
-			<div
-				data-slot="dialog-footer"
-				class={cn("flex items-center justify-end gap-2 px-2 pt-2 pb-1", dialog.footer.class)}
-			>
-				{@render dialog.footer.children?.()}
+		{#if dialog.variant === "framed"}
+			<!-- Inset frame: the body sits on a lighter surface, the footer in the rim below it. -->
+			<div class={cn(dialogFrame({ variant: dialog.variant }).body(), "p-5")}>
+				{@render children?.()}
 			</div>
+			{#if dialog.footer}
+				<div
+					data-slot="dialog-footer"
+					class={cn(dialogFrame({ variant: dialog.variant }).footer(), dialog.footer.class)}
+				>
+					{@render dialog.footer.children?.()}
+				</div>
+			{/if}
+		{:else}
+			{@render children?.()}
+			{#if dialog.footer}
+				<div
+					data-slot="dialog-footer"
+					class={cn(dialogFrame({ variant: dialog.variant }).footer(), dialog.footer.class)}
+				>
+					{@render dialog.footer.children?.()}
+				</div>
+			{/if}
 		{/if}
 	</div>
 </dialog>

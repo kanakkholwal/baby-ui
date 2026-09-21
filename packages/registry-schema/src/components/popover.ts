@@ -6,7 +6,7 @@ export const popover = defineComponent({
 	description:
 		"Anchored panel that flips and shifts to stay on screen, dismissed by Escape or an outside click.",
 	category: "base",
-	status: "beta",
+	status: "alpha",
 	props: [
 		{
 			name: "placement",

@@ -1,4 +1,5 @@
 import { createContext, type Snippet } from "svelte";
+import type { DialogVariant } from "../dialog/context";
 
 export type CommandContext = {
 	readonly query: string;
@@ -24,6 +25,7 @@ export const [getCommand, setCommand] = createContext<CommandContext>();
  * search. Optional: standalone Command usage outside a CommandDialog just skips it. */
 export type CommandDialogState = {
 	readonly open: boolean;
+	readonly variant: DialogVariant;
 	/** CommandHeader hoists here so CommandDialog can render it in the rim above the card. */
 	header: { children?: Snippet; class?: string } | undefined;
 };

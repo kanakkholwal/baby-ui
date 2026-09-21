@@ -3,14 +3,14 @@
 import type { TextareaHTMLAttributes } from "react";
 import { useEffect, useId, useRef } from "react";
 import { cn } from "../lib/cn";
+import { type TextareaSize, type TextareaVariant, textarea } from "./variants";
 
-type Size = "sm" | "md" | "lg" | "xl";
-type Variant = "outline" | "soft";
+export type { TextareaSize, TextareaVariant };
 
 export interface TextareaProps
 	extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, "size"> {
-	size?: Size;
-	variant?: Variant;
+	size?: TextareaSize;
+	variant?: TextareaVariant;
 	autoGrow?: boolean;
 	maxRows?: number;
 	invalid?: boolean;
@@ -18,18 +18,6 @@ export interface TextareaProps
 	description?: string;
 	showCount?: boolean;
 }
-
-const SIZE: Record<Size, string> = {
-	sm: "px-2.5 py-1.5 text-xs",
-	md: "px-3 py-2 text-sm",
-	lg: "px-3.5 py-2.5 text-sm",
-	xl: "px-4 py-3 text-base",
-};
-
-const VARIANT: Record<Variant, string> = {
-	outline: "border-input bg-background",
-	soft: "border-transparent bg-card",
-};
 
 export function Textarea({
 	className,
@@ -70,18 +58,7 @@ export function Textarea({
 			maxLength={maxLength}
 			aria-invalid={invalid || undefined}
 			aria-describedby={description ? `${id}-description` : undefined}
-			className={cn(
-				"min-h-16 w-full rounded-lg border text-foreground leading-relaxed",
-				"placeholder:text-muted-foreground",
-				"transition-[box-shadow,border-color] duration-[var(--duration-press)] ease-[var(--ease-out)]",
-				"outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring",
-				"disabled:cursor-not-allowed disabled:opacity-50",
-				"aria-[invalid=true]:border-[var(--destructive)] aria-[invalid=true]:focus-visible:ring-[color-mix(in_oklch,var(--destructive)_40%,transparent)]",
-				autoGrow ? "resize-none overflow-y-hidden" : "resize-y",
-				VARIANT[variant],
-				SIZE[size],
-				className,
-			)}
+			className={cn(textarea({ size, variant, autoGrow }), className)}
 		/>
 	);
 

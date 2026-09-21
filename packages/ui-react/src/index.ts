@@ -42,6 +42,7 @@ export {
 	CardFooter,
 	CardHeader,
 	CardTitle,
+	type CardVariant,
 } from "./card/card";
 export { Checkbox, type CheckboxProps } from "./checkbox/checkbox";
 export { CodeBlock, type CodeBlockProps } from "./code-block/code-block";
@@ -85,6 +86,7 @@ export {
 	type DialogSize,
 	DialogTitle,
 	DialogTrigger,
+	type DialogVariant,
 } from "./dialog/dialog";
 export {
 	Drawer,
@@ -183,6 +185,7 @@ export {
 	SheetTrigger,
 } from "./sheet/sheet";
 export { Shortcut, type ShortcutProps } from "./shortcut/shortcut";
+export type { ShortcutSize, ShortcutVariant } from "./shortcut/variants";
 export { ShowMore, type ShowMoreProps } from "./show-more/show-more";
 export { Skeleton, type SkeletonProps } from "./skeleton/skeleton";
 export { Slider, type SliderProps } from "./slider/slider";

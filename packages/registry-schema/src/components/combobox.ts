@@ -6,7 +6,7 @@ export const combobox = defineComponent({
 	description:
 		"Filtering input with an anchored result list and full keyboard selection.",
 	category: "base",
-	status: "beta",
+	status: "alpha",
 	props: [
 		{
 			name: "options",

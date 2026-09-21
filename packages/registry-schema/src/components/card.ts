@@ -50,9 +50,10 @@ export const card = defineComponent({
 			entry: "Card",
 			files: [
 				{ path: "card/card.tsx", type: "registry:ui" },
+				{ path: "card/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 		svelte: {
 			entry: "Card",
@@ -64,9 +65,10 @@ export const card = defineComponent({
 				{ path: "card/card-action.svelte", type: "registry:ui" },
 				{ path: "card/card-content.svelte", type: "registry:ui" },
 				{ path: "card/card-footer.svelte", type: "registry:ui" },
+				{ path: "card/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 	},
 	keywords: ["card", "surface", "panel", "container"],

@@ -3,6 +3,7 @@ import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 import { cn } from "../lib/cn";
 import { getCommandDialogState, hasCommandDialogState, setCommand } from "./context";
+import { commandFrame } from "./variants";
 
 let {
 	children,
@@ -100,8 +101,10 @@ $effect(() => {
 <div
 	{...rest}
 	data-slot="command"
+	data-variant={dialogState?.variant ?? "framed"}
 	class={cn(
-		"relative flex min-h-0 flex-col overflow-hidden rounded-[11px] bg-card text-foreground",
+		"relative flex min-h-0 flex-col overflow-hidden text-foreground",
+		commandFrame({ variant: dialogState?.variant ?? "framed" }).body(),
 		classProp,
 	)}
 >

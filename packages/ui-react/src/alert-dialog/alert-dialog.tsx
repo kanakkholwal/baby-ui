@@ -13,12 +13,14 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import { DIALOG_PANEL, DIALOG_SURFACE } from "../dialog/dialog";
+import { type DialogVariant, dialogFrame } from "../dialog/variants";
 import { cn } from "../lib/cn";
 
 type Ctx = {
 	open: boolean;
 	titleId: string;
 	descriptionId: string;
+	variant: DialogVariant;
 	setOpen: (open: boolean) => void;
 	setCancel: (el: HTMLElement | null) => void;
 	/** The rim slot below the surface; AlertDialogFooter portals into it. */
@@ -38,11 +40,13 @@ export function AlertDialog({
 	children,
 	open: openProp,
 	defaultOpen = false,
+	variant = "framed",
 	onOpenChange,
 }: {
 	children?: ReactNode;
 	open?: boolean;
 	defaultOpen?: boolean;
+	variant?: DialogVariant;
 	onOpenChange?: (open: boolean) => void;
 }) {
 	const uid = useId();
@@ -69,12 +73,13 @@ export function AlertDialog({
 			open,
 			titleId: `${uid}-title`,
 			descriptionId: `${uid}-description`,
+			variant,
 			setOpen,
 			setCancel,
 			footerEl,
 			setFooterEl,
 		}),
-		[open, uid, setOpen, footerEl],
+		[open, uid, variant, setOpen, footerEl],
 	);
 
 	return <AlertDialogCtx.Provider value={ctx}>{children}</AlertDialogCtx.Provider>;
@@ -124,16 +129,27 @@ export function AlertDialogContent({ className, children }: ComponentProps<"div"
 			<div
 				data-slot="alert-dialog-content"
 				data-state={dialog.open ? "open" : "closed"}
+				data-variant={dialog.variant}
 				className={cn(
 					DIALOG_PANEL,
-					"w-[min(26rem,calc(100vw-2rem))] rounded-2xl border border-border bg-background p-1 shadow-2xl",
+					dialogFrame({ variant: dialog.variant }).panel(),
+					"w-[min(26rem,calc(100vw-2rem))]",
 					className,
 				)}
 			>
-				<div className="relative overflow-hidden rounded-[11px] bg-card p-5">
-					{children}
-				</div>
-				<div ref={dialog.setFooterEl} className="empty:hidden" />
+				{dialog.variant === "framed" ? (
+					<>
+						<div className={cn(dialogFrame({ variant: dialog.variant }).body(), "p-5")}>
+							{children}
+						</div>
+						<div ref={dialog.setFooterEl} className="empty:hidden" />
+					</>
+				) : (
+					<>
+						{children}
+						<div ref={dialog.setFooterEl} className="empty:hidden" />
+					</>
+				)}
 			</div>
 		</dialog>
 	);
@@ -154,7 +170,7 @@ export function AlertDialogFooter({ className, ...props }: ComponentProps<"div">
 	const node = (
 		<div
 			data-slot="alert-dialog-footer"
-			className={cn("flex items-center justify-end gap-2 px-2 pt-2 pb-1", className)}
+			className={cn(dialogFrame({ variant: dialog.variant }).footer(), className)}
 			{...props}
 		/>
 	);

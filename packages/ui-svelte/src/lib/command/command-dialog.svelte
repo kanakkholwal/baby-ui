@@ -2,15 +2,22 @@
 import type { Snippet } from "svelte";
 import { DIALOG_SURFACE } from "../dialog/context";
 import { cn } from "../lib/cn";
-import Shortcut from "../shortcut/shortcut.svelte";
 import { COMMAND_PANEL, setCommandDialogState } from "./context";
+import { commandFrame, type DialogVariant } from "./variants";
 
 let {
 	children,
 	open = $bindable(false),
 	label = "Command palette",
+	variant = "framed",
 	class: classProp,
-}: { children?: Snippet; open?: boolean; label?: string; class?: string } = $props();
+}: {
+	children?: Snippet;
+	open?: boolean;
+	label?: string;
+	variant?: DialogVariant;
+	class?: string;
+} = $props();
 
 let el = $state<HTMLDialogElement>();
 let header = $state<{ children?: Snippet; class?: string }>();
@@ -18,6 +25,9 @@ let header = $state<{ children?: Snippet; class?: string }>();
 setCommandDialogState({
 	get open() {
 		return open;
+	},
+	get variant() {
+		return variant;
 	},
 	get header() {
 		return header;
@@ -54,21 +64,23 @@ $effect(() => {
 	<div
 		data-slot="command-dialog"
 		data-state={open ? "open" : "closed"}
+		data-variant={variant}
 		class={cn(
 			COMMAND_PANEL,
-			"flex max-h-[min(30rem,70dvh)] w-[min(36rem,calc(100vw-2rem))] flex-col overflow-hidden rounded-2xl border border-border bg-background p-1 shadow-2xl",
+			commandFrame({ variant }).panel(),
+			"flex max-h-[min(30rem,70dvh)] w-[min(36rem,calc(100vw-2rem))] flex-col overflow-hidden",
 			classProp,
 		)}
 	>
 		<!-- Inset frame: header sits in the rim, the card below it holds input and results. -->
 		{#if header}
-			<div
-				data-slot="command-header"
-				class={cn("flex items-center justify-between gap-3 px-3.5 pt-1.5 pb-2", header.class)}
-			>
+			<div data-slot="command-header" class={cn(commandFrame({ variant }).header(), header.class)}>
 				<p class="font-medium text-foreground text-sm">{@render header.children?.()}</p>
 				<span class="flex shrink-0 items-center gap-1.5 text-muted-foreground text-xs">
-					<Shortcut shortcut="esc" size="sm" />
+					<kbd
+						class="inline-flex h-4 min-w-4 items-center justify-center rounded border border-border bg-card px-1 font-medium font-sans text-[10px]"
+						>esc</kbd
+					>
 					close
 				</span>
 			</div>

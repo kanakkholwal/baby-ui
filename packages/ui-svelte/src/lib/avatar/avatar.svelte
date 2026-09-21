@@ -3,8 +3,7 @@ import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 import { cn } from "../lib/cn";
 import { setAvatar } from "./context";
-
-type Size = "sm" | "md" | "lg" | "xl";
+import { type AvatarShape, type AvatarSize, avatar } from "./variants";
 
 let {
 	children,
@@ -14,17 +13,10 @@ let {
 	...rest
 }: {
 	children?: Snippet;
-	size?: Size;
-	shape?: "circle" | "square";
+	size?: AvatarSize;
+	shape?: AvatarShape;
 	class?: string;
 } & HTMLAttributes<HTMLSpanElement> = $props();
-
-const SIZE: Record<Size, string> = {
-	sm: "size-8 text-xs",
-	md: "size-10 text-sm",
-	lg: "size-14 text-base",
-	xl: "size-20 text-xl",
-};
 
 let loaded = $state(false);
 
@@ -36,15 +28,6 @@ setAvatar({
 });
 </script>
 
-<span
-	{...rest}
-	data-slot="avatar"
-	class={cn(
-		"relative inline-grid shrink-0 place-items-center overflow-hidden bg-card",
-		shape === "circle" ? "rounded-full" : "rounded-lg",
-		SIZE[size],
-		classProp,
-	)}
->
+<span {...rest} data-slot="avatar" class={cn(avatar({ size, shape }), classProp)}>
 	{@render children?.()}
 </span>

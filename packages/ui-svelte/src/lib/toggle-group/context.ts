@@ -1,6 +1,7 @@
 import { createContext } from "svelte";
+import type { ToggleGroupSize } from "./variants";
 
-export type ToggleGroupSize = "sm" | "md" | "lg" | "xl";
+export type { ToggleGroupSize };
 
 export type ToggleGroupContext = {
 	readonly size: ToggleGroupSize;
@@ -10,10 +11,3 @@ export type ToggleGroupContext = {
 };
 
 export const [getToggleGroup, setToggleGroup] = createContext<ToggleGroupContext>();
-
-export const TOGGLE_GROUP_ITEM: Record<ToggleGroupSize, string> = {
-	sm: "h-6 px-2 text-[11px]",
-	md: "h-7 px-2.5 text-xs",
-	lg: "h-9 px-3 text-sm",
-	xl: "h-11 px-4 text-base",
-};

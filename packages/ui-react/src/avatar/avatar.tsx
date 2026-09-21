@@ -3,15 +3,9 @@
 import type { ComponentProps } from "react";
 import { createContext, useContext, useEffect, useState } from "react";
 import { cn } from "../lib/cn";
+import { type AvatarShape, type AvatarSize, avatar } from "./variants";
 
-type Size = "sm" | "md" | "lg" | "xl";
-
-const SIZE: Record<Size, string> = {
-	sm: "size-8 text-xs",
-	md: "size-10 text-sm",
-	lg: "size-14 text-base",
-	xl: "size-20 text-xl",
-};
+export type { AvatarShape, AvatarSize };
 
 type Ctx = { loaded: boolean; setLoaded: (loaded: boolean) => void };
 
@@ -29,19 +23,14 @@ export function Avatar({
 	shape = "circle",
 	children,
 	...props
-}: ComponentProps<"span"> & { size?: Size; shape?: "circle" | "square" }) {
+}: ComponentProps<"span"> & { size?: AvatarSize; shape?: AvatarShape }) {
 	const [loaded, setLoaded] = useState(false);
 
 	return (
 		<AvatarCtx.Provider value={{ loaded, setLoaded }}>
 			<span
 				data-slot="avatar"
-				className={cn(
-					"relative inline-grid shrink-0 place-items-center overflow-hidden bg-card",
-					shape === "circle" ? "rounded-full" : "rounded-lg",
-					SIZE[size],
-					className,
-				)}
+				className={cn(avatar({ size, shape }), className)}
 				{...props}
 			>
 				{children}

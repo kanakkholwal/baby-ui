@@ -12,61 +12,9 @@ import {
 	useState,
 } from "react";
 import { cn } from "../lib/cn";
+import { type TabsSize, type TabsVariant, tabsFrame } from "./variants";
 
-export type TabsVariant =
-	| "pill"
-	| "underline"
-	| "segment"
-	| "soft"
-	| "outline"
-	| "enclosed";
-export type TabsSize = "sm" | "md" | "lg" | "xl";
-
-const LIST: Record<TabsVariant, string> = {
-	pill: "gap-1 rounded-full bg-card p-1",
-	segment: "gap-0.5 rounded-lg bg-card p-0.5",
-	underline: "gap-1 border-border border-b",
-	soft: "gap-1",
-	outline: "gap-1",
-	enclosed: "gap-1 border-border border-b",
-};
-
-const TRIGGER: Record<TabsSize, string> = {
-	sm: "h-7 px-2.5 text-xs",
-	md: "h-8 px-3.5 text-sm",
-	lg: "h-10 px-4 text-sm",
-	xl: "h-12 px-5 text-base",
-};
-
-const RADIUS: Record<TabsVariant, string> = {
-	pill: "rounded-full",
-	segment: "rounded-md",
-	underline: "rounded-md",
-	soft: "rounded-lg",
-	outline: "rounded-lg",
-	enclosed: "rounded-t-lg",
-};
-
-// The sliding marker, measured from the active trigger.
-const INDICATOR: Record<TabsVariant, string> = {
-	pill: "top-1 bottom-1 rounded-full bg-primary",
-	segment: "top-0.5 bottom-0.5 rounded-md border border-border bg-background shadow-sm",
-	underline: "-bottom-px h-0.5 rounded-full bg-primary",
-	soft: "inset-y-0 rounded-lg bg-foreground/[0.06]",
-	outline: "inset-y-0 rounded-lg border border-border",
-	enclosed:
-		"-bottom-px top-0 rounded-t-lg border border-border border-b-background bg-background",
-};
-
-// Active label colour per variant; pill sits on the primary fill, the rest on a surface.
-const ACTIVE: Record<TabsVariant, string> = {
-	pill: "aria-selected:text-primary-foreground",
-	segment: "aria-selected:text-foreground",
-	underline: "aria-selected:text-foreground",
-	soft: "aria-selected:text-foreground",
-	outline: "aria-selected:text-foreground",
-	enclosed: "aria-selected:text-foreground",
-};
+export type { TabsSize, TabsVariant };
 
 const ARROW =
 	"absolute inset-y-0 z-20 inline-flex w-9 items-center justify-center text-foreground transition-opacity hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-0";
@@ -129,6 +77,10 @@ export function Tabs({
 
 export function TabsList({ className, children, ...props }: ComponentProps<"div">) {
 	const tabs = useTabs();
+	const { list: listClass, indicator: indicatorClass } = tabsFrame({
+		variant: tabs.variant,
+		size: tabs.size,
+	});
 	const root = useRef<HTMLDivElement>(null);
 	const viewport = useRef<HTMLDivElement>(null);
 	const list = useRef<HTMLDivElement>(null);
@@ -172,7 +124,7 @@ export function TabsList({ className, children, ...props }: ComponentProps<"div"
 		};
 	}, [measure]);
 
-	const indicator = rects[tabs.value] ?? { left: 0, width: 0 };
+	const indicatorRects = rects[tabs.value] ?? { left: 0, width: 0 };
 
 	/** Keep the selected tab clear of the arrows that overlay the faded edges. */
 	useEffect(() => {
@@ -275,23 +227,16 @@ export function TabsList({ className, children, ...props }: ComponentProps<"div"
 					role="tablist"
 					data-slot="tabs-list"
 					onKeyDown={onKeyDown}
-					className={cn(
-						"relative inline-flex w-max items-center",
-						LIST[tabs.variant],
-						className,
-					)}
+					className={cn(listClass(), className)}
 					{...props}
 				>
 					<span
 						aria-hidden
 						style={{
-							transform: `translateX(${indicator.left}px)`,
-							width: indicator.width,
+							transform: `translateX(${indicatorRects.left}px)`,
+							width: indicatorRects.width,
 						}}
-						className={cn(
-							"pointer-events-none absolute left-0 transition-[transform,scale,translate,width] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none",
-							INDICATOR[tabs.variant],
-						)}
+						className={indicatorClass()}
 					/>
 					{children}
 				</div>
@@ -328,6 +273,7 @@ export function TabsTrigger({
 }: ComponentProps<"button"> & { value: string }) {
 	const tabs = useTabs();
 	const active = tabs.value === value;
+	const { trigger } = tabsFrame({ variant: tabs.variant, size: tabs.size });
 
 	return (
 		<button
@@ -341,13 +287,7 @@ export function TabsTrigger({
 			aria-controls={`panel-${value}`}
 			tabIndex={active ? 0 : -1}
 			onClick={() => tabs.setValue(value)}
-			className={cn(
-				"relative z-10 inline-flex shrink-0 items-center justify-center whitespace-nowrap font-medium text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring",
-				ACTIVE[tabs.variant],
-				RADIUS[tabs.variant],
-				TRIGGER[tabs.size],
-				className,
-			)}
+			className={cn(trigger(), className)}
 			{...props}
 		>
 			{children}

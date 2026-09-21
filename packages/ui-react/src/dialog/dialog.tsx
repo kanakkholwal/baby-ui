@@ -13,6 +13,14 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import { cn } from "../lib/cn";
+import {
+	type DialogSize,
+	type DialogVariant,
+	dialogFrame,
+	dialogWidth,
+} from "./variants";
+
+export type { DialogSize, DialogVariant };
 
 /** The <dialog> itself fades with its backdrop; allow-discrete keeps it on screen to exit. */
 export const DIALOG_SURFACE = [
@@ -36,20 +44,12 @@ export const DIALOG_PANEL = [
 	"motion-reduce:transition-none",
 ].join(" ");
 
-export type DialogSize = "sm" | "md" | "lg" | "xl";
-
-const WIDTH: Record<DialogSize, string> = {
-	sm: "max-w-sm",
-	md: "max-w-lg",
-	lg: "max-w-2xl",
-	xl: "max-w-4xl",
-};
-
 type Ctx = {
 	open: boolean;
 	titleId: string;
 	descriptionId: string;
 	size: DialogSize;
+	variant: DialogVariant;
 	dismissOnBackdrop: boolean;
 	setOpen: (open: boolean) => void;
 	/** The rim slot below the surface; DialogFooter portals into it. */
@@ -70,6 +70,7 @@ export function Dialog({
 	open: openProp,
 	defaultOpen = false,
 	size = "md",
+	variant = "framed",
 	dismissOnBackdrop = true,
 	onOpenChange,
 }: {
@@ -77,6 +78,7 @@ export function Dialog({
 	open?: boolean;
 	defaultOpen?: boolean;
 	size?: DialogSize;
+	variant?: DialogVariant;
 	dismissOnBackdrop?: boolean;
 	onOpenChange?: (open: boolean) => void;
 }) {
@@ -97,6 +99,7 @@ export function Dialog({
 		() => ({
 			open,
 			size,
+			variant,
 			dismissOnBackdrop,
 			titleId: `${uid}-title`,
 			descriptionId: `${uid}-description`,
@@ -104,7 +107,7 @@ export function Dialog({
 			footerEl,
 			setFooterEl,
 		}),
-		[open, size, dismissOnBackdrop, uid, setOpen, footerEl],
+		[open, size, variant, dismissOnBackdrop, uid, setOpen, footerEl],
 	);
 
 	return <DialogCtx.Provider value={ctx}>{children}</DialogCtx.Provider>;
@@ -158,18 +161,29 @@ export function DialogContent({ className, children }: ComponentProps<"div">) {
 			<div
 				data-slot="dialog-content"
 				data-state={dialog.open ? "open" : "closed"}
+				data-variant={dialog.variant}
 				className={cn(
 					DIALOG_PANEL,
-					"w-[min(32rem,calc(100vw-2rem))] rounded-2xl border border-border bg-background p-1 shadow-2xl",
-					WIDTH[dialog.size],
+					dialogFrame({ variant: dialog.variant }).panel(),
+					"w-[min(32rem,calc(100vw-2rem))]",
+					dialogWidth({ size: dialog.size }),
 					className,
 				)}
 			>
-				{/* Inset frame: the body sits on a lighter surface, the footer in the rim below it. */}
-				<div className="relative overflow-hidden rounded-[11px] bg-card p-5">
-					{children}
-				</div>
-				<div ref={dialog.setFooterEl} className="empty:hidden" />
+				{dialog.variant === "framed" ? (
+					<>
+						{/* Inset frame: the body sits on a lighter surface, the footer in the rim below it. */}
+						<div className={cn(dialogFrame({ variant: dialog.variant }).body(), "p-5")}>
+							{children}
+						</div>
+						<div ref={dialog.setFooterEl} className="empty:hidden" />
+					</>
+				) : (
+					<>
+						{children}
+						<div ref={dialog.setFooterEl} className="empty:hidden" />
+					</>
+				)}
 			</div>
 		</dialog>
 	);
@@ -190,7 +204,7 @@ export function DialogFooter({ className, ...props }: ComponentProps<"div">) {
 	const node = (
 		<div
 			data-slot="dialog-footer"
-			className={cn("flex items-center justify-end gap-2 px-2 pt-2 pb-1", className)}
+			className={cn(dialogFrame({ variant: dialog.variant }).footer(), className)}
 			{...props}
 		/>
 	);

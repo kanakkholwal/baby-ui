@@ -72,9 +72,10 @@ export const radioGroup = defineComponent({
 			entry: "RadioGroup",
 			files: [
 				{ path: "radio-group/radio-group.tsx", type: "registry:ui" },
+				{ path: "radio-group/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 		svelte: {
 			entry: "RadioGroup",
@@ -82,9 +83,10 @@ export const radioGroup = defineComponent({
 				{ path: "radio-group/radio-group.svelte", type: "registry:ui" },
 				{ path: "radio-group/radio-group-item.svelte", type: "registry:ui" },
 				{ path: "radio-group/context.ts", type: "registry:ui" },
+				{ path: "radio-group/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 	},
 	keywords: ["radio", "form", "choice", "selection"],

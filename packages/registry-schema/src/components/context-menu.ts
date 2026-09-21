@@ -5,7 +5,7 @@ export const contextMenu = defineComponent({
 	name: "Context Menu",
 	description: "Right-click menu positioned at the pointer, clamped to the viewport.",
 	category: "base",
-	status: "beta",
+	status: "alpha",
 	props: [],
 	motion: {
 		springs: [],

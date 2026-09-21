@@ -1,9 +1,10 @@
 import { cn } from "../lib/cn";
+import { type SpinnerSize, spinnerIcon } from "./variants";
 
-const SIZE = { sm: "size-3.5", md: "size-5", lg: "size-8", xl: "size-12" };
+export type { SpinnerSize };
 
 export interface SpinnerProps {
-	size?: "sm" | "md" | "lg" | "xl";
+	size?: SpinnerSize;
 	label?: string;
 	className?: string;
 }
@@ -11,12 +12,7 @@ export interface SpinnerProps {
 export function Spinner({ size = "md", label = "Loading", className }: SpinnerProps) {
 	return (
 		<span role="status" aria-label={label} className={cn("inline-flex", className)}>
-			<svg
-				viewBox="0 0 16 16"
-				fill="none"
-				aria-hidden
-				className={cn("spinner", SIZE[size])}
-			>
+			<svg viewBox="0 0 16 16" fill="none" aria-hidden className={spinnerIcon({ size })}>
 				<circle
 					cx="8"
 					cy="8"

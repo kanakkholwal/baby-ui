@@ -22,6 +22,14 @@ export const alertDialog = defineComponent({
 			default: true,
 			control: { kind: "boolean" },
 		},
+		{
+			name: "variant",
+			type: '"default" | "framed"',
+			description:
+				"`framed` insets the body in the same rim as Dialog. `default` is the flat shadcn/ui surface.",
+			default: '"framed"',
+			control: { kind: "select", options: ["default", "framed"] },
+		},
 	],
 	motion: {
 		springs: [],
@@ -37,6 +45,7 @@ export const alertDialog = defineComponent({
 			"role=alertdialog, so assistive tech announces it as an interruption rather than a passive dialog.",
 			"Focus lands on cancel, never on the destructive action. A confirmation that focuses Delete turns a reflexive Enter into data loss.",
 			"aria-describedby points at the consequence, so it is read with the title.",
+			'`variant="default"` renders a single flat surface, matching the shadcn/ui baseline.',
 			"Part names and data-slot values match shadcn/ui, so this replaces an existing alert dialog without touching call sites.",
 		],
 	},
@@ -54,6 +63,8 @@ export const alertDialog = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge"],
+			// Reuses Dialog's DIALOG_PANEL/DIALOG_SURFACE and DialogVariant type.
+			registryDependencies: ["dialog"],
 		},
 		svelte: {
 			entry: "AlertDialog",
@@ -71,6 +82,7 @@ export const alertDialog = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge"],
+			registryDependencies: ["dialog"],
 		},
 	},
 	keywords: ["alert", "dialog"],

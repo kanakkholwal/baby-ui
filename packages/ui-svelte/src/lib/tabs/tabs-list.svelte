@@ -2,7 +2,8 @@
 import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 import { cn } from "../lib/cn";
-import { getTabs, TABS_INDICATOR, TABS_LIST } from "./context";
+import { getTabs } from "./context";
+import { tabsFrame } from "./variants";
 
 let {
 	children,
@@ -11,6 +12,7 @@ let {
 }: { children?: Snippet; class?: string } & HTMLAttributes<HTMLDivElement> = $props();
 
 const tabs = getTabs();
+const frame = $derived(tabsFrame({ variant: tabs.variant, size: tabs.size }));
 
 let root = $state<HTMLDivElement>();
 let viewport = $state<HTMLDivElement>();
@@ -151,20 +153,13 @@ const ARROW =
 			role="tablist"
 			data-slot="tabs-list"
 			{onkeydown}
-			class={cn(
-				"relative inline-flex w-max items-center",
-				TABS_LIST[tabs.variant],
-				classProp,
-			)}
+			class={cn(frame.list(), classProp)}
 		>
 			<span
 				aria-hidden="true"
 				style:transform="translateX({indicator.left}px)"
 				style:width="{indicator.width}px"
-				class={cn(
-					"pointer-events-none absolute left-0 transition-[transform,scale,translate,width] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none",
-					TABS_INDICATOR[tabs.variant],
-				)}
+				class={frame.indicator()}
 			></span>
 
 			{@render children?.()}

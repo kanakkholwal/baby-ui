@@ -23,6 +23,14 @@ export const dialog = defineComponent({
 			control: { kind: "select", options: ["sm", "md", "lg", "xl"] },
 		},
 		{
+			name: "variant",
+			type: '"default" | "framed"',
+			description:
+				"`framed` insets the body in a rim: a thin bg-background border around a bg-card surface. `default` is the flat shadcn/ui surface, for dropping into an existing project.",
+			default: '"framed"',
+			control: { kind: "select", options: ["default", "framed"] },
+		},
+		{
 			name: "dismissOnBackdrop",
 			type: "boolean",
 			description: "Close when the backdrop is clicked.",
@@ -47,6 +55,7 @@ export const dialog = defineComponent({
 		notes: [
 			"Rendered with the native dialog element, so the top layer, the backdrop and inertness of the rest of the page come from the browser rather than a focus-trap library.",
 			"DialogTitle and DialogDescription own the ids that the dialog is labelled and described by, so the wiring cannot drift.",
+			'`variant="default"` renders a single flat surface (the DialogFooter padding moves inline with it), matching the shadcn/ui baseline exactly.',
 			"Part names and data-slot values match shadcn/ui, so this replaces an existing dialog without touching call sites.",
 		],
 	},
@@ -61,9 +70,10 @@ export const dialog = defineComponent({
 			entry: "Dialog",
 			files: [
 				{ path: "dialog/dialog.tsx", type: "registry:ui" },
+				{ path: "dialog/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 		svelte: {
 			entry: "Dialog",
@@ -77,9 +87,10 @@ export const dialog = defineComponent({
 				{ path: "dialog/dialog-footer.svelte", type: "registry:ui" },
 				{ path: "dialog/dialog-close.svelte", type: "registry:ui" },
 				{ path: "dialog/context.ts", type: "registry:ui" },
+				{ path: "dialog/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 	},
 	keywords: ["dialog", "modal"],

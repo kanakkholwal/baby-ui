@@ -40,6 +40,7 @@ export { default as CardDescription } from "./card/card-description.svelte";
 export { default as CardFooter } from "./card/card-footer.svelte";
 export { default as CardHeader } from "./card/card-header.svelte";
 export { default as CardTitle } from "./card/card-title.svelte";
+export type { CardVariant } from "./card/variants";
 export { default as Checkbox } from "./checkbox/checkbox.svelte";
 export { default as CodeBlock } from "./code-block/code-block.svelte";
 export { default as Collapsible } from "./collapsible/collapsible.svelte";
@@ -66,6 +67,7 @@ export { default as ContextMenuSeparator } from "./context-menu/context-menu-sep
 export { default as ContextMenuTrigger } from "./context-menu/context-menu-trigger.svelte";
 export { default as Conversation } from "./conversation/conversation.svelte";
 export { default as CopyButton } from "./copy-button/copy-button.svelte";
+export type { DialogSize, DialogVariant } from "./dialog/context";
 export { default as Dialog } from "./dialog/dialog.svelte";
 export { default as DialogClose } from "./dialog/dialog-close.svelte";
 export { default as DialogContent } from "./dialog/dialog-content.svelte";
@@ -126,6 +128,7 @@ export { default as Progress } from "./progress/progress.svelte";
 export { default as Question, type QuestionOption } from "./question/question.svelte";
 export { default as RadioGroup } from "./radio-group/radio-group.svelte";
 export { default as RadioGroupItem } from "./radio-group/radio-group-item.svelte";
+export type { RadioSize, RadioVariant } from "./radio-group/variants";
 export { default as Reasoning } from "./reasoning/reasoning.svelte";
 export {
 	default as ReorderList,
@@ -149,7 +152,9 @@ export { default as SheetFooter } from "./sheet/sheet-footer.svelte";
 export { default as SheetHeader } from "./sheet/sheet-header.svelte";
 export { default as SheetTitle } from "./sheet/sheet-title.svelte";
 export { default as SheetTrigger } from "./sheet/sheet-trigger.svelte";
+export type { SheetSide } from "./sheet/variants";
 export { default as Shortcut } from "./shortcut/shortcut.svelte";
+export type { ShortcutSize, ShortcutVariant } from "./shortcut/variants";
 export { default as ShowMore } from "./show-more/show-more.svelte";
 export { default as Skeleton } from "./skeleton/skeleton.svelte";
 export { default as Slider } from "./slider/slider.svelte";
@@ -173,7 +178,5 @@ export { default as Tooltip } from "./tooltip/tooltip.svelte";
 export { default as TooltipContent } from "./tooltip/tooltip-content.svelte";
 export { default as TooltipProvider } from "./tooltip/tooltip-provider.svelte";
 export { default as TooltipTrigger } from "./tooltip/tooltip-trigger.svelte";
-export {
-	default as Typography,
-	type TypographyVariant,
-} from "./typography/typography.svelte";
+export { default as Typography } from "./typography/typography.svelte";
+export type { TypographyVariant } from "./typography/variants";

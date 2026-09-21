@@ -1,4 +1,4 @@
-import { tv } from "tailwind-variants";
+import { tv, type VariantProps } from "tailwind-variants";
 
 export const badge = tv({
 	base: "inline-flex shrink-0 items-center gap-1.5 rounded-md border font-medium whitespace-nowrap transition-colors duration-150",
@@ -24,5 +24,5 @@ export const badge = tv({
 	defaultVariants: { variant: "secondary", size: "md" },
 });
 
-export type BadgeVariant = keyof typeof badge.variants.variant;
-export type BadgeSize = keyof typeof badge.variants.size;
+export type BadgeVariant = NonNullable<VariantProps<typeof badge>["variant"]>;
+export type BadgeSize = NonNullable<VariantProps<typeof badge>["size"]>;

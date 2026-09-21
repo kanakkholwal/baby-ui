@@ -21,6 +21,7 @@ import {
 	CardFooter,
 	CardHeader,
 	CardTitle,
+	type CardVariant,
 	Checkbox,
 	Input,
 	Label,
@@ -96,7 +97,7 @@ export function CardDemo({ props }: { props: Props }) {
 	return (
 		<Card
 			interactive={props.interactive !== false}
-			variant={(props.variant as "default" | "framed") ?? "default"}
+			variant={(props.variant as CardVariant) ?? "default"}
 			className="w-[min(28rem,calc(100vw-4rem))]"
 		>
 			<CardHeader>

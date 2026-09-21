@@ -1,12 +1,14 @@
 import { createContext, type Snippet } from "svelte";
+import type { DialogSize, DialogVariant } from "./variants";
 
-export type DialogSize = "sm" | "md" | "lg" | "xl";
+export type { DialogSize, DialogVariant };
 
 export type DialogContext = {
 	readonly open: boolean;
 	readonly titleId: string;
 	readonly descriptionId: string;
 	readonly size: DialogSize;
+	readonly variant: DialogVariant;
 	readonly dismissOnBackdrop: boolean;
 	setOpen: (open: boolean) => void;
 	/** The footer hoists itself here so it can sit in the frame rim below the surface. */
@@ -14,13 +16,6 @@ export type DialogContext = {
 };
 
 export const [getDialog, setDialog] = createContext<DialogContext>();
-
-export const DIALOG_WIDTH: Record<DialogSize, string> = {
-	sm: "max-w-sm",
-	md: "max-w-lg",
-	lg: "max-w-2xl",
-	xl: "max-w-4xl",
-};
 
 /** The <dialog> itself fades with its backdrop; allow-discrete keeps it on screen to exit. */
 export const DIALOG_SURFACE = [

@@ -1,17 +1,16 @@
 <script lang="ts">
 import { cn } from "../lib/cn";
+import { type SpinnerSize, spinnerIcon } from "./variants";
 
 let {
 	size = "md",
 	label = "Loading",
 	class: classProp,
-}: { size?: "sm" | "md" | "lg" | "xl"; label?: string; class?: string } = $props();
-
-const SIZE = { sm: "size-3.5", md: "size-5", lg: "size-8", xl: "size-12" };
+}: { size?: SpinnerSize; label?: string; class?: string } = $props();
 </script>
 
 <span role="status" aria-label={label} class={cn("inline-flex", classProp)}>
-	<svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class={cn("spinner", SIZE[size])}>
+	<svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class={spinnerIcon({ size })}>
 		<circle cx="8" cy="8" r="6.2" stroke="currentColor" stroke-width="1.8" opacity="0.22" />
 		<path d="M14.2 8A6.2 6.2 0 0 0 8 1.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
 	</svg>

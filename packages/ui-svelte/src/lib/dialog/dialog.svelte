@@ -1,16 +1,18 @@
 <script lang="ts">
 import type { Snippet } from "svelte";
-import { type DialogSize, setDialog } from "./context";
+import { type DialogSize, type DialogVariant, setDialog } from "./context";
 
 let {
 	children,
 	open = $bindable(false),
 	size = "md",
+	variant = "framed",
 	dismissOnBackdrop = true,
 }: {
 	children?: Snippet;
 	open?: boolean;
 	size?: DialogSize;
+	variant?: DialogVariant;
 	dismissOnBackdrop?: boolean;
 } = $props();
 
@@ -23,6 +25,9 @@ setDialog({
 	},
 	get size() {
 		return size;
+	},
+	get variant() {
+		return variant;
 	},
 	get dismissOnBackdrop() {
 		return dismissOnBackdrop;

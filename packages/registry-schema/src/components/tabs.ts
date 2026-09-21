@@ -69,9 +69,10 @@ export const tabs = defineComponent({
 			entry: "Tabs",
 			files: [
 				{ path: "tabs/tabs.tsx", type: "registry:ui" },
+				{ path: "tabs/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 		svelte: {
 			entry: "Tabs",
@@ -81,9 +82,10 @@ export const tabs = defineComponent({
 				{ path: "tabs/tabs-trigger.svelte", type: "registry:ui" },
 				{ path: "tabs/tabs-content.svelte", type: "registry:ui" },
 				{ path: "tabs/context.ts", type: "registry:ui" },
+				{ path: "tabs/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 	},
 	keywords: ["tabs", "navigation", "segmented"],

@@ -1,16 +1,14 @@
 <script lang="ts">
 import type { HTMLTextareaAttributes } from "svelte/elements";
 import { cn } from "../lib/cn";
-
-type Size = "sm" | "md" | "lg" | "xl";
-type Variant = "outline" | "soft";
+import { type TextareaSize, type TextareaVariant, textarea } from "./variants";
 
 type Props = {
 	value?: string;
 	class?: string;
 	rows?: number;
-	size?: Size;
-	variant?: Variant;
+	size?: TextareaSize;
+	variant?: TextareaVariant;
 	autoGrow?: boolean;
 	maxRows?: number;
 	invalid?: boolean;
@@ -36,18 +34,6 @@ let {
 	...rest
 }: Props = $props();
 
-const SIZE: Record<Size, string> = {
-	sm: "px-2.5 py-1.5 text-xs",
-	md: "px-3 py-2 text-sm",
-	lg: "px-3.5 py-2.5 text-sm",
-	xl: "px-4 py-3 text-base",
-};
-
-const VARIANT: Record<Variant, string> = {
-	outline: "border-input bg-background",
-	soft: "border-transparent bg-card",
-};
-
 const id = $props.id();
 const wrapped = $derived(Boolean(label || description || showCount));
 let el = $state<HTMLTextAreaElement>();
@@ -72,18 +58,7 @@ $effect(() => {
 		{rows}
 		aria-invalid={invalid || undefined}
 		aria-describedby={description ? `${id}-description` : undefined}
-		class={cn(
-			"min-h-16 w-full rounded-lg border text-foreground leading-relaxed",
-			"placeholder:text-muted-foreground",
-			"transition-[box-shadow,border-color] duration-[var(--duration-press)] ease-[var(--ease-out)]",
-			"outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring",
-			"disabled:cursor-not-allowed disabled:opacity-50",
-			"aria-[invalid=true]:border-[var(--destructive)] aria-[invalid=true]:focus-visible:ring-[color-mix(in_oklch,var(--destructive)_40%,transparent)]",
-			autoGrow ? "resize-none overflow-y-hidden" : "resize-y",
-			VARIANT[variant],
-			SIZE[size],
-			classProp,
-		)}
+		class={cn(textarea({ size, variant, autoGrow }), classProp)}
 	></textarea>
 {/snippet}
 

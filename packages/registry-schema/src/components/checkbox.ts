@@ -75,17 +75,19 @@ export const checkbox = defineComponent({
 			entry: "Checkbox",
 			files: [
 				{ path: "checkbox/checkbox.tsx", type: "registry:ui" },
+				{ path: "checkbox/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 		svelte: {
 			entry: "Checkbox",
 			files: [
 				{ path: "checkbox/checkbox.svelte", type: "registry:ui" },
+				{ path: "checkbox/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 	},
 	keywords: ["checkbox", "form", "toggle", "selection"],

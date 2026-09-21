@@ -1,7 +1,8 @@
 <script lang="ts">
 import type { Snippet } from "svelte";
 import { cn } from "../lib/cn";
-import { getRadioGroup, RADIO_DOT, RADIO_RING, RADIO_TEXT } from "./context";
+import { getRadioGroup } from "./context";
+import { radioGroup } from "./variants";
 
 let {
 	children,
@@ -23,6 +24,7 @@ const group = getRadioGroup();
 const id = $props.id();
 const checked = $derived(group.value === value);
 const off = $derived(disabled || group.disabled);
+const frame = $derived(radioGroup({ variant: group.variant, size: group.size }));
 
 function onkeydown(event: KeyboardEvent) {
 	const forward = event.key === "ArrowDown" || event.key === "ArrowRight";
@@ -33,17 +35,7 @@ function onkeydown(event: KeyboardEvent) {
 }
 </script>
 
-<label
-	for={id}
-	data-slot="radio-group-item"
-	class={cn(
-		"inline-flex cursor-pointer items-start gap-2.5 text-foreground",
-		group.variant === "card" &&
-			"rounded-xl border border-border bg-card px-3.5 py-3 transition-colors hover:border-border-strong has-checked:border-primary",
-		RADIO_TEXT[group.size],
-		classProp,
-	)}
->
+<label for={id} data-slot="radio-group-item" class={cn(frame.label(), classProp)}>
 	<input
 		{id}
 		{value}
@@ -56,15 +48,8 @@ function onkeydown(event: KeyboardEvent) {
 		{onkeydown}
 		class="peer sr-only"
 	/>
-	<span
-		aria-hidden="true"
-		class={cn(
-			"mt-0.5 grid shrink-0 place-items-center rounded-full border-2 border-muted-foreground/50 bg-background transition-colors peer-checked:border-primary peer-focus-visible:ring-2 peer-focus-visible:ring-ring peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-background",
-			RADIO_RING[group.size],
-		)}
-	>
-		<span data-on={checked} class={cn("radio-dot rounded-full bg-primary", RADIO_DOT[group.size])}
-		></span>
+	<span aria-hidden="true" class={frame.ring()}>
+		<span data-on={checked} class={frame.dot()}></span>
 	</span>
 	<span class="min-w-0">
 		{#if children}

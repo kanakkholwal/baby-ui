@@ -13,7 +13,7 @@ import {
 } from "react";
 import { DIALOG_SURFACE } from "../dialog/dialog";
 import { cn } from "../lib/cn";
-import { Shortcut } from "../shortcut/shortcut";
+import { commandFrame, type DialogVariant } from "./variants";
 
 /** Same choreography as a dialog panel, but the palette drops from above its shortcut. */
 const COMMAND_PANEL = [
@@ -69,6 +69,9 @@ const CommandHeaderCtx = createContext<((header: CommandHeaderContent) => void) 
 	null,
 );
 
+/** `framed` outside any CommandDialog too, since a bare Command is still its own surface. */
+const CommandVariantCtx = createContext<DialogVariant>("framed");
+
 export function Command({ className, children, ...props }: ComponentProps<"div">) {
 	const listId = useId();
 	const [query, setQueryState] = useState("");
@@ -76,6 +79,7 @@ export function Command({ className, children, ...props }: ComponentProps<"div">
 	const [resultCount, setResultCount] = useState(0);
 	const listEl = useRef<HTMLElement | null>(null);
 	const dialogOpen = useContext(CommandDialogCtx);
+	const variant = useContext(CommandVariantCtx);
 
 	const options = useCallback(
 		() => [...(listEl.current?.querySelectorAll<HTMLElement>("[role='option']") ?? [])],
@@ -181,8 +185,10 @@ export function Command({ className, children, ...props }: ComponentProps<"div">
 		<CommandCtx.Provider value={ctx}>
 			<div
 				data-slot="command"
+				data-variant={variant}
 				className={cn(
-					"relative flex min-h-0 flex-col overflow-hidden rounded-[11px] bg-card text-foreground",
+					"relative flex min-h-0 flex-col overflow-hidden text-foreground",
+					commandFrame({ variant }).body(),
 					className,
 				)}
 				{...props}
@@ -197,12 +203,14 @@ export function CommandDialog({
 	className,
 	open,
 	label = "Command palette",
+	variant = "framed",
 	children,
 	onOpenChange,
 }: {
 	className?: string;
 	open: boolean;
 	label?: string;
+	variant?: DialogVariant;
 	children?: ReactNode;
 	onOpenChange: (open: boolean) => void;
 }) {
@@ -238,9 +246,11 @@ export function CommandDialog({
 			<div
 				data-slot="command-dialog"
 				data-state={open ? "open" : "closed"}
+				data-variant={variant}
 				className={cn(
 					COMMAND_PANEL,
-					"flex max-h-[min(30rem,70dvh)] w-[min(36rem,calc(100vw-2rem))] flex-col overflow-hidden rounded-2xl border border-border bg-background p-1 shadow-2xl",
+					commandFrame({ variant }).panel(),
+					"flex max-h-[min(30rem,70dvh)] w-[min(36rem,calc(100vw-2rem))] flex-col overflow-hidden",
 					className,
 				)}
 			>
@@ -248,22 +258,23 @@ export function CommandDialog({
 				{header ? (
 					<div
 						data-slot="command-header"
-						className={cn(
-							"flex items-center justify-between gap-3 px-3.5 pt-1.5 pb-2",
-							header.className,
-						)}
+						className={cn(commandFrame({ variant }).header(), header.className)}
 					>
 						<p className="font-medium text-foreground text-sm">{header.children}</p>
 						<span className="flex shrink-0 items-center gap-1.5 text-muted-foreground text-xs">
-							<Shortcut shortcut="esc" size="sm" />
+							<kbd className="inline-flex h-4 min-w-4 items-center justify-center rounded border border-border bg-card px-1 font-medium font-sans text-[10px]">
+								esc
+							</kbd>
 							close
 						</span>
 					</div>
 				) : null}
 				<CommandDialogCtx.Provider value={open}>
-					<CommandHeaderCtx.Provider value={setHeader}>
-						{children}
-					</CommandHeaderCtx.Provider>
+					<CommandVariantCtx.Provider value={variant}>
+						<CommandHeaderCtx.Provider value={setHeader}>
+							{children}
+						</CommandHeaderCtx.Provider>
+					</CommandVariantCtx.Provider>
 				</CommandDialogCtx.Provider>
 			</div>
 		</dialog>

@@ -28,6 +28,7 @@ import {
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
+	type DialogVariant,
 	Drawer,
 	DrawerClose,
 	DrawerContent,
@@ -74,6 +75,7 @@ export function DialogDemo({ props }: { props: Props }) {
 			open={open}
 			onOpenChange={setOpen}
 			size={(props.size as "sm" | "md" | "lg" | "xl") ?? "md"}
+			variant={(props.variant as DialogVariant) ?? "framed"}
 			dismissOnBackdrop={props.dismissOnBackdrop !== false}
 		>
 			<DialogTrigger className={BTN}>Add domain</DialogTrigger>
@@ -126,7 +128,7 @@ export function AlertDialogDemo({ props }: { props: Props }) {
 	const [done, setDone] = useState(false);
 	return (
 		<div className="flex flex-col items-center gap-3">
-			<AlertDialog>
+			<AlertDialog variant={(props.variant as DialogVariant) ?? "framed"}>
 				<AlertDialogTrigger className={BTN}>Delete project</AlertDialogTrigger>
 				<AlertDialogContent>
 					<AlertDialogHeader>
@@ -318,7 +320,11 @@ export function CommandDemo({ props }: { props: Props }) {
 				Open palette
 			</button>
 			{last ? <p className="text-muted-foreground text-xs">Ran: {last}</p> : null}
-			<CommandDialog open={open} onOpenChange={setOpen}>
+			<CommandDialog
+				open={open}
+				onOpenChange={setOpen}
+				variant={(props.variant as DialogVariant) ?? "framed"}
+			>
 				<Command>
 					<CommandHeader>Command</CommandHeader>
 					<CommandInput

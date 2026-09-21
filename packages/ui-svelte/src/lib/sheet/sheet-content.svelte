@@ -1,14 +1,8 @@
 <script lang="ts">
 import type { Snippet } from "svelte";
 import { cn } from "../lib/cn";
-import {
-	getSheet,
-	SHEET_OVERLAY,
-	SHEET_PANEL,
-	SHEET_SIDE,
-	SHEET_VEIL,
-	type SheetSide,
-} from "./context";
+import { getSheet, SHEET_OVERLAY, SHEET_VEIL, type SheetSide } from "./context";
+import { sheetPanel } from "./variants";
 
 let {
 	children,
@@ -51,7 +45,7 @@ $effect(() => {
 			data-slot="sheet-content"
 			data-side={side}
 			data-state={sheet.open ? "open" : "closed"}
-			class={cn(SHEET_PANEL, SHEET_SIDE[side], classProp)}
+			class={cn(sheetPanel({ side }), classProp)}
 		>
 			{@render children?.()}
 		</div>

@@ -5,7 +5,7 @@ export const command = defineComponent({
 	name: "Command Palette",
 	description: "Searchable action list driven entirely from the keyboard.",
 	category: "base",
-	status: "beta",
+	status: "alpha",
 	props: [
 		{
 			name: "open",
@@ -27,6 +27,14 @@ export const command = defineComponent({
 			description: "Shown when nothing matches.",
 			default: "No results",
 			control: { kind: "text" },
+		},
+		{
+			name: "variant",
+			type: '"default" | "framed"',
+			description:
+				"`framed` insets the search input and results in the same rim as Dialog. `default` is a single flat surface, matching shadcn/ui's cmdk-based Command.",
+			default: '"framed"',
+			control: { kind: "select", options: ["default", "framed"] },
 		},
 	],
 	motion: {
@@ -52,7 +60,7 @@ export const command = defineComponent({
 			"The result count next to the input and a debounced live region both read from the same filtered count, so a screen reader and a sighted user see the same number.",
 			"Reopening always starts from an empty search, even though the panel stays mounted through the close transition.",
 			"Part names and data-slot values match shadcn/ui, so this replaces an existing command without touching call sites.",
-			"CommandHeader hoists into the dialog's rim (the same inset-frame treatment as Dialog and the new Card `framed` variant); the card below it holds the search input and results.",
+			'CommandHeader hoists into the dialog\'s rim (the same inset-frame treatment as Dialog and the Card `framed` variant); the card below it holds the search input and results. The "esc" cap is literal text, not the Shortcut glyph, since a spoken-word key name reads more clearly at this size.',
 		],
 	},
 	licenseOrigin: {
@@ -66,11 +74,12 @@ export const command = defineComponent({
 			entry: "Command",
 			files: [
 				{ path: "command/command.tsx", type: "registry:ui" },
+				{ path: "command/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
-			// CommandHeader's "esc close" hint is our own Shortcut, fetched as its own item.
-			registryDependencies: ["shortcut"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			// Reuses Dialog's DIALOG_SURFACE/DIALOG_PANEL and DialogVariant type.
+			registryDependencies: ["dialog"],
 		},
 		svelte: {
 			entry: "Command",
@@ -86,10 +95,12 @@ export const command = defineComponent({
 				{ path: "command/command-shortcut.svelte", type: "registry:ui" },
 				{ path: "command/command-separator.svelte", type: "registry:ui" },
 				{ path: "command/context.ts", type: "registry:ui" },
+				{ path: "command/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
-			registryDependencies: ["shortcut"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			// Reuses Dialog's DIALOG_SURFACE and DialogVariant type.
+			registryDependencies: ["dialog"],
 		},
 	},
 	keywords: ["command"],

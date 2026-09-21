@@ -1,4 +1,4 @@
-import { tv } from "tailwind-variants";
+import { tv, type VariantProps } from "tailwind-variants";
 
 export const input = tv({
 	base: [
@@ -20,4 +20,4 @@ export const input = tv({
 	defaultVariants: { size: "md" },
 });
 
-export type InputSize = keyof typeof input.variants.size;
+export type InputSize = NonNullable<VariantProps<typeof input>["size"]>;

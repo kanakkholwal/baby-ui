@@ -5,7 +5,7 @@ export const reorderList = defineComponent({
 	name: "Reorder List",
 	description: "Draggable list where the keyboard path is the primary one.",
 	category: "base",
-	status: "beta",
+	status: "alpha",
 	props: [
 		{
 			name: "items",

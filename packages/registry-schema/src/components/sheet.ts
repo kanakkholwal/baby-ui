@@ -50,9 +50,10 @@ export const sheet = defineComponent({
 			entry: "Sheet",
 			files: [
 				{ path: "sheet/sheet.tsx", type: "registry:ui" },
+				{ path: "sheet/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 		svelte: {
 			entry: "Sheet",
@@ -66,9 +67,10 @@ export const sheet = defineComponent({
 				{ path: "sheet/sheet-footer.svelte", type: "registry:ui" },
 				{ path: "sheet/sheet-close.svelte", type: "registry:ui" },
 				{ path: "sheet/context.ts", type: "registry:ui" },
+				{ path: "sheet/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 	},
 	keywords: ["sheet"],

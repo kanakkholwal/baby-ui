@@ -1,11 +1,12 @@
 import { cn } from "../lib/cn";
+import { type ProgressSize, progressTrack } from "./variants";
 
-const HEIGHT = { sm: "h-1", md: "h-2", lg: "h-3", xl: "h-4" };
+export type { ProgressSize };
 
 export interface ProgressProps {
 	value?: number;
 	indeterminate?: boolean;
-	size?: "sm" | "md" | "lg" | "xl";
+	size?: ProgressSize;
 	label?: string;
 	className?: string;
 }
@@ -26,11 +27,7 @@ export function Progress({
 			aria-valuemin={0}
 			aria-valuemax={100}
 			aria-valuenow={indeterminate ? undefined : clamped}
-			className={cn(
-				"w-full overflow-hidden rounded-full bg-input",
-				HEIGHT[size],
-				className,
-			)}
+			className={cn(progressTrack({ size }), className)}
 		>
 			{indeterminate ? (
 				<div className="progress-sweep h-full w-2/5 rounded-full bg-primary" />

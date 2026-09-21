@@ -1,6 +1,7 @@
 <script lang="ts">
 import type { Snippet } from "svelte";
 import { DIALOG_PANEL, DIALOG_SURFACE } from "../dialog/context";
+import { dialogFrame } from "../dialog/variants";
 import { cn } from "../lib/cn";
 import { getAlertDialog } from "./context";
 
@@ -32,22 +33,36 @@ $effect(() => {
 	<div
 		data-slot="alert-dialog-content"
 		data-state={dialog.open ? "open" : "closed"}
+		data-variant={dialog.variant}
 		class={cn(
 			DIALOG_PANEL,
-			"w-[min(26rem,calc(100vw-2rem))] rounded-2xl border border-border bg-background p-1 shadow-2xl",
+			dialogFrame({ variant: dialog.variant }).panel(),
+			"w-[min(26rem,calc(100vw-2rem))]",
 			classProp,
 		)}
 	>
-		<div class="relative overflow-hidden rounded-[11px] bg-card p-5">
-			{@render children?.()}
-		</div>
-		{#if dialog.footer}
-			<div
-				data-slot="alert-dialog-footer"
-				class={cn("flex items-center justify-end gap-2 px-2 pt-2 pb-1", dialog.footer.class)}
-			>
-				{@render dialog.footer.children?.()}
+		{#if dialog.variant === "framed"}
+			<div class={cn(dialogFrame({ variant: dialog.variant }).body(), "p-5")}>
+				{@render children?.()}
 			</div>
+			{#if dialog.footer}
+				<div
+					data-slot="alert-dialog-footer"
+					class={cn(dialogFrame({ variant: dialog.variant }).footer(), dialog.footer.class)}
+				>
+					{@render dialog.footer.children?.()}
+				</div>
+			{/if}
+		{:else}
+			{@render children?.()}
+			{#if dialog.footer}
+				<div
+					data-slot="alert-dialog-footer"
+					class={cn(dialogFrame({ variant: dialog.variant }).footer(), dialog.footer.class)}
+				>
+					{@render dialog.footer.children?.()}
+				</div>
+			{/if}
 		{/if}
 	</div>
 </dialog>

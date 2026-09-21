@@ -55,9 +55,10 @@ export const avatar = defineComponent({
 			entry: "Avatar",
 			files: [
 				{ path: "avatar/avatar.tsx", type: "registry:ui" },
+				{ path: "avatar/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 		svelte: {
 			entry: "Avatar",
@@ -66,9 +67,10 @@ export const avatar = defineComponent({
 				{ path: "avatar/avatar-image.svelte", type: "registry:ui" },
 				{ path: "avatar/avatar-fallback.svelte", type: "registry:ui" },
 				{ path: "avatar/context.ts", type: "registry:ui" },
+				{ path: "avatar/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 	},
 	keywords: ["avatar", "profile", "user", "initials"],
