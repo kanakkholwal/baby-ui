@@ -14,6 +14,7 @@ import {
 import { buildThirdPartyLicenses } from "./licenses";
 import { buildLlmsTxt } from "./llms";
 import { buildThemeItems } from "./theme";
+import { buildThemeCss } from "./theme-css";
 import { jsPath, toJavaScript } from "./tojs";
 import { buildUsage, verifyUsage } from "./usage";
 import { verifyComponentDocs, verifySprings } from "./verify";
@@ -136,6 +137,15 @@ async function main() {
 		"utf8",
 	);
 	written.push("../src/lib/generated/usage.json");
+
+	const themeCssPath = resolve(REPO_ROOT, "apps/site/src/lib/generated/theme-css.json");
+	await writeFile(
+		themeCssPath,
+		`${JSON.stringify({ css: await buildThemeCss() })}
+`,
+		"utf8",
+	);
+	written.push("../src/lib/generated/theme-css.json");
 
 	const originsPath = resolve(REPO_ROOT, "apps/site/src/lib/generated/origins.json");
 	await mkdir(dirname(originsPath), { recursive: true });

@@ -12,7 +12,7 @@ export const command = defineComponent({
 			type: "boolean",
 			description: "Whether the palette is shown. Bindable.",
 			default: false,
-			control: { kind: "boolean" },
+			control: { kind: "none" },
 		},
 		{
 			name: "placeholder",

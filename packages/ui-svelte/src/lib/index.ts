@@ -1,5 +1,7 @@
 export { default as Accordion } from "./accordion/accordion.svelte";
+export { default as AccordionContent } from "./accordion/accordion-content.svelte";
 export { default as AccordionItem } from "./accordion/accordion-item.svelte";
+export { default as AccordionTrigger } from "./accordion/accordion-trigger.svelte";
 export { default as Alert } from "./alert/alert.svelte";
 export { default as AlertDescription } from "./alert/alert-description.svelte";
 export { default as AlertTitle } from "./alert/alert-title.svelte";

@@ -3,6 +3,9 @@
 import type { AlertVariant, BadgeSize, BadgeVariant, InputSize } from "@baby-ui/react";
 import {
 	Accordion,
+	AccordionContent,
+	AccordionItem,
+	AccordionTrigger,
 	Alert,
 	AlertDescription,
 	AlertTitle,
@@ -213,8 +216,12 @@ export function CheckboxDemo({ props }: { props: Props }) {
 				checked={checked}
 				onCheckedChange={setChecked}
 				disabled={Boolean(props.disabled)}
+				indeterminate={Boolean(props.indeterminate)}
+				size={(props.size as "sm" | "md" | "lg" | "xl") ?? "md"}
 				label={(props.label as string) || "Remember this grant"}
-				description="Skips the prompt for the next 30 days."
+				description={
+					(props.description as string) || "Skips the prompt for the next 30 days."
+				}
 			/>
 		</div>
 	);
@@ -351,13 +358,25 @@ const ACCORDION_ITEMS = [
 ];
 
 export function AccordionDemo({ props }: { props: Props }) {
+	const type = (props.type as "single" | "multiple") ?? "single";
+	const [value, setValue] = useState<string | string[]>("install");
+	// Switching modes changes the value's shape, so it is reseeded rather than coerced.
+	useEffect(() => setValue(type === "multiple" ? ["install"] : "install"), [type]);
 	return (
 		<div className="w-full max-w-md">
 			<Accordion
-				items={ACCORDION_ITEMS}
-				multiple={Boolean(props.multiple)}
+				type={type}
 				collapsible={props.collapsible !== false}
-			/>
+				value={value}
+				onValueChange={setValue}
+			>
+				{ACCORDION_ITEMS.map((item) => (
+					<AccordionItem key={item.id} value={item.id}>
+						<AccordionTrigger>{item.title}</AccordionTrigger>
+						<AccordionContent>{item.content}</AccordionContent>
+					</AccordionItem>
+				))}
+			</Accordion>
 		</div>
 	);
 }

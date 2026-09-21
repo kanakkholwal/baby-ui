@@ -1,7 +1,9 @@
 export {
 	Accordion,
-	type AccordionItemData,
+	AccordionContent,
+	AccordionItem,
 	type AccordionProps,
+	AccordionTrigger,
 } from "./accordion/accordion";
 export { Alert, AlertDescription, AlertTitle } from "./alert/alert";
 export type { AlertVariant } from "./alert/variants";

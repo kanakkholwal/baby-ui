@@ -13,7 +13,7 @@ export const sheet = defineComponent({
 			type: "boolean",
 			description: "Whether the sheet is shown. Bindable.",
 			default: false,
-			control: { kind: "boolean" },
+			control: { kind: "none" },
 		},
 		{
 			name: "side",

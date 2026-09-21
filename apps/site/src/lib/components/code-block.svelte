@@ -12,6 +12,7 @@ let {
 	filename,
 	panels,
 	maxHeight = "32rem",
+	collapsible = false,
 }: {
 	code?: string;
 	html?: string;
@@ -20,7 +21,14 @@ let {
 	/** Several sources in one frame, switched by tabs. Overrides code/html. */
 	panels?: Panel[];
 	maxHeight?: string;
+	/** Start folded to a preview height with an expand control, for long reference blocks. */
+	collapsible?: boolean;
 } = $props();
+
+let expanded = $state(false);
+let contentHeight = $state(0);
+// A tall block sweeping 3000px in 280ms reads as a snap; scale the time with the distance.
+const foldMs = $derived(Math.min(600, 200 + Math.max(0, contentHeight - 288) / 8));
 
 const all = $derived<Panel[]>(
 	panels ?? [{ id: "single", label: filename ?? lang, code, html, lang }],
@@ -82,6 +90,46 @@ const BODY =
 				{@html panel.html}
 			</div>
 		{/each}
+	{:else if collapsible}
+		<!-- max-height animates between two lengths, so the open end is the measured content. -->
+		<div
+			style:max-height={expanded ? `${contentHeight + 72}px` : "18rem"}
+			style:transition-duration="{foldMs}ms"
+			class={[
+				BODY,
+				"overflow-hidden transition-[max-height,padding] ease-[var(--ease-in-out)] motion-reduce:transition-none",
+				expanded && "pb-14",
+			]}
+		>
+			<div bind:clientHeight={contentHeight}>{@html html}</div>
+		</div>
+		<div
+			aria-hidden="true"
+			class={[
+				"pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background to-transparent transition-opacity duration-[var(--duration-overlay)]",
+				expanded ? "opacity-0" : "opacity-100",
+			]}
+		></div>
+		<button
+			type="button"
+			aria-expanded={expanded}
+			onclick={() => (expanded = !expanded)}
+			class="-translate-x-1/2 absolute bottom-3 left-1/2 inline-flex h-8 items-center gap-1.5 rounded-full border border-border bg-card px-3 font-medium text-foreground text-xs shadow-sm transition-colors hover:bg-foreground/[0.06]"
+		>
+			{expanded ? "Collapse" : "Expand code"}
+			<svg
+				viewBox="0 0 12 12"
+				fill="none"
+				aria-hidden="true"
+				class={[
+					"size-3 transition-[rotate] duration-[var(--duration-press)]",
+					expanded && "rotate-180",
+				]}
+			>
+				<path d="m3 4.5 3 3 3-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+			</svg>
+		</button>
+
 	{:else}
 		<div style:max-height={maxHeight} class={BODY}>
 			<!-- Shiki output, generated on the server from our own sources. -->

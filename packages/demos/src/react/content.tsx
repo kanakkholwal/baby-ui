@@ -103,13 +103,20 @@ export function TagInputDemo({ props }: { props: Props }) {
 
 export function ColorPickerDemo({ props }: { props: Props }) {
 	const [value, setValue] = useState("#7dd3fc");
+	const [format, setFormat] = useState<"hsv" | "hsl" | "rgb">("hsv");
 	useEffect(() => {
 		if (typeof props.value === "string") setValue(props.value);
 	}, [props.value]);
+	useEffect(
+		() => setFormat((props.format as "hsv" | "hsl" | "rgb") ?? "hsv"),
+		[props.format],
+	);
 	return (
 		<ColorPicker
 			value={value}
 			onValueChange={setValue}
+			format={format}
+			onFormatChange={setFormat}
 			label={(props.label as string) || "Accent"}
 		/>
 	);
@@ -129,6 +136,7 @@ export function ReorderListDemo({ props }: { props: Props }) {
 			<ReorderList
 				items={items}
 				onItemsChange={setItems}
+				disabled={Boolean(props.disabled)}
 				label={(props.label as string) || "Build steps"}
 			/>
 		</div>

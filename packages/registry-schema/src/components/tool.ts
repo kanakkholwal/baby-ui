@@ -38,7 +38,7 @@ export const tool = defineComponent({
 			type: "boolean",
 			description: "Start expanded.",
 			default: false,
-			control: { kind: "boolean" },
+			control: { kind: "none" },
 		},
 	],
 	motion: {

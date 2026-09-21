@@ -1,15 +1,13 @@
 ---
 title: Theming
-description: One set of CSS variables drives every component.
+description: CSS variables on :root, redefined under .dark. Components never name a colour.
 ---
 
-Colours, radii and motion are CSS variables on `:root`, with a `.dark` block for the ones
-that change. Components never name a colour, so they follow whatever theme the page has:
-your shadcn variables by default, or ours once you add the `theme` registry item.
+Components read shadcn's variable names, so they follow your theme. Add the `theme`
+registry item, or paste the base layer from [Installation](/docs/installation), to use
+this site's look instead.
 
 ## Primary colour
-
-Set the pair almost everything reads.
 
 ```css
 :root {
@@ -18,13 +16,17 @@ Set the pair almost everything reads.
 }
 ```
 
-The header's settings panel writes exactly these two variables, which is why every
-component on this site recolours at once.
+`--ring` derives from `--primary`, so focus follows the brand colour. The header's
+palette control writes exactly this pair.
+
+## Extra names
+
+Beyond shadcn's set, components use `--success`, `--warning`, `--border-strong`, `--neon`
+and `--violet`. `tokens` defines them; override them the same way.
 
 ## Dark mode
 
-Add `.dark` to `<html>` and set `color-scheme`, or form controls and scrollbars keep
-painting for a light page.
+Add `dark` to `<html>` and set `color-scheme`:
 
 ```js
 document.documentElement.classList.toggle("dark", dark);
@@ -33,13 +35,14 @@ document.documentElement.style.colorScheme = dark ? "dark" : "light";
 
 ## Motion
 
-Durations and easings are variables too. `prefers-reduced-motion` shortens them and
-removes travel; fades stay, because they carry the state change.
+Durations and easings are variables too. Reduced motion shortens them and removes travel;
+fades stay.
 
 ```css
 --duration-press: 140ms;
 --duration-dropdown: 200ms;
 --duration-overlay: 280ms;
+--duration-exit: 120ms;
 --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 ```
 

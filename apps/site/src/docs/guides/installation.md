@@ -1,62 +1,150 @@
 ---
 title: Installation
-description: Add a component with the shadcn CLI, or copy the files by hand.
+description: From an empty folder to a rendered component, in React or Svelte.
 ---
 
-## Prerequisites
+Baby UI is a shadcn registry: the CLI copies source into your project, and you own it.
+New to shadcn? Follow every step. Already on shadcn/ui or shadcn-svelte? Skip to
+[Add a component](#add-a-component). Framework tabs follow the header; package manager
+tabs remember your choice.
 
-- Tailwind CSS v4.
-- React: a project set up with `npx shadcn@latest init`.
-- Svelte: a project set up with `npx shadcn-svelte@latest init`.
-
-`init` writes the `components.json` the CLI reads for paths and aliases. Nothing else is
-required: there is no package to install.
-
-## Add a component
-
-Point the CLI at the component's JSON.
+## 1. Create a project
 
 ```bash
-npx shadcn@latest add https://baby-ui.pages.dev/r/button.json
+# tab: Next.js
+# pm: dlx create-next-app@latest my-app --typescript --tailwind --eslint --app
 ```
 
 ```bash
-npx shadcn-svelte@latest add https://baby-ui.pages.dev/svelte/r/button.json
-```
-
-The CLI copies the source files into your `ui` folder, installs the npm dependencies the
-component needs, and pulls in `tokens` (below) the first time. Every component page has
-an Install tab with this command filled in for the framework and language you selected in
-the header.
-
-## Tokens
-
-Each component depends on a registry item named `tokens`, so the CLI adds it for you. It
-writes into your global stylesheet:
-
-- the motion variables (`--duration-*`, `--ease-*`, `--press-scale` and friends) and their
-  reduced-motion overrides,
-- the keyframes and helper classes components reference,
-- colour names shadcn does not define (`--success`, `--warning`, `--border-strong`,
-  `--neon`, `--violet`).
-
-It never touches `--background`, `--primary` or any other variable your shadcn theme
-already owns, so an installed component takes on your palette.
-
-## Theme
-
-To adopt the Baby UI look wholesale, add `theme`. It replaces the shadcn palette, radius
-and type stack in both colour modes.
-
-```bash
-npx shadcn@latest add https://baby-ui.pages.dev/r/theme.json
+# tab: Vite
+# pm: create vite@latest my-app --template react-ts
 ```
 
 ```bash
-npx shadcn-svelte@latest add https://baby-ui.pages.dev/svelte/r/theme.json
+# tab: SvelteKit
+# pm: dlx sv@latest create my-app
 ```
 
-Dark mode is the `.dark` class on `<html>`, the same convention shadcn uses.
+Pick TypeScript when asked. JavaScript works too; choose it in the header and every
+command switches to the JS route.
+
+## 2. Install Tailwind CSS v4
+
+Next.js and `sv create` (Tailwind add-on) already did this. For Vite:
+
+```bash
+# tab: Install
+# pm: add tailwindcss @tailwindcss/vite
+```
+
+```ts
+// tab: vite.config.ts
+import tailwindcss from "@tailwindcss/vite";
+import react from "@vitejs/plugin-react";
+import { defineConfig } from "vite";
+
+export default defineConfig({
+	plugins: [react(), tailwindcss()],
+});
+```
+
+```css
+// tab: app.css
+@import "tailwindcss";
+```
+
+## 3. Initialise shadcn
+
+Writes `components.json` (where `ui`, `lib` and your global CSS live) and the base theme
+variables.
+
+```bash
+# tab: React
+# pm: dlx shadcn@latest init
+```
+
+```bash
+# tab: Svelte
+# pm: dlx shadcn-svelte@latest init
+```
+
+Accept the defaults; Baby UI reads the same variable names whatever you pick.
+
+## 4. Add a component
+
+Point the CLI at a component's JSON. Button, for example:
+
+```bash
+# tab: React
+# pm: dlx shadcn@latest add https://baby-ui.pages.dev/r/button.json
+```
+
+```bash
+# tab: Svelte
+# pm: dlx shadcn-svelte@latest add https://baby-ui.pages.dev/svelte/r/button.json
+```
+
+The CLI then:
+
+- copies the files into your `ui` folder, plus `lib/cn.ts` if missing,
+- installs the component's npm dependencies,
+- writes the component's own CSS, and `tokens` (motion variables) the first time.
+
+Your `--background`, `--primary` and the rest are never touched. Each component page fills
+this command in for the framework and language chosen in the header; its Manual tab lists
+the files for copying by hand.
+
+## 5. Use it
+
+```tsx
+// tab: React
+import { Button } from "@/components/ui/button";
+
+export default function Page() {
+	return <Button>Deploy</Button>;
+}
+```
+
+```svelte
+// tab: Svelte
+<script lang="ts">
+	import { Button } from "$lib/components/ui/button";
+</script>
+
+<Button>Deploy</Button>
+```
+
+## 6. Dark mode
+
+The `dark` class on `<html>`, as in shadcn, so `next-themes` and `mode-watcher` work
+unchanged. Set `color-scheme` too, or form controls stay light.
+
+```js
+document.documentElement.classList.toggle("dark", dark);
+document.documentElement.style.colorScheme = dark ? "dark" : "light";
+```
+
+## Adopting the Baby UI look
+
+Components follow your theme by default. For this site's palette, radius and type stack,
+add `theme`:
+
+```bash
+# tab: React
+# pm: dlx shadcn@latest add https://baby-ui.pages.dev/r/theme.json
+```
+
+```bash
+# tab: Svelte
+# pm: dlx shadcn-svelte@latest add https://baby-ui.pages.dev/svelte/r/theme.json
+```
+
+Or paste the base layer below over what `init` wrote after `@import "tailwindcss"`: dark
+variant, theme mapping, palette and motion variables. Add your own variables there.
+
+```css
+/* baby-ui:theme */
+```
 
 ## Routes
 
@@ -65,10 +153,10 @@ Dark mode is the `.dark` class on `<html>`, the same convention shadcn uses.
 | React | `/r/{slug}.json` | `/r/js/{slug}.json` |
 | Svelte | `/svelte/r/{slug}.json` | `/svelte/r/js/{slug}.json` |
 
-The JS route ships the same files with types stripped. The index for each route is at
-`registry.json`, for example `https://baby-ui.pages.dev/r/registry.json`.
+`tokens.json`, `theme.json` and the `registry.json` index live on every route.
 
-## Manual
+## If something looks wrong
 
-The Install tab's Manual view lists the dependencies and every file with its destination
-path. Copy them, then add `tokens` once with the command above.
+- **Grey, unstyled controls**: add `tokens.json` with the same `add` command.
+- **`@/lib/utils` or `$lib/cn` not found**: aliases come from `components.json`; run `init`.
+- **Nothing animates**: the OS reduced-motion setting keeps fades and drops travel.

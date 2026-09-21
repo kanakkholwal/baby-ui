@@ -22,7 +22,7 @@ export const DIALOG_WIDTH: Record<DialogSize, string> = {
 
 /** The <dialog> itself fades with its backdrop; allow-discrete keeps it on screen to exit. */
 export const DIALOG_SURFACE = [
-	"m-auto bg-transparent p-0 text-foreground opacity-0",
+	"m-auto overflow-visible bg-transparent p-0 text-foreground opacity-0",
 	"transition-[opacity,display,overlay] transition-discrete duration-[var(--duration-exit)] ease-[var(--ease-out)]",
 	"open:opacity-100 open:duration-[var(--duration-overlay)] starting:open:opacity-0",
 	"backdrop:bg-black/50 backdrop:opacity-0 backdrop:backdrop-blur-[2px]",

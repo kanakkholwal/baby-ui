@@ -13,7 +13,7 @@ export const fullscreenNav = defineComponent({
 			type: "boolean",
 			description: "Whether the overlay is shown. Bindable.",
 			default: false,
-			control: { kind: "boolean" },
+			control: { kind: "none" },
 		},
 		{
 			name: "links",

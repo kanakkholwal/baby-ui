@@ -31,7 +31,9 @@ const granted = $derived(scopes.filter(Boolean).length);
 	<Checkbox
 		bind:checked
 		disabled={Boolean(props.disabled)}
+		indeterminate={Boolean(props.indeterminate)}
+		size={(props.size as "sm" | "md" | "lg" | "xl") ?? "md"}
 		label={(props.label as string) || "Remember this grant"}
-		description="Skips the prompt for the next 30 days."
+		description={(props.description as string) || "Skips the prompt for the next 30 days."}
 	/>
 </div>

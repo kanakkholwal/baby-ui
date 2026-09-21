@@ -22,14 +22,14 @@ export const toast = defineComponent({
 			type: '"soft" | "solid" | "outline"',
 			description: "Surface treatment.",
 			default: "soft",
-			control: { kind: "select", options: ["soft", "solid", "outline"] },
+			control: { kind: "none" },
 		},
 		{
 			name: "max",
 			type: "number",
 			description: "How many toasts render at once. The rest wait their turn.",
 			default: 4,
-			control: { kind: "number", min: 1, max: 8, step: 1 },
+			control: { kind: "none" },
 		},
 		{
 			name: "toasts",

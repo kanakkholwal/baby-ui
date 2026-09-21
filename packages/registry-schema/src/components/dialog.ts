@@ -13,7 +13,7 @@ export const dialog = defineComponent({
 			type: "boolean",
 			description: "Whether the dialog is shown. Bindable.",
 			default: false,
-			control: { kind: "boolean" },
+			control: { kind: "none" },
 		},
 		{
 			name: "size",

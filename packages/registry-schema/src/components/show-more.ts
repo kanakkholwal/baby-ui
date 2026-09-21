@@ -27,7 +27,7 @@ export const showMore = defineComponent({
 			type: "boolean",
 			description: "Whether the content is expanded. Bindable.",
 			default: false,
-			control: { kind: "boolean" },
+			control: { kind: "none" },
 		},
 		{
 			name: "moreLabel",

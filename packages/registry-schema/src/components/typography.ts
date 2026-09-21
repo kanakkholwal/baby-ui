@@ -21,7 +21,7 @@ export const typography = defineComponent({
 			name: "as",
 			type: "string",
 			description: "Override the rendered element without changing the look.",
-			control: { kind: "text" },
+			control: { kind: "none" },
 		},
 	],
 	a11y: {

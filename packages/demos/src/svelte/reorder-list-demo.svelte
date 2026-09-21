@@ -12,5 +12,9 @@ let items = $state([
 </script>
 
 <div class="w-80">
-	<ReorderList bind:items label={(props.label as string) || "Build steps"} />
+	<ReorderList
+		bind:items
+		disabled={Boolean(props.disabled)}
+		label={(props.label as string) || "Build steps"}
+	/>
 </div>

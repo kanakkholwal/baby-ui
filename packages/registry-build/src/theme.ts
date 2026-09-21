@@ -153,7 +153,9 @@ export async function buildThemeItems(framework: Framework): Promise<RegistryIte
 			light: { ...pick(palette.light, extension), ...motion.light },
 			dark: pick(palette.dark, extension),
 		},
-		css: { ...palette.css, ...motion.css },
+		// Class rules travel with the component that uses them (see cssFor); only the
+		// global bits stay here.
+		css: { ...palette.css, ...globalOnly(motion.css) },
 	});
 
 	const standard = (name: string) => SHADCN_VARS.has(name) || name.startsWith("--font-");
@@ -170,4 +172,14 @@ export async function buildThemeItems(framework: Framework): Promise<RegistryIte
 	});
 
 	return [tokens, full];
+}
+
+// Class rules ship with the component that uses them; only the :root overrides stay global.
+function globalOnly(css: Css): Css {
+	const out: Css = {};
+	for (const [k, v] of Object.entries(css)) {
+		if (k.startsWith("@media") && typeof v === "object" && v[":root"])
+			out[k] = { ":root": v[":root"] };
+	}
+	return out;
 }

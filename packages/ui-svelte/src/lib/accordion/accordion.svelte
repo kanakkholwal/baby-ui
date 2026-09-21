@@ -1,41 +1,54 @@
 <script lang="ts">
+import type { Snippet } from "svelte";
+import type { HTMLAttributes } from "svelte/elements";
 import { cn } from "../lib/cn";
-import AccordionItem from "./accordion-item.svelte";
+import { setAccordion } from "./context";
 
-type Item = { id: string; title: string; content: string };
+type Props = {
+	children?: Snippet;
+	type?: "single" | "multiple";
+	/** Single mode only: whether the open panel can be closed again. */
+	collapsible?: boolean;
+	/** The open item in single mode, the open items in multiple mode. */
+	value?: string | string[];
+	class?: string;
+} & Omit<HTMLAttributes<HTMLDivElement>, "children">;
 
 let {
-	items,
-	multiple = false,
-	collapsible = true,
+	children,
+	type = "single",
+	collapsible = false,
+	value = $bindable(),
 	class: classProp,
-}: {
-	items: Item[];
-	multiple?: boolean;
-	collapsible?: boolean;
-	class?: string;
-} = $props();
+	...rest
+}: Props = $props();
 
-let open = $state<string[]>([]);
+const open = $derived(value === undefined ? [] : Array.isArray(value) ? value : [value]);
 
-function toggle(id: string) {
-	const isOpen = open.includes(id);
-	if (multiple) {
-		open = isOpen ? open.filter((x) => x !== id) : [...open, id];
-		return;
-	}
-	if (isOpen) open = collapsible ? [] : open;
-	else open = [id];
-}
+setAccordion({
+	get type() {
+		return type;
+	},
+	isOpen: (item) => open.includes(item),
+	toggle(item) {
+		const isOpen = open.includes(item);
+		if (type === "multiple") {
+			value = isOpen ? open.filter((x) => x !== item) : [...open, item];
+			return;
+		}
+		if (isOpen) {
+			if (collapsible) value = "";
+			return;
+		}
+		value = item;
+	},
+});
 </script>
 
-<div class={cn("divide-y divide-border overflow-hidden rounded-xl border border-border", classProp)}>
-	{#each items as item (item.id)}
-		<AccordionItem
-			title={item.title}
-			content={item.content}
-			open={open.includes(item.id)}
-			ontoggle={() => toggle(item.id)}
-		/>
-	{/each}
+<div
+	{...rest}
+	data-slot="accordion"
+	class={cn("divide-y divide-border overflow-hidden rounded-xl border border-border", classProp)}
+>
+	{@render children?.()}
 </div>

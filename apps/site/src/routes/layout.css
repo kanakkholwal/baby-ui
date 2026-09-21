@@ -140,3 +140,33 @@
 		display: none;
 	}
 }
+
+/* The header's Browse button. Site-only, so it lives here rather than in the tokens. */
+.rainbow-ring {
+	background-image: linear-gradient(
+		90deg,
+		var(--success),
+		var(--warning),
+		var(--accent),
+		var(--violet),
+		var(--success),
+		var(--warning),
+		var(--accent),
+		var(--violet),
+		var(--success)
+	);
+	background-size: 200% 100%;
+	animation: rainbow-ring 3s linear infinite;
+}
+
+@keyframes rainbow-ring {
+	to {
+		background-position: 200% 0;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.rainbow-ring {
+		animation: none;
+	}
+}

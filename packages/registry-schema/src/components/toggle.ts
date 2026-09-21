@@ -33,7 +33,7 @@ export const toggle = defineComponent({
 			type: "string",
 			description: "Accessible name when the content is an icon.",
 			default: "Bold",
-			control: { kind: "text" },
+			control: { kind: "none" },
 		},
 	],
 	motion: {

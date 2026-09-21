@@ -21,6 +21,10 @@ export default defineConfig({
 			path: "./src/lib/components/code-block.svelte",
 			hydrate: true,
 		},
+		"code-group": {
+			path: "./src/lib/components/code-group.svelte",
+			hydrate: true,
+		},
 		"dock-demo": {
 			path: "../../packages/demos/src/svelte/dock-demo.svelte",
 			hydrate: true,

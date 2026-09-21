@@ -27,7 +27,7 @@ export const navbar = defineComponent({
 			type: "boolean",
 			description: "Pin to the top and swap to a blurred surface once scrolled.",
 			default: true,
-			control: { kind: "boolean" },
+			control: { kind: "none" },
 		},
 		{
 			name: "blur",
@@ -35,7 +35,7 @@ export const navbar = defineComponent({
 			description:
 				"Use a translucent blurred surface rather than a solid one when scrolled.",
 			default: true,
-			control: { kind: "boolean" },
+			control: { kind: "none" },
 		},
 	],
 

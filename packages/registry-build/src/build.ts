@@ -7,6 +7,7 @@ import {
 	type RegistryItem,
 	RegistryItemSchema,
 } from "@baby-ui/registry-schema";
+import { cssFor } from "./component-css";
 import { FRAMEWORK, SITE_URL } from "./config";
 import { rewriteImports } from "./rewrite";
 import { tokensUrl } from "./theme";
@@ -56,6 +57,7 @@ export async function buildItem(
 		registryDependencies: [...impl.registryDependencies, tokensUrl(framework)],
 		files,
 		cssVars: Object.keys(spec.cssVars).length ? { theme: spec.cssVars } : undefined,
+		css: await cssFor(files.map((f) => f.content)),
 		categories: [spec.category],
 		meta: {
 			tier: spec.tier,
