@@ -156,7 +156,7 @@ export function ContextMenuDemo(_: { props: Props }) {
 		<div className="flex flex-col items-center gap-3">
 			<ContextMenu>
 				<ContextMenuTrigger>
-					<div className="grid h-28 w-64 place-items-center rounded-xl border border-border border-dashed text-muted-foreground text-sm">
+					<div className="grid size-64 place-items-center rounded-xl border border-border border-dashed text-muted-foreground text-sm">
 						Right-click anywhere here
 					</div>
 				</ContextMenuTrigger>

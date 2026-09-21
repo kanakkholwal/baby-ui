@@ -15,6 +15,13 @@ export const codeBlock = defineComponent({
 			control: { kind: "none" },
 		},
 		{
+			name: "html",
+			type: "string",
+			description:
+				"Pre-highlighted markup from Shiki, highlight.js or similar. `code` remains the copy source.",
+			control: { kind: "none" },
+		},
+		{
 			name: "language",
 			type: "string",
 			description: "Label shown in the filename bar.",

@@ -1,4 +1,5 @@
 <script lang="ts">
+import CodeBlock from "./code-block.svelte";
 import InstallCommand from "./install-command.svelte";
 import PmCommand from "./pm-command.svelte";
 import SourceFiles from "./source-files.svelte";
@@ -11,11 +12,14 @@ let {
 	slug,
 	dependencies,
 	files,
+	css = null,
 	dialect = "ts",
 }: {
 	slug: string;
 	dependencies: string[];
 	files: File[];
+	/** What the CLI writes into the global stylesheet for this component. */
+	css?: { code: string; html: string } | null;
 	dialect?: string;
 } = $props();
 
@@ -42,6 +46,18 @@ const tabs = [
 			<li>
 				<p class="mb-2 text-foreground text-sm">Copy each file to the path shown.</p>
 				<SourceFiles {files} {dialect} />
+			</li>
+			{#if css}
+				<li>
+					<p class="mb-2 text-foreground text-sm">Add this to your global stylesheet.</p>
+					<CodeBlock code={css.code} html={css.html} lang="css" />
+				</li>
+			{/if}
+			<li>
+				<p class="text-muted-foreground text-sm">
+					Add <code class="rounded bg-muted px-1 text-foreground">tokens.json</code> once with
+					the CLI; it holds the motion variables every component reads.
+				</p>
 			</li>
 		</ol>
 	{/if}

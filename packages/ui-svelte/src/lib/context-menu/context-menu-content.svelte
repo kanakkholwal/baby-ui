@@ -26,7 +26,9 @@ $effect(() => {
 	const rect = el.getBoundingClientRect();
 	const x = Math.min(menu.point.x, window.innerWidth - rect.width - 8);
 	const y = Math.min(menu.point.y, window.innerHeight - rect.height - 8);
-	el.style.transform = `translate(${Math.max(8, x)}px, ${Math.max(8, y)}px)`;
+	// left/top rather than transform, or the entry scale would shrink the offset too.
+	el.style.left = `${Math.max(8, x)}px`;
+	el.style.top = `${Math.max(8, y)}px`;
 	return dismissable([el], menu.close);
 });
 </script>

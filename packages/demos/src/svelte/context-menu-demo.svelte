@@ -14,7 +14,7 @@ let last = $state("");
 	<ContextMenu>
 		<ContextMenuTrigger>
 			<div
-				class="grid h-28 w-64 place-items-center rounded-xl border border-border border-dashed text-muted-foreground text-sm"
+				class="grid size-64 place-items-center rounded-xl border border-border border-dashed text-muted-foreground text-sm"
 			>
 				Right-click anywhere here
 			</div>

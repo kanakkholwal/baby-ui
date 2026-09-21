@@ -35,11 +35,22 @@ $effect(() => {
 		data-state={dialog.open ? "open" : "closed"}
 		class={cn(
 			DIALOG_PANEL,
-			"w-[min(32rem,calc(100vw-2rem))] rounded-2xl border border-border bg-card p-6 shadow-2xl",
+			"w-[min(32rem,calc(100vw-2rem))] rounded-2xl border border-border bg-background p-1 shadow-2xl",
 			DIALOG_WIDTH[dialog.size],
 			classProp,
 		)}
 	>
-		{@render children?.()}
+		<!-- Inset frame: the body sits on a lighter surface, the footer in the rim below it. -->
+		<div class="relative overflow-hidden rounded-[11px] bg-card p-5">
+			{@render children?.()}
+		</div>
+		{#if dialog.footer}
+			<div
+				data-slot="dialog-footer"
+				class={cn("flex items-center justify-end gap-2 px-2 pt-2 pb-1", dialog.footer.class)}
+			>
+				{@render dialog.footer.children?.()}
+			</div>
+		{/if}
 	</div>
 </dialog>

@@ -1,5 +1,10 @@
-import { Shortcut } from "@baby-ui/react";
+import { Button, Shortcut } from "@baby-ui/react";
 
 export function Example() {
-	return <Shortcut keys={["⌘", "K"]} />;
+	return (
+		<Button>
+			Save
+			<Shortcut shortcut="cmd+s" />
+		</Button>
+	);
 }

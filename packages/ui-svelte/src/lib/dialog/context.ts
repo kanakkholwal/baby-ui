@@ -1,4 +1,4 @@
-import { createContext } from "svelte";
+import { createContext, type Snippet } from "svelte";
 
 export type DialogSize = "sm" | "md" | "lg" | "xl";
 
@@ -9,6 +9,8 @@ export type DialogContext = {
 	readonly size: DialogSize;
 	readonly dismissOnBackdrop: boolean;
 	setOpen: (open: boolean) => void;
+	/** The footer hoists itself here so it can sit in the frame rim below the surface. */
+	footer: { children?: Snippet; class?: string } | undefined;
 };
 
 export const [getDialog, setDialog] = createContext<DialogContext>();

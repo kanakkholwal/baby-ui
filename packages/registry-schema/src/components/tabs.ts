@@ -8,7 +8,7 @@ export const tabs = defineComponent({
 	category: "base",
 	status: "stable",
 	variants: {
-		variant: ["pill", "underline", "segment"],
+		variant: ["pill", "underline", "segment", "soft", "outline", "enclosed"],
 		size: ["sm", "md", "lg", "xl"],
 	},
 	props: [
@@ -20,10 +20,13 @@ export const tabs = defineComponent({
 		},
 		{
 			name: "variant",
-			type: '"pill" | "underline" | "segment"',
+			type: '"pill" | "underline" | "segment" | "soft" | "outline" | "enclosed"',
 			description: "Indicator treatment.",
 			default: "pill",
-			control: { kind: "select", options: ["pill", "underline", "segment"] },
+			control: {
+				kind: "select",
+				options: ["pill", "underline", "segment", "soft", "outline", "enclosed"],
+			},
 		},
 		{
 			name: "size",

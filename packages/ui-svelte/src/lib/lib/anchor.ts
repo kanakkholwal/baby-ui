@@ -115,14 +115,14 @@ export function anchor(
 	// Before any layout read: the first style resolution is when @starting-style is
 	// sampled, and the entry lean keys off this attribute.
 	floating.dataset.placement ??= placement;
-	// computePosition resolves a microtask later; seed the position now so the surface
-	// never paints a frame at the viewport corner and appear to fly in from there.
+	// Seeded synchronously so no frame paints at the viewport corner. Set via left/top, not
+	// transform: `scale` composes before `transform` and would shrink a translate() offset.
 	const seed = anchorEl.getBoundingClientRect();
 	Object.assign(floating.style, {
 		position: "fixed",
-		left: "0",
-		top: "0",
-		transform: `translate(${Math.round(seed.left)}px, ${Math.round(seed.bottom + gap)}px)`,
+		left: `${Math.round(seed.left)}px`,
+		top: `${Math.round(seed.bottom + gap)}px`,
+		transform: "none",
 	});
 
 	return autoUpdate(anchorEl, floating, () => {
@@ -133,9 +133,9 @@ export function anchor(
 		}).then(({ x, y, placement: resolved }) => {
 			Object.assign(floating.style, {
 				position: "fixed",
-				left: "0",
-				top: "0",
-				transform: `translate(${Math.round(x)}px, ${Math.round(y)}px)`,
+				left: `${Math.round(x)}px`,
+				top: `${Math.round(y)}px`,
+				transform: "none",
 			});
 			floating.dataset.placement = resolved;
 			// Grow from the edge nearest the anchor, whichever side flip settled on.

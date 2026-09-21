@@ -5,7 +5,7 @@ export const markdown = defineComponent({
 	name: "Markdown",
 	description: "Minimal block renderer for headings, paragraphs, lists and fenced code.",
 	category: "base",
-	status: "beta",
+	status: "alpha",
 	props: [
 		{
 			name: "content",

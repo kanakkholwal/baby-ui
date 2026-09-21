@@ -1,6 +1,6 @@
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "react";
 import { cn } from "../lib/cn";
-import { type ButtonSize, type ButtonVariant, button } from "./variants";
+import { type ButtonSize, type ButtonVariant, button, isIconSize } from "./variants";
 
 type Base = {
 	variant?: ButtonVariant;
@@ -23,6 +23,7 @@ const FACE =
 function Faces({
 	loading,
 	loadingLabel,
+	size,
 	children,
 }: Required<Pick<Base, "loading">> & Base) {
 	return (
@@ -32,7 +33,11 @@ function Faces({
 			</span>
 			<span className={FACE} data-on={loading} aria-hidden={!loading}>
 				<Spinner spinning={loading} />
-				{loadingLabel}
+				{isIconSize(size) ? (
+					<span className="sr-only">{loadingLabel}</span>
+				) : (
+					loadingLabel
+				)}
 			</span>
 		</span>
 	);
@@ -78,7 +83,7 @@ export function Button(props: ButtonProps) {
 
 	const classes = cn(button({ variant, size }), className);
 	const face = (
-		<Faces loading={loading} loadingLabel={loadingLabel}>
+		<Faces loading={loading} loadingLabel={loadingLabel} size={size}>
 			{children}
 		</Faces>
 	);

@@ -28,6 +28,7 @@ import {
 	DialogTitle,
 	DialogTrigger,
 	FullscreenNav,
+	Input,
 	Label,
 	Select,
 	SelectContent,
@@ -40,6 +41,7 @@ import {
 	SheetHeader,
 	SheetTitle,
 	SheetTrigger,
+	Shortcut,
 	Toast,
 	type ToastItem,
 	type ToastTone,
@@ -54,6 +56,8 @@ const BTN =
 
 export function DialogDemo({ props }: { props: Props }) {
 	const [open, setOpen] = useState(false);
+	const [domain, setDomain] = useState("");
+	const id = useId();
 	return (
 		<Dialog
 			open={open}
@@ -61,25 +65,45 @@ export function DialogDemo({ props }: { props: Props }) {
 			size={(props.size as "sm" | "md" | "lg" | "xl") ?? "md"}
 			dismissOnBackdrop={props.dismissOnBackdrop !== false}
 		>
-			<DialogTrigger className={BTN}>Open dialog</DialogTrigger>
+			<DialogTrigger className={BTN}>Add domain</DialogTrigger>
 			<DialogContent>
 				<DialogHeader>
-					<div className="min-w-0">
-						<DialogTitle>Deploy to production</DialogTitle>
-						<DialogDescription>This will replace the current build.</DialogDescription>
-					</div>
-					<DialogClose />
+					<DialogTitle>
+						<svg viewBox="0 0 20 20" fill="none" aria-hidden>
+							<circle cx="10" cy="10" r="7.5" stroke="currentColor" strokeWidth="1.5" />
+							<path
+								d="M2.5 10h15M10 2.5c2.5 2.5 2.5 12.5 0 15M10 2.5c-2.5 2.5-2.5 12.5 0 15"
+								stroke="currentColor"
+								strokeWidth="1.5"
+							/>
+						</svg>
+						Add a domain
+					</DialogTitle>
+					<DialogDescription>
+						Add an existing domain to your baby-ui project.
+					</DialogDescription>
 				</DialogHeader>
-				<p className="mt-4 text-muted-foreground text-sm">
-					Traffic shifts as soon as the build is healthy. The previous deployment stays
-					available for instant rollback.
-				</p>
+				<DialogClose />
+				<div className="mt-4 flex flex-col gap-1.5">
+					<Label htmlFor={id}>Domain</Label>
+					<Input
+						id={id}
+						value={domain}
+						onChange={(e) => setDomain(e.currentTarget.value)}
+						placeholder="example.com"
+					/>
+					<p className="text-muted-foreground text-sm">
+						We'll guide you through DNS configuration next.
+					</p>
+				</div>
 				<DialogFooter>
 					<Button variant="ghost" size="sm" onClick={() => setOpen(false)}>
 						Cancel
+						<Shortcut shortcut="esc" size="sm" />
 					</Button>
-					<Button size="sm" onClick={() => setOpen(false)}>
-						Deploy
+					<Button size="sm" className="ml-auto" onClick={() => setOpen(false)}>
+						Add
+						<Shortcut shortcut="enter" size="sm" />
 					</Button>
 				</DialogFooter>
 			</DialogContent>

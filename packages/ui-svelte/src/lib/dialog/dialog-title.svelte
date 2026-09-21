@@ -13,6 +13,6 @@ let {
 const ctx = getDialog();
 </script>
 
-<h2 {...rest} id={ctx.titleId} data-slot="dialog-title" class={cn("font-medium text-foreground text-lg", classProp)}>
+<h2 {...rest} id={ctx.titleId} data-slot="dialog-title" class={cn("flex items-center gap-2 font-semibold text-foreground text-lg [&>svg]:size-5 [&>svg]:text-muted-foreground", classProp)}>
 	{@render children?.()}
 </h2>

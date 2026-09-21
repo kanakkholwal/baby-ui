@@ -13,6 +13,6 @@ let {
 const ctx = getDialog();
 </script>
 
-<p {...rest} id={ctx.descriptionId} data-slot="dialog-description" class={cn("mt-1 text-muted-foreground text-sm", classProp)}>
+<p {...rest} id={ctx.descriptionId} data-slot="dialog-description" class={cn("text-muted-foreground text-sm", classProp)}>
 	{@render children?.()}
 </p>

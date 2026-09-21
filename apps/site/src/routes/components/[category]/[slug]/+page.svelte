@@ -97,6 +97,7 @@ const usage = $derived(
 					slug={data.spec.slug}
 					dependencies={port.dependencies}
 					files={port.files}
+					css={port.css}
 					{dialect}
 				/>
 			{/if}

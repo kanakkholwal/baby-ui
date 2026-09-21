@@ -13,8 +13,8 @@ const disabled = $derived(Boolean(props.disabled));
 </script>
 
 <Button {variant} {size} {href} {loading} {loadingLabel} {disabled}>
-	{size === "icon" ? "" : "Deploy project"}
-	{#if size === "icon"}
+	{size.startsWith("icon") ? "" : "Deploy project"}
+	{#if size.startsWith("icon")}
 		<svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
 			<path
 				d="M8 3.5v9M3.5 8h9"

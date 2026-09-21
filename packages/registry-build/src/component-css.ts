@@ -80,3 +80,16 @@ export async function cssFor(sources: string[]): Promise<Css | undefined> {
 	}
 	return Object.keys(out).length ? out : undefined;
 }
+
+/** The `css` object as a stylesheet, for the Manual install view. */
+export function cssText(css: Css | undefined, depth = 0): string {
+	if (!css) return "";
+	const pad = "\t".repeat(depth);
+	return Object.entries(css)
+		.map(([k, v]) =>
+			typeof v === "string"
+				? `${pad}${k}: ${v};`
+				: `${pad}${k} {\n${cssText(v, depth + 1)}\n${pad}}`,
+		)
+		.join(depth === 0 ? "\n\n" : "\n");
+}

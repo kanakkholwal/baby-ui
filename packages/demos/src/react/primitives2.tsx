@@ -152,17 +152,27 @@ export function ShowMoreDemo({ props }: { props: Props }) {
 }
 
 export function ShortcutDemo({ props }: { props: Props }) {
-	const size = (props.size as "sm" | "md") ?? "md";
+	const [last, setLast] = useState("");
+	const size = (props.size as "sm" | "md" | "lg" | "xl") ?? "md";
 	return (
-		<div className="flex flex-col gap-2 text-sm">
-			<div className="flex items-center justify-between gap-6">
-				<span className="text-muted-foreground">Command palette</span>
-				<Shortcut keys={["⌘", "K"]} size={size} />
+		<div className="flex flex-col items-center gap-3">
+			<div className="flex flex-wrap items-center gap-2">
+				<Button variant="outline" size="sm" onClick={() => setLast("New file")}>
+					New file
+					<Shortcut shortcut={(props.shortcut as string) || "cmd+n"} size={size} />
+				</Button>
+				<Button variant="outline" size="sm" onClick={() => setLast("Saved")}>
+					Save
+					<Shortcut shortcut="cmd+s" />
+				</Button>
+				<Button size="sm" onClick={() => setLast("Sent")}>
+					Send
+					<Shortcut shortcut="cmd+enter" />
+				</Button>
 			</div>
-			<div className="flex items-center justify-between gap-6">
-				<span className="text-muted-foreground">Save</span>
-				<Shortcut keys={["⌘", "S"]} />
-			</div>
+			<p className="text-muted-foreground text-xs">
+				{last ? `${last} via keyboard or click` : "Press a shortcut"}
+			</p>
 		</div>
 	);
 }

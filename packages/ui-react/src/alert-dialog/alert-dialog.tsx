@@ -11,6 +11,7 @@ import {
 	useRef,
 	useState,
 } from "react";
+import { createPortal } from "react-dom";
 import { DIALOG_PANEL, DIALOG_SURFACE } from "../dialog/dialog";
 import { cn } from "../lib/cn";
 
@@ -20,6 +21,9 @@ type Ctx = {
 	descriptionId: string;
 	setOpen: (open: boolean) => void;
 	setCancel: (el: HTMLElement | null) => void;
+	/** The rim slot below the surface; AlertDialogFooter portals into it. */
+	footerEl: HTMLDivElement | null;
+	setFooterEl: (el: HTMLDivElement | null) => void;
 };
 
 const AlertDialogCtx = createContext<Ctx | null>(null);
@@ -44,6 +48,7 @@ export function AlertDialog({
 	const uid = useId();
 	const [internal, setInternal] = useState(defaultOpen);
 	const [cancelEl, setCancel] = useState<HTMLElement | null>(null);
+	const [footerEl, setFooterEl] = useState<HTMLDivElement | null>(null);
 	const open = openProp ?? internal;
 
 	const setOpen = useCallback(
@@ -66,8 +71,10 @@ export function AlertDialog({
 			descriptionId: `${uid}-description`,
 			setOpen,
 			setCancel,
+			footerEl,
+			setFooterEl,
 		}),
-		[open, uid, setOpen],
+		[open, uid, setOpen, footerEl],
 	);
 
 	return <AlertDialogCtx.Provider value={ctx}>{children}</AlertDialogCtx.Provider>;
@@ -119,11 +126,14 @@ export function AlertDialogContent({ className, children }: ComponentProps<"div"
 				data-state={dialog.open ? "open" : "closed"}
 				className={cn(
 					DIALOG_PANEL,
-					"w-[min(26rem,calc(100vw-2rem))] rounded-2xl border border-border bg-card p-6 shadow-2xl",
+					"w-[min(26rem,calc(100vw-2rem))] rounded-2xl border border-border bg-background p-1 shadow-2xl",
 					className,
 				)}
 			>
-				{children}
+				<div className="relative overflow-hidden rounded-[11px] bg-card p-5">
+					{children}
+				</div>
+				<div ref={dialog.setFooterEl} className="empty:hidden" />
 			</div>
 		</dialog>
 	);
@@ -140,13 +150,16 @@ export function AlertDialogHeader({ className, ...props }: ComponentProps<"div">
 }
 
 export function AlertDialogFooter({ className, ...props }: ComponentProps<"div">) {
-	return (
+	const dialog = useAlertDialog();
+	const node = (
 		<div
 			data-slot="alert-dialog-footer"
-			className={cn("mt-6 flex items-center justify-end gap-2", className)}
+			className={cn("flex items-center justify-end gap-2 px-2 pt-2 pb-1", className)}
 			{...props}
 		/>
 	);
+	// Rendered into the frame rim below the surface once that slot exists.
+	return dialog.footerEl ? createPortal(node, dialog.footerEl) : null;
 }
 
 export function AlertDialogTitle({ className, ...props }: ComponentProps<"h2">) {

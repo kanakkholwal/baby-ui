@@ -15,6 +15,7 @@ let {
 } = $props();
 
 const uid = $props.id();
+let footer = $state<{ children?: Snippet; class?: string }>();
 
 setDialog({
 	get open() {
@@ -29,6 +30,12 @@ setDialog({
 	titleId: `${uid}-title`,
 	descriptionId: `${uid}-description`,
 	setOpen: (next) => (open = next),
+	get footer() {
+		return footer;
+	},
+	set footer(next) {
+		footer = next;
+	},
 });
 </script>
 

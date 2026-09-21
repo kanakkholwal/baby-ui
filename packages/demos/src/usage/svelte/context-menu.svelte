@@ -10,7 +10,7 @@ import {
 
 <ContextMenu>
 	<ContextMenuTrigger>
-		<div class="grid h-32 place-items-center rounded-xl border border-border border-dashed">
+		<div class="grid size-32 place-items-center rounded-xl border border-border border-dashed">
 			Right-click anywhere here
 		</div>
 	</ContextMenuTrigger>

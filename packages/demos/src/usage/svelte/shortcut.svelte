@@ -1,5 +1,8 @@
 <script lang="ts">
-import { Shortcut } from "@baby-ui/svelte";
+import { Button, Shortcut } from "@baby-ui/svelte";
 </script>
 
-<Shortcut keys={["⌘", "K"]} />
+<Button>
+	Save
+	<Shortcut shortcut="cmd+s" />
+</Button>

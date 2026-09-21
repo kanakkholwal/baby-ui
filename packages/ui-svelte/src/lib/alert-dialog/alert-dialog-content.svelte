@@ -34,10 +34,20 @@ $effect(() => {
 		data-state={dialog.open ? "open" : "closed"}
 		class={cn(
 			DIALOG_PANEL,
-			"w-[min(26rem,calc(100vw-2rem))] rounded-2xl border border-border bg-card p-6 shadow-2xl",
+			"w-[min(26rem,calc(100vw-2rem))] rounded-2xl border border-border bg-background p-1 shadow-2xl",
 			classProp,
 		)}
 	>
-		{@render children?.()}
+		<div class="relative overflow-hidden rounded-[11px] bg-card p-5">
+			{@render children?.()}
+		</div>
+		{#if dialog.footer}
+			<div
+				data-slot="alert-dialog-footer"
+				class={cn("flex items-center justify-end gap-2 px-2 pt-2 pb-1", dialog.footer.class)}
+			>
+				{@render dialog.footer.children?.()}
+			</div>
+		{/if}
 	</div>
 </dialog>

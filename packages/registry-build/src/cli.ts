@@ -3,6 +3,7 @@ import { dirname, resolve } from "node:path";
 import { FRAMEWORKS, type Framework } from "@baby-ui/registry-schema";
 import { specs } from "@baby-ui/registry-schema/components";
 import { buildItem, toJsItem } from "./build";
+import { cssText } from "./component-css";
 import {
 	FRAMEWORK,
 	OUT_DIR,
@@ -99,12 +100,17 @@ async function main() {
 	// TS and its JS counterpart per file, generated here so prettier and babel never
 	// reach the Worker. The site imports this instead of re-reading the registry JSON.
 	const sources: Record<string, Record<string, unknown[]>> = {};
+	const css: Record<string, Record<string, string>> = {};
 	for (const spec of specs) {
 		const perFramework: Record<string, unknown[]> = {};
 		sources[spec.slug] = perFramework;
+		const perFrameworkCss: Record<string, string> = {};
+		css[spec.slug] = perFrameworkCss;
 		for (const framework of FRAMEWORKS as readonly Framework[]) {
 			const item = await buildItem(spec, framework);
 			if (!item) continue;
+			if (item.css)
+				perFrameworkCss[framework] = cssText(item.css as Parameters<typeof cssText>[0]);
 			perFramework[framework] = await Promise.all(
 				item.files.map(async (file) => {
 					const js = await toJavaScript(file.content, file.path).catch(() => null);
@@ -119,6 +125,16 @@ async function main() {
 			);
 		}
 	}
+	const cssPath = resolve(REPO_ROOT, "apps/site/src/lib/generated/css.json");
+	await mkdir(dirname(cssPath), { recursive: true });
+	await writeFile(
+		cssPath,
+		`${JSON.stringify(css, null, 2)}
+`,
+		"utf8",
+	);
+	written.push("../src/lib/generated/css.json");
+
 	const usage: Record<string, Record<string, unknown>> = {};
 	for (const spec of specs) {
 		const perFramework: Record<string, unknown> = {};

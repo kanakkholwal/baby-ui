@@ -11,6 +11,7 @@ import {
 	useRef,
 	useState,
 } from "react";
+import { createPortal } from "react-dom";
 import { cn } from "../lib/cn";
 
 /** The <dialog> itself fades with its backdrop; allow-discrete keeps it on screen to exit. */
@@ -51,6 +52,9 @@ type Ctx = {
 	size: DialogSize;
 	dismissOnBackdrop: boolean;
 	setOpen: (open: boolean) => void;
+	/** The rim slot below the surface; DialogFooter portals into it. */
+	footerEl: HTMLDivElement | null;
+	setFooterEl: (el: HTMLDivElement | null) => void;
 };
 
 const DialogCtx = createContext<Ctx | null>(null);
@@ -88,6 +92,7 @@ export function Dialog({
 		[openProp, onOpenChange],
 	);
 
+	const [footerEl, setFooterEl] = useState<HTMLDivElement | null>(null);
 	const ctx = useMemo(
 		() => ({
 			open,
@@ -96,8 +101,10 @@ export function Dialog({
 			titleId: `${uid}-title`,
 			descriptionId: `${uid}-description`,
 			setOpen,
+			footerEl,
+			setFooterEl,
 		}),
-		[open, size, dismissOnBackdrop, uid, setOpen],
+		[open, size, dismissOnBackdrop, uid, setOpen, footerEl],
 	);
 
 	return <DialogCtx.Provider value={ctx}>{children}</DialogCtx.Provider>;
@@ -153,12 +160,16 @@ export function DialogContent({ className, children }: ComponentProps<"div">) {
 				data-state={dialog.open ? "open" : "closed"}
 				className={cn(
 					DIALOG_PANEL,
-					"w-[min(32rem,calc(100vw-2rem))] rounded-2xl border border-border bg-card p-6 shadow-2xl",
+					"w-[min(32rem,calc(100vw-2rem))] rounded-2xl border border-border bg-background p-1 shadow-2xl",
 					WIDTH[dialog.size],
 					className,
 				)}
 			>
-				{children}
+				{/* Inset frame: the body sits on a lighter surface, the footer in the rim below it. */}
+				<div className="relative overflow-hidden rounded-[11px] bg-card p-5">
+					{children}
+				</div>
+				<div ref={dialog.setFooterEl} className="empty:hidden" />
 			</div>
 		</dialog>
 	);
@@ -168,20 +179,23 @@ export function DialogHeader({ className, ...props }: ComponentProps<"div">) {
 	return (
 		<div
 			data-slot="dialog-header"
-			className={cn("flex items-start justify-between gap-4", className)}
+			className={cn("flex flex-col gap-1.5 pr-8", className)}
 			{...props}
 		/>
 	);
 }
 
 export function DialogFooter({ className, ...props }: ComponentProps<"div">) {
-	return (
+	const dialog = useDialog();
+	const node = (
 		<div
 			data-slot="dialog-footer"
-			className={cn("mt-6 flex items-center justify-end gap-2", className)}
+			className={cn("flex items-center justify-end gap-2 px-2 pt-2 pb-1", className)}
 			{...props}
 		/>
 	);
+	// Rendered into the frame rim below the surface once that slot exists.
+	return dialog.footerEl ? createPortal(node, dialog.footerEl) : null;
 }
 
 export function DialogTitle({ className, ...props }: ComponentProps<"h2">) {
@@ -191,7 +205,10 @@ export function DialogTitle({ className, ...props }: ComponentProps<"h2">) {
 		<h2
 			id={dialog.titleId}
 			data-slot="dialog-title"
-			className={cn("font-medium text-foreground text-lg", className)}
+			className={cn(
+				"flex items-center gap-2 font-semibold text-foreground text-lg [&>svg]:size-5 [&>svg]:text-muted-foreground",
+				className,
+			)}
 			{...props}
 		/>
 	);
@@ -204,7 +221,7 @@ export function DialogDescription({ className, ...props }: ComponentProps<"p">) 
 		<p
 			id={dialog.descriptionId}
 			data-slot="dialog-description"
-			className={cn("mt-1 text-muted-foreground text-sm", className)}
+			className={cn("text-muted-foreground text-sm", className)}
 			{...props}
 		/>
 	);
@@ -220,7 +237,7 @@ export function DialogClose({ className, children, ...props }: ComponentProps<"b
 			aria-label={children ? undefined : "Close"}
 			onClick={() => dialog.setOpen(false)}
 			className={cn(
-				"-mr-1 shrink-0 rounded-md p-1 text-muted-foreground transition-colors hover:text-foreground",
+				"absolute top-3 right-3 grid size-8 place-items-center rounded-md text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring",
 				className,
 			)}
 			{...props}

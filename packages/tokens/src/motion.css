@@ -214,18 +214,6 @@
 	box-shadow: 0 0 0 3px var(--ring);
 }
 
-.slider-thumb {
-	transition: transform var(--duration-press) var(--ease-out);
-}
-
-.slider:hover .slider-thumb {
-	transform: scale(1.15);
-}
-
-.slider:active .slider-thumb {
-	transform: scale(1.25);
-}
-
 .typing-dot {
 	animation: typing-dot 1.2s ease-in-out infinite;
 }
@@ -278,8 +266,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.radio-dot,
-	.slider-thumb {
+	.radio-dot {
 		transition: none;
 	}
 

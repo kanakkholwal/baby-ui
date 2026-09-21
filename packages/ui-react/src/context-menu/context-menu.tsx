@@ -92,7 +92,9 @@ export function ContextMenuContent({
 		const rect = node.getBoundingClientRect();
 		const x = Math.min(menu.point.x, window.innerWidth - rect.width - 8);
 		const y = Math.min(menu.point.y, window.innerHeight - rect.height - 8);
-		node.style.transform = `translate(${Math.max(8, x)}px, ${Math.max(8, y)}px)`;
+		// left/top rather than transform, or the entry scale would shrink the offset too.
+		node.style.left = `${Math.max(8, x)}px`;
+		node.style.top = `${Math.max(8, y)}px`;
 		return dismissable([node], menu.close);
 		// mounted is a dependency: the surface only exists on the render after it flips.
 	}, [menu.open, mounted, menu.point, menu.close]);

@@ -13,13 +13,22 @@ import {
 } from "react";
 import { cn } from "../lib/cn";
 
-export type TabsVariant = "pill" | "underline" | "segment";
+export type TabsVariant =
+	| "pill"
+	| "underline"
+	| "segment"
+	| "soft"
+	| "outline"
+	| "enclosed";
 export type TabsSize = "sm" | "md" | "lg" | "xl";
 
 const LIST: Record<TabsVariant, string> = {
 	pill: "gap-1 rounded-full bg-card p-1",
 	segment: "gap-0.5 rounded-lg bg-card p-0.5",
 	underline: "gap-1 border-border border-b",
+	soft: "gap-1",
+	outline: "gap-1",
+	enclosed: "gap-1 border-border border-b",
 };
 
 const TRIGGER: Record<TabsSize, string> = {
@@ -33,6 +42,30 @@ const RADIUS: Record<TabsVariant, string> = {
 	pill: "rounded-full",
 	segment: "rounded-md",
 	underline: "rounded-md",
+	soft: "rounded-lg",
+	outline: "rounded-lg",
+	enclosed: "rounded-t-lg",
+};
+
+// The sliding marker, measured from the active trigger.
+const INDICATOR: Record<TabsVariant, string> = {
+	pill: "top-1 bottom-1 rounded-full bg-primary",
+	segment: "top-0.5 bottom-0.5 rounded-md border border-border bg-background shadow-sm",
+	underline: "-bottom-px h-0.5 rounded-full bg-primary",
+	soft: "inset-y-0 rounded-lg bg-foreground/[0.06]",
+	outline: "inset-y-0 rounded-lg border border-border",
+	enclosed:
+		"-bottom-px top-0 rounded-t-lg border border-border border-b-background bg-background",
+};
+
+// Active label colour per variant; pill sits on the primary fill, the rest on a surface.
+const ACTIVE: Record<TabsVariant, string> = {
+	pill: "aria-selected:text-primary-foreground",
+	segment: "aria-selected:text-foreground",
+	underline: "aria-selected:text-foreground",
+	soft: "aria-selected:text-foreground",
+	outline: "aria-selected:text-foreground",
+	enclosed: "aria-selected:text-foreground",
 };
 
 const ARROW =
@@ -140,25 +173,6 @@ export function TabsList({ className, children, ...props }: ComponentProps<"div"
 	}, [measure]);
 
 	const indicator = rects[tabs.value] ?? { left: 0, width: 0 };
-
-	/** Clip each duplicate label to the indicator so the colour travels with it. */
-	useEffect(() => {
-		if (!list.current) return;
-		for (const label of list.current.querySelectorAll<HTMLElement>("[data-tabs-label]")) {
-			const trigger = label.closest<HTMLElement>("[data-tab]");
-			const rect = trigger ? rects[trigger.dataset.tab ?? ""] : undefined;
-			if (!rect) continue;
-			const left = Math.max(0, indicator.left - rect.left);
-			const right = Math.max(
-				0,
-				rect.left + rect.width - (indicator.left + indicator.width),
-			);
-			label.style.clipPath =
-				left + right >= rect.width
-					? "inset(0 100% 0 0)"
-					: `inset(0 ${right}px 0 ${left}px)`;
-		}
-	}, [rects, indicator.left, indicator.width]);
 
 	/** Keep the selected tab clear of the arrows that overlay the faded edges. */
 	useEffect(() => {
@@ -276,9 +290,7 @@ export function TabsList({ className, children, ...props }: ComponentProps<"div"
 						}}
 						className={cn(
 							"pointer-events-none absolute left-0 transition-[transform,scale,translate,width] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none",
-							tabs.variant === "pill" && "top-1 bottom-1 rounded-full bg-primary",
-							tabs.variant === "segment" && "top-0.5 bottom-0.5 rounded-md bg-primary",
-							tabs.variant === "underline" && "-bottom-px h-0.5 rounded-full bg-primary",
+							INDICATOR[tabs.variant],
 						)}
 					/>
 					{children}
@@ -331,7 +343,7 @@ export function TabsTrigger({
 			onClick={() => tabs.setValue(value)}
 			className={cn(
 				"relative z-10 inline-flex shrink-0 items-center justify-center whitespace-nowrap font-medium text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring",
-				tabs.variant === "underline" && "aria-selected:text-foreground",
+				ACTIVE[tabs.variant],
 				RADIUS[tabs.variant],
 				TRIGGER[tabs.size],
 				className,
@@ -339,15 +351,6 @@ export function TabsTrigger({
 			{...props}
 		>
 			{children}
-			{tabs.variant !== "underline" ? (
-				<span
-					aria-hidden
-					data-tabs-label=""
-					className="pointer-events-none absolute inset-0 inline-flex items-center justify-center text-primary-foreground transition-[clip-path] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] [clip-path:inset(0_100%_0_0)] motion-reduce:transition-none"
-				>
-					{children}
-				</span>
-			) : null}
 		</button>
 	);
 }

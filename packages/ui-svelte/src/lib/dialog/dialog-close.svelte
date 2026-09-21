@@ -20,7 +20,7 @@ const dialog = getDialog();
 	aria-label={children ? undefined : "Close"}
 	onclick={() => dialog.setOpen(false)}
 	class={cn(
-		"-mr-1 shrink-0 rounded-md p-1 text-muted-foreground transition-colors hover:text-foreground",
+		"absolute top-3 right-3 grid size-8 place-items-center rounded-md text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring",
 		classProp,
 	)}
 >

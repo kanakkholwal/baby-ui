@@ -3,14 +3,24 @@ import { defineComponent } from "../index";
 export const shortcut = defineComponent({
 	slug: "shortcut",
 	name: "Shortcut",
-	description: "Keyboard shortcut hint that reads correctly to screen readers.",
+	description:
+		"Key caps for a shortcut that also fires it: the combo clicks the button it sits in.",
 	category: "base",
 	status: "stable",
 	props: [
 		{
-			name: "keys",
-			type: "string[]",
-			description: "Key glyphs in press order.",
+			name: "shortcut",
+			type: "string",
+			description:
+				"Tokens joined by +, such as cmd+k or shift+enter. Rendered as glyph caps.",
+			default: "cmd+n",
+			control: { kind: "text", placeholder: "cmd+k" },
+		},
+		{
+			name: "ontrigger",
+			type: "(event: KeyboardEvent) => void",
+			description:
+				"Runs on the combo. Without it, the enclosing button or link is clicked.",
 			control: { kind: "none" },
 		},
 		{
@@ -22,9 +32,12 @@ export const shortcut = defineComponent({
 		},
 	],
 	a11y: {
-		keyboard: [],
+		keyboard: [
+			"The combo itself clicks the enclosing button, unless focus is in a text field",
+		],
 		notes: [
 			"The glyphs are aria-hidden and a spoken form is provided in visually hidden text, so a screen reader says Command K rather than reading the symbol names.",
+			"Single-key combos are ignored while typing in an input or textarea; Enter and Escape still fire from inputs.",
 			"Glyphs are rendered as kbd elements, which is what the element is for.",
 		],
 	},
@@ -39,6 +52,7 @@ export const shortcut = defineComponent({
 			entry: "Shortcut",
 			files: [
 				{ path: "shortcut/shortcut.tsx", type: "registry:ui" },
+				{ path: "lib/shortcut.ts", type: "registry:lib" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge"],
@@ -47,6 +61,7 @@ export const shortcut = defineComponent({
 			entry: "Shortcut",
 			files: [
 				{ path: "shortcut/shortcut.svelte", type: "registry:ui" },
+				{ path: "lib/shortcut.ts", type: "registry:lib" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge"],

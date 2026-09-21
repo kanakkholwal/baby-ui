@@ -21,8 +21,8 @@ palette control writes exactly this pair.
 
 ## Extra names
 
-Beyond shadcn's set, components use `--success`, `--warning`, `--border-strong`, `--neon`
-and `--violet`. `tokens` defines them; override them the same way.
+Beyond shadcn's set, components use `--success`, `--warning`, `--info`, `--border-strong`,
+`--neon` and `--violet`. `tokens` defines them; override them the same way.
 
 ## Dark mode
 

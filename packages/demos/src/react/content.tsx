@@ -42,7 +42,7 @@ export function CopyButtonDemo({ props }: { props: Props }) {
 
 export function CodeBlockDemo({ props }: { props: Props }) {
 	return (
-		<div className="w-96">
+		<div className="w-[min(28rem,calc(100vw-4rem))]">
 			<CodeBlock
 				code={SAMPLE_CODE}
 				language={(props.language as string) || "ts"}

@@ -10,7 +10,7 @@ export function Example() {
 	return (
 		<ContextMenu>
 			<ContextMenuTrigger>
-				<div className="grid h-32 place-items-center rounded-xl border border-border border-dashed">
+				<div className="grid size-32 place-items-center rounded-xl border border-border border-dashed">
 					Right-click anywhere here
 				</div>
 			</ContextMenuTrigger>

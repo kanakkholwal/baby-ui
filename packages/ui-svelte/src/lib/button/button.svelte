@@ -2,7 +2,7 @@
 import type { Snippet } from "svelte";
 import type { HTMLAnchorAttributes, HTMLButtonAttributes } from "svelte/elements";
 import { cn } from "../lib/cn";
-import { type ButtonSize, type ButtonVariant, button } from "./variants";
+import { type ButtonSize, type ButtonVariant, button, isIconSize } from "./variants";
 
 type Props = {
 	variant?: ButtonVariant;
@@ -30,6 +30,7 @@ const FACE =
 	"col-start-1 row-start-1 flex items-center justify-center gap-2 transition-[opacity,transform,scale,translate,filter] duration-200 ease-[var(--ease-out)] motion-reduce:transition-none data-[on=false]:pointer-events-none data-[on=false]:translate-y-[3px] data-[on=false]:opacity-0 data-[on=false]:blur-[3px]";
 
 const classes = $derived(cn(button({ variant, size }), classProp));
+const iconOnly = $derived(isIconSize(size));
 
 function activate(event: MouseEvent) {
 	if (loading) {
@@ -61,7 +62,7 @@ function activate(event: MouseEvent) {
 					stroke-linecap="round"
 				/>
 			</svg>
-			{loadingLabel}
+			{#if iconOnly}<span class="sr-only">{loadingLabel}</span>{:else}{loadingLabel}{/if}
 		</span>
 	</span>
 {/snippet}

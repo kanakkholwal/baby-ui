@@ -2,7 +2,7 @@
 import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 import { cn } from "../lib/cn";
-import { getTabs, TABS_LIST } from "./context";
+import { getTabs, TABS_INDICATOR, TABS_LIST } from "./context";
 
 let {
 	children,
@@ -51,25 +51,6 @@ $effect(() => {
 		observer.disconnect();
 		port.removeEventListener("scroll", measure);
 	};
-});
-
-/** Clip each duplicate label to the indicator so the colour travels with it. */
-$effect(() => {
-	if (!list) return;
-	for (const label of list.querySelectorAll<HTMLElement>("[data-tabs-label]")) {
-		const trigger = label.closest<HTMLElement>("[data-tab]");
-		const rect = trigger ? rects[trigger.dataset.tab ?? ""] : undefined;
-		if (!rect) continue;
-		const left = Math.max(0, indicator.left - rect.left);
-		const right = Math.max(
-			0,
-			rect.left + rect.width - (indicator.left + indicator.width),
-		);
-		label.style.clipPath =
-			left + right >= rect.width
-				? "inset(0 100% 0 0)"
-				: `inset(0 ${right}px 0 ${left}px)`;
-	}
 });
 
 /** Keep the selected tab clear of the arrows that overlay the faded edges. */
@@ -182,9 +163,7 @@ const ARROW =
 				style:width="{indicator.width}px"
 				class={cn(
 					"pointer-events-none absolute left-0 transition-[transform,scale,translate,width] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none",
-					tabs.variant === "pill" && "top-1 bottom-1 rounded-full bg-primary",
-					tabs.variant === "segment" && "top-0.5 bottom-0.5 rounded-md bg-primary",
-					tabs.variant === "underline" && "-bottom-px h-0.5 rounded-full bg-primary",
+					TABS_INDICATOR[tabs.variant],
 				)}
 			></span>
 

@@ -1,16 +1,26 @@
 <script lang="ts">
-import { Shortcut } from "@baby-ui/svelte";
+import { Button, Shortcut } from "@baby-ui/svelte";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+
+let last = $state("");
+const size = $derived((props.size as "sm" | "md" | "lg" | "xl") ?? "md");
 </script>
 
-<div class="flex flex-col gap-2 text-sm">
-	<div class="flex items-center justify-between gap-6">
-		<span class="text-muted-foreground">Command palette</span>
-		<Shortcut keys={["⌘", "K"]} size={(props.size as "sm" | "md") ?? "md"} />
+<div class="flex flex-col items-center gap-3">
+	<div class="flex flex-wrap items-center gap-2">
+		<Button variant="outline" size="sm" onclick={() => (last = "New file")}>
+			New file
+			<Shortcut shortcut={(props.shortcut as string) || "cmd+n"} {size} />
+		</Button>
+		<Button variant="outline" size="sm" onclick={() => (last = "Saved")}>
+			Save
+			<Shortcut shortcut="cmd+s" />
+		</Button>
+		<Button size="sm" onclick={() => (last = "Sent")}>
+			Send
+			<Shortcut shortcut="cmd+enter" />
+		</Button>
 	</div>
-	<div class="flex items-center justify-between gap-6">
-		<span class="text-muted-foreground">Save</span>
-		<Shortcut keys={["⌘", "S"]} />
-	</div>
+	<p class="text-muted-foreground text-xs">{last ? `${last} via keyboard or click` : "Press a shortcut"}</p>
 </div>

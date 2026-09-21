@@ -6,7 +6,7 @@ import { error } from "@sveltejs/kit";
 import { prepare } from "$lib/docs-nodes";
 import { highlight, langFor } from "$lib/highlight";
 import { findSpec } from "$lib/registry";
-import { sourceFiles } from "$lib/registry-items";
+import { componentCss, sourceFiles } from "$lib/registry-items";
 import { usageSnippet } from "$lib/usage";
 import type { EntryGenerator, PageServerLoad } from "./$types";
 
@@ -58,11 +58,15 @@ export const load: PageServerLoad = async ({ params }) => {
 					}
 				: null;
 			const dependencies = spec.impl[framework]?.dependencies ?? [];
+			const cssSource = componentCss(spec.slug, framework);
 			return {
 				framework,
 				usage,
 				dependencies,
 				files,
+				css: cssSource
+					? { code: cssSource, html: await highlight(cssSource, "css") }
+					: null,
 			};
 		}),
 	);

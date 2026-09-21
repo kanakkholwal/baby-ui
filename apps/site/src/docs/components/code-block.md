@@ -1,19 +1,27 @@
 ---
 title: Code Block
-description: Scrollable code surface with optional line numbers, filename bar and copy.
+description: Inset code frame with a language badge, filename, copy button and optional highlighter output.
 component: code-block
 category: base
 tags: [code, block]
 ---
 
-Code is rendered as text nodes. There is no `innerHTML` anywhere, so a snippet from an
-untrusted source cannot inject markup.
+Pass `code` and it renders as text nodes, with optional line numbers. Pass `html` as well
+and the block renders your highlighter's markup instead; `code` stays the copy source.
 
-## No highlighting
+## Bring your own highlighter
 
-Deliberately. Syntax highlighting belongs in a build step that bakes the markup in, not in
-a component that ships a tokenizer to every visitor. This site highlights with Shiki
-server-side and passes the result in.
+Shiki, highlight.js and Prism all emit a `<pre><code>` tree; the block strips the outer
+padding and background so the frame stays consistent, and gives Shiki's `.line` spans
+their gutter. This site renders with Shiki on the server:
 
-Line numbers are `aria-hidden` and unselectable, so copying the block gives you code rather
-than code with numbers down the left.
+```ts
+const html = await codeToHtml(source, { lang: "ts", theme: "github-dark-default" });
+```
+
+```svelte
+<CodeBlock {code} {html} language="ts" filename="lib/cn.ts" />
+```
+
+Plain mode has no `innerHTML`, so an untrusted snippet cannot inject markup. Line numbers
+are `aria-hidden` and unselectable, so a copy gives you code, not code with a gutter.

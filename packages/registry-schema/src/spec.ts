@@ -77,7 +77,7 @@ export const ComponentSpecSchema = z.object({
 	description: z.string().min(1),
 	category: CategorySchema,
 	tier: z.enum(["free", "pro"]).default("free"),
-	status: z.enum(["stable", "beta", "experimental"]).default("beta"),
+	status: z.enum(["stable", "beta", "alpha", "experimental"]).default("beta"),
 
 	props: z.array(PropSpecSchema).default([]),
 	/** Named variant axes, e.g. `{ variant: ["default","ghost"], size: ["sm","lg"] }`. */
