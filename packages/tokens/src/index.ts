@@ -11,7 +11,7 @@ export const duration = {
 	tooltip: 150,
 	dropdown: 200,
 	overlay: 280,
-	drawer: 420,
+	drawer: 500,
 } as const;
 
 export const staggerStep = 45;

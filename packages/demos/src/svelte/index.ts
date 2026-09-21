@@ -20,6 +20,7 @@ import ContextMenuDemo from "./context-menu-demo.svelte";
 import ConversationDemo from "./conversation-demo.svelte";
 import CopyButtonDemo from "./copy-button-demo.svelte";
 import DialogDemo from "./dialog-demo.svelte";
+import DrawerDemo from "./drawer-demo.svelte";
 import DropdownMenuDemo from "./dropdown-menu-demo.svelte";
 import FileDiffDemo from "./file-diff-demo.svelte";
 import FileTreeDemo from "./file-tree-demo.svelte";
@@ -107,6 +108,7 @@ export const demos: Record<string, DemoComponent> = {
 	pagination: as(PaginationDemo),
 	"scroll-area": as(ScrollAreaDemo),
 	dialog: as(DialogDemo),
+	drawer: as(DrawerDemo),
 	"alert-dialog": as(AlertDialogDemo),
 	sheet: as(SheetDemo),
 	toast: as(ToastDemo),

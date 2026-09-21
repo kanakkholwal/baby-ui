@@ -1,7 +1,7 @@
 <script lang="ts">
-import { specs } from "@baby-ui/registry-schema/components";
 import ComponentCard from "$lib/components/component-card.svelte";
 import { CATEGORY_BLURB, CATEGORY_LABEL } from "$lib/registry";
+import { specs } from "@baby-ui/registry-schema/components";
 import type { PageProps } from "./$types";
 
 let { data }: PageProps = $props();
@@ -11,7 +11,7 @@ const items = $derived(data.slugs.map((slug) => specs.find((s) => s.slug === slu
 </script>
 
 <svelte:head>
-	<title>{label} — baby-ui</title>
+	<title>{label}· Baby UI</title>
 	<meta name="description" content={CATEGORY_BLURB[data.category]} />
 </svelte:head>
 

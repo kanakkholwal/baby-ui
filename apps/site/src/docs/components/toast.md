@@ -1,19 +1,27 @@
 ---
 title: Toast
-description: Stacked notifications in a live region, dismissible and tone-aware.
+description: "sonner's stack in beUI's clothing: one Toaster, then toast() from anywhere."
 component: toast
 category: base
-tags: [toast]
+tags: [toast, sonner, notification]
 ---
 
-The container is `aria-live="polite"`, so a new toast is announced without cutting off
-whatever is being read.
+Mount `Toaster` once near the root, then call `toast()` from any module. sonner (React) and
+svelte-sonner (Svelte) own stacking, swipe to dismiss, timers and the live region; every
+class on the toast is ours, so it matches beUI's layout: round tinted icon, title, two-line
+description, pill action, round close.
 
-## Nothing auto-dismisses
+## Calls
 
-There is no timer. A notification that removes itself after four seconds is unreadable for
-anyone who reads slowly, is mid-sentence elsewhere, or uses a screen reader. The caller
-owns the array and decides when something leaves.
+```ts
+toast("Draft saved");
+toast.success("Invite sent", { description: "mia@acme.dev can join." });
+toast.error("Payment declined", { action: { label: "Retry", onClick: retry } });
+toast.promise(deploy(), { loading: "Deploying…", success: "Live", error: "Failed" });
+```
 
-The container is `pointer-events-none` with each card set to `auto`, so the empty space
-around the stack never swallows a click meant for the page.
+## Timing
+
+Four seconds by default, paused while the pointer is over the stack or the tab is hidden.
+Pass `duration: Infinity` for anything a person must act on; `closeButton` stays on so it
+can always be dismissed.

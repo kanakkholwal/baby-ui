@@ -27,6 +27,15 @@ import {
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
+	Drawer,
+	DrawerClose,
+	DrawerContent,
+	DrawerDescription,
+	type DrawerDirection,
+	DrawerFooter,
+	DrawerHeader,
+	DrawerTitle,
+	DrawerTrigger,
 	FullscreenNav,
 	Input,
 	Label,
@@ -42,10 +51,11 @@ import {
 	SheetTitle,
 	SheetTrigger,
 	Shortcut,
-	Toast,
-	type ToastItem,
-	type ToastTone,
+	Slider,
+	Toaster,
+	type ToasterProps,
 	Toolbar,
+	toast,
 } from "@baby-ui/react";
 import { useId, useState } from "react";
 
@@ -180,47 +190,96 @@ export function SheetDemo({ props }: { props: Props }) {
 	);
 }
 
-export function ToastDemo({ props }: { props: Props }) {
-	const [toasts, setToasts] = useState<ToastItem[]>([
-		{
-			id: "1",
-			title: "Deploy finished",
-			description: "Live in 4 regions.",
-			tone: "success",
+// The same set beUI's preview opens, plus the tones it lacks.
+const TOAST_EXAMPLES: { label: string; run: () => unknown }[] = [
+	{ label: "Title only", run: () => toast.success("Saved") },
+	{
+		label: "Promise",
+		run: () => {
+			// A shared `description` on toast.promise() would show on every state; updating
+			// the same id by hand gives loading and success their own, like beUI's demo.
+			const id = toast.loading("Publishing component", {
+				description: "Bundling source, preview, and registry metadata.",
+			});
+			setTimeout(() => {
+				toast.success("Component published", {
+					id,
+					description: "Registry endpoint and raw source are available.",
+				});
+			}, 1800);
 		},
-	]);
+	},
+	{
+		label: "Success",
+		run: () =>
+			toast.success("Component published", {
+				description: "Registry endpoint and raw source are available.",
+			}),
+	},
+	{
+		label: "Error",
+		run: () =>
+			toast.error("Snapshot failed", {
+				description: "Retry after the browser target settles.",
+			}),
+	},
+	{
+		label: "Warning",
+		run: () =>
+			toast.warning("Quota at 90%", {
+				description: "Builds pause when the month's minutes run out.",
+			}),
+	},
+	{
+		label: "Info",
+		run: () =>
+			toast.info("New version available", { description: "Reload to pick up 0.4.2." }),
+	},
+	{
+		label: "Action",
+		run: () =>
+			toast("Invite sent", {
+				description: "mia@acme.dev can join the workspace.",
+				action: { label: "Undo", onClick: () => toast("Invite withdrawn") },
+			}),
+	},
+];
 
-	function push(tone: ToastTone) {
-		setToasts((prev) => {
-			const n = prev.length + 1;
-			return [
-				...prev,
-				{
-					id: String(Date.now()),
-					title: `Notification ${n}`,
-					description: "Dismiss me.",
-					tone,
-				},
-			];
-		});
-	}
-
+export function ToastDemo({ props }: { props: Props }) {
+	const position = (props.position as ToasterProps["position"]) ?? "bottom-right";
 	return (
-		<>
-			<div className="flex flex-wrap gap-2">
-				<button type="button" className={BTN} onClick={() => push("info")}>
-					Add toast
-				</button>
-				<button type="button" className={BTN} onClick={() => push("error")}>
-					Add error
-				</button>
+		<div className="flex flex-col items-center gap-4">
+			<div className="flex flex-wrap items-center justify-center gap-2">
+				{TOAST_EXAMPLES.map((example) => (
+					<Button
+						key={example.label}
+						variant="outline"
+						size="sm"
+						className="rounded-full"
+						onClick={example.run}
+					>
+						{example.label}
+					</Button>
+				))}
+				<Button
+					variant="ghost"
+					size="sm"
+					className="rounded-full"
+					onClick={() => toast.dismiss()}
+				>
+					Clear
+				</Button>
 			</div>
-			<Toast
-				toasts={toasts}
-				position={(props.position as never) ?? "bottom-right"}
-				onDismiss={(id) => setToasts((prev) => prev.filter((t) => t.id !== id))}
+			<p className="max-w-sm text-center text-muted-foreground text-xs leading-5">
+				Toasts render fixed on the screen. Change the position in the controls to open
+				from another edge.
+			</p>
+			<Toaster
+				position={position}
+				expand={props.expand !== false}
+				closeButton={props.closeButton !== false}
 			/>
-		</>
+		</div>
 	);
 }
 
@@ -339,5 +398,52 @@ export function FullscreenNavDemo({ props }: { props: Props }) {
 				title={(props.title as string) || "Menu"}
 			/>
 		</>
+	);
+}
+
+export function DrawerDemo({ props }: { props: Props }) {
+	const [open, setOpen] = useState(false);
+	const [budget, setBudget] = useState(60);
+	return (
+		<Drawer
+			open={open}
+			onOpenChange={setOpen}
+			direction={(props.direction as DrawerDirection) ?? "bottom"}
+			dismissible={props.dismissible !== false}
+		>
+			<DrawerTrigger className={BTN}>Set a budget</DrawerTrigger>
+			<DrawerContent>
+				<DrawerHeader>
+					<DrawerTitle>Monthly budget</DrawerTitle>
+					<DrawerDescription>
+						Alerts go out when spend crosses this line.
+					</DrawerDescription>
+				</DrawerHeader>
+				<DrawerClose />
+				<div className="mt-6 flex flex-col gap-4">
+					<div className="flex items-baseline justify-between">
+						<span className="text-muted-foreground text-sm">Limit</span>
+						<span className="font-semibold text-3xl text-foreground tabular-nums">
+							${budget}
+						</span>
+					</div>
+					<Slider
+						value={budget}
+						onValueChange={setBudget}
+						min={10}
+						max={200}
+						step={5}
+						label="Monthly budget"
+					/>
+					<p className="text-muted-foreground text-xs">Spent so far this month: $42.</p>
+				</div>
+				<DrawerFooter>
+					<DrawerClose className="inline-flex h-9 items-center justify-center rounded-lg px-3 font-medium text-foreground text-sm transition-colors hover:bg-foreground/[0.06]">
+						Cancel
+					</DrawerClose>
+					<Button onClick={() => setOpen(false)}>Save budget</Button>
+				</DrawerFooter>
+			</DrawerContent>
+		</Drawer>
 	);
 }

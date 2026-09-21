@@ -11,7 +11,7 @@
 	--duration-tooltip: 150ms;
 	--duration-dropdown: 200ms;
 	--duration-overlay: 280ms;
-	--duration-drawer: 420ms;
+	--duration-drawer: 500ms;
 	/* Leaving is never the moment the user waits on, so every exit undercuts its entrance. */
 	--duration-exit: 120ms;
 

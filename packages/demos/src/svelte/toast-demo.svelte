@@ -1,33 +1,81 @@
 <script lang="ts">
-import { Toast, type ToastItem, type ToastTone } from "@baby-ui/svelte";
+import { Button, Toaster, type ToasterProps, toast } from "@baby-ui/svelte";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
 
-let toasts = $state<ToastItem[]>([
-	{
-		id: "1",
-		title: "Deploy finished",
-		description: "Live in 4 regions.",
-		tone: "success",
-	},
-]);
-let n = $state(1);
+const position = $derived((props.position as ToasterProps["position"]) ?? "bottom-right");
 
-function push(tone: ToastTone) {
-	n += 1;
-	toasts = [
-		...toasts,
-		{ id: String(n), title: `Notification ${n}`, description: "Dismiss me.", tone },
-	];
-}
+// The same set beUI's preview opens, plus the tones it lacks.
+const EXAMPLES = [
+	{ label: "Title only", run: () => toast.success("Saved") },
+	{
+		label: "Promise",
+		run: () => {
+			// svelte-sonner's toast.promise() shares one `description` across every
+			// state; updating the same id by hand gives loading and success their own.
+			const id = toast.loading("Publishing component", {
+				description: "Bundling source, preview, and registry metadata.",
+			});
+			setTimeout(() => {
+				toast.success("Component published", {
+					id,
+					description: "Registry endpoint and raw source are available.",
+				});
+			}, 1800);
+		},
+	},
+	{
+		label: "Success",
+		run: () =>
+			toast.success("Component published", {
+				description: "Registry endpoint and raw source are available.",
+			}),
+	},
+	{
+		label: "Error",
+		run: () =>
+			toast.error("Snapshot failed", {
+				description: "Retry after the browser target settles.",
+			}),
+	},
+	{
+		label: "Warning",
+		run: () =>
+			toast.warning("Quota at 90%", {
+				description: "Builds pause when the month's minutes run out.",
+			}),
+	},
+	{
+		label: "Info",
+		run: () =>
+			toast.info("New version available", { description: "Reload to pick up 0.4.2." }),
+	},
+	{
+		label: "Action",
+		run: () =>
+			toast("Invite sent", {
+				description: "mia@acme.dev can join the workspace.",
+				action: { label: "Undo", onClick: () => toast("Invite withdrawn") },
+			}),
+	},
+];
 </script>
 
-<div class="flex flex-wrap gap-2">
-	<button type="button" class="inline-flex h-9 items-center rounded-lg border border-border bg-card px-3 font-medium text-foreground text-sm" onclick={() => push("info")}>Add toast</button>
-	<button type="button" class="inline-flex h-9 items-center rounded-lg border border-border bg-card px-3 font-medium text-foreground text-sm" onclick={() => push("error")}>Add error</button>
+<div class="flex flex-col items-center gap-4">
+	<div class="flex flex-wrap items-center justify-center gap-2">
+		{#each EXAMPLES as example (example.label)}
+			<Button variant="outline" size="sm" class="rounded-full" onclick={example.run}>
+				{example.label}
+			</Button>
+		{/each}
+		<Button variant="ghost" size="sm" class="rounded-full" onclick={() => toast.dismiss()}>
+			Clear
+		</Button>
+	</div>
+	<p class="max-w-sm text-center text-muted-foreground text-xs leading-5">
+		Toasts render fixed on the screen. Change the position in the controls to open from
+		another edge.
+	</p>
 </div>
 
-<Toast
-	bind:toasts
-	position={(props.position as "bottom-right" | "bottom-center" | "top-right") ?? "bottom-right"}
-/>
+<Toaster {position} expand={props.expand !== false} closeButton={props.closeButton !== false} />

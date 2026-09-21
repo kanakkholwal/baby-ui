@@ -1,6 +1,6 @@
 <script lang="ts">
-import { specs } from "@baby-ui/registry-schema/components";
 import { page } from "$app/state";
+import { specs } from "@baby-ui/registry-schema/components";
 
 const status = $derived(page.status);
 const notFound = $derived(status === 404);
@@ -26,7 +26,7 @@ const message = $derived(
 );
 </script>
 
-<svelte:head><title>{status} — baby-ui</title></svelte:head>
+<svelte:head><title>{status}· Baby UI</title></svelte:head>
 
 <main class="mx-auto flex min-h-[70vh] max-w-2xl flex-col justify-center px-6 py-20">
 	<p

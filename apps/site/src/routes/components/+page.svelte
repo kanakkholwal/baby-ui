@@ -1,14 +1,14 @@
 <script lang="ts">
-import { specs } from "@baby-ui/registry-schema/components";
 import ComponentCard from "$lib/components/component-card.svelte";
 import { CATEGORY_LABEL } from "$lib/registry";
+import { specs } from "@baby-ui/registry-schema/components";
 import type { PageProps } from "./$types";
 
 let { data }: PageProps = $props();
 </script>
 
 <svelte:head>
-	<title>Components — baby-ui</title>
+	<title>Components· Baby UI</title>
 	<meta name="description" content="Every component in the registry, in React and Svelte." />
 </svelte:head>
 

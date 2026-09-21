@@ -20,6 +20,7 @@ import { contextMenu } from "./context-menu";
 import { conversation } from "./conversation";
 import { copyButton } from "./copy-button";
 import { dialog } from "./dialog";
+import { drawer } from "./drawer";
 import { dropdownMenu } from "./dropdown-menu";
 import { fileDiff } from "./file-diff";
 import { fileTree } from "./file-tree";
@@ -114,6 +115,7 @@ export const specs: ComponentSpec[] = [
 	fileTree,
 	morphingModal,
 	dialog,
+	drawer,
 	message,
 	responseStream,
 	reasoning,
