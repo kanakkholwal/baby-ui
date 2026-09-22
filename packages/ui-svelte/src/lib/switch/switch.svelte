@@ -1,6 +1,7 @@
 <script lang="ts">
+import { Switch as SwitchPrimitive } from "bits-ui";
 import { cn } from "../lib/cn";
-import { SWITCH_TRAVEL, type SwitchSize, switchThumb, switchTrack } from "./variants";
+import { type SwitchSize, switchThumb, switchTrack } from "./variants";
 
 type Props = {
 	checked?: boolean;
@@ -19,39 +20,19 @@ let {
 }: Props = $props();
 
 const id = $props.id();
-let pressed = $state(false);
-let shaking = $state(false);
-
-// Refusal is feedback: a disabled switch says no rather than doing nothing.
-function refuse() {
-	shaking = false;
-	requestAnimationFrame(() => (shaking = true));
-}
 </script>
 
 {#snippet control()}
-	<button
+	<SwitchPrimitive.Root
 		{id}
-		type="button"
-		role="switch"
-		aria-checked={checked}
+		{disabled}
+		bind:checked
 		aria-label={label ? undefined : "Toggle"}
-		aria-disabled={disabled || undefined}
-		onclick={() => (disabled ? refuse() : (checked = !checked))}
-		onpointerdown={() => (pressed = true)}
-		onpointerup={() => (pressed = false)}
-		onpointerleave={() => (pressed = false)}
+		data-slot="switch"
 		class={cn(switchTrack({ size }), !label && classProp)}
 	>
-		<span
-			aria-hidden="true"
-			data-shake={shaking || undefined}
-			onanimationend={() => (shaking = false)}
-			style:transform={checked ? `translateX(${SWITCH_TRAVEL[size]})` : "translateX(0)"}
-			style:scale={pressed && !disabled ? "0.9" : "1"}
-			class={switchThumb({ size })}
-		></span>
-	</button>
+		<SwitchPrimitive.Thumb class={switchThumb({ size })} />
+	</SwitchPrimitive.Root>
 {/snippet}
 
 <!-- Bare, so this can replace a shadcn switch; the wrapper only appears with a label. -->

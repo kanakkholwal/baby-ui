@@ -11,6 +11,7 @@ import {
 } from "../command/command";
 import { cn } from "../lib/cn";
 import { Popover, PopoverContent, PopoverTrigger } from "../popover/popover";
+import { type ComboboxSize, combobox } from "./variants";
 
 /** A combobox is a Popover whose content is a Command: shadcn/ui's own combobox recipe,
  * no dedicated positioning, dismiss or search logic of its own. */
@@ -18,15 +19,13 @@ export const Combobox = Popover;
 
 export function ComboboxTrigger({
 	className,
+	size = "md",
 	...props
-}: ComponentProps<typeof PopoverTrigger>) {
+}: ComponentProps<typeof PopoverTrigger> & { size?: ComboboxSize }) {
 	return (
 		<PopoverTrigger
 			role="combobox"
-			className={cn(
-				"h-9 w-64 items-center justify-between gap-2 rounded-lg border border-input bg-background px-3 font-normal text-foreground text-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring",
-				className,
-			)}
+			className={cn(combobox({ size }).trigger(), className)}
 			{...props}
 		/>
 	);
@@ -35,13 +34,13 @@ export function ComboboxTrigger({
 export function ComboboxContent({
 	className,
 	children,
+	size = "md",
 	...props
-}: ComponentProps<typeof PopoverContent>) {
+}: ComponentProps<typeof PopoverContent> & { size?: ComboboxSize }) {
+	const c = combobox({ size });
 	return (
-		<PopoverContent className={cn("w-64 overflow-hidden p-0", className)} {...props}>
-			<Command className="max-h-72 rounded-none border-none bg-transparent shadow-none">
-				{children}
-			</Command>
+		<PopoverContent className={cn(c.content(), className)} {...props}>
+			<Command className={c.list()}>{children}</Command>
 		</PopoverContent>
 	);
 }

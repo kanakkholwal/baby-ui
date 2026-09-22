@@ -18,24 +18,16 @@ export const switchTrack = tv({
 });
 
 export const switchThumb = tv({
-	base: "switch-thumb rounded-full bg-background shadow-sm",
+	base: "switch-thumb rounded-full bg-background shadow-sm transition-transform data-[checked]:scale-100",
 	variants: {
 		size: {
-			sm: "size-3",
-			md: "size-4",
-			lg: "size-5",
-			xl: "size-6",
+			sm: "size-3 data-[checked]:translate-x-3",
+			md: "size-4 data-[checked]:translate-x-4",
+			lg: "size-5 data-[checked]:translate-x-5",
+			xl: "size-6 data-[checked]:translate-x-6",
 		},
 	},
 	defaultVariants: { size: "md" },
 });
 
 export type SwitchSize = NonNullable<VariantProps<typeof switchTrack>["size"]>;
-
-/** How far the thumb travels to the checked position; a CSS value, not a class. */
-export const SWITCH_TRAVEL: Record<SwitchSize, string> = {
-	sm: "0.75rem",
-	md: "1rem",
-	lg: "1.25rem",
-	xl: "1.5rem",
-};

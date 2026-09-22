@@ -48,6 +48,7 @@ export const toggle = defineComponent({
 		notes: [
 			"aria-pressed, not aria-checked: this is a button that stays down, not a checkbox.",
 			"An icon-only toggle needs `label`, or it is announced as an unnamed button.",
+			"State is delegated to Base UI (React) and bits-ui (Svelte); this component only owns the classes and data-slots.",
 		],
 	},
 	licenseOrigin: {
@@ -64,7 +65,7 @@ export const toggle = defineComponent({
 				{ path: "toggle/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "@base-ui/react"],
 		},
 		svelte: {
 			entry: "Toggle",
@@ -73,7 +74,7 @@ export const toggle = defineComponent({
 				{ path: "toggle/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "bits-ui"],
 		},
 	},
 	keywords: ["toggle"],

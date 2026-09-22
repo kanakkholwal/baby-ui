@@ -1,23 +1,21 @@
 <script lang="ts">
-import type { Snippet } from "svelte";
-import type { HTMLButtonAttributes } from "svelte/elements";
+import type { ComponentProps } from "svelte";
 import { cn } from "../lib/cn";
 import PopoverTrigger from "../popover/popover-trigger.svelte";
+import { type ComboboxSize, combobox } from "./variants";
 
 let {
 	children,
 	class: classProp,
+	size = "md",
 	...rest
-}: { children?: Snippet; class?: string } & HTMLButtonAttributes = $props();
+}: ComponentProps<typeof PopoverTrigger> & { size?: ComboboxSize } = $props();
 </script>
 
 <PopoverTrigger
 	{...rest}
 	role="combobox"
-	class={cn(
-		"h-9 w-64 items-center justify-between gap-2 rounded-lg border border-input bg-background px-3 font-normal text-foreground text-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring",
-		classProp,
-	)}
+	class={cn(combobox({ size }).trigger(), classProp)}
 >
 	{@render children?.()}
 </PopoverTrigger>

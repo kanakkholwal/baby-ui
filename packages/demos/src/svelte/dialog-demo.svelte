@@ -25,7 +25,7 @@ const id = $props.id();
 <Dialog
 	bind:open
 	size={(props.size as "sm" | "md" | "lg" | "xl") ?? "md"}
-	variant={(props.variant as DialogVariant) ?? "framed"}
+	variant={(props.variant as DialogVariant) ?? "default"}
 	dismissOnBackdrop={props.dismissOnBackdrop !== false}
 >
 	<DialogTrigger class="inline-flex h-9 items-center rounded-lg border border-border bg-card px-3 font-medium text-foreground text-sm">Add domain</DialogTrigger>

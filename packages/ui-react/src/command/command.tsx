@@ -70,7 +70,7 @@ const CommandHeaderCtx = createContext<((header: CommandHeaderContent) => void) 
 );
 
 /** `framed` outside any CommandDialog too, since a bare Command is still its own surface. */
-const CommandVariantCtx = createContext<DialogVariant>("framed");
+const CommandVariantCtx = createContext<DialogVariant>("default");
 
 export function Command({ className, children, ...props }: ComponentProps<"div">) {
 	const listId = useId();
@@ -203,7 +203,7 @@ export function CommandDialog({
 	className,
 	open,
 	label = "Command palette",
-	variant = "framed",
+	variant = "default",
 	children,
 	onOpenChange,
 }: {
@@ -254,8 +254,9 @@ export function CommandDialog({
 					className,
 				)}
 			>
-				{/* Inset frame: header sits in the rim, the card below it holds input and results. */}
-				{header ? (
+				{/* Inset frame only: header sits in the rim, the card below it holds input and
+				results. shadcn/ui's default Command has no visible header at all. */}
+				{variant === "framed" && header ? (
 					<div
 						data-slot="command-header"
 						className={cn(commandFrame({ variant }).header(), header.className)}

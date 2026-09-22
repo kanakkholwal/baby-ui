@@ -13,6 +13,7 @@
 		"@base-ui/react": "catalog:",
 		"@floating-ui/dom": "catalog:",
 		"clsx": "catalog:",
+		"cmdk": "catalog:",
 		"sonner": "catalog:",
 		"tailwind-merge": "catalog:",
 		"tailwind-variants": "catalog:",

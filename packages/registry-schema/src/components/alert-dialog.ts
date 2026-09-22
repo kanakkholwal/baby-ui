@@ -27,7 +27,7 @@ export const alertDialog = defineComponent({
 			type: '"default" | "framed"',
 			description:
 				"`framed` insets the body in the same rim as Dialog. `default` is the flat shadcn/ui surface.",
-			default: '"framed"',
+			default: "default",
 			control: { kind: "select", options: ["default", "framed"] },
 		},
 	],

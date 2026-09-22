@@ -34,7 +34,7 @@ function run(id: string) {
 	{#if last}<p class="text-muted-foreground text-xs">Ran: {last}</p>{/if}
 </div>
 
-<CommandDialog bind:open variant={(props.variant as DialogVariant) ?? "framed"}>
+<CommandDialog bind:open variant={(props.variant as DialogVariant) ?? "default"}>
 	<Command>
 		<CommandHeader>Command</CommandHeader>
 		<CommandInput placeholder={(props.placeholder as string) || "Type a command or search…"} />

@@ -17,13 +17,17 @@ let comments = $state(false);
 const ROW = "flex w-full flex-row-reverse items-center justify-between gap-4";
 </script>
 
-<Popover placement={(props.placement as never) ?? "bottom-start"} gap={Number(props.gap ?? 6)}>
+<Popover>
 	<PopoverTrigger
 		class="inline-flex h-9 items-center rounded-lg border border-border bg-card px-3 font-medium text-foreground text-sm"
 	>
 		Deploy settings
 	</PopoverTrigger>
-	<PopoverContent class="w-72">
+	<PopoverContent
+		class="w-72"
+		side={(props.side as never) ?? "bottom"}
+		sideOffset={Number(props.sideOffset ?? 6)}
+	>
 		<div class="flex flex-col gap-3">
 			<Label>Preview branches</Label>
 			<Switch bind:checked={autoDeploy} size="sm" label="Auto deploy" class={ROW} />

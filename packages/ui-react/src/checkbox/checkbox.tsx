@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useId, useRef } from "react";
+import { Checkbox as CheckboxPrimitive } from "@base-ui/react/checkbox";
+import { useId } from "react";
 import { cn } from "../lib/cn";
 import { type CheckboxSize, checkbox } from "./variants";
 
@@ -19,7 +20,7 @@ export interface CheckboxProps {
 }
 
 export function Checkbox({
-	checked = false,
+	checked,
 	indeterminate = false,
 	disabled = false,
 	size = "md",
@@ -30,34 +31,25 @@ export function Checkbox({
 	onCheckedChange,
 }: CheckboxProps) {
 	const id = useId();
-	const el = useRef<HTMLInputElement>(null);
 	const frame = checkbox({ size });
 
-	// indeterminate is a DOM property, not an attribute, so it has to be set here.
-	useEffect(() => {
-		if (el.current) el.current.indeterminate = indeterminate;
-	}, [indeterminate]);
-
 	const control = (
-		<span className={cn(frame.wrapper(), !label && !description && className)}>
-			<input
-				ref={el}
-				id={id}
-				name={name}
-				disabled={disabled}
-				type="checkbox"
-				checked={checked}
-				onChange={(e) => onCheckedChange?.(e.currentTarget.checked)}
-				className="peer absolute inset-0 size-full cursor-pointer opacity-0 disabled:cursor-not-allowed"
-			/>
-			<span aria-hidden className={frame.box()}>
+		<CheckboxPrimitive.Root
+			id={id}
+			checked={checked}
+			indeterminate={indeterminate}
+			disabled={disabled}
+			name={name}
+			onCheckedChange={onCheckedChange}
+			data-slot="checkbox"
+			className={cn(frame.box(), !label && !description && className)}
+		>
+			<CheckboxPrimitive.Indicator
+				keepMounted
+				className={cn("text-primary-foreground", frame.mark())}
+			>
 				{indeterminate ? (
-					<svg
-						viewBox="0 0 12 12"
-						fill="none"
-						aria-hidden
-						className={cn("text-primary-foreground", frame.mark())}
-					>
+					<svg viewBox="0 0 12 12" fill="none" aria-hidden className="size-full">
 						<path
 							d="M3 6h6"
 							stroke="currentColor"
@@ -70,8 +62,8 @@ export function Checkbox({
 						viewBox="0 0 12 12"
 						fill="none"
 						aria-hidden
+						className="checkbox-check size-full"
 						data-on={checked}
-						className={cn("checkbox-check text-primary-foreground", frame.mark())}
 					>
 						<path
 							d="M2.5 6.2 4.8 8.5 9.5 3.6"
@@ -82,8 +74,8 @@ export function Checkbox({
 						/>
 					</svg>
 				)}
-			</span>
-		</span>
+			</CheckboxPrimitive.Indicator>
+		</CheckboxPrimitive.Root>
 	);
 
 	// Bare, so this can replace a shadcn checkbox; the wrapper only appears with a label.

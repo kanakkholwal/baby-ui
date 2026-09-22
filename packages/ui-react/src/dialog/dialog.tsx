@@ -70,7 +70,7 @@ export function Dialog({
 	open: openProp,
 	defaultOpen = false,
 	size = "md",
-	variant = "framed",
+	variant = "default",
 	dismissOnBackdrop = true,
 	onOpenChange,
 }: {

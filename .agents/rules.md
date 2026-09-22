@@ -21,14 +21,25 @@ Any agent (Claude Code, Codex, Cursor, Copilot) should read this file first.
 - Base components are shadcn drop-ins: shadcn part names, `data-slot` values, `type` /
   `collapsible` / `value` style props. Check the shadcn API before designing one.
 - **HARD RULE (P1):** every base component with a real interaction engine (open/closed state,
-  focus management, keyboard nav, selection — not just menus) is built on
-  `@base-ui-components/react` (React) / `bits-ui` (Svelte), the same primitives shadcn/ui and
-  shadcn-svelte themselves use, never a hand-rolled state machine. Keep the styling layer thin:
-  `data-slot`, `variants.ts` classes, and the motion contract on top (match the primitive's own
-  `data-state`/`data-side`/`data-highlighted`, not just our own `data-placement`). Menus
-  (ContextMenu/DropdownMenu) use `@radix-ui/react-*` specifically, since shadcn/ui still bases
-  those on Radix. Does not apply to components with no interaction engine (Badge, Avatar,
-  Typography, Skeleton). See `base-primitives-hard-rule` / `prefer-primitives-for-menus` memory.
+  focus management, keyboard nav, selection — not just menus) is built on `@base-ui/react`
+  (React — package renamed from `@base-ui-components/react`, which is deprecated) / `bits-ui`
+  (Svelte), the same primitives shadcn/ui and shadcn-svelte themselves use, never a hand-rolled
+  state machine. This includes menus (ContextMenu/DropdownMenu use Base UI's own `menu`/
+  `context-menu`, not Radix). Keep the styling layer thin: `data-slot`, `variants.ts` classes,
+  and the motion contract on top (match the primitive's own `data-state`/`data-open`/
+  `data-side`/`data-highlighted`, not just our own `data-placement`). Does not apply to
+  components with no interaction engine (Badge, Avatar, Typography, Skeleton) or ones that
+  already ride the same primitive shadcn/ui itself uses (Drawer on vaul, Toast on sonner).
+  Collapsible-style parts (Accordion, Collapsible, Tabs panels) hide closed content via a native
+  `hidden` attribute by default, which silently kills CSS transitions — pass `forceMount`
+  (bits-ui) / rely on `keepMounted` (Base UI) and verify by sampling the animated property across
+  frames, not just checking end-state attributes. See `base-primitives-hard-rule` /
+  `prefer-primitives-for-menus` / `primitive-hidden-attribute-breaks-css-transitions` memory.
+- `apps/site`'s own component demo pages do NOT render the React port even when "React" is
+  selected — `REACT_RUNNER_URL` is hardcoded `null`, so it silently falls back to the Svelte
+  demo. Verify React live via `apps/playground/react-runner` (port 5174) or `pnpm playground`;
+  URL scheme `?slug=<component>&props=<json>`. See `react-preview-is-fake-use-playground-runners`
+  memory.
 - **HARD RULE (P1):** a component's `variant`/`size`-style prop types are *derived*, never
   hand-typed literal unions. One `variants.ts` per component (or shared, when two components
   genuinely share an axis, e.g. Dialog/AlertDialog/Command's inset-rim treatment):

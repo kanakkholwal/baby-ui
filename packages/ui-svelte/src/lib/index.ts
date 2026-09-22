@@ -6,7 +6,7 @@ export { default as AccordionTrigger } from "./accordion/accordion-trigger.svelt
 export { default as Alert } from "./alert/alert.svelte";
 export { default as AlertDescription } from "./alert/alert-description.svelte";
 export { default as AlertTitle } from "./alert/alert-title.svelte";
-export type { AlertVariant } from "./alert/variants";
+export { ALERT_ICON, type AlertVariant } from "./alert/variants";
 export { default as AlertDialog } from "./alert-dialog/alert-dialog.svelte";
 export { default as AlertDialogAction } from "./alert-dialog/alert-dialog-action.svelte";
 export { default as AlertDialogCancel } from "./alert-dialog/alert-dialog-cancel.svelte";
@@ -50,6 +50,7 @@ export { default as ColorPicker } from "./color-picker/color-picker.svelte";
 export { default as Combobox } from "./combobox/combobox.svelte";
 export { default as ComboboxContent } from "./combobox/combobox-content.svelte";
 export { default as ComboboxTrigger } from "./combobox/combobox-trigger.svelte";
+export type { ComboboxSize } from "./combobox/variants";
 export { default as Command } from "./command/command.svelte";
 export { default as CommandDialog } from "./command/command-dialog.svelte";
 export {

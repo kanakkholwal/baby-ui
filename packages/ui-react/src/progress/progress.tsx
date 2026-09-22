@@ -1,3 +1,4 @@
+import { Progress as ProgressPrimitive } from "@base-ui/react/progress";
 import { cn } from "../lib/cn";
 import { type ProgressSize, progressTrack } from "./variants";
 
@@ -21,22 +22,18 @@ export function Progress({
 	const clamped = Math.min(100, Math.max(0, value));
 
 	return (
-		<div
-			role="progressbar"
+		<ProgressPrimitive.Root
+			value={indeterminate ? null : clamped}
 			aria-label={label}
-			aria-valuemin={0}
-			aria-valuemax={100}
-			aria-valuenow={indeterminate ? undefined : clamped}
-			className={cn(progressTrack({ size }), className)}
+			data-slot="progress"
 		>
-			{indeterminate ? (
-				<div className="progress-sweep h-full w-2/5 rounded-full bg-primary" />
-			) : (
-				<div
-					style={{ width: `${clamped}%` }}
-					className="h-full rounded-full bg-primary transition-[width] duration-[var(--duration-overlay)] ease-[var(--ease-out)] motion-reduce:transition-none"
-				/>
-			)}
-		</div>
+			<ProgressPrimitive.Track className={cn(progressTrack({ size }), className)}>
+				{indeterminate ? (
+					<div className="progress-sweep h-full w-2/5 rounded-full bg-primary" />
+				) : (
+					<ProgressPrimitive.Indicator className="h-full rounded-full bg-primary transition-[width] duration-[var(--duration-overlay)] ease-[var(--ease-out)] motion-reduce:transition-none" />
+				)}
+			</ProgressPrimitive.Track>
+		</ProgressPrimitive.Root>
 	);
 }

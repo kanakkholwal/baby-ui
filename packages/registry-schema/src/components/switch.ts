@@ -50,6 +50,7 @@ export const switchComponent = defineComponent({
 		keyboard: ["Space toggles the switch", "Enter toggles the switch"],
 		notes: [
 			"Uses role=switch with aria-checked, not a checkbox: a switch takes effect immediately, a checkbox waits for submit.",
+			"State, keyboard and the hidden input are delegated to Base UI (React) and bits-ui (Svelte); this component only owns the classes and data-slots.",
 		],
 	},
 	licenseOrigin: {
@@ -66,7 +67,7 @@ export const switchComponent = defineComponent({
 				{ path: "switch/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "@base-ui/react"],
 		},
 		svelte: {
 			entry: "Switch",
@@ -75,7 +76,7 @@ export const switchComponent = defineComponent({
 				{ path: "switch/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "bits-ui"],
 		},
 	},
 	keywords: ["switch", "toggle", "form", "setting"],

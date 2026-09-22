@@ -44,6 +44,7 @@ export const progress = defineComponent({
 		keyboard: [],
 		notes: [
 			"Determinate sets aria-valuenow, aria-valuemin and aria-valuemax; indeterminate omits aria-valuenow entirely rather than reporting 0.",
+			"aria attributes are delegated to Base UI (React) and bits-ui (Svelte); this component only owns the classes and data-slots.",
 		],
 	},
 	licenseOrigin: {
@@ -60,7 +61,7 @@ export const progress = defineComponent({
 				{ path: "progress/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "@base-ui/react"],
 		},
 		svelte: {
 			entry: "Progress",
@@ -69,7 +70,7 @@ export const progress = defineComponent({
 				{ path: "progress/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "bits-ui"],
 		},
 	},
 	keywords: ["progress", "loading", "bar"],

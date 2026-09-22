@@ -1,33 +1,16 @@
 "use client";
 
-import type { ComponentProps, KeyboardEvent, ReactNode } from "react";
-import { createContext, useCallback, useContext, useId, useMemo, useRef } from "react";
+import { Radio } from "@base-ui/react/radio";
+import { RadioGroup as RadioGroupPrimitive } from "@base-ui/react/radio-group";
+import { createContext, type ReactNode, useContext, useId } from "react";
 import { cn } from "../lib/cn";
 import { type RadioSize, type RadioVariant, radioGroup } from "./variants";
 
 export type { RadioSize, RadioVariant };
 
-type Ctx = {
-	value: string;
-	name?: string;
-	size: RadioSize;
-	variant: RadioVariant;
-	disabled: boolean;
-	setValue: (value: string) => void;
-	step: (from: string, delta: -1 | 1) => void;
-};
-
-const RadioCtx = createContext<Ctx | null>(null);
-
-function useRadioGroup() {
-	const ctx = useContext(RadioCtx);
-	if (!ctx) throw new Error("RadioGroupItem must be used inside <RadioGroup>");
-	return ctx;
-}
-
 export function RadioGroup({
 	className,
-	value = "",
+	value,
 	orientation = "vertical",
 	variant = "default",
 	size = "md",
@@ -36,7 +19,8 @@ export function RadioGroup({
 	onValueChange,
 	children,
 	...props
-}: Omit<ComponentProps<"div">, "onChange"> & {
+}: {
+	className?: string;
 	value?: string;
 	orientation?: "vertical" | "horizontal";
 	variant?: RadioVariant;
@@ -44,50 +28,38 @@ export function RadioGroup({
 	disabled?: boolean;
 	name?: string;
 	onValueChange?: (value: string) => void;
+	children?: ReactNode;
 }) {
-	const root = useRef<HTMLDivElement>(null);
-
-	const setValue = useCallback((next: string) => onValueChange?.(next), [onValueChange]);
-
-	const step = useCallback(
-		(from: string, delta: -1 | 1) => {
-			const items = [
-				...(root.current?.querySelectorAll<HTMLElement>("[data-value]") ?? []),
-			];
-			const i = items.findIndex((el) => el.dataset.value === from);
-			const next = items[(i + delta + items.length) % items.length];
-			if (!next?.dataset.value) return;
-			onValueChange?.(next.dataset.value);
-			next.focus();
-		},
-		[onValueChange],
-	);
-
-	const ctx = useMemo(
-		() => ({ value, name, size, variant, disabled, setValue, step }),
-		[value, name, size, variant, disabled, setValue, step],
-	);
-
 	return (
-		<RadioCtx.Provider value={ctx}>
-			<div
-				ref={root}
-				role="radiogroup"
-				data-slot="radio-group"
-				aria-orientation={orientation}
-				className={cn(
-					"flex gap-2",
-					orientation === "vertical" ? "flex-col" : "flex-row flex-wrap items-start",
-					disabled && "opacity-50",
-					className,
-				)}
-				{...props}
-			>
+		<RadioGroupPrimitive
+			value={value}
+			disabled={disabled}
+			name={name}
+			onValueChange={onValueChange}
+			data-slot="radio-group"
+			aria-orientation={orientation}
+			className={cn(
+				"flex gap-2",
+				orientation === "vertical" ? "flex-col" : "flex-row flex-wrap items-start",
+				disabled && "opacity-50",
+				className,
+			)}
+			{...props}
+		>
+			<RadioGroupItemVariantCtx.Provider value={{ variant, size }}>
 				{children}
-			</div>
-		</RadioCtx.Provider>
+			</RadioGroupItemVariantCtx.Provider>
+		</RadioGroupPrimitive>
 	);
 }
+
+const RadioGroupItemVariantCtx = createContext<{
+	variant: RadioVariant;
+	size: RadioSize;
+}>({
+	variant: "default",
+	size: "md",
+});
 
 export function RadioGroupItem({
 	className,
@@ -104,19 +76,9 @@ export function RadioGroupItem({
 	disabled?: boolean;
 	children?: ReactNode;
 }) {
-	const group = useRadioGroup();
 	const id = useId();
-	const checked = group.value === value;
-	const off = disabled || group.disabled;
-	const frame = radioGroup({ variant: group.variant, size: group.size });
-
-	function onKeyDown(event: KeyboardEvent) {
-		const forward = event.key === "ArrowDown" || event.key === "ArrowRight";
-		const back = event.key === "ArrowUp" || event.key === "ArrowLeft";
-		if (!forward && !back) return;
-		event.preventDefault();
-		group.step(value, forward ? 1 : -1);
-	}
+	const { variant, size } = useContext(RadioGroupItemVariantCtx);
+	const frame = radioGroup({ variant, size });
 
 	return (
 		<label
@@ -124,21 +86,9 @@ export function RadioGroupItem({
 			data-slot="radio-group-item"
 			className={cn(frame.label(), className)}
 		>
-			<input
-				id={id}
-				value={value}
-				type="radio"
-				name={group.name}
-				disabled={off}
-				checked={checked}
-				data-value={value}
-				onChange={() => group.setValue(value)}
-				onKeyDown={onKeyDown}
-				className="peer sr-only"
-			/>
-			<span aria-hidden className={frame.ring()}>
-				<span data-on={checked} className={frame.dot()} />
-			</span>
+			<Radio.Root id={id} value={value} disabled={disabled} className={frame.ring()}>
+				<Radio.Indicator keepMounted className={frame.dot()} />
+			</Radio.Root>
 			<span className="min-w-0">
 				{children ?? (label ? <span className="block">{label}</span> : null)}
 				{description ? (

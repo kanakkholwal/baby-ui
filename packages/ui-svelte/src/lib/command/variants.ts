@@ -20,5 +20,5 @@ export const commandFrame = tv({
 			},
 		},
 	},
-	defaultVariants: { variant: "framed" },
+	defaultVariants: { variant: "default" },
 });

@@ -13,12 +13,8 @@ export const commandFrame = tv({
 	variants: {
 		variant: {
 			framed: { panel: "p-1", header: "pt-1.5 pb-2", body: "rounded-[11px] bg-card" },
-			default: {
-				panel: "p-0",
-				header: "border-border border-b py-2.5",
-				body: "bg-popover",
-			},
+			default: { panel: "p-0", body: "bg-popover" },
 		},
 	},
-	defaultVariants: { variant: "framed" },
+	defaultVariants: { variant: "default" },
 });

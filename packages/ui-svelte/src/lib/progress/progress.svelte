@@ -1,4 +1,5 @@
 <script lang="ts">
+import { Progress as ProgressPrimitive } from "bits-ui";
 import { cn } from "../lib/cn";
 import { type ProgressSize, progressTrack } from "./variants";
 
@@ -21,12 +22,10 @@ let {
 const clamped = $derived(Math.min(100, Math.max(0, value)));
 </script>
 
-<div
-	role="progressbar"
+<ProgressPrimitive.Root
+	value={indeterminate ? null : clamped}
 	aria-label={label}
-	aria-valuemin={0}
-	aria-valuemax={100}
-	aria-valuenow={indeterminate ? undefined : clamped}
+	data-slot="progress"
 	class={cn(progressTrack({ size }), classProp)}
 >
 	{#if indeterminate}
@@ -37,4 +36,4 @@ const clamped = $derived(Math.min(100, Math.max(0, value)));
 			class="h-full rounded-full bg-primary transition-[width] duration-[var(--duration-overlay)] ease-[var(--ease-out)] motion-reduce:transition-none"
 		></div>
 	{/if}
-</div>
+</ProgressPrimitive.Root>

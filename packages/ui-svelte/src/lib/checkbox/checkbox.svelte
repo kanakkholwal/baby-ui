@@ -1,4 +1,5 @@
 <script lang="ts">
+import { Checkbox as CheckboxPrimitive } from "bits-ui";
 import { cn } from "../lib/cn";
 import { type CheckboxSize, checkbox } from "./variants";
 
@@ -15,7 +16,7 @@ type Props = {
 
 let {
 	checked = $bindable(false),
-	indeterminate = false,
+	indeterminate = $bindable(false),
 	disabled = false,
 	size = "md",
 	label,
@@ -26,27 +27,20 @@ let {
 
 const frame = $derived(checkbox({ size }));
 const id = $props.id();
-let el = $state<HTMLInputElement>();
-
-// indeterminate is a DOM property, not an attribute, so it has to be set here.
-$effect(() => {
-	if (el) el.indeterminate = indeterminate;
-});
 </script>
 
 {#snippet control()}
-	<span class={cn(frame.wrapper(), !label && !description && classProp)}>
-		<input
-			bind:this={el}
-			bind:checked
-			{id}
-			{name}
-			{disabled}
-			type="checkbox"
-			class="peer absolute inset-0 size-full cursor-pointer opacity-0 disabled:cursor-not-allowed"
-		/>
-		<span aria-hidden="true" class={frame.box()}>
-			{#if indeterminate}
+	<CheckboxPrimitive.Root
+		{id}
+		{name}
+		{disabled}
+		bind:checked
+		bind:indeterminate
+		data-slot="checkbox"
+		class={cn(frame.box(), !label && !description && classProp)}
+	>
+		{#snippet children({ checked: isChecked, indeterminate: isIndeterminate })}
+			{#if isIndeterminate}
 				<svg
 					viewBox="0 0 12 12"
 					fill="none"
@@ -60,7 +54,7 @@ $effect(() => {
 					viewBox="0 0 12 12"
 					fill="none"
 					aria-hidden="true"
-					data-on={checked}
+					data-on={isChecked}
 					class={cn("checkbox-check text-primary-foreground", frame.mark())}
 				>
 					<path
@@ -72,8 +66,8 @@ $effect(() => {
 					/>
 				</svg>
 			{/if}
-		</span>
-	</span>
+		{/snippet}
+	</CheckboxPrimitive.Root>
 {/snippet}
 
 <!-- Bare, so this can replace a shadcn checkbox; the wrapper only appears with a label. -->

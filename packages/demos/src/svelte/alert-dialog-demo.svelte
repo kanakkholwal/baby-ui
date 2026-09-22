@@ -18,7 +18,7 @@ let done = $state(false);
 </script>
 
 <div class="flex flex-col items-center gap-3">
-	<AlertDialog variant={(props.variant as DialogVariant) ?? "framed"}>
+	<AlertDialog variant={(props.variant as DialogVariant) ?? "default"}>
 		<AlertDialogTrigger class="inline-flex h-9 items-center rounded-lg border border-border bg-card px-3 font-medium text-foreground text-sm">Delete project</AlertDialogTrigger>
 		<AlertDialogContent>
 			<AlertDialogHeader>

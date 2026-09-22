@@ -75,7 +75,7 @@ export function DialogDemo({ props }: { props: Props }) {
 			open={open}
 			onOpenChange={setOpen}
 			size={(props.size as "sm" | "md" | "lg" | "xl") ?? "md"}
-			variant={(props.variant as DialogVariant) ?? "framed"}
+			variant={(props.variant as DialogVariant) ?? "default"}
 			dismissOnBackdrop={props.dismissOnBackdrop !== false}
 		>
 			<DialogTrigger className={BTN}>Add domain</DialogTrigger>
@@ -128,7 +128,7 @@ export function AlertDialogDemo({ props }: { props: Props }) {
 	const [done, setDone] = useState(false);
 	return (
 		<div className="flex flex-col items-center gap-3">
-			<AlertDialog variant={(props.variant as DialogVariant) ?? "framed"}>
+			<AlertDialog variant={(props.variant as DialogVariant) ?? "default"}>
 				<AlertDialogTrigger className={BTN}>Delete project</AlertDialogTrigger>
 				<AlertDialogContent>
 					<AlertDialogHeader>
@@ -323,7 +323,7 @@ export function CommandDemo({ props }: { props: Props }) {
 			<CommandDialog
 				open={open}
 				onOpenChange={setOpen}
-				variant={(props.variant as DialogVariant) ?? "framed"}
+				variant={(props.variant as DialogVariant) ?? "default"}
 			>
 				<Command>
 					<CommandHeader>Command</CommandHeader>

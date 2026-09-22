@@ -26,7 +26,10 @@ export const collapsible = defineComponent({
 	},
 	a11y: {
 		keyboard: ["Enter and Space toggle the panel"],
-		notes: ["A button with aria-expanded and aria-controls pointing at the region."],
+		notes: [
+			"A button with aria-expanded and aria-controls pointing at the region.",
+			"State and keyboard are delegated to Base UI (React) and bits-ui (Svelte); this component only owns the classes and data-slots.",
+		],
 	},
 	licenseOrigin: {
 		source: "sivir-ui",
@@ -41,7 +44,7 @@ export const collapsible = defineComponent({
 				{ path: "collapsible/collapsible.tsx", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "@base-ui/react"],
 		},
 		svelte: {
 			entry: "Collapsible",
@@ -49,10 +52,9 @@ export const collapsible = defineComponent({
 				{ path: "collapsible/collapsible.svelte", type: "registry:ui" },
 				{ path: "collapsible/collapsible-trigger.svelte", type: "registry:ui" },
 				{ path: "collapsible/collapsible-content.svelte", type: "registry:ui" },
-				{ path: "collapsible/context.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "bits-ui"],
 		},
 	},
 	keywords: ["collapsible"],

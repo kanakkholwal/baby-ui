@@ -27,7 +27,7 @@ export const dialog = defineComponent({
 			type: '"default" | "framed"',
 			description:
 				"`framed` insets the body in a rim: a thin bg-background border around a bg-card surface. `default` is the flat shadcn/ui surface, for dropping into an existing project.",
-			default: '"framed"',
+			default: "default",
 			control: { kind: "select", options: ["default", "framed"] },
 		},
 		{

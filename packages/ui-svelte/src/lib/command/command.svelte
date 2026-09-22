@@ -101,10 +101,10 @@ $effect(() => {
 <div
 	{...rest}
 	data-slot="command"
-	data-variant={dialogState?.variant ?? "framed"}
+	data-variant={dialogState?.variant ?? "default"}
 	class={cn(
 		"relative flex min-h-0 flex-col overflow-hidden text-foreground",
-		commandFrame({ variant: dialogState?.variant ?? "framed" }).body(),
+		commandFrame({ variant: dialogState?.variant ?? "default" }).body(),
 		classProp,
 	)}
 >

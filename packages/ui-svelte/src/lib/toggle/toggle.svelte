@@ -1,4 +1,5 @@
 <script lang="ts">
+import { Toggle as TogglePrimitive } from "bits-ui";
 import type { Snippet } from "svelte";
 import { cn } from "../lib/cn";
 import { type ToggleSize, toggleButton } from "./variants";
@@ -20,13 +21,12 @@ let {
 } = $props();
 </script>
 
-<button
-	type="button"
-	aria-pressed={pressed}
-	aria-label={label}
+<TogglePrimitive.Root
+	bind:pressed
 	{disabled}
-	onclick={() => (pressed = !pressed)}
+	aria-label={label}
+	data-slot="toggle"
 	class={cn(toggleButton({ size }), classProp)}
 >
 	{@render children?.()}
-</button>
+</TogglePrimitive.Root>

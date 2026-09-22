@@ -59,6 +59,7 @@ export const radioGroup = defineComponent({
 		],
 		notes: [
 			"Roving tabindex, so the group is one tab stop. Arrow keys selecting on move is the documented radio pattern, not an accident.",
+			"State, roving focus and keyboard are delegated to Base UI (React) and bits-ui (Svelte); this component only owns the classes and data-slots.",
 		],
 	},
 	licenseOrigin: {
@@ -75,7 +76,7 @@ export const radioGroup = defineComponent({
 				{ path: "radio-group/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "@base-ui/react"],
 		},
 		svelte: {
 			entry: "RadioGroup",
@@ -86,7 +87,7 @@ export const radioGroup = defineComponent({
 				{ path: "radio-group/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "bits-ui"],
 		},
 	},
 	keywords: ["radio", "form", "choice", "selection"],

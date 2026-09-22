@@ -6,7 +6,7 @@ import { setAlertDialog } from "./context";
 let {
 	children,
 	open = $bindable(false),
-	variant = "framed",
+	variant = "default",
 }: { children?: Snippet; open?: boolean; variant?: DialogVariant } = $props();
 
 const uid = $props.id();

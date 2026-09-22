@@ -1,30 +1,26 @@
 <script lang="ts">
+import { Collapsible as CollapsiblePrimitive } from "bits-ui";
 import type { Snippet } from "svelte";
-import type { HTMLAttributes } from "svelte/elements";
 import { cn } from "../lib/cn";
-import { getCollapsible } from "./context";
 
 let {
 	children,
 	class: classProp,
 	...rest
-}: { children?: Snippet; class?: string } & HTMLAttributes<HTMLDivElement> = $props();
-
-const collapsible = getCollapsible();
+}: { children?: Snippet; class?: string } = $props();
 </script>
 
-<!-- grid-template-rows animates to content height without measuring it. -->
-<div
+<!-- grid-template-rows animates to content height without measuring it; forceMount keeps
+	the panel mounted while closed, or the transition has no prior frame to animate from. -->
+<CollapsiblePrimitive.Content
 	{...rest}
-	id={collapsible.contentId}
+	forceMount
 	data-slot="collapsible-content"
-	data-state={collapsible.open ? "open" : "closed"}
-	style:grid-template-rows={collapsible.open ? "1fr" : "0fr"}
-	class="grid transition-[grid-template-rows] duration-200 ease-[var(--ease-out)] motion-reduce:transition-none"
+	class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-200 ease-[var(--ease-out)] data-[state=open]:grid-rows-[1fr] motion-reduce:transition-none"
 >
 	<div class="overflow-hidden">
 		<div class={cn("px-1 pb-2 text-muted-foreground text-sm", classProp)}>
 			{@render children?.()}
 		</div>
 	</div>
-</div>
+</CollapsiblePrimitive.Content>

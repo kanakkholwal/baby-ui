@@ -62,7 +62,7 @@ function go(href: string) {
 	</kbd>
 </button>
 
-<CommandDialog bind:open>
+<CommandDialog bind:open variant="framed">
 	<Command>
 		<CommandHeader>Search</CommandHeader>
 		<CommandInput placeholder="Search components and guides…" />

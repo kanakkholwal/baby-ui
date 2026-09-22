@@ -12,6 +12,7 @@ let {
 
 <AccordionPrimitive.Content
 	{...rest}
+	forceMount
 	data-slot="accordion-content"
 	class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] data-[state=open]:grid-rows-[1fr] motion-reduce:transition-none"
 >

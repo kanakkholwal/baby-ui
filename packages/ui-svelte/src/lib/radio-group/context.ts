@@ -3,14 +3,10 @@ import type { RadioSize, RadioVariant } from "./variants";
 
 export type { RadioSize, RadioVariant };
 
-export type RadioGroupContext = {
-	readonly value: string;
-	readonly name: string | undefined;
+export type RadioGroupItemContext = {
 	readonly size: RadioSize;
 	readonly variant: RadioVariant;
-	readonly disabled: boolean;
-	setValue: (value: string) => void;
-	step: (from: string, delta: -1 | 1) => void;
 };
 
-export const [getRadioGroup, setRadioGroup] = createContext<RadioGroupContext>();
+export const [getRadioGroupItemContext, setRadioGroupItemContext] =
+	createContext<RadioGroupItemContext>();

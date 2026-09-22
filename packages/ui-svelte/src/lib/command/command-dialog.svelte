@@ -9,7 +9,7 @@ let {
 	children,
 	open = $bindable(false),
 	label = "Command palette",
-	variant = "framed",
+	variant = "default",
 	class: classProp,
 }: {
 	children?: Snippet;

@@ -7,11 +7,14 @@ import {
 	ComboboxInput,
 	ComboboxItem,
 	ComboboxList,
+	type ComboboxSize,
 	ComboboxTrigger,
 } from "@baby-ui/svelte";
 
+let { props = {} }: { props?: Record<string, unknown> } = $props();
 let open = $state(false);
 let value = $state("");
+const size = $derived((props.size as ComboboxSize) ?? "md");
 
 const regions = [
 	{ value: "ams", label: "Amsterdam" },
@@ -26,13 +29,13 @@ const selected = $derived(regions.find((r) => r.value === value));
 </script>
 
 <Combobox bind:open>
-	<ComboboxTrigger>
+	<ComboboxTrigger {size}>
 		{selected?.label ?? "Search regions…"}
 		<svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class="size-3.5 shrink-0 text-muted-foreground">
 			<path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
 		</svg>
 	</ComboboxTrigger>
-	<ComboboxContent>
+	<ComboboxContent {size}>
 		<ComboboxInput placeholder="Search regions…" />
 		<ComboboxList>
 			<ComboboxEmpty>No matches</ComboboxEmpty>

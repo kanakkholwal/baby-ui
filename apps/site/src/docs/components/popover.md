@@ -6,18 +6,18 @@ category: base
 tags: [popover, overlay]
 ---
 
-Positioning comes from floating-ui: the panel flips to the opposite side when it runs
-out of room and shifts along its axis to stay clear of the viewport edge. Both ports call
-the same `anchor()` helper, so they cannot disagree about where the panel goes.
+Positioning, outside dismissal, focus return and portaling all come from Base UI (React)
+and bits-ui (Svelte): the panel flips to the opposite side when it runs out of room and
+shifts along its axis to stay clear of the viewport edge. This component only owns the
+classes and data-slots.
 
 ## Why the origin moves
 
-`transform-origin` is set from whichever side the flip settled on, so the panel always
+`transform-origin` follows whichever side the positioner settles on, so the panel always
 grows out of the trigger. A popover that scales from a fixed corner reads as unrelated to
 the thing you clicked, which is the whole point of anchoring it.
 
 ## Dismissal
 
-Outside `pointerdown` is captured, not bubbled. Without capture, the click that closes
-the popover also activates whatever was underneath it, which is how you end up deleting
-something by dismissing a menu.
+An outside click or Escape closes the popover and returns focus to the trigger, handled
+by the primitive rather than a hand-rolled outside-click listener.

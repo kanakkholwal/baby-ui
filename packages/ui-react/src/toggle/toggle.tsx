@@ -1,5 +1,6 @@
 "use client";
 
+import { Toggle as TogglePrimitive } from "@base-ui/react/toggle";
 import type { ReactNode } from "react";
 import { cn } from "../lib/cn";
 import { type ToggleSize, toggleButton } from "./variants";
@@ -18,7 +19,7 @@ export interface ToggleProps {
 
 export function Toggle({
 	children,
-	pressed = false,
+	pressed,
 	disabled = false,
 	size = "md",
 	label,
@@ -26,15 +27,15 @@ export function Toggle({
 	onPressedChange,
 }: ToggleProps) {
 	return (
-		<button
-			type="button"
-			aria-pressed={pressed}
-			aria-label={label}
+		<TogglePrimitive
+			data-slot="toggle"
+			pressed={pressed}
 			disabled={disabled}
-			onClick={() => onPressedChange?.(!pressed)}
+			aria-label={label}
+			onPressedChange={onPressedChange}
 			className={cn(toggleButton({ size }), className)}
 		>
 			{children}
-		</button>
+		</TogglePrimitive>
 	);
 }

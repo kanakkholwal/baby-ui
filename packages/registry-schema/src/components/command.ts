@@ -33,7 +33,7 @@ export const command = defineComponent({
 			type: '"default" | "framed"',
 			description:
 				"`framed` insets the search input and results in the same rim as Dialog. `default` is a single flat surface, matching shadcn/ui's cmdk-based Command.",
-			default: '"framed"',
+			default: "default",
 			control: { kind: "select", options: ["default", "framed"] },
 		},
 	],

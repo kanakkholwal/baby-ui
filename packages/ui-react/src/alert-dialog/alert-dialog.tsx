@@ -40,7 +40,7 @@ export function AlertDialog({
 	children,
 	open: openProp,
 	defaultOpen = false,
-	variant = "framed",
+	variant = "default",
 	onOpenChange,
 }: {
 	children?: ReactNode;

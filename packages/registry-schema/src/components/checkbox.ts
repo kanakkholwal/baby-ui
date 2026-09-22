@@ -62,6 +62,7 @@ export const checkbox = defineComponent({
 		keyboard: [],
 		notes: [
 			"Backed by a real checkbox input, visually hidden rather than replaced, so form submission and the indeterminate DOM property both work.",
+			"State, keyboard and the hidden input are delegated to Base UI (React) and bits-ui (Svelte); this component only owns the classes and data-slots.",
 		],
 	},
 	licenseOrigin: {
@@ -78,7 +79,7 @@ export const checkbox = defineComponent({
 				{ path: "checkbox/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "@base-ui/react"],
 		},
 		svelte: {
 			entry: "Checkbox",
@@ -87,7 +88,7 @@ export const checkbox = defineComponent({
 				{ path: "checkbox/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "bits-ui"],
 		},
 	},
 	keywords: ["checkbox", "form", "toggle", "selection"],

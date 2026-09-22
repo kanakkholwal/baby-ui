@@ -1,8 +1,9 @@
 <script lang="ts">
+import { RadioGroup as RadioGroupPrimitive } from "bits-ui";
 import type { Snippet } from "svelte";
-import type { HTMLAttributes } from "svelte/elements";
 import { cn } from "../lib/cn";
-import { type RadioSize, type RadioVariant, setRadioGroup } from "./context";
+import { setRadioGroupItemContext } from "./context";
+import type { RadioSize, RadioVariant } from "./variants";
 
 let {
 	children,
@@ -23,44 +24,25 @@ let {
 	disabled?: boolean;
 	name?: string;
 	class?: string;
-} & HTMLAttributes<HTMLDivElement> = $props();
+} = $props();
 
-let root = $state<HTMLDivElement>();
-
-setRadioGroup({
-	get value() {
-		return value;
-	},
-	get name() {
-		return name;
-	},
+setRadioGroupItemContext({
 	get size() {
 		return size;
 	},
 	get variant() {
 		return variant;
 	},
-	get disabled() {
-		return disabled;
-	},
-	setValue: (next) => (value = next),
-	step: (from, delta) => {
-		const items = [...(root?.querySelectorAll<HTMLElement>("[data-value]") ?? [])];
-		const i = items.findIndex((el) => el.dataset.value === from);
-		const next = items[(i + delta + items.length) % items.length];
-		if (!next?.dataset.value) return;
-		value = next.dataset.value;
-		next.focus();
-	},
 });
 </script>
 
-<div
+<RadioGroupPrimitive.Root
 	{...rest}
-	bind:this={root}
-	role="radiogroup"
+	bind:value
+	{orientation}
+	{disabled}
+	{name}
 	data-slot="radio-group"
-	aria-orientation={orientation}
 	class={cn(
 		"flex gap-2",
 		orientation === "vertical" ? "flex-col" : "flex-row flex-wrap items-start",
@@ -69,4 +51,4 @@ setRadioGroup({
 	)}
 >
 	{@render children?.()}
-</div>
+</RadioGroupPrimitive.Root>

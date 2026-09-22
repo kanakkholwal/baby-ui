@@ -6,7 +6,7 @@ export {
 	AccordionTrigger,
 } from "./accordion/accordion";
 export { Alert, AlertDescription, AlertTitle } from "./alert/alert";
-export type { AlertVariant } from "./alert/variants";
+export { ALERT_ICON, type AlertVariant } from "./alert/variants";
 export {
 	AlertDialog,
 	AlertDialogAction,
@@ -62,6 +62,7 @@ export {
 	ComboboxList,
 	ComboboxTrigger,
 } from "./combobox/combobox";
+export type { ComboboxSize } from "./combobox/variants";
 export {
 	Command,
 	CommandDialog,

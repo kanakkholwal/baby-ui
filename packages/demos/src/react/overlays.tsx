@@ -48,7 +48,7 @@ import {
 	TooltipContent,
 	TooltipTrigger,
 } from "@baby-ui/react";
-import { useState } from "react";
+import { type ComponentProps, useState } from "react";
 
 type Props = Record<string, unknown>;
 
@@ -63,12 +63,13 @@ export function PopoverDemo({ props }: { props: Props }) {
 	const [comments, setComments] = useState(false);
 
 	return (
-		<Popover
-			placement={(props.placement as never) ?? "bottom-start"}
-			gap={Number(props.gap ?? 6)}
-		>
+		<Popover>
 			<PopoverTrigger className={TRIGGER}>Deploy settings</PopoverTrigger>
-			<PopoverContent className="w-72">
+			<PopoverContent
+				className="w-72"
+				side={(props.side as never) ?? "bottom"}
+				sideOffset={Number(props.sideOffset ?? 6)}
+			>
 				<div className="flex flex-col gap-3">
 					<Label>Preview branches</Label>
 					<Switch
@@ -316,14 +317,15 @@ const REGIONS = [
 	{ value: "syd", label: "Sydney" },
 ];
 
-export function ComboboxDemo(_: { props: Props }) {
+export function ComboboxDemo({ props }: { props: Props }) {
 	const [open, setOpen] = useState(false);
 	const [value, setValue] = useState("");
 	const selected = REGIONS.find((r) => r.value === value);
+	const size = (props.size as ComponentProps<typeof ComboboxTrigger>["size"]) ?? "md";
 
 	return (
 		<Combobox open={open} onOpenChange={setOpen}>
-			<ComboboxTrigger>
+			<ComboboxTrigger size={size}>
 				{selected?.label ?? "Search regions…"}
 				<svg
 					viewBox="0 0 16 16"
@@ -340,7 +342,7 @@ export function ComboboxDemo(_: { props: Props }) {
 					/>
 				</svg>
 			</ComboboxTrigger>
-			<ComboboxContent>
+			<ComboboxContent size={size}>
 				<ComboboxInput placeholder="Search regions…" />
 				<ComboboxList>
 					<ComboboxEmpty>No matches</ComboboxEmpty>

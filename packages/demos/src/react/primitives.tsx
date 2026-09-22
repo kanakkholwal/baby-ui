@@ -1,18 +1,21 @@
 "use client";
 
-import type { AlertVariant, BadgeSize, BadgeVariant, InputSize } from "@baby-ui/react";
 import {
 	Accordion,
 	AccordionContent,
 	AccordionItem,
 	AccordionTrigger,
+	ALERT_ICON,
 	Alert,
 	AlertDescription,
 	AlertTitle,
+	type AlertVariant,
 	Avatar,
 	AvatarFallback,
 	AvatarImage,
 	Badge,
+	type BadgeSize,
+	type BadgeVariant,
 	Button,
 	Card,
 	CardAction,
@@ -24,6 +27,7 @@ import {
 	type CardVariant,
 	Checkbox,
 	Input,
+	type InputSize,
 	Label,
 	Progress,
 	Skeleton,
@@ -331,13 +335,6 @@ export function SkeletonDemo({ props }: { props: Props }) {
 		</div>
 	);
 }
-
-const ALERT_ICON: Record<AlertVariant, string> = {
-	info: "M8 7.2v4M8 5.1h.01",
-	success: "M4.8 8.3 7 10.5l4.2-4.6",
-	warning: "M8 5.6v3.2M8 11.1h.01",
-	destructive: "M5.6 5.6l4.8 4.8M10.4 5.6l-4.8 4.8",
-};
 
 export function AlertDemo({ props }: { props: Props }) {
 	const variant = (props.variant as AlertVariant) ?? "info";

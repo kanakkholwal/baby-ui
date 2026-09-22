@@ -20,7 +20,7 @@ export const card = defineComponent({
 			type: '"default" | "framed"',
 			description:
 				"`framed` wraps the body in the same inset rim as Dialog and Command: a thin bg-background border around a bg-card surface.",
-			default: '"default"',
+			default: "default",
 			control: { kind: "select", options: ["default", "framed"] },
 		},
 	],

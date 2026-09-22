@@ -13,7 +13,7 @@ export const dialogFrame = tv({
 			default: { panel: "p-6", footer: "pt-6", body: "" },
 		},
 	},
-	defaultVariants: { variant: "framed" },
+	defaultVariants: { variant: "default" },
 });
 
 export type DialogVariant = NonNullable<VariantProps<typeof dialogFrame>["variant"]>;

@@ -1,8 +1,9 @@
 "use client";
 
-import { useId, useState } from "react";
+import { Switch as SwitchPrimitive } from "@base-ui/react/switch";
+import { useId } from "react";
 import { cn } from "../lib/cn";
-import { SWITCH_TRAVEL, type SwitchSize, switchThumb, switchTrack } from "./variants";
+import { type SwitchSize, switchThumb, switchTrack } from "./variants";
 
 export type { SwitchSize };
 
@@ -16,7 +17,7 @@ export interface SwitchProps {
 }
 
 export function Switch({
-	checked = false,
+	checked,
 	disabled = false,
 	size = "md",
 	label,
@@ -24,40 +25,19 @@ export function Switch({
 	onCheckedChange,
 }: SwitchProps) {
 	const id = useId();
-	const [pressed, setPressed] = useState(false);
-	const [shaking, setShaking] = useState(false);
-
-	// Refusal is feedback: a disabled switch says no rather than doing nothing.
-	function refuse() {
-		setShaking(false);
-		requestAnimationFrame(() => setShaking(true));
-	}
 
 	const control = (
-		<button
+		<SwitchPrimitive.Root
 			id={id}
-			type="button"
-			role="switch"
-			aria-checked={checked}
+			checked={checked}
+			disabled={disabled}
+			onCheckedChange={onCheckedChange}
+			data-slot="switch"
 			aria-label={label ? undefined : "Toggle"}
-			aria-disabled={disabled || undefined}
-			onClick={() => (disabled ? refuse() : onCheckedChange?.(!checked))}
-			onPointerDown={() => setPressed(true)}
-			onPointerUp={() => setPressed(false)}
-			onPointerLeave={() => setPressed(false)}
 			className={cn(switchTrack({ size }), !label && className)}
 		>
-			<span
-				aria-hidden
-				data-shake={shaking || undefined}
-				onAnimationEnd={() => setShaking(false)}
-				style={{
-					transform: checked ? `translateX(${SWITCH_TRAVEL[size]})` : "translateX(0)",
-					scale: pressed && !disabled ? "0.9" : "1",
-				}}
-				className={switchThumb({ size })}
-			/>
-		</button>
+			<SwitchPrimitive.Thumb className={switchThumb({ size })} />
+		</SwitchPrimitive.Root>
 	);
 
 	// Bare, so this can replace a shadcn switch; the wrapper only appears with a label.

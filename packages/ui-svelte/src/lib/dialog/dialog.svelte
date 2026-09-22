@@ -6,7 +6,7 @@ let {
 	children,
 	open = $bindable(false),
 	size = "md",
-	variant = "framed",
+	variant = "default",
 	dismissOnBackdrop = true,
 }: {
 	children?: Snippet;

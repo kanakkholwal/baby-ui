@@ -1,19 +1,22 @@
 <script lang="ts">
-import type { Snippet } from "svelte";
-import type { HTMLAttributes } from "svelte/elements";
+import type { ComponentProps } from "svelte";
 import Command from "../command/command.svelte";
 import { cn } from "../lib/cn";
 import PopoverContent from "../popover/popover-content.svelte";
+import { type ComboboxSize, combobox } from "./variants";
 
 let {
 	children,
 	class: classProp,
+	size = "md",
 	...rest
-}: { children?: Snippet; class?: string } & HTMLAttributes<HTMLDivElement> = $props();
+}: ComponentProps<typeof PopoverContent> & { size?: ComboboxSize } = $props();
+
+const c = $derived(combobox({ size }));
 </script>
 
-<PopoverContent {...rest} class={cn("w-64 overflow-hidden p-0", classProp)}>
-	<Command class="max-h-72 rounded-none border-none bg-transparent shadow-none">
+<PopoverContent {...rest} class={cn(c.content(), classProp)}>
+	<Command class={c.list()}>
 		{@render children?.()}
 	</Command>
 </PopoverContent>

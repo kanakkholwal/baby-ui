@@ -1,22 +1,12 @@
 "use client";
 
+import { Collapsible as CollapsiblePrimitive } from "@base-ui/react/collapsible";
 import type { ComponentProps } from "react";
-import { createContext, useContext, useId, useState } from "react";
 import { cn } from "../lib/cn";
-
-type Ctx = { open: boolean; contentId: string; toggle: () => void };
-
-const CollapsibleCtx = createContext<Ctx | null>(null);
-
-function useCollapsible() {
-	const ctx = useContext(CollapsibleCtx);
-	if (!ctx) throw new Error("Collapsible parts must be used inside <Collapsible>");
-	return ctx;
-}
 
 export function Collapsible({
 	className,
-	open: openProp,
+	open,
 	defaultOpen = false,
 	disabled = false,
 	onOpenChange,
@@ -28,28 +18,18 @@ export function Collapsible({
 	disabled?: boolean;
 	onOpenChange?: (open: boolean) => void;
 }) {
-	const contentId = useId();
-	const [internal, setInternal] = useState(defaultOpen);
-	const open = openProp ?? internal;
-
-	function toggle() {
-		if (disabled) return;
-		const next = !open;
-		if (openProp === undefined) setInternal(next);
-		onOpenChange?.(next);
-	}
-
 	return (
-		<CollapsibleCtx.Provider value={{ open, contentId, toggle }}>
-			<div
-				data-slot="collapsible"
-				data-state={open ? "open" : "closed"}
-				className={cn("w-full", className)}
-				{...props}
-			>
-				{children}
-			</div>
-		</CollapsibleCtx.Provider>
+		<CollapsiblePrimitive.Root
+			open={open}
+			defaultOpen={defaultOpen}
+			disabled={disabled}
+			onOpenChange={onOpenChange}
+			data-slot="collapsible"
+			className={cn("w-full", className)}
+			{...props}
+		>
+			{children}
+		</CollapsiblePrimitive.Root>
 	);
 }
 
@@ -57,19 +37,13 @@ export function CollapsibleTrigger({
 	className,
 	children,
 	...props
-}: ComponentProps<"button">) {
-	const { open, contentId, toggle } = useCollapsible();
-
+}: ComponentProps<typeof CollapsiblePrimitive.Trigger>) {
 	return (
-		<button
-			type="button"
+		<CollapsiblePrimitive.Trigger
 			data-slot="collapsible-trigger"
-			data-state={open ? "open" : "closed"}
-			aria-expanded={open}
-			aria-controls={contentId}
-			onClick={toggle}
 			className={cn(
 				"flex w-full items-center gap-2 rounded-lg px-1 py-1.5 text-left font-medium text-foreground text-sm transition-colors hover:text-muted-foreground",
+				"[&>svg]:transition-[transform,scale,translate] [&>svg]:duration-200 [&>svg]:ease-[var(--ease-out)] [&[data-panel-open]>svg]:rotate-90 motion-reduce:[&>svg]:transition-none",
 				className,
 			)}
 			{...props}
@@ -78,8 +52,7 @@ export function CollapsibleTrigger({
 				viewBox="0 0 16 16"
 				fill="none"
 				aria-hidden
-				style={{ transform: open ? "rotate(90deg)" : "none" }}
-				className="size-3.5 shrink-0 text-muted-foreground transition-[transform,scale,translate] duration-200 ease-[var(--ease-out)] motion-reduce:transition-none"
+				className="size-3.5 shrink-0 text-muted-foreground"
 			>
 				<path
 					d="m6 4 4 4-4 4"
@@ -90,7 +63,7 @@ export function CollapsibleTrigger({
 				/>
 			</svg>
 			{children}
-		</button>
+		</CollapsiblePrimitive.Trigger>
 	);
 }
 
@@ -98,17 +71,15 @@ export function CollapsibleContent({
 	className,
 	children,
 	...props
-}: ComponentProps<"div">) {
-	const { open, contentId } = useCollapsible();
-
-	// grid-template-rows animates to content height without measuring it.
+}: ComponentProps<typeof CollapsiblePrimitive.Panel>) {
+	// keepMounted still leaves a `hidden` attribute here (unlike Accordion's panel); Tailwind's
+	// preflight makes `[hidden]` `!important`, so force it off to keep a prior frame to animate from.
 	return (
-		<div
-			id={contentId}
+		<CollapsiblePrimitive.Panel
+			keepMounted
+			hidden={false}
 			data-slot="collapsible-content"
-			data-state={open ? "open" : "closed"}
-			style={{ gridTemplateRows: open ? "1fr" : "0fr" }}
-			className="grid transition-[grid-template-rows] duration-200 ease-[var(--ease-out)] motion-reduce:transition-none"
+			className="grid grid-rows-[0fr] transition-[grid-template-rows] duration-200 ease-[var(--ease-out)] data-[open]:grid-rows-[1fr] motion-reduce:transition-none"
 			{...props}
 		>
 			<div className="overflow-hidden">
@@ -116,6 +87,6 @@ export function CollapsibleContent({
 					{children}
 				</div>
 			</div>
-		</div>
+		</CollapsiblePrimitive.Panel>
 	);
 }

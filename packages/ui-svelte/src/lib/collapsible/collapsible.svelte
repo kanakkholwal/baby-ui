@@ -1,8 +1,7 @@
 <script lang="ts">
+import { Collapsible as CollapsiblePrimitive } from "bits-ui";
 import type { Snippet } from "svelte";
-import type { HTMLAttributes } from "svelte/elements";
 import { cn } from "../lib/cn";
-import { setCollapsible } from "./context";
 
 let {
 	children,
@@ -15,26 +14,15 @@ let {
 	open?: boolean;
 	disabled?: boolean;
 	class?: string;
-} & HTMLAttributes<HTMLDivElement> = $props();
-
-const contentId = $props.id();
-
-setCollapsible({
-	get open() {
-		return open;
-	},
-	contentId,
-	toggle: () => {
-		if (!disabled) open = !open;
-	},
-});
+} = $props();
 </script>
 
-<div
+<CollapsiblePrimitive.Root
 	{...rest}
+	bind:open
+	{disabled}
 	data-slot="collapsible"
-	data-state={open ? "open" : "closed"}
 	class={cn("w-full", classProp)}
 >
 	{@render children?.()}
-</div>
+</CollapsiblePrimitive.Root>
