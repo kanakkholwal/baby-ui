@@ -29,7 +29,7 @@ export const dropdownMenu = defineComponent({
 		springs: [],
 		reducedMotion: "The menu appears without the scale, and rows no longer stagger in.",
 		behaviour: [
-			"Opens anchored to the trigger and flips above it when there is no room below (Radix/bits-ui popper collision detection).",
+			"Opens anchored to the trigger and flips above it when there is no room below (Base UI/bits-ui popper collision detection).",
 			"Unfolds from the trigger edge (beUI unfold: clip-path from the near edge, flat-to-round\ncorners), with a 30ms stagger per row, the same as Select and Combobox.",
 			"Focus moves to the first item on open and back to the trigger on close, so the keyboard never lands nowhere.",
 			"A submenu opens to the right of its trigger on hover or click/arrow-right/enter, and scales in rather than unfolding, since the unfold direction is tuned for top/bottom placement.",
@@ -47,7 +47,7 @@ export const dropdownMenu = defineComponent({
 		notes: [
 			"The trigger declares aria-haspopup=menu, so a screen reader announces that it opens something.",
 			"Disabled items are skipped by the roving focus rather than focused and announced as unavailable.",
-			"Positioning, focus trapping, roving tabindex, typeahead, outside-dismiss and portaling are all delegated to Radix UI (React) and bits-ui (Svelte); this component only owns the classes and data-slots.",
+			"Positioning, focus trapping, roving tabindex, typeahead, outside-dismiss and portaling are all delegated to Base UI (React) and bits-ui (Svelte); this component only owns the classes and data-slots.",
 		],
 	},
 	licenseOrigin: {
@@ -65,12 +65,7 @@ export const dropdownMenu = defineComponent({
 				{ path: "lib/menu.ts", type: "registry:lib" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: [
-				"clsx",
-				"tailwind-merge",
-				"tailwind-variants",
-				"@radix-ui/react-dropdown-menu",
-			],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "@base-ui/react"],
 		},
 		svelte: {
 			entry: "DropdownMenu",

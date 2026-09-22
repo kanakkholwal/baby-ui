@@ -10,14 +10,13 @@
 		"check": "tsc --noEmit"
 	},
 	"dependencies": {
-		"sonner": "catalog:",
-		"vaul": "catalog:",
+		"@base-ui/react": "catalog:",
 		"@floating-ui/dom": "catalog:",
-		"@radix-ui/react-dropdown-menu": "catalog:",
-		"@radix-ui/react-context-menu": "catalog:",
 		"clsx": "catalog:",
+		"sonner": "catalog:",
 		"tailwind-merge": "catalog:",
-		"tailwind-variants": "catalog:"
+		"tailwind-variants": "catalog:",
+		"vaul": "catalog:"
 	},
 	"devDependencies": {
 		"@types/react": "catalog:",

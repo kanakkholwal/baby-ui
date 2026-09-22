@@ -3,16 +3,19 @@ import { FRAMEWORK } from "./config";
 
 const RELATIVE_IMPORT = /(from\s+|import\s+)(["'])(\.[^"']+)\2/g;
 
-/** `../lib/cn.js` becomes `@/lib/cn` (React) or `$lib/cn` (Svelte); siblings just
- * lose the `.js` that ESM resolution needs here but a shadcn consumer does not. */
+/** `../lib/cn` becomes `@/lib/cn`/`$lib/cn`; other `../x/y` cross-component imports become
+ * `@/components/ui/x/y`/`$lib/components/ui/x/y` — a consumer's tree isn't our monorepo layout. */
 export function rewriteImports(source: string, framework: Framework): string {
-	const { libAlias } = FRAMEWORK[framework];
+	const { libAlias, uiAlias } = FRAMEWORK[framework];
 	return source.replace(
 		RELATIVE_IMPORT,
 		(_m, keyword: string, q: string, spec: string) => {
 			let next = spec.replace(/\.js$/, "");
-			if (next.startsWith("../lib/"))
+			if (next.startsWith("../lib/")) {
 				next = `${libAlias}/${next.slice("../lib/".length)}`;
+			} else if (next.startsWith("../")) {
+				next = `${uiAlias}/${next.slice("../".length)}`;
+			}
 			return `${keyword}${q}${next}${q}`;
 		},
 	);

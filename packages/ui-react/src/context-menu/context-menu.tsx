@@ -1,13 +1,14 @@
 "use client";
 
-import * as ContextMenuPrimitive from "@radix-ui/react-context-menu";
+import { ContextMenu as ContextMenuPrimitive } from "@base-ui/react/context-menu";
+import { Menu } from "@base-ui/react/menu";
 import type { ComponentProps } from "react";
 import { ANCHORED, stagger } from "../lib/anchor";
 import { cn } from "../lib/cn";
 import { MENU_SHORTCUT, MENU_SURFACE, type MenuItemVariant, menuItem } from "../lib/menu";
 
 export const ContextMenu = ContextMenuPrimitive.Root;
-export const ContextMenuSub = ContextMenuPrimitive.Sub;
+export const ContextMenuSub = Menu.SubmenuRoot;
 
 export function ContextMenuTrigger({
 	className,
@@ -25,17 +26,19 @@ export function ContextMenuTrigger({
 export function ContextMenuContent({
 	className,
 	...props
-}: ComponentProps<typeof ContextMenuPrimitive.Content>) {
+}: ComponentProps<typeof ContextMenuPrimitive.Popup>) {
 	return (
 		<ContextMenuPrimitive.Portal>
-			<ContextMenuPrimitive.Content
-				data-slot="context-menu-content"
-				ref={(node) => {
-					if (node) stagger(node.querySelectorAll<HTMLElement>("[role='menuitem']"));
-				}}
-				className={cn(ANCHORED, MENU_SURFACE, className)}
-				{...props}
-			/>
+			<ContextMenuPrimitive.Positioner>
+				<ContextMenuPrimitive.Popup
+					data-slot="context-menu-content"
+					ref={(node: HTMLDivElement | null) => {
+						if (node) stagger(node.querySelectorAll<HTMLElement>("[role='menuitem']"));
+					}}
+					className={cn(ANCHORED, MENU_SURFACE, className)}
+					{...props}
+				/>
+			</ContextMenuPrimitive.Positioner>
 		</ContextMenuPrimitive.Portal>
 	);
 }
@@ -106,15 +109,17 @@ export function ContextMenuSubTrigger({
 	className,
 	inset = false,
 	children,
+	closeDelay = 200,
 	...props
-}: ComponentProps<typeof ContextMenuPrimitive.SubTrigger> & { inset?: boolean }) {
+}: ComponentProps<typeof Menu.SubmenuTrigger> & { inset?: boolean }) {
 	return (
-		<ContextMenuPrimitive.SubTrigger
+		<Menu.SubmenuTrigger
 			data-slot="context-menu-sub-trigger"
 			data-inset={inset || undefined}
+			closeDelay={closeDelay}
 			className={cn(
 				menuItem({ variant: "default" }),
-				"data-[state=open]:bg-foreground/[0.06]",
+				"data-[open]:bg-foreground/[0.06]",
 				className,
 			)}
 			{...props}
@@ -134,21 +139,25 @@ export function ContextMenuSubTrigger({
 					strokeLinejoin="round"
 				/>
 			</svg>
-		</ContextMenuPrimitive.SubTrigger>
+		</Menu.SubmenuTrigger>
 	);
 }
 
 export function ContextMenuSubContent({
 	className,
+	sideOffset = 2,
 	...props
-}: ComponentProps<typeof ContextMenuPrimitive.SubContent>) {
+}: ComponentProps<typeof Menu.Popup> &
+	Pick<ComponentProps<typeof Menu.Positioner>, "sideOffset">) {
 	return (
-		<ContextMenuPrimitive.Portal>
-			<ContextMenuPrimitive.SubContent
-				data-slot="context-menu-sub-content"
-				className={cn(ANCHORED, MENU_SURFACE, "min-w-40", className)}
-				{...props}
-			/>
-		</ContextMenuPrimitive.Portal>
+		<Menu.Portal>
+			<Menu.Positioner sideOffset={sideOffset}>
+				<Menu.Popup
+					data-slot="context-menu-sub-content"
+					className={cn(ANCHORED, MENU_SURFACE, "min-w-40", className)}
+					{...props}
+				/>
+			</Menu.Positioner>
+		</Menu.Portal>
 	);
 }

@@ -10,7 +10,7 @@ build/
 .env
 .env.*
 !.env.example
-
+TODO.md
 # local-only agent workspaces
 .scratchpad/
 .notes/

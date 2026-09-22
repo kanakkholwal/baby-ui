@@ -52,7 +52,16 @@ export {
 	CollapsibleTrigger,
 } from "./collapsible/collapsible";
 export { ColorPicker, type ColorPickerProps } from "./color-picker/color-picker";
-export { Combobox, type ComboboxProps, type ComboOption } from "./combobox/combobox";
+export {
+	Combobox,
+	ComboboxContent,
+	ComboboxEmpty,
+	ComboboxGroup,
+	ComboboxInput,
+	ComboboxItem,
+	ComboboxList,
+	ComboboxTrigger,
+} from "./combobox/combobox";
 export {
 	Command,
 	CommandDialog,

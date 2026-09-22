@@ -17,9 +17,10 @@ export const accordion = defineComponent({
 		{
 			name: "collapsible",
 			type: "boolean",
-			description: "Single mode only: lets the open panel close again.",
+			description:
+				"Ignored: Base UI/bits-ui's single mode always allows closing the open panel. Kept for backward compatibility.",
 			default: true,
-			control: { kind: "boolean" },
+			control: { kind: "none" },
 		},
 		{
 			name: "value",
@@ -44,6 +45,7 @@ export const accordion = defineComponent({
 		notes: [
 			"Each trigger is a button inside a heading, with aria-expanded and aria-controls pointing at its panel region.",
 			"Uses grid-template-rows rather than max-height, so a tall panel does not open at the wrong speed.",
+			"Open/close state, focus and keyboard handling are delegated to Base UI (React) and bits-ui (Svelte); this component only owns the classes and data-slots.",
 		],
 	},
 	licenseOrigin: {
@@ -59,7 +61,7 @@ export const accordion = defineComponent({
 				{ path: "accordion/accordion.tsx", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "@base-ui/react"],
 		},
 		svelte: {
 			entry: "Accordion",
@@ -68,10 +70,9 @@ export const accordion = defineComponent({
 				{ path: "accordion/accordion-item.svelte", type: "registry:ui" },
 				{ path: "accordion/accordion-trigger.svelte", type: "registry:ui" },
 				{ path: "accordion/accordion-content.svelte", type: "registry:ui" },
-				{ path: "accordion/context.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "bits-ui"],
 		},
 	},
 	keywords: ["accordion", "disclosure", "faq", "collapse"],

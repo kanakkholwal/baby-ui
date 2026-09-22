@@ -1,20 +1,20 @@
 "use client";
 
-import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
+import { Menu } from "@base-ui/react/menu";
 import type { ComponentProps } from "react";
 import { ANCHORED, stagger, UNFOLD, UNFOLD_ITEM } from "../lib/anchor";
 import { cn } from "../lib/cn";
 import { MENU_SHORTCUT, MENU_SURFACE, type MenuItemVariant, menuItem } from "../lib/menu";
 
-export const DropdownMenu = DropdownMenuPrimitive.Root;
-export const DropdownMenuSub = DropdownMenuPrimitive.Sub;
+export const DropdownMenu = Menu.Root;
+export const DropdownMenuSub = Menu.SubmenuRoot;
 
 export function DropdownMenuTrigger({
 	className,
 	...props
-}: ComponentProps<typeof DropdownMenuPrimitive.Trigger>) {
+}: ComponentProps<typeof Menu.Trigger>) {
 	return (
-		<DropdownMenuPrimitive.Trigger
+		<Menu.Trigger
 			data-slot="dropdown-menu-trigger"
 			className={cn(
 				"inline-flex rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-ring",
@@ -30,20 +30,21 @@ export function DropdownMenuContent({
 	sideOffset = 6,
 	align = "start",
 	...props
-}: ComponentProps<typeof DropdownMenuPrimitive.Content>) {
+}: ComponentProps<typeof Menu.Popup> &
+	Pick<ComponentProps<typeof Menu.Positioner>, "sideOffset" | "align" | "side">) {
 	return (
-		<DropdownMenuPrimitive.Portal>
-			<DropdownMenuPrimitive.Content
-				data-slot="dropdown-menu-content"
-				sideOffset={sideOffset}
-				align={align}
-				ref={(node) => {
-					if (node) stagger(node.querySelectorAll<HTMLElement>("[role='menuitem']"));
-				}}
-				className={cn(UNFOLD, MENU_SURFACE, className)}
-				{...props}
-			/>
-		</DropdownMenuPrimitive.Portal>
+		<Menu.Portal>
+			<Menu.Positioner sideOffset={sideOffset} align={align}>
+				<Menu.Popup
+					data-slot="dropdown-menu-content"
+					ref={(node: HTMLDivElement | null) => {
+						if (node) stagger(node.querySelectorAll<HTMLElement>("[role='menuitem']"));
+					}}
+					className={cn(UNFOLD, MENU_SURFACE, className)}
+					{...props}
+				/>
+			</Menu.Positioner>
+		</Menu.Portal>
 	);
 }
 
@@ -52,14 +53,14 @@ export function DropdownMenuItem({
 	destructive = false,
 	inset = false,
 	...props
-}: ComponentProps<typeof DropdownMenuPrimitive.Item> & {
+}: ComponentProps<typeof Menu.Item> & {
 	destructive?: boolean;
 	inset?: boolean;
 }) {
 	const variant: MenuItemVariant = destructive ? "destructive" : "default";
 
 	return (
-		<DropdownMenuPrimitive.Item
+		<Menu.Item
 			data-slot="dropdown-menu-item"
 			data-inset={inset || undefined}
 			className={cn(UNFOLD_ITEM, menuItem({ variant }), className)}
@@ -99,9 +100,9 @@ export function DropdownMenuLabel({
 export function DropdownMenuSeparator({
 	className,
 	...props
-}: ComponentProps<typeof DropdownMenuPrimitive.Separator>) {
+}: ComponentProps<typeof Menu.Separator>) {
 	return (
-		<DropdownMenuPrimitive.Separator
+		<Menu.Separator
 			data-slot="dropdown-menu-separator"
 			className={cn("-mx-1 my-1 border-border", className)}
 			{...props}
@@ -113,15 +114,17 @@ export function DropdownMenuSubTrigger({
 	className,
 	inset = false,
 	children,
+	closeDelay = 200,
 	...props
-}: ComponentProps<typeof DropdownMenuPrimitive.SubTrigger> & { inset?: boolean }) {
+}: ComponentProps<typeof Menu.SubmenuTrigger> & { inset?: boolean }) {
 	return (
-		<DropdownMenuPrimitive.SubTrigger
+		<Menu.SubmenuTrigger
 			data-slot="dropdown-menu-sub-trigger"
 			data-inset={inset || undefined}
+			closeDelay={closeDelay}
 			className={cn(
 				menuItem({ variant: "default" }),
-				"data-[state=open]:bg-foreground/[0.06]",
+				"data-[open]:bg-foreground/[0.06]",
 				className,
 			)}
 			{...props}
@@ -141,21 +144,25 @@ export function DropdownMenuSubTrigger({
 					strokeLinejoin="round"
 				/>
 			</svg>
-		</DropdownMenuPrimitive.SubTrigger>
+		</Menu.SubmenuTrigger>
 	);
 }
 
 export function DropdownMenuSubContent({
 	className,
+	sideOffset = 2,
 	...props
-}: ComponentProps<typeof DropdownMenuPrimitive.SubContent>) {
+}: ComponentProps<typeof Menu.Popup> &
+	Pick<ComponentProps<typeof Menu.Positioner>, "sideOffset">) {
 	return (
-		<DropdownMenuPrimitive.Portal>
-			<DropdownMenuPrimitive.SubContent
-				data-slot="dropdown-menu-sub-content"
-				className={cn(ANCHORED, MENU_SURFACE, "min-w-40", className)}
-				{...props}
-			/>
-		</DropdownMenuPrimitive.Portal>
+		<Menu.Portal>
+			<Menu.Positioner sideOffset={sideOffset}>
+				<Menu.Popup
+					data-slot="dropdown-menu-sub-content"
+					className={cn(ANCHORED, MENU_SURFACE, "min-w-40", className)}
+					{...props}
+				/>
+			</Menu.Positioner>
+		</Menu.Portal>
 	);
 }

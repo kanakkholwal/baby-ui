@@ -47,15 +47,32 @@ export { default as Collapsible } from "./collapsible/collapsible.svelte";
 export { default as CollapsibleContent } from "./collapsible/collapsible-content.svelte";
 export { default as CollapsibleTrigger } from "./collapsible/collapsible-trigger.svelte";
 export { default as ColorPicker } from "./color-picker/color-picker.svelte";
-export { type ComboOption, default as Combobox } from "./combobox/combobox.svelte";
+export { default as Combobox } from "./combobox/combobox.svelte";
+export { default as ComboboxContent } from "./combobox/combobox-content.svelte";
+export { default as ComboboxTrigger } from "./combobox/combobox-trigger.svelte";
 export { default as Command } from "./command/command.svelte";
 export { default as CommandDialog } from "./command/command-dialog.svelte";
-export { default as CommandEmpty } from "./command/command-empty.svelte";
-export { default as CommandGroup } from "./command/command-group.svelte";
+export {
+	default as ComboboxEmpty,
+	default as CommandEmpty,
+} from "./command/command-empty.svelte";
+export {
+	default as ComboboxGroup,
+	default as CommandGroup,
+} from "./command/command-group.svelte";
 export { default as CommandHeader } from "./command/command-header.svelte";
-export { default as CommandInput } from "./command/command-input.svelte";
-export { default as CommandItem } from "./command/command-item.svelte";
-export { default as CommandList } from "./command/command-list.svelte";
+export {
+	default as ComboboxInput,
+	default as CommandInput,
+} from "./command/command-input.svelte";
+export {
+	default as ComboboxItem,
+	default as CommandItem,
+} from "./command/command-item.svelte";
+export {
+	default as ComboboxList,
+	default as CommandList,
+} from "./command/command-list.svelte";
 export { default as CommandSeparator } from "./command/command-separator.svelte";
 export { default as CommandShortcut } from "./command/command-shortcut.svelte";
 export { default as Composer } from "./composer/composer.svelte";

@@ -11,7 +11,7 @@ export const contextMenu = defineComponent({
 		springs: [],
 		reducedMotion: "The menu appears without the scale.",
 		behaviour: [
-			"Opens at the pointer and is clamped so it never renders partly off screen (Radix/bits-ui popper collision detection).",
+			"Opens at the pointer and is clamped so it never renders partly off screen (Base UI/bits-ui popper collision detection).",
 			"A submenu opens to the right of its trigger on hover or click/arrow-right/enter.",
 		],
 	},
@@ -24,7 +24,7 @@ export const contextMenu = defineComponent({
 		],
 		notes: [
 			"Right-click has no keyboard equivalent on every platform, so anything here must also be reachable another way.",
-			"Positioning, focus trapping, roving tabindex, outside-dismiss and portaling are all delegated to Radix UI (React) and bits-ui (Svelte); this component only owns the classes and data-slots.",
+			"Positioning, focus trapping, roving tabindex, outside-dismiss and portaling are all delegated to Base UI (React) and bits-ui (Svelte); this component only owns the classes and data-slots.",
 		],
 	},
 	licenseOrigin: {
@@ -42,12 +42,7 @@ export const contextMenu = defineComponent({
 				{ path: "lib/menu.ts", type: "registry:lib" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: [
-				"clsx",
-				"tailwind-merge",
-				"tailwind-variants",
-				"@radix-ui/react-context-menu",
-			],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "@base-ui/react"],
 		},
 		svelte: {
 			entry: "ContextMenu",

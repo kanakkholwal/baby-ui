@@ -1,54 +1,38 @@
 <script lang="ts">
+import { Accordion as AccordionPrimitive } from "bits-ui";
 import type { Snippet } from "svelte";
-import type { HTMLAttributes } from "svelte/elements";
 import { cn } from "../lib/cn";
-import { setAccordion } from "./context";
-
-type Props = {
-	children?: Snippet;
-	type?: "single" | "multiple";
-	/** Single mode only: whether the open panel can be closed again. */
-	collapsible?: boolean;
-	/** The open item in single mode, the open items in multiple mode. */
-	value?: string | string[];
-	class?: string;
-} & Omit<HTMLAttributes<HTMLDivElement>, "children">;
 
 let {
 	children,
 	type = "single",
-	collapsible = false,
+	collapsible: _collapsible,
 	value = $bindable(),
+	onValueChange,
 	class: classProp,
 	...rest
-}: Props = $props();
-
-const open = $derived(value === undefined ? [] : Array.isArray(value) ? value : [value]);
-
-setAccordion({
-	get type() {
-		return type;
-	},
-	isOpen: (item) => open.includes(item),
-	toggle(item) {
-		const isOpen = open.includes(item);
-		if (type === "multiple") {
-			value = isOpen ? open.filter((x) => x !== item) : [...open, item];
-			return;
-		}
-		if (isOpen) {
-			if (collapsible) value = "";
-			return;
-		}
-		value = item;
-	},
-});
+}: {
+	children?: Snippet;
+	type?: "single" | "multiple";
+	/** Ignored: bits-ui's single mode always allows closing the open item. Kept so
+	 * existing callers passing `collapsible={false}` still compile. */
+	collapsible?: boolean;
+	value?: string | string[];
+	onValueChange?: (value: string | string[]) => void;
+	class?: string;
+} = $props();
 </script>
 
-<div
+<AccordionPrimitive.Root
 	{...rest}
+	type={type as "single"}
+	bind:value={value as string}
+	onValueChange={onValueChange as (value: string) => void}
 	data-slot="accordion"
-	class={cn("divide-y divide-border overflow-hidden rounded-xl border border-border", classProp)}
+	class={cn(
+		"divide-y divide-border overflow-hidden rounded-xl border border-border",
+		classProp,
+	)}
 >
 	{@render children?.()}
-</div>
+</AccordionPrimitive.Root>

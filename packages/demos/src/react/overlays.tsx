@@ -5,6 +5,13 @@ import {
 	AvatarFallback,
 	Button,
 	Combobox,
+	ComboboxContent,
+	ComboboxEmpty,
+	ComboboxGroup,
+	ComboboxInput,
+	ComboboxItem,
+	ComboboxList,
+	ComboboxTrigger,
 	ContextMenu,
 	ContextMenuContent,
 	ContextMenuItem,
@@ -309,16 +316,67 @@ const REGIONS = [
 	{ value: "syd", label: "Sydney" },
 ];
 
-export function ComboboxDemo({ props }: { props: Props }) {
+export function ComboboxDemo(_: { props: Props }) {
+	const [open, setOpen] = useState(false);
 	const [value, setValue] = useState("");
+	const selected = REGIONS.find((r) => r.value === value);
+
 	return (
-		<Combobox
-			options={REGIONS}
-			value={value}
-			onValueChange={setValue}
-			placeholder={(props.placeholder as string) || "Search regions…"}
-			emptyLabel={(props.emptyLabel as string) || "No matches"}
-			label="Region"
-		/>
+		<Combobox open={open} onOpenChange={setOpen}>
+			<ComboboxTrigger>
+				{selected?.label ?? "Search regions…"}
+				<svg
+					viewBox="0 0 16 16"
+					fill="none"
+					aria-hidden
+					className="size-3.5 shrink-0 text-muted-foreground"
+				>
+					<path
+						d="m4 6 4 4 4-4"
+						stroke="currentColor"
+						strokeWidth="1.5"
+						strokeLinecap="round"
+						strokeLinejoin="round"
+					/>
+				</svg>
+			</ComboboxTrigger>
+			<ComboboxContent>
+				<ComboboxInput placeholder="Search regions…" />
+				<ComboboxList>
+					<ComboboxEmpty>No matches</ComboboxEmpty>
+					<ComboboxGroup>
+						{REGIONS.map((region) => (
+							<ComboboxItem
+								key={region.value}
+								value={region.value}
+								keywords={region.label}
+								onClick={() => {
+									setValue(region.value === value ? "" : region.value);
+									setOpen(false);
+								}}
+							>
+								{region.label}
+								{region.value === value ? (
+									<svg
+										viewBox="0 0 14 14"
+										fill="none"
+										aria-hidden
+										className="size-3.5 shrink-0"
+									>
+										<path
+											d="M3 7.4 5.6 10 11 4.2"
+											stroke="currentColor"
+											strokeWidth="1.6"
+											strokeLinecap="round"
+											strokeLinejoin="round"
+										/>
+									</svg>
+								) : null}
+							</ComboboxItem>
+						))}
+					</ComboboxGroup>
+				</ComboboxList>
+			</ComboboxContent>
+		</Combobox>
 	);
 }

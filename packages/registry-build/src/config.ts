@@ -29,6 +29,7 @@ export const FRAMEWORK: Record<
 		srcDir: string;
 		routePrefix: string;
 		libAlias: string;
+		uiAlias: string;
 		uiTarget: string;
 		libTarget: string;
 	}
@@ -37,6 +38,7 @@ export const FRAMEWORK: Record<
 		srcDir: resolve(REPO_ROOT, "packages/ui-react/src"),
 		routePrefix: "r",
 		libAlias: "@/lib",
+		uiAlias: "@/components/ui",
 		uiTarget: "components/ui",
 		libTarget: "lib",
 	},
@@ -44,6 +46,7 @@ export const FRAMEWORK: Record<
 		srcDir: resolve(REPO_ROOT, "packages/ui-svelte/src/lib"),
 		routePrefix: "svelte/r",
 		libAlias: "$lib",
+		uiAlias: "$lib/components/ui",
 		uiTarget: "src/lib/components/ui",
 		libTarget: "src/lib",
 	},
