@@ -20,6 +20,6 @@ $effect(() => {
 		bind:ref
 		{...rest}
 		data-slot="context-menu-content"
-		class={cn(ANCHORED, MENU_SURFACE, classProp)}
+		class={cn(ANCHORED, "static", MENU_SURFACE, classProp)}
 	/>
 </ContextMenuPrimitive.Portal>

@@ -1,6 +1,7 @@
 <script lang="ts">
+import { AlertDialog as AlertDialogPrimitive } from "bits-ui";
 import type { Snippet } from "svelte";
-import { DIALOG_PANEL, DIALOG_SURFACE } from "../dialog/context";
+import { DIALOG_BACKDROP, DIALOG_PANEL } from "../dialog/context";
 import { dialogFrame } from "../dialog/variants";
 import { cn } from "../lib/cn";
 import { getAlertDialog } from "./context";
@@ -8,32 +9,21 @@ import { getAlertDialog } from "./context";
 let { children, class: classProp }: { children?: Snippet; class?: string } = $props();
 
 const dialog = getAlertDialog();
-let el = $state<HTMLDialogElement>();
-
-// An alertdialog never dismisses on the backdrop: the choice has to be made.
-$effect(() => {
-	if (!el) return;
-	if (dialog.open && !el.open) el.showModal();
-	if (!dialog.open && el.open) el.close();
-});
+let contentEl = $state<HTMLElement | null>(null);
 </script>
 
-<dialog
-	bind:this={el}
-	role="alertdialog"
-	aria-labelledby={dialog.titleId}
-	aria-describedby={dialog.descriptionId}
-	onclose={() => dialog.setOpen(false)}
-	oncancel={(event) => {
-		event.preventDefault();
-		dialog.setOpen(false);
-	}}
-	class={DIALOG_SURFACE}
->
-	<div
+<AlertDialogPrimitive.Portal>
+	<AlertDialogPrimitive.Overlay data-slot="alert-dialog-backdrop" class={DIALOG_BACKDROP} />
+	<AlertDialogPrimitive.Content
+		bind:ref={contentEl}
 		data-slot="alert-dialog-content"
-		data-state={dialog.open ? "open" : "closed"}
 		data-variant={dialog.variant}
+		onOpenAutoFocus={(event) => {
+			event.preventDefault();
+			contentEl
+				?.querySelector<HTMLElement>('[data-slot="alert-dialog-cancel"]')
+				?.focus();
+		}}
 		class={cn(
 			DIALOG_PANEL,
 			dialogFrame({ variant: dialog.variant }).panel(),
@@ -64,5 +54,5 @@ $effect(() => {
 				</div>
 			{/if}
 		{/if}
-	</div>
-</dialog>
+	</AlertDialogPrimitive.Content>
+</AlertDialogPrimitive.Portal>

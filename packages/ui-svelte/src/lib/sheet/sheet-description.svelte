@@ -1,18 +1,12 @@
 <script lang="ts">
-import type { Snippet } from "svelte";
-import type { HTMLAttributes } from "svelte/elements";
+import { Dialog as SheetPrimitive } from "bits-ui";
 import { cn } from "../lib/cn";
-import { getSheet } from "./context";
 
-let {
-	children,
-	class: classProp,
-	...rest
-}: { children?: Snippet; class?: string } & HTMLAttributes<HTMLDivElement> = $props();
-
-const ctx = getSheet();
+let { class: classProp, ...rest }: SheetPrimitive.DescriptionProps = $props();
 </script>
 
-<p {...rest} id={ctx.descriptionId} data-slot="sheet-description" class={cn("text-muted-foreground text-sm", classProp)}>
-	{@render children?.()}
-</p>
+<SheetPrimitive.Description
+	{...rest}
+	data-slot="sheet-description"
+	class={cn("text-muted-foreground text-sm", classProp)}
+/>

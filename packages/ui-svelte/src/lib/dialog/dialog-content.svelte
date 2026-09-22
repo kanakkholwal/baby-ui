@@ -1,40 +1,23 @@
 <script lang="ts">
+import { Dialog as DialogPrimitive } from "bits-ui";
 import type { Snippet } from "svelte";
 import { cn } from "../lib/cn";
-import { DIALOG_PANEL, DIALOG_SURFACE, getDialog } from "./context";
+import { DIALOG_BACKDROP, DIALOG_PANEL, getDialog } from "./context";
 import { dialogFrame, dialogWidth } from "./variants";
 
 let { children, class: classProp }: { children?: Snippet; class?: string } = $props();
 
 const dialog = getDialog();
-let el = $state<HTMLDialogElement>();
-
-// <dialog> owns the top layer and page inertness; syncing is all we do here.
-$effect(() => {
-	if (!el) return;
-	if (dialog.open && !el.open) el.showModal();
-	if (!dialog.open && el.open) el.close();
-});
 </script>
 
-<dialog
-	bind:this={el}
-	aria-labelledby={dialog.titleId}
-	aria-describedby={dialog.descriptionId}
-	onclose={() => dialog.setOpen(false)}
-	oncancel={(event) => {
-		event.preventDefault();
-		dialog.setOpen(false);
-	}}
-	onclick={(event) => {
-		if (dialog.dismissOnBackdrop && event.target === el) dialog.setOpen(false);
-	}}
-	class={DIALOG_SURFACE}
->
-	<div
+<DialogPrimitive.Portal>
+	<DialogPrimitive.Overlay data-slot="dialog-backdrop" class={DIALOG_BACKDROP} />
+	<DialogPrimitive.Content
 		data-slot="dialog-content"
-		data-state={dialog.open ? "open" : "closed"}
 		data-variant={dialog.variant}
+		onInteractOutside={(event) => {
+			if (!dialog.dismissOnBackdrop) event.preventDefault();
+		}}
 		class={cn(
 			DIALOG_PANEL,
 			dialogFrame({ variant: dialog.variant }).panel(),
@@ -67,5 +50,5 @@ $effect(() => {
 				</div>
 			{/if}
 		{/if}
-	</div>
-</dialog>
+	</DialogPrimitive.Content>
+</DialogPrimitive.Portal>

@@ -3,7 +3,7 @@ import { tv, type VariantProps } from "tailwind-variants";
 /** Only the closed state translates, so the open state needs no competing utility. */
 export const sheetPanel = tv({
 	base: [
-		"absolute flex flex-col gap-4 overflow-y-auto border-border bg-background p-6",
+		"fixed z-50 flex flex-col gap-4 overflow-y-auto border-border bg-background p-6",
 		"transition-transform duration-[var(--duration-drawer)] ease-[var(--ease-drawer)]",
 		"data-[state=closed]:duration-[var(--duration-overlay)]",
 		"data-[state=closed]:data-[side=left]:-translate-x-full",

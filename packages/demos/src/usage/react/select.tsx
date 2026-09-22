@@ -9,11 +9,17 @@ import {
 } from "@baby-ui/react";
 import { useState } from "react";
 
+const RUNTIMES = [
+	{ value: "node", label: "Node 22" },
+	{ value: "bun", label: "Bun 1.2" },
+	{ value: "deno", label: "Deno 2" },
+];
+
 export function Example() {
 	const [value, setValue] = useState("");
 
 	return (
-		<Select value={value} onValueChange={setValue}>
+		<Select value={value} onValueChange={setValue} items={RUNTIMES}>
 			<SelectTrigger aria-label="Runtime">
 				<SelectValue placeholder="Pick a runtime" />
 			</SelectTrigger>

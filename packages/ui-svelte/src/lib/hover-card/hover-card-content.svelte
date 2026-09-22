@@ -1,49 +1,26 @@
 <script lang="ts">
-import type { Snippet } from "svelte";
-import type { HTMLAttributes } from "svelte/elements";
+import { LinkPreview as HoverCardPrimitive } from "bits-ui";
 import { ANCHORED } from "../lib/anchor";
 import { cn } from "../lib/cn";
-import { getHoverCard } from "./context";
 
 let {
-	children,
 	class: classProp,
+	align = "center",
+	sideOffset = 4,
 	...rest
-}: { children?: Snippet; class?: string } & HTMLAttributes<HTMLDivElement> = $props();
-
-const card = getHoverCard();
-let el = $state<HTMLDivElement>();
-// Kept mounted after the first open so the surface can animate out as well as in.
-let mounted = $state(false);
-
-$effect(() => {
-	if (card.open) mounted = true;
-});
-
-$effect(() => {
-	card.setContent(el);
-	return () => card.setContent(undefined);
-});
+}: HoverCardPrimitive.ContentProps = $props();
 </script>
 
-{#if mounted}
-	<div
+<HoverCardPrimitive.Portal>
+	<HoverCardPrimitive.Content
+		{align}
+		{sideOffset}
 		{...rest}
-		bind:this={el}
-		id={card.contentId}
-		role="dialog"
-		tabindex="-1"
 		data-slot="hover-card-content"
-		data-state={card.open ? "open" : "closed"}
-		inert={!card.open}
-		onpointerenter={() => card.schedule(true)}
-		onpointerleave={() => card.schedule(false)}
 		class={cn(
 			ANCHORED,
-			"w-64 rounded-xl border border-border bg-popover p-3 text-sm shadow-2xl",
+			"static z-50 w-64 rounded-xl border border-border bg-popover p-3 text-sm shadow-2xl",
 			classProp,
 		)}
-	>
-		{@render children?.()}
-	</div>
-{/if}
+	/>
+</HoverCardPrimitive.Portal>

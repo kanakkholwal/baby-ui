@@ -37,6 +37,7 @@ export const sheet = defineComponent({
 		notes: [
 			"aria-modal with a labelled heading. Focus moves to the first control inside on open.",
 			"Prefer `bottom` on phones: it is the reachable part of the screen.",
+			"Built on the same Dialog primitive (Base UI/bits-ui) as Dialog itself, just with a side-anchored panel instead of a centered one.",
 		],
 	},
 	licenseOrigin: {
@@ -53,7 +54,9 @@ export const sheet = defineComponent({
 				{ path: "sheet/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "@base-ui/react"],
+			// Reuses Dialog's DIALOG_BACKDROP.
+			registryDependencies: ["dialog"],
 		},
 		svelte: {
 			entry: "Sheet",
@@ -66,11 +69,12 @@ export const sheet = defineComponent({
 				{ path: "sheet/sheet-description.svelte", type: "registry:ui" },
 				{ path: "sheet/sheet-footer.svelte", type: "registry:ui" },
 				{ path: "sheet/sheet-close.svelte", type: "registry:ui" },
-				{ path: "sheet/context.ts", type: "registry:ui" },
 				{ path: "sheet/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "bits-ui"],
+			// Reuses Dialog's DIALOG_BACKDROP.
+			registryDependencies: ["dialog"],
 		},
 	},
 	keywords: ["sheet"],

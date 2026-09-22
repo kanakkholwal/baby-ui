@@ -11,7 +11,6 @@ let { props = {} }: { props?: Record<string, unknown> } = $props();
 </script>
 
 <HoverCard
-	placement={(props.placement as never) ?? "bottom-start"}
 	openDelay={Number(props.openDelay ?? 300)}
 	closeDelay={Number(props.closeDelay ?? 150)}
 >
@@ -23,7 +22,7 @@ let { props = {} }: { props?: Record<string, unknown> } = $props();
 			@kanakkholwal
 		</button>
 	</HoverCardTrigger>
-	<HoverCardContent>
+	<HoverCardContent side={(props.side as never) ?? "bottom"}>
 		<div class="flex items-start gap-3">
 			<Avatar size="sm"><AvatarFallback>KK</AvatarFallback></Avatar>
 			<div>

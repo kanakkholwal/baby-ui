@@ -9,21 +9,14 @@ export const hoverCard = defineComponent({
 	status: "stable",
 	props: [
 		{
-			name: "placement",
-			type: "Placement",
-			description: "Preferred side. Flips automatically when there is not room.",
-			default: "bottom-start",
+			name: "side",
+			type: '"top" | "right" | "bottom" | "left"',
+			description:
+				"HoverCardContent: preferred side. Flips automatically when there is not room.",
+			default: "bottom",
 			control: {
 				kind: "select",
-				options: [
-					"top",
-					"bottom",
-					"left",
-					"right",
-					"bottom-start",
-					"bottom-end",
-					"top-start",
-				],
+				options: ["top", "right", "bottom", "left"],
 			},
 		},
 		{
@@ -54,6 +47,7 @@ export const hoverCard = defineComponent({
 		notes: [
 			"Hover-only content is supplementary by definition; never put the only copy of something in here.",
 			"The card is aria-describedby the trigger and opens on focus as well as hover.",
+			"Positioning, hover-intent timing and portaling are delegated to Base UI's preview-card (React) and bits-ui's link-preview (Svelte); this component only owns the classes and data-slots.",
 		],
 	},
 	licenseOrigin: {
@@ -70,7 +64,7 @@ export const hoverCard = defineComponent({
 				{ path: "lib/anchor.ts", type: "registry:lib" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge", "@floating-ui/dom"],
+			dependencies: ["clsx", "tailwind-merge", "@base-ui/react"],
 		},
 		svelte: {
 			entry: "HoverCard",
@@ -78,11 +72,10 @@ export const hoverCard = defineComponent({
 				{ path: "hover-card/hover-card.svelte", type: "registry:ui" },
 				{ path: "hover-card/hover-card-trigger.svelte", type: "registry:ui" },
 				{ path: "hover-card/hover-card-content.svelte", type: "registry:ui" },
-				{ path: "hover-card/context.ts", type: "registry:ui" },
 				{ path: "lib/anchor.ts", type: "registry:lib" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge", "@floating-ui/dom"],
+			dependencies: ["clsx", "tailwind-merge", "bits-ui"],
 		},
 	},
 	keywords: ["hover", "card", "overlay"],

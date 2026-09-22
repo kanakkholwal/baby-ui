@@ -19,6 +19,20 @@ export const dropdownMenu = defineComponent({
 			},
 		},
 		{
+			name: "sideOffset",
+			type: "number",
+			description: "Distance from the trigger, in pixels.",
+			default: 4,
+			control: { kind: "number", min: 0, max: 24, step: 1 },
+		},
+		{
+			name: "align",
+			type: '"start" | "center" | "end"',
+			description: "Alignment along the side.",
+			default: "start",
+			control: { kind: "select", options: ["start", "center", "end"] },
+		},
+		{
 			name: "open",
 			type: "boolean",
 			description: "Controlled open state. Bindable.",

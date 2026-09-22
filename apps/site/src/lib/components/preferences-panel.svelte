@@ -72,7 +72,7 @@ $effect(() => {
 		<div class="flex flex-col divide-y divide-border">
 			<div class="flex items-center justify-between gap-3 px-4 py-2.5">
 				<span class="text-foreground text-xs">Appearance</span>
-				<Select bind:value={appearance}>
+				<Select bind:value={appearance} items={APPEARANCE.map((o) => ({ value: o.value, label: o.label }))}>
 					<SelectTrigger aria-label="Appearance" class="h-8 w-32 rounded-lg text-xs">
 						<SelectValue />
 					</SelectTrigger>

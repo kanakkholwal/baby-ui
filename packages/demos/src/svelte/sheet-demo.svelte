@@ -17,6 +17,12 @@ import {
 let { props = {} }: { props?: Record<string, unknown> } = $props();
 
 let region = $state("fra");
+
+const REGIONS = [
+	{ value: "fra", label: "Frankfurt" },
+	{ value: "iad", label: "Washington DC" },
+	{ value: "syd", label: "Sydney" },
+];
 </script>
 
 <Sheet>
@@ -28,14 +34,14 @@ let region = $state("fra");
 		</SheetHeader>
 		<div class="flex flex-col gap-1.5">
 			<Label for="sheet-region">Region</Label>
-			<Select bind:value={region}>
+			<Select bind:value={region} items={REGIONS}>
 				<SelectTrigger id="sheet-region">
 					<SelectValue placeholder="Pick a region" />
 				</SelectTrigger>
 				<SelectContent>
-					<SelectItem value="fra">Frankfurt</SelectItem>
-					<SelectItem value="iad">Washington DC</SelectItem>
-					<SelectItem value="syd">Sydney</SelectItem>
+					<SelectItem value="fra" label="Frankfurt">Frankfurt</SelectItem>
+					<SelectItem value="iad" label="Washington DC">Washington DC</SelectItem>
+					<SelectItem value="syd" label="Sydney">Sydney</SelectItem>
 				</SelectContent>
 			</Select>
 		</div>

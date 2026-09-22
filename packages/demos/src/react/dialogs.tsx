@@ -172,7 +172,7 @@ export function SheetDemo({ props }: { props: Props }) {
 				</SheetHeader>
 				<div className="flex flex-col gap-1.5">
 					<Label htmlFor={id}>Region</Label>
-					<Select value={region} onValueChange={setRegion}>
+					<Select value={region} onValueChange={setRegion} items={REGIONS}>
 						<SelectTrigger id={id} aria-label="Region">
 							<SelectValue placeholder="Pick a region" />
 						</SelectTrigger>

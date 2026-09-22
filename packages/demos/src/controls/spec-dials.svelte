@@ -65,13 +65,14 @@ function label(prop: PropSpec) {
 			{#if control.kind === "select"}
 				<Select
 					bind:value={() => String(state[prop.name] ?? ""), (next) => (state[prop.name] = next)}
+					items={control.options.map((o) => ({ value: o, label: o }))}
 				>
 					<SelectTrigger aria-label={label(prop)} class="h-7 w-32 rounded-md text-xs">
 						<SelectValue />
 					</SelectTrigger>
 					<SelectContent>
 						{#each control.options as option (option)}
-							<SelectItem value={option}>{option}</SelectItem>
+							<SelectItem value={option} label={option}>{option}</SelectItem>
 						{/each}
 					</SelectContent>
 				</Select>

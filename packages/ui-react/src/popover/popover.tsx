@@ -25,23 +25,30 @@ export function PopoverTrigger({
 
 export function PopoverContent({
 	className,
-	sideOffset = 6,
-	align = "start",
-	side,
+	align = "center",
+	alignOffset = 0,
+	side = "bottom",
+	sideOffset = 4,
 	...props
 }: ComponentProps<typeof PopoverPrimitive.Popup> &
 	Pick<
 		ComponentProps<typeof PopoverPrimitive.Positioner>,
-		"sideOffset" | "align" | "side"
+		"align" | "alignOffset" | "side" | "sideOffset"
 	>) {
 	return (
 		<PopoverPrimitive.Portal>
-			<PopoverPrimitive.Positioner sideOffset={sideOffset} align={align} side={side}>
+			<PopoverPrimitive.Positioner
+				align={align}
+				alignOffset={alignOffset}
+				side={side}
+				sideOffset={sideOffset}
+				className="isolate z-50"
+			>
 				<PopoverPrimitive.Popup
 					data-slot="popover-content"
 					className={cn(
 						ANCHORED,
-						"w-72 rounded-xl border border-border bg-popover p-3 text-sm shadow-2xl",
+						"static w-72 rounded-xl border border-border bg-popover p-3 text-sm shadow-2xl",
 						className,
 					)}
 					{...props}

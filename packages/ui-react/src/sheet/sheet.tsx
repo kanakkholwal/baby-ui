@@ -1,94 +1,22 @@
 "use client";
 
-import type { ComponentProps, ReactNode } from "react";
-import {
-	createContext,
-	useCallback,
-	useContext,
-	useEffect,
-	useId,
-	useMemo,
-	useRef,
-	useState,
-} from "react";
+import { Dialog as SheetPrimitive } from "@base-ui/react/dialog";
+import type { ComponentProps } from "react";
+import { DIALOG_BACKDROP } from "../dialog/dialog";
 import { cn } from "../lib/cn";
 import { type SheetSide, sheetPanel } from "./variants";
 
 export type { SheetSide };
 
-/** Visibility, delayed by the exit, is what keeps a non-dialog overlay on screen to slide out. */
-const SHEET_OVERLAY = [
-	"fixed inset-0 z-50 transition-[visibility] duration-0",
-	"data-[state=closed]:invisible data-[state=closed]:delay-[var(--duration-overlay)]",
-].join(" ");
+export const Sheet = SheetPrimitive.Root;
 
-const SHEET_VEIL = [
-	"absolute inset-0 bg-black/50 transition-opacity duration-[var(--duration-overlay)] ease-[var(--ease-out)]",
-	"data-[state=closed]:opacity-0 data-[state=closed]:duration-[var(--duration-exit)]",
-	"starting:data-[state=open]:opacity-0",
-].join(" ");
-
-type Ctx = {
-	open: boolean;
-	titleId: string;
-	descriptionId: string;
-	setOpen: (open: boolean) => void;
-};
-
-const SheetCtx = createContext<Ctx | null>(null);
-
-function useSheet() {
-	const ctx = useContext(SheetCtx);
-	if (!ctx) throw new Error("Sheet parts must be used inside <Sheet>");
-	return ctx;
-}
-
-export function Sheet({
-	children,
-	open: openProp,
-	defaultOpen = false,
-	onOpenChange,
-}: {
-	children?: ReactNode;
-	open?: boolean;
-	defaultOpen?: boolean;
-	onOpenChange?: (open: boolean) => void;
-}) {
-	const uid = useId();
-	const [internal, setInternal] = useState(defaultOpen);
-	const open = openProp ?? internal;
-
-	const setOpen = useCallback(
-		(next: boolean) => {
-			if (openProp === undefined) setInternal(next);
-			onOpenChange?.(next);
-		},
-		[openProp, onOpenChange],
-	);
-
-	const ctx = useMemo(
-		() => ({
-			open,
-			titleId: `${uid}-title`,
-			descriptionId: `${uid}-description`,
-			setOpen,
-		}),
-		[open, uid, setOpen],
-	);
-
-	return <SheetCtx.Provider value={ctx}>{children}</SheetCtx.Provider>;
-}
-
-export function SheetTrigger({ className, ...props }: ComponentProps<"button">) {
-	const sheet = useSheet();
-
+export function SheetTrigger({
+	className,
+	...props
+}: ComponentProps<typeof SheetPrimitive.Trigger>) {
 	return (
-		<button
-			type="button"
+		<SheetPrimitive.Trigger
 			data-slot="sheet-trigger"
-			aria-haspopup="dialog"
-			aria-expanded={sheet.open}
-			onClick={() => sheet.setOpen(true)}
 			className={cn("inline-flex", className)}
 			{...props}
 		/>
@@ -98,50 +26,18 @@ export function SheetTrigger({ className, ...props }: ComponentProps<"button">) 
 export function SheetContent({
 	className,
 	side = "right",
-	children,
-}: ComponentProps<"div"> & { side?: SheetSide }) {
-	const sheet = useSheet();
-	const panel = useRef<HTMLDivElement>(null);
-	const { open, setOpen } = sheet;
-	// Nothing renders until the first open, and from then on the panel stays so it can slide out.
-	const [mounted, setMounted] = useState(false);
-
-	useEffect(() => {
-		if (!open) return;
-		setMounted(true);
-		panel.current?.querySelector<HTMLElement>("button, a, input, [tabindex]")?.focus();
-		const onKey = (event: KeyboardEvent) => {
-			if (event.key === "Escape") setOpen(false);
-		};
-		window.addEventListener("keydown", onKey);
-		return () => window.removeEventListener("keydown", onKey);
-		// mounted is a dependency: the panel only exists on the render after it flips.
-	}, [open, mounted, setOpen]);
-
-	if (!mounted) return null;
-
+	...props
+}: ComponentProps<typeof SheetPrimitive.Popup> & { side?: SheetSide }) {
 	return (
-		<div className={SHEET_OVERLAY} data-state={open ? "open" : "closed"} inert={!open}>
-			<button
-				type="button"
-				aria-label="Close"
-				data-state={open ? "open" : "closed"}
-				onClick={() => setOpen(false)}
-				className={SHEET_VEIL}
-			/>
-			<div
-				ref={panel}
-				role="dialog"
-				aria-modal
-				aria-labelledby={sheet.titleId}
+		<SheetPrimitive.Portal>
+			<SheetPrimitive.Backdrop data-slot="sheet-backdrop" className={DIALOG_BACKDROP} />
+			<SheetPrimitive.Popup
 				data-slot="sheet-content"
 				data-side={side}
-				data-state={open ? "open" : "closed"}
 				className={cn(sheetPanel({ side }), className)}
-			>
-				{children}
-			</div>
-		</div>
+				{...props}
+			/>
+		</SheetPrimitive.Portal>
 	);
 }
 
@@ -165,12 +61,12 @@ export function SheetFooter({ className, ...props }: ComponentProps<"div">) {
 	);
 }
 
-export function SheetTitle({ className, ...props }: ComponentProps<"h2">) {
-	const sheet = useSheet();
-
+export function SheetTitle({
+	className,
+	...props
+}: ComponentProps<typeof SheetPrimitive.Title>) {
 	return (
-		<h2
-			id={sheet.titleId}
+		<SheetPrimitive.Title
 			data-slot="sheet-title"
 			className={cn("font-semibold text-foreground text-sm", className)}
 			{...props}
@@ -178,12 +74,12 @@ export function SheetTitle({ className, ...props }: ComponentProps<"h2">) {
 	);
 }
 
-export function SheetDescription({ className, ...props }: ComponentProps<"p">) {
-	const sheet = useSheet();
-
+export function SheetDescription({
+	className,
+	...props
+}: ComponentProps<typeof SheetPrimitive.Description>) {
 	return (
-		<p
-			id={sheet.descriptionId}
+		<SheetPrimitive.Description
 			data-slot="sheet-description"
 			className={cn("text-muted-foreground text-sm", className)}
 			{...props}
@@ -191,15 +87,15 @@ export function SheetDescription({ className, ...props }: ComponentProps<"p">) {
 	);
 }
 
-export function SheetClose({ className, children, ...props }: ComponentProps<"button">) {
-	const sheet = useSheet();
-
+export function SheetClose({
+	className,
+	children,
+	...props
+}: ComponentProps<typeof SheetPrimitive.Close>) {
 	return (
-		<button
-			type="button"
+		<SheetPrimitive.Close
 			data-slot="sheet-close"
 			aria-label={children ? undefined : "Close"}
-			onClick={() => sheet.setOpen(false)}
 			className={cn(
 				"grid size-8 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-card hover:text-foreground",
 				className,
@@ -216,6 +112,6 @@ export function SheetClose({ className, children, ...props }: ComponentProps<"bu
 					/>
 				</svg>
 			)}
-		</button>
+		</SheetPrimitive.Close>
 	);
 }

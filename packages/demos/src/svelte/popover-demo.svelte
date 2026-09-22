@@ -26,7 +26,8 @@ const ROW = "flex w-full flex-row-reverse items-center justify-between gap-4";
 	<PopoverContent
 		class="w-72"
 		side={(props.side as never) ?? "bottom"}
-		sideOffset={Number(props.sideOffset ?? 6)}
+		sideOffset={Number(props.sideOffset ?? 4)}
+		align={(props.align as never) ?? "center"}
 	>
 		<div class="flex flex-col gap-3">
 			<Label>Preview branches</Label>

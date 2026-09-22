@@ -11,6 +11,6 @@ let { class: classProp, ...rest }: DropdownMenuPrimitive.SubContentProps = $prop
 	<DropdownMenuPrimitive.SubContent
 		{...rest}
 		data-slot="dropdown-menu-sub-content"
-		class={cn(ANCHORED, MENU_SURFACE, "min-w-40", classProp)}
+		class={cn(ANCHORED, "static", MENU_SURFACE, "min-w-40", classProp)}
 	/>
 </DropdownMenuPrimitive.Portal>

@@ -14,11 +14,12 @@ import {
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
 
+let open = $state(false);
 let done = $state(false);
 </script>
 
 <div class="flex flex-col items-center gap-3">
-	<AlertDialog variant={(props.variant as DialogVariant) ?? "default"}>
+	<AlertDialog bind:open variant={(props.variant as DialogVariant) ?? "default"}>
 		<AlertDialogTrigger class="inline-flex h-9 items-center rounded-lg border border-border bg-card px-3 font-medium text-foreground text-sm">Delete project</AlertDialogTrigger>
 		<AlertDialogContent>
 			<AlertDialogHeader>
@@ -31,7 +32,10 @@ let done = $state(false);
 				<AlertDialogCancel>Cancel</AlertDialogCancel>
 				<AlertDialogAction
 					destructive={props.destructive !== false}
-					onclick={() => (done = true)}
+					onclick={() => {
+						done = true;
+						open = false;
+					}}
 				>
 					Delete
 				</AlertDialogAction>

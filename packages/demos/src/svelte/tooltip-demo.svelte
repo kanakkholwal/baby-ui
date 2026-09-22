@@ -1,5 +1,10 @@
 <script lang="ts">
-import { Tooltip, TooltipContent, TooltipTrigger } from "@baby-ui/svelte";
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from "@baby-ui/svelte";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
 
@@ -21,29 +26,31 @@ const ACTIONS = [
 	},
 ];
 
-const placement = $derived((props.placement as never) ?? "top");
+const side = $derived((props.side as never) ?? "top");
 const delay = $derived(Number(props.delay ?? 400));
 </script>
 
-<div class="inline-flex items-center gap-1 rounded-xl border border-border p-1">
-	{#each ACTIONS as action (action.id)}
-		<Tooltip {placement} {delay}>
-			<TooltipTrigger
-				class="grid size-8 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground"
-			>
-				<svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class="size-4">
-					<path
-						d={action.path}
-						stroke="currentColor"
-						stroke-width="1.3"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-					/>
-				</svg>
-			</TooltipTrigger>
-			<TooltipContent>
-				{action.id === "copy" ? (props.label as string) || action.hint : action.hint}
-			</TooltipContent>
-		</Tooltip>
-	{/each}
-</div>
+<TooltipProvider>
+	<div class="inline-flex items-center gap-1 rounded-xl border border-border p-1">
+		{#each ACTIONS as action (action.id)}
+			<Tooltip {delay}>
+				<TooltipTrigger
+					class="grid size-8 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground"
+				>
+					<svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class="size-4">
+						<path
+							d={action.path}
+							stroke="currentColor"
+							stroke-width="1.3"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						/>
+					</svg>
+				</TooltipTrigger>
+				<TooltipContent {side}>
+					{action.id === "copy" ? (props.label as string) || action.hint : action.hint}
+				</TooltipContent>
+			</Tooltip>
+		{/each}
+	</div>
+</TooltipProvider>

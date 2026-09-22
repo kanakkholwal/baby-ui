@@ -15,6 +15,13 @@ export const select = defineComponent({
 			control: { kind: "none" },
 		},
 		{
+			name: "items",
+			type: "{ value: string; label: string; disabled?: boolean }[]",
+			description:
+				"Value-to-label map, read by SelectValue to render the trigger's text without requiring the list to have mounted first.",
+			control: { kind: "none" },
+		},
+		{
 			name: "placeholder",
 			type: "string",
 			description: "Shown when nothing is selected.",
@@ -22,21 +29,14 @@ export const select = defineComponent({
 			control: { kind: "text" },
 		},
 		{
-			name: "placement",
-			type: "Placement",
-			description: "Preferred side. Flips automatically when there is not room.",
-			default: "bottom-start",
+			name: "side",
+			type: '"top" | "right" | "bottom" | "left"',
+			description:
+				"SelectContent: preferred side. Flips automatically when there is not room.",
+			default: "bottom",
 			control: {
 				kind: "select",
-				options: [
-					"top",
-					"bottom",
-					"left",
-					"right",
-					"bottom-start",
-					"bottom-end",
-					"top-start",
-				],
+				options: ["top", "right", "bottom", "left"],
 			},
 		},
 	],
@@ -57,6 +57,8 @@ export const select = defineComponent({
 		notes: [
 			"The trigger is role=combobox with aria-haspopup=listbox, which is the documented pattern for a custom select.",
 			"The list opens with focus on the selected option, not the first one.",
+			"Positioning, roving focus, typeahead and portaling are delegated to Base UI (React) and bits-ui (Svelte); this component only owns the classes and data-slots.",
+			"Svelte: SelectItem needs a `label` prop (used by SelectValue to render the trigger's text) since bits-ui doesn't read it back from the item's own rendered children the way Base UI's React SelectItem does.",
 		],
 	},
 	licenseOrigin: {
@@ -73,7 +75,7 @@ export const select = defineComponent({
 				{ path: "lib/anchor.ts", type: "registry:lib" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge", "@floating-ui/dom"],
+			dependencies: ["clsx", "tailwind-merge", "@base-ui/react"],
 		},
 		svelte: {
 			entry: "Select",
@@ -86,11 +88,12 @@ export const select = defineComponent({
 				{ path: "select/select-group.svelte", type: "registry:ui" },
 				{ path: "select/select-label.svelte", type: "registry:ui" },
 				{ path: "select/select-separator.svelte", type: "registry:ui" },
-				{ path: "select/context.ts", type: "registry:ui" },
 				{ path: "lib/anchor.ts", type: "registry:lib" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge", "@floating-ui/dom"],
+			dependencies: ["clsx", "tailwind-merge", "bits-ui"],
+			// select-separator.svelte is still a plain <hr>: bits-ui's Select module has no
+			// Select-scoped Separator (unlike Base UI's), and this repo has no standalone one yet.
 		},
 	},
 	keywords: ["select", "overlay"],

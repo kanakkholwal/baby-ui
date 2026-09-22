@@ -2,11 +2,11 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@baby-ui/react";
 
 export function Example() {
 	return (
-		<Tooltip placement="top">
+		<Tooltip>
 			<TooltipTrigger>
 				<button type="button">Copy</button>
 			</TooltipTrigger>
-			<TooltipContent>Copy to clipboard</TooltipContent>
+			<TooltipContent side="top">Copy to clipboard</TooltipContent>
 		</Tooltip>
 	);
 }

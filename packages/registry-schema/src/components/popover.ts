@@ -22,8 +22,22 @@ export const popover = defineComponent({
 			name: "sideOffset",
 			type: "number",
 			description: "Distance from the anchor, in pixels.",
-			default: 6,
+			default: 4,
 			control: { kind: "number", min: 0, max: 24, step: 1 },
+		},
+		{
+			name: "align",
+			type: '"start" | "center" | "end"',
+			description: "Alignment along the side.",
+			default: "center",
+			control: { kind: "select", options: ["start", "center", "end"] },
+		},
+		{
+			name: "alignOffset",
+			type: "number",
+			description: "Offsets the alignment from its default position, in pixels.",
+			default: 0,
+			control: { kind: "number", min: -24, max: 24, step: 1 },
 		},
 		{
 			name: "open",

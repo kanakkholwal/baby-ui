@@ -68,7 +68,8 @@ export function PopoverDemo({ props }: { props: Props }) {
 			<PopoverContent
 				className="w-72"
 				side={(props.side as never) ?? "bottom"}
-				sideOffset={Number(props.sideOffset ?? 6)}
+				sideOffset={Number(props.sideOffset ?? 4)}
+				align={(props.align as never) ?? "center"}
 			>
 				<div className="flex flex-col gap-3">
 					<Label>Preview branches</Label>
@@ -117,11 +118,7 @@ export function TooltipDemo({ props }: { props: Props }) {
 	return (
 		<div className="inline-flex items-center gap-1 rounded-xl border border-border p-1">
 			{ACTIONS.map((action) => (
-				<Tooltip
-					key={action.id}
-					placement={(props.placement as never) ?? "top"}
-					delay={Number(props.delay ?? 400)}
-				>
+				<Tooltip key={action.id} delay={Number(props.delay ?? 400)}>
 					<TooltipTrigger className="grid size-8 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground">
 						<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-4">
 							<path
@@ -133,7 +130,7 @@ export function TooltipDemo({ props }: { props: Props }) {
 							/>
 						</svg>
 					</TooltipTrigger>
-					<TooltipContent>
+					<TooltipContent side={(props.side as never) ?? "top"}>
 						{action.id === "copy" ? (props.label as string) || action.hint : action.hint}
 					</TooltipContent>
 				</Tooltip>
@@ -148,7 +145,10 @@ export function DropdownMenuDemo({ props }: { props: Props }) {
 		<div className="flex flex-col items-center gap-3">
 			<DropdownMenu>
 				<DropdownMenuTrigger className={TRIGGER}>Actions</DropdownMenuTrigger>
-				<DropdownMenuContent side={(props.side as never) ?? "bottom"}>
+				<DropdownMenuContent
+					side={(props.side as never) ?? "bottom"}
+					align={(props.align as never) ?? "start"}
+				>
 					<DropdownMenuLabel>This file</DropdownMenuLabel>
 					<DropdownMenuItem onClick={() => setLast("rename")}>
 						Rename
@@ -241,7 +241,6 @@ export function ContextMenuDemo(_: { props: Props }) {
 export function HoverCardDemo({ props }: { props: Props }) {
 	return (
 		<HoverCard
-			placement={(props.placement as never) ?? "bottom-start"}
 			openDelay={Number(props.openDelay ?? 300)}
 			closeDelay={Number(props.closeDelay ?? 150)}
 		>
@@ -253,7 +252,7 @@ export function HoverCardDemo({ props }: { props: Props }) {
 					@kanakkholwal
 				</button>
 			</HoverCardTrigger>
-			<HoverCardContent>
+			<HoverCardContent side={(props.side as never) ?? "bottom"}>
 				<div className="flex items-start gap-3">
 					<Avatar size="sm">
 						<AvatarFallback>KK</AvatarFallback>
@@ -282,17 +281,13 @@ export function SelectDemo({ props }: { props: Props }) {
 	const [value, setValue] = useState("edge");
 	return (
 		<div className="w-64">
-			<Select
-				value={value}
-				onValueChange={setValue}
-				placement={(props.placement as never) ?? "bottom-start"}
-			>
+			<Select value={value} onValueChange={setValue} items={RUNTIMES}>
 				<SelectTrigger aria-label="Runtime">
 					<SelectValue
 						placeholder={(props.placeholder as string) || "Select an option"}
 					/>
 				</SelectTrigger>
-				<SelectContent>
+				<SelectContent side={(props.side as never) ?? "bottom"}>
 					{RUNTIMES.map((runtime) => (
 						<SelectItem
 							key={runtime.value}

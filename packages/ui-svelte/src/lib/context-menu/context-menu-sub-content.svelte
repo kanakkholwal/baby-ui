@@ -11,6 +11,6 @@ let { class: classProp, ...rest }: ContextMenuPrimitive.SubContentProps = $props
 	<ContextMenuPrimitive.SubContent
 		{...rest}
 		data-slot="context-menu-sub-content"
-		class={cn(ANCHORED, MENU_SURFACE, "min-w-40", classProp)}
+		class={cn(ANCHORED, "static", MENU_SURFACE, "min-w-40", classProp)}
 	/>
 </ContextMenuPrimitive.Portal>

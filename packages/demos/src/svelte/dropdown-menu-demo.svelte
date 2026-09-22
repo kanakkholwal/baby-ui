@@ -20,7 +20,10 @@ let last = $state("");
 <div class="flex flex-col items-center gap-3">
 	<DropdownMenu>
 		<DropdownMenuTrigger class="inline-flex h-9 items-center rounded-lg border border-border bg-card px-3 font-medium text-foreground text-sm">Actions</DropdownMenuTrigger>
-		<DropdownMenuContent side={(props.side as never) ?? "bottom"}>
+		<DropdownMenuContent
+		side={(props.side as never) ?? "bottom"}
+		align={(props.align as never) ?? "start"}
+	>
 			<DropdownMenuLabel>This file</DropdownMenuLabel>
 			<DropdownMenuItem onclick={() => (last = "rename")}>
 				Rename

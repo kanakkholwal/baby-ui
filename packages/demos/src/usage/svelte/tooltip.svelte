@@ -1,10 +1,17 @@
 <script lang="ts">
-import { Tooltip, TooltipContent, TooltipTrigger } from "@baby-ui/svelte";
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from "@baby-ui/svelte";
 </script>
 
-<Tooltip placement="top">
-	<TooltipTrigger>
-		<button type="button">Copy</button>
-	</TooltipTrigger>
-	<TooltipContent>Copy to clipboard</TooltipContent>
-</Tooltip>
+<TooltipProvider>
+	<Tooltip>
+		<TooltipTrigger>
+			<button type="button">Copy</button>
+		</TooltipTrigger>
+		<TooltipContent side="top">Copy to clipboard</TooltipContent>
+	</Tooltip>
+</TooltipProvider>

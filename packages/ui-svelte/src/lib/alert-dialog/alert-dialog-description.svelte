@@ -1,18 +1,12 @@
 <script lang="ts">
-import type { Snippet } from "svelte";
-import type { HTMLAttributes } from "svelte/elements";
+import { AlertDialog as AlertDialogPrimitive } from "bits-ui";
 import { cn } from "../lib/cn";
-import { getAlertDialog } from "./context";
 
-let {
-	children,
-	class: classProp,
-	...rest
-}: { children?: Snippet; class?: string } & HTMLAttributes<HTMLDivElement> = $props();
-
-const ctx = getAlertDialog();
+let { class: classProp, ...rest }: AlertDialogPrimitive.DescriptionProps = $props();
 </script>
 
-<p {...rest} id={ctx.descriptionId} data-slot="alert-dialog-description" class={cn("text-muted-foreground text-sm leading-relaxed", classProp)}>
-	{@render children?.()}
-</p>
+<AlertDialogPrimitive.Description
+	{...rest}
+	data-slot="alert-dialog-description"
+	class={cn("text-muted-foreground text-sm leading-relaxed", classProp)}
+/>

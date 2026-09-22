@@ -6,7 +6,7 @@ import { MENU_SURFACE } from "../lib/menu";
 
 let {
 	class: classProp,
-	sideOffset = 6,
+	sideOffset = 4,
 	align = "start",
 	ref = $bindable(null),
 	...rest
@@ -24,6 +24,6 @@ $effect(() => {
 		{align}
 		{...rest}
 		data-slot="dropdown-menu-content"
-		class={cn(UNFOLD, MENU_SURFACE, classProp)}
+		class={cn(UNFOLD, "static", MENU_SURFACE, classProp)}
 	/>
 </DropdownMenuPrimitive.Portal>

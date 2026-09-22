@@ -1,9 +1,7 @@
 <script lang="ts">
-import type { Snippet } from "svelte";
+import { Tooltip as TooltipPrimitive } from "bits-ui";
 
-// shadcn requires a provider around tooltips; ours needs no shared state, so this
-// exists only so the same markup compiles here.
-let { children }: { children?: Snippet } = $props();
+let { ...rest }: TooltipPrimitive.ProviderProps = $props();
 </script>
 
-{@render children?.()}
+<TooltipPrimitive.Provider {...rest} />

@@ -3,17 +3,17 @@ import { tv, type VariantProps } from "tailwind-variants";
 /** Only the closed state translates, so the open state needs no competing utility. */
 export const sheetPanel = tv({
 	base: [
-		"absolute flex flex-col gap-4 overflow-y-auto border-border bg-background p-6",
+		"fixed z-50 flex flex-col gap-4 overflow-y-auto border-border bg-background p-6",
 		"transition-transform duration-[var(--duration-drawer)] ease-[var(--ease-drawer)]",
-		"data-[state=closed]:duration-[var(--duration-overlay)]",
-		"data-[state=closed]:data-[side=left]:-translate-x-full",
-		"data-[state=closed]:data-[side=right]:translate-x-full",
-		"data-[state=closed]:data-[side=top]:-translate-y-full",
-		"data-[state=closed]:data-[side=bottom]:translate-y-full",
-		"starting:data-[state=open]:data-[side=left]:-translate-x-full",
-		"starting:data-[state=open]:data-[side=right]:translate-x-full",
-		"starting:data-[state=open]:data-[side=top]:-translate-y-full",
-		"starting:data-[state=open]:data-[side=bottom]:translate-y-full",
+		"data-[closed]:duration-[var(--duration-overlay)]",
+		"data-[closed]:data-[side=left]:-translate-x-full",
+		"data-[closed]:data-[side=right]:translate-x-full",
+		"data-[closed]:data-[side=top]:-translate-y-full",
+		"data-[closed]:data-[side=bottom]:translate-y-full",
+		"starting:data-[open]:data-[side=left]:-translate-x-full",
+		"starting:data-[open]:data-[side=right]:translate-x-full",
+		"starting:data-[open]:data-[side=top]:-translate-y-full",
+		"starting:data-[open]:data-[side=bottom]:translate-y-full",
 		"motion-reduce:transition-none",
 	],
 	variants: {

@@ -17,21 +17,14 @@ export const tooltip = defineComponent({
 			control: { kind: "text" },
 		},
 		{
-			name: "placement",
-			type: "Placement",
-			description: "Preferred side. Flips automatically when there is not room.",
-			default: "bottom-start",
+			name: "side",
+			type: '"top" | "right" | "bottom" | "left"',
+			description:
+				"TooltipContent: preferred side. Flips automatically when there is not room.",
+			default: "top",
 			control: {
 				kind: "select",
-				options: [
-					"top",
-					"bottom",
-					"left",
-					"right",
-					"bottom-start",
-					"bottom-end",
-					"top-start",
-				],
+				options: ["top", "right", "bottom", "left"],
 			},
 		},
 		{
@@ -60,6 +53,8 @@ export const tooltip = defineComponent({
 			"Opens on focus as well as hover, otherwise keyboard users never see it.",
 			"The tooltip is aria-describedby the trigger, so it supplements the accessible name rather than replacing it.",
 			"pointer-events are off, so the tooltip can never eat the click meant for the trigger.",
+			"Positioning, hover-intent timing and portaling are delegated to Base UI (React) and bits-ui (Svelte); this component only owns the classes and data-slots.",
+			"Svelte: bits-ui's Tooltip.Root requires a Tooltip.Provider ancestor and throws without one; Base UI's Tooltip.Root has no such requirement, so React usage is fine standalone.",
 		],
 	},
 	licenseOrigin: {
@@ -76,7 +71,7 @@ export const tooltip = defineComponent({
 				{ path: "lib/anchor.ts", type: "registry:lib" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge", "@floating-ui/dom"],
+			dependencies: ["clsx", "tailwind-merge", "@base-ui/react"],
 		},
 		svelte: {
 			entry: "Tooltip",
@@ -85,11 +80,10 @@ export const tooltip = defineComponent({
 				{ path: "tooltip/tooltip-trigger.svelte", type: "registry:ui" },
 				{ path: "tooltip/tooltip-content.svelte", type: "registry:ui" },
 				{ path: "tooltip/tooltip-provider.svelte", type: "registry:ui" },
-				{ path: "tooltip/context.ts", type: "registry:ui" },
 				{ path: "lib/anchor.ts", type: "registry:lib" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge", "@floating-ui/dom"],
+			dependencies: ["clsx", "tailwind-merge", "bits-ui"],
 		},
 	},
 	keywords: ["tooltip", "overlay"],

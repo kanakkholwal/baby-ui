@@ -11,6 +11,8 @@ import { tv } from "tailwind-variants";
 
 export type AnchorPlacement = Placement;
 
+// `fixed top-0 left-0` fits this file's own JS-positioned consumers only; a Base UI/
+// bits-ui Positioner wrapper needs its content back to `static`, or it can't measure it.
 const ANCHORED_BASE = [
 	"fixed top-0 left-0 z-50 pointer-events-none opacity-0",
 	"duration-[var(--duration-exit)] ease-[var(--ease-out)]",

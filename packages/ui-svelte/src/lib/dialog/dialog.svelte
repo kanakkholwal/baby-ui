@@ -1,4 +1,5 @@
 <script lang="ts">
+import { Dialog as DialogPrimitive } from "bits-ui";
 import type { Snippet } from "svelte";
 import { type DialogSize, type DialogVariant, setDialog } from "./context";
 
@@ -16,13 +17,9 @@ let {
 	dismissOnBackdrop?: boolean;
 } = $props();
 
-const uid = $props.id();
 let footer = $state<{ children?: Snippet; class?: string }>();
 
 setDialog({
-	get open() {
-		return open;
-	},
 	get size() {
 		return size;
 	},
@@ -32,9 +29,6 @@ setDialog({
 	get dismissOnBackdrop() {
 		return dismissOnBackdrop;
 	},
-	titleId: `${uid}-title`,
-	descriptionId: `${uid}-description`,
-	setOpen: (next) => (open = next),
 	get footer() {
 		return footer;
 	},
@@ -44,4 +38,6 @@ setDialog({
 });
 </script>
 
-{@render children?.()}
+<DialogPrimitive.Root bind:open>
+	{@render children?.()}
+</DialogPrimitive.Root>

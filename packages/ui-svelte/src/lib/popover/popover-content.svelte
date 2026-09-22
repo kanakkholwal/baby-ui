@@ -5,8 +5,8 @@ import { cn } from "../lib/cn";
 
 let {
 	class: classProp,
-	sideOffset = 6,
-	align = "start",
+	sideOffset = 4,
+	align = "center",
 	...rest
 }: PopoverPrimitive.ContentProps = $props();
 </script>
@@ -19,7 +19,7 @@ let {
 		data-slot="popover-content"
 		class={cn(
 			ANCHORED,
-			"w-72 rounded-xl border border-border bg-popover p-3 text-sm shadow-2xl",
+			"static w-72 rounded-xl border border-border bg-popover p-3 text-sm shadow-2xl",
 			classProp,
 		)}
 	/>

@@ -1,4 +1,5 @@
 <script lang="ts">
+import { AlertDialog as AlertDialogPrimitive } from "bits-ui";
 import type { Snippet } from "svelte";
 import type { DialogVariant } from "../dialog/context";
 import { setAlertDialog } from "./context";
@@ -9,21 +10,12 @@ let {
 	variant = "default",
 }: { children?: Snippet; open?: boolean; variant?: DialogVariant } = $props();
 
-const uid = $props.id();
-let cancelEl = $state<HTMLElement>();
 let footer = $state<{ children?: Snippet; class?: string }>();
 
 setAlertDialog({
-	get open() {
-		return open;
-	},
 	get variant() {
 		return variant;
 	},
-	titleId: `${uid}-title`,
-	descriptionId: `${uid}-description`,
-	setOpen: (next) => (open = next),
-	setCancel: (el) => (cancelEl = el),
 	get footer() {
 		return footer;
 	},
@@ -31,11 +23,8 @@ setAlertDialog({
 		footer = next;
 	},
 });
-
-// Focus the safe choice, never the destructive one.
-$effect(() => {
-	if (open) cancelEl?.focus();
-});
 </script>
 
-{@render children?.()}
+<AlertDialogPrimitive.Root bind:open>
+	{@render children?.()}
+</AlertDialogPrimitive.Root>

@@ -25,17 +25,31 @@ export function ContextMenuTrigger({
 
 export function ContextMenuContent({
 	className,
+	align = "start",
+	alignOffset = 4,
+	side = "right",
+	sideOffset = 0,
 	...props
-}: ComponentProps<typeof ContextMenuPrimitive.Popup>) {
+}: ComponentProps<typeof ContextMenuPrimitive.Popup> &
+	Pick<
+		ComponentProps<typeof ContextMenuPrimitive.Positioner>,
+		"align" | "alignOffset" | "side" | "sideOffset"
+	>) {
 	return (
 		<ContextMenuPrimitive.Portal>
-			<ContextMenuPrimitive.Positioner>
+			<ContextMenuPrimitive.Positioner
+				align={align}
+				alignOffset={alignOffset}
+				side={side}
+				sideOffset={sideOffset}
+				className="isolate z-50 outline-none"
+			>
 				<ContextMenuPrimitive.Popup
 					data-slot="context-menu-content"
 					ref={(node: HTMLDivElement | null) => {
 						if (node) stagger(node.querySelectorAll<HTMLElement>("[role='menuitem']"));
 					}}
-					className={cn(ANCHORED, MENU_SURFACE, className)}
+					className={cn(ANCHORED, "static", MENU_SURFACE, className)}
 					{...props}
 				/>
 			</ContextMenuPrimitive.Positioner>
@@ -145,16 +159,28 @@ export function ContextMenuSubTrigger({
 
 export function ContextMenuSubContent({
 	className,
-	sideOffset = 2,
+	align = "start",
+	alignOffset = -3,
+	side = "right",
+	sideOffset = 0,
 	...props
 }: ComponentProps<typeof Menu.Popup> &
-	Pick<ComponentProps<typeof Menu.Positioner>, "sideOffset">) {
+	Pick<
+		ComponentProps<typeof Menu.Positioner>,
+		"align" | "alignOffset" | "side" | "sideOffset"
+	>) {
 	return (
 		<Menu.Portal>
-			<Menu.Positioner sideOffset={sideOffset}>
+			<Menu.Positioner
+				align={align}
+				alignOffset={alignOffset}
+				side={side}
+				sideOffset={sideOffset}
+				className="isolate z-50 outline-none"
+			>
 				<Menu.Popup
 					data-slot="context-menu-sub-content"
-					className={cn(ANCHORED, MENU_SURFACE, "min-w-40", className)}
+					className={cn(ANCHORED, "static", MENU_SURFACE, "min-w-40", className)}
 					{...props}
 				/>
 			</Menu.Positioner>

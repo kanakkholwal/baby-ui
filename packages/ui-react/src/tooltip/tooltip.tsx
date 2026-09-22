@@ -1,140 +1,79 @@
 "use client";
 
-import type { ComponentProps, ReactNode } from "react";
-import {
-	createContext,
-	useCallback,
-	useContext,
-	useEffect,
-	useId,
-	useLayoutEffect,
-	useMemo,
-	useRef,
-	useState,
-} from "react";
-import { ANCHORED, type AnchorPlacement, anchor } from "../lib/anchor";
+import { Tooltip as TooltipPrimitive } from "@base-ui/react/tooltip";
+import { type ComponentProps, createContext, type ReactNode, useContext } from "react";
+import { ANCHORED } from "../lib/anchor";
 import { cn } from "../lib/cn";
 
-type Ctx = {
-	open: boolean;
-	contentId: string;
-	show: (immediate?: boolean) => void;
-	hide: () => void;
-	setTrigger: (el: HTMLElement | null) => void;
-	setContent: (el: HTMLElement | null) => void;
-};
-
-const TooltipCtx = createContext<Ctx | null>(null);
-
-function useTooltip() {
-	const ctx = useContext(TooltipCtx);
-	if (!ctx) throw new Error("Tooltip parts must be used inside <Tooltip>");
-	return ctx;
+export function TooltipProvider(props: ComponentProps<typeof TooltipPrimitive.Provider>) {
+	return <TooltipPrimitive.Provider {...props} />;
 }
 
-// shadcn wraps tooltips in a provider; ours needs no shared state, so this exists
-// only so the same markup compiles here.
-export function TooltipProvider({ children }: { children?: ReactNode }) {
-	return <>{children}</>;
-}
+const DelayCtx = createContext(400);
 
 export function Tooltip({
 	children,
-	placement = "top",
 	delay = 400,
-}: {
+	...props
+}: ComponentProps<typeof TooltipPrimitive.Root> & {
 	children?: ReactNode;
-	placement?: AnchorPlacement;
 	delay?: number;
 }) {
-	const contentId = useId();
-	const [open, setOpen] = useState(false);
-	const [triggerEl, setTrigger] = useState<HTMLElement | null>(null);
-	const [contentEl, setContent] = useState<HTMLElement | null>(null);
-	const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
-
-	// Keyboard focus skips the delay: the user has already committed to the control.
-	const show = useCallback(
-		(immediate = false) => {
-			clearTimeout(timer.current);
-			timer.current = setTimeout(() => setOpen(true), immediate ? 0 : delay);
-		},
-		[delay],
+	return (
+		<DelayCtx.Provider value={delay}>
+			<TooltipPrimitive.Root {...props}>{children}</TooltipPrimitive.Root>
+		</DelayCtx.Provider>
 	);
-
-	const hide = useCallback(() => {
-		clearTimeout(timer.current);
-		setOpen(false);
-	}, []);
-
-	useLayoutEffect(() => {
-		if (!open || !triggerEl || !contentEl) return;
-		return anchor(triggerEl, contentEl, { placement, gap: 6 });
-	}, [open, triggerEl, contentEl, placement]);
-
-	useEffect(() => {
-		if (!open) return;
-		const onKey = (e: KeyboardEvent) => {
-			if (e.key === "Escape") setOpen(false);
-		};
-		window.addEventListener("keydown", onKey);
-		return () => window.removeEventListener("keydown", onKey);
-	}, [open]);
-
-	const ctx = useMemo(
-		() => ({ open, contentId, show, hide, setTrigger, setContent }),
-		[open, contentId, show, hide],
-	);
-
-	return <TooltipCtx.Provider value={ctx}>{children}</TooltipCtx.Provider>;
 }
 
-export function TooltipTrigger({ className, ...props }: ComponentProps<"span">) {
-	const tooltip = useTooltip();
+export function TooltipTrigger({
+	className,
+	...props
+}: ComponentProps<typeof TooltipPrimitive.Trigger>) {
+	const delay = useContext(DelayCtx);
 
 	return (
-		// biome-ignore lint/a11y/noStaticElementInteractions: the wrapper only listens; the real control is its child
-		<span
-			ref={tooltip.setTrigger}
+		<TooltipPrimitive.Trigger
 			data-slot="tooltip-trigger"
-			data-state={tooltip.open ? "open" : "closed"}
-			aria-describedby={tooltip.open ? tooltip.contentId : undefined}
-			onPointerEnter={() => tooltip.show()}
-			onPointerLeave={tooltip.hide}
-			onFocus={() => tooltip.show(true)}
-			onBlur={tooltip.hide}
+			delay={delay}
 			className={cn("inline-flex", className)}
 			{...props}
 		/>
 	);
 }
 
-export function TooltipContent({ className, ...props }: ComponentProps<"div">) {
-	const tooltip = useTooltip();
-	// Kept mounted after the first open so the surface can animate out as well as in.
-	const [mounted, setMounted] = useState(false);
-
-	useEffect(() => {
-		if (tooltip.open) setMounted(true);
-	}, [tooltip.open]);
-
-	if (!mounted) return null;
-
+export function TooltipContent({
+	className,
+	align = "center",
+	alignOffset = 0,
+	side = "top",
+	sideOffset = 6,
+	...props
+}: ComponentProps<typeof TooltipPrimitive.Popup> &
+	Pick<
+		ComponentProps<typeof TooltipPrimitive.Positioner>,
+		"align" | "alignOffset" | "side" | "sideOffset"
+	>) {
 	return (
-		<div
-			ref={tooltip.setContent}
-			id={tooltip.contentId}
-			role="tooltip"
-			data-slot="tooltip-content"
-			data-state={tooltip.open ? "open" : "closed"}
-			inert={!tooltip.open}
-			className={cn(
-				ANCHORED,
-				"rounded-md border border-border bg-popover px-2 py-1 text-foreground text-xs shadow-lg",
-				"data-[state=open]:pointer-events-none",
-				className,
-			)}
-			{...props}
-		/>
+		<TooltipPrimitive.Portal>
+			<TooltipPrimitive.Positioner
+				align={align}
+				alignOffset={alignOffset}
+				side={side}
+				sideOffset={sideOffset}
+				className="isolate z-50"
+			>
+				<TooltipPrimitive.Popup
+					data-slot="tooltip-content"
+					className={cn(
+						ANCHORED,
+						"static z-50 rounded-md border border-border bg-popover px-2 py-1 text-foreground text-xs shadow-lg",
+						"data-[open]:pointer-events-none",
+						className,
+					)}
+					{...props}
+				/>
+			</TooltipPrimitive.Positioner>
+		</TooltipPrimitive.Portal>
 	);
 }

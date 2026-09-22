@@ -27,20 +27,31 @@ export function DropdownMenuTrigger({
 
 export function DropdownMenuContent({
 	className,
-	sideOffset = 6,
 	align = "start",
+	alignOffset = 0,
+	side = "bottom",
+	sideOffset = 4,
 	...props
 }: ComponentProps<typeof Menu.Popup> &
-	Pick<ComponentProps<typeof Menu.Positioner>, "sideOffset" | "align" | "side">) {
+	Pick<
+		ComponentProps<typeof Menu.Positioner>,
+		"align" | "alignOffset" | "side" | "sideOffset"
+	>) {
 	return (
 		<Menu.Portal>
-			<Menu.Positioner sideOffset={sideOffset} align={align}>
+			<Menu.Positioner
+				align={align}
+				alignOffset={alignOffset}
+				side={side}
+				sideOffset={sideOffset}
+				className="isolate z-50 outline-none"
+			>
 				<Menu.Popup
 					data-slot="dropdown-menu-content"
 					ref={(node: HTMLDivElement | null) => {
 						if (node) stagger(node.querySelectorAll<HTMLElement>("[role='menuitem']"));
 					}}
-					className={cn(UNFOLD, MENU_SURFACE, className)}
+					className={cn(UNFOLD, "static", MENU_SURFACE, className)}
 					{...props}
 				/>
 			</Menu.Positioner>
@@ -150,16 +161,28 @@ export function DropdownMenuSubTrigger({
 
 export function DropdownMenuSubContent({
 	className,
-	sideOffset = 2,
+	align = "start",
+	alignOffset = -3,
+	side = "right",
+	sideOffset = 0,
 	...props
 }: ComponentProps<typeof Menu.Popup> &
-	Pick<ComponentProps<typeof Menu.Positioner>, "sideOffset">) {
+	Pick<
+		ComponentProps<typeof Menu.Positioner>,
+		"align" | "alignOffset" | "side" | "sideOffset"
+	>) {
 	return (
 		<Menu.Portal>
-			<Menu.Positioner sideOffset={sideOffset}>
+			<Menu.Positioner
+				align={align}
+				alignOffset={alignOffset}
+				side={side}
+				sideOffset={sideOffset}
+				className="isolate z-50 outline-none"
+			>
 				<Menu.Popup
 					data-slot="dropdown-menu-sub-content"
-					className={cn(ANCHORED, MENU_SURFACE, "min-w-40", className)}
+					className={cn(ANCHORED, "static", MENU_SURFACE, "min-w-40", className)}
 					{...props}
 				/>
 			</Menu.Positioner>
