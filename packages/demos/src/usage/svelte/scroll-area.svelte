@@ -4,6 +4,6 @@ import { ScrollArea } from "@baby-ui/svelte";
 
 <ScrollArea maxHeight="12rem">
 	<p class="text-muted-foreground text-sm">
-		Long content scrolls here with a thin, always-visible scrollbar.
+		Long content scrolls here with a thin scrollbar that appears on hover.
 	</p>
 </ScrollArea>

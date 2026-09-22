@@ -1,22 +1,17 @@
 <script lang="ts">
-import type { Snippet } from "svelte";
-import type { HTMLAttributes } from "svelte/elements";
+import { Tabs as TabsPrimitive } from "bits-ui";
 import { cn } from "../lib/cn";
 import { getTabs } from "./context";
 import { tabsFrame } from "./variants";
 
-let {
-	children,
-	class: classProp,
-	...rest
-}: { children?: Snippet; class?: string } & HTMLAttributes<HTMLDivElement> = $props();
+let { children, class: classProp, ...rest }: TabsPrimitive.ListProps = $props();
 
 const tabs = getTabs();
 const frame = $derived(tabsFrame({ variant: tabs.variant, size: tabs.size }));
 
 let root = $state<HTMLDivElement>();
 let viewport = $state<HTMLDivElement>();
-let list = $state<HTMLDivElement>();
+let list = $state<HTMLDivElement | null>(null);
 let rects = $state<Record<string, { left: number; width: number }>>({});
 let edges = $state({ overflow: false, left: false, right: false });
 
@@ -76,35 +71,6 @@ const mask = $derived(
 		: undefined,
 );
 
-function move(delta: number) {
-	const ids = [...(list?.querySelectorAll<HTMLElement>("[data-tab]") ?? [])].map(
-		(el) => el.dataset.tab ?? "",
-	);
-	const i = ids.indexOf(tabs.value);
-	const next = ids[(i + delta + ids.length) % ids.length];
-	if (next) tabs.setValue(next);
-}
-
-function onkeydown(event: KeyboardEvent) {
-	const ids = [...(list?.querySelectorAll<HTMLElement>("[data-tab]") ?? [])].map(
-		(el) => el.dataset.tab ?? "",
-	);
-	if (event.key === "ArrowRight") {
-		event.preventDefault();
-		move(1);
-	} else if (event.key === "ArrowLeft") {
-		event.preventDefault();
-		move(-1);
-	} else if (event.key === "Home") {
-		event.preventDefault();
-		if (ids[0]) tabs.setValue(ids[0]);
-	} else if (event.key === "End") {
-		event.preventDefault();
-		const last = ids[ids.length - 1];
-		if (last) tabs.setValue(last);
-	}
-}
-
 function scroll(direction: number) {
 	viewport?.scrollBy({
 		left: direction * viewport.clientWidth * 0.8,
@@ -147,13 +113,11 @@ const ARROW =
 			edges.overflow && "[border-radius:inherit]",
 		)}
 	>
-		<div
-			{...rest}
-			bind:this={list}
-			role="tablist"
+		<TabsPrimitive.List
+			bind:ref={list}
 			data-slot="tabs-list"
-			{onkeydown}
 			class={cn(frame.list(), classProp)}
+			{...rest}
 		>
 			<span
 				aria-hidden="true"
@@ -163,7 +127,7 @@ const ARROW =
 			></span>
 
 			{@render children?.()}
-		</div>
+		</TabsPrimitive.List>
 	</div>
 
 	{#if edges.overflow}

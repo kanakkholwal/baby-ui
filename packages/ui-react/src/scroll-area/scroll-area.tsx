@@ -1,19 +1,20 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { ScrollArea as ScrollAreaPrimitive } from "@base-ui/react/scroll-area";
+import type { ComponentProps, ReactNode } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "../lib/cn";
 
-export interface ScrollAreaProps {
+export interface ScrollAreaProps extends ComponentProps<typeof ScrollAreaPrimitive.Root> {
 	children: ReactNode;
 	maxHeight?: string;
-	className?: string;
 }
 
 export function ScrollArea({
 	children,
 	maxHeight = "16rem",
 	className,
+	...props
 }: ScrollAreaProps) {
 	const viewport = useRef<HTMLDivElement>(null);
 	const [atTop, setAtTop] = useState(true);
@@ -37,15 +38,30 @@ export function ScrollArea({
 	}, [measure]);
 
 	return (
-		<div className={cn("relative", className)}>
-			<div
+		<ScrollAreaPrimitive.Root
+			data-slot="scroll-area"
+			className={cn("relative", className)}
+			{...props}
+		>
+			<ScrollAreaPrimitive.Viewport
 				ref={viewport}
 				onScroll={measure}
+				data-slot="scroll-area-viewport"
 				style={{ maxHeight }}
-				className="scroll-area overflow-y-auto"
+				className="size-full rounded-[inherit] outline-none"
 			>
 				{children}
-			</div>
+			</ScrollAreaPrimitive.Viewport>
+			<ScrollAreaPrimitive.Scrollbar
+				data-slot="scroll-area-scrollbar"
+				className="flex touch-none select-none p-0.5 transition-colors data-[orientation=horizontal]:h-2.5 data-[orientation=horizontal]:flex-col data-[orientation=vertical]:w-2.5"
+			>
+				<ScrollAreaPrimitive.Thumb
+					data-slot="scroll-area-thumb"
+					className="relative flex-1 rounded-full bg-border"
+				/>
+			</ScrollAreaPrimitive.Scrollbar>
+			<ScrollAreaPrimitive.Corner />
 
 			<span
 				aria-hidden
@@ -57,6 +73,6 @@ export function ScrollArea({
 				style={{ opacity: atBottom ? 0 : 1 }}
 				className="pointer-events-none absolute inset-x-0 bottom-0 h-6 bg-gradient-to-t from-background to-transparent transition-opacity duration-150"
 			/>
-		</div>
+		</ScrollAreaPrimitive.Root>
 	);
 }

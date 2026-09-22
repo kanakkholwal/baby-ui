@@ -27,8 +27,8 @@ export const scrollArea = defineComponent({
 	a11y: {
 		keyboard: ["Arrow keys and Page Up and Page Down scroll the region natively"],
 		notes: [
-			"Native scrolling, not a JavaScript reimplementation, so keyboard scrolling, momentum and screen-reader virtual cursors all keep working.",
-			"The scrollbar is thinned, never hidden. Hiding it removes the only affordance a mouse user has.",
+			"The viewport still scrolls via real overflow, so keyboard scrolling, momentum and screen-reader virtual cursors all keep working; only the scrollbar track and thumb are custom-drawn.",
+			"Positioning, drag-to-scroll and auto-hide are delegated to Base UI (React) and bits-ui (Svelte); this component only owns the classes and data-slots.",
 		],
 	},
 	licenseOrigin: {
@@ -44,7 +44,7 @@ export const scrollArea = defineComponent({
 				{ path: "scroll-area/scroll-area.tsx", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "@base-ui/react"],
 		},
 		svelte: {
 			entry: "ScrollArea",
@@ -52,7 +52,7 @@ export const scrollArea = defineComponent({
 				{ path: "scroll-area/scroll-area.svelte", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "bits-ui"],
 		},
 	},
 	keywords: ["scroll", "area"],

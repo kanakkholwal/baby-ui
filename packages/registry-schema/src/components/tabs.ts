@@ -54,8 +54,8 @@ export const tabs = defineComponent({
 		],
 		notes: [
 			"Each tab is aria-controls linked to its panel, and the panel is aria-labelledby its tab.",
-			"Selection follows focus, which is correct only because panels are already rendered; it would be wrong if switching fetched data.",
-			"Part names and data-slot values match shadcn/ui, so this replaces an existing tabs without touching call sites.",
+			"Selection follows focus (arrow keys switch immediately, not just Enter/Space): Base UI's List has `activateOnFocus` set explicitly since it otherwise defaults to manual activation, unlike bits-ui which defaults to automatic.",
+			"Positioning, roving focus, keyboard nav and panel mount/hide are delegated to Base UI (React) and bits-ui (Svelte); this component only owns the sliding-indicator measurement, overflow-scroll arrows and data-slots.",
 		],
 	},
 	licenseOrigin: {
@@ -72,7 +72,7 @@ export const tabs = defineComponent({
 				{ path: "tabs/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "@base-ui/react"],
 		},
 		svelte: {
 			entry: "Tabs",
@@ -85,7 +85,7 @@ export const tabs = defineComponent({
 				{ path: "tabs/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "bits-ui"],
 		},
 	},
 	keywords: ["tabs", "navigation", "segmented"],

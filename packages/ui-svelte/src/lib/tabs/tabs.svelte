@@ -1,6 +1,5 @@
 <script lang="ts">
-import type { Snippet } from "svelte";
-import type { HTMLAttributes } from "svelte/elements";
+import { Tabs as TabsPrimitive } from "bits-ui";
 import { cn } from "../lib/cn";
 import { setTabs, type TabsSize, type TabsVariant } from "./context";
 
@@ -11,13 +10,11 @@ let {
 	size = "md",
 	class: classProp,
 	...rest
-}: {
-	children?: Snippet;
+}: Omit<TabsPrimitive.RootProps, "value"> & {
 	value?: string;
 	variant?: TabsVariant;
 	size?: TabsSize;
-	class?: string;
-} & HTMLAttributes<HTMLDivElement> = $props();
+} = $props();
 
 setTabs({
 	get value() {
@@ -29,10 +26,9 @@ setTabs({
 	get size() {
 		return size;
 	},
-	setValue: (next) => (value = next),
 });
 </script>
 
-<div {...rest} data-slot="tabs" class={cn("flex flex-col", classProp)}>
+<TabsPrimitive.Root bind:value data-slot="tabs" class={cn("flex flex-col", classProp)} {...rest}>
 	{@render children?.()}
-</div>
+</TabsPrimitive.Root>

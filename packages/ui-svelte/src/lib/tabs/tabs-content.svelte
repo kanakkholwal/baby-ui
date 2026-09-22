@@ -1,34 +1,11 @@
 <script lang="ts">
-import type { Snippet } from "svelte";
-import type { HTMLAttributes } from "svelte/elements";
+import { Tabs as TabsPrimitive } from "bits-ui";
 import { cn } from "../lib/cn";
-import { getTabs } from "./context";
 
-let {
-	children,
-	value,
-	class: classProp,
-	...rest
-}: {
-	children?: Snippet;
-	value: string;
-	class?: string;
-} & HTMLAttributes<HTMLDivElement> = $props();
-
-const tabs = getTabs();
-const active = $derived(tabs.value === value);
+let { children, value, class: classProp, ...rest }: TabsPrimitive.ContentProps = $props();
 </script>
 
-<!-- Inactive panels stay in the DOM so their content is still findable and crawlable. -->
-<div
-	{...rest}
-	id="panel-{value}"
-	role="tabpanel"
-	data-slot="tabs-content"
-	data-state={active ? "active" : "inactive"}
-	aria-labelledby="tab-{value}"
-	hidden={!active}
-	class={cn("mt-4", classProp)}
->
+<!-- bits-ui's Content always stays in the DOM, toggling native `hidden`, so panels stay findable and crawlable. -->
+<TabsPrimitive.Content {value} data-slot="tabs-content" class={cn("mt-4", classProp)} {...rest}>
 	{@render children?.()}
-</div>
+</TabsPrimitive.Content>

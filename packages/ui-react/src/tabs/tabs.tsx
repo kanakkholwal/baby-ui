@@ -1,6 +1,7 @@
 "use client";
 
-import type { ComponentProps, KeyboardEvent } from "react";
+import { Tabs as TabsPrimitive } from "@base-ui/react/tabs";
+import type { ComponentProps } from "react";
 import {
 	createContext,
 	useCallback,
@@ -23,7 +24,6 @@ type Ctx = {
 	value: string;
 	variant: TabsVariant;
 	size: TabsSize;
-	setValue: (value: string) => void;
 };
 
 const TabsCtx = createContext<Ctx | null>(null);
@@ -43,7 +43,10 @@ export function Tabs({
 	onValueChange,
 	children,
 	...props
-}: Omit<ComponentProps<"div">, "onChange"> & {
+}: Omit<
+	ComponentProps<typeof TabsPrimitive.Root>,
+	"value" | "defaultValue" | "onValueChange"
+> & {
 	value?: string;
 	defaultValue?: string;
 	variant?: TabsVariant;
@@ -61,16 +64,19 @@ export function Tabs({
 		[valueProp, onValueChange],
 	);
 
-	const ctx = useMemo(
-		() => ({ value, variant, size, setValue }),
-		[value, variant, size, setValue],
-	);
+	const ctx = useMemo(() => ({ value, variant, size }), [value, variant, size]);
 
 	return (
 		<TabsCtx.Provider value={ctx}>
-			<div data-slot="tabs" className={cn("flex flex-col", className)} {...props}>
+			<TabsPrimitive.Root
+				data-slot="tabs"
+				value={value}
+				onValueChange={(next) => setValue(String(next ?? ""))}
+				className={cn("flex flex-col", className)}
+				{...props}
+			>
 				{children}
-			</div>
+			</TabsPrimitive.Root>
 		</TabsCtx.Provider>
 	);
 }
@@ -148,37 +154,6 @@ export function TabsList({ className, children, ...props }: ComponentProps<"div"
 			})`
 		: undefined;
 
-	function ids() {
-		return [...(list.current?.querySelectorAll<HTMLElement>("[data-tab]") ?? [])].map(
-			(el) => el.dataset.tab ?? "",
-		);
-	}
-
-	function move(delta: number) {
-		const all = ids();
-		const i = all.indexOf(tabs.value);
-		const next = all[(i + delta + all.length) % all.length];
-		if (next) tabs.setValue(next);
-	}
-
-	function onKeyDown(event: KeyboardEvent) {
-		const all = ids();
-		if (event.key === "ArrowRight") {
-			event.preventDefault();
-			move(1);
-		} else if (event.key === "ArrowLeft") {
-			event.preventDefault();
-			move(-1);
-		} else if (event.key === "Home") {
-			event.preventDefault();
-			if (all[0]) tabs.setValue(all[0]);
-		} else if (event.key === "End") {
-			event.preventDefault();
-			const last = all[all.length - 1];
-			if (last) tabs.setValue(last);
-		}
-	}
-
 	function scroll(direction: number) {
 		const port = viewport.current;
 		if (port)
@@ -222,11 +197,12 @@ export function TabsList({ className, children, ...props }: ComponentProps<"div"
 					edges.overflow && "[border-radius:inherit]",
 				)}
 			>
-				<div
+				<TabsPrimitive.List
 					ref={list}
-					role="tablist"
 					data-slot="tabs-list"
-					onKeyDown={onKeyDown}
+					// Base UI defaults to manual activation; this matches bits-ui's default and
+					// the pre-migration behavior (arrow keys select immediately).
+					activateOnFocus
 					className={cn(listClass(), className)}
 					{...props}
 				>
@@ -239,7 +215,7 @@ export function TabsList({ className, children, ...props }: ComponentProps<"div"
 						className={indicatorClass()}
 					/>
 					{children}
-				</div>
+				</TabsPrimitive.List>
 			</div>
 
 			{edges.overflow ? (
@@ -268,30 +244,19 @@ export function TabsList({ className, children, ...props }: ComponentProps<"div"
 export function TabsTrigger({
 	className,
 	value,
-	children,
 	...props
-}: ComponentProps<"button"> & { value: string }) {
+}: ComponentProps<typeof TabsPrimitive.Tab> & { value: string }) {
 	const tabs = useTabs();
-	const active = tabs.value === value;
 	const { trigger } = tabsFrame({ variant: tabs.variant, size: tabs.size });
 
 	return (
-		<button
-			type="button"
-			role="tab"
+		<TabsPrimitive.Tab
 			data-slot="tabs-trigger"
 			data-tab={value}
-			data-state={active ? "active" : "inactive"}
-			id={`tab-${value}`}
-			aria-selected={active}
-			aria-controls={`panel-${value}`}
-			tabIndex={active ? 0 : -1}
-			onClick={() => tabs.setValue(value)}
+			value={value}
 			className={cn(trigger(), className)}
 			{...props}
-		>
-			{children}
-		</button>
+		/>
 	);
 }
 
@@ -299,19 +264,12 @@ export function TabsContent({
 	className,
 	value,
 	...props
-}: ComponentProps<"div"> & { value: string }) {
-	const tabs = useTabs();
-	const active = tabs.value === value;
-
-	// Inactive panels stay in the DOM so their content is still findable and crawlable.
+}: ComponentProps<typeof TabsPrimitive.Panel> & { value: string }) {
 	return (
-		<div
-			id={`panel-${value}`}
-			role="tabpanel"
+		<TabsPrimitive.Panel
 			data-slot="tabs-content"
-			data-state={active ? "active" : "inactive"}
-			aria-labelledby={`tab-${value}`}
-			hidden={!active}
+			value={value}
+			keepMounted
 			className={cn("mt-4", className)}
 			{...props}
 		/>

@@ -4,7 +4,7 @@ export function Example() {
 	return (
 		<ScrollArea maxHeight="12rem">
 			<p className="text-muted-foreground text-sm">
-				Long content scrolls here with a thin, always-visible scrollbar.
+				Long content scrolls here with a thin scrollbar that appears on hover.
 			</p>
 		</ScrollArea>
 	);

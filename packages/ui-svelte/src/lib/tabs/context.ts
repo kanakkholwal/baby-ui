@@ -7,7 +7,6 @@ export type TabsContext = {
 	readonly value: string;
 	readonly variant: TabsVariant;
 	readonly size: TabsSize;
-	setValue: (value: string) => void;
 };
 
 export const [getTabs, setTabs] = createContext<TabsContext>();
