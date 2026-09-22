@@ -50,6 +50,7 @@ export const filterTable = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge"],
+			registryDependencies: ["badge"],
 		},
 		svelte: {
 			entry: "FilterTable",
@@ -59,6 +60,7 @@ export const filterTable = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge"],
+			registryDependencies: ["badge"],
 		},
 	},
 	keywords: ["table", "filter", "tasks", "status"],

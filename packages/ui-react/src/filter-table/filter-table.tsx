@@ -2,6 +2,8 @@
 
 import type { ComponentProps } from "react";
 import { useMemo, useState } from "react";
+import { Badge } from "../badge/badge";
+import type { BadgeVariant } from "../badge/variants";
 import { cn } from "../lib/cn";
 
 export type TableRowStatus = "todo" | "progress" | "done";
@@ -28,10 +30,16 @@ const DEFAULT_LABELS: FilterTableLabels = {
 	columns: { task: "Task name", date: "Date", status: "Status", owner: "Owner" },
 };
 
-const PILLS: Record<TableRowStatus, { label: string; cls: string }> = {
-	todo: { label: "To do", cls: "border-warning/20 bg-warning/10 text-warning" },
-	progress: { label: "In Progress", cls: "border-info/20 bg-info/10 text-info" },
-	done: { label: "Completed", cls: "border-success/20 bg-success/10 text-success" },
+const STATUS_LABEL: Record<TableRowStatus, string> = {
+	todo: "To do",
+	progress: "In Progress",
+	done: "Completed",
+};
+
+const STATUS_VARIANT: Record<TableRowStatus, BadgeVariant> = {
+	todo: "warning",
+	progress: "info",
+	done: "success",
 };
 
 const GRID_COLS =
@@ -126,7 +134,6 @@ export function FilterTable({
 					</div>
 					{rows.map((row) => {
 						const shown = filter === "all" || row.status === filter;
-						const pill = PILLS[row.status];
 						return (
 							<div
 								key={row.task}
@@ -152,14 +159,9 @@ export function FilterTable({
 											{row.date}
 										</span>
 										<span className="flex items-center border-border border-r px-3 py-2">
-											<span
-												className={cn(
-													"inline-flex h-[23px] shrink-0 items-center whitespace-nowrap rounded-[8px] border px-[7px] text-[13px] font-medium",
-													pill.cls,
-												)}
-											>
-												{pill.label}
-											</span>
+											<Badge variant={STATUS_VARIANT[row.status]}>
+												{STATUS_LABEL[row.status]}
+											</Badge>
 										</span>
 										<span className="flex min-w-0 items-center px-3 py-2 text-muted-foreground">
 											<span className="truncate">{row.owner}</span>

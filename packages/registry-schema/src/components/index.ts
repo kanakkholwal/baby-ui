@@ -9,6 +9,7 @@ import { bentoGrid } from "./bento-grid";
 import { breadcrumb } from "./breadcrumb";
 import { button } from "./button";
 import { card } from "./card";
+import { chatComposer } from "./chat-composer";
 import { checkbox } from "./checkbox";
 import { codeBlock } from "./code-block";
 import { collapsible } from "./collapsible";
@@ -31,6 +32,7 @@ import { gauge } from "./gauge";
 import { hoverCard } from "./hover-card";
 import { input } from "./input";
 import { label } from "./label";
+import { loadingState } from "./loading-state";
 import { markdown } from "./markdown";
 import { message } from "./message";
 import { morphingModal } from "./morphing-modal";
@@ -41,6 +43,7 @@ import { progress } from "./progress";
 import { question } from "./question";
 import { radioGroup } from "./radio-group";
 import { reasoning } from "./reasoning";
+import { recommendationCard } from "./recommendation-card";
 import { reorderList } from "./reorder-list";
 import { responseStream } from "./response-stream";
 import { responsiveDialog } from "./responsive-dialog";
@@ -131,6 +134,9 @@ export const specs: ComponentSpec[] = [
 	responsiveDialog,
 	contextCards,
 	filterTable,
+	loadingState,
+	recommendationCard,
+	chatComposer,
 ];
 
 export function getSpec(slug: string): ComponentSpec | undefined {

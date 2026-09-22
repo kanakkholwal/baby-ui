@@ -13,6 +13,7 @@ export const badge = tv({
 				"border-transparent bg-[color-mix(in_oklch,var(--warning)_15%,transparent)] text-[var(--warning)]",
 			destructive:
 				"border-transparent bg-[color-mix(in_oklch,var(--destructive)_15%,transparent)] text-[var(--destructive)]",
+			info: "border-transparent bg-[color-mix(in_oklch,var(--info)_15%,transparent)] text-[var(--info)]",
 		},
 		size: {
 			sm: "h-5 px-1.5 text-[11px]",

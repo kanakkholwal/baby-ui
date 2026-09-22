@@ -9,6 +9,7 @@ import BentoGridDemo from "./bento-grid-demo.svelte";
 import BreadcrumbDemo from "./breadcrumb-demo.svelte";
 import ButtonDemo from "./button-demo.svelte";
 import CardDemo from "./card-demo.svelte";
+import ChatComposerDemo from "./chat-composer-demo.svelte";
 import CheckboxDemo from "./checkbox-demo.svelte";
 import CodeBlockDemo from "./code-block-demo.svelte";
 import CollapsibleDemo from "./collapsible-demo.svelte";
@@ -31,6 +32,7 @@ import GaugeDemo from "./gauge-demo.svelte";
 import HoverCardDemo from "./hover-card-demo.svelte";
 import InputDemo from "./input-demo.svelte";
 import LabelDemo from "./label-demo.svelte";
+import LoadingStateDemo from "./loading-state-demo.svelte";
 import MarkdownDemo from "./markdown-demo.svelte";
 import MessageDemo from "./message-demo.svelte";
 import MorphingModalDemo from "./morphing-modal-demo.svelte";
@@ -41,6 +43,7 @@ import ProgressDemo from "./progress-demo.svelte";
 import QuestionDemo from "./question-demo.svelte";
 import RadioGroupDemo from "./radio-group-demo.svelte";
 import ReasoningDemo from "./reasoning-demo.svelte";
+import RecommendationCardDemo from "./recommendation-card-demo.svelte";
 import ReorderListDemo from "./reorder-list-demo.svelte";
 import ResponseStreamDemo from "./response-stream-demo.svelte";
 import ResponsiveDialogDemo from "./responsive-dialog-demo.svelte";
@@ -136,4 +139,7 @@ export const demos: Record<string, DemoComponent> = {
 	"responsive-dialog": as(ResponsiveDialogDemo),
 	"context-cards": as(ContextCardsDemo),
 	"filter-table": as(FilterTableDemo),
+	"loading-state": as(LoadingStateDemo),
+	"recommendation-card": as(RecommendationCardDemo),
+	"chat-composer": as(ChatComposerDemo),
 };

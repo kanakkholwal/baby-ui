@@ -41,6 +41,8 @@ export { default as CardFooter } from "./card/card-footer.svelte";
 export { default as CardHeader } from "./card/card-header.svelte";
 export { default as CardTitle } from "./card/card-title.svelte";
 export type { CardVariant } from "./card/variants";
+export { default as ChatComposer } from "./chat-composer/chat-composer.svelte";
+export type { ChatMessage } from "./chat-composer/types";
 export { default as Checkbox } from "./checkbox/checkbox.svelte";
 export { default as CodeBlock } from "./code-block/code-block.svelte";
 export { default as Collapsible } from "./collapsible/collapsible.svelte";
@@ -142,6 +144,8 @@ export type { InputSize } from "./input/variants";
 export { default as Label } from "./label/label.svelte";
 export { type AnchorPlacement, anchor, dismissable, rove } from "./lib/anchor";
 export { cn } from "./lib/cn";
+export { default as LoadingState } from "./loading-state/loading-state.svelte";
+export type { LoadingStateVariant } from "./loading-state/types";
 export { default as Markdown } from "./markdown/markdown.svelte";
 export { default as Message } from "./message/message.svelte";
 export { default as MessageActions } from "./message/message-actions.svelte";
@@ -165,6 +169,11 @@ export { default as RadioGroup } from "./radio-group/radio-group.svelte";
 export { default as RadioGroupItem } from "./radio-group/radio-group-item.svelte";
 export type { RadioSize, RadioVariant } from "./radio-group/variants";
 export { default as Reasoning } from "./reasoning/reasoning.svelte";
+export { default as RecommendationCard } from "./recommendation-card/recommendation-card.svelte";
+export type {
+	RecommendationLabels,
+	RecommendationOption,
+} from "./recommendation-card/types";
 export {
 	default as ReorderList,
 	type ReorderItem,

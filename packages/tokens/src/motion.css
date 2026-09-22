@@ -308,6 +308,44 @@
 	}
 }
 
+/* Shared by LoadingState's pixel grid: a per-cell brief flash, offset by animation-delay
+   so cells with staggered delays read as a wavefront crossing the grid. */
+.pixel-cell {
+	animation-name: pixel-on;
+	animation-timing-function: ease-in-out;
+	animation-iteration-count: infinite;
+}
+
+@keyframes pixel-on {
+	0%,
+	40%,
+	100% {
+		opacity: 0.15;
+	}
+	20% {
+		opacity: 1;
+	}
+}
+
+/* Shared by LoadingState's Surfer video card and similar small mount-time pop-ins. */
+.pop-in {
+	animation: pop-in 200ms var(--ease-out) both;
+}
+
+@keyframes pop-in {
+	from {
+		opacity: 0;
+		transform: scale(0.95);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.pixel-cell,
+	.pop-in {
+		animation: none;
+	}
+}
+
 /* Shared by both spinner ports. */
 .spinner {
 	animation: spinner 850ms linear infinite;

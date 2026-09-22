@@ -22,6 +22,7 @@ import {
 	TabsDemo,
 	TaskStepsDemo,
 } from "./agentic";
+import { ChatComposerDemo } from "./chat-composer";
 import {
 	AttachmentDemo,
 	CodeBlockDemo,
@@ -48,6 +49,7 @@ import {
 	ToolbarDemo,
 } from "./dialogs";
 import { FilterTableDemo } from "./filter-table";
+import { LoadingStateDemo } from "./loading-state";
 import {
 	ComboboxDemo,
 	ContextMenuDemo,
@@ -83,6 +85,7 @@ import {
 	ToggleGroupDemo,
 	TypographyDemo,
 } from "./primitives2";
+import { RecommendationCardDemo } from "./recommendation-card";
 import { ResponsiveDialogDemo } from "./responsive-dialog";
 
 type Props = Record<string, unknown>;
@@ -286,4 +289,7 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"responsive-dialog": ResponsiveDialogDemo,
 	"context-cards": ContextCardsDemo,
 	"filter-table": FilterTableDemo,
+	"loading-state": LoadingStateDemo,
+	"recommendation-card": RecommendationCardDemo,
+	"chat-composer": ChatComposerDemo,
 };

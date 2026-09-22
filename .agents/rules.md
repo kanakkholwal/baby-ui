@@ -22,6 +22,14 @@ Any agent (Claude Code, Codex, Cursor, Copilot) should read this file first.
   `packages/demos/src/*` (and usage snippets), never in `packages/ui-react/src` /
   `packages/ui-svelte/src/lib`. A real installer must not receive a fake dataset baked into
   their component.
+- **HARD RULE:** when porting reference code (e.g. `.scratchpad/beautifului`), the source is
+  raw behavior/visual reference only, never architecture to copy. Compose existing registry
+  components instead of hand-rolling an equivalent (e.g. a status pill uses `Badge`, not a
+  local `Record` of raw Tailwind classes) — extend the existing component's `variants.ts` with
+  a missing tone/variant if needed, rather than working around the gap locally. Cross-component
+  reuse inside `ui-react`/`ui-svelte` always imports the relative sibling path
+  (`../badge/badge`, `../badge/badge.svelte`), never the package alias (`@baby-ui/react`/
+  `@baby-ui/svelte`).
 
 ## Always
 

@@ -1,6 +1,14 @@
 import { defineComponent } from "../index";
 
-const VARIANTS = ["default", "secondary", "outline", "success", "warning", "destructive"];
+const VARIANTS = [
+	"default",
+	"secondary",
+	"outline",
+	"success",
+	"warning",
+	"destructive",
+	"info",
+];
 
 export const badge = defineComponent({
 	slug: "badge",

@@ -44,6 +44,11 @@ export {
 	CardTitle,
 	type CardVariant,
 } from "./card/card";
+export {
+	ChatComposer,
+	type ChatComposerProps,
+	type ChatMessage,
+} from "./chat-composer/chat-composer";
 export { Checkbox, type CheckboxProps } from "./checkbox/checkbox";
 export { CodeBlock, type CodeBlockProps } from "./code-block/code-block";
 export {
@@ -157,6 +162,11 @@ export type { InputSize } from "./input/variants";
 export { Label, type LabelProps } from "./label/label";
 export { type AnchorPlacement, anchor, dismissable, rove } from "./lib/anchor";
 export { cn } from "./lib/cn";
+export {
+	LoadingState,
+	type LoadingStateProps,
+	type LoadingStateVariant,
+} from "./loading-state/loading-state";
 export { Markdown, type MarkdownProps } from "./markdown/markdown";
 export { Message, type MessageProps } from "./message/message";
 export {
@@ -185,6 +195,12 @@ export {
 	type RadioVariant,
 } from "./radio-group/radio-group";
 export { Reasoning, type ReasoningProps } from "./reasoning/reasoning";
+export {
+	RecommendationCard,
+	type RecommendationCardProps,
+	type RecommendationLabels,
+	type RecommendationOption,
+} from "./recommendation-card/recommendation-card";
 export {
 	type ReorderItem,
 	ReorderList,
