@@ -308,6 +308,25 @@
 	}
 }
 
+/* Shared by both Question ports: each question slides in from the right as the
+   step advances, instead of a hard cut. */
+.question-slide-in {
+	animation: question-slide-in 220ms var(--ease-out) both;
+}
+
+@keyframes question-slide-in {
+	from {
+		opacity: 0;
+		transform: translateX(8px);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.question-slide-in {
+		animation: none;
+	}
+}
+
 /* Shared by both Message ports: the iMessage bubble pop, a slide-up with a slight
    scale overshoot rather than a linear ease. */
 .imessage-in {

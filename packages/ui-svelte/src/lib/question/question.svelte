@@ -1,77 +1,157 @@
 <script lang="ts">
+import Button from "../button/button.svelte";
 import { cn } from "../lib/cn";
+import QuestionOptions from "./question-options.svelte";
+import type { QuestionAnswer, QuestionAnswers, QuestionItem } from "./types";
+import { type QuestionLayout, question } from "./variants";
 
-export type QuestionOption = { id: string; label: string };
+const EMPTY_ANSWER: QuestionAnswer = { selected: [] };
+
+function isAnswered(answer: QuestionAnswer) {
+	return answer.selected.length > 0 || Boolean(answer.custom?.trim());
+}
 
 let {
-	question,
-	options,
-	answered = $bindable(false),
-	multiple = false,
+	layout = "card",
+	questions,
+	answers,
+	defaultAnswers = {},
+	onAnswersChange,
+	step,
+	defaultStep = 0,
+	onStepChange,
+	onSubmit,
+	submitLabel = "Submit",
 	class: classProp,
-	onanswer,
 }: {
-	question: string;
-	options: QuestionOption[];
-	answered?: boolean;
-	multiple?: boolean;
+	layout?: QuestionLayout;
+	questions: QuestionItem[];
+	answers?: QuestionAnswers;
+	defaultAnswers?: QuestionAnswers;
+	onAnswersChange?: (answers: QuestionAnswers) => void;
+	step?: number;
+	defaultStep?: number;
+	onStepChange?: (step: number) => void;
+	onSubmit?: (answers: QuestionAnswers) => void;
+	submitLabel?: string;
 	class?: string;
-	onanswer?: (ids: string[]) => void;
 } = $props();
 
-const id = $props.id();
-let picked = $state<string[]>([]);
+// svelte-ignore state_referenced_locally -- intentional one-time seed, matching React's useState(initialValue)
+let internalAnswers = $state<QuestionAnswers>(defaultAnswers);
+// svelte-ignore state_referenced_locally -- intentional one-time seed, matching React's useState(initialValue)
+let internalStep = $state(defaultStep);
+let autoAdvanceTimer: ReturnType<typeof setTimeout> | undefined;
 
-function toggle(optionId: string) {
-	if (answered) return;
-	if (!multiple) {
-		picked = [optionId];
-		answered = true;
-		onanswer?.(picked);
+const slots = $derived(question({ layout }));
+const currentAnswers = $derived(answers ?? internalAnswers);
+const currentStep = $derived(
+	Math.min(Math.max(0, step ?? internalStep), Math.max(0, questions.length - 1)),
+);
+const item = $derived(questions[currentStep]);
+const multipleQuestions = $derived(questions.length > 1);
+const currentAnswer = $derived(
+	item ? (currentAnswers[item.id] ?? EMPTY_ANSWER) : EMPTY_ANSWER,
+);
+const last = $derived(currentStep >= questions.length - 1);
+
+function clearAutoAdvance() {
+	clearTimeout(autoAdvanceTimer);
+	autoAdvanceTimer = undefined;
+}
+
+function setAnswers(next: QuestionAnswers) {
+	if (answers === undefined) internalAnswers = next;
+	onAnswersChange?.(next);
+}
+
+function setStep(next: number) {
+	clearAutoAdvance();
+	if (step === undefined) internalStep = next;
+	onStepChange?.(next);
+}
+
+function updateAnswer(next: QuestionAnswer) {
+	if (!item) return;
+	setAnswers({ ...currentAnswers, [item.id]: next });
+}
+
+function continueQuestion() {
+	if (!last) {
+		setStep(currentStep + 1);
 		return;
 	}
-	picked = picked.includes(optionId)
-		? picked.filter((p) => p !== optionId)
-		: [...picked, optionId];
+	onSubmit?.(currentAnswers);
+}
+
+function queueAutoAdvance() {
+	if (!item || item.multiple || item.autoAdvance === false || last) return;
+	clearAutoAdvance();
+	autoAdvanceTimer = setTimeout(() => setStep(currentStep + 1), 240);
 }
 </script>
 
-<div
-	class={cn("flex flex-col gap-3 rounded-xl border border-border bg-card p-4", classProp)}
->
-	<p {id} class="font-medium text-foreground text-sm">{question}</p>
+{#if item}
+	<div data-slot="question" class={cn(slots.root(), classProp)}>
+		{#key item.id}
+			<div class="question-slide-in flex flex-col gap-1">
+				<div class="flex items-start gap-2">
+					<p class="min-w-0 flex-1 font-medium text-foreground text-sm">{item.title}</p>
+					{#if multipleQuestions}
+						<span class="shrink-0 text-[11px] text-muted-foreground tabular-nums">{currentStep + 1}/{questions.length}</span>
+					{/if}
+				</div>
+				{#if item.description}
+					<p class="text-muted-foreground text-xs leading-relaxed">{item.description}</p>
+				{/if}
 
-	<div role="group" aria-labelledby={id} class="flex flex-wrap gap-2">
-		{#each options as option (option.id)}
-			<button
-				type="button"
-				aria-pressed={picked.includes(option.id)}
-				disabled={answered && !picked.includes(option.id)}
-				onclick={() => toggle(option.id)}
-				class={cn(
-					"inline-flex h-8 items-center rounded-lg border border-border px-3 text-sm transition-colors",
-					"hover:bg-foreground/[0.06] disabled:pointer-events-none disabled:opacity-40",
-					"aria-pressed:border-border-strong aria-pressed:bg-foreground/[0.08] aria-pressed:text-foreground",
-				)}
+				<QuestionOptions {item} answer={currentAnswer} onChange={updateAnswer} onSingleSelect={queueAutoAdvance} />
+			</div>
+		{/key}
+
+		<div class="mt-3 flex items-center gap-2">
+			{#if multipleQuestions}
+				<button
+					type="button"
+					aria-label="Previous question"
+					disabled={currentStep === 0}
+					onclick={() => setStep(currentStep - 1)}
+					class="grid size-7 shrink-0 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground disabled:pointer-events-none disabled:opacity-40"
+				>
+					<svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class="size-3.5">
+						<path d="M10 3.5 5.5 8l4.5 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+					</svg>
+				</button>
+				<span class="flex gap-1.5">
+					{#each questions as q, i (q.id)}
+						<span
+							aria-hidden="true"
+							class={cn(
+								"size-1.5 rounded-full bg-foreground transition-[opacity,scale] duration-200 ease-[var(--ease-out)]",
+								i === currentStep ? "scale-100 opacity-100" : "scale-75 opacity-35",
+							)}
+						></span>
+					{/each}
+				</span>
+			{/if}
+			<Button
+				size={last ? "sm" : "icon-sm"}
+				aria-label={last ? "Submit response" : "Next question"}
+				disabled={!isAnswered(currentAnswer)}
+				onclick={continueQuestion}
+				class="ml-auto rounded-full"
 			>
-				{option.label}
-			</button>
-		{/each}
+				{#if last}
+					{submitLabel}
+					<svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class="size-3.5">
+						<path d="M3.5 8h9M8.5 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+					</svg>
+				{:else}
+					<svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class="size-3.5">
+						<path d="M6 3.5 10.5 8 6 12.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+					</svg>
+				{/if}
+			</Button>
+		</div>
 	</div>
-
-	{#if multiple && !answered}
-		<button
-			type="button"
-			disabled={picked.length === 0}
-			onclick={() => {
-				answered = true;
-				onanswer?.(picked);
-			}}
-			class="self-start rounded-lg bg-primary px-3 py-1.5 font-medium text-primary-foreground text-xs disabled:opacity-40"
-		>
-			Submit
-		</button>
-	{/if}
-
-	<span role="status" class="sr-only">{answered ? "Answer recorded" : ""}</span>
-</div>
+{/if}

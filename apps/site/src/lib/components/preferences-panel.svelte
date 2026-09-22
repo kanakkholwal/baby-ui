@@ -19,8 +19,7 @@ import IconBrandSvelte from "@tabler/icons-svelte/icons/brand-svelte";
 import IconBrandTypescript from "@tabler/icons-svelte/icons/brand-typescript";
 import IconCheck from "@tabler/icons-svelte/icons/check";
 import { type Appearance, type Dialect, prefs, THEMES } from "$lib/preferences.svelte";
-
-type Option = { id: string; label: string; icon: Icon };
+import SegmentControl from "./segment-control.svelte";
 
 const APPEARANCE: { value: Appearance; label: string }[] = [
 	{ value: "light", label: "Light" },
@@ -44,23 +43,6 @@ $effect(() => {
 	if (appearance !== prefs.appearance) prefs.set("appearance", appearance as Appearance);
 });
 </script>
-
-{#snippet segment(options: Option[], current: string, pick: (id: never) => void)}
-	<div class="inline-flex items-center gap-0.5 rounded-lg bg-card p-0.5">
-		{#each options as option (option.id)}
-			{@const Glyph = option.icon}
-			<button
-				type="button"
-				onclick={() => pick(option.id as never)}
-				aria-pressed={current === option.id}
-				class="inline-flex h-7 items-center gap-1.5 rounded-md px-2 text-muted-foreground text-xs transition-colors hover:text-foreground aria-pressed:bg-background aria-pressed:font-medium aria-pressed:text-foreground aria-pressed:shadow-sm"
-			>
-				<Glyph size={14} stroke={1.6} />
-				{option.label}
-			</button>
-		{/each}
-	</div>
-{/snippet}
 
 <Sheet bind:open={prefs.open}>
 	<SheetContent side="right" class="w-[min(20rem,100vw)] gap-0 p-0">
@@ -107,12 +89,20 @@ $effect(() => {
 
 			<div class="flex items-center justify-between gap-3 px-4 py-2.5">
 				<span class="text-foreground text-xs">Framework</span>
-				{@render segment(FRAMEWORKS, prefs.framework, (id) => prefs.set("framework", id))}
+				<SegmentControl
+					options={FRAMEWORKS}
+					current={prefs.framework}
+					onPick={(id) => prefs.set("framework", id as Framework)}
+				/>
 			</div>
 
 			<div class="flex items-center justify-between gap-3 px-4 py-2.5">
 				<span class="text-foreground text-xs">Language</span>
-				{@render segment(DIALECTS, prefs.dialect, (id) => prefs.set("dialect", id))}
+				<SegmentControl
+					options={DIALECTS}
+					current={prefs.dialect}
+					onPick={(id) => prefs.set("dialect", id as Dialect)}
+				/>
 			</div>
 		</div>
 

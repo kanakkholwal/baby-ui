@@ -1,10 +1,12 @@
 <script lang="ts">
 import { registry } from "virtual:docvia/source";
 import { demos } from "@baby-ui/demos/svelte";
+import { specs } from "@baby-ui/registry-schema/components";
 import { Renderer } from "@docvia/renderer-svelte";
 import IconChevronRight from "@tabler/icons-svelte/icons/chevron-right";
 import IconList from "@tabler/icons-svelte/icons/list";
 import CodeBlock from "$lib/components/code-block.svelte";
+import ComponentCard from "$lib/components/component-card.svelte";
 import ControlsPanel from "$lib/components/controls-panel.svelte";
 import DemoPreview from "$lib/components/demo-preview.svelte";
 import InstallBlock from "$lib/components/install-block.svelte";
@@ -49,6 +51,11 @@ $effect(() => {
 
 const port = $derived(data.ports.find((p) => p.framework === framework) ?? data.ports[0]);
 const hasControls = $derived(data.spec.props.some((p) => p.control.kind !== "none"));
+const related = $derived(
+	specs
+		.filter((s) => s.category === data.spec.category && s.slug !== data.spec.slug)
+		.slice(0, 6),
+);
 const tabs = [
 	{ id: "preview", label: "Preview" },
 	{ id: "usage", label: "Usage" },
@@ -61,6 +68,7 @@ const outline = $derived(
 		...data.proseHeadings,
 		data.spec.motion && { id: "behaviour", label: "Behaviour" },
 		data.spec.props.length > 0 && { id: "api-reference", label: "API reference" },
+		related.length > 0 && { id: "related", label: "Related components" },
 	].filter((h): h is { id: string; label: string } => Boolean(h)),
 );
 const usage = $derived(
@@ -167,6 +175,20 @@ const usage = $derived(
 		<section id="api-reference" class="mt-12 scroll-mt-24 border-border border-t pt-8">
 			<h2 class="font-semibold text-foreground text-sm">API Reference</h2>
 			<div class="mt-3"><PropsTable props={data.spec.props} /></div>
+		</section>
+	{/if}
+
+	{#if related.length}
+		<section id="related" class="mt-12 scroll-mt-24 border-border border-t pt-8">
+			<h2 class="font-semibold text-foreground text-sm">Related components</h2>
+			<p class="mt-1 text-muted-foreground text-sm">
+				More from {CATEGORY_LABEL[data.spec.category]}.
+			</p>
+			<div class="mt-4 grid grid-cols-1 gap-4 [grid-auto-rows:19rem] sm:grid-cols-2 lg:grid-cols-3">
+				{#each related as item (item.slug)}
+					<ComponentCard spec={item} />
+				{/each}
+			</div>
 		</section>
 	{/if}
 </div>

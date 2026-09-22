@@ -41,6 +41,7 @@ export function siteNav(): { href: string; label: string; match: string }[] {
 export type SearchItem = {
 	href: string;
 	name: string;
+	slug: string;
 	group: string;
 	description: string;
 };
@@ -51,6 +52,7 @@ export function searchItems(): SearchItem[] {
 		.map((s) => ({
 			href: `/components/${s.category}/${s.slug}`,
 			name: s.name,
+			slug: s.slug,
 			group: CATEGORY_LABEL[s.category],
 			description: s.description,
 		}))

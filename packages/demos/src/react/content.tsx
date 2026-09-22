@@ -13,6 +13,8 @@ import {
 	Markdown,
 	Message,
 	Question,
+	type QuestionAnswers,
+	type QuestionItem,
 	Reasoning,
 	type ReorderItem,
 	ReorderList,
@@ -346,26 +348,53 @@ export function ToolDemo({ props }: { props: Props }) {
 	);
 }
 
-const ANSWERS = [
-	{ id: "edge", label: "Edge" },
-	{ id: "node", label: "Node" },
-	{ id: "both", label: "Both" },
+const QUESTIONS: QuestionItem[] = [
+	{
+		id: "runtime",
+		title: "Which runtime should this target?",
+		options: [
+			{ value: "edge", label: "Edge" },
+			{ value: "node", label: "Node" },
+			{ value: "both", label: "Both" },
+		],
+	},
+	{
+		id: "features",
+		title: "Which features does it need?",
+		description: "Pick any that apply, or add your own.",
+		multiple: true,
+		allowCustom: true,
+		customPlaceholder: "Add another requirement…",
+		options: [
+			{ value: "streaming", label: "Streaming responses" },
+			{ value: "auth", label: "Auth middleware" },
+			{ value: "caching", label: "Response caching" },
+		],
+	},
+	{
+		id: "priority",
+		title: "How urgent is this?",
+		options: [
+			{ value: "now", label: "Ship this week" },
+			{ value: "soon", label: "Next sprint" },
+			{ value: "later", label: "No rush" },
+		],
+	},
 ];
 
 export function QuestionDemo({ props }: { props: Props }) {
-	const [picked, setPicked] = useState<string[]>([]);
+	const [submitted, setSubmitted] = useState<QuestionAnswers | null>(null);
 	return (
-		<div className="w-96">
+		<div className="w-full max-w-sm">
 			<Question
-				key={String(props.multiple)}
-				question={(props.question as string) || "Which runtime should this target?"}
-				options={ANSWERS}
-				multiple={Boolean(props.multiple)}
-				onAnswer={setPicked}
+				key={String(props.layout)}
+				layout={(props.layout as "card" | "inline") ?? "card"}
+				questions={QUESTIONS}
+				onSubmit={setSubmitted}
 			/>
-			{picked.length ? (
+			{submitted ? (
 				<p className="mt-2 text-muted-foreground text-xs">
-					Answered: {picked.join(", ")}
+					Submitted: {JSON.stringify(submitted)}
 				</p>
 			) : null}
 		</div>

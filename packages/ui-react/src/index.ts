@@ -204,7 +204,15 @@ export {
 export { paginationRange } from "./pagination/range";
 export { Popover, PopoverContent, PopoverTrigger } from "./popover/popover";
 export { Progress, type ProgressProps } from "./progress/progress";
-export { Question, type QuestionOption, type QuestionProps } from "./question/question";
+export {
+	Question,
+	type QuestionAnswer,
+	type QuestionAnswers,
+	type QuestionItem,
+	type QuestionOption,
+	type QuestionProps,
+} from "./question/question";
+export type { QuestionLayout } from "./question/variants";
 export {
 	RadioGroup,
 	RadioGroupItem,
@@ -267,6 +275,13 @@ export { ShowMore, type ShowMoreProps } from "./show-more/show-more";
 export { Skeleton, type SkeletonProps } from "./skeleton/skeleton";
 export { Slider, type SliderProps } from "./slider/slider";
 export { Spinner, type SpinnerProps } from "./spinner/spinner";
+export {
+	type StreamingSource,
+	StreamingText,
+	type StreamingTextProps,
+	type StreamingToken,
+} from "./streaming-text/streaming-text";
+export type { StreamingTextLayout } from "./streaming-text/variants";
 export { Switch, type SwitchProps } from "./switch/switch";
 export {
 	Tabs,

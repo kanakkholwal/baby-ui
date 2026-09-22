@@ -14,6 +14,7 @@ const GUIDES = [
 ];
 
 let open = $state<Record<string, boolean>>({});
+let root = $state<HTMLElement>();
 
 // The rail is one border on the list; each row overlaps it so the active mark sits on it.
 function linkClass(active: boolean) {
@@ -27,9 +28,16 @@ function linkClass(active: boolean) {
 
 const sectionTrigger =
 	"mb-2 w-full justify-start gap-1.5 px-3 py-0 font-semibold text-[11px] text-muted-foreground uppercase tracking-wider hover:text-foreground";
+
+// Keeps the active link in view regardless of which ancestor actually scrolls (the fixed
+// desktop rail or the mobile drawer's own scroll container) — scrollIntoView walks up to it.
+$effect(() => {
+	page.url.pathname;
+	root?.querySelector('a[aria-current="page"]')?.scrollIntoView({ block: "nearest" });
+});
 </script>
 
-<aside aria-label="Site navigation">
+<aside aria-label="Site navigation" bind:this={root}>
 	<nav class="flex flex-col gap-5">
 		<Collapsible
 			bind:open={() => (open.guides ?? true), (v) => (open.guides = v)}
@@ -39,7 +47,13 @@ const sectionTrigger =
 			<CollapsibleContent class="px-0 pb-0 duration-300">
 				<div class="ml-3 border-border border-l">
 					{#each GUIDES as item (item.href)}
-						<a href={item.href} onclick={onNavigate} class={linkClass(page.url.pathname === item.href)}>
+						{@const active = page.url.pathname === item.href}
+						<a
+							href={item.href}
+							onclick={onNavigate}
+							aria-current={active ? "page" : undefined}
+							class={linkClass(active)}
+						>
 							{item.name}
 						</a>
 					{/each}
@@ -65,7 +79,13 @@ const sectionTrigger =
 				<CollapsibleContent class="px-0 pb-0 duration-300">
 					<div class="ml-3 border-border border-l">
 						{#each group.items as item (item.slug)}
-							<a href={item.href} onclick={onNavigate} class={linkClass(page.url.pathname === item.href)}>
+							{@const active = page.url.pathname === item.href}
+							<a
+								href={item.href}
+								onclick={onNavigate}
+								aria-current={active ? "page" : undefined}
+								class={linkClass(active)}
+							>
 								<span class="flex items-center justify-between gap-2 pr-3">
 									<span class="truncate">{item.name}</span>
 									{#if item.status !== "stable"}

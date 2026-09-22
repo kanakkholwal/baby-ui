@@ -87,6 +87,7 @@ import {
 } from "./primitives2";
 import { RecommendationCardDemo } from "./recommendation-card";
 import { ResponsiveDialogDemo } from "./responsive-dialog";
+import { StreamingTextDemo } from "./streaming-text";
 import { TaskRowsDemo } from "./task-rows";
 import { ThinkingStateDemo } from "./thinking-state";
 
@@ -296,4 +297,5 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"chat-composer": ChatComposerDemo,
 	"thinking-state": ThinkingStateDemo,
 	"task-rows": TaskRowsDemo,
+	"streaming-text": StreamingTextDemo,
 };

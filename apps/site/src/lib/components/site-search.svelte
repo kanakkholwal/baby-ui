@@ -86,7 +86,7 @@ function go(href: string) {
 					{#each group.items as item (item.href)}
 						<CommandItem
 							value={item.name}
-							keywords={item.description}
+							keywords={item.slug}
 							onclick={() => go(item.href)}
 						>
 							<span class="min-w-0">

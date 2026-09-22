@@ -169,7 +169,14 @@ export { default as Popover } from "./popover/popover.svelte";
 export { default as PopoverContent } from "./popover/popover-content.svelte";
 export { default as PopoverTrigger } from "./popover/popover-trigger.svelte";
 export { default as Progress } from "./progress/progress.svelte";
-export { default as Question, type QuestionOption } from "./question/question.svelte";
+export { default as Question } from "./question/question.svelte";
+export type {
+	QuestionAnswer,
+	QuestionAnswers,
+	QuestionItem,
+	QuestionOption,
+} from "./question/types";
+export type { QuestionLayout } from "./question/variants";
 export { default as RadioGroup } from "./radio-group/radio-group.svelte";
 export { default as RadioGroupItem } from "./radio-group/radio-group-item.svelte";
 export type { RadioSize, RadioVariant } from "./radio-group/variants";
@@ -217,6 +224,9 @@ export { default as ShowMore } from "./show-more/show-more.svelte";
 export { default as Skeleton } from "./skeleton/skeleton.svelte";
 export { default as Slider } from "./slider/slider.svelte";
 export { default as Spinner } from "./spinner/spinner.svelte";
+export { default as StreamingText } from "./streaming-text/streaming-text.svelte";
+export type { StreamingSource, StreamingToken } from "./streaming-text/types";
+export type { StreamingTextLayout } from "./streaming-text/variants";
 export { default as Switch } from "./switch/switch.svelte";
 export type { TabsSize, TabsVariant } from "./tabs/context";
 export { default as Tabs } from "./tabs/tabs.svelte";

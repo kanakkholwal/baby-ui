@@ -55,6 +55,7 @@ import { showMore } from "./show-more";
 import { skeleton } from "./skeleton";
 import { slider } from "./slider";
 import { spinner } from "./spinner";
+import { streamingText } from "./streaming-text";
 import { switchComponent } from "./switch";
 import { tabs } from "./tabs";
 import { tagInput } from "./tag-input";
@@ -141,6 +142,7 @@ export const specs: ComponentSpec[] = [
 	chatComposer,
 	thinkingState,
 	taskRows,
+	streamingText,
 ];
 
 export function getSpec(slug: string): ComponentSpec | undefined {

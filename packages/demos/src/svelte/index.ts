@@ -76,4 +76,5 @@ export const demos: Record<string, DemoLoader> = {
 	"chat-composer": () => import("./chat-composer-demo.svelte"),
 	"thinking-state": () => import("./thinking-state-demo.svelte"),
 	"task-rows": () => import("./task-rows-demo.svelte"),
+	"streaming-text": () => import("./streaming-text-demo.svelte"),
 };

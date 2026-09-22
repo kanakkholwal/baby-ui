@@ -1,38 +1,71 @@
 import { defineComponent } from "../index";
 
+const LAYOUTS = ["card", "inline"];
+
 export const question = defineComponent({
 	slug: "question",
 	name: "Question",
-	description: "Inline clarifying question with single or multiple choice answers.",
+	description:
+		"One or more clarifying questions, stepped through with radio/checkbox/custom-text answers and a sliding transition.",
 	category: "agents",
-	status: "beta",
+	status: "stable",
+	variants: { layout: LAYOUTS },
 	props: [
 		{
-			name: "question",
-			type: "string",
-			description: "What is being asked.",
-			default: "Which runtime should this target?",
-			control: { kind: "text" },
+			name: "layout",
+			type: LAYOUTS.map((v) => `"${v}"`).join(" | "),
+			description:
+				"`card` wraps the question in a bordered surface; `inline` has none, for embedding inside a Message bubble.",
+			default: "card",
+			control: { kind: "select", options: LAYOUTS },
 		},
 		{
-			name: "options",
-			type: "QuestionOption[]",
-			description: "Available answers.",
+			name: "questions",
+			type: "QuestionItem[]",
+			description:
+				"One or more questions, stepped through in order. Each can carry radio (single) or checkbox (multiple) options, a free-text field (`allowCustom`), and its own `autoAdvance`.",
 			control: { kind: "none" },
 		},
 		{
-			name: "multiple",
-			type: "boolean",
-			description: "Allow more than one answer, with an explicit submit.",
-			default: false,
-			control: { kind: "boolean" },
+			name: "answers",
+			type: "QuestionAnswers",
+			description:
+				"Controlled answers, keyed by question id. Uncontrolled via `defaultAnswers` otherwise.",
+			control: { kind: "none" },
+		},
+		{
+			name: "step",
+			type: "number",
+			description: "Controlled current step. Uncontrolled via `defaultStep` otherwise.",
+			control: { kind: "none" },
+		},
+		{
+			name: "submitLabel",
+			type: "string",
+			description: "Label on the final question's submit control.",
+			default: "Submit",
+			control: { kind: "text" },
 		},
 	],
+	motion: {
+		springs: [],
+		reducedMotion:
+			"The slide-in on each question drops; the progress dots keep their instant scale/opacity change.",
+		behaviour: [
+			"Each question slides in from the right and fades, replacing the previous one outright rather than cross-fading.",
+			"A single-select (non-multiple) question with `autoAdvance` (the default) moves to the next question 240ms after a pick, giving the reader a moment to see their choice register.",
+			"Progress dots scale and fade for the current question rather than just changing colour.",
+		],
+	},
 	a11y: {
-		keyboard: ["Tab reaches each option", "Enter and Space select"],
+		keyboard: [
+			"Tab reaches each option",
+			"Enter and Space select",
+			"Arrow keys move within a radio group",
+		],
 		notes: [
-			"Answering is announced through a live region, so the state change is not silent.",
-			"Once answered, unchosen options are disabled rather than removed, so the question still reads as a question afterwards.",
+			"Options are real `RadioGroup`/`Checkbox` primitives, not styled toggle buttons — full keyboard and screen-reader semantics come from the primitive, not reimplemented here.",
+			"The submit control is disabled, not hidden, until the current question has an answer, so its position never shifts.",
 		],
 	},
 	licenseOrigin: {
@@ -46,18 +79,24 @@ export const question = defineComponent({
 			entry: "Question",
 			files: [
 				{ path: "question/question.tsx", type: "registry:ui" },
+				{ path: "question/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			registryDependencies: ["button", "checkbox", "input", "radio-group"],
 		},
 		svelte: {
 			entry: "Question",
 			files: [
 				{ path: "question/question.svelte", type: "registry:ui" },
+				{ path: "question/question-options.svelte", type: "registry:ui" },
+				{ path: "question/types.ts", type: "registry:ui" },
+				{ path: "question/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			registryDependencies: ["button", "checkbox", "input", "radio-group"],
 		},
 	},
-	keywords: ["question"],
+	keywords: ["question", "prompt", "form", "agent"],
 });

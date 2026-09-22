@@ -10,7 +10,7 @@ notices are reproduced here as those licenses require.
 - Source: https://beui.dev
 - License: MIT
 - Copyright (c) 2026 beUI
-- Components derived: chat-composer, composer, context-cards, drawer, filter-table, loading-state, recommendation-card, responsive-dialog, task-rows, thinking-state, toast
+- Components derived: chat-composer, composer, context-cards, drawer, filter-table, loading-state, recommendation-card, responsive-dialog, streaming-text, task-rows, thinking-state, toast
 
 ## sivir-ui
 

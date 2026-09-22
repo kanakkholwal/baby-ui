@@ -1,17 +1,17 @@
-import { Question } from "@baby-ui/react";
+import { Question, type QuestionItem } from "@baby-ui/react";
 
-const options = [
-	{ id: "react", label: "React" },
-	{ id: "svelte", label: "Svelte" },
-	{ id: "both", label: "Both" },
+const questions: QuestionItem[] = [
+	{
+		id: "port",
+		title: "Which port do you want?",
+		options: [
+			{ value: "react", label: "React" },
+			{ value: "svelte", label: "Svelte" },
+			{ value: "both", label: "Both" },
+		],
+	},
 ];
 
 export function Example() {
-	return (
-		<Question
-			question="Which port do you want?"
-			options={options}
-			onAnswer={(ids) => console.log(ids)}
-		/>
-	);
+	return <Question questions={questions} onSubmit={(answers) => console.log(answers)} />;
 }
