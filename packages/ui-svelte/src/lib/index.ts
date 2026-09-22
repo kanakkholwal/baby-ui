@@ -77,6 +77,8 @@ export {
 export { default as CommandSeparator } from "./command/command-separator.svelte";
 export { default as CommandShortcut } from "./command/command-shortcut.svelte";
 export { default as Composer } from "./composer/composer.svelte";
+export { default as ContextCards } from "./context-cards/context-cards.svelte";
+export type { ContextChunk, ContextChunkTone } from "./context-cards/types";
 export { default as ContextMenu } from "./context-menu/context-menu.svelte";
 export { default as ContextMenuContent } from "./context-menu/context-menu-content.svelte";
 export { default as ContextMenuItem } from "./context-menu/context-menu-item.svelte";
@@ -107,6 +109,7 @@ export { default as DrawerFooter } from "./drawer/drawer-footer.svelte";
 export { default as DrawerHeader } from "./drawer/drawer-header.svelte";
 export { default as DrawerTitle } from "./drawer/drawer-title.svelte";
 export { default as DrawerTrigger } from "./drawer/drawer-trigger.svelte";
+export type { DrawerVariant } from "./drawer/variants";
 export { default as DropdownMenu } from "./dropdown-menu/dropdown-menu.svelte";
 export { default as DropdownMenuContent } from "./dropdown-menu/dropdown-menu-content.svelte";
 export { default as DropdownMenuItem } from "./dropdown-menu/dropdown-menu-item.svelte";
@@ -120,6 +123,12 @@ export { default as DropdownMenuTrigger } from "./dropdown-menu/dropdown-menu-tr
 export { type DiffLine, default as FileDiff } from "./file-diff/file-diff.svelte";
 export { default as FileTree } from "./file-tree/file-tree.svelte";
 export type { FileTreeNode } from "./file-tree/types";
+export { default as FilterTable } from "./filter-table/filter-table.svelte";
+export type {
+	FilterTableLabels,
+	TableRow,
+	TableRowStatus,
+} from "./filter-table/types";
 export {
 	default as FullscreenNav,
 	type NavLink,
@@ -161,6 +170,15 @@ export {
 	type ReorderItem,
 } from "./reorder-list/reorder-list.svelte";
 export { default as ResponseStream } from "./response-stream/response-stream.svelte";
+export type { ResponsiveDialogVariant } from "./responsive-dialog/context";
+export { default as ResponsiveDialog } from "./responsive-dialog/responsive-dialog.svelte";
+export { default as ResponsiveDialogClose } from "./responsive-dialog/responsive-dialog-close.svelte";
+export { default as ResponsiveDialogContent } from "./responsive-dialog/responsive-dialog-content.svelte";
+export { default as ResponsiveDialogDescription } from "./responsive-dialog/responsive-dialog-description.svelte";
+export { default as ResponsiveDialogFooter } from "./responsive-dialog/responsive-dialog-footer.svelte";
+export { default as ResponsiveDialogHeader } from "./responsive-dialog/responsive-dialog-header.svelte";
+export { default as ResponsiveDialogTitle } from "./responsive-dialog/responsive-dialog-title.svelte";
+export { default as ResponsiveDialogTrigger } from "./responsive-dialog/responsive-dialog-trigger.svelte";
 export { default as ScrollArea } from "./scroll-area/scroll-area.svelte";
 export { default as Select } from "./select/select.svelte";
 export { default as SelectContent } from "./select/select-content.svelte";

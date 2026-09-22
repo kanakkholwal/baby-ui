@@ -36,6 +36,7 @@ import {
 	TagInputDemo,
 	ToolDemo,
 } from "./content";
+import { ContextCardsDemo } from "./context-cards";
 import {
 	AlertDialogDemo,
 	CommandDemo,
@@ -46,6 +47,7 @@ import {
 	ToastDemo,
 	ToolbarDemo,
 } from "./dialogs";
+import { FilterTableDemo } from "./filter-table";
 import {
 	ComboboxDemo,
 	ContextMenuDemo,
@@ -81,6 +83,7 @@ import {
 	ToggleGroupDemo,
 	TypographyDemo,
 } from "./primitives2";
+import { ResponsiveDialogDemo } from "./responsive-dialog";
 
 type Props = Record<string, unknown>;
 
@@ -280,4 +283,7 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"response-stream": ResponseStreamDemo,
 	reasoning: ReasoningDemo,
 	"task-steps": TaskStepsDemo,
+	"responsive-dialog": ResponsiveDialogDemo,
+	"context-cards": ContextCardsDemo,
+	"filter-table": FilterTableDemo,
 };

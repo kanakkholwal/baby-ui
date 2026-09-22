@@ -30,6 +30,14 @@ export const drawer = defineComponent({
 			control: { kind: "boolean" },
 		},
 		{
+			name: "variant",
+			type: '"default" | "framed"',
+			description:
+				"`framed` insets the body in a rim: a thin bg-background border around a bg-card surface, with a draggable pill handle. `default` is the flat shadcn/ui surface with a decorative bar (vaul drags the whole panel either way).",
+			default: "default",
+			control: { kind: "select", options: ["default", "framed"] },
+		},
+		{
 			name: "snapPoints",
 			type: "(number | string)[]",
 			description:
@@ -51,6 +59,7 @@ export const drawer = defineComponent({
 		behaviour: [
 			"Slides in over 500ms on cubic-bezier(0.32, 0.72, 0, 1), the same curve as --ease-drawer, and follows the pointer while dragging.",
 			"Releasing past the close threshold finishes the slide out; releasing short snaps back or to the nearest snap point.",
+			"Dragging inside the body always scrolls, never dismisses; only the handle/bar area starts a dismiss-drag.",
 		],
 	},
 	a11y: {
@@ -60,7 +69,7 @@ export const drawer = defineComponent({
 		],
 		notes: [
 			"vaul renders a modal dialog with focus trapped inside and the page behind it inert.",
-			"The drag handle is decorative; every close path also exists as a button or key.",
+			"The body (`drawer-surface`) is marked `data-vaul-no-drag`, so scrolling never triggers a dismiss-drag; only the handle/bar area does, and both show cursor: grab/grabbing even though `default`'s bar isn't a separate Handle element. Every close path also exists as a button or key.",
 		],
 	},
 	licenseOrigin: {
@@ -74,6 +83,7 @@ export const drawer = defineComponent({
 			entry: "Drawer",
 			files: [
 				{ path: "drawer/drawer.tsx", type: "registry:ui" },
+				{ path: "drawer/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "vaul"],
@@ -90,6 +100,7 @@ export const drawer = defineComponent({
 				{ path: "drawer/drawer-description.svelte", type: "registry:ui" },
 				{ path: "drawer/drawer-close.svelte", type: "registry:ui" },
 				{ path: "drawer/context.ts", type: "registry:ui" },
+				{ path: "drawer/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "vaul-svelte@next", "bits-ui"],

@@ -17,9 +17,20 @@ export const DRAWER_CONTENT: Record<DrawerDirection, string> = {
 	right: "inset-y-0 right-0 h-full w-80 max-w-[85vw] rounded-l-3xl border-r-0",
 };
 
-export const DRAWER_SURFACE: Record<DrawerDirection, string> = {
-	bottom: "rounded-[20px] rounded-b-none",
-	top: "rounded-[20px] rounded-t-none",
-	left: "rounded-[20px] rounded-l-none",
-	right: "rounded-[20px] rounded-r-none",
+/** vaul's own [data-vaul-handle] CSS is a fixed 5px x 32px horizontal bar, only meant for
+ * bottom/top; rotated to a vertical bar and absolutely positioned on the free edge for left/right. */
+export const HANDLE_SIDES: Record<DrawerDirection, string> = {
+	bottom: "mx-auto! mt-2 mb-1 h-1.5! w-10!",
+	top: "order-last mx-auto! mt-1 mb-2 h-1.5! w-10!",
+	left: "absolute! top-1/2! right-2! -translate-y-1/2! h-10! w-1.5!",
+	right: "absolute! top-1/2! left-2! -translate-y-1/2! h-10! w-1.5!",
+};
+
+/** Not a separate drag target (vaul drags the whole panel), but still shows the grab
+ * affordance on every side, rotated to a vertical bar for left/right. */
+export const HANDLE_BAR_SIDES: Record<DrawerDirection, string> = {
+	bottom: "mx-auto mt-4 h-2 w-24",
+	top: "order-last mx-auto mb-4 h-2 w-24",
+	left: "absolute top-1/2 right-2 -translate-y-1/2 h-24 w-2",
+	right: "absolute top-1/2 left-2 -translate-y-1/2 h-24 w-2",
 };

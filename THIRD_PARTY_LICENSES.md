@@ -10,7 +10,7 @@ notices are reproduced here as those licenses require.
 - Source: https://beui.dev
 - License: MIT
 - Copyright (c) 2026 beUI
-- Components derived: drawer, toast
+- Components derived: context-cards, drawer, filter-table, responsive-dialog, toast
 
 ## sivir-ui
 

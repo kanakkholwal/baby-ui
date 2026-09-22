@@ -16,6 +16,7 @@ import { colorPicker } from "./color-picker";
 import { combobox } from "./combobox";
 import { command } from "./command";
 import { composer } from "./composer";
+import { contextCards } from "./context-cards";
 import { contextMenu } from "./context-menu";
 import { conversation } from "./conversation";
 import { copyButton } from "./copy-button";
@@ -24,6 +25,7 @@ import { drawer } from "./drawer";
 import { dropdownMenu } from "./dropdown-menu";
 import { fileDiff } from "./file-diff";
 import { fileTree } from "./file-tree";
+import { filterTable } from "./filter-table";
 import { fullscreenNav } from "./fullscreen-nav";
 import { gauge } from "./gauge";
 import { hoverCard } from "./hover-card";
@@ -41,6 +43,7 @@ import { radioGroup } from "./radio-group";
 import { reasoning } from "./reasoning";
 import { reorderList } from "./reorder-list";
 import { responseStream } from "./response-stream";
+import { responsiveDialog } from "./responsive-dialog";
 import { scrollArea } from "./scroll-area";
 import { select } from "./select";
 import { sheet } from "./sheet";
@@ -125,6 +128,9 @@ export const specs: ComponentSpec[] = [
 	conversation,
 	question,
 	tool,
+	responsiveDialog,
+	contextCards,
+	filterTable,
 ];
 
 export function getSpec(slug: string): ComponentSpec | undefined {

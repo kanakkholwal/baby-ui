@@ -77,6 +77,12 @@ export {
 } from "./command/command";
 export { Composer, type ComposerProps } from "./composer/composer";
 export {
+	ContextCards,
+	type ContextCardsProps,
+	type ContextChunk,
+	type ContextChunkTone,
+} from "./context-cards/context-cards";
+export {
 	ContextMenu,
 	ContextMenuContent,
 	ContextMenuItem,
@@ -115,6 +121,7 @@ export {
 	type DrawerProps,
 	DrawerTitle,
 	DrawerTrigger,
+	type DrawerVariant,
 } from "./drawer/drawer";
 export {
 	DropdownMenu,
@@ -131,6 +138,13 @@ export {
 export { type DiffLine, FileDiff, type FileDiffProps } from "./file-diff/file-diff";
 export { FileTree, type FileTreeProps } from "./file-tree/file-tree";
 export type { FileTreeNode } from "./file-tree/types";
+export {
+	FilterTable,
+	type FilterTableLabels,
+	type FilterTableProps,
+	type TableRow,
+	type TableRowStatus,
+} from "./filter-table/filter-table";
 export {
 	FullscreenNav,
 	type FullscreenNavProps,
@@ -180,6 +194,18 @@ export {
 	ResponseStream,
 	type ResponseStreamProps,
 } from "./response-stream/response-stream";
+export {
+	ResponsiveDialog,
+	ResponsiveDialogClose,
+	ResponsiveDialogContent,
+	ResponsiveDialogDescription,
+	ResponsiveDialogFooter,
+	ResponsiveDialogHeader,
+	type ResponsiveDialogProps,
+	ResponsiveDialogTitle,
+	ResponsiveDialogTrigger,
+	type ResponsiveDialogVariant,
+} from "./responsive-dialog/responsive-dialog";
 export { ScrollArea, type ScrollAreaProps } from "./scroll-area/scroll-area";
 export {
 	Select,

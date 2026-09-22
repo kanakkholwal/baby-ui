@@ -38,6 +38,7 @@ import {
 	DrawerHeader,
 	DrawerTitle,
 	DrawerTrigger,
+	type DrawerVariant,
 	FullscreenNav,
 	Input,
 	Label,
@@ -465,7 +466,7 @@ export function DrawerDemo({ props }: { props: Props }) {
 			dismissible={props.dismissible !== false}
 		>
 			<DrawerTrigger className={BTN}>Set a budget</DrawerTrigger>
-			<DrawerContent>
+			<DrawerContent variant={(props.variant as DrawerVariant) ?? "default"}>
 				<DrawerHeader>
 					<DrawerTitle>Monthly budget</DrawerTitle>
 					<DrawerDescription>

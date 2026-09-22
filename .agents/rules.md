@@ -15,6 +15,13 @@ Any agent (Claude Code, Codex, Cursor, Copilot) should read this file first.
 - Never use `--accent` as a hover surface. Hovers are `bg-foreground/[0.06]`.
 - Never leave a comment over 2 lines or a file-header comment (`scripts/check-comments.mjs --all`).
 - Never print licence credits on base component pages; non-base ported components keep theirs.
+- **HARD RULE:** never bake fictional sample content (rows, chunks, task lists, names) into a
+  shipped component as a default value. Data-shaped props (`chunks`, `rows`, items arrays) are
+  required, no default — the component only owns structural/behavioural config (status→style
+  maps, enum-to-tone lookups), never invented business data. Sample data lives only in
+  `packages/demos/src/*` (and usage snippets), never in `packages/ui-react/src` /
+  `packages/ui-svelte/src/lib`. A real installer must not receive a fake dataset baked into
+  their component.
 
 ## Always
 

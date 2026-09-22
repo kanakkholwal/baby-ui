@@ -278,6 +278,36 @@
 	}
 }
 
+/* Shared by ported list-of-cards components (ContextCards, others); pair with
+   `animation-delay: calc(var(--stagger-step) * N)` for a staggered reveal. */
+.card-fade-up {
+	animation: card-fade-up var(--duration-overlay) var(--ease-out) both;
+}
+
+@keyframes card-fade-up {
+	from {
+		opacity: 0;
+		transform: translateY(8px);
+	}
+}
+
+.fade-in {
+	animation: fade-in var(--duration-dropdown) var(--ease-out) both;
+}
+
+@keyframes fade-in {
+	from {
+		opacity: 0;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.card-fade-up,
+	.fade-in {
+		animation: none;
+	}
+}
+
 /* Shared by both spinner ports. */
 .spinner {
 	animation: spinner 850ms linear infinite;

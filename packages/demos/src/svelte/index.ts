@@ -16,6 +16,7 @@ import ColorPickerDemo from "./color-picker-demo.svelte";
 import ComboboxDemo from "./combobox-demo.svelte";
 import CommandDemo from "./command-demo.svelte";
 import ComposerDemo from "./composer-demo.svelte";
+import ContextCardsDemo from "./context-cards-demo.svelte";
 import ContextMenuDemo from "./context-menu-demo.svelte";
 import ConversationDemo from "./conversation-demo.svelte";
 import CopyButtonDemo from "./copy-button-demo.svelte";
@@ -24,6 +25,7 @@ import DrawerDemo from "./drawer-demo.svelte";
 import DropdownMenuDemo from "./dropdown-menu-demo.svelte";
 import FileDiffDemo from "./file-diff-demo.svelte";
 import FileTreeDemo from "./file-tree-demo.svelte";
+import FilterTableDemo from "./filter-table-demo.svelte";
 import FullscreenNavDemo from "./fullscreen-nav-demo.svelte";
 import GaugeDemo from "./gauge-demo.svelte";
 import HoverCardDemo from "./hover-card-demo.svelte";
@@ -41,6 +43,7 @@ import RadioGroupDemo from "./radio-group-demo.svelte";
 import ReasoningDemo from "./reasoning-demo.svelte";
 import ReorderListDemo from "./reorder-list-demo.svelte";
 import ResponseStreamDemo from "./response-stream-demo.svelte";
+import ResponsiveDialogDemo from "./responsive-dialog-demo.svelte";
 import ScrollAreaDemo from "./scroll-area-demo.svelte";
 import SelectDemo from "./select-demo.svelte";
 import SheetDemo from "./sheet-demo.svelte";
@@ -130,4 +133,7 @@ export const demos: Record<string, DemoComponent> = {
 	"response-stream": as(ResponseStreamDemo),
 	reasoning: as(ReasoningDemo),
 	"task-steps": as(TaskStepsDemo),
+	"responsive-dialog": as(ResponsiveDialogDemo),
+	"context-cards": as(ContextCardsDemo),
+	"filter-table": as(FilterTableDemo),
 };

@@ -10,6 +10,7 @@ import {
 	DrawerHeader,
 	DrawerTitle,
 	DrawerTrigger,
+	type DrawerVariant,
 	Slider,
 } from "@baby-ui/svelte";
 
@@ -18,13 +19,14 @@ let { props = {} }: { props?: Record<string, unknown> } = $props();
 let open = $state(false);
 let budget = $state(60);
 const direction = $derived((props.direction as DrawerDirection) ?? "bottom");
+const variant = $derived((props.variant as DrawerVariant) ?? "default");
 </script>
 
 <Drawer bind:open {direction} dismissible={props.dismissible !== false}>
 	<DrawerTrigger class="inline-flex h-9 items-center rounded-lg border border-border bg-card px-3 font-medium text-foreground text-sm">
 		Set a budget
 	</DrawerTrigger>
-	<DrawerContent>
+	<DrawerContent {variant}>
 		<DrawerHeader>
 			<DrawerTitle>Monthly budget</DrawerTitle>
 			<DrawerDescription>Alerts go out when spend crosses this line.</DrawerDescription>

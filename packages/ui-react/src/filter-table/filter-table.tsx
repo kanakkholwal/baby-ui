@@ -1,0 +1,176 @@
+"use client";
+
+import type { ComponentProps } from "react";
+import { useMemo, useState } from "react";
+import { cn } from "../lib/cn";
+
+export type TableRowStatus = "todo" | "progress" | "done";
+
+export type TableRow = {
+	task: string;
+	date: string;
+	status: TableRowStatus;
+	owner: string;
+};
+
+export type FilterTableLabels = {
+	columns: { task: string; date: string; status: string; owner: string };
+};
+
+const FILTERS: { key: "all" | TableRowStatus; label: string; tone?: string }[] = [
+	{ key: "all", label: "All" },
+	{ key: "todo", label: "To do", tone: "bg-warning" },
+	{ key: "progress", label: "In Progress", tone: "bg-info" },
+	{ key: "done", label: "Completed", tone: "bg-success" },
+];
+
+const DEFAULT_LABELS: FilterTableLabels = {
+	columns: { task: "Task name", date: "Date", status: "Status", owner: "Owner" },
+};
+
+const PILLS: Record<TableRowStatus, { label: string; cls: string }> = {
+	todo: { label: "To do", cls: "border-warning/20 bg-warning/10 text-warning" },
+	progress: { label: "In Progress", cls: "border-info/20 bg-info/10 text-info" },
+	done: { label: "Completed", cls: "border-success/20 bg-success/10 text-success" },
+};
+
+const GRID_COLS =
+	"grid-cols-[minmax(0,1.3fr)_minmax(0,0.6fr)_minmax(0,0.95fr)_minmax(0,0.9fr)]";
+
+export interface FilterTableProps extends Omit<ComponentProps<"div">, "children"> {
+	rows: TableRow[];
+	labels?: FilterTableLabels;
+}
+
+/** Status chips directly filter the task table; a hidden row collapses via
+ * grid-template-rows (1fr → 0fr) rather than unmounting, so the transition can animate. */
+export function FilterTable({
+	className,
+	rows,
+	labels = DEFAULT_LABELS,
+	...props
+}: FilterTableProps) {
+	const [filter, setFilter] = useState<"all" | TableRowStatus>("all");
+
+	const counts = useMemo(() => {
+		const byStatus: Record<"all" | TableRowStatus, number> = {
+			all: rows.length,
+			todo: 0,
+			progress: 0,
+			done: 0,
+		};
+		for (const row of rows) byStatus[row.status] += 1;
+		return byStatus;
+	}, [rows]);
+
+	return (
+		<div data-slot="filter-table" className={cn("w-full max-w-md", className)} {...props}>
+			<div
+				className="-mx-1 mb-1 flex items-center gap-1 overflow-x-auto px-1 py-1"
+				style={{ scrollbarWidth: "none" }}
+			>
+				{FILTERS.map((f) => {
+					const active = filter === f.key;
+					return (
+						<button
+							key={f.key}
+							type="button"
+							aria-pressed={active}
+							onClick={() => setFilter(f.key)}
+							className={cn(
+								"flex h-[26px] shrink-0 items-center gap-1.5 rounded-full px-2.5 text-[12px] font-medium transition-[background-color,box-shadow,color] duration-200",
+								active
+									? "bg-card text-foreground shadow-sm"
+									: "text-muted-foreground hover:bg-foreground/[0.06]",
+							)}
+						>
+							{f.tone ? <span className={cn("size-1.5 rounded-full", f.tone)} /> : null}
+							{f.label}
+							<span
+								className={cn(
+									"rounded-[4px] px-1 text-[10.5px] tabular-nums",
+									active ? "bg-input text-muted-foreground" : "text-muted-foreground",
+								)}
+							>
+								{counts[f.key]}
+							</span>
+						</button>
+					);
+				})}
+			</div>
+
+			<section
+				aria-label="Scrollable task table"
+				className="overflow-x-auto rounded-2xl bg-card shadow-sm"
+				// biome-ignore lint/a11y/noNoninteractiveTabindex: only keyboard entry to this horizontally-scrolling table
+				tabIndex={0}
+				style={{ scrollbarWidth: "none" }}
+			>
+				<div className="min-w-[420px]">
+					<div
+						className={cn(
+							"grid border-border border-b text-[12.5px] font-medium text-muted-foreground",
+							GRID_COLS,
+						)}
+					>
+						<span className="border-border border-r px-3 py-2">
+							{labels.columns.task}
+						</span>
+						<span className="border-border border-r px-3 py-2">
+							{labels.columns.date}
+						</span>
+						<span className="border-border border-r px-3 py-2">
+							{labels.columns.status}
+						</span>
+						<span className="px-3 py-2">{labels.columns.owner}</span>
+					</div>
+					{rows.map((row) => {
+						const shown = filter === "all" || row.status === filter;
+						const pill = PILLS[row.status];
+						return (
+							<div
+								key={row.task}
+								className="grid transition-[grid-template-rows,opacity] duration-300 ease-[var(--ease-out)]"
+								style={{
+									gridTemplateRows: shown ? "1fr" : "0fr",
+									opacity: shown ? 1 : 0,
+								}}
+							>
+								<div className="overflow-hidden">
+									<div
+										className={cn(
+											"grid border-border border-b text-[13px] transition-colors duration-100 hover:bg-foreground/[0.06]",
+											GRID_COLS,
+										)}
+									>
+										<span className="flex min-w-0 items-center border-border border-r px-3 py-2">
+											<span className="truncate font-medium text-foreground">
+												{row.task}
+											</span>
+										</span>
+										<span className="flex items-center whitespace-nowrap border-border border-r px-3 py-2 text-muted-foreground tabular-nums">
+											{row.date}
+										</span>
+										<span className="flex items-center border-border border-r px-3 py-2">
+											<span
+												className={cn(
+													"inline-flex h-[23px] shrink-0 items-center whitespace-nowrap rounded-[8px] border px-[7px] text-[13px] font-medium",
+													pill.cls,
+												)}
+											>
+												{pill.label}
+											</span>
+										</span>
+										<span className="flex min-w-0 items-center px-3 py-2 text-muted-foreground">
+											<span className="truncate">{row.owner}</span>
+										</span>
+									</div>
+								</div>
+							</div>
+						);
+					})}
+				</div>
+			</section>
+		</div>
+	);
+}
