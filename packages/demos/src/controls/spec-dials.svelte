@@ -113,7 +113,7 @@ function label(prop: PropSpec) {
 	{/if}
 {/snippet}
 
-<div class="divide-y divide-border rounded-xl border border-border bg-card/40 py-0.5">
+<div class="flex flex-col">
 	{#each dials as prop (prop.name)}
 		{@render dial(prop)}
 	{/each}

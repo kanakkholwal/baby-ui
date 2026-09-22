@@ -5,3 +5,11 @@ export type ChatMessage = {
 	time: string;
 	body: string;
 };
+
+/** One switchable thread: its own tab, starting prompt, and scripted replies. */
+export type ChatTopic = {
+	key: string;
+	label: string;
+	initialPrompt: string;
+	messages: ChatMessage[];
+};

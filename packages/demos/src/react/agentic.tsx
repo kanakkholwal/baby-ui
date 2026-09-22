@@ -9,6 +9,9 @@ import {
 	BreadcrumbPage,
 	BreadcrumbSeparator,
 	Message,
+	type MessageLayout,
+	type MessageMotion,
+	type MessageTone,
 	RadioGroup,
 	RadioGroupItem,
 	Reasoning,
@@ -163,13 +166,16 @@ export function TabsDemo({ props }: { props: Props }) {
 export function MessageDemo({ props }: { props: Props }) {
 	return (
 		<div className="flex w-96 flex-col gap-4">
-			{/* biome-ignore lint/a11y/useValidAriaRole: Message.role is the chat sender, not an ARIA role */}
-			<Message role="user" name="Kanak Kholwal" showActions={false}>
+			<Message align="end" name="Kanak Kholwal" tone="solid" showActions={false}>
 				Why is the dock magnifying from the wrong centre?
 			</Message>
 			<Message
-				role={(props.role as "user" | "assistant") ?? "assistant"}
+				key={String(props.motion)}
+				align={(props.align as "start" | "end") ?? "start"}
 				name={(props.name as string) || "Assistant"}
+				tone={(props.tone as MessageTone) ?? "surface"}
+				layout={(props.layout as MessageLayout) ?? "default"}
+				motion={(props.motion as MessageMotion) ?? "none"}
 				pending={Boolean(props.pending)}
 				showActions={props.showActions !== false}
 			>

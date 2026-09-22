@@ -1,63 +1,74 @@
 <script lang="ts">
 import type { Snippet } from "svelte";
+import type { HTMLAttributes } from "svelte/elements";
 import { cn } from "../lib/cn";
+import { type ConversationContext, setConversation } from "./context";
 
 let {
 	children,
-	empty,
-	maxHeight = "24rem",
+	threshold = 80,
 	class: classProp,
-}: { children?: Snippet; empty?: Snippet; maxHeight?: string; class?: string } = $props();
+	...rest
+}: {
+	children?: Snippet;
+	/** Auto-follow stays engaged while the reader is within this many px of the bottom. */
+	threshold?: number;
+} & HTMLAttributes<HTMLDivElement> = $props();
 
-let viewport = $state<HTMLDivElement>();
-let pinned = $state(true);
+let follow = $state(true);
+let atBottom = $state(true);
+let viewport = $state<HTMLDivElement | null>(null);
+let scrollingToBottom = $state(false);
 
-function measure() {
-	if (!viewport) return;
-	pinned = viewport.scrollTop + viewport.clientHeight >= viewport.scrollHeight - 24;
-}
+const conversation: ConversationContext = {
+	get follow() {
+		return follow;
+	},
+	set follow(value) {
+		follow = value;
+	},
+	get atBottom() {
+		return atBottom;
+	},
+	set atBottom(value) {
+		atBottom = value;
+	},
+	get threshold() {
+		return threshold;
+	},
+	get viewport() {
+		return viewport;
+	},
+	set viewport(value) {
+		viewport = value;
+	},
+	get scrollingToBottom() {
+		return scrollingToBottom;
+	},
+	set scrollingToBottom(value) {
+		scrollingToBottom = value;
+	},
+	scrollToBottom(behavior = "auto") {
+		follow = true;
+		scrollingToBottom = behavior === "smooth";
+		if (!viewport) {
+			scrollingToBottom = false;
+			return;
+		}
+		viewport.scrollTo({ top: viewport.scrollHeight, behavior });
+	},
+};
 
-// Follow new turns only while the reader is already at the bottom. Yanking someone
-// back down mid-scroll is the most common bug in a chat transcript.
-$effect(() => {
-	if (!viewport) return;
-	const observer = new MutationObserver(() => {
-		if (pinned && viewport) viewport.scrollTop = viewport.scrollHeight;
-	});
-	observer.observe(viewport, { childList: true, subtree: true });
-	return () => observer.disconnect();
-});
-
-function toBottom() {
-	if (!viewport) return;
-	viewport.scrollTo({ top: viewport.scrollHeight, behavior: "smooth" });
-}
+setConversation(conversation);
 </script>
 
-<div class={cn("relative", classProp)}>
-	<div
-		bind:this={viewport}
-		onscroll={measure}
-		style:max-height={maxHeight}
-		class="scroll-area flex flex-col gap-4 overflow-y-auto p-1"
-	>
-		{#if children}
-			{@render children()}
-		{:else if empty}
-			{@render empty()}
-		{/if}
-	</div>
-
-	{#if !pinned}
-		<button
-			type="button"
-			onclick={toBottom}
-			class="absolute inset-x-0 bottom-3 mx-auto grid size-8 place-items-center rounded-full border border-border bg-popover text-muted-foreground shadow-lg transition-colors hover:text-foreground duration-[var(--duration-dropdown)] ease-[var(--ease-out)] starting:scale-[var(--enter-scale)] starting:opacity-0"
-			aria-label="Scroll to latest"
-		>
-			<svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class="size-3.5">
-				<path d="M8 3.5V13M4 9l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-			</svg>
-		</button>
-	{/if}
+<!-- A scrollable transcript that follows new turns while the reader is already at the
+bottom, and stops the moment they scroll up. -->
+<div
+	{...rest}
+	data-slot="conversation"
+	data-state={follow ? "following" : "paused"}
+	class={cn("relative min-h-0 overflow-hidden", classProp)}
+>
+	{@render children?.()}
 </div>

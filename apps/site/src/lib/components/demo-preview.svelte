@@ -8,11 +8,13 @@ let {
 	slug,
 	demo,
 	props,
+	class: classProp,
 }: {
 	framework: Framework;
 	slug: string;
 	demo: DemoComponent | undefined;
 	props: Record<string, unknown>;
+	class?: string;
 } = $props();
 
 const Demo = $derived(demo);
@@ -24,7 +26,10 @@ const iframeSrc = $derived(
 </script>
 
 <div
-	class="relative grid min-h-88 place-items-center overflow-hidden rounded-xl border border-border bg-[radial-gradient(var(--border)_1px,transparent_1px)] [background-size:16px_16px] p-8"
+	class={[
+		"relative grid min-h-88 place-items-center overflow-hidden rounded-xl border border-border bg-[radial-gradient(var(--border)_1px,transparent_1px)] [background-size:16px_16px] p-8",
+		classProp,
+	]}
 >
 	{#if Demo}
 		<Demo {props} />

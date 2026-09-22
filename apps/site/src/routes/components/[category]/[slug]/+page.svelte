@@ -4,9 +4,11 @@ import { demos } from "@baby-ui/demos/svelte";
 import { Renderer } from "@docvia/renderer-svelte";
 import IconChevronRight from "@tabler/icons-svelte/icons/chevron-right";
 import CodeBlock from "$lib/components/code-block.svelte";
+import ControlsPanel from "$lib/components/controls-panel.svelte";
 import DemoPreview from "$lib/components/demo-preview.svelte";
 import InstallBlock from "$lib/components/install-block.svelte";
 import PageMenu from "$lib/components/page-menu.svelte";
+import PreviewToolbar from "$lib/components/preview-toolbar.svelte";
 import PropsRail from "$lib/components/props-rail.svelte";
 import PropsTable from "$lib/components/props-table.svelte";
 import Tabs from "$lib/components/tabs.svelte";
@@ -17,6 +19,9 @@ import type { PageProps } from "./$types";
 let { data }: PageProps = $props();
 
 let tab = $state("preview");
+let viewport = $state<"desktop" | "mobile">("desktop");
+let fullscreen = $state(false);
+let reloadKey = $state(0);
 
 // Framework and language are global preferences, set from the header settings drawer.
 const framework = $derived(prefs.framework);
@@ -24,10 +29,24 @@ const dialect = $derived(prefs.dialect);
 let values = $state<Record<string, unknown>>({});
 
 $effect(() => {
+	if (!fullscreen) return;
+	const onKey = (event: KeyboardEvent) => {
+		if (event.key === "Escape") fullscreen = false;
+	};
+	window.addEventListener("keydown", onKey);
+	document.body.style.overflow = "hidden";
+	return () => {
+		window.removeEventListener("keydown", onKey);
+		document.body.style.overflow = "";
+	};
+});
+
+$effect(() => {
 	values = defaultProps(data.spec);
 });
 
 const port = $derived(data.ports.find((p) => p.framework === framework) ?? data.ports[0]);
+const hasControls = $derived(data.spec.props.some((p) => p.control.kind !== "none"));
 const tabs = [
 	{ id: "preview", label: "Preview" },
 	{ id: "usage", label: "Usage" },
@@ -84,10 +103,18 @@ const usage = $derived(
 	</div>
 
 	<section id="preview" class="mt-8 scroll-mt-24">
-		<Tabs {tabs} bind:active={tab} variant="underline" class="w-full" />
+		<div class="flex items-center justify-between gap-3">
+			<Tabs {tabs} bind:active={tab} variant="underline" class="flex-1" />
+			{#if tab === "preview"}
+				<PreviewToolbar bind:viewport bind:fullscreen onReload={() => reloadKey++} />
+			{/if}
+		</div>
 		<div id="panel-{tab}" role="tabpanel" aria-labelledby="tab-{tab}" class="mt-4">
 			{#if tab === "preview"}
-				<DemoPreview {framework} slug={data.spec.slug} demo={demos[data.spec.slug]} props={values} />
+				{@render previewStage()}
+				{#if hasControls}
+					<ControlsPanel spec={data.spec} bind:values />
+				{/if}
 			{:else if tab === "usage"}
 				{#if usage}
 					<CodeBlock code={usage.code} html={usage.html} lang={usage.lang} maxHeight="none" />
@@ -133,10 +160,42 @@ const usage = $derived(
 	{/if}
 </div>
 
-<aside aria-label="Controls and metadata" class="hidden min-w-0 xl:block">
+{#snippet previewStage(fill = false)}
+	<div
+		class={[
+			"mx-auto transition-[max-width] duration-300",
+			viewport === "mobile" ? "max-w-sm" : "max-w-none",
+			fill && "flex h-full flex-col",
+		]}
+	>
+		{#key reloadKey}
+			<DemoPreview
+				{framework}
+				slug={data.spec.slug}
+				demo={demos[data.spec.slug]}
+				props={values}
+				class={fill ? "h-full flex-1" : undefined}
+			/>
+		{/key}
+	</div>
+{/snippet}
+
+{#if fullscreen}
+	<div class="fixed inset-0 z-50 flex flex-col gap-4 bg-background p-4 sm:p-6">
+		<div class="flex items-center justify-between gap-3">
+			<p class="font-medium text-foreground text-sm">{data.spec.name} · Preview</p>
+			<PreviewToolbar bind:viewport bind:fullscreen onReload={() => reloadKey++} />
+		</div>
+		<div class="min-h-0 flex-1 overflow-auto">
+			{@render previewStage(true)}
+		</div>
+	</div>
+{/if}
+
+<aside aria-label="On this page" class="hidden min-w-0 xl:block">
 	<div
 		class="scrollbar-hide fixed top-24 right-8 z-10 max-h-[calc(100dvh-8rem)] w-(--right-sidebar-width) overflow-y-auto pb-1"
 	>
-		<PropsRail spec={data.spec} bind:values {outline} />
+		<PropsRail slug={data.spec.slug} {outline} />
 	</div>
 </aside>

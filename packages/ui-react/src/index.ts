@@ -48,6 +48,7 @@ export {
 	ChatComposer,
 	type ChatComposerProps,
 	type ChatMessage,
+	type ChatTopic,
 } from "./chat-composer/chat-composer";
 export { Checkbox, type CheckboxProps } from "./checkbox/checkbox";
 export { CodeBlock, type CodeBlockProps } from "./code-block/code-block";
@@ -99,7 +100,16 @@ export {
 	ContextMenuSubTrigger,
 	ContextMenuTrigger,
 } from "./context-menu/context-menu";
-export { Conversation, type ConversationProps } from "./conversation/conversation";
+export {
+	Conversation,
+	ConversationContent,
+	type ConversationContentProps,
+	ConversationEmpty,
+	type ConversationEmptyProps,
+	type ConversationProps,
+	ConversationScrollButton,
+	type ConversationScrollButtonProps,
+} from "./conversation/conversation";
 export { CopyButton, type CopyButtonProps } from "./copy-button/copy-button";
 export {
 	Dialog,
@@ -169,6 +179,7 @@ export {
 } from "./loading-state/loading-state";
 export { Markdown, type MarkdownProps } from "./markdown/markdown";
 export { Message, type MessageProps } from "./message/message";
+export type { MessageLayout, MessageMotion, MessageTone } from "./message/variants";
 export {
 	MorphingModal,
 	type MorphingModalProps,

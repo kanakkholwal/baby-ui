@@ -7,36 +7,51 @@ let {
 	children,
 	maxHeight = "16rem",
 	class: classProp,
+	viewportRef = $bindable(null),
+	viewportProps,
 	...rest
-}: ScrollAreaPrimitive.RootProps & { children: Snippet; maxHeight?: string } = $props();
+}: ScrollAreaPrimitive.RootProps & {
+	children: Snippet;
+	maxHeight?: string;
+	/** Exposes the actual scrollable element, for callers that need to drive its scroll
+	 * position themselves (e.g. Conversation's auto-follow). */
+	viewportRef?: HTMLDivElement | null;
+	/** Escape hatch for props that must land on the real scrollable element, not the
+	 * outer root (role, aria-*, tabindex, extra scroll/pointer listeners). */
+	viewportProps?: Omit<ScrollAreaPrimitive.ViewportProps, "children" | "ref">;
+} = $props();
 
-let viewport = $state<HTMLDivElement | null>(null);
 let atTop = $state(true);
 let atBottom = $state(true);
 
 // Fades tell the reader there is more; a styled scrollbar alone does not on touch.
 function measure() {
-	if (!viewport) return;
-	atTop = viewport.scrollTop <= 1;
-	atBottom = viewport.scrollTop + viewport.clientHeight >= viewport.scrollHeight - 1;
+	if (!viewportRef) return;
+	atTop = viewportRef.scrollTop <= 1;
+	atBottom =
+		viewportRef.scrollTop + viewportRef.clientHeight >= viewportRef.scrollHeight - 1;
 }
 
 $effect(() => {
-	if (!viewport) return;
+	if (!viewportRef) return;
 	measure();
 	const observer = new ResizeObserver(measure);
-	observer.observe(viewport);
+	observer.observe(viewportRef);
 	return () => observer.disconnect();
 });
 </script>
 
 <ScrollAreaPrimitive.Root data-slot="scroll-area" class={cn("relative", classProp)} {...rest}>
 	<ScrollAreaPrimitive.Viewport
-		bind:ref={viewport}
-		onscroll={measure}
+		{...viewportProps}
+		bind:ref={viewportRef}
+		onscroll={(event) => {
+			measure();
+			viewportProps?.onscroll?.(event);
+		}}
 		data-slot="scroll-area-viewport"
 		style="max-height: {maxHeight}"
-		class="size-full rounded-[inherit] outline-none"
+		class={cn("size-full rounded-[inherit] outline-none", viewportProps?.class)}
 	>
 		{@render children()}
 	</ScrollAreaPrimitive.Viewport>

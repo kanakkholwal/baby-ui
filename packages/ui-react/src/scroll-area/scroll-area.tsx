@@ -8,12 +8,23 @@ import { cn } from "../lib/cn";
 export interface ScrollAreaProps extends ComponentProps<typeof ScrollAreaPrimitive.Root> {
 	children: ReactNode;
 	maxHeight?: string;
+	/** Exposes the actual scrollable element, for callers that need to drive its scroll
+	 * position themselves (e.g. Conversation's auto-follow). */
+	viewportRef?: (el: HTMLDivElement | null) => void;
+	/** Escape hatch for props that must land on the real scrollable element, not the
+	 * outer root (role, aria-*, tabIndex, extra scroll/pointer listeners). */
+	viewportProps?: Omit<
+		ComponentProps<typeof ScrollAreaPrimitive.Viewport>,
+		"children" | "ref"
+	>;
 }
 
 export function ScrollArea({
 	children,
 	maxHeight = "16rem",
 	className,
+	viewportRef,
+	viewportProps,
 	...props
 }: ScrollAreaProps) {
 	const viewport = useRef<HTMLDivElement>(null);
@@ -44,11 +55,21 @@ export function ScrollArea({
 			{...props}
 		>
 			<ScrollAreaPrimitive.Viewport
-				ref={viewport}
-				onScroll={measure}
+				{...viewportProps}
+				ref={(el) => {
+					viewport.current = el;
+					viewportRef?.(el);
+				}}
+				onScroll={(event) => {
+					measure();
+					viewportProps?.onScroll?.(event);
+				}}
 				data-slot="scroll-area-viewport"
-				style={{ maxHeight }}
-				className="size-full rounded-[inherit] outline-none"
+				style={{ maxHeight, ...viewportProps?.style }}
+				className={cn(
+					"size-full rounded-[inherit] outline-none",
+					viewportProps?.className,
+				)}
 			>
 				{children}
 			</ScrollAreaPrimitive.Viewport>

@@ -59,9 +59,11 @@ $effect(() => {
 		{/each}
 		<aside class="min-h-0 overflow-y-auto p-3">
 			{#if spec}
-				{#key spec.slug}
-					<SpecDials {spec} bind:values />
-				{/key}
+				<div class="rounded-xl border border-border bg-card/40 py-0.5">
+					{#key spec.slug}
+						<SpecDials {spec} bind:values />
+					{/key}
+				</div>
 			{/if}
 		</aside>
 	</div>

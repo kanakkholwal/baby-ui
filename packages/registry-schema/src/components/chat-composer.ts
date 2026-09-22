@@ -3,26 +3,16 @@ import { defineComponent } from "../index";
 export const chatComposer = defineComponent({
 	slug: "chat-composer",
 	name: "Chat Composer",
-	description: "Interactive chat panel with tabs, scripted replies, and a composer.",
+	description:
+		"Interactive chat panel with switchable topic tabs, scripted replies, and a composer.",
 	category: "agents",
 	status: "stable",
 	props: [
 		{
-			name: "initialPrompt",
-			type: "string",
-			description: "The pre-filled prompt shown in the first user bubble before sending.",
-			control: { kind: "text" },
-		},
-		{
-			name: "messages",
-			type: "ChatMessage[]",
-			description: "Scripted agent replies revealed in sequence after the user sends.",
-			control: { kind: "none" },
-		},
-		{
-			name: "suggestions",
-			type: "string[]",
-			description: "Header chips (tabs) for switching context. Omit for none.",
+			name: "topics",
+			type: "ChatTopic[]",
+			description:
+				"Every switchable thread; the header tabs are these topics, each with its own starting prompt and scripted replies.",
 			control: { kind: "none" },
 		},
 		{
@@ -45,11 +35,12 @@ export const chatComposer = defineComponent({
 	a11y: {
 		keyboard: [
 			"Enter in the input sends",
-			"Tab reaches the tabs, header actions, and the send button",
+			"Tab reaches the topic tabs, header actions, and the send button",
 		],
 		notes: [
-			'The composer\'s click-to-focus wrapper is `role="presentation"`; the real input carries `aria-label="Chat prompt"`.',
-			'Each header icon button has its own distinct `aria-label` ("New"/"History"/"More"), not a shared generic one.',
+			"The composer's click-to-focus wrapper has no ARIA role of its own; the real input carries `aria-label=\"Chat prompt\"` and is independently focusable, so the wrapper's click is a mouse-only convenience with no keyboard functionality riding on it.",
+			'"New", "Prompt history" and "More actions" each have their own distinct `aria-label`, not a shared generic one.',
+			'Copying the conversation announces its result ("Copied"/"Couldn\'t copy") through a `role="status"` live region.',
 		],
 	},
 	licenseOrigin: {
@@ -66,6 +57,7 @@ export const chatComposer = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge"],
+			registryDependencies: ["dropdown-menu"],
 		},
 		svelte: {
 			entry: "ChatComposer",
@@ -75,6 +67,7 @@ export const chatComposer = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge"],
+			registryDependencies: ["dropdown-menu"],
 		},
 	},
 	keywords: ["chat", "composer", "conversation", "agent"],

@@ -9,26 +9,33 @@ export const conversation = defineComponent({
 	status: "stable",
 	props: [
 		{
-			name: "maxHeight",
-			type: "string",
-			description: "CSS max-height for the viewport.",
-			default: "24rem",
-			control: { kind: "text" },
+			name: "threshold",
+			type: "number",
+			description:
+				"Auto-follow stays engaged while the reader is within this many px of the bottom.",
+			default: "80",
+			control: { kind: "number" },
 		},
 	],
 	motion: {
 		springs: [],
-		reducedMotion: "The jump scrolls instantly.",
+		reducedMotion:
+			"The jump-to-latest scrolls instantly instead of smoothly; the transcript itself has no motion to drop.",
 		behaviour: [
-			"New turns are followed only while pinned within 24px of the bottom, which tolerates sub-pixel scroll rounding.",
-			"The jump button uses smooth scrolling, which the platform already disables under reduced motion.",
+			"New turns are followed only while the reader is within `threshold` px of the bottom, which tolerates sub-pixel scroll rounding.",
+			"A `ResizeObserver` on both the scroll viewport and the transcript catches content growth (streaming replies, images loading in) and keeps following without waiting for a scroll event.",
+			"Wheel, touch and pointer-down are tracked separately from scroll position, so a user actively scrolling up detaches follow immediately — a programmatic `scrollToBottom()` call never gets mistaken for that.",
 		],
 	},
 	a11y: {
-		keyboard: ["The jump-to-latest button is reachable by Tab when visible"],
+		keyboard: [
+			"The transcript itself is a Tab stop when its content overflows, for keyboard scrolling",
+			"The jump-to-latest button is reachable by Tab when visible",
+		],
 		notes: [
-			"Auto-scroll is suspended the moment the reader scrolls up. Yanking someone back to the bottom while they are reading is the single most common bug in a chat transcript.",
-			"A jump-to-latest control appears only when the view is detached, so it never covers content unnecessarily.",
+			'The transcript is `role="log"` with `aria-live="polite"` and `aria-relevant="additions text"`, so assistive tech announces new turns without re-reading the whole history.',
+			"Auto-scroll is suspended the moment the reader scrolls up. Yanking someone back to the bottom while they're reading is the single most common bug in a chat transcript.",
+			"A jump-to-latest control appears only when the view is detached from the bottom, so it never covers content unnecessarily.",
 		],
 	},
 	licenseOrigin: {
@@ -45,15 +52,21 @@ export const conversation = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge"],
+			registryDependencies: ["scroll-area"],
 		},
 		svelte: {
 			entry: "Conversation",
 			files: [
 				{ path: "conversation/conversation.svelte", type: "registry:ui" },
+				{ path: "conversation/conversation-content.svelte", type: "registry:ui" },
+				{ path: "conversation/conversation-empty.svelte", type: "registry:ui" },
+				{ path: "conversation/conversation-scroll-button.svelte", type: "registry:ui" },
+				{ path: "conversation/context.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge"],
+			registryDependencies: ["scroll-area"],
 		},
 	},
-	keywords: ["conversation"],
+	keywords: ["conversation", "chat", "transcript", "auto-scroll"],
 });
