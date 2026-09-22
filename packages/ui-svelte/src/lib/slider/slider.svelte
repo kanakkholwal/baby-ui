@@ -1,60 +1,93 @@
 <script lang="ts">
+import { Slider as SliderPrimitive } from "bits-ui";
 import { cn } from "../lib/cn";
 
 let {
 	value = $bindable(50),
 	min = 0,
 	max = 100,
-	step = 1,
-	disabled = false,
+	orientation = "horizontal",
 	label,
 	class: classProp,
-}: {
-	value?: number;
+	...rest
+}: Omit<
+	SliderPrimitive.RootProps,
+	"type" | "value" | "min" | "max" | "onValueChange" | "onValueCommit" | "orientation"
+> & {
+	value?: number | number[];
 	min?: number;
 	max?: number;
-	step?: number;
-	disabled?: boolean;
+	orientation?: "horizontal" | "vertical";
 	label?: string;
-	class?: string;
 } = $props();
 
-const pct = $derived(
-	Math.min(100, Math.max(0, ((value - min) / (max - min || 1)) * 100)),
+const thumbIndices = $derived(
+	Array.from({ length: Array.isArray(value) ? value.length : 1 }, (_, i) => i),
 );
-
-// The native thumb is the handle, so focus, hover and drag states need no mirroring.
-const THUMB = [
-	"[&::-webkit-slider-thumb]:size-4 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full",
-	"[&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-solid [&::-webkit-slider-thumb]:border-primary [&::-webkit-slider-thumb]:bg-background [&::-webkit-slider-thumb]:shadow-sm",
-	"[&::-webkit-slider-thumb]:transition-[scale,box-shadow] [&::-webkit-slider-thumb]:duration-[var(--duration-press)] [&::-webkit-slider-thumb]:ease-[var(--ease-out)]",
-	"[&:not(:disabled):hover::-webkit-slider-thumb]:scale-110 [&:not(:disabled):active::-webkit-slider-thumb]:scale-125",
-	"[&:focus-visible::-webkit-slider-thumb]:shadow-[0_0_0_4px_var(--ring)]",
-	"[&::-moz-range-thumb]:size-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-solid [&::-moz-range-thumb]:border-primary [&::-moz-range-thumb]:bg-background",
-	"[&::-moz-range-thumb]:transition-[scale,box-shadow] [&::-moz-range-thumb]:duration-[var(--duration-press)]",
-	"[&:not(:disabled):hover::-moz-range-thumb]:scale-110 [&:focus-visible::-moz-range-thumb]:shadow-[0_0_0_4px_var(--ring)]",
-	"motion-reduce:[&::-webkit-slider-thumb]:transition-none motion-reduce:[&::-moz-range-thumb]:transition-none",
-].join(" ");
+const rootClass = $derived(
+	cn(
+		"relative flex items-center",
+		orientation === "vertical" ? "h-full" : "w-full",
+		classProp,
+	),
+);
 </script>
 
-<div
-	data-slot="slider"
-	class={cn("relative flex h-5 w-full select-none items-center", disabled && "opacity-50", classProp)}
->
-	<div class="h-1 w-full overflow-hidden rounded-full bg-input">
-		<div class="h-full rounded-full bg-primary" style:width="{pct}%"></div>
+{#snippet body()}
+	<div
+		class={cn(
+			"relative flex touch-none select-none items-center data-disabled:opacity-50",
+			orientation === "vertical" ? "h-full w-5 flex-col" : "h-5 w-full",
+		)}
+	>
+		<span
+			data-slot="slider-track"
+			class={cn(
+				"relative overflow-hidden rounded-full bg-input",
+				orientation === "vertical" ? "h-full w-1" : "h-1 w-full",
+			)}
+		>
+			<SliderPrimitive.Range
+				data-slot="slider-range"
+				class={cn("rounded-full bg-primary", orientation === "vertical" ? "w-full" : "h-full")}
+			/>
+		</span>
+		{#each thumbIndices as index (index)}
+			<SliderPrimitive.Thumb
+				{index}
+				aria-label={label}
+				data-slot="slider-thumb"
+				class="block size-4 shrink-0 rounded-full border-2 border-primary bg-background shadow-sm outline-none transition-[scale,box-shadow] duration-[var(--duration-press)] ease-[var(--ease-out)] hover:scale-110 active:scale-125 focus-visible:shadow-[0_0_0_4px_var(--ring)] motion-reduce:transition-none"
+			/>
+		{/each}
 	</div>
-	<input
-		type="range"
+{/snippet}
+
+<!-- bits-ui's type/value form a discriminated union that can't narrow from a runtime variable. -->
+{#if Array.isArray(value)}
+	<SliderPrimitive.Root
+		bind:value={value as number[]}
+		type="multiple"
 		{min}
 		{max}
-		{step}
-		{disabled}
-		aria-label={label}
-		bind:value
-		class={cn(
-			"absolute inset-0 m-0 w-full cursor-pointer appearance-none bg-transparent outline-none disabled:cursor-not-allowed [&::-moz-range-track]:bg-transparent",
-			THUMB,
-		)}
-	/>
-</div>
+		{orientation}
+		data-slot="slider"
+		class={rootClass}
+		{...rest}
+	>
+		{@render body()}
+	</SliderPrimitive.Root>
+{:else}
+	<SliderPrimitive.Root
+		bind:value={value as number}
+		type="single"
+		{min}
+		{max}
+		{orientation}
+		data-slot="slider"
+		class={rootClass}
+		{...rest}
+	>
+		{@render body()}
+	</SliderPrimitive.Root>
+{/if}

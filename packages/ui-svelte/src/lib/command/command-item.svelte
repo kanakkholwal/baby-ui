@@ -1,8 +1,6 @@
 <script lang="ts">
-import type { Snippet } from "svelte";
-import type { HTMLButtonAttributes } from "svelte/elements";
+import { Command as CommandPrimitive } from "bits-ui";
 import { cn } from "../lib/cn";
-import { getCommand } from "./context";
 
 let {
 	children,
@@ -11,36 +9,24 @@ let {
 	class: classProp,
 	onclick,
 	...rest
-}: {
-	children?: Snippet;
+}: Omit<CommandPrimitive.ItemProps, "keywords" | "onSelect" | "value"> & {
 	value: string;
 	keywords?: string;
-	class?: string;
-} & HTMLButtonAttributes = $props();
-
-const command = getCommand();
-const uid = $props.id();
-const visible = $derived(command.matches(`${value} ${keywords}`));
-const active = $derived(command.activeId === uid);
+	onclick?: () => void;
+} = $props();
 </script>
 
-{#if visible}
-	<button
-		{...rest}
-		type="button"
-		role="option"
-		id={uid}
-		data-slot="command-item"
-		data-value={value}
-		aria-selected={active}
-		onpointermove={() => command.setActive(uid)}
-		{onclick}
-		class={cn(
-			"relative flex w-full items-center justify-between gap-3 rounded-lg px-2.5 py-2 text-left text-sm transition-colors",
-			active ? "text-foreground" : "text-muted-foreground",
-			classProp,
-		)}
-	>
-		{@render children?.()}
-	</button>
-{/if}
+<CommandPrimitive.Item
+	{value}
+	keywords={keywords ? keywords.split(/\s+/) : undefined}
+	onSelect={onclick}
+	data-slot="command-item"
+	class={cn(
+		"relative flex w-full items-center justify-between gap-3 rounded-lg px-2.5 py-2 text-left text-sm transition-colors",
+		"text-muted-foreground data-[selected]:text-foreground",
+		classProp,
+	)}
+	{...rest}
+>
+	{@render children?.()}
+</CommandPrimitive.Item>

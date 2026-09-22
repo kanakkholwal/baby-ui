@@ -9,7 +9,7 @@ export function Example() {
 	return (
 		<Slider
 			value={value}
-			onValueChange={setValue}
+			onValueChange={(next) => setValue(typeof next === "number" ? next : (next[0] ?? 0))}
 			min={0}
 			max={100}
 			step={5}

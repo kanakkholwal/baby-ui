@@ -1,34 +1,27 @@
 <script lang="ts">
+import { ToggleGroup as ToggleGroupPrimitive } from "bits-ui";
 import type { Snippet } from "svelte";
-import type { HTMLButtonAttributes } from "svelte/elements";
 import { cn } from "../lib/cn";
 import { getToggleGroup } from "./context";
 import { toggleGroupItem } from "./variants";
 
 let {
-	children,
+	children: childrenProp,
 	value,
-	disabled = false,
 	class: classProp,
 	...rest
-}: {
-	children?: Snippet;
-	value: string;
-	disabled?: boolean;
-	class?: string;
-} & HTMLButtonAttributes = $props();
+}: Omit<ToggleGroupPrimitive.ItemProps, "children"> & { children?: Snippet } = $props();
 
 const group = getToggleGroup();
 </script>
 
-<button
-	{...rest}
-	type="button"
+<ToggleGroupPrimitive.Item
+	{value}
 	data-slot="toggle-group-item"
-	aria-pressed={group.isOn(value)}
-	disabled={disabled || group.disabled}
-	onclick={() => group.toggle(value)}
 	class={cn(toggleGroupItem({ size: group.size }), classProp)}
+	{...rest}
 >
-	{@render children?.()}
-</button>
+	{#snippet children()}
+		{@render childrenProp?.()}
+	{/snippet}
+</ToggleGroupPrimitive.Item>

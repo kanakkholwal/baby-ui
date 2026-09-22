@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Toolbar } from "@baby-ui/svelte";
+import { Toolbar, ToolbarButton } from "@baby-ui/svelte";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
 
@@ -23,15 +23,10 @@ const tools = [
 	label={(props.label as string) || "Formatting"}
 >
 	{#each tools as tool (tool.id)}
-		<button
-			type="button"
-			data-toolbar-item
-			aria-label={tool.label}
-			class="grid size-8 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
-		>
+		<ToolbarButton aria-label={tool.label}>
 			<svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class="size-4">
 				<path d={tool.path} stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
 			</svg>
-		</button>
+		</ToolbarButton>
 	{/each}
 </Toolbar>

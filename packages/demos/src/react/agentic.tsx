@@ -84,22 +84,38 @@ export function RadioGroupDemo({ props }: { props: Props }) {
 }
 
 export function SliderDemo({ props }: { props: Props }) {
-	const [value, setValue] = useState(50);
-	useEffect(() => setValue(Number(props.value ?? 50)), [props.value]);
+	const orientation = (props.orientation as "horizontal" | "vertical") ?? "horizontal";
+	const range = Boolean(props.range);
+	const [value, setValue] = useState<number | number[]>(50);
+	useEffect(() => {
+		setValue(range ? [25, 75] : Number(props.value ?? 50));
+	}, [range, props.value]);
+
+	const display = Array.isArray(value) ? `${value[0]}–${value[1]}` : value;
+
+	const wrapperClass =
+		orientation === "vertical" ? "flex flex-row gap-3" : "flex w-72 flex-col gap-3";
+	const labelClass =
+		orientation === "vertical"
+			? "flex flex-col items-center gap-1 text-sm"
+			: "flex items-baseline justify-between text-sm";
+
 	return (
-		<div className="flex w-72 flex-col gap-2">
-			<div className="flex items-baseline justify-between text-sm">
+		<div className={wrapperClass}>
+			<div className={labelClass}>
 				<span className="text-muted-foreground">Volume</span>
-				<span className="font-mono text-foreground text-xs tabular-nums">{value}</span>
+				<span className="font-mono text-foreground text-xs tabular-nums">{display}</span>
 			</div>
 			<Slider
 				value={value}
 				onValueChange={setValue}
+				orientation={orientation}
 				min={Number(props.min ?? 0)}
 				max={Number(props.max ?? 100)}
 				step={Number(props.step ?? 1)}
 				disabled={Boolean(props.disabled)}
 				label="Volume"
+				style={orientation === "vertical" ? { height: "14rem" } : undefined}
 			/>
 		</div>
 	);

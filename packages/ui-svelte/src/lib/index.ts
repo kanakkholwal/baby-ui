@@ -200,6 +200,7 @@ export { default as ToggleGroup } from "./toggle-group/toggle-group.svelte";
 export { default as ToggleGroupItem } from "./toggle-group/toggle-group-item.svelte";
 export { default as Tool, type ToolState } from "./tool/tool.svelte";
 export { default as Toolbar } from "./toolbar/toolbar.svelte";
+export { default as ToolbarButton } from "./toolbar/toolbar-button.svelte";
 export { default as Tooltip } from "./tooltip/tooltip.svelte";
 export { default as TooltipContent } from "./tooltip/tooltip-content.svelte";
 export { default as TooltipProvider } from "./tooltip/tooltip-provider.svelte";

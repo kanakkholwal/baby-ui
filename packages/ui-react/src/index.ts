@@ -229,7 +229,7 @@ export { Toaster, type ToasterProps, toast } from "./toast/toaster";
 export { Toggle, type ToggleProps } from "./toggle/toggle";
 export { ToggleGroup, ToggleGroupItem } from "./toggle-group/toggle-group";
 export { Tool, type ToolProps, type ToolState } from "./tool/tool";
-export { Toolbar, type ToolbarProps } from "./toolbar/toolbar";
+export { Toolbar, ToolbarButton, type ToolbarProps } from "./toolbar/toolbar";
 export {
 	Tooltip,
 	TooltipContent,

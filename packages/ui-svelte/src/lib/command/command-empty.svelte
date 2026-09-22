@@ -1,27 +1,14 @@
 <script lang="ts">
-import type { Snippet } from "svelte";
-import type { HTMLAttributes } from "svelte/elements";
+import { Command as CommandPrimitive } from "bits-ui";
 import { cn } from "../lib/cn";
 
-let {
-	children,
-	class: classProp,
-	...rest
-}: {
-	children?: Snippet;
-	class?: string;
-} & HTMLAttributes<HTMLParagraphElement> = $props();
+let { children, class: classProp, ...rest }: CommandPrimitive.EmptyProps = $props();
 </script>
 
-<!-- :has() hides this whenever the list still has a visible item, so no counting. -->
-<p
-	{...rest}
+<CommandPrimitive.Empty
 	data-slot="command-empty"
-	class={cn(
-		"px-4 py-10 text-center text-muted-foreground text-sm",
-		"[[data-slot=command-list]:has([data-slot=command-item])_&]:hidden",
-		classProp,
-	)}
+	class={cn("px-4 py-10 text-center text-muted-foreground text-sm", classProp)}
+	{...rest}
 >
 	{@render children?.()}
-</p>
+</CommandPrimitive.Empty>

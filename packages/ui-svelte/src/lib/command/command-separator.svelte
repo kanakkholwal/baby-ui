@@ -1,9 +1,12 @@
 <script lang="ts">
-import type { HTMLAttributes } from "svelte/elements";
+import { Command as CommandPrimitive } from "bits-ui";
 import { cn } from "../lib/cn";
 
-let { class: classProp, ...rest }: { class?: string } & HTMLAttributes<HTMLHRElement> =
-	$props();
+let { class: classProp, ...rest }: CommandPrimitive.SeparatorProps = $props();
 </script>
 
-<hr {...rest} data-slot="command-separator" class={cn("my-1 border-border", classProp)} />
+<CommandPrimitive.Separator
+	data-slot="command-separator"
+	class={cn("my-1 border-border", classProp)}
+	{...rest}
+/>

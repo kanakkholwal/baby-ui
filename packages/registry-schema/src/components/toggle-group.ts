@@ -38,8 +38,9 @@ export const toggleGroup = defineComponent({
 	a11y: {
 		keyboard: ["Tab moves into the group, then between options"],
 		notes: [
-			"role=group with a label, and each option carries aria-pressed.",
+			"role=group with a label. In multiple mode each option carries aria-pressed; in single mode the group is a real radiogroup (role=radio, aria-checked) per WAI-ARIA, since bits-ui distinguishes the two but Base UI does not (React uses aria-pressed either way).",
 			"In single mode clicking the active option clears it. If clearing makes no sense for your data, this should be a radio group instead.",
+			"Roving focus, keyboard nav and selection state are delegated to Base UI (React) and bits-ui (Svelte); this component only owns the classes and data-slots.",
 		],
 	},
 	licenseOrigin: {
@@ -56,7 +57,7 @@ export const toggleGroup = defineComponent({
 				{ path: "toggle-group/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "@base-ui/react"],
 		},
 		svelte: {
 			entry: "ToggleGroup",
@@ -67,7 +68,7 @@ export const toggleGroup = defineComponent({
 				{ path: "toggle-group/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "bits-ui"],
 		},
 	},
 	keywords: ["toggle", "group"],

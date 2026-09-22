@@ -63,7 +63,7 @@ export const alertDialog = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge"],
-			// Reuses Dialog's DIALOG_PANEL/DIALOG_SURFACE and DialogVariant type.
+			// Reuses Dialog's DIALOG_PANEL and DialogVariant type.
 			registryDependencies: ["dialog"],
 		},
 		svelte: {

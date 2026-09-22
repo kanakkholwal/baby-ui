@@ -1,9 +1,9 @@
 <script lang="ts">
-import { Toggle, Toolbar } from "@baby-ui/svelte";
+import { Toolbar, ToolbarButton } from "@baby-ui/svelte";
 </script>
 
 <Toolbar label="Text formatting">
-	<Toggle label="Bold">B</Toggle>
-	<Toggle label="Italic">I</Toggle>
-	<Toggle label="Underline">U</Toggle>
+	<ToolbarButton aria-label="Bold">B</ToolbarButton>
+	<ToolbarButton aria-label="Italic">I</ToolbarButton>
+	<ToolbarButton aria-label="Underline">U</ToolbarButton>
 </Toolbar>

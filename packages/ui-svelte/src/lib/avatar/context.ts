@@ -1,8 +1,7 @@
 import { createContext } from "svelte";
 
 export type AvatarContext = {
-	readonly loaded: boolean;
-	setLoaded: (loaded: boolean) => void;
+	readonly status: "loading" | "loaded" | "error";
 };
 
 export const [getAvatar, setAvatar] = createContext<AvatarContext>();

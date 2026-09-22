@@ -1,5 +1,7 @@
 "use client";
 
+import { Toggle as TogglePrimitive } from "@base-ui/react/toggle";
+import { ToggleGroup as ToggleGroupPrimitive } from "@base-ui/react/toggle-group";
 import type { ComponentProps } from "react";
 import { createContext, useContext, useMemo } from "react";
 import { cn } from "../lib/cn";
@@ -7,16 +9,11 @@ import { type ToggleGroupSize, toggleGroupItem } from "./variants";
 
 export type { ToggleGroupSize };
 
-type Ctx = {
-	size: ToggleGroupSize;
-	disabled: boolean;
-	isOn: (value: string) => boolean;
-	toggle: (value: string) => void;
-};
+type Ctx = { size: ToggleGroupSize };
 
 const ToggleGroupCtx = createContext<Ctx | null>(null);
 
-function useToggleGroup() {
+function useToggleGroupCtx() {
 	const ctx = useContext(ToggleGroupCtx);
 	if (!ctx) throw new Error("ToggleGroupItem must be used inside <ToggleGroup>");
 	return ctx;
@@ -32,7 +29,10 @@ export function ToggleGroup({
 	onValueChange,
 	children,
 	...props
-}: Omit<ComponentProps<"div">, "onChange"> & {
+}: Omit<
+	ComponentProps<typeof ToggleGroupPrimitive>,
+	"value" | "defaultValue" | "onValueChange" | "multiple"
+> & {
 	value?: string | string[];
 	type?: "single" | "multiple";
 	size?: ToggleGroupSize;
@@ -40,33 +40,22 @@ export function ToggleGroup({
 	label?: string;
 	onValueChange?: (value: string | string[]) => void;
 }) {
-	const ctx = useMemo<Ctx>(
-		() => ({
-			size,
-			disabled,
-			isOn: (item) =>
-				type === "multiple" ? (value as string[]).includes(item) : value === item,
-			toggle: (item) => {
-				if (type === "single") {
-					onValueChange?.(value === item ? "" : item);
-					return;
-				}
-				const list = value as string[];
-				onValueChange?.(
-					list.includes(item) ? list.filter((v) => v !== item) : [...list, item],
-				);
-			},
-		}),
-		[size, disabled, type, value, onValueChange],
-	);
+	// Base UI's ToggleGroup is always array-valued (`multiple` just allows >1 pressed);
+	// bridged here to keep this component's own string | string[] API unchanged.
+	const arrayValue =
+		type === "multiple" ? (value as string[]) : value ? [value as string] : [];
 
 	return (
-		<ToggleGroupCtx.Provider value={ctx}>
-			{/* biome-ignore lint/a11y/useSemanticElements: a toggle bar is not a form fieldset */}
-			<div
-				role="group"
+		<ToggleGroupCtx.Provider value={useMemo(() => ({ size }), [size])}>
+			<ToggleGroupPrimitive
 				data-slot="toggle-group"
 				aria-label={label}
+				disabled={disabled}
+				multiple={type === "multiple"}
+				value={arrayValue}
+				onValueChange={(next) =>
+					onValueChange?.(type === "multiple" ? next : (next[0] ?? ""))
+				}
 				className={cn(
 					"inline-flex items-center gap-0.5 rounded-xl border border-border bg-card p-1",
 					disabled && "opacity-50",
@@ -75,7 +64,7 @@ export function ToggleGroup({
 				{...props}
 			>
 				{children}
-			</div>
+			</ToggleGroupPrimitive>
 		</ToggleGroupCtx.Provider>
 	);
 }
@@ -83,19 +72,15 @@ export function ToggleGroup({
 export function ToggleGroupItem({
 	className,
 	value,
-	disabled = false,
 	...props
-}: ComponentProps<"button"> & { value: string }) {
-	const group = useToggleGroup();
+}: ComponentProps<typeof TogglePrimitive> & { value: string }) {
+	const { size } = useToggleGroupCtx();
 
 	return (
-		<button
-			type="button"
+		<TogglePrimitive
 			data-slot="toggle-group-item"
-			aria-pressed={group.isOn(value)}
-			disabled={disabled || group.disabled}
-			onClick={() => group.toggle(value)}
-			className={cn(toggleGroupItem({ size: group.size }), className)}
+			value={value}
+			className={cn(toggleGroupItem({ size }), className)}
 			{...props}
 		/>
 	);

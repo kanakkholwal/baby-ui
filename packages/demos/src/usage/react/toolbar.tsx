@@ -1,11 +1,11 @@
-import { Toggle, Toolbar } from "@baby-ui/react";
+import { Toolbar, ToolbarButton } from "@baby-ui/react";
 
 export function Example() {
 	return (
 		<Toolbar label="Text formatting">
-			<Toggle label="Bold">B</Toggle>
-			<Toggle label="Italic">I</Toggle>
-			<Toggle label="Underline">U</Toggle>
+			<ToolbarButton aria-label="Bold">B</ToolbarButton>
+			<ToolbarButton aria-label="Italic">I</ToolbarButton>
+			<ToolbarButton aria-label="Underline">U</ToolbarButton>
 		</Toolbar>
 	);
 }

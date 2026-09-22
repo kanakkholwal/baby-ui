@@ -13,19 +13,6 @@ export type DialogContext = {
 
 export const [getDialog, setDialog] = createContext<DialogContext>();
 
-/** Command's own CommandDialog still renders a native `<dialog>` (pending its own cmdk
- * migration), so it keeps using this rather than Dialog's own bits-ui-flavored classes. */
-export const DIALOG_SURFACE = [
-	"m-auto overflow-visible bg-transparent p-0 text-foreground opacity-0",
-	"transition-[opacity,display,overlay] transition-discrete duration-[var(--duration-exit)] ease-[var(--ease-out)]",
-	"open:opacity-100 open:duration-[var(--duration-overlay)] starting:open:opacity-0",
-	"backdrop:bg-black/50 backdrop:opacity-0 backdrop:backdrop-blur-[2px]",
-	"backdrop:transition-[opacity,display,overlay] backdrop:transition-discrete",
-	"backdrop:duration-[var(--duration-exit)] backdrop:ease-[var(--ease-out)]",
-	"open:backdrop:opacity-100 open:backdrop:duration-[var(--duration-overlay)]",
-	"starting:open:backdrop:opacity-0",
-].join(" ");
-
 /** The backdrop fades in step with the panel; bits-ui owns the top layer and inertness. */
 export const DIALOG_BACKDROP = [
 	"fixed inset-0 z-50 bg-black/50 opacity-0 backdrop-blur-[2px]",

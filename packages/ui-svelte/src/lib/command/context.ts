@@ -2,27 +2,16 @@ import { createContext, type Snippet } from "svelte";
 import type { DialogVariant } from "../dialog/context";
 
 export type CommandContext = {
-	readonly query: string;
-	readonly listId: string;
-	readonly activeId: string;
 	/** Visible rows after filtering, for the count next to the search input. */
 	readonly resultCount: number;
-	setQuery: (query: string) => void;
-	setActive: (id: string) => void;
-	/** True when an item's value or keywords contain the current query. */
-	matches: (haystack: string) => boolean;
-	select: () => void;
-	setList: (el: HTMLElement | undefined) => void;
-	setResultCount: (count: number) => void;
-	move: (delta: number) => void;
-	first: () => void;
-	last: () => void;
+	/** The currently highlighted item's value, so the sliding marker knows when to remeasure. */
+	readonly activeValue: string;
 };
 
 export const [getCommand, setCommand] = createContext<CommandContext>();
 
-/** Bridges CommandDialog's open state to Command, so a fresh open starts with an empty
- * search. Optional: standalone Command usage outside a CommandDialog just skips it. */
+/** Bridges CommandDialog's variant/header to Command. Optional: standalone Command usage
+ * outside a CommandDialog just skips it. */
 export type CommandDialogState = {
 	readonly open: boolean;
 	readonly variant: DialogVariant;

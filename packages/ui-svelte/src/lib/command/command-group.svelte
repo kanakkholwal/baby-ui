@@ -1,32 +1,33 @@
 <script lang="ts">
-import type { Snippet } from "svelte";
-import type { HTMLAttributes } from "svelte/elements";
+import { Command as CommandPrimitive, useId } from "bits-ui";
 import { cn } from "../lib/cn";
 
 let {
 	children,
 	heading,
+	value,
 	class: classProp,
 	...rest
-}: {
-	children?: Snippet;
+}: Omit<CommandPrimitive.GroupProps, "value"> & {
 	heading?: string;
-	class?: string;
-} & HTMLAttributes<HTMLDivElement> = $props();
+	value?: string;
+} = $props();
 </script>
 
-<!-- A group with no surviving item hides itself, heading included. -->
-<div
-	{...rest}
+<CommandPrimitive.Group
+	value={value ?? heading ?? `----${useId()}`}
 	data-slot="command-group"
-	class={cn("not-has-[[data-slot=command-item]]:hidden", classProp)}
+	class={classProp}
+	{...rest}
 >
 	{#if heading}
-		<p class="px-4 pt-2 pb-1 font-semibold text-[11px] text-muted-foreground uppercase tracking-wider">
+		<CommandPrimitive.GroupHeading
+			class="px-4 pt-2 pb-1 font-semibold text-[11px] text-muted-foreground uppercase tracking-wider"
+		>
 			{heading}
-		</p>
+		</CommandPrimitive.GroupHeading>
 	{/if}
-	<div class="px-1.5">
+	<CommandPrimitive.GroupItems class="px-1.5">
 		{@render children?.()}
-	</div>
-</div>
+	</CommandPrimitive.GroupItems>
+</CommandPrimitive.Group>

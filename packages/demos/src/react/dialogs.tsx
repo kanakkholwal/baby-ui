@@ -57,6 +57,7 @@ import {
 	Toaster,
 	type ToasterProps,
 	Toolbar,
+	ToolbarButton,
 	toast,
 } from "@baby-ui/react";
 import { useId, useState } from "react";
@@ -413,13 +414,7 @@ export function ToolbarDemo({ props }: { props: Props }) {
 			label={(props.label as string) || "Formatting"}
 		>
 			{TOOLS.map((tool) => (
-				<button
-					key={tool.id}
-					type="button"
-					data-toolbar-item
-					aria-label={tool.label}
-					className="grid size-8 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
-				>
+				<ToolbarButton key={tool.id} aria-label={tool.label}>
 					<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-4">
 						<path
 							d={tool.path}
@@ -429,7 +424,7 @@ export function ToolbarDemo({ props }: { props: Props }) {
 							strokeLinejoin="round"
 						/>
 					</svg>
-				</button>
+				</ToolbarButton>
 			))}
 		</Toolbar>
 	);
@@ -487,7 +482,9 @@ export function DrawerDemo({ props }: { props: Props }) {
 					</div>
 					<Slider
 						value={budget}
-						onValueChange={setBudget}
+						onValueChange={(next) =>
+							setBudget(typeof next === "number" ? next : (next[0] ?? 10))
+						}
 						min={10}
 						max={200}
 						step={5}

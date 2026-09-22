@@ -103,12 +103,16 @@ const VIEWS = [
 ];
 
 export function ToggleGroupDemo({ props }: { props: Props }) {
-	const [value, setValue] = useState<string | string[]>("grid");
+	const type = (props.type as "single" | "multiple") ?? "single";
+	const [value, setValue] = useState<string | string[]>(
+		type === "multiple" ? ["grid"] : "grid",
+	);
+	useEffect(() => setValue(type === "multiple" ? ["grid"] : "grid"), [type]);
 	return (
 		<ToggleGroup
 			value={value}
 			onValueChange={setValue}
-			type={(props.type as "single" | "multiple") ?? "single"}
+			type={type}
 			size={(props.size as "sm" | "md" | "lg" | "xl") ?? "md"}
 			disabled={Boolean(props.disabled)}
 			label="View"

@@ -9,8 +9,9 @@ export const slider = defineComponent({
 	props: [
 		{
 			name: "value",
-			type: "number",
-			description: "Current value. Bindable.",
+			type: "number | number[]",
+			description:
+				"Current value. Bindable. An array renders one thumb per entry (a range slider).",
 			default: 50,
 			control: { kind: "number", min: 0, max: 100, step: 1 },
 		},
@@ -42,6 +43,21 @@ export const slider = defineComponent({
 			default: false,
 			control: { kind: "boolean" },
 		},
+		{
+			name: "orientation",
+			type: '"horizontal" | "vertical"',
+			description: "Layout and which arrow keys move the thumb.",
+			default: "horizontal",
+			control: { kind: "select", options: ["horizontal", "vertical"] },
+		},
+		{
+			name: "range",
+			type: "boolean",
+			description:
+				"Demo-only: renders two thumbs and a value tuple, since `value` accepts `number | number[]` on the real component (an array renders one thumb per entry).",
+			default: false,
+			control: { kind: "boolean" },
+		},
 	],
 	motion: {
 		springs: [],
@@ -49,6 +65,7 @@ export const slider = defineComponent({
 		behaviour: [
 			"The thumb scales to 1.15 on hover and 1.25 while dragging, over 140ms.",
 			"The fill has no transition: it must track the pointer exactly or the control feels broken.",
+			"Vertical orientation needs an explicit height on an ancestor (percentage sizing has nothing to resolve against otherwise) — the demo sets one directly since it's a one-off layout concern, not a design token.",
 		],
 	},
 	a11y: {
@@ -58,7 +75,8 @@ export const slider = defineComponent({
 			"Home and End jump to the bounds",
 		],
 		notes: [
-			"A real range input underneath, so every one of those keys works without being reimplemented.",
+			"A real range input underneath (Base UI's Thumb, React) or a real focusable div driving the same keyboard model (bits-ui, Svelte), so every one of those keys works without being reimplemented.",
+			"Dragging or clicking a Slider nested inside a Drawer (vaul / vaul-svelte) can conflict with the Drawer's own swipe-to-dismiss gesture tracking; this is a Drawer-level characteristic, not specific to Slider.",
 		],
 	},
 	licenseOrigin: {
@@ -74,7 +92,7 @@ export const slider = defineComponent({
 				{ path: "slider/slider.tsx", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "@base-ui/react"],
 		},
 		svelte: {
 			entry: "Slider",
@@ -82,7 +100,7 @@ export const slider = defineComponent({
 				{ path: "slider/slider.svelte", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "bits-ui"],
 		},
 	},
 	keywords: ["slider", "range", "form", "input"],

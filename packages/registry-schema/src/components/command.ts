@@ -5,7 +5,7 @@ export const command = defineComponent({
 	name: "Command Palette",
 	description: "Searchable action list driven entirely from the keyboard.",
 	category: "base",
-	status: "alpha",
+	status: "stable",
 	props: [
 		{
 			name: "open",
@@ -19,6 +19,14 @@ export const command = defineComponent({
 			type: "string",
 			description: "Input placeholder.",
 			default: "Type a command or search\u2026",
+			control: { kind: "text" },
+		},
+		{
+			name: "description",
+			type: "string",
+			description:
+				"Sr-only description announced alongside the dialog's accessible name.",
+			default: "Search for a command to run\u2026",
 			control: { kind: "text" },
 		},
 		{
@@ -55,10 +63,11 @@ export const command = defineComponent({
 		],
 		notes: [
 			"aria-activedescendant keeps focus in the input while the list is navigated.",
-			"The palette is a native dialog, so the page behind it is inert without extra work.",
-			"Filtering hides items rather than rebuilding the list, and `:has()` hides an empty group and reveals CommandEmpty, so nothing counts matches in JavaScript.",
-			"The result count next to the input and a debounced live region both read from the same filtered count, so a screen reader and a sighted user see the same number.",
-			"Reopening always starts from an empty search, even though the panel stays mounted through the close transition.",
+			"CommandDialog carries a real, sr-only Title/Description (aria-labelledby/aria-describedby), matching shadcn's own pattern, rather than a bare aria-label.",
+			"The palette is a real modal dialog (Base UI React, bits-ui Svelte), so the page behind it is inert without extra work; it also unmounts on close, so reopening always starts from an empty search with no special-cased reset.",
+			"Filtering, roving highlight, keyboard nav (arrows, Home, End, Enter) and hiding empty groups/results are delegated to cmdk (React) and bits-ui's own `command` module (Svelte); this component only owns the sliding-highlight marker, motion and data-slots.",
+			"Search is real fuzzy matching (cmdk's own scoring, bits-ui's own port of the same algorithm), not a plain case-insensitive substring check like the pre-migration version — a query can now match on a looser, ranked basis.",
+			"The result count next to the input and a debounced live region both read from the same filtered count the primitive already tracks, so a screen reader and a sighted user see the same number.",
 			"Part names and data-slot values match shadcn/ui, so this replaces an existing command without touching call sites.",
 			'CommandHeader hoists into the dialog\'s rim (the same inset-frame treatment as Dialog and the Card `framed` variant); the card below it holds the search input and results. The "esc" cap is literal text, not the Shortcut glyph, since a spoken-word key name reads more clearly at this size.',
 		],
@@ -77,8 +86,14 @@ export const command = defineComponent({
 				{ path: "command/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
-			// Reuses Dialog's DIALOG_SURFACE/DIALOG_PANEL and DialogVariant type.
+			dependencies: [
+				"clsx",
+				"tailwind-merge",
+				"tailwind-variants",
+				"cmdk",
+				"@base-ui/react",
+			],
+			// Reuses Dialog's DIALOG_BACKDROP and DialogVariant type.
 			registryDependencies: ["dialog"],
 		},
 		svelte: {
@@ -98,8 +113,8 @@ export const command = defineComponent({
 				{ path: "command/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
-			// Reuses Dialog's DIALOG_SURFACE and DialogVariant type.
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "bits-ui"],
+			// Reuses Dialog's DIALOG_BACKDROP and DialogVariant type.
 			registryDependencies: ["dialog"],
 		},
 	},

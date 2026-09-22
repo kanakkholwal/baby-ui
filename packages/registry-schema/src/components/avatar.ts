@@ -41,7 +41,8 @@ export const avatar = defineComponent({
 	a11y: {
 		keyboard: [],
 		notes: [
-			"The image carries `name` as alt text; the initials fallback is aria-hidden because the name is already announced.",
+			"The image carries `name` as alt text. While it hasn't loaded (or failed), the image is aria-hidden and the initials fallback is the one thing assistive tech sees; once it loads, the fallback unmounts and the image alone is exposed.",
+			"Image load/error tracking is delegated to Base UI (React) and bits-ui (Svelte); this component only owns the fade transition and data-slots.",
 		],
 	},
 	licenseOrigin: {
@@ -58,7 +59,7 @@ export const avatar = defineComponent({
 				{ path: "avatar/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "@base-ui/react"],
 		},
 		svelte: {
 			entry: "Avatar",
@@ -70,7 +71,7 @@ export const avatar = defineComponent({
 				{ path: "avatar/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "bits-ui"],
 		},
 	},
 	keywords: ["avatar", "profile", "user", "initials"],

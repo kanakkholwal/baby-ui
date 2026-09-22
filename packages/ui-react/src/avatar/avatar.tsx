@@ -1,70 +1,46 @@
 "use client";
 
+import { Avatar as AvatarPrimitive } from "@base-ui/react/avatar";
 import type { ComponentProps } from "react";
-import { createContext, useContext, useEffect, useState } from "react";
 import { cn } from "../lib/cn";
 import { type AvatarShape, type AvatarSize, avatar } from "./variants";
 
 export type { AvatarShape, AvatarSize };
 
-type Ctx = { loaded: boolean; setLoaded: (loaded: boolean) => void };
-
-const AvatarCtx = createContext<Ctx | null>(null);
-
-function useAvatar() {
-	const ctx = useContext(AvatarCtx);
-	if (!ctx) throw new Error("Avatar parts must be used inside <Avatar>");
-	return ctx;
-}
-
 export function Avatar({
 	className,
 	size = "md",
 	shape = "circle",
-	children,
 	...props
-}: ComponentProps<"span"> & { size?: AvatarSize; shape?: AvatarShape }) {
-	const [loaded, setLoaded] = useState(false);
-
+}: ComponentProps<typeof AvatarPrimitive.Root> & {
+	size?: AvatarSize;
+	shape?: AvatarShape;
+}) {
 	return (
-		<AvatarCtx.Provider value={{ loaded, setLoaded }}>
-			<span
-				data-slot="avatar"
-				className={cn(avatar({ size, shape }), className)}
-				{...props}
-			>
-				{children}
-			</span>
-		</AvatarCtx.Provider>
+		<AvatarPrimitive.Root
+			data-slot="avatar"
+			className={cn(avatar({ size, shape }), className)}
+			{...props}
+		/>
 	);
 }
 
 export function AvatarImage({
 	className,
 	src,
-	alt = "",
 	...props
-}: ComponentProps<"img">) {
-	const { loaded, setLoaded } = useAvatar();
-	const [failed, setFailed] = useState(false);
-
-	useEffect(() => {
-		setFailed(false);
-		setLoaded(false);
-	}, [setLoaded]);
-
-	if (!src || failed) return null;
+}: ComponentProps<typeof AvatarPrimitive.Image>) {
+	if (!src) return null;
 
 	return (
-		<img
+		<AvatarPrimitive.Image
 			data-slot="avatar-image"
 			src={src}
-			alt={alt}
-			onLoad={() => setLoaded(true)}
-			onError={() => setFailed(true)}
-			style={{ opacity: loaded ? 1 : 0 }}
+			// keepMounted keeps our own opacity fade (Base UI's default mode skips straight
+			// to mounted-when-loaded, with no fade of its own to preserve).
+			keepMounted
 			className={cn(
-				"absolute inset-0 size-full object-cover transition-opacity duration-200 ease-[var(--ease-out)] motion-reduce:transition-none",
+				"absolute inset-0 size-full object-cover opacity-100 transition-opacity duration-200 ease-[var(--ease-out)] data-[loading]:opacity-0 data-[error]:hidden motion-reduce:transition-none",
 				className,
 			)}
 			{...props}
@@ -72,12 +48,12 @@ export function AvatarImage({
 	);
 }
 
-export function AvatarFallback({ className, ...props }: ComponentProps<"span">) {
-	const { loaded } = useAvatar();
-
+export function AvatarFallback({
+	className,
+	...props
+}: ComponentProps<typeof AvatarPrimitive.Fallback>) {
 	return (
-		<span
-			aria-hidden={loaded || undefined}
+		<AvatarPrimitive.Fallback
 			data-slot="avatar-fallback"
 			className={cn("font-medium text-muted-foreground select-none", className)}
 			{...props}
