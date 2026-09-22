@@ -58,8 +58,10 @@ import { spinner } from "./spinner";
 import { switchComponent } from "./switch";
 import { tabs } from "./tabs";
 import { tagInput } from "./tag-input";
+import { taskRows } from "./task-rows";
 import { taskSteps } from "./task-steps";
 import { textarea } from "./textarea";
+import { thinkingState } from "./thinking-state";
 import { toast } from "./toast";
 import { toggle } from "./toggle";
 import { toggleGroup } from "./toggle-group";
@@ -137,6 +139,8 @@ export const specs: ComponentSpec[] = [
 	loadingState,
 	recommendationCard,
 	chatComposer,
+	thinkingState,
+	taskRows,
 ];
 
 export function getSpec(slug: string): ComponentSpec | undefined {

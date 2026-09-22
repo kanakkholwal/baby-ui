@@ -3,10 +3,12 @@ import { registry } from "virtual:docvia/source";
 import { demos } from "@baby-ui/demos/svelte";
 import { Renderer } from "@docvia/renderer-svelte";
 import IconChevronRight from "@tabler/icons-svelte/icons/chevron-right";
+import IconList from "@tabler/icons-svelte/icons/list";
 import CodeBlock from "$lib/components/code-block.svelte";
 import ControlsPanel from "$lib/components/controls-panel.svelte";
 import DemoPreview from "$lib/components/demo-preview.svelte";
 import InstallBlock from "$lib/components/install-block.svelte";
+import MobileNavDrawer from "$lib/components/mobile-nav-drawer.svelte";
 import PageMenu from "$lib/components/page-menu.svelte";
 import PreviewToolbar from "$lib/components/preview-toolbar.svelte";
 import PropsRail from "$lib/components/props-rail.svelte";
@@ -100,6 +102,15 @@ const usage = $derived(
 		</div>
 
 		<p class="mt-2 max-w-2xl text-muted-foreground">{data.spec.description}</p>
+
+		<div class="mt-4 xl:hidden">
+			<MobileNavDrawer label="On this page" title="On this page">
+				{#snippet icon()}<IconList size={14} stroke={1.6} />{/snippet}
+				{#snippet children()}
+					<PropsRail slug={data.spec.slug} {outline} />
+				{/snippet}
+			</MobileNavDrawer>
+		</div>
 	</div>
 
 	<section id="preview" class="mt-8 scroll-mt-24">

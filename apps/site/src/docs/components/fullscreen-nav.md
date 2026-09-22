@@ -2,7 +2,7 @@
 title: Fullscreen Nav
 description: Full-viewport navigation overlay with staggered links and scroll locking.
 component: fullscreen-nav
-category: boilerplate
+category: blocks
 tags: [fullscreen, nav]
 ---
 

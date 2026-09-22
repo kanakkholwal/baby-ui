@@ -2,7 +2,7 @@
 title: Bento Grid
 description: Asymmetric feature grid where each cell declares its own span and collapses to a single column on small screens.
 component: bento-grid
-category: boilerplate
+category: blocks
 tags: [bento, grid, layout]
 ---
 

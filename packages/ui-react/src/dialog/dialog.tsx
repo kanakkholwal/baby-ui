@@ -192,6 +192,9 @@ export function DialogDescription({
 	);
 }
 
+const DIALOG_CLOSE_ICON_ONLY =
+	"absolute top-3 right-3 grid size-8 place-items-center rounded-md text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring";
+
 export function DialogClose({
 	className,
 	children,
@@ -201,10 +204,7 @@ export function DialogClose({
 		<DialogPrimitive.Close
 			data-slot="dialog-close"
 			aria-label={children ? undefined : "Close"}
-			className={cn(
-				"absolute top-3 right-3 grid size-8 place-items-center rounded-md text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring",
-				className,
-			)}
+			className={cn(!children && DIALOG_CLOSE_ICON_ONLY, className)}
 			{...props}
 		>
 			{children ?? (

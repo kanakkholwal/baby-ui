@@ -5,7 +5,7 @@ export const fullscreenNav = defineComponent({
 	name: "Fullscreen Nav",
 	description:
 		"Full-viewport navigation overlay with staggered links and scroll locking.",
-	category: "boilerplate",
+	category: "blocks",
 	status: "alpha",
 	props: [
 		{

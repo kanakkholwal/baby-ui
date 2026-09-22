@@ -5,7 +5,7 @@ export const bentoGrid = defineComponent({
 	name: "Bento Grid",
 	description:
 		"Asymmetric feature grid where each cell declares its own span and collapses to a single column on small screens.",
-	category: "boilerplate",
+	category: "blocks",
 	status: "stable",
 
 	props: [

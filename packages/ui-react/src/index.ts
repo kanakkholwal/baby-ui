@@ -81,7 +81,13 @@ export {
 	CommandSeparator,
 	CommandShortcut,
 } from "./command/command";
-export { Composer, type ComposerProps } from "./composer/composer";
+export {
+	Composer,
+	type ComposerAction,
+	type ComposerModel,
+	type ComposerProps,
+} from "./composer/composer";
+export type { ComposerSize } from "./composer/variants";
 export {
 	ContextCards,
 	type ContextCardsProps,
@@ -272,12 +278,27 @@ export {
 } from "./tabs/tabs";
 export { TagInput, type TagInputProps } from "./tag-input/tag-input";
 export {
+	type TaskDetail,
+	type TaskRow,
+	type TaskRowStatus,
+	TaskRows,
+	type TaskRowsLabels,
+	type TaskRowsProps,
+} from "./task-rows/task-rows";
+export type { TaskRowsVariant } from "./task-rows/variants";
+export {
 	type TaskStatus,
 	type TaskStep,
 	TaskSteps,
 	type TaskStepsProps,
 } from "./task-steps/task-steps";
 export { Textarea, type TextareaProps } from "./textarea/textarea";
+export {
+	type ThinkingRow,
+	ThinkingState,
+	type ThinkingStateProps,
+} from "./thinking-state/thinking-state";
+export type { ThinkingStateVariant } from "./thinking-state/variants";
 export { Toaster, type ToasterProps, toast } from "./toast/toaster";
 export { Toggle, type ToggleProps } from "./toggle/toggle";
 export { ToggleGroup, ToggleGroupItem } from "./toggle-group/toggle-group";

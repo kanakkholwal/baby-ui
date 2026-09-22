@@ -30,8 +30,9 @@ const BTN =
 					Dialog on desktop, Drawer on mobile — the same markup renders both.
 				</ResponsiveDialogDescription>
 			</ResponsiveDialogHeader>
+			<ResponsiveDialogClose />
 			<ResponsiveDialogFooter>
-				<ResponsiveDialogClose class={BTN}>Cancel</ResponsiveDialogClose>
+				<Button variant="ghost" size="sm" onclick={() => (open = false)}>Cancel</Button>
 				<Button onclick={() => (open = false)}>Save</Button>
 			</ResponsiveDialogFooter>
 		</ResponsiveDialogContent>

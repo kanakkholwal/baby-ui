@@ -1,18 +1,21 @@
 <script lang="ts">
 import IconArrowUpRight from "@tabler/icons-svelte/icons/arrow-up-right";
 import IconBrandGithub from "@tabler/icons-svelte/icons/brand-github";
+import IconMenu2 from "@tabler/icons-svelte/icons/menu-2";
 import IconSettings from "@tabler/icons-svelte/icons/settings";
 import { page } from "$app/state";
 import Logo from "$lib/components/logo.svelte";
 import SiteSearch from "$lib/components/site-search.svelte";
+import { mobileNav } from "$lib/mobile-nav.svelte";
 import { prefs } from "$lib/preferences.svelte";
-import { navCategories } from "$lib/registry";
+import { siteNav } from "$lib/registry";
 
-const NAV = [
-	{ href: "/components", label: "Components", match: "/components" },
-	...navCategories().filter((c) => c.label === "Agents"),
-	{ href: "/docs", label: "Docs", match: "/docs" },
-];
+const NAV = siteNav();
+
+// The header's own hamburger only opens something on routes that render a SiteSidebar.
+const hasSidebar = $derived(
+	page.url.pathname.startsWith("/components") || page.url.pathname.startsWith("/docs"),
+);
 
 let scrolled = $state(false);
 
@@ -38,7 +41,17 @@ function active(match: string) {
 	]}
 >
 	<div class="relative flex h-14 w-full items-center justify-between gap-4 px-4 md:px-6 xl:px-8">
-		<div class="flex items-center gap-4">
+		<div class="flex items-center gap-3">
+			{#if hasSidebar}
+				<button
+					type="button"
+					onclick={() => (mobileNav.open = true)}
+					aria-label="Open navigation"
+					class="grid size-9 shrink-0 place-items-center rounded-2xl border border-border bg-card/20 text-muted-foreground transition-colors hover:border-border-strong hover:text-foreground md:hidden"
+				>
+					<IconMenu2 size={17} stroke={1.6} />
+				</button>
+			{/if}
 			<a
 				href="/"
 				class="group flex items-center gap-2.5 font-semibold text-foreground text-sm tracking-tight"

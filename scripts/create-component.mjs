@@ -3,7 +3,7 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const CATEGORIES = ["base", "boilerplate", "advanced", "animated", "agents"];
+const CATEGORIES = ["base", "blocks", "advanced", "animated", "agents"];
 const RESERVED = new Set([
 	"switch",
 	"delete",

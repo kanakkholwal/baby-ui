@@ -102,7 +102,7 @@ export function CardDemo({ props }: { props: Props }) {
 		<Card
 			interactive={props.interactive !== false}
 			variant={(props.variant as CardVariant) ?? "default"}
-			className="w-[min(28rem,calc(100vw-4rem))]"
+			className="w-full max-w-md"
 		>
 			<CardHeader>
 				<CardTitle className="text-base">baby-ui</CardTitle>

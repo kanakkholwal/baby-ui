@@ -18,7 +18,7 @@ let { props = {} }: { props?: Record<string, unknown> } = $props();
 <Card
 	interactive={props.interactive !== false}
 	variant={(props.variant as CardVariant) ?? "default"}
-	class="w-[min(28rem,calc(100vw-4rem))]"
+	class="w-full max-w-md"
 >
 	<CardHeader>
 		<CardTitle class="text-base">baby-ui</CardTitle>

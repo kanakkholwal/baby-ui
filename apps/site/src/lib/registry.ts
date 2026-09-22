@@ -4,7 +4,7 @@ import { specs } from "@baby-ui/registry-schema/components";
 
 export const CATEGORY_LABEL: Record<Category, string> = {
 	base: "Base",
-	boilerplate: "Boilerplate",
+	blocks: "Blocks",
 	advanced: "Advanced",
 	animated: "Animated",
 	agents: "Agents",
@@ -12,7 +12,7 @@ export const CATEGORY_LABEL: Record<Category, string> = {
 
 export const CATEGORY_BLURB: Record<Category, string> = {
 	base: "The controls every interface needs, with the motion already worked out.",
-	boilerplate: "Whole sections you would otherwise rebuild on every project.",
+	blocks: "Whole sections you would otherwise rebuild on every project.",
 	advanced: "Components with real interaction models behind them.",
 	animated: "Pieces where the motion is the point.",
 	agents: "Interface parts for products that talk back: messages, tools, reasoning.",
@@ -27,6 +27,15 @@ export function navCategories(): { href: string; label: string; match: string }[
 			match: `/components/${category}`,
 		}),
 	);
+}
+
+/** The global top-level nav, shared by the header links and the mobile drawer's top row. */
+export function siteNav(): { href: string; label: string; match: string }[] {
+	return [
+		{ href: "/components", label: "Components", match: "/components" },
+		...navCategories().filter((c) => c.label === "Agents"),
+		{ href: "/docs", label: "Docs", match: "/docs" },
+	];
 }
 
 export type SearchItem = {

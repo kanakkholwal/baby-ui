@@ -11,6 +11,7 @@ import {
 	ContextMenuTrigger,
 } from "@baby-ui/svelte";
 
+let { props = {} }: { props?: Record<string, unknown> } = $props();
 let last = $state("");
 </script>
 

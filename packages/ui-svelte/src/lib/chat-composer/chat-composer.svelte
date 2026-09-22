@@ -13,7 +13,7 @@ export type { ChatMessage, ChatTopic } from "./types";
 type Phase = "idle" | "sent" | "reply1" | "reply2" | "done";
 
 const ICON_BUTTON =
-	"flex size-6 items-center justify-center rounded-md text-muted-foreground transition-colors duration-100 hover:bg-foreground/[0.06] hover:text-foreground data-[popup-open]:bg-foreground/[0.06] data-[popup-open]:text-foreground";
+	"flex size-6 items-center justify-center rounded-md text-muted-foreground transition-colors duration-100 hover:bg-foreground/[0.06] hover:text-foreground data-[state=open]:bg-foreground/[0.06] data-[state=open]:text-foreground";
 
 let {
 	topics,

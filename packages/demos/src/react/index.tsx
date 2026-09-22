@@ -87,6 +87,8 @@ import {
 } from "./primitives2";
 import { RecommendationCardDemo } from "./recommendation-card";
 import { ResponsiveDialogDemo } from "./responsive-dialog";
+import { TaskRowsDemo } from "./task-rows";
+import { ThinkingStateDemo } from "./thinking-state";
 
 type Props = Record<string, unknown>;
 
@@ -292,4 +294,6 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"loading-state": LoadingStateDemo,
 	"recommendation-card": RecommendationCardDemo,
 	"chat-composer": ChatComposerDemo,
+	"thinking-state": ThinkingStateDemo,
+	"task-rows": TaskRowsDemo,
 };

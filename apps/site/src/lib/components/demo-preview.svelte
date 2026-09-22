@@ -1,6 +1,7 @@
 <script lang="ts">
-import type { DemoComponent } from "@baby-ui/demos/svelte";
+import type { DemoLoader } from "@baby-ui/demos/svelte";
 import type { Framework } from "@baby-ui/registry-schema";
+import { Spinner } from "@baby-ui/svelte";
 import { REACT_RUNNER_URL } from "$lib/flags";
 
 let {
@@ -12,12 +13,12 @@ let {
 }: {
 	framework: Framework;
 	slug: string;
-	demo: DemoComponent | undefined;
+	demo: DemoLoader | undefined;
 	props: Record<string, unknown>;
 	class?: string;
 } = $props();
 
-const Demo = $derived(demo);
+const demoPromise = $derived(demo?.());
 const iframeSrc = $derived(
 	REACT_RUNNER_URL
 		? `${REACT_RUNNER_URL}?slug=${slug}&props=${encodeURIComponent(JSON.stringify(props))}`
@@ -31,12 +32,22 @@ const iframeSrc = $derived(
 		classProp,
 	]}
 >
-	{#if Demo}
-		<Demo {props} />
+	{#if demoPromise}
+		{#await demoPromise}
+			<div class="flex flex-col items-center gap-2 text-muted-foreground text-sm">
+				<Spinner size="md" label="Loading preview" />
+				<span>Loading preview…</span>
+			</div>
+		{:then mod}
+			{@const Demo = mod.default}
+			<Demo {props} />
+		{:catch}
+			<p class="text-muted-foreground text-sm">Couldn't load this preview.</p>
+		{/await}
 	{:else}
 		<p class="text-muted-foreground text-sm">No demo for this component yet.</p>
 	{/if}
-	{#if framework === "react" && Demo}
+	{#if framework === "react" && demoPromise}
 		{#if iframeSrc}
 			<iframe
 				src={iframeSrc}

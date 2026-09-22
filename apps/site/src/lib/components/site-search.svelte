@@ -51,7 +51,8 @@ function go(href: string) {
 <button
 	type="button"
 	onclick={() => (open = true)}
-	class="hidden h-9 shrink-0 items-center gap-2 whitespace-nowrap rounded-2xl border border-border bg-card/20 px-3 text-muted-foreground text-xs transition-colors hover:border-border-strong hover:text-foreground sm:flex lg:w-48"
+	aria-label="Search"
+	class="flex size-9 shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-2xl border border-border bg-card/20 text-muted-foreground text-xs transition-colors hover:border-border-strong hover:text-foreground sm:h-9 sm:w-auto sm:justify-start sm:px-3 lg:w-48"
 >
 	<IconSearch size={14} stroke={1.6} class="shrink-0" />
 	<span class="hidden lg:inline">Search…</span>

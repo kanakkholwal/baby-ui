@@ -86,7 +86,7 @@ $effect(() => {
 
 			<div class="flex flex-col gap-2 px-4 py-3">
 				<span class="text-foreground text-xs">Theme</span>
-				<div class="grid grid-cols-6 gap-2">
+				<div class="flex flex-wrap gap-2">
 					{#each THEMES as theme (theme.id)}
 						<button
 							type="button"
@@ -95,10 +95,10 @@ $effect(() => {
 							aria-label={theme.name}
 							title={theme.name}
 							style:background={theme.swatch}
-							class="grid aspect-square place-items-center rounded-full text-white ring-offset-2 ring-offset-background transition-[box-shadow,scale] hover:scale-110 aria-pressed:ring-2 aria-pressed:ring-foreground/40"
+							class="grid size-6 shrink-0 place-items-center rounded-full text-white ring-offset-2 ring-offset-background transition-[box-shadow,scale] hover:scale-110 aria-pressed:ring-2 aria-pressed:ring-foreground/40"
 						>
 							{#if prefs.theme === theme.id}
-								<IconCheck size={12} stroke={2.6} />
+								<IconCheck size={10} stroke={2.6} />
 							{/if}
 						</button>
 					{/each}

@@ -5,7 +5,7 @@ export const navbar = defineComponent({
 	name: "Navbar",
 	description:
 		"Production site header with a scroll-aware surface, an active-link indicator that slides, and a mobile sheet.",
-	category: "boilerplate",
+	category: "blocks",
 	status: "alpha",
 
 	props: [

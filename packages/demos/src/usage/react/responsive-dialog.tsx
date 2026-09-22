@@ -26,8 +26,11 @@ export function Example() {
 						Dialog on desktop, Drawer on mobile.
 					</ResponsiveDialogDescription>
 				</ResponsiveDialogHeader>
+				<ResponsiveDialogClose />
 				<ResponsiveDialogFooter>
-					<ResponsiveDialogClose>Cancel</ResponsiveDialogClose>
+					<Button variant="ghost" size="sm" onClick={() => setOpen(false)}>
+						Cancel
+					</Button>
 					<Button onClick={() => setOpen(false)}>Save</Button>
 				</ResponsiveDialogFooter>
 			</ResponsiveDialogContent>

@@ -59,7 +59,7 @@ const row =
 	"flex w-full items-center gap-2.5 rounded-md px-2 py-1.5 text-left text-[13px] text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground";
 </script>
 
-<div bind:this={root} class="relative shrink-0">
+<div bind:this={root} class="relative shrink-0 self-start">
 	<div class="flex items-center rounded-xl border border-border bg-card/20">
 		<button
 			type="button"

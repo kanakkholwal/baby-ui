@@ -2,7 +2,7 @@
 title: Navbar
 description: Production site header with a scroll-aware surface, an active-link indicator that slides, and a mobile sheet.
 component: navbar
-category: boilerplate
+category: blocks
 tags: [navbar, header, saas]
 ---
 

@@ -1,145 +1,79 @@
 import type { Component } from "svelte";
-import AccordionDemo from "./accordion-demo.svelte";
-import AlertDemo from "./alert-demo.svelte";
-import AlertDialogDemo from "./alert-dialog-demo.svelte";
-import AttachmentDemo from "./attachment-demo.svelte";
-import AvatarDemo from "./avatar-demo.svelte";
-import BadgeDemo from "./badge-demo.svelte";
-import BentoGridDemo from "./bento-grid-demo.svelte";
-import BreadcrumbDemo from "./breadcrumb-demo.svelte";
-import ButtonDemo from "./button-demo.svelte";
-import CardDemo from "./card-demo.svelte";
-import ChatComposerDemo from "./chat-composer-demo.svelte";
-import CheckboxDemo from "./checkbox-demo.svelte";
-import CodeBlockDemo from "./code-block-demo.svelte";
-import CollapsibleDemo from "./collapsible-demo.svelte";
-import ColorPickerDemo from "./color-picker-demo.svelte";
-import ComboboxDemo from "./combobox-demo.svelte";
-import CommandDemo from "./command-demo.svelte";
-import ComposerDemo from "./composer-demo.svelte";
-import ContextCardsDemo from "./context-cards-demo.svelte";
-import ContextMenuDemo from "./context-menu-demo.svelte";
-import ConversationDemo from "./conversation-demo.svelte";
-import CopyButtonDemo from "./copy-button-demo.svelte";
-import DialogDemo from "./dialog-demo.svelte";
-import DrawerDemo from "./drawer-demo.svelte";
-import DropdownMenuDemo from "./dropdown-menu-demo.svelte";
-import FileDiffDemo from "./file-diff-demo.svelte";
-import FileTreeDemo from "./file-tree-demo.svelte";
-import FilterTableDemo from "./filter-table-demo.svelte";
-import FullscreenNavDemo from "./fullscreen-nav-demo.svelte";
-import GaugeDemo from "./gauge-demo.svelte";
-import HoverCardDemo from "./hover-card-demo.svelte";
-import InputDemo from "./input-demo.svelte";
-import LabelDemo from "./label-demo.svelte";
-import LoadingStateDemo from "./loading-state-demo.svelte";
-import MarkdownDemo from "./markdown-demo.svelte";
-import MessageDemo from "./message-demo.svelte";
-import MorphingModalDemo from "./morphing-modal-demo.svelte";
-import NavbarDemo from "./navbar-demo.svelte";
-import PaginationDemo from "./pagination-demo.svelte";
-import PopoverDemo from "./popover-demo.svelte";
-import ProgressDemo from "./progress-demo.svelte";
-import QuestionDemo from "./question-demo.svelte";
-import RadioGroupDemo from "./radio-group-demo.svelte";
-import ReasoningDemo from "./reasoning-demo.svelte";
-import RecommendationCardDemo from "./recommendation-card-demo.svelte";
-import ReorderListDemo from "./reorder-list-demo.svelte";
-import ResponseStreamDemo from "./response-stream-demo.svelte";
-import ResponsiveDialogDemo from "./responsive-dialog-demo.svelte";
-import ScrollAreaDemo from "./scroll-area-demo.svelte";
-import SelectDemo from "./select-demo.svelte";
-import SheetDemo from "./sheet-demo.svelte";
-import ShortcutDemo from "./shortcut-demo.svelte";
-import ShowMoreDemo from "./show-more-demo.svelte";
-import SkeletonDemo from "./skeleton-demo.svelte";
-import SliderDemo from "./slider-demo.svelte";
-import SpinnerDemo from "./spinner-demo.svelte";
-import SwitchDemo from "./switch-demo.svelte";
-import TabsDemo from "./tabs-demo.svelte";
-import TagInputDemo from "./tag-input-demo.svelte";
-import TaskStepsDemo from "./task-steps-demo.svelte";
-import TextareaDemo from "./textarea-demo.svelte";
-import ToastDemo from "./toast-demo.svelte";
-import ToggleDemo from "./toggle-demo.svelte";
-import ToggleGroupDemo from "./toggle-group-demo.svelte";
-import ToolDemo from "./tool-demo.svelte";
-import ToolbarDemo from "./toolbar-demo.svelte";
-import TooltipDemo from "./tooltip-demo.svelte";
-import TypographyDemo from "./typography-demo.svelte";
 
 export type DemoComponent = Component<{ props?: Record<string, unknown> }>;
+export type DemoLoader = () => Promise<{ default: DemoComponent }>;
 
-const as = (c: unknown) => c as DemoComponent;
-
-/** A spec without a demo here renders the Code tab only, rather than an empty frame. */
-export const demos: Record<string, DemoComponent> = {
-	accordion: as(AccordionDemo),
-	alert: as(AlertDemo),
-	avatar: as(AvatarDemo),
-	badge: as(BadgeDemo),
-	button: as(ButtonDemo),
-	card: as(CardDemo),
-	checkbox: as(CheckboxDemo),
-	input: as(InputDemo),
-	label: as(LabelDemo),
-	progress: as(ProgressDemo),
-	skeleton: as(SkeletonDemo),
-	switch: as(SwitchDemo),
-	textarea: as(TextareaDemo),
-	navbar: as(NavbarDemo),
-	"bento-grid": as(BentoGridDemo),
-	"file-tree": as(FileTreeDemo),
-	"morphing-modal": as(MorphingModalDemo),
-	"copy-button": as(CopyButtonDemo),
-	"code-block": as(CodeBlockDemo),
-	markdown: as(MarkdownDemo),
-	"file-diff": as(FileDiffDemo),
-	"tag-input": as(TagInputDemo),
-	"color-picker": as(ColorPickerDemo),
-	"reorder-list": as(ReorderListDemo),
-	attachment: as(AttachmentDemo),
-	composer: as(ComposerDemo),
-	conversation: as(ConversationDemo),
-	tool: as(ToolDemo),
-	question: as(QuestionDemo),
-	spinner: as(SpinnerDemo),
-	toggle: as(ToggleDemo),
-	"toggle-group": as(ToggleGroupDemo),
-	collapsible: as(CollapsibleDemo),
-	"show-more": as(ShowMoreDemo),
-	shortcut: as(ShortcutDemo),
-	typography: as(TypographyDemo),
-	gauge: as(GaugeDemo),
-	pagination: as(PaginationDemo),
-	"scroll-area": as(ScrollAreaDemo),
-	dialog: as(DialogDemo),
-	drawer: as(DrawerDemo),
-	"alert-dialog": as(AlertDialogDemo),
-	sheet: as(SheetDemo),
-	toast: as(ToastDemo),
-	command: as(CommandDemo),
-	toolbar: as(ToolbarDemo),
-	"fullscreen-nav": as(FullscreenNavDemo),
-	popover: as(PopoverDemo),
-	tooltip: as(TooltipDemo),
-	"dropdown-menu": as(DropdownMenuDemo),
-	"context-menu": as(ContextMenuDemo),
-	"hover-card": as(HoverCardDemo),
-	select: as(SelectDemo),
-	combobox: as(ComboboxDemo),
-	breadcrumb: as(BreadcrumbDemo),
-	"radio-group": as(RadioGroupDemo),
-	slider: as(SliderDemo),
-	tabs: as(TabsDemo),
-	message: as(MessageDemo),
-	"response-stream": as(ResponseStreamDemo),
-	reasoning: as(ReasoningDemo),
-	"task-steps": as(TaskStepsDemo),
-	"responsive-dialog": as(ResponsiveDialogDemo),
-	"context-cards": as(ContextCardsDemo),
-	"filter-table": as(FilterTableDemo),
-	"loading-state": as(LoadingStateDemo),
-	"recommendation-card": as(RecommendationCardDemo),
-	"chat-composer": as(ChatComposerDemo),
+/** A spec without a demo here renders the Code tab only. Each entry is a dynamic
+ * import so Vite code-splits every demo, fetched only when its preview is shown. */
+export const demos: Record<string, DemoLoader> = {
+	accordion: () => import("./accordion-demo.svelte"),
+	alert: () => import("./alert-demo.svelte"),
+	avatar: () => import("./avatar-demo.svelte"),
+	badge: () => import("./badge-demo.svelte"),
+	button: () => import("./button-demo.svelte"),
+	card: () => import("./card-demo.svelte"),
+	checkbox: () => import("./checkbox-demo.svelte"),
+	input: () => import("./input-demo.svelte"),
+	label: () => import("./label-demo.svelte"),
+	progress: () => import("./progress-demo.svelte"),
+	skeleton: () => import("./skeleton-demo.svelte"),
+	switch: () => import("./switch-demo.svelte"),
+	textarea: () => import("./textarea-demo.svelte"),
+	navbar: () => import("./navbar-demo.svelte"),
+	"bento-grid": () => import("./bento-grid-demo.svelte"),
+	"file-tree": () => import("./file-tree-demo.svelte"),
+	"morphing-modal": () => import("./morphing-modal-demo.svelte"),
+	"copy-button": () => import("./copy-button-demo.svelte"),
+	"code-block": () => import("./code-block-demo.svelte"),
+	markdown: () => import("./markdown-demo.svelte"),
+	"file-diff": () => import("./file-diff-demo.svelte"),
+	"tag-input": () => import("./tag-input-demo.svelte"),
+	"color-picker": () => import("./color-picker-demo.svelte"),
+	"reorder-list": () => import("./reorder-list-demo.svelte"),
+	attachment: () => import("./attachment-demo.svelte"),
+	composer: () => import("./composer-demo.svelte"),
+	conversation: () => import("./conversation-demo.svelte"),
+	tool: () => import("./tool-demo.svelte"),
+	question: () => import("./question-demo.svelte"),
+	spinner: () => import("./spinner-demo.svelte"),
+	toggle: () => import("./toggle-demo.svelte"),
+	"toggle-group": () => import("./toggle-group-demo.svelte"),
+	collapsible: () => import("./collapsible-demo.svelte"),
+	"show-more": () => import("./show-more-demo.svelte"),
+	shortcut: () => import("./shortcut-demo.svelte"),
+	typography: () => import("./typography-demo.svelte"),
+	gauge: () => import("./gauge-demo.svelte"),
+	pagination: () => import("./pagination-demo.svelte"),
+	"scroll-area": () => import("./scroll-area-demo.svelte"),
+	dialog: () => import("./dialog-demo.svelte"),
+	drawer: () => import("./drawer-demo.svelte"),
+	"alert-dialog": () => import("./alert-dialog-demo.svelte"),
+	sheet: () => import("./sheet-demo.svelte"),
+	toast: () => import("./toast-demo.svelte"),
+	command: () => import("./command-demo.svelte"),
+	toolbar: () => import("./toolbar-demo.svelte"),
+	"fullscreen-nav": () => import("./fullscreen-nav-demo.svelte"),
+	popover: () => import("./popover-demo.svelte"),
+	tooltip: () => import("./tooltip-demo.svelte"),
+	"dropdown-menu": () => import("./dropdown-menu-demo.svelte"),
+	"context-menu": () => import("./context-menu-demo.svelte"),
+	"hover-card": () => import("./hover-card-demo.svelte"),
+	select: () => import("./select-demo.svelte"),
+	combobox: () => import("./combobox-demo.svelte"),
+	breadcrumb: () => import("./breadcrumb-demo.svelte"),
+	"radio-group": () => import("./radio-group-demo.svelte"),
+	slider: () => import("./slider-demo.svelte"),
+	tabs: () => import("./tabs-demo.svelte"),
+	message: () => import("./message-demo.svelte"),
+	"response-stream": () => import("./response-stream-demo.svelte"),
+	reasoning: () => import("./reasoning-demo.svelte"),
+	"task-steps": () => import("./task-steps-demo.svelte"),
+	"responsive-dialog": () => import("./responsive-dialog-demo.svelte"),
+	"context-cards": () => import("./context-cards-demo.svelte"),
+	"filter-table": () => import("./filter-table-demo.svelte"),
+	"loading-state": () => import("./loading-state-demo.svelte"),
+	"recommendation-card": () => import("./recommendation-card-demo.svelte"),
+	"chat-composer": () => import("./chat-composer-demo.svelte"),
+	"thinking-state": () => import("./thinking-state-demo.svelte"),
+	"task-rows": () => import("./task-rows-demo.svelte"),
 };

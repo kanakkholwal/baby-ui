@@ -8,16 +8,16 @@ let {
 	class: classProp,
 	...rest
 }: DialogPrimitive.CloseProps & { children?: Snippet } = $props();
+
+const ICON_ONLY =
+	"absolute top-3 right-3 grid size-8 place-items-center rounded-md text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring";
 </script>
 
 <DialogPrimitive.Close
 	{...rest}
 	data-slot="dialog-close"
 	aria-label={children ? undefined : "Close"}
-	class={cn(
-		"absolute top-3 right-3 grid size-8 place-items-center rounded-md text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring",
-		classProp,
-	)}
+	class={cn(!children && ICON_ONLY, classProp)}
 >
 	{#if children}
 		{@render children()}

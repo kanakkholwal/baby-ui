@@ -1,32 +1,43 @@
 import { defineComponent } from "../index";
 
+const SIZES = ["sm", "md", "lg"];
+
 export const composer = defineComponent({
 	slug: "composer",
 	name: "Composer",
 	description:
-		"Chat input that grows with content, sends on Enter and exposes a toolbar slot.",
+		"Chat input that grows with content, sends on Enter, and composes a model picker and an actions menu.",
 	category: "agents",
 	status: "stable",
+	variants: { size: SIZES },
 	props: [
 		{
 			name: "value",
 			type: "string",
-			description: "Draft text. Bindable.",
+			description:
+				"Draft text. Controlled if you pass it with `onValueChange`, uncontrolled otherwise (seeded from `defaultValue`).",
 			control: { kind: "none" },
 		},
 		{
 			name: "placeholder",
 			type: "string",
 			description: "Field placeholder.",
-			default: "Send a message\u2026",
+			default: "Send a message…",
 			control: { kind: "text" },
 		},
 		{
-			name: "busy",
-			type: "boolean",
-			description: "A send is in flight; the button shows a spinner and refuses.",
-			default: false,
-			control: { kind: "boolean" },
+			name: "size",
+			type: SIZES.map((v) => `"${v}"`).join(" | "),
+			description: "Padding and text size of the field.",
+			default: "md",
+			control: { kind: "select", options: SIZES },
+		},
+		{
+			name: "minRows",
+			type: "number",
+			description: "Rows the field starts at.",
+			default: 1,
+			control: { kind: "number", min: 1, max: 6, step: 1 },
 		},
 		{
 			name: "maxRows",
@@ -34,6 +45,28 @@ export const composer = defineComponent({
 			description: "Rows before the field scrolls.",
 			default: 8,
 			control: { kind: "number", min: 2, max: 16, step: 1 },
+		},
+		{
+			name: "models",
+			type: "ComposerModel[]",
+			description:
+				"Model choices for the built-in picker. Omit (or pass an empty array) to hide it entirely; there is no fictional default list.",
+			control: { kind: "none" },
+		},
+		{
+			name: "actions",
+			type: "ComposerAction[]",
+			description:
+				'Quick actions listed behind the leading "+" button. Omit to hide the button entirely.',
+			control: { kind: "none" },
+		},
+		{
+			name: "loading",
+			type: "boolean",
+			description:
+				"A send is in flight; the send button becomes a Stop button, wired to `onStop`.",
+			default: false,
+			control: { kind: "boolean" },
 		},
 		{
 			name: "disabled",
@@ -45,41 +78,49 @@ export const composer = defineComponent({
 	],
 	motion: {
 		springs: [],
-		reducedMotion: "Unchanged.",
+		reducedMotion:
+			"Unchanged; the field has no motion beyond its own instant height changes.",
 		behaviour: [
-			"Height follows content with no easing, for the same reason as the textarea: an eased grow lags the caret.",
+			"Height follows content with no easing, for the same reason as Textarea: an eased grow lags the caret.",
+			'The "+" action-menu glyph rotates 45° while its menu is open, a plain CSS transform, not a spring.',
 		],
 	},
 	a11y: {
 		keyboard: ["Enter sends", "Shift and Enter insert a line break"],
 		notes: [
-			"Enter sends and Shift+Enter breaks the line, which is the convention every chat client uses. The reverse strands anyone writing more than a sentence.",
-			"The send button is disabled while empty or busy rather than hidden, so its position never shifts.",
+			"Enter sends and Shift+Enter breaks the line, the convention every chat client uses. The reverse strands anyone writing more than a sentence.",
+			"A composing Enter (committing an IME conversion) never submits, only a plain Enter does.",
+			"The send button is disabled while empty, disabled, or loading rather than hidden, so its position never shifts.",
 		],
 	},
 	licenseOrigin: {
-		source: "sivir-ui",
-		url: "https://github.com/aidan-neel/sivir-ui",
+		source: "beUI",
+		url: "https://beui.dev",
 		license: "MIT",
-		copyright: "Copyright (c) 2026 Aidan Neel",
+		copyright: "Copyright (c) 2026 beUI",
 	},
 	impl: {
 		react: {
 			entry: "Composer",
 			files: [
 				{ path: "composer/composer.tsx", type: "registry:ui" },
+				{ path: "composer/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			registryDependencies: ["dropdown-menu", "select"],
 		},
 		svelte: {
 			entry: "Composer",
 			files: [
 				{ path: "composer/composer.svelte", type: "registry:ui" },
+				{ path: "composer/types.ts", type: "registry:ui" },
+				{ path: "composer/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			registryDependencies: ["dropdown-menu", "select"],
 		},
 	},
-	keywords: ["composer"],
+	keywords: ["composer", "prompt", "chat", "input"],
 });

@@ -77,6 +77,18 @@ Any agent (Claude Code, Codex, Cursor, Copilot) should read this file first.
   Not forced on base primitives that are genuinely axis-less (Separator, Skeleton). Never
   hardcode a `Record<string, string>` class lookup or inline ternary for a styling axis;
   that's what `variants.ts` + `tv()` slots are for, per the P1 rule above.
+- **HARD RULE:** a shipped component is a pure render of its current props for anything that
+  represents real-world status or progress (task state, retry outcome, a value climbing over
+  time) — it never owns an internal timer/state machine that simulates this itself. Internal
+  state stays limited to pure UI concerns (open/closed, hover, focus, manual override of an
+  auto-computed value) and CSS motion timing (stagger/duration). Any scripted narrative (a
+  task failing then succeeding) is the DEMO's own `useState`/`$state` + timer, never baked
+  into `ui-react`/`ui-svelte`. A callback-driven action (retry, dismiss) only renders as a
+  real control when its handler prop is passed, never as always-on decoration. See
+  `controlled-components-no-internal-fake-state-hard-rule` memory (caught on `TaskRows`,
+  which auto-advanced a `status: "sequence"` row through a canned pending → failed →
+  succeeded arc via an internal `useTick`, and separately hardcoded an "auto-open" check to a
+  literal demo row key instead of a structural condition).
 - React and Svelte ports change together, same spec, same classes, same measured motion.
 - Motion is CSS-only: `--duration-*`, `--ease-*`, `--enter-scale`, `--press-scale`. Exits
   mirror entrances and use `--duration-exit`. Anchored surfaces grow from the trigger edge

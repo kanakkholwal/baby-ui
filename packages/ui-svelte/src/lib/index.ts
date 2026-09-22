@@ -79,6 +79,8 @@ export {
 export { default as CommandSeparator } from "./command/command-separator.svelte";
 export { default as CommandShortcut } from "./command/command-shortcut.svelte";
 export { default as Composer } from "./composer/composer.svelte";
+export type { ComposerAction, ComposerModel } from "./composer/types";
+export type { ComposerSize } from "./composer/variants";
 export { default as ContextCards } from "./context-cards/context-cards.svelte";
 export type { ContextChunk, ContextChunkTone } from "./context-cards/types";
 export { default as ContextMenu } from "./context-menu/context-menu.svelte";
@@ -222,8 +224,19 @@ export { default as TabsContent } from "./tabs/tabs-content.svelte";
 export { default as TabsList } from "./tabs/tabs-list.svelte";
 export { default as TabsTrigger } from "./tabs/tabs-trigger.svelte";
 export { default as TagInput } from "./tag-input/tag-input.svelte";
+export { default as TaskRows } from "./task-rows/task-rows.svelte";
+export type {
+	TaskDetail,
+	TaskRow,
+	TaskRowStatus,
+	TaskRowsLabels,
+} from "./task-rows/types";
+export type { TaskRowsVariant } from "./task-rows/variants";
 export { default as TaskSteps, type TaskStatus } from "./task-steps/task-steps.svelte";
 export { default as Textarea } from "./textarea/textarea.svelte";
+export { default as ThinkingState } from "./thinking-state/thinking-state.svelte";
+export type { ThinkingRow } from "./thinking-state/types";
+export type { ThinkingStateVariant } from "./thinking-state/variants";
 export { default as Toaster } from "./toast/toaster.svelte";
 export { default as Toggle } from "./toggle/toggle.svelte";
 export { default as ToggleGroup } from "./toggle-group/toggle-group.svelte";

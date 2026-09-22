@@ -1,13 +1,7 @@
 import { z } from "zod";
 import { PropSpecSchema } from "./control";
 
-export const CATEGORIES = [
-	"base",
-	"boilerplate",
-	"advanced",
-	"animated",
-	"agents",
-] as const;
+export const CATEGORIES = ["base", "blocks", "advanced", "animated", "agents"] as const;
 export const FRAMEWORKS = ["react", "svelte"] as const;
 
 export const CategorySchema = z.enum(CATEGORIES);

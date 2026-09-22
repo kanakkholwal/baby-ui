@@ -10,11 +10,11 @@ notices are reproduced here as those licenses require.
 - Source: https://beui.dev
 - License: MIT
 - Copyright (c) 2026 beUI
-- Components derived: chat-composer, context-cards, drawer, filter-table, loading-state, recommendation-card, responsive-dialog, toast
+- Components derived: chat-composer, composer, context-cards, drawer, filter-table, loading-state, recommendation-card, responsive-dialog, task-rows, thinking-state, toast
 
 ## sivir-ui
 
 - Source: https://github.com/aidan-neel/sivir-ui
 - License: MIT
 - Copyright (c) 2026 Aidan Neel
-- Components derived: accordion, alert, alert-dialog, attachment, avatar, badge, breadcrumb, button, card, checkbox, code-block, collapsible, color-picker, combobox, command, composer, context-menu, conversation, copy-button, dialog, dropdown-menu, file-diff, fullscreen-nav, gauge, hover-card, input, label, markdown, message, pagination, popover, progress, question, radio-group, reasoning, reorder-list, response-stream, scroll-area, select, sheet, shortcut, show-more, skeleton, slider, spinner, switch, tabs, tag-input, task-steps, textarea, toggle, toggle-group, tool, toolbar, tooltip, typography
+- Components derived: accordion, alert, alert-dialog, attachment, avatar, badge, breadcrumb, button, card, checkbox, code-block, collapsible, color-picker, combobox, command, context-menu, conversation, copy-button, dialog, dropdown-menu, file-diff, fullscreen-nav, gauge, hover-card, input, label, markdown, message, pagination, popover, progress, question, radio-group, reasoning, reorder-list, response-stream, scroll-area, select, sheet, shortcut, show-more, skeleton, slider, spinner, switch, tabs, tag-input, task-steps, textarea, toggle, toggle-group, tool, toolbar, tooltip, typography

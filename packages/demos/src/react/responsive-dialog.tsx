@@ -36,8 +36,11 @@ export function ResponsiveDialogDemo({ props }: { props: Props }) {
 							Dialog on desktop, Drawer on mobile — the same markup renders both.
 						</ResponsiveDialogDescription>
 					</ResponsiveDialogHeader>
+					<ResponsiveDialogClose />
 					<ResponsiveDialogFooter>
-						<ResponsiveDialogClose className={BTN}>Cancel</ResponsiveDialogClose>
+						<Button variant="ghost" size="sm" onClick={() => setOpen(false)}>
+							Cancel
+						</Button>
 						<Button onClick={() => setOpen(false)}>Save</Button>
 					</ResponsiveDialogFooter>
 				</ResponsiveDialogContent>

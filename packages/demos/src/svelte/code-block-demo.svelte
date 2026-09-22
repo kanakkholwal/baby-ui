@@ -7,7 +7,7 @@ const code =
 	"export function cn(...inputs: ClassValue[]) {\n\treturn twMerge(clsx(inputs));\n}";
 </script>
 
-<div class="w-[min(28rem,calc(100vw-4rem))]">
+<div class="w-full max-w-md">
 	<CodeBlock
 		{code}
 		language={(props.language as string) || "ts"}
