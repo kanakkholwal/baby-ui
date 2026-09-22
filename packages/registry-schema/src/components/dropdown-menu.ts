@@ -9,21 +9,13 @@ export const dropdownMenu = defineComponent({
 	status: "stable",
 	props: [
 		{
-			name: "placement",
-			type: "Placement",
+			name: "side",
+			type: '"top" | "right" | "bottom" | "left"',
 			description: "Preferred side. Flips automatically when there is not room.",
-			default: "bottom-start",
+			default: "bottom",
 			control: {
 				kind: "select",
-				options: [
-					"top",
-					"bottom",
-					"left",
-					"right",
-					"bottom-start",
-					"bottom-end",
-					"top-start",
-				],
+				options: ["top", "right", "bottom", "left"],
 			},
 		},
 		{
@@ -35,10 +27,12 @@ export const dropdownMenu = defineComponent({
 	],
 	motion: {
 		springs: [],
-		reducedMotion: "The menu appears without the scale.",
+		reducedMotion: "The menu appears without the scale, and rows no longer stagger in.",
 		behaviour: [
-			"Opens anchored to the trigger and flips above it when there is no room below.",
+			"Opens anchored to the trigger and flips above it when there is no room below (Radix/bits-ui popper collision detection).",
+			"Unfolds from the trigger edge (beUI unfold: clip-path from the near edge, flat-to-round\ncorners), with a 30ms stagger per row, the same as Select and Combobox.",
 			"Focus moves to the first item on open and back to the trigger on close, so the keyboard never lands nowhere.",
+			"A submenu opens to the right of its trigger on hover or click/arrow-right/enter, and scales in rather than unfolding, since the unfold direction is tuned for top/bottom placement.",
 		],
 	},
 	a11y: {
@@ -46,11 +40,14 @@ export const dropdownMenu = defineComponent({
 		keyboard: [
 			"Arrow keys move between items, wrapping at both ends",
 			"Home and End jump to the first and last item",
-			"Escape closes the menu and returns focus to the trigger",
+			"Escape closes the entire menu, including any open submenu, and returns focus to the trigger",
+			"On a submenu trigger: ArrowRight or Enter opens it and focuses its first item",
+			"Inside an open submenu: arrow keys rove within it only, and ArrowLeft closes just that submenu and returns focus to its trigger",
 		],
 		notes: [
 			"The trigger declares aria-haspopup=menu, so a screen reader announces that it opens something.",
 			"Disabled items are skipped by the roving focus rather than focused and announced as unavailable.",
+			"Positioning, focus trapping, roving tabindex, typeahead, outside-dismiss and portaling are all delegated to Radix UI (React) and bits-ui (Svelte); this component only owns the classes and data-slots.",
 		],
 	},
 	licenseOrigin: {
@@ -65,9 +62,15 @@ export const dropdownMenu = defineComponent({
 			files: [
 				{ path: "dropdown-menu/dropdown-menu.tsx", type: "registry:ui" },
 				{ path: "lib/anchor.ts", type: "registry:lib" },
+				{ path: "lib/menu.ts", type: "registry:lib" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge", "@floating-ui/dom"],
+			dependencies: [
+				"clsx",
+				"tailwind-merge",
+				"tailwind-variants",
+				"@radix-ui/react-dropdown-menu",
+			],
 		},
 		svelte: {
 			entry: "DropdownMenu",
@@ -78,11 +81,15 @@ export const dropdownMenu = defineComponent({
 				{ path: "dropdown-menu/dropdown-menu-item.svelte", type: "registry:ui" },
 				{ path: "dropdown-menu/dropdown-menu-label.svelte", type: "registry:ui" },
 				{ path: "dropdown-menu/dropdown-menu-separator.svelte", type: "registry:ui" },
-				{ path: "dropdown-menu/context.ts", type: "registry:ui" },
+				{ path: "dropdown-menu/dropdown-menu-shortcut.svelte", type: "registry:ui" },
+				{ path: "dropdown-menu/dropdown-menu-sub.svelte", type: "registry:ui" },
+				{ path: "dropdown-menu/dropdown-menu-sub-content.svelte", type: "registry:ui" },
+				{ path: "dropdown-menu/dropdown-menu-sub-trigger.svelte", type: "registry:ui" },
 				{ path: "lib/anchor.ts", type: "registry:lib" },
+				{ path: "lib/menu.ts", type: "registry:lib" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge", "@floating-ui/dom"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "bits-ui"],
 		},
 	},
 	keywords: ["dropdown", "menu", "overlay"],

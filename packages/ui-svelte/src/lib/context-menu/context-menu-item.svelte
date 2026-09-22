@@ -1,40 +1,21 @@
 <script lang="ts">
-import type { Snippet } from "svelte";
-import type { HTMLButtonAttributes } from "svelte/elements";
+import { ContextMenu as ContextMenuPrimitive } from "bits-ui";
 import { cn } from "../lib/cn";
-import { getContextMenu } from "./context";
+import { menuItem } from "../lib/menu";
 
 let {
-	children,
-	destructive = false,
 	class: classProp,
-	onclick,
+	destructive = false,
+	inset = false,
 	...rest
-}: {
-	children?: Snippet;
-	destructive?: boolean;
-	class?: string;
-} & HTMLButtonAttributes = $props();
+}: ContextMenuPrimitive.ItemProps & { destructive?: boolean; inset?: boolean } = $props();
 
-const menu = getContextMenu();
+const variant = $derived(destructive ? "destructive" : "default");
 </script>
 
-<button
+<ContextMenuPrimitive.Item
 	{...rest}
-	type="button"
-	role="menuitem"
 	data-slot="context-menu-item"
-	onclick={(event) => {
-		onclick?.(event);
-		menu.close();
-	}}
-	class={cn(
-		"flex w-full items-center gap-2 rounded-md px-2.5 py-1.5 text-left text-sm outline-none transition-colors",
-		"hover:bg-foreground/[0.06] focus-visible:bg-foreground/[0.06]",
-		"disabled:pointer-events-none disabled:opacity-50",
-		destructive ? "text-[var(--destructive)]" : "text-foreground",
-		classProp,
-	)}
->
-	{@render children?.()}
-</button>
+	data-inset={inset || undefined}
+	class={cn(menuItem({ variant }), classProp)}
+/>

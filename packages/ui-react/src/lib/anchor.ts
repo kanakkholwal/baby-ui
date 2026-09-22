@@ -28,12 +28,17 @@ export const ANCHORED = [
 	...ANCHORED_BASE,
 	"scale-[var(--enter-scale)] transition-[opacity,scale,translate]",
 	// The closed state leans toward its trigger, so opening reads as unfolding from it.
+	// `placement` is our own anchor(); `side` is Radix/bits-ui's popper attribute.
 	"data-[state=closed]:data-[placement^=bottom]:-translate-y-1",
 	"data-[state=closed]:data-[placement^=top]:translate-y-1",
+	"data-[state=closed]:data-[side=bottom]:-translate-y-1",
+	"data-[state=closed]:data-[side=top]:translate-y-1",
 	"data-[state=open]:scale-100",
 	"starting:data-[state=open]:scale-[var(--enter-scale)]",
 	"starting:data-[state=open]:data-[placement^=bottom]:-translate-y-1",
 	"starting:data-[state=open]:data-[placement^=top]:translate-y-1",
+	"starting:data-[state=open]:data-[side=bottom]:-translate-y-1",
+	"starting:data-[state=open]:data-[side=top]:translate-y-1",
 ].join(" ");
 
 /**
@@ -44,15 +49,24 @@ export const UNFOLD = [
 	...ANCHORED_BASE,
 	"group/surface transition-[opacity,translate,clip-path,border-radius]",
 	// Negative insets keep the box-shadow inside the clip; only the near edge closes to 100%.
+	// `placement` is our own anchor(); `side` is Radix/bits-ui's popper attribute.
 	"data-[state=open]:[clip-path:inset(-4rem)]",
 	"data-[state=closed]:data-[placement^=bottom]:[clip-path:inset(-4rem_-4rem_100%_-4rem)]",
 	"data-[state=closed]:data-[placement^=bottom]:-translate-y-1.5 data-[state=closed]:data-[placement^=bottom]:rounded-t-none",
 	"data-[state=closed]:data-[placement^=top]:[clip-path:inset(100%_-4rem_-4rem_-4rem)]",
 	"data-[state=closed]:data-[placement^=top]:translate-y-1.5 data-[state=closed]:data-[placement^=top]:rounded-b-none",
+	"data-[state=closed]:data-[side=bottom]:[clip-path:inset(-4rem_-4rem_100%_-4rem)]",
+	"data-[state=closed]:data-[side=bottom]:-translate-y-1.5 data-[state=closed]:data-[side=bottom]:rounded-t-none",
+	"data-[state=closed]:data-[side=top]:[clip-path:inset(100%_-4rem_-4rem_-4rem)]",
+	"data-[state=closed]:data-[side=top]:translate-y-1.5 data-[state=closed]:data-[side=top]:rounded-b-none",
 	"starting:data-[state=open]:data-[placement^=bottom]:[clip-path:inset(-4rem_-4rem_100%_-4rem)]",
 	"starting:data-[state=open]:data-[placement^=bottom]:-translate-y-1.5 starting:data-[state=open]:data-[placement^=bottom]:rounded-t-none",
 	"starting:data-[state=open]:data-[placement^=top]:[clip-path:inset(100%_-4rem_-4rem_-4rem)]",
 	"starting:data-[state=open]:data-[placement^=top]:translate-y-1.5 starting:data-[state=open]:data-[placement^=top]:rounded-b-none",
+	"starting:data-[state=open]:data-[side=bottom]:[clip-path:inset(-4rem_-4rem_100%_-4rem)]",
+	"starting:data-[state=open]:data-[side=bottom]:-translate-y-1.5 starting:data-[state=open]:data-[side=bottom]:rounded-t-none",
+	"starting:data-[state=open]:data-[side=top]:[clip-path:inset(100%_-4rem_-4rem_-4rem)]",
+	"starting:data-[state=open]:data-[side=top]:translate-y-1.5 starting:data-[state=open]:data-[side=top]:rounded-b-none",
 ].join(" ");
 
 /** Rows inside an `UNFOLD` surface settle in one after another; `stagger()` numbers them. */
@@ -150,18 +164,25 @@ export function anchor(
 	});
 }
 
-/** Closes on outside pointerdown and on Escape. Returns a teardown. */
+type DismissableElements =
+	| (HTMLElement | undefined | null)[]
+	| (() => (HTMLElement | undefined | null)[]);
+
+/** Closes on outside pointerdown and on Escape. `elements` can be a getter, so a
+ * frequently-changing exempt set never forces this listener to be recreated. */
 export function dismissable(
-	elements: (HTMLElement | undefined | null)[],
+	elements: DismissableElements,
 	onDismiss: () => void,
 ): () => void {
+	const getElements = typeof elements === "function" ? elements : () => elements;
 	const onPointer = (event: PointerEvent) => {
 		const target = event.target as Node;
-		if (elements.some((el) => el?.contains(target))) return;
+		if (getElements().some((el) => el?.contains(target))) return;
 		onDismiss();
 	};
 	const onKey = (event: KeyboardEvent) => {
-		if (event.key === "Escape") onDismiss();
+		// A nested surface (a submenu, say) calls preventDefault to close only itself.
+		if (event.key === "Escape" && !event.defaultPrevented) onDismiss();
 	};
 	window.addEventListener("pointerdown", onPointer, true);
 	window.addEventListener("keydown", onKey);

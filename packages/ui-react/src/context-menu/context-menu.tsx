@@ -1,146 +1,87 @@
 "use client";
 
-import type { ComponentProps, ReactNode } from "react";
-import {
-	createContext,
-	useCallback,
-	useContext,
-	useEffect,
-	useId,
-	useLayoutEffect,
-	useMemo,
-	useRef,
-	useState,
-} from "react";
-import { ANCHORED, dismissable } from "../lib/anchor";
+import * as ContextMenuPrimitive from "@radix-ui/react-context-menu";
+import type { ComponentProps } from "react";
+import { ANCHORED, stagger } from "../lib/anchor";
 import { cn } from "../lib/cn";
+import { MENU_SHORTCUT, MENU_SURFACE, type MenuItemVariant, menuItem } from "../lib/menu";
 
-const SURFACE = "min-w-44 rounded-xl border border-border bg-popover p-1 shadow-2xl";
+export const ContextMenu = ContextMenuPrimitive.Root;
+export const ContextMenuSub = ContextMenuPrimitive.Sub;
 
-type Ctx = {
-	open: boolean;
-	contentId: string;
-	point: { x: number; y: number };
-	openAt: (x: number, y: number) => void;
-	close: () => void;
-};
-
-const ContextMenuCtx = createContext<Ctx | null>(null);
-
-function useContextMenu() {
-	const ctx = useContext(ContextMenuCtx);
-	if (!ctx) throw new Error("ContextMenu parts must be used inside <ContextMenu>");
-	return ctx;
-}
-
-export function ContextMenu({ children }: { children?: ReactNode }) {
-	const contentId = useId();
-	const [open, setOpen] = useState(false);
-	const [point, setPoint] = useState({ x: 0, y: 0 });
-
-	const openAt = useCallback((x: number, y: number) => {
-		setPoint({ x, y });
-		setOpen(true);
-	}, []);
-
-	const close = useCallback(() => setOpen(false), []);
-
-	const ctx = useMemo(
-		() => ({ open, contentId, point, openAt, close }),
-		[open, contentId, point, openAt, close],
-	);
-
-	return <ContextMenuCtx.Provider value={ctx}>{children}</ContextMenuCtx.Provider>;
-}
-
-export function ContextMenuTrigger({ children }: { children?: ReactNode }) {
-	const menu = useContextMenu();
-
+export function ContextMenuTrigger({
+	className,
+	...props
+}: ComponentProps<typeof ContextMenuPrimitive.Trigger>) {
 	return (
-		// biome-ignore lint/a11y/noStaticElementInteractions: a context menu is opened by the platform gesture, not a control
-		<div
+		<ContextMenuPrimitive.Trigger
 			data-slot="context-menu-trigger"
-			className="contents"
-			onContextMenu={(event) => {
-				event.preventDefault();
-				menu.openAt(event.clientX, event.clientY);
-			}}
-		>
-			{children}
-		</div>
+			className={cn("contents", className)}
+			{...props}
+		/>
 	);
 }
 
 export function ContextMenuContent({
 	className,
-	children,
 	...props
-}: ComponentProps<"div">) {
-	const menu = useContextMenu();
-	const el = useRef<HTMLDivElement>(null);
-	// Kept mounted after the first open so the surface can animate out as well as in.
-	const [mounted, setMounted] = useState(false);
-
-	useEffect(() => {
-		if (menu.open) setMounted(true);
-	}, [menu.open]);
-
-	// Positioned from a point rather than an element, so it clamps rather than flips.
-	useLayoutEffect(() => {
-		const node = el.current;
-		if (!menu.open || !node) return;
-		const rect = node.getBoundingClientRect();
-		const x = Math.min(menu.point.x, window.innerWidth - rect.width - 8);
-		const y = Math.min(menu.point.y, window.innerHeight - rect.height - 8);
-		// left/top rather than transform, or the entry scale would shrink the offset too.
-		node.style.left = `${Math.max(8, x)}px`;
-		node.style.top = `${Math.max(8, y)}px`;
-		return dismissable([node], menu.close);
-		// mounted is a dependency: the surface only exists on the render after it flips.
-	}, [menu.open, mounted, menu.point, menu.close]);
-
-	if (!mounted) return null;
-
+}: ComponentProps<typeof ContextMenuPrimitive.Content>) {
 	return (
-		<div
-			ref={el}
-			id={menu.contentId}
-			role="menu"
-			tabIndex={-1}
-			data-slot="context-menu-content"
-			data-state={menu.open ? "open" : "closed"}
-			inert={!menu.open}
-			style={{ transformOrigin: "top left" }}
-			className={cn(ANCHORED, SURFACE, className)}
-			{...props}
-		>
-			{children}
-		</div>
+		<ContextMenuPrimitive.Portal>
+			<ContextMenuPrimitive.Content
+				data-slot="context-menu-content"
+				ref={(node) => {
+					if (node) stagger(node.querySelectorAll<HTMLElement>("[role='menuitem']"));
+				}}
+				className={cn(ANCHORED, MENU_SURFACE, className)}
+				{...props}
+			/>
+		</ContextMenuPrimitive.Portal>
 	);
 }
 
 export function ContextMenuItem({
 	className,
 	destructive = false,
-	onClick,
+	inset = false,
 	...props
-}: ComponentProps<"button"> & { destructive?: boolean }) {
-	const menu = useContextMenu();
+}: ComponentProps<typeof ContextMenuPrimitive.Item> & {
+	destructive?: boolean;
+	inset?: boolean;
+}) {
+	const variant: MenuItemVariant = destructive ? "destructive" : "default";
 
 	return (
-		<button
-			type="button"
-			role="menuitem"
+		<ContextMenuPrimitive.Item
 			data-slot="context-menu-item"
-			onClick={(event) => {
-				onClick?.(event);
-				menu.close();
-			}}
+			data-inset={inset || undefined}
+			className={cn(menuItem({ variant }), className)}
+			{...props}
+		/>
+	);
+}
+
+export function ContextMenuShortcut({ className, ...props }: ComponentProps<"kbd">) {
+	return (
+		<kbd
+			data-slot="context-menu-shortcut"
+			className={cn(MENU_SHORTCUT, className)}
+			{...props}
+		/>
+	);
+}
+
+export function ContextMenuLabel({
+	className,
+	inset = false,
+	...props
+}: ComponentProps<"div"> & { inset?: boolean }) {
+	return (
+		<div
+			data-slot="context-menu-label"
+			data-inset={inset || undefined}
 			className={cn(
-				"flex w-full items-center gap-2 rounded-md px-2.5 py-1.5 text-left text-sm outline-none transition-colors",
-				"hover:bg-foreground/[0.06] focus-visible:bg-foreground/[0.06]",
-				"disabled:pointer-events-none disabled:opacity-50",
-				destructive ? "text-[var(--destructive)]" : "text-foreground",
+				"px-2.5 py-1.5 font-medium text-muted-foreground text-xs data-[inset]:pl-8",
 				className,
 			)}
 			{...props}
@@ -148,22 +89,66 @@ export function ContextMenuItem({
 	);
 }
 
-export function ContextMenuLabel({ className, ...props }: ComponentProps<"div">) {
+export function ContextMenuSeparator({
+	className,
+	...props
+}: ComponentProps<typeof ContextMenuPrimitive.Separator>) {
 	return (
-		<div
-			data-slot="context-menu-label"
-			className={cn("px-2.5 py-1.5 font-medium text-muted-foreground text-xs", className)}
+		<ContextMenuPrimitive.Separator
+			data-slot="context-menu-separator"
+			className={cn("-mx-1 my-1 border-border", className)}
 			{...props}
 		/>
 	);
 }
 
-export function ContextMenuSeparator({ className, ...props }: ComponentProps<"hr">) {
+export function ContextMenuSubTrigger({
+	className,
+	inset = false,
+	children,
+	...props
+}: ComponentProps<typeof ContextMenuPrimitive.SubTrigger> & { inset?: boolean }) {
 	return (
-		<hr
-			data-slot="context-menu-separator"
-			className={cn("-mx-1 my-1 border-border", className)}
+		<ContextMenuPrimitive.SubTrigger
+			data-slot="context-menu-sub-trigger"
+			data-inset={inset || undefined}
+			className={cn(
+				menuItem({ variant: "default" }),
+				"data-[state=open]:bg-foreground/[0.06]",
+				className,
+			)}
 			{...props}
-		/>
+		>
+			<span className="min-w-0 flex-1 truncate text-left">{children}</span>
+			<svg
+				viewBox="0 0 16 16"
+				fill="none"
+				aria-hidden
+				className="ml-2 size-3.5 shrink-0 text-muted-foreground"
+			>
+				<path
+					d="m6 3.5 4.5 4.5L6 12.5"
+					stroke="currentColor"
+					strokeWidth="1.5"
+					strokeLinecap="round"
+					strokeLinejoin="round"
+				/>
+			</svg>
+		</ContextMenuPrimitive.SubTrigger>
+	);
+}
+
+export function ContextMenuSubContent({
+	className,
+	...props
+}: ComponentProps<typeof ContextMenuPrimitive.SubContent>) {
+	return (
+		<ContextMenuPrimitive.Portal>
+			<ContextMenuPrimitive.SubContent
+				data-slot="context-menu-sub-content"
+				className={cn(ANCHORED, MENU_SURFACE, "min-w-40", className)}
+				{...props}
+			/>
+		</ContextMenuPrimitive.Portal>
 	);
 }

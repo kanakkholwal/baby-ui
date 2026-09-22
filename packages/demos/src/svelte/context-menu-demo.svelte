@@ -4,6 +4,10 @@ import {
 	ContextMenuContent,
 	ContextMenuItem,
 	ContextMenuSeparator,
+	ContextMenuShortcut,
+	ContextMenuSub,
+	ContextMenuSubContent,
+	ContextMenuSubTrigger,
 	ContextMenuTrigger,
 } from "@baby-ui/svelte";
 
@@ -20,10 +24,29 @@ let last = $state("");
 			</div>
 		</ContextMenuTrigger>
 		<ContextMenuContent>
-			<ContextMenuItem onclick={() => (last = "open")}>Open in editor</ContextMenuItem>
-			<ContextMenuItem onclick={() => (last = "copy")}>Copy path</ContextMenuItem>
+			<ContextMenuItem onclick={() => (last = "open")}>
+				Open in editor
+				<ContextMenuShortcut>⏎</ContextMenuShortcut>
+			</ContextMenuItem>
+			<ContextMenuItem onclick={() => (last = "copy")}>
+				Copy path
+				<ContextMenuShortcut>⌘C</ContextMenuShortcut>
+			</ContextMenuItem>
 			<ContextMenuSeparator />
-			<ContextMenuItem destructive onclick={() => (last = "delete")}>Delete</ContextMenuItem>
+			<ContextMenuSub>
+				<ContextMenuSubTrigger>Arrange</ContextMenuSubTrigger>
+				<ContextMenuSubContent>
+					<ContextMenuItem onclick={() => (last = "bring-to-front")}>Bring to front</ContextMenuItem>
+					<ContextMenuItem onclick={() => (last = "bring-forward")}>Bring forward</ContextMenuItem>
+					<ContextMenuItem onclick={() => (last = "send-backward")}>Send backward</ContextMenuItem>
+					<ContextMenuItem onclick={() => (last = "send-to-back")}>Send to back</ContextMenuItem>
+				</ContextMenuSubContent>
+			</ContextMenuSub>
+			<ContextMenuSeparator />
+			<ContextMenuItem destructive onclick={() => (last = "delete")}>
+				Delete
+				<ContextMenuShortcut>⌫</ContextMenuShortcut>
+			</ContextMenuItem>
 		</ContextMenuContent>
 	</ContextMenu>
 	{#if last}<p class="text-muted-foreground text-xs">Selected: {last}</p>{/if}

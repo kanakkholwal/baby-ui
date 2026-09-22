@@ -20,3 +20,10 @@ capability is still discoverable.
 
 A destructive item is coloured but stays in place. Moving it to the bottom is a common
 habit that trains people to expect Delete last, which is exactly when a mis-click hurts.
+
+## Submenus
+
+`DropdownMenuSub`, `DropdownMenuSubTrigger` and `DropdownMenuSubContent` open to the right
+of the trigger on hover, click, or arrow-right / enter. Its own arrow keys rove within the
+submenu only, and arrow-left closes just that submenu and refocuses its trigger. Escape
+closes the whole menu tree at once.

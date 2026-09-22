@@ -5,6 +5,10 @@ import {
 	DropdownMenuItem,
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
+	DropdownMenuShortcut,
+	DropdownMenuSub,
+	DropdownMenuSubContent,
+	DropdownMenuSubTrigger,
 	DropdownMenuTrigger,
 } from "@baby-ui/svelte";
 
@@ -14,15 +18,34 @@ let last = $state("");
 </script>
 
 <div class="flex flex-col items-center gap-3">
-	<DropdownMenu placement={(props.placement as never) ?? "bottom-start"}>
+	<DropdownMenu>
 		<DropdownMenuTrigger class="inline-flex h-9 items-center rounded-lg border border-border bg-card px-3 font-medium text-foreground text-sm">Actions</DropdownMenuTrigger>
-		<DropdownMenuContent>
+		<DropdownMenuContent side={(props.side as never) ?? "bottom"}>
 			<DropdownMenuLabel>This file</DropdownMenuLabel>
-			<DropdownMenuItem onclick={() => (last = "rename")}>Rename</DropdownMenuItem>
-			<DropdownMenuItem onclick={() => (last = "duplicate")}>Duplicate</DropdownMenuItem>
+			<DropdownMenuItem onclick={() => (last = "rename")}>
+				Rename
+				<DropdownMenuShortcut>⌘R</DropdownMenuShortcut>
+			</DropdownMenuItem>
+			<DropdownMenuItem onclick={() => (last = "duplicate")}>
+				Duplicate
+				<DropdownMenuShortcut>⌘D</DropdownMenuShortcut>
+			</DropdownMenuItem>
 			<DropdownMenuItem disabled>Archive</DropdownMenuItem>
 			<DropdownMenuSeparator />
-			<DropdownMenuItem destructive onclick={() => (last = "delete")}>Delete</DropdownMenuItem>
+			<DropdownMenuSub>
+				<DropdownMenuSubTrigger>Arrange</DropdownMenuSubTrigger>
+				<DropdownMenuSubContent>
+					<DropdownMenuItem onclick={() => (last = "bring-to-front")}>Bring to front</DropdownMenuItem>
+					<DropdownMenuItem onclick={() => (last = "bring-forward")}>Bring forward</DropdownMenuItem>
+					<DropdownMenuItem onclick={() => (last = "send-backward")}>Send backward</DropdownMenuItem>
+					<DropdownMenuItem onclick={() => (last = "send-to-back")}>Send to back</DropdownMenuItem>
+				</DropdownMenuSubContent>
+			</DropdownMenuSub>
+			<DropdownMenuSeparator />
+			<DropdownMenuItem destructive onclick={() => (last = "delete")}>
+				Delete
+				<DropdownMenuShortcut>⌫</DropdownMenuShortcut>
+			</DropdownMenuItem>
 		</DropdownMenuContent>
 	</DropdownMenu>
 	{#if last}<p class="text-muted-foreground text-xs">Selected: {last}</p>{/if}

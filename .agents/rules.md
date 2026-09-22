@@ -20,6 +20,12 @@ Any agent (Claude Code, Codex, Cursor, Copilot) should read this file first.
 
 - Base components are shadcn drop-ins: shadcn part names, `data-slot` values, `type` /
   `collapsible` / `value` style props. Check the shadcn API before designing one.
+- Complex interaction engines (floating + portal + outside-dismiss + focus-trap + roving
+  tabindex — menus, comboboxes, and similar) are built on `@radix-ui/react-*` (React) / `bits-ui`
+  (Svelte), the same primitives shadcn/ui and shadcn-svelte use, not hand-rolled state machines.
+  Keep the styling layer thin: `data-slot`, Tailwind classes, and the motion contract on top
+  (match Radix/bits-ui's `data-side`/`data-state`/`data-highlighted`, not just our own
+  `data-placement`). See `prefer-primitives-for-menus` memory.
 - **HARD RULE (P1):** a component's `variant`/`size`-style prop types are *derived*, never
   hand-typed literal unions. One `variants.ts` per component (or shared, when two components
   genuinely share an axis, e.g. Dialog/AlertDialog/Command's inset-rim treatment):

@@ -1,102 +1,21 @@
 "use client";
 
-import type { ComponentProps, KeyboardEvent, ReactNode } from "react";
-import {
-	createContext,
-	useCallback,
-	useContext,
-	useEffect,
-	useId,
-	useLayoutEffect,
-	useMemo,
-	useRef,
-	useState,
-} from "react";
-import { ANCHORED, type AnchorPlacement, anchor, dismissable, rove } from "../lib/anchor";
+import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
+import type { ComponentProps } from "react";
+import { ANCHORED, stagger, UNFOLD, UNFOLD_ITEM } from "../lib/anchor";
 import { cn } from "../lib/cn";
+import { MENU_SHORTCUT, MENU_SURFACE, type MenuItemVariant, menuItem } from "../lib/menu";
 
-const SURFACE = "min-w-44 rounded-xl border border-border bg-popover p-1 shadow-2xl";
+export const DropdownMenu = DropdownMenuPrimitive.Root;
+export const DropdownMenuSub = DropdownMenuPrimitive.Sub;
 
-type Ctx = {
-	open: boolean;
-	contentId: string;
-	setOpen: (open: boolean) => void;
-	close: () => void;
-	setTrigger: (el: HTMLElement | null) => void;
-	setContent: (el: HTMLElement | null) => void;
-};
-
-const MenuCtx = createContext<Ctx | null>(null);
-
-function useMenu() {
-	const ctx = useContext(MenuCtx);
-	if (!ctx) throw new Error("DropdownMenu parts must be used inside <DropdownMenu>");
-	return ctx;
-}
-
-export function DropdownMenu({
-	children,
-	open: openProp,
-	defaultOpen = false,
-	placement = "bottom-start",
-	onOpenChange,
-}: {
-	children?: ReactNode;
-	open?: boolean;
-	defaultOpen?: boolean;
-	placement?: AnchorPlacement;
-	onOpenChange?: (open: boolean) => void;
-}) {
-	const contentId = useId();
-	const [internal, setInternal] = useState(defaultOpen);
-	const [triggerEl, setTrigger] = useState<HTMLElement | null>(null);
-	const [contentEl, setContent] = useState<HTMLElement | null>(null);
-	const open = openProp ?? internal;
-
-	const setOpen = useCallback(
-		(next: boolean) => {
-			if (openProp === undefined) setInternal(next);
-			onOpenChange?.(next);
-		},
-		[openProp, onOpenChange],
-	);
-
-	const close = useCallback(() => {
-		setOpen(false);
-		triggerEl?.focus();
-	}, [setOpen, triggerEl]);
-
-	useLayoutEffect(() => {
-		if (!open || !triggerEl || !contentEl) return;
-		const stopAnchor = anchor(triggerEl, contentEl, { placement, gap: 6 });
-		const stopDismiss = dismissable([triggerEl, contentEl], close);
-		return () => {
-			stopAnchor();
-			stopDismiss();
-		};
-	}, [open, triggerEl, contentEl, placement, close]);
-
-	const ctx = useMemo(
-		() => ({ open, contentId, setOpen, close, setTrigger, setContent }),
-		[open, contentId, setOpen, close],
-	);
-
-	return <MenuCtx.Provider value={ctx}>{children}</MenuCtx.Provider>;
-}
-
-export function DropdownMenuTrigger({ className, ...props }: ComponentProps<"button">) {
-	const menu = useMenu();
-
+export function DropdownMenuTrigger({
+	className,
+	...props
+}: ComponentProps<typeof DropdownMenuPrimitive.Trigger>) {
 	return (
-		<button
-			ref={menu.setTrigger}
-			type="button"
+		<DropdownMenuPrimitive.Trigger
 			data-slot="dropdown-menu-trigger"
-			data-state={menu.open ? "open" : "closed"}
-			aria-haspopup="menu"
-			aria-expanded={menu.open}
-			aria-controls={menu.open ? menu.contentId : undefined}
-			onClick={() => menu.setOpen(!menu.open)}
 			className={cn(
 				"inline-flex rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-ring",
 				className,
@@ -108,87 +27,68 @@ export function DropdownMenuTrigger({ className, ...props }: ComponentProps<"but
 
 export function DropdownMenuContent({
 	className,
-	children,
+	sideOffset = 6,
+	align = "start",
 	...props
-}: ComponentProps<"div">) {
-	const menu = useMenu();
-	const el = useRef<HTMLDivElement | null>(null);
-	const [index, setIndex] = useState(0);
-
-	const rows = useCallback(
-		() => [
-			...(el.current?.querySelectorAll<HTMLElement>(
-				"[role='menuitem']:not([disabled])",
-			) ?? []),
-		],
-		[],
-	);
-
-	const [mounted, setMounted] = useState(false);
-
-	useEffect(() => {
-		if (!menu.open) return;
-		setMounted(true);
-		setIndex(0);
-		rows()[0]?.focus();
-		// mounted is a dependency: the rows only exist on the render after it flips.
-	}, [menu.open, mounted, rows]);
-
-	function onKeyDown(event: KeyboardEvent) {
-		const all = rows();
-		const next = rove(all, index, event.key);
-		if (next === null) return;
-		event.preventDefault();
-		setIndex(next);
-		all[next]?.focus();
-	}
-
-	// Kept mounted after the first open so the surface can animate out as well as in.
-	if (!mounted) return null;
-
+}: ComponentProps<typeof DropdownMenuPrimitive.Content>) {
 	return (
-		<div
-			ref={(node) => {
-				el.current = node;
-				menu.setContent(node);
-			}}
-			id={menu.contentId}
-			role="menu"
-			tabIndex={-1}
-			data-slot="dropdown-menu-content"
-			data-state={menu.open ? "open" : "closed"}
-			inert={!menu.open}
-			onKeyDown={onKeyDown}
-			className={cn(ANCHORED, SURFACE, className)}
-			{...props}
-		>
-			{children}
-		</div>
+		<DropdownMenuPrimitive.Portal>
+			<DropdownMenuPrimitive.Content
+				data-slot="dropdown-menu-content"
+				sideOffset={sideOffset}
+				align={align}
+				ref={(node) => {
+					if (node) stagger(node.querySelectorAll<HTMLElement>("[role='menuitem']"));
+				}}
+				className={cn(UNFOLD, MENU_SURFACE, className)}
+				{...props}
+			/>
+		</DropdownMenuPrimitive.Portal>
 	);
 }
 
 export function DropdownMenuItem({
 	className,
 	destructive = false,
-	onClick,
+	inset = false,
 	...props
-}: ComponentProps<"button"> & { destructive?: boolean }) {
-	const menu = useMenu();
+}: ComponentProps<typeof DropdownMenuPrimitive.Item> & {
+	destructive?: boolean;
+	inset?: boolean;
+}) {
+	const variant: MenuItemVariant = destructive ? "destructive" : "default";
 
 	return (
-		<button
-			type="button"
-			role="menuitem"
+		<DropdownMenuPrimitive.Item
 			data-slot="dropdown-menu-item"
-			onClick={(event) => {
-				onClick?.(event);
-				menu.close();
-			}}
+			data-inset={inset || undefined}
+			className={cn(UNFOLD_ITEM, menuItem({ variant }), className)}
+			{...props}
+		/>
+	);
+}
+
+export function DropdownMenuShortcut({ className, ...props }: ComponentProps<"kbd">) {
+	return (
+		<kbd
+			data-slot="dropdown-menu-shortcut"
+			className={cn(MENU_SHORTCUT, className)}
+			{...props}
+		/>
+	);
+}
+
+export function DropdownMenuLabel({
+	className,
+	inset = false,
+	...props
+}: ComponentProps<"div"> & { inset?: boolean }) {
+	return (
+		<div
+			data-slot="dropdown-menu-label"
+			data-inset={inset || undefined}
 			className={cn(
-				"flex w-full items-center gap-2 rounded-md px-2.5 py-1.5 text-left text-sm outline-none transition-colors",
-				"hover:bg-foreground/[0.06] focus-visible:bg-foreground/[0.06]",
-				"disabled:pointer-events-none disabled:opacity-50",
-				destructive ? "text-[var(--destructive)]" : "text-foreground",
+				"px-2.5 py-1.5 font-medium text-muted-foreground text-xs data-[inset]:pl-8",
 				className,
 			)}
 			{...props}
@@ -196,22 +96,66 @@ export function DropdownMenuItem({
 	);
 }
 
-export function DropdownMenuLabel({ className, ...props }: ComponentProps<"div">) {
+export function DropdownMenuSeparator({
+	className,
+	...props
+}: ComponentProps<typeof DropdownMenuPrimitive.Separator>) {
 	return (
-		<div
-			data-slot="dropdown-menu-label"
-			className={cn("px-2.5 py-1.5 font-medium text-muted-foreground text-xs", className)}
+		<DropdownMenuPrimitive.Separator
+			data-slot="dropdown-menu-separator"
+			className={cn("-mx-1 my-1 border-border", className)}
 			{...props}
 		/>
 	);
 }
 
-export function DropdownMenuSeparator({ className, ...props }: ComponentProps<"hr">) {
+export function DropdownMenuSubTrigger({
+	className,
+	inset = false,
+	children,
+	...props
+}: ComponentProps<typeof DropdownMenuPrimitive.SubTrigger> & { inset?: boolean }) {
 	return (
-		<hr
-			data-slot="dropdown-menu-separator"
-			className={cn("-mx-1 my-1 border-border", className)}
+		<DropdownMenuPrimitive.SubTrigger
+			data-slot="dropdown-menu-sub-trigger"
+			data-inset={inset || undefined}
+			className={cn(
+				menuItem({ variant: "default" }),
+				"data-[state=open]:bg-foreground/[0.06]",
+				className,
+			)}
 			{...props}
-		/>
+		>
+			<span className="min-w-0 flex-1 truncate text-left">{children}</span>
+			<svg
+				viewBox="0 0 16 16"
+				fill="none"
+				aria-hidden
+				className="ml-2 size-3.5 shrink-0 text-muted-foreground"
+			>
+				<path
+					d="m6 3.5 4.5 4.5L6 12.5"
+					stroke="currentColor"
+					strokeWidth="1.5"
+					strokeLinecap="round"
+					strokeLinejoin="round"
+				/>
+			</svg>
+		</DropdownMenuPrimitive.SubTrigger>
+	);
+}
+
+export function DropdownMenuSubContent({
+	className,
+	...props
+}: ComponentProps<typeof DropdownMenuPrimitive.SubContent>) {
+	return (
+		<DropdownMenuPrimitive.Portal>
+			<DropdownMenuPrimitive.SubContent
+				data-slot="dropdown-menu-sub-content"
+				className={cn(ANCHORED, MENU_SURFACE, "min-w-40", className)}
+				{...props}
+			/>
+		</DropdownMenuPrimitive.Portal>
 	);
 }

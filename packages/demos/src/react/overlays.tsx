@@ -9,12 +9,20 @@ import {
 	ContextMenuContent,
 	ContextMenuItem,
 	ContextMenuSeparator,
+	ContextMenuShortcut,
+	ContextMenuSub,
+	ContextMenuSubContent,
+	ContextMenuSubTrigger,
 	ContextMenuTrigger,
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
+	DropdownMenuShortcut,
+	DropdownMenuSub,
+	DropdownMenuSubContent,
+	DropdownMenuSubTrigger,
 	DropdownMenuTrigger,
 	HoverCard,
 	HoverCardContent,
@@ -130,18 +138,41 @@ export function DropdownMenuDemo({ props }: { props: Props }) {
 	const [last, setLast] = useState("");
 	return (
 		<div className="flex flex-col items-center gap-3">
-			<DropdownMenu placement={(props.placement as never) ?? "bottom-start"}>
+			<DropdownMenu>
 				<DropdownMenuTrigger className={TRIGGER}>Actions</DropdownMenuTrigger>
-				<DropdownMenuContent>
+				<DropdownMenuContent side={(props.side as never) ?? "bottom"}>
 					<DropdownMenuLabel>This file</DropdownMenuLabel>
-					<DropdownMenuItem onClick={() => setLast("rename")}>Rename</DropdownMenuItem>
+					<DropdownMenuItem onClick={() => setLast("rename")}>
+						Rename
+						<DropdownMenuShortcut>⌘R</DropdownMenuShortcut>
+					</DropdownMenuItem>
 					<DropdownMenuItem onClick={() => setLast("duplicate")}>
 						Duplicate
+						<DropdownMenuShortcut>⌘D</DropdownMenuShortcut>
 					</DropdownMenuItem>
 					<DropdownMenuItem disabled>Archive</DropdownMenuItem>
 					<DropdownMenuSeparator />
+					<DropdownMenuSub>
+						<DropdownMenuSubTrigger>Arrange</DropdownMenuSubTrigger>
+						<DropdownMenuSubContent>
+							<DropdownMenuItem onClick={() => setLast("bring-to-front")}>
+								Bring to front
+							</DropdownMenuItem>
+							<DropdownMenuItem onClick={() => setLast("bring-forward")}>
+								Bring forward
+							</DropdownMenuItem>
+							<DropdownMenuItem onClick={() => setLast("send-backward")}>
+								Send backward
+							</DropdownMenuItem>
+							<DropdownMenuItem onClick={() => setLast("send-to-back")}>
+								Send to back
+							</DropdownMenuItem>
+						</DropdownMenuSubContent>
+					</DropdownMenuSub>
+					<DropdownMenuSeparator />
 					<DropdownMenuItem destructive onClick={() => setLast("delete")}>
 						Delete
+						<DropdownMenuShortcut>⌫</DropdownMenuShortcut>
 					</DropdownMenuItem>
 				</DropdownMenuContent>
 			</DropdownMenu>
@@ -163,11 +194,34 @@ export function ContextMenuDemo(_: { props: Props }) {
 				<ContextMenuContent>
 					<ContextMenuItem onClick={() => setLast("open")}>
 						Open in editor
+						<ContextMenuShortcut>⏎</ContextMenuShortcut>
 					</ContextMenuItem>
-					<ContextMenuItem onClick={() => setLast("copy")}>Copy path</ContextMenuItem>
+					<ContextMenuItem onClick={() => setLast("copy")}>
+						Copy path
+						<ContextMenuShortcut>⌘C</ContextMenuShortcut>
+					</ContextMenuItem>
+					<ContextMenuSeparator />
+					<ContextMenuSub>
+						<ContextMenuSubTrigger>Arrange</ContextMenuSubTrigger>
+						<ContextMenuSubContent>
+							<ContextMenuItem onClick={() => setLast("bring-to-front")}>
+								Bring to front
+							</ContextMenuItem>
+							<ContextMenuItem onClick={() => setLast("bring-forward")}>
+								Bring forward
+							</ContextMenuItem>
+							<ContextMenuItem onClick={() => setLast("send-backward")}>
+								Send backward
+							</ContextMenuItem>
+							<ContextMenuItem onClick={() => setLast("send-to-back")}>
+								Send to back
+							</ContextMenuItem>
+						</ContextMenuSubContent>
+					</ContextMenuSub>
 					<ContextMenuSeparator />
 					<ContextMenuItem destructive onClick={() => setLast("delete")}>
 						Delete
+						<ContextMenuShortcut>⌫</ContextMenuShortcut>
 					</ContextMenuItem>
 				</ContextMenuContent>
 			</ContextMenu>

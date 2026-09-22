@@ -64,6 +64,10 @@ export { default as ContextMenuContent } from "./context-menu/context-menu-conte
 export { default as ContextMenuItem } from "./context-menu/context-menu-item.svelte";
 export { default as ContextMenuLabel } from "./context-menu/context-menu-label.svelte";
 export { default as ContextMenuSeparator } from "./context-menu/context-menu-separator.svelte";
+export { default as ContextMenuShortcut } from "./context-menu/context-menu-shortcut.svelte";
+export { default as ContextMenuSub } from "./context-menu/context-menu-sub.svelte";
+export { default as ContextMenuSubContent } from "./context-menu/context-menu-sub-content.svelte";
+export { default as ContextMenuSubTrigger } from "./context-menu/context-menu-sub-trigger.svelte";
 export { default as ContextMenuTrigger } from "./context-menu/context-menu-trigger.svelte";
 export { default as Conversation } from "./conversation/conversation.svelte";
 export { default as CopyButton } from "./copy-button/copy-button.svelte";
@@ -90,6 +94,10 @@ export { default as DropdownMenuContent } from "./dropdown-menu/dropdown-menu-co
 export { default as DropdownMenuItem } from "./dropdown-menu/dropdown-menu-item.svelte";
 export { default as DropdownMenuLabel } from "./dropdown-menu/dropdown-menu-label.svelte";
 export { default as DropdownMenuSeparator } from "./dropdown-menu/dropdown-menu-separator.svelte";
+export { default as DropdownMenuShortcut } from "./dropdown-menu/dropdown-menu-shortcut.svelte";
+export { default as DropdownMenuSub } from "./dropdown-menu/dropdown-menu-sub.svelte";
+export { default as DropdownMenuSubContent } from "./dropdown-menu/dropdown-menu-sub-content.svelte";
+export { default as DropdownMenuSubTrigger } from "./dropdown-menu/dropdown-menu-sub-trigger.svelte";
 export { default as DropdownMenuTrigger } from "./dropdown-menu/dropdown-menu-trigger.svelte";
 export { type DiffLine, default as FileDiff } from "./file-diff/file-diff.svelte";
 export { default as FileTree } from "./file-tree/file-tree.svelte";

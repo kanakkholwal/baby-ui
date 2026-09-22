@@ -72,6 +72,10 @@ export {
 	ContextMenuItem,
 	ContextMenuLabel,
 	ContextMenuSeparator,
+	ContextMenuShortcut,
+	ContextMenuSub,
+	ContextMenuSubContent,
+	ContextMenuSubTrigger,
 	ContextMenuTrigger,
 } from "./context-menu/context-menu";
 export { Conversation, type ConversationProps } from "./conversation/conversation";
@@ -108,6 +112,10 @@ export {
 	DropdownMenuItem,
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
+	DropdownMenuShortcut,
+	DropdownMenuSub,
+	DropdownMenuSubContent,
+	DropdownMenuSubTrigger,
 	DropdownMenuTrigger,
 } from "./dropdown-menu/dropdown-menu";
 export { type DiffLine, FileDiff, type FileDiffProps } from "./file-diff/file-diff";

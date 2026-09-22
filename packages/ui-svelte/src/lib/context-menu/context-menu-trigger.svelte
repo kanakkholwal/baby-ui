@@ -1,20 +1,12 @@
 <script lang="ts">
-import type { Snippet } from "svelte";
-import { getContextMenu } from "./context";
+import { ContextMenu as ContextMenuPrimitive } from "bits-ui";
+import { cn } from "../lib/cn";
 
-let { children }: { children?: Snippet } = $props();
-
-const menu = getContextMenu();
+let { class: classProp, ...rest }: ContextMenuPrimitive.TriggerProps = $props();
 </script>
 
-<!-- svelte-ignore a11y_no_static_element_interactions -->
-<div
+<ContextMenuPrimitive.Trigger
+	{...rest}
 	data-slot="context-menu-trigger"
-	class="contents"
-	oncontextmenu={(event) => {
-		event.preventDefault();
-		menu.openAt(event.clientX, event.clientY);
-	}}
->
-	{@render children?.()}
-</div>
+	class={cn("contents", classProp)}
+/>
