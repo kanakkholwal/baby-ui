@@ -17,7 +17,8 @@
 		"lint": "biome check .",
 		"format": "biome check --write .",
 		"fonts": "node scripts/sync-fonts.mjs",
-		"size": "node scripts/check-worker-size.mjs"
+		"size": "node scripts/check-worker-size.mjs",
+		"test:chart": "node --test scripts/test-chart-core.mjs"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.5.14",

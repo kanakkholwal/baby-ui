@@ -102,6 +102,13 @@ export const ComponentSpecSchema = z.object({
 export type ComponentSpec = z.infer<typeof ComponentSpecSchema>;
 export type ComponentSpecInput = z.input<typeof ComponentSpecSchema>;
 
+/** Site path of a component page. Charts live under their own top-level route. */
+export function docsPath(spec: Pick<ComponentSpec, "category" | "slug">): string {
+	return spec.category === "charts"
+		? `/charts/${spec.slug}`
+		: `/components/${spec.category}/${spec.slug}`;
+}
+
 /** Authoring helper: validates at module load so a bad spec fails the build, not a request. */
 export function defineComponent(spec: ComponentSpecInput): ComponentSpec {
 	return ComponentSpecSchema.parse(spec);

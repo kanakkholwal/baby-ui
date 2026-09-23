@@ -1,5 +1,5 @@
 import type { Category, ComponentSpec } from "@baby-ui/registry-schema";
-import { CATEGORIES } from "@baby-ui/registry-schema";
+import { CATEGORIES, docsPath } from "@baby-ui/registry-schema";
 import { specs } from "@baby-ui/registry-schema/components";
 
 export const CATEGORY_LABEL: Record<Category, string> = {
@@ -19,7 +19,8 @@ export const CATEGORY_BLURB: Record<Category, string> = {
 	animated: "Pieces where the motion is the point.",
 	agents: "Interface parts for products that talk back: messages, tools, reasoning.",
 	text: "Copy that moves: reveals, swaps, hovers and loops built for headlines and labels.",
-	charts: "SVG charts on d3 with keyboard, screen-reader and reduced-motion support built in.",
+	charts:
+		"SVG charts on d3 with keyboard, screen-reader and reduced-motion support built in.",
 };
 
 /** Charts live under their own top-level route; every other category under /components. */
@@ -27,9 +28,7 @@ export function categoryHref(category: Category): string {
 	return category === "charts" ? "/charts" : `/components/${category}`;
 }
 
-export function specHref(spec: Pick<ComponentSpec, "category" | "slug">): string {
-	return `${categoryHref(spec.category)}/${spec.slug}`;
-}
+export const specHref = docsPath;
 
 /** Nav entries, derived from the specs so a new component shows up without edits here. */
 export function navCategories(): { href: string; label: string; match: string }[] {
@@ -79,23 +78,27 @@ export type SidebarGroup = {
 };
 
 /** `scope` splits the charts sidebar from the components sidebar. */
-export function sidebarGroups(scope: "components" | "charts" | "all" = "all"): SidebarGroup[] {
+export function sidebarGroups(
+	scope: "components" | "charts" | "all" = "all",
+): SidebarGroup[] {
 	return CATEGORIES.filter((c) =>
 		scope === "all" ? true : scope === "charts" ? c === "charts" : c !== "charts",
-	).map((category) => ({
-		category,
-		label: CATEGORY_LABEL[category],
-		// Alphabetical: the sidebar is for finding a known name, not for browsing.
-		items: specs
-			.filter((s) => s.category === category)
-			.map((s) => ({
-				slug: s.slug,
-				name: s.name,
-				href: specHref(s),
-				status: s.status,
-			}))
-			.sort((a, b) => a.name.localeCompare(b.name)),
-	})).filter((g) => g.items.length > 0);
+	)
+		.map((category) => ({
+			category,
+			label: CATEGORY_LABEL[category],
+			// Alphabetical: the sidebar is for finding a known name, not for browsing.
+			items: specs
+				.filter((s) => s.category === category)
+				.map((s) => ({
+					slug: s.slug,
+					name: s.name,
+					href: specHref(s),
+					status: s.status,
+				}))
+				.sort((a, b) => a.name.localeCompare(b.name)),
+		}))
+		.filter((g) => g.items.length > 0);
 }
 
 export function findSpec(category: string, slug: string): ComponentSpec | undefined {
@@ -109,8 +112,8 @@ export function adjacentComponents(
 	category: string,
 	slug: string,
 ): { prev: AdjacentComponent | null; next: AdjacentComponent | null } {
-	const flat = sidebarGroups(category === "charts" ? "charts" : "components").flatMap((group) =>
-		group.items.map((item) => ({ ...item, category: group.category })),
+	const flat = sidebarGroups(category === "charts" ? "charts" : "components").flatMap(
+		(group) => group.items.map((item) => ({ ...item, category: group.category })),
 	);
 	const index = flat.findIndex(
 		(item) => item.category === category && item.slug === slug,

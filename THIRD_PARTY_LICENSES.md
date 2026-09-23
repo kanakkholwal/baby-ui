@@ -15,6 +15,11 @@ notices are reproduced here as those licenses require.
 - Source: https://beui.dev
 - License: MIT
 
+## bklit-ui
+
+- Source: https://github.com/bklit/bklit-ui
+- License: MIT
+
 ## sivir-ui
 
 - Source: https://github.com/aidan-neel/sivir-ui

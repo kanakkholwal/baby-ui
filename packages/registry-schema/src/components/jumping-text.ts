@@ -30,6 +30,7 @@ export const jumpingText = defineComponent({
 			type: "number",
 			description:
 				"Delay step between units. Defaults to 50 for words, 10 for characters.",
+			default: 50,
 			control: { kind: "number", min: 0, max: 150, step: 5 },
 		},
 		{

@@ -49,6 +49,32 @@ export { default as CardFooter } from "./card/card-footer.svelte";
 export { default as CardHeader } from "./card/card-header.svelte";
 export { default as CardTitle } from "./card/card-title.svelte";
 export type { CardVariant } from "./card/variants";
+export { default as CartesianGrid } from "./chart/cartesian-grid.svelte";
+export { default as ChartContainer } from "./chart/chart-container.svelte";
+export { default as ChartLegend } from "./chart/chart-legend.svelte";
+export { default as ChartLegendContent } from "./chart/chart-legend-content.svelte";
+export { default as ChartStyle } from "./chart/chart-style.svelte";
+export { default as ChartTooltip } from "./chart/chart-tooltip.svelte";
+export { default as ChartTooltipContent } from "./chart/chart-tooltip-content.svelte";
+export {
+	type ActiveContextValue,
+	type ChartConfig,
+	type ChartContextValue,
+	type PlotContextValue,
+	useActivePoint,
+	useChart,
+	usePlot,
+} from "./chart/context";
+export type { ActivePoint, ChartStatus, Datum, FadeEdges, Margin } from "./chart/core";
+export { default as TimeSeriesChart } from "./chart/time-series-chart.svelte";
+export type {
+	ChartAspect,
+	ChartGridVariant,
+	ChartLegendAlign,
+	ChartTooltipIndicator,
+} from "./chart/variants";
+export { default as XAxis } from "./chart/x-axis.svelte";
+export { default as YAxis } from "./chart/y-axis.svelte";
 export { default as ChatComposer } from "./chat-composer/chat-composer.svelte";
 export type { ChatMessage, ChatTopic } from "./chat-composer/types";
 export { default as Checkbox } from "./checkbox/checkbox.svelte";
@@ -195,6 +221,9 @@ export { default as JumpingText } from "./jumping-text/jumping-text.svelte";
 export type { JumpingTextMode, JumpingTextSize } from "./jumping-text/variants";
 export { default as Label } from "./label/label.svelte";
 export { cn } from "./lib/cn";
+export { default as Line } from "./line-chart/line.svelte";
+export { default as LineChart } from "./line-chart/line-chart.svelte";
+export type { LineCurve, LineVariant } from "./line-chart/variants";
 export { default as LoadingState } from "./loading-state/loading-state.svelte";
 export type { LoadingStateVariant } from "./loading-state/types";
 export { default as Markdown } from "./markdown/markdown.svelte";

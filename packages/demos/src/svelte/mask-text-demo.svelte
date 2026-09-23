@@ -1,7 +1,13 @@
 <script lang="ts">
-import { MaskText } from "@baby-ui/svelte";
+import { MaskText, type MaskTextSize } from "@baby-ui/svelte";
 
-let { props: _props = {} }: { props?: Record<string, unknown> } = $props();
+let { props = {} }: { props?: Record<string, unknown> } = $props();
 </script>
 
-<MaskText revealText="Hello there" baseText="Move your cursor" />
+<MaskText
+	revealText={(props.revealText as string) || "Hello there"}
+	baseText={(props.baseText as string) || "Move your cursor"}
+	revealSize={Number(props.revealSize ?? 240)}
+	durationMs={Number(props.durationMs ?? 500)}
+	size={(props.size as MaskTextSize) ?? "md"}
+/>

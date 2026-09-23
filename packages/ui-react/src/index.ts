@@ -55,6 +55,45 @@ export {
 	type CardVariant,
 } from "./card/card";
 export {
+	CartesianGrid,
+	type CartesianGridProps,
+	XAxis,
+	type XAxisProps,
+	YAxis,
+	type YAxisProps,
+} from "./chart/axes";
+export {
+	type ChartConfig,
+	ChartContainer,
+	type ChartContainerProps,
+	ChartLegend,
+	ChartLegendContent,
+	type ChartLegendContentProps,
+	ChartStyle,
+	useChart,
+} from "./chart/chart";
+export type { ActivePoint, ChartStatus, Datum, FadeEdges, Margin } from "./chart/core";
+export {
+	type ActiveContextValue,
+	type PlotContextValue,
+	TimeSeriesChart,
+	type TimeSeriesChartProps,
+	useActivePoint,
+	usePlot,
+} from "./chart/time-series";
+export {
+	ChartTooltip,
+	ChartTooltipContent,
+	type ChartTooltipContentProps,
+	type ChartTooltipProps,
+} from "./chart/tooltip";
+export type {
+	ChartAspect,
+	ChartGridVariant,
+	ChartLegendAlign,
+	ChartTooltipIndicator,
+} from "./chart/variants";
+export {
 	ChatComposer,
 	type ChatComposerProps,
 	type ChatMessage,
@@ -238,6 +277,13 @@ export { JumpingText, type JumpingTextProps } from "./jumping-text/jumping-text"
 export type { JumpingTextMode, JumpingTextSize } from "./jumping-text/variants";
 export { Label, type LabelProps } from "./label/label";
 export { cn } from "./lib/cn";
+export {
+	Line,
+	LineChart,
+	type LineChartProps,
+	type LineProps,
+} from "./line-chart/line-chart";
+export type { LineCurve, LineVariant } from "./line-chart/variants";
 export {
 	LoadingState,
 	type LoadingStateProps,

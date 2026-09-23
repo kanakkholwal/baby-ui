@@ -7,6 +7,11 @@ import { toJavaScript } from "./tojs";
 const USAGE_DIR = resolve(REPO_ROOT, "packages/demos/src/usage");
 
 const EXT: Record<Framework, string> = { react: "tsx", svelte: "svelte" };
+/** `@baby-ui/react/chart` names another item, so one snippet can import a chart and its base. */
+const SUBPATH: Record<Framework, RegExp> = {
+	react: /@baby-ui\/react(?:\/([a-z0-9-]+))?/g,
+	svelte: /@baby-ui\/svelte(?:\/([a-z0-9-]+))?/g,
+};
 const PACKAGE: Record<Framework, RegExp> = {
 	react: /@baby-ui\/react/g,
 	svelte: /@baby-ui\/svelte/g,
@@ -20,7 +25,10 @@ export function usagePath(slug: string, framework: Framework): string {
 function rewritePackage(source: string, framework: Framework, slug: string): string {
 	const { uiTarget, libAlias } = FRAMEWORK[framework];
 	const base = framework === "react" ? `@/${uiTarget}` : `${libAlias}/components/ui`;
-	return source.replace(PACKAGE[framework], `${base}/${slug}`);
+	return source.replace(
+		SUBPATH[framework],
+		(_m, sub?: string) => `${base}/${sub ?? slug}`,
+	);
 }
 
 export type UsageVariant = { path: string; ts: string; js: string | null };

@@ -41,6 +41,11 @@ const SHADCN_VARS = new Set(
 		"input",
 		"ring",
 		"radius",
+		"chart-1",
+		"chart-2",
+		"chart-3",
+		"chart-4",
+		"chart-5",
 	].flatMap((n) => [`--${n}`, `--color-${n}`]),
 );
 const SHADCN_THEME = new Set([

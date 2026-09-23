@@ -6,7 +6,11 @@ let { props = {} }: { props?: Record<string, unknown> } = $props();
 
 <p class="text-2xl text-foreground">
 	Every
-	<DoubleUnderline as="span" trigger={(props.trigger as DoubleUnderlineTrigger) ?? "hover"}>
+	<DoubleUnderline
+		as="span"
+		trigger={(props.trigger as DoubleUnderlineTrigger) ?? "hover"}
+		durationMs={Number(props.durationMs ?? 500)}
+	>
 		component
 	</DoubleUnderline>
 	ships in both ports.

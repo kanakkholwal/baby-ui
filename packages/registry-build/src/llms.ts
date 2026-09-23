@@ -1,4 +1,4 @@
-import type { ComponentSpec } from "@baby-ui/registry-schema";
+import { type ComponentSpec, docsPath } from "@baby-ui/registry-schema";
 import { REGISTRY_NAME, REGISTRY_URL, SITE_URL } from "./config";
 
 export function buildLlmsTxt(specs: ComponentSpec[]): string {
@@ -33,7 +33,7 @@ export function buildLlmsTxt(specs: ComponentSpec[]): string {
 		for (const spec of specs.filter((s) => s.category === category)) {
 			const frameworks = Object.keys(spec.impl).sort().join(", ");
 			lines.push(
-				`- **${spec.slug}** (${frameworks}) — ${spec.description} [${SITE_URL}/components/${spec.category}/${spec.slug}]`,
+				`- **${spec.slug}** (${frameworks}) — ${spec.description} [${SITE_URL}${docsPath(spec)}]`,
 			);
 		}
 		lines.push("");

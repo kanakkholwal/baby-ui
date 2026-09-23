@@ -6,5 +6,10 @@ let text = $derived((props.text as string) || "Gibberish");
 </script>
 
 {#key text}
-	<GibberishText {text} size={(props.size as GibberishTextSize) ?? "lg"} class="text-foreground" />
+	<GibberishText
+		{text}
+		speedMs={Number(props.speedMs ?? 24)}
+		size={(props.size as GibberishTextSize) ?? "lg"}
+		class="text-foreground"
+	/>
 {/key}

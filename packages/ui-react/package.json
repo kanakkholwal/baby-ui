@@ -5,7 +5,8 @@
 	"license": "Apache-2.0",
 	"type": "module",
 	"exports": {
-		".": "./src/index.ts"
+		".": "./src/index.ts",
+		"./*": "./src/index.ts"
 	},
 	"scripts": {
 		"check": "tsc --noEmit"
@@ -14,12 +15,18 @@
 		"@base-ui/react": "catalog:",
 		"clsx": "catalog:",
 		"cmdk": "catalog:",
+		"d3-array": "catalog:",
+		"d3-scale": "catalog:",
+		"d3-shape": "catalog:",
 		"sonner": "catalog:",
 		"tailwind-merge": "catalog:",
 		"tailwind-variants": "catalog:",
 		"vaul": "catalog:"
 	},
 	"devDependencies": {
+		"@types/d3-array": "catalog:",
+		"@types/d3-scale": "catalog:",
+		"@types/d3-shape": "catalog:",
 		"@types/react": "catalog:",
 		"@types/react-dom": "catalog:",
 		"react": "catalog:",

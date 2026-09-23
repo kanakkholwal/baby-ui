@@ -7,4 +7,5 @@ let { props = {} }: { props?: Record<string, unknown> } = $props();
 <TextBorderAnimation
 	text={(props.text as string) || "Programming"}
 	size={(props.size as TextBorderAnimationSize) ?? "lg"}
+	durationMs={Number(props.durationMs ?? 300)}
 />

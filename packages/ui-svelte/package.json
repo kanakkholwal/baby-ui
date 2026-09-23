@@ -9,22 +9,32 @@
 		".": {
 			"svelte": "./src/lib/index.ts",
 			"types": "./src/lib/index.ts"
+		},
+		"./*": {
+			"svelte": "./src/lib/index.ts",
+			"types": "./src/lib/index.ts"
 		}
 	},
 	"scripts": {
 		"check": "svelte-check --tsconfig ./tsconfig.json"
 	},
 	"dependencies": {
-		"svelte-sonner": "catalog:",
 		"bits-ui": "catalog:",
-		"vaul-svelte": "catalog:",
 		"clsx": "catalog:",
+		"d3-array": "catalog:",
+		"d3-scale": "catalog:",
+		"d3-shape": "catalog:",
 		"svelte": "catalog:",
+		"svelte-sonner": "catalog:",
 		"tailwind-merge": "catalog:",
-		"tailwind-variants": "catalog:"
+		"tailwind-variants": "catalog:",
+		"vaul-svelte": "catalog:"
 	},
 	"devDependencies": {
 		"@sveltejs/vite-plugin-svelte": "catalog:",
+		"@types/d3-array": "catalog:",
+		"@types/d3-scale": "catalog:",
+		"@types/d3-shape": "catalog:",
 		"svelte-check": "catalog:",
 		"typescript": "catalog:",
 		"vite": "catalog:"

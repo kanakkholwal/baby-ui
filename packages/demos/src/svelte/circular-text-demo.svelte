@@ -5,6 +5,8 @@ let { props = {} }: { props?: Record<string, unknown> } = $props();
 </script>
 
 <CircularText
-	text="CIRCULAR TEXT · CIRCULAR TEXT · "
+	text={(props.text as string) || "CIRCULAR TEXT · CIRCULAR TEXT · "}
+	spinSeconds={Number(props.spinSeconds ?? 30)}
+	radius={Number(props.radius ?? 80)}
 	direction={(props.direction as CircularTextDirection) ?? "clockwise"}
 />

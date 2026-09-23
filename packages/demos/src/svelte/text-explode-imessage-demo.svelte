@@ -1,7 +1,18 @@
 <script lang="ts">
-import { TextExplodeIMessage } from "@baby-ui/svelte";
+import {
+	TextExplodeIMessage,
+	type TextExplodeIMessageMode,
+	type TextExplodeIMessageSize,
+} from "@baby-ui/svelte";
 
-let { props: _props = {} }: { props?: Record<string, unknown> } = $props();
+let { props = {} }: { props?: Record<string, unknown> } = $props();
 </script>
 
-<TextExplodeIMessage text="Big news" mode="loop" />
+{#key String(props.durationMs ?? "")}
+	<TextExplodeIMessage
+		text={(props.text as string) || "Big news"}
+		mode={(props.mode as TextExplodeIMessageMode) ?? "loop"}
+		durationMs={Number(props.durationMs ?? 4000)}
+		size={(props.size as TextExplodeIMessageSize) ?? "lg"}
+	/>
+{/key}

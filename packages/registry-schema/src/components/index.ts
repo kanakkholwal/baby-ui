@@ -12,6 +12,7 @@ import { boldCopy } from "./bold-copy";
 import { breadcrumb } from "./breadcrumb";
 import { button } from "./button";
 import { card } from "./card";
+import { chart, lineChart } from "./chart";
 import { chatComposer } from "./chat-composer";
 import { checkbox } from "./checkbox";
 import { circularText } from "./circular-text";
@@ -221,6 +222,8 @@ export const specs: ComponentSpec[] = [
 	ticker,
 	scrollReveal,
 	textExplodeIMessage,
+	chart,
+	lineChart,
 ];
 
 export function getSpec(slug: string): ComponentSpec | undefined {

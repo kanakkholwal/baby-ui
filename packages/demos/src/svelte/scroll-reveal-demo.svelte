@@ -1,9 +1,13 @@
 <script lang="ts">
-import { ScrollReveal } from "@baby-ui/svelte";
+import { ScrollReveal, type ScrollRevealSize } from "@baby-ui/svelte";
 
-let { props: _props = {} }: { props?: Record<string, unknown> } = $props();
+let { props = {} }: { props?: Record<string, unknown> } = $props();
 </script>
 
 <ScrollReveal
-	text="Scroll inside this box to reveal each word of this sentence, one at a time, as you go."
+	text={(props.text as string) ||
+		"Scroll inside this box to reveal each word of this sentence, one at a time, as you go."}
+	minOpacity={Number(props.minOpacity ?? 0.5)}
+	blur={props.blur !== false}
+	size={(props.size as ScrollRevealSize) ?? "md"}
 />

@@ -42,6 +42,21 @@
 	/* Derived, so focus reads as the brand colour in every theme without a second knob. */
 	--ring: color-mix(in oklch, var(--primary) 50%, transparent);
 
+	/* Series order is the colour-blind safety mechanism; never cycle or reorder. Sub-3:1
+	   light slots are relieved by the legend and the data table every chart ships. */
+	--chart-1: #2a78d6;
+	--chart-2: #eb6834;
+	--chart-3: #1baf7a;
+	--chart-4: #eda100;
+	--chart-5: #e87ba4;
+	--chart-scale-1: #b7d3f6;
+	--chart-scale-2: #6da7ec;
+	--chart-scale-3: #2a78d6;
+	--chart-scale-4: #1c5cab;
+	--chart-scale-5: #104281;
+	--chart-positive: #2a78d6;
+	--chart-negative: #e34948;
+
 	--radius: 0.625rem;
 
 	/* All three are self-hosted: Inter and JetBrains Mono via fontsource, Satoshi vendored. */
@@ -67,6 +82,19 @@
 	--glass-bg: rgb(28 28 28 / 0.55);
 	--glass-border: rgb(255 255 255 / 0.08);
 	--gradient-bg: linear-gradient(135deg, oklch(19% 0 0) 0%, oklch(22% 0.008 210) 100%);
+	--chart-1: #3987e5;
+	--chart-2: #d95926;
+	--chart-3: #199e70;
+	--chart-4: #c98500;
+	--chart-5: #d55181;
+	/* Dark flips the anchor: near-zero recedes into the surface, peaks read brightest. */
+	--chart-scale-1: #184f95;
+	--chart-scale-2: #256abf;
+	--chart-scale-3: #3987e5;
+	--chart-scale-4: #6da7ec;
+	--chart-scale-5: #b7d3f6;
+	--chart-positive: #3987e5;
+	--chart-negative: #e66767;
 	--gradient-accent: linear-gradient(
 		to right,
 		oklch(80% 0.18 195) 0%,

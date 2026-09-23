@@ -6,7 +6,10 @@ let { props = {} }: { props?: Record<string, unknown> } = $props();
 
 <p class="text-lg text-foreground">
 	Read the
-	<MetisText direction={(props.direction as MetisTextDirection) ?? "left"}>
+	<MetisText
+		direction={(props.direction as MetisTextDirection) ?? "left"}
+		durationMs={Number(props.durationMs ?? 300)}
+	>
 		full changelog
 	</MetisText>
 	.

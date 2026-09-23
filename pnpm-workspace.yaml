@@ -44,6 +44,12 @@ catalog:
   tailwind-variants: ^3.3.1
 
   "@base-ui/react": ^1.8.0
+  d3-array: ^3.2.4
+  d3-scale: ^4.0.2
+  d3-shape: ^3.2.0
+  "@types/d3-array": ^3.2.2
+  "@types/d3-scale": ^4.0.9
+  "@types/d3-shape": ^3.2.0
   shiki: ^4.4.3
   "@shikijs/langs": ^4.4.3
   "@shikijs/themes": ^4.4.3

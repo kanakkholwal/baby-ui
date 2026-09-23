@@ -23,6 +23,7 @@ import {
 	TabsDemo,
 	TaskStepsDemo,
 } from "./agentic";
+import { ChartDemo, LineChartDemo } from "./charts";
 import { ChatComposerDemo } from "./chat-composer";
 import { CollabCardDemo } from "./collab-card";
 import {
@@ -338,6 +339,8 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"responsive-dialog": ResponsiveDialogDemo,
 	"context-cards": ContextCardsDemo,
 	"collab-card": CollabCardDemo,
+	chart: ChartDemo,
+	"line-chart": LineChartDemo,
 	"filter-table": FilterTableDemo,
 	"diff-table": DiffTableDemo,
 	"records-table": RecordsTableDemo,

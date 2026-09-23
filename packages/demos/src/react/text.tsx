@@ -295,7 +295,9 @@ export function TextTransitionDemo({ props }: { props: Props }) {
 	return (
 		<TextTransition
 			key={
-				(props.variant as string) + String(props.durationMs ?? "") + String(props.staggerMs ?? "")
+				(props.variant as string) +
+				String(props.durationMs ?? "") +
+				String(props.staggerMs ?? "")
 			}
 			text={(props.text as string) || "Ship it in seconds"}
 			variant={(props.variant as TextTransitionVariant) ?? "blur-out-up"}

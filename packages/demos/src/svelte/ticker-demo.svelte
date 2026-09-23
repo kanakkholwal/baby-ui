@@ -1,7 +1,11 @@
 <script lang="ts">
-import { Ticker } from "@baby-ui/svelte";
+import { Ticker, type TickerSize } from "@baby-ui/svelte";
 
-let { props: _props = {} }: { props?: Record<string, unknown> } = $props();
+let { props = {} }: { props?: Record<string, unknown> } = $props();
 </script>
 
-<Ticker value="1,024" />
+<Ticker
+	value={(props.value as string) || "1,024"}
+	durationMs={Number(props.durationMs ?? 500)}
+	size={(props.size as TickerSize) ?? "md"}
+/>

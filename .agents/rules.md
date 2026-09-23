@@ -139,9 +139,39 @@ Any agent (Claude Code, Codex, Cursor, Copilot) should read this file first.
 - Motion libraries: none in base components; elsewhere prefer CSS, then vaul / sonner
   (the shadcn choices) over framer-motion.
 
+## Charts (category `charts`, served at `/charts`)
+
+Plan and bklit motion numbers: `.notes/10-charts-plan.md`.
+
+- **HARD RULE:** charts are d3 modules (`d3-scale`, `d3-shape`, `d3-array`, ...) plus plain
+  SVG in both ports. No visx, recharts, layerchart, motion, framer-motion or svelte/motion.
+  Public parts keep shadcn names (`ChartContainer`, `ChartConfig`, `ChartTooltip`,
+  `ChartTooltipContent`, `ChartLegend`, `ChartLegendContent`, `data-slot="chart"`).
+- **HARD RULE:** the one sanctioned JS motion path is the `chart/motion.ts` kernel (tween +
+  spring), byte-identical in both ports, for what CSS cannot drive (scales, per-frame
+  paths, arcs, retargeted springs). Fades, dims and label slides stay CSS. Only chart
+  items may import it. Phases advance on animation completion, never on a duration timer.
+- Chart pure logic (scales, paths, ticks, geometry, kernel) is plain TS shared verbatim
+  across ports and unit tested once.
+- Composition never inspects child component names. Children register through context;
+  SVG layering is document order.
+- The chart tooltip follows the pointer, so it is not a Base UI / bits-ui Tooltip (a
+  recorded primitives exception). Legend series toggles use the Toggle primitive.
+- **HARD RULE:** every chart is keyboard navigable (arrows move the active datum, Escape
+  clears), announces the active datum in a polite live region, ships a generated summary
+  and an `sr-only` data table, never encodes by colour alone, and honours reduced motion
+  (end state immediately, no loops).
+- Chart colours come only from `--chart-1..5`, `--chart-scale-1..5`, `--chart-positive`,
+  `--chart-negative` and existing chrome tokens. Series slots are assigned in fixed order,
+  never cycled; colour follows the entity, not its rank. Any palette change reruns the
+  dataviz `validate_palette.js` in both modes and pastes the output.
+- No hardcoded locale or English copy: `locale` and formatter props on axes and tooltip.
+- Active datum, hidden series, selection and status are controlled props with
+  uncontrolled defaults. Never port from bklit `packages/studio` (proprietary).
+
 ## Gates before saying done
 
-`pnpm lint` · `node scripts/check-comments.mjs --all` · `node scripts/check-import-extensions.mjs`
+`pnpm lint` · `node scripts/check-comments.mjs --all` · `node scripts/check-import-extensions.mjs` · `pnpm test:chart`
 · `pnpm turbo check` · `pnpm turbo registry` · `pnpm turbo build` · `pnpm size`.
 Paste the outputs. If `apps/site` `pnpm dev` is running, adapter-cloudflare fails with EBUSY
 on `.svelte-kit/cloudflare`; say so rather than working around it.

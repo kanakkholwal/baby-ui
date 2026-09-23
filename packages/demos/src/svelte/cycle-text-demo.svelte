@@ -8,5 +8,12 @@ const words = ["designers", "developers", "founders", "teams"];
 
 <p class="text-2xl text-foreground">
 	Built for
-	<CycleText {words} size={(props.size as CycleTextSize) ?? "lg"} class="font-semibold text-primary" />
+	<CycleText
+		{words}
+		defaultIndex={Number(props.defaultIndex ?? 0)}
+		intervalMs={Number(props.intervalMs ?? 1300)}
+		durationMs={Number(props.durationMs ?? 260)}
+		size={(props.size as CycleTextSize) ?? "lg"}
+		class="font-semibold text-primary"
+	/>
 </p>

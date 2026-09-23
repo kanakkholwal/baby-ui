@@ -2,6 +2,7 @@ import { readFile } from "node:fs/promises";
 import { basename, resolve } from "node:path";
 import {
 	type ComponentSpec,
+	docsPath,
 	type Framework,
 	REGISTRY_ITEM_SCHEMA_URL,
 	type RegistryItem,
@@ -74,7 +75,7 @@ export async function buildItem(
 			tier: spec.tier,
 			status: spec.status,
 			frameworks: Object.keys(spec.impl),
-			docs: `${SITE_URL}/components/${spec.category}/${spec.slug}`,
+			docs: `${SITE_URL}${docsPath(spec)}`,
 			...(spec.licenseOrigin ? { licenseOrigin: spec.licenseOrigin } : {}),
 		},
 	});
