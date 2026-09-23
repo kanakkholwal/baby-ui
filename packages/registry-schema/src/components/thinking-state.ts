@@ -32,26 +32,26 @@ export const thinkingState = defineComponent({
 			description:
 				"Whether the trace is still in progress, same contract as Reasoning's own `thinking` prop. Drives the shimmered header and auto-expand; the component has no internal timer of its own.",
 			default: false,
-			control: { kind: "boolean" },
+			control: { kind: "none" },
 		},
 		{
 			name: "activeLabel",
 			type: "string",
 			description: "Header text while `thinking` is true (shimmered).",
-			control: { kind: "text" },
+			control: { kind: "none" },
 		},
 		{
 			name: "doneLabel",
 			type: "string",
 			description: "Header text once `thinking` is false.",
-			control: { kind: "text" },
+			control: { kind: "none" },
 		},
 		{
 			name: "query",
 			type: "string",
 			description:
 				"Optional search-query line shown above the rows (the `search` variant).",
-			control: { kind: "text" },
+			control: { kind: "none" },
 		},
 	],
 	motion: {

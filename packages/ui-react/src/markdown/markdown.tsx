@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { cn } from "../lib/cn";
 
 type Block =
@@ -64,9 +65,10 @@ export interface MarkdownProps {
 }
 
 export function Markdown({ content, className }: MarkdownProps) {
+	const blocks = useMemo(() => parse(content), [content]);
 	return (
 		<div className={cn("flex flex-col gap-3 text-sm leading-relaxed", className)}>
-			{parse(content).map((block, i) => {
+			{blocks.map((block, i) => {
 				const key = i;
 				if (block.kind === "heading" && block.level === 2) {
 					return (

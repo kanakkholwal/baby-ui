@@ -34,7 +34,7 @@ const demoProps = $derived(defaultProps(spec));
 				{#await demoPromise}
 					<Spinner size="sm" label="Loading preview" class="text-muted-foreground" />
 				{:then mod}
-					{@const Demo = mod.default}
+					{const Demo = mod.default}
 					<div class="pointer-events-none scale-90 opacity-90 transition-opacity duration-300 ease-[var(--ease-out)] group-hover/card:opacity-100 motion-reduce:transition-none">
 						<Demo props={demoProps} />
 					</div>

@@ -1,11 +1,14 @@
 import { defineComponent } from "../index";
 
+const STATUSES = ["pending", "running", "done", "error"];
+
 export const tool = defineComponent({
 	slug: "tool",
 	name: "Tool Call",
 	description: "Collapsible tool invocation showing state, input and output.",
 	category: "agents",
-	status: "beta",
+	status: "stable",
+	variants: { status: STATUSES },
 	props: [
 		{
 			name: "name",
@@ -16,10 +19,10 @@ export const tool = defineComponent({
 		},
 		{
 			name: "status",
-			type: '"pending" | "running" | "done" | "error"',
+			type: STATUSES.map((v) => `"${v}"`).join(" | "),
 			description: "Current state.",
 			default: "running",
-			control: { kind: "select", options: ["pending", "running", "done", "error"] },
+			control: { kind: "select", options: STATUSES },
 		},
 		{
 			name: "input",
@@ -67,17 +70,19 @@ export const tool = defineComponent({
 			entry: "Tool",
 			files: [
 				{ path: "tool/tool.tsx", type: "registry:ui" },
+				{ path: "tool/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 		svelte: {
 			entry: "Tool",
 			files: [
 				{ path: "tool/tool.svelte", type: "registry:ui" },
+				{ path: "tool/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 	},
 	keywords: ["tool"],

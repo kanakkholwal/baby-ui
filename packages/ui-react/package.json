@@ -11,7 +11,6 @@
 	},
 	"dependencies": {
 		"@base-ui/react": "catalog:",
-		"@floating-ui/dom": "catalog:",
 		"clsx": "catalog:",
 		"cmdk": "catalog:",
 		"sonner": "catalog:",

@@ -1,8 +1,7 @@
 <script lang="ts">
 import { untrack } from "svelte";
 import { cn } from "../lib/cn";
-
-export type ToolState = "pending" | "running" | "done" | "error";
+import { type ToolState, tool } from "./variants";
 
 let {
 	name,
@@ -23,22 +22,17 @@ let {
 const id = $props.id();
 let open = $state(untrack(() => defaultOpen));
 
-const TONE: Record<ToolState, string> = {
-	pending: "text-muted-foreground",
-	running: "text-primary",
-	done: "text-[var(--success)]",
-	error: "text-[var(--destructive)]",
-};
-
 const LABEL: Record<ToolState, string> = {
 	pending: "Queued",
 	running: "Running",
 	done: "Completed",
 	error: "Failed",
 };
+
+const classes = $derived(tool({ status }));
 </script>
 
-<div class={cn("overflow-hidden rounded-xl border border-border bg-card/40", classProp)}>
+<div data-slot="tool" class={cn(classes.root(), classProp)}>
 	<button
 		type="button"
 		aria-expanded={open}
@@ -46,7 +40,7 @@ const LABEL: Record<ToolState, string> = {
 		onclick={() => (open = !open)}
 		class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm transition-colors hover:bg-foreground/[0.03]"
 	>
-		<span aria-hidden="true" class={cn("grid size-4 shrink-0 place-items-center", TONE[status])}>
+		<span aria-hidden="true" class={classes.icon()}>
 			{#if status === "running"}
 				<svg viewBox="0 0 12 12" fill="none" class="spinner size-3">
 					<circle cx="6" cy="6" r="4.4" stroke="currentColor" stroke-width="1.5" opacity="0.25" />
@@ -66,13 +60,13 @@ const LABEL: Record<ToolState, string> = {
 		</span>
 
 		<span class="flex-1 font-mono text-foreground text-xs">{name}</span>
-		<span class={cn("shrink-0 text-[11px]", TONE[status])}>{LABEL[status]}</span>
+		<span class={classes.label()}>{LABEL[status]}</span>
 		<svg
 			viewBox="0 0 16 16"
 			fill="none"
 			aria-hidden="true"
 			style:transform={open ? "rotate(180deg)" : "none"}
-			class="size-3.5 shrink-0 text-muted-foreground transition-[transform,scale,translate] duration-200 ease-[var(--ease-out)] motion-reduce:transition-none"
+			class="size-3.5 shrink-0 text-muted-foreground transition-[transform,scale,translate] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none"
 		>
 			<path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
 		</svg>
@@ -80,9 +74,8 @@ const LABEL: Record<ToolState, string> = {
 
 	<div
 		{id}
-		role="region"
 		style:grid-template-rows={open ? "1fr" : "0fr"}
-		class="grid transition-[grid-template-rows] duration-200 ease-[var(--ease-out)] motion-reduce:transition-none"
+		class="grid transition-[grid-template-rows] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none"
 	>
 		<div class="overflow-hidden">
 			<div class="flex flex-col gap-2 border-border/60 border-t p-3">

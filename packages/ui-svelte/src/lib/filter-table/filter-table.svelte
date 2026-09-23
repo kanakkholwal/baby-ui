@@ -58,7 +58,7 @@ const counts = $derived.by(() => {
 <div data-slot="filter-table" class={cn("w-full max-w-md", classProp)} {...rest}>
 	<div class="-mx-1 mb-1 flex items-center gap-1 overflow-x-auto px-1 py-1" style="scrollbar-width: none">
 		{#each FILTERS as f (f.key)}
-			{@const active = filter === f.key}
+			{const active = filter === f.key}
 			<button
 				type="button"
 				aria-pressed={active}
@@ -100,7 +100,7 @@ const counts = $derived.by(() => {
 				<span class="px-3 py-2">{labels.columns.owner}</span>
 			</div>
 			{#each rows as row (row.task)}
-				{@const shown = filter === "all" || row.status === filter}
+				{const shown = filter === "all" || row.status === filter}
 				<div
 					class="grid transition-[grid-template-rows,opacity] duration-300 ease-[var(--ease-out)]"
 					style={`grid-template-rows: ${shown ? "1fr" : "0fr"}; opacity: ${shown ? 1 : 0}`}

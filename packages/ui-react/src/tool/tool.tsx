@@ -2,15 +2,7 @@
 
 import { useId, useState } from "react";
 import { cn } from "../lib/cn";
-
-export type ToolState = "pending" | "running" | "done" | "error";
-
-const TONE: Record<ToolState, string> = {
-	pending: "text-muted-foreground",
-	running: "text-primary",
-	done: "text-[var(--success)]",
-	error: "text-[var(--destructive)]",
-};
+import { type ToolState, tool } from "./variants";
 
 const LABEL: Record<ToolState, string> = {
 	pending: "Queued",
@@ -38,14 +30,10 @@ export function Tool({
 }: ToolProps) {
 	const id = useId();
 	const [open, setOpen] = useState(defaultOpen);
+	const { root, icon, label } = tool({ status });
 
 	return (
-		<div
-			className={cn(
-				"overflow-hidden rounded-xl border border-border bg-card/40",
-				className,
-			)}
-		>
+		<div data-slot="tool" className={cn(root(), className)}>
 			<button
 				type="button"
 				aria-expanded={open}
@@ -53,10 +41,7 @@ export function Tool({
 				onClick={() => setOpen((v) => !v)}
 				className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm transition-colors hover:bg-foreground/[0.03]"
 			>
-				<span
-					aria-hidden
-					className={cn("grid size-4 shrink-0 place-items-center", TONE[status])}
-				>
+				<span aria-hidden className={icon()}>
 					{status === "running" ? (
 						<svg viewBox="0 0 12 12" fill="none" aria-hidden className="spinner size-3">
 							<circle
@@ -99,13 +84,13 @@ export function Tool({
 				</span>
 
 				<span className="flex-1 font-mono text-foreground text-xs">{name}</span>
-				<span className={cn("shrink-0 text-[11px]", TONE[status])}>{LABEL[status]}</span>
+				<span className={label()}>{LABEL[status]}</span>
 				<svg
 					viewBox="0 0 16 16"
 					fill="none"
 					aria-hidden
 					style={{ transform: open ? "rotate(180deg)" : undefined }}
-					className="size-3.5 shrink-0 text-muted-foreground transition-[transform,scale,translate] duration-200 ease-[var(--ease-out)] motion-reduce:transition-none"
+					className="size-3.5 shrink-0 text-muted-foreground transition-[transform,scale,translate] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none"
 				>
 					<path
 						d="m4 6 4 4 4-4"
@@ -120,7 +105,7 @@ export function Tool({
 			<div
 				id={id}
 				style={{ gridTemplateRows: open ? "1fr" : "0fr" }}
-				className="grid transition-[grid-template-rows] duration-200 ease-[var(--ease-out)] motion-reduce:transition-none"
+				className="grid transition-[grid-template-rows] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none"
 			>
 				<div className="overflow-hidden">
 					<div className="flex flex-col gap-2 border-border/60 border-t p-3">

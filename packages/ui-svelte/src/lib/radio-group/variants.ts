@@ -2,6 +2,7 @@ import { tv, type VariantProps } from "tailwind-variants";
 
 export const radioGroup = tv({
 	slots: {
+		root: "flex gap-2",
 		label: "inline-flex cursor-pointer items-start gap-2.5 text-foreground",
 		ring: [
 			"mt-0.5 grid shrink-0 place-items-center rounded-full border-2 border-muted-foreground/50 bg-background transition-colors",
@@ -23,9 +24,16 @@ export const radioGroup = tv({
 			lg: { label: "text-sm", ring: "size-5", dot: "size-2.5" },
 			xl: { label: "text-base", ring: "size-6", dot: "size-3" },
 		},
+		orientation: {
+			vertical: { root: "flex-col" },
+			horizontal: { root: "flex-row flex-wrap items-start" },
+		},
 	},
-	defaultVariants: { variant: "default", size: "md" },
+	defaultVariants: { variant: "default", size: "md", orientation: "vertical" },
 });
 
 export type RadioVariant = NonNullable<VariantProps<typeof radioGroup>["variant"]>;
 export type RadioSize = NonNullable<VariantProps<typeof radioGroup>["size"]>;
+export type RadioOrientation = NonNullable<
+	VariantProps<typeof radioGroup>["orientation"]
+>;

@@ -1,18 +1,12 @@
 import { cn } from "../lib/cn";
-
-const TONE = {
-	default: "text-primary",
-	success: "text-[var(--success)]",
-	warning: "text-[var(--warning)]",
-	danger: "text-[var(--destructive)]",
-};
+import { type GaugeTone, gaugeIndicator } from "./variants";
 
 export interface GaugeProps {
 	value?: number;
 	size?: number;
 	thickness?: number;
 	label?: string;
-	tone?: keyof typeof TONE;
+	tone?: GaugeTone;
 	className?: string;
 }
 
@@ -67,10 +61,7 @@ export function Gauge({
 					strokeLinecap="round"
 					strokeDasharray={`${arc} ${circumference}`}
 					strokeDashoffset={offset}
-					className={cn(
-						"transition-[stroke-dashoffset] duration-[var(--duration-overlay)] ease-[var(--ease-out)] motion-reduce:transition-none",
-						TONE[tone],
-					)}
+					className={gaugeIndicator({ tone })}
 				/>
 			</svg>
 			<span className="font-medium text-foreground text-lg tabular-nums">

@@ -74,7 +74,7 @@ export function Reasoning({
 					fill="none"
 					aria-hidden
 					style={{ transform: open ? "rotate(180deg)" : undefined }}
-					className="size-3.5 shrink-0 text-muted-foreground transition-[transform,scale,translate] duration-200 ease-[var(--ease-out)] motion-reduce:transition-none"
+					className="size-3.5 shrink-0 text-muted-foreground transition-[transform,scale,translate] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none"
 				>
 					<path
 						d="m4 6 4 4 4-4"
@@ -89,7 +89,7 @@ export function Reasoning({
 			<div
 				id={id}
 				style={{ gridTemplateRows: open ? "1fr" : "0fr" }}
-				className="grid transition-[grid-template-rows] duration-200 ease-[var(--ease-out)] motion-reduce:transition-none"
+				className="grid transition-[grid-template-rows] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none"
 			>
 				<div className="overflow-hidden">
 					<div className="border-border/60 border-t px-3 py-2.5 text-muted-foreground text-xs leading-relaxed">

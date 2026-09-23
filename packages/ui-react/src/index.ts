@@ -5,6 +5,8 @@ export {
 	type AccordionProps,
 	AccordionTrigger,
 } from "./accordion/accordion";
+export { AgentScreen, type AgentScreenProps } from "./agent-screen/agent-screen";
+export type { AgentScreenSize } from "./agent-screen/variants";
 export { Alert, AlertDescription, AlertTitle } from "./alert/alert";
 export { ALERT_ICON, type AlertVariant } from "./alert/variants";
 export {
@@ -19,6 +21,7 @@ export {
 	AlertDialogTrigger,
 } from "./alert-dialog/alert-dialog";
 export { Attachment, type AttachmentProps } from "./attachment/attachment";
+export type { AttachmentStatus } from "./attachment/variants";
 export { Avatar, AvatarFallback, AvatarImage } from "./avatar/avatar";
 export { Badge, type BadgeProps } from "./badge/badge";
 export type { BadgeSize, BadgeVariant } from "./badge/variants";
@@ -129,6 +132,8 @@ export {
 	DialogTrigger,
 	type DialogVariant,
 } from "./dialog/dialog";
+export { type DiffRow, DiffTable, type DiffTableProps } from "./diff-table/diff-table";
+export type { DiffRowChange } from "./diff-table/variants";
 export {
 	Drawer,
 	DrawerClose,
@@ -167,16 +172,33 @@ export {
 	type TableRowStatus,
 } from "./filter-table/filter-table";
 export {
+	FineTuneCard,
+	type FineTuneCardLabels,
+	type FineTuneCardProps,
+	type FineTuneField,
+	type FineTuneState,
+} from "./fine-tune-card/fine-tune-card";
+export type { FineTuneCardSize } from "./fine-tune-card/variants";
+export {
+	Flowchart,
+	type FlowchartConditionRow,
+	type FlowchartEdge,
+	type FlowchartOption,
+	type FlowchartProps,
+	type StepNode,
+} from "./flowchart/flowchart";
+export type { FlowchartBackground } from "./flowchart/variants";
+export {
 	FullscreenNav,
 	type FullscreenNavProps,
 	type NavLink,
 } from "./fullscreen-nav/fullscreen-nav";
 export { Gauge, type GaugeProps } from "./gauge/gauge";
+export type { GaugeTone } from "./gauge/variants";
 export { HoverCard, HoverCardContent, HoverCardTrigger } from "./hover-card/hover-card";
 export { Input, type InputProps } from "./input/input";
 export type { InputSize } from "./input/variants";
 export { Label, type LabelProps } from "./label/label";
-export { type AnchorPlacement, anchor, dismissable, rove } from "./lib/anchor";
 export { cn } from "./lib/cn";
 export {
 	LoadingState,
@@ -216,6 +238,7 @@ export type { QuestionLayout } from "./question/variants";
 export {
 	RadioGroup,
 	RadioGroupItem,
+	type RadioOrientation,
 	type RadioSize,
 	type RadioVariant,
 } from "./radio-group/radio-group";
@@ -273,6 +296,7 @@ export { Shortcut, type ShortcutProps } from "./shortcut/shortcut";
 export type { ShortcutSize, ShortcutVariant } from "./shortcut/variants";
 export { ShowMore, type ShowMoreProps } from "./show-more/show-more";
 export { Skeleton, type SkeletonProps } from "./skeleton/skeleton";
+export type { SkeletonShape } from "./skeleton/variants";
 export { Slider, type SliderProps } from "./slider/slider";
 export { Spinner, type SpinnerProps } from "./spinner/spinner";
 export {
@@ -317,8 +341,10 @@ export type { ThinkingStateVariant } from "./thinking-state/variants";
 export { Toaster, type ToasterProps, toast } from "./toast/toaster";
 export { Toggle, type ToggleProps } from "./toggle/toggle";
 export { ToggleGroup, ToggleGroupItem } from "./toggle-group/toggle-group";
-export { Tool, type ToolProps, type ToolState } from "./tool/tool";
+export { Tool, type ToolProps } from "./tool/tool";
+export type { ToolState } from "./tool/variants";
 export { Toolbar, ToolbarButton, type ToolbarProps } from "./toolbar/toolbar";
+export type { ToolbarOrientation } from "./toolbar/variants";
 export {
 	Tooltip,
 	TooltipContent,

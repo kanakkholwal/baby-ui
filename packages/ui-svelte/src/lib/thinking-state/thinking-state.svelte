@@ -67,7 +67,7 @@ const uid = $props.id();
 	{/if}
 	{#if r.add !== undefined}
 		<span class="shrink-0 font-mono text-[11px] tabular-nums">
-			<span class="text-[var(--success)]">+{r.add}</span> <span class="text-[var(--destructive)]">-{r.del}</span>
+			<span class="text-success">+{r.add}</span> <span class="text-destructive">-{r.del}</span>
 		</span>
 	{/if}
 {/snippet}

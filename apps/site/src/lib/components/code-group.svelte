@@ -10,8 +10,8 @@ import Tabs from "./tabs.svelte";
 
 let { panels }: { panels: Panel[] } = $props();
 
-// A tab named after a framework follows the header preference, so a React reader
-// lands on the React command without clicking.
+// Follows the header preference until the reader picks a tab manually; $effect, not
+// $derived, since the check has to read `active` itself to detect that override.
 let active = $state("");
 $effect(() => {
 	const preferred = panels.find((p) => p.label.toLowerCase() === prefs.framework);
@@ -48,7 +48,7 @@ const BODY =
 	</div>
 	<div class="relative overflow-hidden rounded-[calc(var(--radius-xl)-1px-0.25rem)] bg-background">
 		{#each panels as panel, i (panel.id)}
-			{@const shift = i === activeIndex ? 0 : i < activeIndex ? -1 : 1}
+			{const shift = i === activeIndex ? 0 : i < activeIndex ? -1 : 1}
 			<div
 				role="tabpanel"
 				id="panel-{panel.id}"

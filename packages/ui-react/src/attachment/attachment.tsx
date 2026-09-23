@@ -1,9 +1,10 @@
 import { cn } from "../lib/cn";
+import { type AttachmentStatus, attachment } from "./variants";
 
 export interface AttachmentProps {
 	name: string;
 	size?: string;
-	status?: "uploading" | "ready" | "error";
+	status?: AttachmentStatus;
 	progress?: number;
 	className?: string;
 	onRemove?: () => void;
@@ -18,16 +19,10 @@ export function Attachment({
 	onRemove,
 }: AttachmentProps) {
 	const clamped = Math.min(100, Math.max(0, progress));
+	const frame = attachment({ status });
 
 	return (
-		<div
-			className={cn(
-				"flex w-full items-center gap-3 rounded-xl border border-border bg-card p-2.5",
-				status === "error" &&
-					"border-[color-mix(in_oklch,var(--destructive)_35%,transparent)]",
-				className,
-			)}
-		>
+		<div className={cn(frame.root(), className)}>
 			<span
 				aria-hidden
 				className="grid size-9 shrink-0 place-items-center rounded-lg bg-background text-muted-foreground"
@@ -57,12 +52,7 @@ export function Attachment({
 						</p>
 					</>
 				) : (
-					<p
-						className={cn(
-							"mt-0.5 text-xs",
-							status === "error" ? "text-[var(--destructive)]" : "text-muted-foreground",
-						)}
-					>
+					<p className={frame.meta()}>
 						{status === "error" ? "Upload failed" : (size ?? "Ready")}
 					</p>
 				)}

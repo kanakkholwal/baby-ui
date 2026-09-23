@@ -12,6 +12,7 @@ import {
 	MorphingModal,
 	Navbar,
 } from "@baby-ui/react";
+import { AgentScreenDemo } from "./agent-screen";
 import {
 	BreadcrumbDemo,
 	MessageDemo,
@@ -48,7 +49,10 @@ import {
 	ToastDemo,
 	ToolbarDemo,
 } from "./dialogs";
+import { DiffTableDemo } from "./diff-table";
 import { FilterTableDemo } from "./filter-table";
+import { FineTuneCardDemo } from "./fine-tune-card";
+import { FlowchartDemo } from "./flowchart";
 import { LoadingStateDemo } from "./loading-state";
 import {
 	ComboboxDemo,
@@ -292,10 +296,14 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"responsive-dialog": ResponsiveDialogDemo,
 	"context-cards": ContextCardsDemo,
 	"filter-table": FilterTableDemo,
+	"diff-table": DiffTableDemo,
+	"fine-tune-card": FineTuneCardDemo,
+	flowchart: FlowchartDemo,
 	"loading-state": LoadingStateDemo,
 	"recommendation-card": RecommendationCardDemo,
 	"chat-composer": ChatComposerDemo,
 	"thinking-state": ThinkingStateDemo,
 	"task-rows": TaskRowsDemo,
 	"streaming-text": StreamingTextDemo,
+	"agent-screen": AgentScreenDemo,
 };

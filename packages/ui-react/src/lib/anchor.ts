@@ -1,22 +1,11 @@
-import {
-	autoUpdate,
-	computePosition,
-	flip,
-	offset,
-	type Placement,
-	shift,
-	size,
-} from "@floating-ui/dom";
 import { tv } from "tailwind-variants";
 
-export type AnchorPlacement = Placement;
-
-// `fixed top-0 left-0` fits this file's own JS-positioned consumers only; a Base UI/
-// bits-ui Positioner wrapper needs its content back to `static`, or it can't measure it.
+// `fixed top-0 left-0` needs a Base UI/bits-ui Positioner wrapper's content back to
+// `static`, or it can't measure it.
 const ANCHORED_BASE = [
 	"fixed top-0 left-0 z-50 pointer-events-none opacity-0",
 	"duration-[var(--duration-exit)] ease-[var(--ease-out)]",
-	// `data-state` is our own anchor()/bits-ui; `data-open`/`data-closed` (presence, not a
+	// `data-state` is bits-ui's own attribute; `data-open`/`data-closed` (presence, not a
 	// value) and `data-starting-style` are Base UI's equivalents.
 	"data-[state=open]:pointer-events-auto data-[state=open]:opacity-100",
 	"data-[state=open]:duration-[var(--duration-dropdown)]",
@@ -30,14 +19,14 @@ const ANCHORED_BASE = [
 
 /**
  * Class contract every anchored surface shares, so a popover, a menu and a select
- * open and close identically. `anchor()` owns transform-origin; this owns the rest.
+ * open and close identically. The Positioner owns transform-origin; this owns the rest.
  */
 export const ANCHORED = tv({
 	base: [
 		...ANCHORED_BASE,
 		"scale-[var(--enter-scale)] transition-[opacity,scale,translate]",
 		// The closed state leans toward its trigger, so opening reads as unfolding from it.
-		// `placement` is our own anchor(); `side` is Radix/bits-ui/Base UI's popper attribute.
+		// `side` is Radix/bits-ui/Base UI's own popper attribute.
 		"data-[state=closed]:data-[placement^=bottom]:-translate-y-1",
 		"data-[state=closed]:data-[placement^=top]:translate-y-1",
 		"data-[state=closed]:data-[side=bottom]:-translate-y-1",
@@ -58,15 +47,15 @@ export const ANCHORED = tv({
 })();
 
 /**
- * Menus, selects and comboboxes unfold from the trigger edge instead of scaling: the
- * list starts flush and square against it, then separates into its own rounded panel.
+ * Menus and selects unfold from the trigger edge instead of scaling. Combobox is a plain
+ * Popover (`ANCHORED`), not a list-of-options surface in the same sense.
  */
 export const UNFOLD = tv({
 	base: [
 		...ANCHORED_BASE,
 		"group/surface transition-[opacity,translate,clip-path,border-radius]",
 		// Negative insets keep the box-shadow inside the clip; only the near edge closes to 100%.
-		// `placement` is our own anchor(); `side` is Radix/bits-ui/Base UI's popper attribute.
+		// `side` is Radix/bits-ui/Base UI's own popper attribute.
 		"data-[state=open]:[clip-path:inset(-4rem)]",
 		"data-[open]:[clip-path:inset(-4rem)]",
 		"data-[state=closed]:data-[placement^=bottom]:[clip-path:inset(-4rem_-4rem_100%_-4rem)]",
@@ -119,118 +108,4 @@ export const UNFOLD_ITEM = tv({
 export function stagger(rows: Iterable<HTMLElement>) {
 	let i = 0;
 	for (const row of rows) row.style.setProperty("--i", String(i++));
-}
-
-export type AnchorOptions = {
-	placement?: AnchorPlacement;
-	/** Gap between anchor and floating element, in pixels. */
-	gap?: number;
-	/** Keep the floating element this far from the viewport edge. */
-	padding?: number;
-	/** Match the floating element's width to the anchor. Used by select and combobox. */
-	matchWidth?: boolean;
-};
-
-/**
- * Positions `floating` against `anchor` and keeps it there. Returns a teardown that
- * must be called, or the listeners outlive the element.
- */
-export function anchor(
-	anchorEl: HTMLElement,
-	floating: HTMLElement,
-	options: AnchorOptions = {},
-): () => void {
-	const { placement = "bottom", gap = 6, padding = 8, matchWidth = false } = options;
-
-	const middleware = [
-		offset(gap),
-		flip({ padding }),
-		shift({ padding }),
-		size({
-			padding,
-			apply({ availableHeight, rects, elements }) {
-				elements.floating.style.setProperty(
-					"--anchor-available-height",
-					`${Math.max(0, availableHeight)}px`,
-				);
-				if (matchWidth) {
-					elements.floating.style.width = `${rects.reference.width}px`;
-				}
-			},
-		}),
-	];
-
-	// Before any layout read: the first style resolution is when @starting-style is
-	// sampled, and the entry lean keys off this attribute.
-	floating.dataset.placement ??= placement;
-	// Seeded synchronously so no frame paints at the viewport corner. Set via left/top, not
-	// transform: `scale` composes before `transform` and would shrink a translate() offset.
-	const seed = anchorEl.getBoundingClientRect();
-	Object.assign(floating.style, {
-		position: "fixed",
-		left: `${Math.round(seed.left)}px`,
-		top: `${Math.round(seed.bottom + gap)}px`,
-		transform: "none",
-	});
-
-	return autoUpdate(anchorEl, floating, () => {
-		computePosition(anchorEl, floating, {
-			placement,
-			strategy: "fixed",
-			middleware,
-		}).then(({ x, y, placement: resolved }) => {
-			Object.assign(floating.style, {
-				position: "fixed",
-				left: `${Math.round(x)}px`,
-				top: `${Math.round(y)}px`,
-				transform: "none",
-			});
-			floating.dataset.placement = resolved;
-			// Grow from the edge nearest the anchor, whichever side flip settled on.
-			floating.style.transformOrigin = resolved.startsWith("top")
-				? "bottom center"
-				: resolved.startsWith("left")
-					? "right center"
-					: resolved.startsWith("right")
-						? "left center"
-						: "top center";
-		});
-	});
-}
-
-type DismissableElements =
-	| (HTMLElement | undefined | null)[]
-	| (() => (HTMLElement | undefined | null)[]);
-
-/** Closes on outside pointerdown and on Escape. `elements` can be a getter, so a
- * frequently-changing exempt set never forces this listener to be recreated. */
-export function dismissable(
-	elements: DismissableElements,
-	onDismiss: () => void,
-): () => void {
-	const getElements = typeof elements === "function" ? elements : () => elements;
-	const onPointer = (event: PointerEvent) => {
-		const target = event.target as Node;
-		if (getElements().some((el) => el?.contains(target))) return;
-		onDismiss();
-	};
-	const onKey = (event: KeyboardEvent) => {
-		// A nested surface (a submenu, say) calls preventDefault to close only itself.
-		if (event.key === "Escape" && !event.defaultPrevented) onDismiss();
-	};
-	window.addEventListener("pointerdown", onPointer, true);
-	window.addEventListener("keydown", onKey);
-	return () => {
-		window.removeEventListener("pointerdown", onPointer, true);
-		window.removeEventListener("keydown", onKey);
-	};
-}
-
-/** Walks a list of focusable items with the arrow keys, wrapping at both ends. */
-export function rove(items: HTMLElement[], current: number, key: string): number | null {
-	if (key === "ArrowDown") return (current + 1) % items.length;
-	if (key === "ArrowUp") return (current - 1 + items.length) % items.length;
-	if (key === "Home") return 0;
-	if (key === "End") return items.length - 1;
-	return null;
 }

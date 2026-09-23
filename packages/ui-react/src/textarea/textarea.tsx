@@ -1,7 +1,7 @@
 "use client";
 
 import type { TextareaHTMLAttributes } from "react";
-import { useEffect, useId, useRef } from "react";
+import { useId, useLayoutEffect, useRef } from "react";
 import { cn } from "../lib/cn";
 import { type TextareaSize, type TextareaVariant, textarea } from "./variants";
 
@@ -40,7 +40,8 @@ export function Textarea({
 	const ref = useRef<HTMLTextAreaElement>(null);
 
 	// Height follows content, never eases: easing lags behind the character just typed.
-	useEffect(() => {
+	// useLayoutEffect, not useEffect: a post-paint resize would show one frame at the old height.
+	useLayoutEffect(() => {
 		const el = ref.current;
 		if (!autoGrow || !el) return;
 		const line = Number.parseFloat(getComputedStyle(el).lineHeight) || 20;

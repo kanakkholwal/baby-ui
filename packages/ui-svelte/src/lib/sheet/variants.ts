@@ -5,6 +5,8 @@ export const sheetPanel = tv({
 	base: [
 		"fixed z-50 flex flex-col gap-4 overflow-y-auto border-border bg-background p-6",
 		"transition-transform duration-[var(--duration-drawer)] ease-[var(--ease-drawer)]",
+		// Deliberately --duration-overlay, not the shorter --duration-exit: a full-width
+		// panel travelling 100% needs more than 120ms to read as a retreat, not a cut.
 		"data-[state=closed]:duration-[var(--duration-overlay)]",
 		"data-[state=closed]:data-[side=left]:-translate-x-full",
 		"data-[state=closed]:data-[side=right]:translate-x-full",

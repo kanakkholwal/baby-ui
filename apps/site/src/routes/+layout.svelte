@@ -1,12 +1,13 @@
 <script lang="ts">
 import "./layout.css";
+import { onMount } from "svelte";
 import PreferencesPanel from "$lib/components/preferences-panel.svelte";
 import SiteHeader from "$lib/components/site-header.svelte";
 import { prefs } from "$lib/preferences.svelte";
 
 let { children } = $props();
 
-$effect(() => prefs.hydrate());
+onMount(() => prefs.hydrate());
 </script>
 
 <SiteHeader />

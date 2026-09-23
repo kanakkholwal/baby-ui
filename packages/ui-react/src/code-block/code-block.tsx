@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { CopyButton } from "../copy-button/copy-button";
 import { cn } from "../lib/cn";
 
@@ -21,7 +22,7 @@ export function CodeBlock({
 	maxHeight = "24rem",
 	className,
 }: CodeBlockProps) {
-	const lines = code.replace(/\n$/, "").split("\n");
+	const lines = useMemo(() => code.replace(/\n$/, "").split("\n"), [code]);
 
 	return (
 		// Inset frame: a tinted rim holds the header, the code sits on an inner surface whose

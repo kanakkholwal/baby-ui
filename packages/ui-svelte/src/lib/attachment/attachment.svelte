@@ -1,5 +1,6 @@
 <script lang="ts">
 import { cn } from "../lib/cn";
+import { type AttachmentStatus, attachment } from "./variants";
 
 let {
 	name,
@@ -11,22 +12,17 @@ let {
 }: {
 	name: string;
 	size?: string;
-	status?: "uploading" | "ready" | "error";
+	status?: AttachmentStatus;
 	progress?: number;
 	class?: string;
 	onremove?: () => void;
 } = $props();
 
 const clamped = $derived(Math.min(100, Math.max(0, progress)));
+const frame = $derived(attachment({ status }));
 </script>
 
-<div
-	class={cn(
-		"flex w-full items-center gap-3 rounded-xl border border-border bg-card p-2.5",
-		status === "error" && "border-[color-mix(in_oklch,var(--destructive)_35%,transparent)]",
-		classProp,
-	)}
->
+<div class={cn(frame.root(), classProp)}>
 	<span
 		aria-hidden="true"
 		class="grid size-9 shrink-0 place-items-center rounded-lg bg-background text-muted-foreground"
@@ -47,7 +43,7 @@ const clamped = $derived(Math.min(100, Math.max(0, progress)));
 			</div>
 			<p class="mt-1 text-muted-foreground text-xs">Uploading {Math.round(clamped)}%</p>
 		{:else}
-			<p class={cn("mt-0.5 text-xs", status === "error" ? "text-[var(--destructive)]" : "text-muted-foreground")}>
+			<p class={frame.meta()}>
 				{status === "error" ? "Upload failed" : (size ?? "Ready")}
 			</p>
 		{/if}

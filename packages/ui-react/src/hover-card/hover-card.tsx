@@ -1,7 +1,13 @@
 "use client";
 
 import { PreviewCard as PreviewCardPrimitive } from "@base-ui/react/preview-card";
-import { type ComponentProps, createContext, type ReactNode, useContext } from "react";
+import {
+	type ComponentProps,
+	createContext,
+	type ReactNode,
+	useContext,
+	useMemo,
+} from "react";
 import { ANCHORED } from "../lib/anchor";
 import { cn } from "../lib/cn";
 
@@ -17,8 +23,9 @@ export function HoverCard({
 	openDelay?: number;
 	closeDelay?: number;
 }) {
+	const delays = useMemo(() => ({ openDelay, closeDelay }), [openDelay, closeDelay]);
 	return (
-		<DelayCtx.Provider value={{ openDelay, closeDelay }}>
+		<DelayCtx.Provider value={delays}>
 			<PreviewCardPrimitive.Root {...props}>{children}</PreviewCardPrimitive.Root>
 		</DelayCtx.Provider>
 	);

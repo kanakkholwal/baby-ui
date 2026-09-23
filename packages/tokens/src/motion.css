@@ -395,44 +395,6 @@
 	}
 }
 
-/* show-more: the veil is the signal that content continues, and the region
-   animates its measured height so collapse and expand are one movement. */
-.show-more-region {
-	transition: height var(--duration-overlay) var(--ease-out);
-}
-
-.show-more-veil {
-	position: absolute;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	height: 2.5rem;
-	background: linear-gradient(to top, var(--background), transparent);
-	opacity: 0;
-	transition: opacity var(--duration-press) var(--ease-out);
-	pointer-events: none;
-}
-
-.show-more-veil[data-on="true"] {
-	opacity: 1;
-}
-
-.show-more-chevron {
-	transition: rotate var(--duration-press) var(--ease-out);
-}
-
-.show-more-chevron[data-on="true"] {
-	rotate: 180deg;
-}
-
-@media (prefers-reduced-motion: reduce) {
-	.show-more-region,
-	.show-more-veil,
-	.show-more-chevron {
-		transition: none;
-	}
-}
-
 /* scroll-area uses a thin scrollbar rather than hiding it; a hidden scrollbar
    removes the only affordance a mouse user has. */
 .scroll-area {

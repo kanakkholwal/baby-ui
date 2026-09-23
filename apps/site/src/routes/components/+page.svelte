@@ -28,7 +28,7 @@ let { data }: PageProps = $props();
 			</div>
 			<div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 				{#each group.items as item (item.slug)}
-					{@const spec = specs.find((s) => s.slug === item.slug)}
+					{const spec = specs.find((s) => s.slug === item.slug)}
 					{#if spec}
 						<ComponentCard {spec} />
 					{/if}

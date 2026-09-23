@@ -58,6 +58,8 @@ let dragging = $state<"square" | "strip" | null>(null);
 const hueColor = $derived(`hsl(${hue}, 100%, 50%)`);
 const preview = $derived(isValidHex(hex) ? hex : isValidHex(value) ? value : "#000000");
 
+// Not $derived: `value` is externally controlled and can change at any time, and syncs
+// into five representations that aren't uniquely invertible from hex alone (grey has no hue).
 $effect(() => {
 	if (!isValidHex(value)) return;
 	const lower = value.toLowerCase();

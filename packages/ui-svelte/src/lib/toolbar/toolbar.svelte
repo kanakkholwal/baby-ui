@@ -1,6 +1,7 @@
 <script lang="ts">
 import { Toolbar as ToolbarPrimitive } from "bits-ui";
 import { cn } from "../lib/cn";
+import { type ToolbarOrientation, toolbar } from "./variants";
 
 let {
 	children,
@@ -9,7 +10,7 @@ let {
 	class: classProp,
 	...rest
 }: Omit<ToolbarPrimitive.RootProps, "orientation"> & {
-	orientation?: "horizontal" | "vertical";
+	orientation?: ToolbarOrientation;
 	label?: string;
 } = $props();
 </script>
@@ -18,11 +19,7 @@ let {
 	{orientation}
 	aria-label={label}
 	data-slot="toolbar"
-	class={cn(
-		"inline-flex items-center gap-0.5 rounded-xl border border-border bg-card p-1",
-		orientation === "vertical" && "flex-col",
-		classProp,
-	)}
+	class={cn(toolbar({ orientation }).root(), classProp)}
 	{...rest}
 >
 	{@render children?.()}

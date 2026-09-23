@@ -72,7 +72,7 @@ async function copyText() {
 	<p class={slots.text()}>
 		{#each content.slice(0, count) as token, i (i)}
 			{#if token.cite !== undefined}
-				{@const source = sources[token.cite]}
+				{const source = sources[token.cite]}
 				{#if source}
 					<a
 						href={source.href}

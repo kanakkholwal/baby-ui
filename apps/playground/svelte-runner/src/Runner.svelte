@@ -11,7 +11,7 @@ const demoPromise = $derived(demos[state.slug]?.());
 <div class="grid h-full place-items-center p-8">
 	{#if demoPromise}
 		{#await demoPromise then mod}
-			{@const Demo = mod.default}
+			{const Demo = mod.default}
 			<Demo props={state.props} />
 		{/await}
 	{:else}

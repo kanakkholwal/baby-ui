@@ -3,6 +3,8 @@ export { default as Accordion } from "./accordion/accordion.svelte";
 export { default as AccordionContent } from "./accordion/accordion-content.svelte";
 export { default as AccordionItem } from "./accordion/accordion-item.svelte";
 export { default as AccordionTrigger } from "./accordion/accordion-trigger.svelte";
+export { default as AgentScreen } from "./agent-screen/agent-screen.svelte";
+export type { AgentScreenSize } from "./agent-screen/variants";
 export { default as Alert } from "./alert/alert.svelte";
 export { default as AlertDescription } from "./alert/alert-description.svelte";
 export { default as AlertTitle } from "./alert/alert-title.svelte";
@@ -17,6 +19,7 @@ export { default as AlertDialogHeader } from "./alert-dialog/alert-dialog-header
 export { default as AlertDialogTitle } from "./alert-dialog/alert-dialog-title.svelte";
 export { default as AlertDialogTrigger } from "./alert-dialog/alert-dialog-trigger.svelte";
 export { default as Attachment } from "./attachment/attachment.svelte";
+export type { AttachmentStatus } from "./attachment/variants";
 export { default as Avatar } from "./avatar/avatar.svelte";
 export { default as AvatarFallback } from "./avatar/avatar-fallback.svelte";
 export { default as AvatarImage } from "./avatar/avatar-image.svelte";
@@ -24,6 +27,7 @@ export { default as Badge } from "./badge/badge.svelte";
 export type { BadgeSize, BadgeVariant } from "./badge/variants";
 export { default as BentoCell } from "./bento-grid/bento-cell.svelte";
 export { default as BentoGrid } from "./bento-grid/bento-grid.svelte";
+export type { BentoSpan } from "./bento-grid/variants";
 export { default as Breadcrumb } from "./breadcrumb/breadcrumb.svelte";
 export { default as BreadcrumbEllipsis } from "./breadcrumb/breadcrumb-ellipsis.svelte";
 export { default as BreadcrumbItem } from "./breadcrumb/breadcrumb-item.svelte";
@@ -107,6 +111,9 @@ export { default as DialogFooter } from "./dialog/dialog-footer.svelte";
 export { default as DialogHeader } from "./dialog/dialog-header.svelte";
 export { default as DialogTitle } from "./dialog/dialog-title.svelte";
 export { default as DialogTrigger } from "./dialog/dialog-trigger.svelte";
+export { default as DiffTable } from "./diff-table/diff-table.svelte";
+export type { DiffRow } from "./diff-table/types";
+export type { DiffRowChange } from "./diff-table/variants";
 export type { DrawerDirection } from "./drawer/context";
 export { default as Drawer } from "./drawer/drawer.svelte";
 export { default as DrawerClose } from "./drawer/drawer-close.svelte";
@@ -136,18 +143,33 @@ export type {
 	TableRow,
 	TableRowStatus,
 } from "./filter-table/types";
+export { default as FineTuneCard } from "./fine-tune-card/fine-tune-card.svelte";
+export type {
+	FineTuneCardLabels,
+	FineTuneField,
+	FineTuneState,
+} from "./fine-tune-card/types";
+export type { FineTuneCardSize } from "./fine-tune-card/variants";
+export { default as Flowchart } from "./flowchart/flowchart.svelte";
+export type {
+	FlowchartConditionRow,
+	FlowchartEdge,
+	FlowchartOption,
+	StepNode,
+} from "./flowchart/types";
+export type { FlowchartBackground } from "./flowchart/variants";
 export {
 	default as FullscreenNav,
 	type NavLink,
 } from "./fullscreen-nav/fullscreen-nav.svelte";
 export { default as Gauge } from "./gauge/gauge.svelte";
+export type { GaugeTone } from "./gauge/variants";
 export { default as HoverCard } from "./hover-card/hover-card.svelte";
 export { default as HoverCardContent } from "./hover-card/hover-card-content.svelte";
 export { default as HoverCardTrigger } from "./hover-card/hover-card-trigger.svelte";
 export { default as Input } from "./input/input.svelte";
 export type { InputSize } from "./input/variants";
 export { default as Label } from "./label/label.svelte";
-export { type AnchorPlacement, anchor, dismissable, rove } from "./lib/anchor";
 export { cn } from "./lib/cn";
 export { default as LoadingState } from "./loading-state/loading-state.svelte";
 export type { LoadingStateVariant } from "./loading-state/types";
@@ -179,7 +201,7 @@ export type {
 export type { QuestionLayout } from "./question/variants";
 export { default as RadioGroup } from "./radio-group/radio-group.svelte";
 export { default as RadioGroupItem } from "./radio-group/radio-group-item.svelte";
-export type { RadioSize, RadioVariant } from "./radio-group/variants";
+export type { RadioOrientation, RadioSize, RadioVariant } from "./radio-group/variants";
 export { default as Reasoning } from "./reasoning/reasoning.svelte";
 export { default as RecommendationCard } from "./recommendation-card/recommendation-card.svelte";
 export type {
@@ -222,6 +244,7 @@ export { default as Shortcut } from "./shortcut/shortcut.svelte";
 export type { ShortcutSize, ShortcutVariant } from "./shortcut/variants";
 export { default as ShowMore } from "./show-more/show-more.svelte";
 export { default as Skeleton } from "./skeleton/skeleton.svelte";
+export type { SkeletonShape } from "./skeleton/variants";
 export { default as Slider } from "./slider/slider.svelte";
 export { default as Spinner } from "./spinner/spinner.svelte";
 export { default as StreamingText } from "./streaming-text/streaming-text.svelte";
@@ -251,9 +274,11 @@ export { default as Toaster } from "./toast/toaster.svelte";
 export { default as Toggle } from "./toggle/toggle.svelte";
 export { default as ToggleGroup } from "./toggle-group/toggle-group.svelte";
 export { default as ToggleGroupItem } from "./toggle-group/toggle-group-item.svelte";
-export { default as Tool, type ToolState } from "./tool/tool.svelte";
+export { default as Tool } from "./tool/tool.svelte";
+export type { ToolState } from "./tool/variants";
 export { default as Toolbar } from "./toolbar/toolbar.svelte";
 export { default as ToolbarButton } from "./toolbar/toolbar-button.svelte";
+export type { ToolbarOrientation } from "./toolbar/variants";
 export { default as Tooltip } from "./tooltip/tooltip.svelte";
 export { default as TooltipContent } from "./tooltip/tooltip-content.svelte";
 export { default as TooltipProvider } from "./tooltip/tooltip-provider.svelte";

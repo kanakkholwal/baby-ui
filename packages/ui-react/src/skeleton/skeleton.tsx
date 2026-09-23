@@ -1,11 +1,10 @@
 import { cn } from "../lib/cn";
-
-const SHAPE = { line: "rounded-md", circle: "rounded-full", block: "rounded-xl" };
+import { type SkeletonShape, skeleton } from "./variants";
 
 export interface SkeletonProps {
 	width?: string;
 	height?: string;
-	shape?: "line" | "circle" | "block";
+	shape?: SkeletonShape;
 	className?: string;
 }
 
@@ -19,7 +18,7 @@ export function Skeleton({
 		<div
 			aria-hidden
 			style={{ width, height }}
-			className={cn("skeleton-shimmer bg-card", SHAPE[shape], className)}
+			className={cn(skeleton({ shape }), className)}
 		/>
 	);
 }

@@ -43,7 +43,7 @@ export function CollapsibleTrigger({
 			data-slot="collapsible-trigger"
 			className={cn(
 				"flex w-full items-center gap-2 rounded-lg px-1 py-1.5 text-left font-medium text-foreground text-sm transition-colors hover:text-muted-foreground",
-				"[&>svg]:transition-[transform,scale,translate] [&>svg]:duration-200 [&>svg]:ease-[var(--ease-out)] [&[data-panel-open]>svg]:rotate-90 motion-reduce:[&>svg]:transition-none",
+				"[&>svg]:transition-[transform,scale,translate] [&>svg]:duration-[var(--duration-dropdown)] [&>svg]:ease-[var(--ease-out)] [&[data-panel-open]>svg]:rotate-90 motion-reduce:[&>svg]:transition-none",
 				className,
 			)}
 			{...props}
@@ -79,7 +79,7 @@ export function CollapsibleContent({
 			keepMounted
 			hidden={false}
 			data-slot="collapsible-content"
-			className="grid grid-rows-[0fr] transition-[grid-template-rows] duration-200 ease-[var(--ease-out)] data-[open]:grid-rows-[1fr] motion-reduce:transition-none"
+			className="grid grid-rows-[0fr] transition-[grid-template-rows] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] data-[open]:grid-rows-[1fr] motion-reduce:transition-none"
 			{...props}
 		>
 			<div className="overflow-hidden">

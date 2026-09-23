@@ -46,9 +46,9 @@ function label(prop: PropSpec) {
 </script>
 
 {#snippet dial(prop: PropSpec)}
-	{@const control = prop.control}
-	{@const row = "flex min-h-8 items-center justify-between gap-3 px-3 py-1.5"}
-	{@const text = "truncate font-medium text-muted-foreground text-xs capitalize"}
+	{const control = prop.control}
+	{const row = "flex min-h-8 items-center justify-between gap-3 px-3 py-1.5"}
+	{const text = "truncate font-medium text-muted-foreground text-xs capitalize"}
 	{#if control.kind === "boolean"}
 		<!-- The row is the label: a wrapping <label> names and toggles the bare switch. -->
 		<label class={row}>

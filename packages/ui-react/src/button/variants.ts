@@ -29,8 +29,7 @@ export const button = tv({
 			warning: "bg-warning text-white hover:bg-warning/90 dark:text-[#151515]",
 			warning_soft: "border-warning/10 bg-warning/10 text-warning hover:bg-warning/15",
 			info: "bg-info text-white hover:bg-info/90 dark:text-[#151515]",
-			info_soft:
-				"border-accent/10 bg-accent/10 text-accent-foreground hover:bg-accent/20",
+			info_soft: "border-info/10 bg-info/10 text-info hover:bg-info/15",
 			dark: "bg-foreground text-background hover:bg-foreground/90",
 			light: "bg-white text-black hover:bg-white/90 dark:bg-black dark:text-white",
 			raw: "h-auto rounded-none border-0 p-0 hover:scale-100 active:scale-100",

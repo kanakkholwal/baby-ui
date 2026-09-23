@@ -1,5 +1,6 @@
 import type { ComponentSpec } from "../index";
 import { accordion } from "./accordion";
+import { agentScreen } from "./agent-screen";
 import { alert } from "./alert";
 import { alertDialog } from "./alert-dialog";
 import { attachment } from "./attachment";
@@ -22,11 +23,14 @@ import { contextMenu } from "./context-menu";
 import { conversation } from "./conversation";
 import { copyButton } from "./copy-button";
 import { dialog } from "./dialog";
+import { diffTable } from "./diff-table";
 import { drawer } from "./drawer";
 import { dropdownMenu } from "./dropdown-menu";
 import { fileDiff } from "./file-diff";
 import { fileTree } from "./file-tree";
 import { filterTable } from "./filter-table";
+import { fineTuneCard } from "./fine-tune-card";
+import { flowchart } from "./flowchart";
 import { fullscreenNav } from "./fullscreen-nav";
 import { gauge } from "./gauge";
 import { hoverCard } from "./hover-card";
@@ -137,12 +141,16 @@ export const specs: ComponentSpec[] = [
 	responsiveDialog,
 	contextCards,
 	filterTable,
+	diffTable,
+	fineTuneCard,
+	flowchart,
 	loadingState,
 	recommendationCard,
 	chatComposer,
 	thinkingState,
 	taskRows,
 	streamingText,
+	agentScreen,
 ];
 
 export function getSpec(slug: string): ComponentSpec | undefined {

@@ -1,13 +1,9 @@
 import { cn } from "../lib/cn";
+import { type DiffLineKind, diffRow } from "./variants";
 
-export type DiffLine = { kind: "add" | "remove" | "context"; text: string };
+export type DiffLine = { kind: DiffLineKind; text: string };
 
 const MARK = { add: "+", remove: "-", context: " " };
-const TONE = {
-	add: "bg-[color-mix(in_oklch,var(--success)_12%,transparent)] text-foreground",
-	remove: "bg-[color-mix(in_oklch,var(--destructive)_12%,transparent)] text-foreground",
-	context: "text-muted-foreground",
-};
 
 export interface FileDiffProps {
 	filename: string;
@@ -32,14 +28,14 @@ export function FileDiff({
 			<div className="flex items-center justify-between gap-3 border-border border-b bg-background/60 px-4 py-2.5">
 				<span className="truncate font-mono text-foreground text-xs">{filename}</span>
 				<span className="flex shrink-0 items-center gap-2 font-mono text-[11px]">
-					<span className="text-[var(--success)]">+{added}</span>
-					<span className="text-[var(--destructive)]">-{removed}</span>
+					<span className="text-success">+{added}</span>
+					<span className="text-destructive">-{removed}</span>
 				</span>
 			</div>
 
 			<div className="overflow-x-auto font-mono text-[13px] leading-relaxed">
 				{lines.map((line, i) => (
-					<div key={i} className={cn("flex whitespace-pre px-4", TONE[line.kind])}>
+					<div key={i} className={diffRow({ kind: line.kind })}>
 						{showLineNumbers ? (
 							<span
 								aria-hidden

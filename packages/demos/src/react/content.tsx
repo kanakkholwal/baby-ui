@@ -20,6 +20,7 @@ import {
 	ReorderList,
 	TagInput,
 	Tool,
+	type ToolState,
 } from "@baby-ui/react";
 import { useEffect, useState } from "react";
 
@@ -330,10 +331,10 @@ export function ConversationDemo({ props }: { props: Props }) {
 
 export function ToolDemo({ props }: { props: Props }) {
 	return (
-		<div className="flex w-96 flex-col gap-2">
+		<div className="flex w-full max-w-sm flex-col gap-2">
 			<Tool
 				name={(props.name as string) || "search_docs"}
-				status={(props.status as "pending" | "running" | "done" | "error") ?? "running"}
+				status={(props.status as ToolState) ?? "running"}
 				input={'{ "query": "dock magnification" }'}
 				output={'{ "matches": 3 }'}
 				defaultOpen={Boolean(props.defaultOpen)}

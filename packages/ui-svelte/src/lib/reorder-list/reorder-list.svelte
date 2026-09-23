@@ -193,7 +193,7 @@ function onpointerup(event: PointerEvent) {
 <div class={cn("w-full", classProp)}>
 	<ol bind:this={listEl} aria-label={label} class="m-0 flex list-none flex-col gap-1.5 p-0">
 		{#each items as item, i (item.id)}
-			{@const lifted = grabbed === item.id || dragging === item.id}
+			{const lifted = grabbed === item.id || dragging === item.id}
 			<li data-flip-key={item.id}>
 				<button
 					type="button"

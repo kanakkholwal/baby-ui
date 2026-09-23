@@ -2,7 +2,7 @@
 import Badge from "../badge/badge.svelte";
 import { cn } from "../lib/cn";
 import type { TaskRow, TaskRowsLabels } from "./types";
-import { type TaskRowsVariant, taskRows } from "./variants";
+import { type TaskRowsTone, type TaskRowsVariant, taskRows } from "./variants";
 
 const DEFAULT_LABELS: TaskRowsLabels = { completed: "Completed", failed: "Failed" };
 
@@ -38,10 +38,10 @@ function toggle(row: TaskRow) {
 </script>
 
 {#snippet spinnerRing(active: boolean, step: number | undefined)}
-	{@const size = 24}
-	{@const stroke = 2}
-	{@const r = (size - stroke) / 2}
-	{@const c = 2 * Math.PI * r}
+	{const size = 24}
+	{const stroke = 2}
+	{const r = (size - stroke) / 2}
+	{const c = 2 * Math.PI * r}
 	<span class="relative inline-flex shrink-0 items-center justify-center" style="width: {size}px; height: {size}px">
 		<svg width={size} height={size} aria-hidden="true" class={cn("absolute inset-0", active && "spinner")}>
 			<circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="var(--border)" stroke-width={stroke} />
@@ -62,8 +62,8 @@ function toggle(row: TaskRow) {
 	</span>
 {/snippet}
 
-{#snippet statusDot(tone: "destructive" | "success", icon: "check" | "x")}
-	<span class={cn("pop-in flex size-5.5 shrink-0 items-center justify-center rounded-full text-white", tone === "destructive" ? "bg-destructive" : "bg-success")}>
+{#snippet statusDot(tone: TaskRowsTone, icon: "check" | "x")}
+	<span class={taskRows({ tone }).statusDot()}>
 		{#if icon === "check"}
 			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="size-3">
 				<path d="M20 6L9 17l-5-5" />
@@ -110,7 +110,7 @@ function toggle(row: TaskRow) {
 
 <div data-slot="task-rows" class={cn(slots.root(), "max-w-[27.5rem]", classProp)}>
 	{#each rows as row, i (row.key)}
-		{@const open = isOpen(row)}
+		{const open = isOpen(row)}
 		<div
 			data-slot="task-row"
 			class={cn(slots.item(), "card-fade-up")}

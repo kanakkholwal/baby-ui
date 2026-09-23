@@ -1,5 +1,6 @@
 <script lang="ts">
 import { cn } from "../lib/cn";
+import { type GaugeTone, gaugeIndicator } from "./variants";
 
 let {
 	value = 0,
@@ -13,7 +14,7 @@ let {
 	size?: number;
 	thickness?: number;
 	label?: string;
-	tone?: "default" | "success" | "warning" | "danger";
+	tone?: GaugeTone;
 	class?: string;
 } = $props();
 
@@ -23,13 +24,6 @@ const circumference = $derived(2 * Math.PI * radius);
 // Three quarters of a circle, so the gap reads as a dial rather than a broken ring.
 const arc = $derived(circumference * 0.75);
 const offset = $derived(arc - (arc * clamped) / 100);
-
-const TONE = {
-	default: "text-primary",
-	success: "text-[var(--success)]",
-	warning: "text-[var(--warning)]",
-	danger: "text-[var(--destructive)]",
-};
 </script>
 
 <div
@@ -63,10 +57,7 @@ const TONE = {
 			stroke-linecap="round"
 			stroke-dasharray="{arc} {circumference}"
 			stroke-dashoffset={offset}
-			class={cn(
-				"transition-[stroke-dashoffset] duration-[var(--duration-overlay)] ease-[var(--ease-out)] motion-reduce:transition-none",
-				TONE[tone],
-			)}
+			class={gaugeIndicator({ tone })}
 		/>
 	</svg>
 	<span class="font-medium text-foreground text-lg tabular-nums">{Math.round(clamped)}</span>

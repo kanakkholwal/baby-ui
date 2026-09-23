@@ -3,7 +3,12 @@ import { RadioGroup as RadioGroupPrimitive } from "bits-ui";
 import type { Snippet } from "svelte";
 import { cn } from "../lib/cn";
 import { setRadioGroupItemContext } from "./context";
-import type { RadioSize, RadioVariant } from "./variants";
+import {
+	type RadioOrientation,
+	type RadioSize,
+	type RadioVariant,
+	radioGroup,
+} from "./variants";
 
 let {
 	children,
@@ -18,7 +23,7 @@ let {
 }: {
 	children?: Snippet;
 	value?: string;
-	orientation?: "vertical" | "horizontal";
+	orientation?: RadioOrientation;
 	variant?: RadioVariant;
 	size?: RadioSize;
 	disabled?: boolean;
@@ -43,12 +48,7 @@ setRadioGroupItemContext({
 	{disabled}
 	{name}
 	data-slot="radio-group"
-	class={cn(
-		"flex gap-2",
-		orientation === "vertical" ? "flex-col" : "flex-row flex-wrap items-start",
-		disabled && "opacity-50",
-		classProp,
-	)}
+	class={cn(radioGroup({ orientation }).root(), disabled && "opacity-50", classProp)}
 >
 	{@render children?.()}
 </RadioGroupPrimitive.Root>

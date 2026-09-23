@@ -2,7 +2,7 @@
 
 import { Select as SelectPrimitive } from "@base-ui/react/select";
 import type { ComponentProps, ReactNode } from "react";
-import { ANCHORED } from "../lib/anchor";
+import { UNFOLD, UNFOLD_ITEM } from "../lib/anchor";
 import { cn } from "../lib/cn";
 
 export function Select({
@@ -108,7 +108,7 @@ export function SelectContent({
 				<SelectPrimitive.Popup
 					data-slot="select-content"
 					className={cn(
-						ANCHORED,
+						UNFOLD,
 						"static z-50 max-h-[min(16rem,var(--available-height))] w-[var(--anchor-width)] overflow-x-hidden overflow-y-auto",
 						"scroll-area rounded-xl border border-border bg-popover p-1 shadow-2xl",
 						className,
@@ -131,6 +131,7 @@ export function SelectItem({
 		<SelectPrimitive.Item
 			data-slot="select-item"
 			className={cn(
+				UNFOLD_ITEM,
 				"relative flex w-full cursor-default items-center justify-between gap-2 rounded-md px-2.5 py-1.5 text-left text-foreground text-sm outline-none transition-colors",
 				"data-[highlighted]:bg-foreground/[0.06]",
 				"data-[disabled]:pointer-events-none data-[disabled]:opacity-50",

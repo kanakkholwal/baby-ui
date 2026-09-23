@@ -1,13 +1,8 @@
 <script lang="ts">
 import type { HTMLAttributes } from "svelte/elements";
 import { cn } from "../lib/cn";
-import type { ContextChunk, ContextChunkTone } from "./types";
-
-const TONE_BG: Record<ContextChunkTone, string> = {
-	destructive: "bg-destructive",
-	success: "bg-success",
-	warning: "bg-warning",
-};
+import type { ContextChunk } from "./types";
+import { contextChunkBadge } from "./variants";
 
 let {
 	class: classProp,
@@ -79,12 +74,7 @@ $effect(() => {
 					class="inline-flex h-6 items-center gap-1.5 rounded-full bg-muted px-2 text-[12px] text-muted-foreground transition-[opacity,transform,background-color] duration-300 ease-[var(--ease-out)] hover:bg-foreground/[0.06]"
 					style={`opacity: ${chipsShown ? 1 : 0}; transform: scale(${chipsShown ? 1 : 0.95}); transition-delay: ${i * 80}ms`}
 				>
-					<span
-						class={cn(
-							"flex size-3.5 items-center justify-center rounded-[4px] font-bold text-[7px] text-white",
-							TONE_BG[chunk.tone],
-						)}
-					>
+					<span class={contextChunkBadge({ tone: chunk.tone })}>
 						{chunk.badge}
 					</span>
 					{chunk.source}

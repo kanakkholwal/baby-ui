@@ -29,7 +29,7 @@ const duration = $derived(prefersReducedMotion.current ? 0 : 200);
 			</thead>
 			<tbody>
 				{#each specs as prop (prop.name)}
-					{@const expanded = Boolean(open[prop.name])}
+					{const expanded = Boolean(open[prop.name])}
 					<tr class="border-border/60 border-b last:border-b-0">
 						<td colspan="3" class="p-0">
 							<button

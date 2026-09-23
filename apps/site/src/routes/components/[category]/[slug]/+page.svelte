@@ -45,6 +45,8 @@ $effect(() => {
 	};
 });
 
+// $effect, not a `{#key data.spec.slug}`-scoped $state init: relies on `data.spec`
+// changing exactly on navigation, not on any other future reactive field of `data`.
 $effect(() => {
 	values = defaultProps(data.spec);
 });

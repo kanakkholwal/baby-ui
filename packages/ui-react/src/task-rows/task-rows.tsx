@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Badge } from "../badge/badge";
 import { cn } from "../lib/cn";
-import { type TaskRowsVariant, taskRows } from "./variants";
+import { type TaskRowsTone, type TaskRowsVariant, taskRows } from "./variants";
 
 function SpinnerRing({ active, children }: { active?: boolean; children?: number }) {
 	const size = 24;
@@ -53,19 +53,10 @@ function StatusDot({
 	tone,
 	children,
 }: {
-	tone: "destructive" | "success";
+	tone: TaskRowsTone;
 	children: React.ReactNode;
 }) {
-	return (
-		<span
-			className={cn(
-				"pop-in flex size-5.5 shrink-0 items-center justify-center rounded-full text-white",
-				tone === "destructive" ? "bg-destructive" : "bg-success",
-			)}
-		>
-			{children}
-		</span>
-	);
+	return <span className={taskRows({ tone }).statusDot()}>{children}</span>;
 }
 
 const XIcon = (

@@ -1,15 +1,8 @@
 import type { CSSProperties, ReactNode } from "react";
 import { cn } from "../lib/cn";
+import { type BentoSpan, bentoCell } from "./variants";
 
-export type BentoSpan = "1x1" | "2x1" | "1x2" | "2x2";
-
-/** Spans only apply from `md` up; below it every cell is one column wide. */
-const SPAN: Record<BentoSpan, string> = {
-	"1x1": "",
-	"2x1": "md:col-span-2",
-	"1x2": "md:row-span-2",
-	"2x2": "md:col-span-2 md:row-span-2",
-};
+export type { BentoSpan };
 
 export interface BentoGridProps {
 	children: ReactNode;
@@ -61,15 +54,7 @@ export function BentoCell({
 	description,
 }: BentoCellProps) {
 	return (
-		<div
-			className={cn(
-				"group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card p-5",
-				"transition-[transform,scale,translate,border-color] duration-200 ease-[var(--ease-out)]",
-				"hover:-translate-y-0.5 hover:border-ring motion-reduce:hover:translate-y-0",
-				SPAN[span],
-				className,
-			)}
-		>
+		<div className={cn(bentoCell({ span }), className)}>
 			{title ? <h3 className="font-medium text-foreground text-sm">{title}</h3> : null}
 			{description ? (
 				<p className="mt-1 text-muted-foreground text-xs leading-relaxed">

@@ -3,8 +3,9 @@
 import type { ComponentProps } from "react";
 import { useEffect, useState } from "react";
 import { cn } from "../lib/cn";
+import { type ContextChunkTone, contextChunkBadge } from "./variants";
 
-export type ContextChunkTone = "destructive" | "success" | "warning";
+export type { ContextChunkTone };
 
 export type ContextChunk = {
 	title: string;
@@ -13,12 +14,6 @@ export type ContextChunk = {
 	source: string;
 	badge: string;
 	tone: ContextChunkTone;
-};
-
-const TONE_BG: Record<ContextChunkTone, string> = {
-	destructive: "bg-destructive",
-	success: "bg-success",
-	warning: "bg-warning",
 };
 
 export interface ContextCardsProps extends Omit<ComponentProps<"div">, "children"> {
@@ -95,12 +90,7 @@ export function ContextCards({
 								transitionDelay: `${i * 80}ms`,
 							}}
 						>
-							<span
-								className={cn(
-									"flex size-3.5 items-center justify-center rounded-[4px] font-bold text-[7px] text-white",
-									TONE_BG[chunk.tone],
-								)}
-							>
+							<span className={contextChunkBadge({ tone: chunk.tone })}>
 								{chunk.badge}
 							</span>
 							{chunk.source}

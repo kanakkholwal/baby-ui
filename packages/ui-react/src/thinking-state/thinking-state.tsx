@@ -193,8 +193,8 @@ export function ThinkingState({
 										) : null}
 										{r.add !== undefined ? (
 											<span className="shrink-0 font-mono text-[11px] tabular-nums">
-												<span className="text-[var(--success)]">+{r.add}</span>{" "}
-												<span className="text-[var(--destructive)]">-{r.del}</span>
+												<span className="text-success">+{r.add}</span>{" "}
+												<span className="text-destructive">-{r.del}</span>
 											</span>
 										) : null}
 									</>

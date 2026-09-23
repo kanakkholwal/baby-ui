@@ -2,11 +2,16 @@
 
 import { Radio } from "@base-ui/react/radio";
 import { RadioGroup as RadioGroupPrimitive } from "@base-ui/react/radio-group";
-import { createContext, type ReactNode, useContext, useId } from "react";
+import { createContext, type ReactNode, useContext, useId, useMemo } from "react";
 import { cn } from "../lib/cn";
-import { type RadioSize, type RadioVariant, radioGroup } from "./variants";
+import {
+	type RadioOrientation,
+	type RadioSize,
+	type RadioVariant,
+	radioGroup,
+} from "./variants";
 
-export type { RadioSize, RadioVariant };
+export type { RadioOrientation, RadioSize, RadioVariant };
 
 export function RadioGroup({
 	className,
@@ -22,7 +27,7 @@ export function RadioGroup({
 }: {
 	className?: string;
 	value?: string;
-	orientation?: "vertical" | "horizontal";
+	orientation?: RadioOrientation;
 	variant?: RadioVariant;
 	size?: RadioSize;
 	disabled?: boolean;
@@ -30,6 +35,7 @@ export function RadioGroup({
 	onValueChange?: (value: string) => void;
 	children?: ReactNode;
 }) {
+	const itemVariant = useMemo(() => ({ variant, size }), [variant, size]);
 	return (
 		<RadioGroupPrimitive
 			value={value}
@@ -39,14 +45,13 @@ export function RadioGroup({
 			data-slot="radio-group"
 			aria-orientation={orientation}
 			className={cn(
-				"flex gap-2",
-				orientation === "vertical" ? "flex-col" : "flex-row flex-wrap items-start",
+				radioGroup({ orientation }).root(),
 				disabled && "opacity-50",
 				className,
 			)}
 			{...props}
 		>
-			<RadioGroupItemVariantCtx.Provider value={{ variant, size }}>
+			<RadioGroupItemVariantCtx.Provider value={itemVariant}>
 				{children}
 			</RadioGroupItemVariantCtx.Provider>
 		</RadioGroupPrimitive>

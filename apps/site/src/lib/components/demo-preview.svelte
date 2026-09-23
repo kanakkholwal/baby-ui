@@ -39,7 +39,7 @@ const iframeSrc = $derived(
 				<span>Loading preview…</span>
 			</div>
 		{:then mod}
-			{@const Demo = mod.default}
+			{const Demo = mod.default}
 			<Demo {props} />
 		{:catch}
 			<p class="text-muted-foreground text-sm">Couldn't load this preview.</p>

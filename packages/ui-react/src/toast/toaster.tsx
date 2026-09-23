@@ -50,6 +50,8 @@ const ICONS: ToasterProps["icons"] = {
 	),
 };
 
+const DEFAULT_OFFSET = { top: 16, right: 16, bottom: 24, left: 16 };
+
 // sonner owns stacking, swipe and timing; every class on the toast is ours.
 export function Toaster({
 	position = "bottom-right",
@@ -58,7 +60,7 @@ export function Toaster({
 	closeButton = true,
 	expand = true,
 	gap = 8,
-	offset = { top: 16, right: 16, bottom: 24, left: 16 },
+	offset = DEFAULT_OFFSET,
 	toastOptions,
 	className,
 	...props
