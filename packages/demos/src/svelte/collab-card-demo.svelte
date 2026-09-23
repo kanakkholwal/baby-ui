@@ -25,6 +25,10 @@ const presenceColors = ["#A259FF", "#FF7262", "#1ABCFE", "#0ACF83"];
 	<CollabCard
 		greeting={(props.greeting as string) || undefined}
 		eyebrow={(props.eyebrow as string) || undefined}
+		intro={(props.intro as string) || undefined}
+		conjunction={(props.conjunction as string) || undefined}
+		trailing={(props.trailing as string) || undefined}
+		backgroundUrl={(props.backgroundUrl as string) || undefined}
 		{collaborators}
 		{presenceColors}
 		extraCount={Number(props.extraCount ?? 2)}

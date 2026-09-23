@@ -45,6 +45,26 @@ export const collabCard = defineComponent({
 			control: { kind: "text" },
 		},
 		{
+			name: "intro",
+			type: "string",
+			description: "Word before the first collaborator's pill.",
+			default: "editing",
+			control: { kind: "text" },
+		},
+		{
+			name: "conjunction",
+			type: "string",
+			description: "Joiner between the two collaborator pills.",
+			default: "&",
+			control: { kind: "text" },
+		},
+		{
+			name: "trailing",
+			type: "string",
+			description: "Optional word after the second collaborator's pill.",
+			control: { kind: "text" },
+		},
+		{
 			name: "liveLabel",
 			type: "string",
 			description:
@@ -55,7 +75,7 @@ export const collabCard = defineComponent({
 			name: "backgroundUrl",
 			type: "string",
 			description: "Background image URL. Falls back to a dark canvas gradient.",
-			control: { kind: "none" },
+			control: { kind: "text" },
 		},
 	],
 	motion: {

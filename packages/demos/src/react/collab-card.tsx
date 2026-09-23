@@ -27,6 +27,10 @@ export function CollabCardDemo({ props }: { props: Props }) {
 			<CollabCard
 				greeting={(props.greeting as string) || undefined}
 				eyebrow={(props.eyebrow as string) || undefined}
+				intro={(props.intro as string) || undefined}
+				conjunction={(props.conjunction as string) || undefined}
+				trailing={(props.trailing as string) || undefined}
+				backgroundUrl={(props.backgroundUrl as string) || undefined}
 				collaborators={COLLABORATORS}
 				presenceColors={PRESENCE_COLORS}
 				extraCount={Number(props.extraCount ?? 2)}
