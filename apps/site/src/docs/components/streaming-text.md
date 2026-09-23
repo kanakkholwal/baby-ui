@@ -19,5 +19,5 @@ are domain content, not something this component invents a fictional default for
 ## No decoration without a handler
 
 Copy always works, reading the assembled plain text straight off `content`. Retry and the
-thumbs-up/down feedback buttons only render when you pass `onRetry`/`onFeedback` — a button
+thumbs-up/down feedback buttons only render when you pass `onRetry`/`onFeedback`: a button
 that looks actionable and does nothing is not something this component ships.

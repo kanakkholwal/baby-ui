@@ -15,10 +15,10 @@ scroll rounding without feeling loose.
 
 ## Parts
 
-- `Conversation` — the root; owns the follow/detached state.
-- `ConversationContent` — the scrollable transcript itself (`role="log"`, live region).
-- `ConversationEmpty` — placeholder shown before the first turn.
-- `ConversationScrollButton` — the jump-to-latest control; appears only once detached.
+- `Conversation`: the root; owns the follow/detached state.
+- `ConversationContent`: the scrollable transcript itself (`role="log"`, live region).
+- `ConversationEmpty`: placeholder shown before the first turn.
+- `ConversationScrollButton`: the jump-to-latest control; appears only once detached.
 
 ```tsx
 <Conversation>
@@ -29,6 +29,6 @@ scroll rounding without feeling loose.
 </Conversation>
 ```
 
-`Conversation` doesn't constrain its own height — give its container a real height and
+`Conversation` doesn't constrain its own height: give its container a real height and
 pass `className="h-full"` to `Conversation` itself so it actually fills it; otherwise the
 transcript just grows with its content instead of scrolling.

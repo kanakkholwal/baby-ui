@@ -12,7 +12,7 @@ mounting per item, so moving along the row reads as the panel morphing to the ne
 ## Not a menu
 
 The panel holds links to pages, not commands, so it's a disclosure pattern rather than
-`role="menu"` — the browser's own link semantics are what a screen reader should hear.
+`role="menu"`: the browser's own link semantics are what a screen reader should hear.
 
 ## Mobile is a real sheet
 

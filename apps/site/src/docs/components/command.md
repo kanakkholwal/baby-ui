@@ -9,8 +9,8 @@ tags: [command]
 The panel scales and drops from above its shortcut, the same duration tokens as Dialog.
 It uses the same inset frame: a thin `bg-background` rim around a `bg-card` body, the same
 treatment as Dialog and Card's `framed` variant. `CommandHeader` is optional and hoists
-itself into that rim — a title on the left, an "esc close" hint on the right built from our
-own `Shortcut` component — so the search input and results sit in the card below it.
+itself into that rim: a title on the left, an "esc close" hint on the right built from our
+own `Shortcut` component, so the search input and results sit in the card below it.
 
 ## Focus never leaves the input
 

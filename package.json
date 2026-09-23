@@ -1,6 +1,7 @@
 {
 	"name": "baby-ui",
 	"private": true,
+	"license": "Apache-2.0",
 	"type": "module",
 	"packageManager": "pnpm@11.1.2",
 	"engines": {

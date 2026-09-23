@@ -7,7 +7,7 @@ tags: [recommendation, confidence, agent, suggestion]
 ---
 
 One recommendation, shown as body text plus a confidence meter (three bars) and label.
-Pressing "Alternatives" opens a drawer listing the other options in place — picking one
+Pressing "Alternatives" opens a drawer listing the other options in place; picking one
 promotes it to the recommendation immediately, in the same card, rather than opening a
 separate flow.
 
@@ -26,7 +26,7 @@ type RecommendationOption = {
 };
 ```
 
-`ctaVariant` is the real `Button` variant type — pick the emphasis that matches the
+`ctaVariant` is the real `Button` variant type: pick the emphasis that matches the
 option's confidence (`"default"` for a strong recommendation, `"secondary"` for one that
 needs review). Accepting an option always shows a `"success"`-styled confirmation,
 regardless of the option's own `ctaVariant`.

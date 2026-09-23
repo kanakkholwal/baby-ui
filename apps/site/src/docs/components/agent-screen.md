@@ -8,7 +8,7 @@ tags: [agent, screen, viewer, recording]
 
 The resting card is a framed capture of the agent's screen; hover reveals an "Open" pill.
 Opening it expands to a full-width viewer with "Teach a task" (starts a recording timer)
-and a collapse control — built on the real `Dialog`, so focus trap, scroll lock and
+and a collapse control, built on the real `Dialog`, so focus trap, scroll lock and
 outside-dismiss all come from that primitive.
 
 ## Recording survives collapsing the viewer

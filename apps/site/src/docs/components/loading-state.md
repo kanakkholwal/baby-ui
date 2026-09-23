@@ -11,7 +11,7 @@ live elapsed timer in tabular monospace figures.
 
 ## Variants
 
-- `drive` / `dots` sweep a chevron wavefront across the grid — square cells for `drive`,
+- `drive` / `dots` sweep a chevron wavefront across the grid: square cells for `drive`,
   round for `dots`.
 - `orbit` laps a comet around the grid's perimeter instead of sweeping through it.
 - `surfer` is `drive` plus a looping video card underneath, for a "look away while this
@@ -22,5 +22,5 @@ live elapsed timer in tabular monospace figures.
 
 Every cell shares one `pixel-on` keyframe; the wavefront comes entirely from staggering
 each cell's `animation-delay`, not per-cell state. Reduced motion freezes the grid to its
-dim resting state and stops the label shimmer — the elapsed timer keeps ticking, since
+dim resting state and stops the label shimmer; the elapsed timer keeps ticking, since
 that's the real status information.

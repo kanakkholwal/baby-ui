@@ -38,7 +38,7 @@ export const toolbar = defineComponent({
 		notes: [
 			"role=toolbar promises roving focus, delivered by the primitive: each control must be a ToolbarButton (or another primitive-aware toolbar part) to register with it, not a plain button.",
 			"Without roving focus a twelve-button toolbar adds twelve tab stops between the user and the content.",
-			"Roving focus and keyboard nav are delegated to Base UI (React) and bits-ui (Svelte); shadcn/ui itself ships no reference for this component, since neither the React nor Svelte registry has one — this component predates that catalog.",
+			"Roving focus and keyboard nav are delegated to Base UI (React) and bits-ui (Svelte); shadcn/ui itself ships no reference for this component, since neither the React nor Svelte registry has one (this component predates that catalog).",
 		],
 	},
 	licenseOrigin: {

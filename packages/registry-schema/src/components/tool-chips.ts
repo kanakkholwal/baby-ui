@@ -15,7 +15,7 @@ export const toolChips = defineComponent({
 			name: "steps",
 			type: "ToolStep[]",
 			description:
-				"Every tool-call row, already known — the reveal is a mount-time stagger, not live progress.",
+				"Every tool-call row, already known: the reveal is a mount-time stagger, not live progress.",
 			control: { kind: "none" },
 		},
 		{

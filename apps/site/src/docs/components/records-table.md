@@ -8,8 +8,8 @@ tags: [table, records, spreadsheet, ai, columns]
 
 A company-records grid where every column is itself a configurable property. Clicking a
 header opens its config (type, tool, inputs, prompt preview); a "Go calculate" button
-reveals computed values row by row, driven entirely by `calculatingColumn`/`resolvedCount`
-— the caller owns the reveal timing, the component only renders it.
+reveals computed values row by row, driven entirely by `calculatingColumn`/`resolvedCount`:
+the caller owns the reveal timing, the component only renders it.
 
 ## Data shape
 

@@ -27,7 +27,7 @@ const BTN =
 			<ResponsiveDialogHeader>
 				<ResponsiveDialogTitle>Edit profile</ResponsiveDialogTitle>
 				<ResponsiveDialogDescription>
-					Dialog on desktop, Drawer on mobile — the same markup renders both.
+					Dialog on desktop, Drawer on mobile: the same markup renders both.
 				</ResponsiveDialogDescription>
 			</ResponsiveDialogHeader>
 			<ResponsiveDialogClose />

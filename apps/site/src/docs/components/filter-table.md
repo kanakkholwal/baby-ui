@@ -6,7 +6,7 @@ category: advanced
 tags: [table, filter, tasks, status]
 ---
 
-A task table with status filter chips above it. Filtering doesn't unmount rows — each one
+A task table with status filter chips above it. Filtering doesn't unmount rows: each one
 collapses via a `grid-template-rows` transition (`1fr` → `0fr`) plus a fade, so switching
 filters animates instead of jump-cutting.
 

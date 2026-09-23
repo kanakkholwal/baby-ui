@@ -117,7 +117,7 @@ export function DrawerContent({
 					)
 				) : null}
 				{/* data-vaul-no-drag: dragging should only start from the rail, not anywhere
-				    in the body — vaul otherwise treats the whole panel as a drag target. */}
+				    in the body, since vaul otherwise treats the whole panel as a drag target. */}
 				<div data-slot="drawer-surface" data-vaul-no-drag className={frame.surface()}>
 					{children}
 				</div>

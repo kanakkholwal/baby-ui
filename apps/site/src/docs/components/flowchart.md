@@ -13,7 +13,7 @@ an If/Else row set instead of a plain title/caption card.
 ## Built on the real Select
 
 Condition rows pick values through this registry's own `Select`, not a hand-rolled
-absolutely-positioned popup with its own outside-click listener — positioning, dismissal
+absolutely-positioned popup with its own outside-click listener; positioning, dismissal
 and keyboard handling all come from that primitive.
 
 ## No fictional default

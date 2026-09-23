@@ -59,7 +59,7 @@ const frame = $derived(drawerFrame({ variant }));
 			{/if}
 		{/if}
 		<!-- data-vaul-no-drag: dragging should only start from the rail, not anywhere in the
-		body — vaul otherwise treats the whole panel as a drag target. -->
+		body, since vaul otherwise treats the whole panel as a drag target. -->
 		<div data-slot="drawer-surface" data-vaul-no-drag class={frame.surface()}>
 			{@render children?.()}
 		</div>

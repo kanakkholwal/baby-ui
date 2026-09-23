@@ -24,7 +24,7 @@ export const conversation = defineComponent({
 		behaviour: [
 			"New turns are followed only while the reader is within `threshold` px of the bottom, which tolerates sub-pixel scroll rounding.",
 			"A `ResizeObserver` on both the scroll viewport and the transcript catches content growth (streaming replies, images loading in) and keeps following without waiting for a scroll event.",
-			"Wheel, touch and pointer-down are tracked separately from scroll position, so a user actively scrolling up detaches follow immediately — a programmatic `scrollToBottom()` call never gets mistaken for that.",
+			"Wheel, touch and pointer-down are tracked separately from scroll position, so a user actively scrolling up detaches follow immediately; a programmatic `scrollToBottom()` call never gets mistaken for that.",
 		],
 	},
 	a11y: {

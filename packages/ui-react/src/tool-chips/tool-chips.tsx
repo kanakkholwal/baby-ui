@@ -37,7 +37,7 @@ function DotIcon() {
 }
 
 export interface ToolChipsProps {
-	/** Every tool-call row, already known — the reveal is a mount-time stagger, not live progress. */
+	/** Every tool-call row, already known: the reveal is a mount-time stagger, not live progress. */
 	steps: ToolStep[];
 	/** File-diff chips shown below the steps; omit or pass `[]` to hide the row entirely. */
 	diffs?: ToolDiff[];

@@ -13,6 +13,8 @@ project; you own the files.
   without touching call sites.
 - One token layer, so both ports look identical and follow your existing theme.
 - A JavaScript route for every component.
+- A [registry namespace](/docs/installation#optional-registry-namespace) for the `shadcn`
+  CLI, so `add` commands shorten to `@baby-ui/button` (React only, for now).
 
 ## Start here
 

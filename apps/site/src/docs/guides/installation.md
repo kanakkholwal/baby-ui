@@ -94,6 +94,25 @@ Your `--background`, `--primary` and the rest are never touched. Each component 
 this command in for the framework and language chosen in the header; its Manual tab lists
 the files for copying by hand.
 
+### Optional: registry namespace
+
+The `shadcn` CLI (React only — `shadcn-svelte` doesn't support this yet) can resolve a
+short alias instead of a full URL. Add it once to `components.json`:
+
+```json
+{
+	"registries": {
+		"@baby-ui": "https://baby-ui.pages.dev/r/{name}.json"
+	}
+}
+```
+
+Then every `add` command shortens to:
+
+```bash
+npx shadcn@latest add @baby-ui/button
+```
+
 ## 5. Use it
 
 ```tsx

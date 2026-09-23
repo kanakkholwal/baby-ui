@@ -59,7 +59,7 @@ export const thinkingState = defineComponent({
 		reducedMotion:
 			"The shimmer and row entrance animations drop; state changes remain instant either way.",
 		behaviour: [
-			"Auto-expands while `thinking` is true, auto-collapses once it's false, unless the reader has already toggled it manually — identical to Reasoning's own open logic.",
+			"Auto-expands while `thinking` is true, auto-collapses once it's false, unless the reader has already toggled it manually: identical to Reasoning's own open logic.",
 			"Rows render immediately and fade up staggered by 80ms each on mount; the connecting rail's height animates to match the expanded content.",
 			"The header label shimmers (the shared `.reasoning-shimmer` class) while `thinking`, then fades to a plain settled label.",
 		],

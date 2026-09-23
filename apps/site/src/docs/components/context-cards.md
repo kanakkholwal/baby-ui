@@ -24,4 +24,4 @@ type ContextChunk = {
 ```
 
 `tone` colors the small badge square next to the source filename (e.g. red for a PDF,
-green for a CSV) — pick whichever reads as the right category for that source type.
+green for a CSV): pick whichever reads as the right category for that source type.

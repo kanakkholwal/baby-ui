@@ -937,20 +937,20 @@
 }
 
 .collab-cursor--host {
-	animation: collab-host 9s ease-in-out infinite;
+	animation: collab-host 9s var(--ease-in-out) infinite;
 }
 
 .collab-cursor--first {
-	animation: collab-first 5.5s ease-in-out infinite;
+	animation: collab-first 5.5s var(--ease-in-out) infinite;
 }
 
 .collab-cursor--second {
-	animation: collab-second 5.5s ease-in-out infinite 0.8s;
+	animation: collab-second 5.5s var(--ease-in-out) infinite 0.8s;
 }
 
 .collab-cursor [data-burst] {
 	opacity: 0;
-	animation: collab-burst 5.5s ease-in-out infinite;
+	animation: collab-burst 5.5s var(--ease-in-out) infinite;
 	animation-fill-mode: both;
 }
 

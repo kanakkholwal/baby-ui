@@ -13,10 +13,10 @@ reader's manual expand/collapse choice still sticks either way.
 
 ## Four row shapes, one shell
 
-- `steps` — a checkmark per row, or a spinner for whichever row has `status: "active"`.
-- `reasoning` — plain prose, no icon, no chip.
-- `search` — a query line, then linked results with a coloured source dot.
-- `coding` — selectable tool-call rows (`aria-pressed`), the last one carrying a diff count.
+- `steps`: a checkmark per row, or a spinner for whichever row has `status: "active"`.
+- `reasoning`: plain prose, no icon, no chip.
+- `search`: a query line, then linked results with a coloured source dot.
+- `coding`: selectable tool-call rows (`aria-pressed`), the last one carrying a diff count.
 
 `rows`, `activeLabel` and `doneLabel` are required: the trace's actual content is domain
 data, not something this component should invent a fictional default for.

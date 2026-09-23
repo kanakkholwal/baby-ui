@@ -67,7 +67,7 @@ export const MotionSpecSchema = z.object({
 
 export const A11ySchema = z.object({
 	role: z.string().optional(),
-	/** `["Escape closes", "Arrow keys move focus"]` — asserted by tests in both ports. */
+	/** `["Escape closes", "Arrow keys move focus"]`, asserted by tests in both ports. */
 	keyboard: z.array(z.string()).default([]),
 	notes: z.array(z.string()).default([]),
 });

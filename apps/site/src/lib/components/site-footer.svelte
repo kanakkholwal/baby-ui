@@ -138,7 +138,7 @@ const year = new Date().getFullYear();
 		<div
 			class="mt-14 flex flex-col gap-3 border-border border-t pt-6 text-muted-foreground text-xs sm:flex-row sm:items-center sm:justify-between"
 		>
-			<p>Components are yours once copied. MIT License.</p>
+			<p>Components are yours once copied. Apache License 2.0.</p>
 			<p>© {year} Baby UI.</p>
 		</div>
 	</div>

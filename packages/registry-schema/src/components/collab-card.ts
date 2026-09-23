@@ -64,14 +64,14 @@ export const collabCard = defineComponent({
 			"Every cursor, the click burst and the live-dot ping freeze in place at full opacity.",
 		behaviour: [
 			"The host cursor wanders a fixed multi-point path; each collaborator's cursor jitters near a pill and fires a click-burst ring on a loop, all timed independently so they never sync up.",
-			"Every dimension is in `cqi` (container query inline units), so the whole card — frame, cursors, pills, presence stack — scales continuously with its own width, not with viewport breakpoints.",
+			"Every dimension is in `cqi` (container query inline units), so the whole card (frame, cursors, pills, presence stack) scales continuously with its own width, not with viewport breakpoints.",
 		],
 	},
 	a11y: {
 		keyboard: [],
 		notes: [
 			"Purely decorative: cursors, the live-ping dot and the presence stack are all `aria-hidden`.",
-			"The Figma-brand colors (`#0D99FF`, `#A259FF`, `#FF7262`, `#1ABCFE`, `#0ACF83`) are fixed, not theme tokens — this card depicts a specific external tool's canvas and stays dark regardless of the site's light/dark mode, the same way a browser-chrome mockup wouldn't reskin either.",
+			"The Figma-brand colors (`#0D99FF`, `#A259FF`, `#FF7262`, `#1ABCFE`, `#0ACF83`) are fixed, not theme tokens: this card depicts a specific external tool's canvas and stays dark regardless of the site's light/dark mode, the same way a browser-chrome mockup wouldn't reskin either.",
 		],
 	},
 	licenseOrigin: {

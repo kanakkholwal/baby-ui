@@ -8,7 +8,7 @@ tags: [responsive, dialog, drawer, modal, sheet]
 
 Renders Dialog above the `md` breakpoint (768px) and Drawer below it, switching live as the
 viewport crosses it. Same markup, same parts (`Trigger`, `Content`, `Header`, `Footer`,
-`Title`, `Description`, `Close`) either way — each part forwards to the real Dialog or
+`Title`, `Description`, `Close`) either way: each part forwards to the real Dialog or
 Drawer component underneath, so focus trapping, `aria-labelledby`/`aria-describedby` wiring
 and motion all come from whichever surface is active.
 

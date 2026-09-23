@@ -1,6 +1,6 @@
 export type FileTreeNode = {
 	name: string;
-	/** Present means folder, absent means file — even when empty. */
+	/** Present means folder, absent means file (even when empty). */
 	children?: FileTreeNode[];
 };
 

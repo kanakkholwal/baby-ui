@@ -40,7 +40,7 @@ export interface ConversationProps extends Omit<ComponentProps<"div">, "children
 }
 
 /** Follows new turns while the reader is already at the bottom, and stops the moment
- * they scroll up — yanking someone back down mid-read is a common transcript bug. */
+ * they scroll up: yanking someone back down mid-read is a common transcript bug. */
 export function Conversation({
 	children,
 	threshold = 80,

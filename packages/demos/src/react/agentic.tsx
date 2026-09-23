@@ -94,7 +94,7 @@ export function SliderDemo({ props }: { props: Props }) {
 		setValue(range ? [25, 75] : Number(props.value ?? 50));
 	}, [range, props.value]);
 
-	const display = Array.isArray(value) ? `${value[0]}–${value[1]}` : value;
+	const display = Array.isArray(value) ? `${value[0]}-${value[1]}` : value;
 
 	const wrapperClass =
 		orientation === "vertical" ? "flex flex-row gap-3" : "flex w-72 flex-col gap-3";

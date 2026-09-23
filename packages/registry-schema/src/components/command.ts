@@ -66,7 +66,7 @@ export const command = defineComponent({
 			"CommandDialog carries a real, sr-only Title/Description (aria-labelledby/aria-describedby), matching shadcn's own pattern, rather than a bare aria-label.",
 			"The palette is a real modal dialog (Base UI React, bits-ui Svelte), so the page behind it is inert without extra work; it also unmounts on close, so reopening always starts from an empty search with no special-cased reset.",
 			"Filtering, roving highlight, keyboard nav (arrows, Home, End, Enter) and hiding empty groups/results are delegated to cmdk (React) and bits-ui's own `command` module (Svelte); this component only owns the sliding-highlight marker, motion and data-slots.",
-			"Search is real fuzzy matching (cmdk's own scoring, bits-ui's own port of the same algorithm), not a plain case-insensitive substring check like the pre-migration version — a query can now match on a looser, ranked basis.",
+			"Search is real fuzzy matching (cmdk's own scoring, bits-ui's own port of the same algorithm), not a plain case-insensitive substring check like the pre-migration version: a query can now match on a looser, ranked basis.",
 			"The result count next to the input and a debounced live region both read from the same filtered count the primitive already tracks, so a screen reader and a sighted user see the same number.",
 			"Part names and data-slot values match shadcn/ui, so this replaces an existing command without touching call sites.",
 			'CommandHeader hoists into the dialog\'s rim (the same inset-frame treatment as Dialog and the Card `framed` variant); the card below it holds the search input and results. The "esc" cap is literal text, not the Shortcut glyph, since a spoken-word key name reads more clearly at this size.',

@@ -64,7 +64,7 @@ export const question = defineComponent({
 			"Arrow keys move within a radio group",
 		],
 		notes: [
-			"Options are real `RadioGroup`/`Checkbox` primitives, not styled toggle buttons — full keyboard and screen-reader semantics come from the primitive, not reimplemented here.",
+			"Options are real `RadioGroup`/`Checkbox` primitives, not styled toggle buttons: full keyboard and screen-reader semantics come from the primitive, not reimplemented here.",
 			"The submit control is disabled, not hidden, until the current question has an answer, so its position never shifts.",
 		],
 	},

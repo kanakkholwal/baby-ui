@@ -7,10 +7,10 @@ tags: [footer, links, marketing, wordmark]
 ---
 
 Brand, description and socials sit beside a grid of link columns. Both are plain content
-props — the component ships no sample data of its own.
+props, and the component ships no sample data of its own.
 
 ## The wordmark is optional
 
 `wordmark` is a giant `background-clip: text` sheen across the foot of the footer. Omit it
-and that whole section doesn't render — it's not a fixed piece of decoration baked into the
+and that whole section doesn't render: it's not a fixed piece of decoration baked into the
 component.

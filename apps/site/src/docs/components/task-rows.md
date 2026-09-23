@@ -13,7 +13,7 @@ is domain content this component has no business inventing.
 ## Fully controlled, no internal timers
 
 A row's badge and pill are a direct render of its `status` (`pending` | `running` | `done` |
-`failed`) — this component holds no state machine and simulates nothing on its own. A failed
+`failed`): this component holds no state machine and simulates nothing on its own. A failed
 row's retry glyph only renders as a real button when you pass `onRetry`; wire it to actually
 retry the task and update `rows` yourself. Completed/failed pills reuse `Badge`, so status is
 never colour-only.

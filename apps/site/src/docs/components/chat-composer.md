@@ -14,7 +14,7 @@ reply sequence reads as the agent actually working rather than appearing all at 
 
 Every header control is wired to real state, not decorative:
 
-- **Topic tabs** switch between `topics` — each has its own starting prompt and scripted
+- **Topic tabs** switch between `topics`: each has its own starting prompt and scripted
   replies, like separate threads.
 - **New** clears the active topic back to an empty composer, ready for a fresh prompt.
 - **Prompt history** lists prompts sent so far this session; picking one re-sends it.
@@ -38,5 +38,5 @@ type ChatMessage = {
 };
 ```
 
-Only the first two messages in a topic are ever shown (one at a time, in sequence) — this
+Only the first two messages in a topic are ever shown (one at a time, in sequence); this
 is a scripted demo panel, not a full conversation history.

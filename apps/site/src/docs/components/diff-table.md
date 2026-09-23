@@ -12,7 +12,7 @@ whether that specific edit is part of the change before applying.
 
 ## No scripted reveal
 
-Rows fade in with a mount-time stagger, not a timed "computing the diff" sequence — the
+Rows fade in with a mount-time stagger, not a timed "computing the diff" sequence; the
 table renders whatever `rows` it's given, immediately.
 
 ## Applying locks the table

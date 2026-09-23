@@ -20,7 +20,7 @@ grow lags the caret.
 
 Pass `models` to show a model picker built on the real `Select`; pass `actions` to show a
 "+" button (its glyph rotates 45° while open, a plain CSS transform) built on the real
-`DropdownMenu`. Both are omitted entirely, not shown empty, when you don't pass them —
+`DropdownMenu`. Both are omitted entirely, not shown empty, when you don't pass them;
 there's no fictional default list baked in.
 
 ## Controlled or uncontrolled

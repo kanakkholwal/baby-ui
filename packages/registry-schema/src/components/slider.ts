@@ -65,7 +65,7 @@ export const slider = defineComponent({
 		behaviour: [
 			"The thumb scales to 1.15 on hover and 1.25 while dragging, over 140ms.",
 			"The fill has no transition: it must track the pointer exactly or the control feels broken.",
-			"Vertical orientation needs an explicit height on an ancestor (percentage sizing has nothing to resolve against otherwise) — the demo sets one directly since it's a one-off layout concern, not a design token.",
+			"Vertical orientation needs an explicit height on an ancestor (percentage sizing has nothing to resolve against otherwise); the demo sets one directly since it's a one-off layout concern, not a design token.",
 		],
 	},
 	a11y: {

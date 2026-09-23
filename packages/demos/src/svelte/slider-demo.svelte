@@ -13,7 +13,7 @@ $effect(() => {
 	value = range ? [25, 75] : Number(props.value ?? 50);
 });
 
-let display = $derived(Array.isArray(value) ? `${value[0]}–${value[1]}` : value);
+let display = $derived(Array.isArray(value) ? `${value[0]}-${value[1]}` : value);
 </script>
 
 <div class="flex gap-3 {orientation === 'vertical' ? 'flex-row' : 'w-72 flex-col'}">

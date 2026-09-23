@@ -12,11 +12,11 @@ state, surfaced together through `onChange`.
 
 ## No fictional default
 
-`fields` is required — the scrub-able properties are the whole point of the card, so there's
+`fields` is required: the scrub-able properties are the whole point of the card, so there's
 no built-in sample set. `options` defaults to empty, which hides the Type row entirely rather
 than showing a select with invented choices.
 
 ## Built on the real Select
 
-The Type picker composes this registry's own `Select`, not a hand-rolled popup — its open
+The Type picker composes this registry's own `Select`, not a hand-rolled popup: its open
 state, positioning and keyboard handling all come from that primitive.
