@@ -8,6 +8,7 @@ export const CATEGORY_LABEL: Record<Category, string> = {
 	advanced: "Advanced",
 	animated: "Animated",
 	agents: "Agents",
+	text: "Text",
 };
 
 export const CATEGORY_BLURB: Record<Category, string> = {
@@ -16,6 +17,7 @@ export const CATEGORY_BLURB: Record<Category, string> = {
 	advanced: "Components with real interaction models behind them.",
 	animated: "Pieces where the motion is the point.",
 	agents: "Interface parts for products that talk back: messages, tools, reasoning.",
+	text: "Copy that moves: reveals, swaps, hovers and loops built for headlines and labels.",
 };
 
 /** Nav entries, derived from the specs so a new component shows up without edits here. */

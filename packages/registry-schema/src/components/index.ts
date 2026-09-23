@@ -3,16 +3,20 @@ import { accordion } from "./accordion";
 import { agentScreen } from "./agent-screen";
 import { alert } from "./alert";
 import { alertDialog } from "./alert-dialog";
+import { animatedGradientText } from "./animated-gradient-text";
 import { attachment } from "./attachment";
 import { avatar } from "./avatar";
 import { badge } from "./badge";
 import { bentoGrid } from "./bento-grid";
+import { boldCopy } from "./bold-copy";
 import { breadcrumb } from "./breadcrumb";
 import { button } from "./button";
 import { card } from "./card";
 import { chatComposer } from "./chat-composer";
 import { checkbox } from "./checkbox";
+import { circularText } from "./circular-text";
 import { codeBlock } from "./code-block";
+import { collabCard } from "./collab-card";
 import { collapsible } from "./collapsible";
 import { colorPicker } from "./color-picker";
 import { combobox } from "./combobox";
@@ -22,8 +26,11 @@ import { contextCards } from "./context-cards";
 import { contextMenu } from "./context-menu";
 import { conversation } from "./conversation";
 import { copyButton } from "./copy-button";
+import { counter } from "./counter";
+import { cycleText } from "./cycle-text";
 import { dialog } from "./dialog";
 import { diffTable } from "./diff-table";
+import { doubleUnderline } from "./double-underline";
 import { drawer } from "./drawer";
 import { dropdownMenu } from "./dropdown-menu";
 import { fileDiff } from "./file-diff";
@@ -31,14 +38,23 @@ import { fileTree } from "./file-tree";
 import { filterTable } from "./filter-table";
 import { fineTuneCard } from "./fine-tune-card";
 import { flowchart } from "./flowchart";
+import { footer } from "./footer";
 import { fullscreenNav } from "./fullscreen-nav";
 import { gauge } from "./gauge";
+import { gibberishText } from "./gibberish-text";
+import { glitchText } from "./glitch-text";
 import { hoverCard } from "./hover-card";
 import { input } from "./input";
+import { jitterText } from "./jitter-text";
+import { jumpingText } from "./jumping-text";
 import { label } from "./label";
 import { loadingState } from "./loading-state";
 import { markdown } from "./markdown";
+import { maskText } from "./mask-text";
+import { megaNavbar } from "./mega-navbar";
 import { message } from "./message";
+import { metisText } from "./metis-text";
+import { mirrorText } from "./mirror-text";
 import { morphingModal } from "./morphing-modal";
 import { navbar } from "./navbar";
 import { pagination } from "./pagination";
@@ -52,7 +68,9 @@ import { recordsTable } from "./records-table";
 import { reorderList } from "./reorder-list";
 import { responseStream } from "./response-stream";
 import { responsiveDialog } from "./responsive-dialog";
+import { rollText } from "./roll-text";
 import { scrollArea } from "./scroll-area";
+import { scrollReveal } from "./scroll-reveal";
 import { scrubField } from "./scrub-field";
 import { select } from "./select";
 import { sheet } from "./sheet";
@@ -62,15 +80,23 @@ import { sidebarNav } from "./sidebar-nav";
 import { skeleton } from "./skeleton";
 import { slider } from "./slider";
 import { spinner } from "./spinner";
+import { splitText } from "./split-text";
+import { staggeredLetter } from "./staggered-letter";
 import { streamingText } from "./streaming-text";
+import { swapText } from "./swap-text";
 import { switchComponent } from "./switch";
 import { table } from "./table";
 import { tabs } from "./tabs";
 import { tagInput } from "./tag-input";
 import { taskRows } from "./task-rows";
 import { taskSteps } from "./task-steps";
+import { textBorderAnimation } from "./text-border-animation";
+import { textExplodeIMessage } from "./text-explode-imessage";
+import { textFlip } from "./text-flip";
+import { textTransition } from "./text-transition";
 import { textarea } from "./textarea";
 import { thinkingState } from "./thinking-state";
+import { ticker } from "./ticker";
 import { toast } from "./toast";
 import { toggle } from "./toggle";
 import { toggleGroup } from "./toggle-group";
@@ -78,7 +104,10 @@ import { tool } from "./tool";
 import { toolChips } from "./tool-chips";
 import { toolbar } from "./toolbar";
 import { tooltip } from "./tooltip";
+import { typingText } from "./typing-text";
 import { typography } from "./typography";
+import { underlineHoverText } from "./underline-hover-text";
+import { waveReveal } from "./wave-reveal";
 
 export const specs: ComponentSpec[] = [
 	accordion,
@@ -130,7 +159,10 @@ export const specs: ComponentSpec[] = [
 	reorderList,
 	tagInput,
 	navbar,
+	megaNavbar,
+	footer,
 	bentoGrid,
+	collabCard,
 	fullscreenNav,
 	fileTree,
 	morphingModal,
@@ -161,6 +193,32 @@ export const specs: ComponentSpec[] = [
 	taskRows,
 	streamingText,
 	agentScreen,
+	animatedGradientText,
+	doubleUnderline,
+	boldCopy,
+	mirrorText,
+	gibberishText,
+	metisText,
+	underlineHoverText,
+	textBorderAnimation,
+	splitText,
+	swapText,
+	textFlip,
+	waveReveal,
+	glitchText,
+	rollText,
+	typingText,
+	textTransition,
+	circularText,
+	jitterText,
+	jumpingText,
+	maskText,
+	staggeredLetter,
+	cycleText,
+	counter,
+	ticker,
+	scrollReveal,
+	textExplodeIMessage,
 ];
 
 export function getSpec(slug: string): ComponentSpec | undefined {

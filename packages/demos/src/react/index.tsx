@@ -24,6 +24,7 @@ import {
 	TaskStepsDemo,
 } from "./agentic";
 import { ChatComposerDemo } from "./chat-composer";
+import { CollabCardDemo } from "./collab-card";
 import {
 	AttachmentDemo,
 	CodeBlockDemo,
@@ -53,7 +54,9 @@ import { DiffTableDemo } from "./diff-table";
 import { FilterTableDemo } from "./filter-table";
 import { FineTuneCardDemo } from "./fine-tune-card";
 import { FlowchartDemo } from "./flowchart";
+import { FooterDemo } from "./footer";
 import { LoadingStateDemo } from "./loading-state";
+import { MegaNavbarDemo } from "./mega-navbar";
 import {
 	ComboboxDemo,
 	ContextMenuDemo,
@@ -97,6 +100,34 @@ import { SidebarNavDemo } from "./sidebar-nav";
 import { StreamingTextDemo } from "./streaming-text";
 import { TableDemo } from "./table";
 import { TaskRowsDemo } from "./task-rows";
+import {
+	AnimatedGradientTextDemo,
+	BoldCopyDemo,
+	CircularTextDemo,
+	CounterDemo,
+	CycleTextDemo,
+	DoubleUnderlineDemo,
+	GibberishTextDemo,
+	GlitchTextDemo,
+	JitterTextDemo,
+	JumpingTextDemo,
+	MaskTextDemo,
+	MetisTextDemo,
+	MirrorTextDemo,
+	RollTextDemo,
+	ScrollRevealDemo,
+	SplitTextDemo,
+	StaggeredLetterDemo,
+	SwapTextDemo,
+	TextBorderAnimationDemo,
+	TextExplodeIMessageDemo,
+	TextFlipDemo,
+	TextTransitionDemo,
+	TickerDemo,
+	TypingTextDemo,
+	UnderlineHoverTextDemo,
+	WaveRevealDemo,
+} from "./text";
 import { ThinkingStateDemo } from "./thinking-state";
 import { ToolChipsDemo } from "./tool-chips";
 
@@ -251,6 +282,8 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	table: TableDemo,
 	textarea: TextareaDemo,
 	navbar: NavbarDemo,
+	"mega-navbar": MegaNavbarDemo,
+	footer: FooterDemo,
 	"bento-grid": BentoGridDemo,
 	"file-tree": FileTreeDemo,
 	"morphing-modal": MorphingModalDemo,
@@ -302,6 +335,7 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"task-steps": TaskStepsDemo,
 	"responsive-dialog": ResponsiveDialogDemo,
 	"context-cards": ContextCardsDemo,
+	"collab-card": CollabCardDemo,
 	"filter-table": FilterTableDemo,
 	"diff-table": DiffTableDemo,
 	"records-table": RecordsTableDemo,
@@ -316,4 +350,30 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"agent-screen": AgentScreenDemo,
 	"tool-chips": ToolChipsDemo,
 	"sidebar-nav": SidebarNavDemo,
+	"animated-gradient-text": AnimatedGradientTextDemo,
+	"double-underline": DoubleUnderlineDemo,
+	"bold-copy": BoldCopyDemo,
+	"mirror-text": MirrorTextDemo,
+	"gibberish-text": GibberishTextDemo,
+	"glitch-text": GlitchTextDemo,
+	"metis-text": MetisTextDemo,
+	"underline-hover-text": UnderlineHoverTextDemo,
+	"text-border-animation": TextBorderAnimationDemo,
+	"roll-text": RollTextDemo,
+	"split-text": SplitTextDemo,
+	"swap-text": SwapTextDemo,
+	"text-flip": TextFlipDemo,
+	"wave-reveal": WaveRevealDemo,
+	"typing-text": TypingTextDemo,
+	"text-transition": TextTransitionDemo,
+	"circular-text": CircularTextDemo,
+	"jitter-text": JitterTextDemo,
+	"jumping-text": JumpingTextDemo,
+	"mask-text": MaskTextDemo,
+	"staggered-letter": StaggeredLetterDemo,
+	"cycle-text": CycleTextDemo,
+	counter: CounterDemo,
+	ticker: TickerDemo,
+	"scroll-reveal": ScrollRevealDemo,
+	"text-explode-imessage": TextExplodeIMessageDemo,
 };

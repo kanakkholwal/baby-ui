@@ -6,6 +6,7 @@
 	--ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 	--ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
 	--ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+	--ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
 	--duration-press: 140ms;
 	--duration-tooltip: 150ms;
@@ -265,6 +266,31 @@
 	}
 }
 
+.footer-wordmark {
+	background-image: linear-gradient(
+		100deg,
+		color-mix(in oklch, var(--foreground) 4%, transparent) 0%,
+		color-mix(in oklch, var(--foreground) 26%, transparent) 20%,
+		color-mix(in oklch, var(--foreground) 80%, transparent) 50%,
+		color-mix(in oklch, var(--foreground) 26%, transparent) 80%,
+		color-mix(in oklch, var(--foreground) 4%, transparent) 100%
+	);
+	background-size: 260% 100%;
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+	animation: footer-wordmark-sheen 9s linear infinite;
+}
+
+@keyframes footer-wordmark-sheen {
+	from {
+		background-position: 160% 0;
+	}
+	to {
+		background-position: -60% 0;
+	}
+}
+
 @media (prefers-reduced-motion: reduce) {
 	.radio-dot {
 		transition: none;
@@ -273,8 +299,17 @@
 	.typing-dot,
 	.stream-caret,
 	.reasoning-shimmer,
-	.step-spinner {
+	.step-spinner,
+	.footer-wordmark {
 		animation: none;
+	}
+
+	.footer-wordmark {
+		background-image: linear-gradient(
+			100deg,
+			color-mix(in oklch, var(--foreground) 5%, transparent) 0%,
+			color-mix(in oklch, var(--foreground) 12%, transparent) 100%
+		);
 	}
 }
 
@@ -330,7 +365,7 @@
 /* Shared by both Message ports: the iMessage bubble pop, a slide-up with a slight
    scale overshoot rather than a linear ease. */
 .imessage-in {
-	animation: imessage-in 320ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+	animation: imessage-in 320ms var(--ease-spring) both;
 }
 
 @keyframes imessage-in {
@@ -414,5 +449,600 @@
 @media (prefers-reduced-motion: reduce) {
 	.spinner {
 		animation-duration: 2s;
+	}
+}
+
+/* Shared by AnimatedGradientText: the gradient fill sweeps left-right and back. */
+.gradient-text-animate {
+	animation: gradient-text-shift var(--agt-duration, 3s) var(--ease-in-out) infinite alternate;
+}
+
+@keyframes gradient-text-shift {
+	from {
+		background-position: 0% 50%;
+	}
+	to {
+		background-position: 100% 50%;
+	}
+}
+
+/* Shared by TextFlip: the word stack steps by `--flip-step` (set inline per tick), so
+   it works for any word count instead of a keyframe with a fixed number of stops. */
+.text-flip-stack {
+	transition: transform var(--duration-overlay) var(--ease-out);
+	transform: translateY(calc(var(--flip-step, 0) * -100%));
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.gradient-text-animate {
+		animation: none;
+	}
+	.text-flip-stack {
+		transition: none;
+	}
+}
+
+/* Shared by WaveReveal: per-unit animation-delay makes the stagger read as a wave.
+   Blur variants run both keyframes in one shorthand; a second class can't add one. */
+.wave-reveal-up {
+	animation: wave-reveal-up var(--duration-overlay) var(--ease-out) both;
+}
+
+.wave-reveal-down {
+	animation: wave-reveal-down var(--duration-overlay) var(--ease-out) both;
+}
+
+.wave-reveal-up-blur {
+	animation:
+		wave-reveal-up var(--duration-overlay) var(--ease-out) both,
+		wave-reveal-blur var(--duration-overlay) var(--ease-out) both;
+}
+
+.wave-reveal-down-blur {
+	animation:
+		wave-reveal-down var(--duration-overlay) var(--ease-out) both,
+		wave-reveal-blur var(--duration-overlay) var(--ease-out) both;
+}
+
+@keyframes wave-reveal-up {
+	from {
+		opacity: 0;
+		transform: translateY(12px);
+	}
+}
+
+@keyframes wave-reveal-down {
+	from {
+		opacity: 0;
+		transform: translateY(-12px);
+	}
+}
+
+@keyframes wave-reveal-blur {
+	from {
+		filter: blur(6px);
+	}
+	to {
+		filter: blur(0);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.wave-reveal-up,
+	.wave-reveal-down,
+	.wave-reveal-up-blur,
+	.wave-reveal-down-blur {
+		animation-name: fade-in;
+		filter: none;
+	}
+}
+
+/* Shared by RollText: two stacked copies of the label roll up like a flip-clock digit. */
+.roll-text__track {
+	display: inline;
+	line-height: inherit;
+	white-space: pre;
+}
+
+.roll-unit {
+	position: relative;
+	display: inline-grid;
+	overflow: clip;
+	clip-path: inset(0);
+	contain: paint;
+	vertical-align: baseline;
+	font-kerning: none;
+	line-height: inherit;
+}
+
+.roll-unit__sizer,
+.roll-unit__stack {
+	grid-area: 1 / 1;
+	line-height: inherit;
+}
+
+.roll-unit__sizer {
+	visibility: hidden;
+	pointer-events: none;
+	user-select: none;
+	white-space: pre;
+}
+
+.roll-unit__stack {
+	position: absolute;
+	inset-inline: 0;
+	top: 0;
+	display: flex;
+	flex-direction: column;
+	white-space: pre;
+	transform: translateY(0);
+}
+
+.roll-unit__line {
+	display: block;
+	line-height: inherit;
+	white-space: inherit;
+}
+
+@keyframes roll-stack-open {
+	from {
+		transform: translateY(0);
+	}
+	to {
+		transform: translateY(-50%);
+	}
+}
+
+.roll-text--animating .roll-unit__stack {
+	animation: roll-stack-open var(--roll-unit-duration, 250ms) var(--ease-in-out)
+		var(--roll-delay, 0ms) forwards;
+}
+
+.roll-text--open:not(.roll-text--animating) .roll-unit__stack {
+	transform: translateY(-50%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.roll-text--animating .roll-unit__stack {
+		animation-duration: 100ms;
+	}
+}
+
+/* Shared by GlitchText: two colour ghosts jitter under the sharp base layer. */
+.glitch-text {
+	--glitch-intensity: 5;
+	--glitch-step: 0.01em;
+	--glitch-duration: 2.5s;
+	--glitch-color-a: #ff00ff;
+	--glitch-color-b: #00ffff;
+	--glitch-blend-mode: screen;
+	--glitch-x: calc(var(--glitch-intensity) * var(--glitch-step));
+	--glitch-y: max(var(--glitch-step), calc(var(--glitch-x) * 0.35));
+	--glitch-x-1: calc((var(--glitch-intensity) - 1) * var(--glitch-step));
+	--glitch-x-2: calc((var(--glitch-intensity) - 2) * var(--glitch-step));
+	position: relative;
+	display: inline-grid;
+	grid-template-areas: "stack";
+}
+
+.glitch-text__ghost-a,
+.glitch-text__ghost-b,
+.glitch-text__base {
+	grid-area: stack;
+}
+
+.glitch-text__ghost-a {
+	color: var(--glitch-color-a);
+	mix-blend-mode: var(--glitch-blend-mode);
+	animation: glitch-a var(--glitch-duration) linear infinite;
+}
+
+.glitch-text__ghost-b {
+	color: var(--glitch-color-b);
+	mix-blend-mode: var(--glitch-blend-mode);
+	animation: glitch-b var(--glitch-duration) linear infinite;
+}
+
+.glitch-text__base {
+	position: relative;
+	z-index: 2;
+	color: var(--glitch-color-base, currentcolor);
+}
+
+@keyframes glitch-a {
+	0%,
+	88%,
+	100% {
+		transform: translate(0, 0);
+		opacity: 0.85;
+	}
+	90% {
+		transform: translate(calc(var(--glitch-x) * -1), calc(var(--glitch-y) * -1));
+		opacity: 1;
+	}
+	92% {
+		transform: translate(var(--glitch-x-1), var(--glitch-y));
+		opacity: 0.9;
+	}
+	94% {
+		transform: translate(calc(var(--glitch-x-2) * -1), 0);
+		opacity: 1;
+	}
+	96% {
+		transform: translate(var(--glitch-x), calc(var(--glitch-y) * -1));
+		opacity: 0.85;
+	}
+}
+
+@keyframes glitch-b {
+	0%,
+	86%,
+	100% {
+		transform: translate(0, 0);
+		opacity: 0.85;
+	}
+	88% {
+		transform: translate(var(--glitch-x), var(--glitch-y));
+		opacity: 1;
+	}
+	91% {
+		transform: translate(calc(var(--glitch-x) * -1), calc(var(--glitch-y) * -1));
+		opacity: 0.9;
+	}
+	93% {
+		transform: translate(var(--glitch-x-1), 0);
+		opacity: 1;
+	}
+	95% {
+		transform: translate(calc(var(--glitch-x-2) * -1), var(--glitch-y));
+		opacity: 0.85;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.glitch-text__ghost-a,
+	.glitch-text__ghost-b {
+		animation: none;
+		opacity: 0.35;
+	}
+}
+
+/* Shared by TextTransition: one generic keyframe driven by custom properties the
+   component sets per unit, so 19 named presets share one animation, not 19. */
+.text-transition-unit {
+	animation: text-transition-enter var(--tt-duration, 400ms) var(--tt-ease, var(--ease-out))
+		var(--tt-delay, 0ms) both;
+}
+
+@keyframes text-transition-enter {
+	from {
+		opacity: var(--tt-from-opacity, 0);
+		transform: translate(var(--tt-from-x, 0px), var(--tt-from-y, 0px))
+			scale(var(--tt-from-scale, 1));
+		filter: blur(var(--tt-from-blur, 0px));
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.text-transition-unit {
+		animation-name: fade-in;
+		filter: none;
+	}
+}
+
+/* Shared by CircularText: the whole ring spins continuously; each character's own
+   rotate+translateY (set inline, since it depends on the text length) is static. */
+.circular-text {
+	animation: circular-spin var(--ct-duration, 30s) linear infinite;
+}
+
+.circular-text[data-direction="counterclockwise"] {
+	animation-direction: reverse;
+}
+
+@keyframes circular-spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.circular-text {
+		animation: none;
+	}
+}
+
+/* Shared by JitterText: a small yoyo'd x/y/rotate wobble, paused briefly at rest. */
+.jitter-text {
+	animation: jitter-wobble var(--jt-duration, 600ms) var(--ease-in-out) infinite alternate;
+}
+
+@keyframes jitter-wobble {
+	0% {
+		transform: translate(0, 1.5px) rotate(0.5deg);
+	}
+	20% {
+		transform: translate(-1px, 1px) rotate(-1.5deg);
+	}
+	40% {
+		transform: translate(1.5px, -1px) rotate(1deg);
+	}
+	60% {
+		transform: translate(-1.5px, 1.5px) rotate(-1.5deg);
+	}
+	80% {
+		transform: translate(1px, -1.5px) rotate(1deg);
+	}
+	100% {
+		transform: translate(0, 0) rotate(0deg);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.jitter-text {
+		animation: none;
+	}
+}
+
+/* Shared by JumpingTextInstagram: a bouncy per-unit entrance (spring standing in for
+   Motion's damped spring), staggered via animation-delay. */
+.jump-in {
+	animation: jump-in var(--jump-duration, 500ms) var(--ease-spring) both;
+}
+
+@keyframes jump-in {
+	from {
+		opacity: 0;
+		transform: translateY(30px) rotate(-30deg);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.jump-in {
+		animation-name: fade-in;
+	}
+}
+
+/* Shared by MaskText: a circular mask follows the cursor (mask-position, set inline
+   per move) and grows on hover (mask-size, the one part that actually transitions). */
+.mask-text-reveal {
+	mask-image: radial-gradient(circle, black 55%, transparent 70%);
+	-webkit-mask-image: radial-gradient(circle, black 55%, transparent 70%);
+	mask-repeat: no-repeat;
+	-webkit-mask-repeat: no-repeat;
+	mask-position: var(--mt-x, 50%) var(--mt-y, 50%);
+	-webkit-mask-position: var(--mt-x, 50%) var(--mt-y, 50%);
+	mask-size: var(--mt-size, 40px 40px);
+	-webkit-mask-size: var(--mt-size, 40px 40px);
+	transition:
+		mask-size var(--mt-duration, 500ms) var(--ease-spring),
+		-webkit-mask-size var(--mt-duration, 500ms) var(--ease-spring);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.mask-text-reveal {
+		transition: none;
+	}
+}
+
+/* Shared by Ticker: each digit is a 10-row strip that translates to the active row.
+   A transition, not a keyframe animation, so it replays on every value change with
+   no remount needed. */
+.ticker-digit {
+	position: relative;
+	display: inline-block;
+	overflow: hidden;
+	height: 1lh;
+	vertical-align: bottom;
+}
+
+.ticker-digit__track {
+	display: flex;
+	flex-direction: column;
+	transition: transform var(--ticker-duration, 500ms) var(--ease-out);
+	transform: translateY(calc(var(--ticker-index, 0) * -1lh));
+}
+
+.ticker-digit__row {
+	height: 1lh;
+	line-height: 1lh;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.ticker-digit__track {
+		transition: none;
+	}
+}
+
+/* Shared by ScrollReveal: one scroll listener sets --sr-progress on the container;
+   every word derives its own reveal fraction (--sr-t) from a per-word CSS calc(),
+   so no per-word JS writes are needed on scroll. */
+.scroll-reveal-word {
+	opacity: calc(var(--sr-min, 0.5) + var(--sr-t, 1) * (1 - var(--sr-min, 0.5)));
+}
+
+.scroll-reveal-word[data-blur="true"] {
+	filter: blur(calc((1 - var(--sr-t, 1)) * 6px));
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.scroll-reveal-word {
+		opacity: 1;
+		filter: none;
+	}
+}
+
+/* Shared by TextExplodeIMessage: one cycle (shrink, jitter, explode outward, reset) per
+   character, driven by a per-character random --te-x/--te-y/--te-rot set once in JS
+   (same generic-engine idea as TextTransition, but with a full multi-stage timeline
+   instead of a single enter). Loop mode runs it forever; hover mode plays it once via
+   a class toggle. */
+[data-mode="loop"] .text-explode-char {
+	animation: text-explode var(--te-duration, 4000ms) var(--ease-in-out) infinite;
+}
+
+.text-explode-char--playing {
+	animation: text-explode var(--te-duration, 4000ms) var(--ease-in-out) 1;
+}
+
+@keyframes text-explode {
+	0%,
+	8% {
+		transform: scale(1) translate(0, 0) rotate(0deg);
+		opacity: 1;
+	}
+	16% {
+		transform: scale(0.85) translate(var(--te-jitter-x, 0px), var(--te-jitter-y, 0px)) rotate(0deg);
+	}
+	24% {
+		transform: scale(0.85)
+			translate(calc(var(--te-jitter-x, 0px) * -1), calc(var(--te-jitter-y, 0px) * -1)) rotate(0deg);
+	}
+	40% {
+		transform: scale(1.1) translate(calc(var(--te-x, 0px) * 0.4), calc(var(--te-y, 0px) * 0.4))
+			rotate(calc(var(--te-rot, 0deg) * 0.3));
+		opacity: 0.85;
+	}
+	70% {
+		transform: scale(calc(1 + var(--te-scale-extra, 0.5) * 0.6))
+			translate(calc(var(--te-x, 0px) * 0.8), calc(var(--te-y, 0px) * 0.8))
+			rotate(calc(var(--te-rot, 0deg) * 0.7));
+		opacity: 0.4;
+	}
+	88% {
+		transform: scale(calc(1 + var(--te-scale-extra, 0.5))) translate(var(--te-x, 0px), var(--te-y, 0px))
+			rotate(var(--te-rot, 0deg));
+		opacity: 0;
+	}
+	100% {
+		transform: scale(1) translate(0, 0) rotate(0deg);
+		opacity: 1;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	[data-mode="loop"] .text-explode-char,
+	.text-explode-char--playing {
+		animation: none;
+	}
+}
+
+/* Shared by both CollabCard ports: wandering multiplayer cursors, sized in cqi so they
+   track the card's own width rather than the viewport. */
+.collab-cursor {
+	display: inline-block;
+	transform-origin: 20% 20%;
+	will-change: transform;
+	animation-fill-mode: both;
+}
+
+.collab-cursor--host {
+	animation: collab-host 9s ease-in-out infinite;
+}
+
+.collab-cursor--first {
+	animation: collab-first 5.5s ease-in-out infinite;
+}
+
+.collab-cursor--second {
+	animation: collab-second 5.5s ease-in-out infinite 0.8s;
+}
+
+.collab-cursor [data-burst] {
+	opacity: 0;
+	animation: collab-burst 5.5s ease-in-out infinite;
+	animation-fill-mode: both;
+}
+
+.collab-cursor--first [data-burst] {
+	animation-delay: 1.1s;
+}
+
+.collab-cursor--second [data-burst] {
+	animation-delay: 2.7s;
+}
+
+.collab-live-ping {
+	animation: collab-ping 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes collab-host {
+	0%,
+	100% {
+		transform: translate3d(0, 0, 0) rotate(-14deg);
+	}
+	22% {
+		transform: translate3d(54cqi, 2cqi, 0) rotate(-4deg);
+	}
+	48% {
+		transform: translate3d(56cqi, 19cqi, 0) rotate(10deg);
+	}
+	72% {
+		transform: translate3d(-1cqi, 21cqi, 0) rotate(-2deg);
+	}
+}
+
+@keyframes collab-first {
+	0%,
+	100% {
+		transform: translate3d(0, 0, 0) rotate(0deg);
+	}
+	30% {
+		transform: translate3d(-1.2cqi, -1cqi, 0) rotate(-5deg);
+	}
+	60% {
+		transform: translate3d(0.8cqi, 0.6cqi, 0) rotate(3deg);
+	}
+}
+
+@keyframes collab-second {
+	0%,
+	100% {
+		transform: translate3d(0, 0, 0) rotate(0deg);
+	}
+	35% {
+		transform: translate3d(1.4cqi, -0.8cqi, 0) rotate(6deg);
+	}
+	65% {
+		transform: translate3d(-0.6cqi, 0.6cqi, 0) rotate(-3deg);
+	}
+}
+
+@keyframes collab-burst {
+	0%,
+	14% {
+		opacity: 0;
+		transform: scale(0.4);
+	}
+	22% {
+		opacity: 1;
+		transform: scale(1);
+	}
+	34%,
+	100% {
+		opacity: 0;
+		transform: scale(1.5);
+	}
+}
+
+@keyframes collab-ping {
+	0% {
+		transform: scale(1);
+		opacity: 0.7;
+	}
+	75%,
+	100% {
+		transform: scale(2.4);
+		opacity: 0;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.collab-cursor,
+	.collab-cursor [data-burst],
+	.collab-live-ping {
+		animation: none;
+		opacity: 1;
+		transform: none;
 	}
 }

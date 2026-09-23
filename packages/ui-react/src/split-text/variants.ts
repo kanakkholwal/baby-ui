@@ -1,0 +1,15 @@
+import { tv, type VariantProps } from "tailwind-variants";
+
+export const splitText = tv({
+	base: "relative mx-auto font-black uppercase",
+	variants: {
+		size: {
+			sm: "text-2xl md:text-3xl",
+			md: "text-4xl md:text-5xl",
+			lg: "text-4xl md:text-5xl lg:text-9xl",
+		},
+	},
+	defaultVariants: { size: "lg" },
+});
+
+export type SplitTextSize = NonNullable<VariantProps<typeof splitText>["size"]>;
