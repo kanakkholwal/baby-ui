@@ -63,17 +63,19 @@ export const gauge = defineComponent({
 			entry: "Gauge",
 			files: [
 				{ path: "gauge/gauge.tsx", type: "registry:ui" },
+				{ path: "gauge/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 		svelte: {
 			entry: "Gauge",
 			files: [
 				{ path: "gauge/gauge.svelte", type: "registry:ui" },
+				{ path: "gauge/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 	},
 	keywords: ["gauge"],

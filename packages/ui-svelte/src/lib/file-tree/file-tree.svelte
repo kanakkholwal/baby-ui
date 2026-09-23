@@ -4,29 +4,61 @@ import { type FileTreeNode, flatten } from "./types";
 
 type Props = {
 	tree: FileTreeNode[];
+	/** Controlled: which folder ids are expanded. Omit to let the component own it. */
+	expandedIds?: Record<string, boolean>;
+	defaultExpandedIds?: Record<string, boolean>;
+	onExpandedIdsChange?: (expandedIds: Record<string, boolean>) => void;
+	/** Starting expand state for any folder id not present in the expanded-ids map. */
+	defaultExpanded?: boolean;
+	/** Controlled: the selected row id. Omit to let the component own it. */
+	selected?: string | null;
+	defaultSelected?: string | null;
+	onSelectedChange?: (id: string) => void;
 	class?: string;
 	indent?: number;
 	showGuides?: boolean;
-	defaultExpanded?: boolean;
-	onselect?: (id: string) => void;
 };
 
 let {
 	tree,
+	expandedIds: expandedIdsProp,
+	defaultExpandedIds = {},
+	onExpandedIdsChange,
+	defaultExpanded = true,
+	selected: selectedProp,
+	defaultSelected = null,
+	onSelectedChange,
 	class: classProp,
 	indent = 14,
 	showGuides = true,
-	defaultExpanded = true,
-	onselect,
 }: Props = $props();
 
-let open = $state<Record<string, boolean>>({});
-let selected = $state<string | null>(null);
+// svelte-ignore state_referenced_locally -- intentional one-time seed, matching React's useState(initialValue)
+let internalExpandedIds = $state(defaultExpandedIds);
+const expandedIds = $derived(expandedIdsProp ?? internalExpandedIds);
+// svelte-ignore state_referenced_locally -- intentional one-time seed, matching React's useState(initialValue)
+let internalSelected = $state(defaultSelected);
+const selected = $derived(selectedProp ?? internalSelected);
 let focused = $state<string | null>(null);
 let root = $state<HTMLDivElement>();
 
-const rows = $derived(flatten(tree, open, defaultExpanded));
-const activeId = $derived(focused ?? rows[0]?.id ?? null);
+// Visible-only rows, purely for keyboard math (arrow/home/end). Rendering itself is
+// recursive below and keeps every row mounted so a folder can animate its collapse.
+const rows = $derived(flatten(tree, expandedIds, defaultExpanded));
+const activeId = $derived(
+	(focused && rows.some((r) => r.id === focused) ? focused : rows[0]?.id) ?? null,
+);
+
+function setExpanded(id: string, next: boolean) {
+	const nextIds = { ...expandedIds, [id]: next };
+	if (expandedIdsProp === undefined) internalExpandedIds = nextIds;
+	onExpandedIdsChange?.(nextIds);
+}
+
+function setSelected(id: string) {
+	if (selectedProp === undefined) internalSelected = id;
+	onSelectedChange?.(id);
+}
 
 function focusRow(id: string) {
 	focused = id;
@@ -35,8 +67,14 @@ function focusRow(id: string) {
 
 function move(from: string, delta: number) {
 	const index = rows.findIndex((r) => r.id === from);
+	if (index === -1) return;
 	const next = rows[index + delta];
 	if (next) focusRow(next.id);
+}
+
+function select(id: string, isFolder: boolean, expanded: boolean) {
+	if (isFolder) setExpanded(id, !expanded);
+	setSelected(id);
 }
 
 function onkeydown(event: KeyboardEvent, id: string) {
@@ -54,17 +92,27 @@ function onkeydown(event: KeyboardEvent, id: string) {
 			break;
 		case "ArrowRight":
 			event.preventDefault();
-			if (row.isFolder && !row.expanded) open[id] = true;
+			if (row.isFolder && !row.expanded) setExpanded(id, true);
 			else if (row.isFolder) move(id, 1);
 			break;
 		case "ArrowLeft": {
 			event.preventDefault();
 			if (row.isFolder && row.expanded) {
-				open[id] = false;
+				setExpanded(id, false);
 				break;
 			}
 			const parent = id.split("/").slice(0, -1).join("/");
 			if (parent) focusRow(parent);
+			break;
+		}
+		case "Home":
+			event.preventDefault();
+			if (rows[0]) focusRow(rows[0].id);
+			break;
+		case "End": {
+			event.preventDefault();
+			const last = rows.at(-1);
+			if (last) focusRow(last.id);
 			break;
 		}
 		case "Enter":
@@ -74,13 +122,63 @@ function onkeydown(event: KeyboardEvent, id: string) {
 			break;
 	}
 }
-
-function select(id: string, isFolder: boolean, expanded: boolean) {
-	if (isFolder) open[id] = !expanded;
-	selected = id;
-	onselect?.(id);
-}
 </script>
+
+<!-- A folder's children stay mounted and collapse via grid-template-rows (0fr <-> 1fr),
+	the same technique Collapsible uses: real height animates instead of rows just
+	vanishing, and there's a real frame to animate from since nothing unmounts. -->
+{#snippet treeRow(node: FileTreeNode, parent: string, depth: number)}
+	{@const id = parent ? `${parent}/${node.name}` : node.name}
+	{@const isFolder = Array.isArray(node.children)}
+	{@const expanded = isFolder ? (expandedIds[id] ?? defaultExpanded) : false}
+	<div
+		role="treeitem"
+		aria-level={depth + 1}
+		aria-selected={selected === id}
+		aria-expanded={isFolder ? expanded : undefined}
+		data-row={id}
+		tabindex={activeId === id ? 0 : -1}
+		onkeydown={(e) => onkeydown(e, id)}
+		onclick={() => select(id, isFolder, expanded)}
+		onfocus={() => (focused = id)}
+		style:padding-left="{depth * indent + 8}px"
+		class={cn(
+			"tree-row flex cursor-pointer items-center gap-1.5 rounded-md py-1 pr-2 outline-none transition-colors",
+			"hover:bg-foreground/[0.06] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
+			selected === id ? "bg-foreground/[0.06] text-foreground" : "text-muted-foreground",
+			showGuides && depth > 0 && "border-border/60 border-l",
+		)}
+	>
+		{#if isFolder}
+			<svg
+				viewBox="0 0 16 16"
+				fill="none"
+				aria-hidden="true"
+				class="size-3.5 shrink-0 transition-[transform,scale,translate] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none"
+				style:transform={expanded ? "rotate(90deg)" : "none"}
+			>
+				<path d="m6 4 4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+			</svg>
+		{:else}
+			<span class="size-3.5 shrink-0"></span>
+		{/if}
+		<span class="truncate">{node.name}</span>
+	</div>
+	{#if isFolder && node.children}
+		<div
+			role="group"
+			inert={!expanded}
+			data-open={expanded ? "" : undefined}
+			class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] data-[open]:grid-rows-[1fr] motion-reduce:transition-none"
+		>
+			<div class="overflow-hidden">
+				{#each node.children as child (child.name)}
+					{@render treeRow(child, id, depth + 1)}
+				{/each}
+			</div>
+		</div>
+	{/if}
+{/snippet}
 
 <div
 	bind:this={root}
@@ -88,58 +186,7 @@ function select(id: string, isFolder: boolean, expanded: boolean) {
 	aria-label="Files"
 	class={cn("select-none font-mono text-[13px]", classProp)}
 >
-	{#each rows as row (row.id)}
-		<div
-			role="treeitem"
-			aria-level={row.depth + 1}
-			aria-selected={selected === row.id}
-			aria-expanded={row.isFolder ? row.expanded : undefined}
-			data-row={row.id}
-			tabindex={activeId === row.id ? 0 : -1}
-			onkeydown={(e) => onkeydown(e, row.id)}
-			onclick={() => select(row.id, row.isFolder, row.expanded)}
-			onfocus={() => (focused = row.id)}
-			style:padding-left="{row.depth * indent + 8}px"
-			class={cn(
-				"tree-row flex cursor-pointer items-center gap-1.5 rounded-md py-1 pr-2 outline-none transition-colors",
-				"hover:bg-foreground/[0.06] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
-				selected === row.id ? "bg-foreground/[0.06] text-foreground" : "text-muted-foreground",
-				showGuides && row.depth > 0 && "border-border/60 border-l",
-			)}
-		>
-			{#if row.isFolder}
-				<svg
-					viewBox="0 0 16 16"
-					fill="none"
-					aria-hidden="true"
-					class="size-3.5 shrink-0 transition-[transform,scale,translate] duration-200 ease-[var(--ease-out)] motion-reduce:transition-none"
-					style:transform={row.expanded ? "rotate(90deg)" : "none"}
-				>
-					<path d="m6 4 4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
-				</svg>
-			{:else}
-				<span class="size-3.5 shrink-0"></span>
-			{/if}
-			<span class="truncate">{row.node.name}</span>
-		</div>
+	{#each tree as node (node.name)}
+		{@render treeRow(node, "", 0)}
 	{/each}
 </div>
-
-<style>
-	.tree-row {
-		animation: tree-row-in 200ms var(--ease-out);
-	}
-
-	@keyframes tree-row-in {
-		from {
-			opacity: 0;
-			transform: translateY(-2px);
-		}
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		.tree-row {
-			animation: none;
-		}
-	}
-</style>

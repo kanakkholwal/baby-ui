@@ -10,9 +10,12 @@ import { componentCss, sourceFiles } from "$lib/registry-items";
 import { usageSnippet } from "$lib/usage";
 import type { EntryGenerator, PageServerLoad } from "./$types";
 
-// Listed rather than crawled, so a component that nothing links to still gets built.
+// Listed rather than crawled, so a component nothing links to still gets built. Charts are
+// crawled from /charts, which the reroute hook serves at their public URL.
 export const entries: EntryGenerator = () =>
-	specs.map((spec) => ({ category: spec.category, slug: spec.slug }));
+	specs
+		.filter((spec) => spec.category !== "charts")
+		.map((spec) => ({ category: spec.category, slug: spec.slug }));
 
 export const load: PageServerLoad = async ({ params }) => {
 	const spec = findSpec(params.category, params.slug);

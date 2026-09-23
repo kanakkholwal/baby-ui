@@ -14,7 +14,9 @@ const NAV = siteNav();
 
 // The header's own hamburger only opens something on routes that render a SiteSidebar.
 const hasSidebar = $derived(
-	page.url.pathname.startsWith("/components") || page.url.pathname.startsWith("/docs"),
+	page.url.pathname.startsWith("/components") ||
+		page.url.pathname.startsWith("/charts") ||
+		page.url.pathname.startsWith("/docs"),
 );
 
 let scrolled = $state(false);

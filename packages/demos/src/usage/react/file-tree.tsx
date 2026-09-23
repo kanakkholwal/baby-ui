@@ -9,5 +9,5 @@ const tree: FileTreeNode[] = [
 ];
 
 export function Example() {
-	return <FileTree tree={tree} onSelect={(id) => console.log(id)} />;
+	return <FileTree tree={tree} onSelectedChange={(id) => console.log(id)} />;
 }

@@ -110,6 +110,16 @@ Any agent (Claude Code, Codex, Cursor, Copilot) should read this file first.
 - Motion is CSS-only: `--duration-*`, `--ease-*`, `--enter-scale`, `--press-scale`. Exits
   mirror entrances and use `--duration-exit`. Anchored surfaces grow from the trigger edge
   (`ANCHORED`); menus, selects and comboboxes unfold (`UNFOLD`) in `lib/anchor.ts`.
+- **HARD RULE:** any component whose own content changes size or row count at runtime
+  (expanding a tree, filtering a list, collapsing a section) animates that change the same
+  way Collapsible does: `grid-template-rows` (`0fr` ↔ `1fr`) with an `overflow-hidden` wrapper
+  and the content kept mounted (`inert` while collapsed, not `hidden`/conditional unmount), so
+  there's a real frame for the transition to animate from and to. Content popping in or out of
+  the DOM with no exit animation is not acceptable, "an exit animation is architecturally
+  awkward here" is not a defense. FilterTable already does this correctly; FileTree shipped
+  removing collapsed rows immediately and was fixed to match. Enforce on every new component
+  with this shape from the start, same standing as the controlled-component and variant-axis
+  HARD RULEs above.
 - `transition-[...]` arbitrary lists must name `scale` and `translate` when they animate
   them; `transition-transform` already covers them.
 - Dialogs are `<dialog>` with `DIALOG_SURFACE` (`overflow-visible`, so the lift never

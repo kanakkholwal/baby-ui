@@ -457,6 +457,12 @@ export {
 export type { TextTransitionVariant } from "./text-transition/variants";
 export { Textarea, type TextareaProps } from "./textarea/textarea";
 export {
+	ThemeToggle,
+	type ThemeToggleProps,
+	type ThemeToggleValue,
+} from "./theme-toggle/theme-toggle";
+export type { ThemeToggleStart, ThemeToggleVariant } from "./theme-toggle/variants";
+export {
 	type ThinkingRow,
 	ThinkingState,
 	type ThinkingStateProps,

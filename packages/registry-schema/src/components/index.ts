@@ -95,6 +95,7 @@ import { textExplodeIMessage } from "./text-explode-imessage";
 import { textFlip } from "./text-flip";
 import { textTransition } from "./text-transition";
 import { textarea } from "./textarea";
+import { themeToggle } from "./theme-toggle";
 import { thinkingState } from "./thinking-state";
 import { ticker } from "./ticker";
 import { toast } from "./toast";
@@ -129,6 +130,7 @@ export const specs: ComponentSpec[] = [
 	table,
 	tabs,
 	textarea,
+	themeToggle,
 	combobox,
 	contextMenu,
 	dropdownMenu,

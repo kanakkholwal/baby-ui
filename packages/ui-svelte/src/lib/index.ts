@@ -354,6 +354,12 @@ export type {
 export { default as TextTransition } from "./text-transition/text-transition.svelte";
 export type { TextTransitionVariant } from "./text-transition/variants";
 export { default as Textarea } from "./textarea/textarea.svelte";
+export { default as ThemeToggle } from "./theme-toggle/theme-toggle.svelte";
+export type {
+	ThemeToggleStart,
+	ThemeToggleValue,
+	ThemeToggleVariant,
+} from "./theme-toggle/variants";
 export { default as ThinkingState } from "./thinking-state/thinking-state.svelte";
 export type { ThinkingRow } from "./thinking-state/types";
 export type { ThinkingStateVariant } from "./thinking-state/variants";

@@ -6,7 +6,9 @@ import type { EntryGenerator, RequestHandler } from "./$types";
 
 export const prerender = true;
 export const entries: EntryGenerator = () =>
-	specs.map((spec) => ({ category: spec.category, slug: spec.slug }));
+	specs
+		.filter((spec) => spec.category !== "charts")
+		.map((spec) => ({ category: spec.category, slug: spec.slug }));
 
 export const GET: RequestHandler = ({ params }) => {
 	const spec = findSpec(params.category, params.slug);

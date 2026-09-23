@@ -19,6 +19,7 @@ export const demos: Record<string, DemoLoader> = {
 	skeleton: () => import("./skeleton-demo.svelte"),
 	switch: () => import("./switch-demo.svelte"),
 	table: () => import("./table-demo.svelte"),
+	"theme-toggle": () => import("./theme-toggle-demo.svelte"),
 	textarea: () => import("./textarea-demo.svelte"),
 	navbar: () => import("./navbar-demo.svelte"),
 	"mega-navbar": () => import("./mega-navbar-demo.svelte"),

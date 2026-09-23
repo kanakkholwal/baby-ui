@@ -2,7 +2,7 @@
 import { demos } from "@baby-ui/demos/svelte";
 import type { ComponentSpec } from "@baby-ui/registry-schema";
 import { Spinner } from "@baby-ui/svelte";
-import { defaultProps } from "$lib/registry";
+import { defaultProps, specHref } from "$lib/registry";
 
 let { spec }: { spec: ComponentSpec } = $props();
 
@@ -12,7 +12,7 @@ const demoProps = $derived(defaultProps(spec));
 
 <article class="group/card relative h-full">
 	<a
-		href="/components/{spec.category}/{spec.slug}"
+		href={specHref(spec)}
 		aria-label="View {spec.name}"
 		class="absolute inset-0 z-20 rounded-3xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
 	></a>

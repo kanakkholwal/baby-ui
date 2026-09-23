@@ -128,6 +128,7 @@ import {
 	UnderlineHoverTextDemo,
 	WaveRevealDemo,
 } from "./text";
+import { ThemeToggleDemo } from "./theme-toggle";
 import { ThinkingStateDemo } from "./thinking-state";
 import { ToolChipsDemo } from "./tool-chips";
 
@@ -281,6 +282,7 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	switch: SwitchDemo,
 	table: TableDemo,
 	textarea: TextareaDemo,
+	"theme-toggle": ThemeToggleDemo,
 	navbar: NavbarDemo,
 	"mega-navbar": MegaNavbarDemo,
 	footer: FooterDemo,

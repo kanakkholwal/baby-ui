@@ -10,4 +10,4 @@ const tree: FileTreeNode[] = [
 ];
 </script>
 
-<FileTree {tree} onselect={(id) => console.log(id)} />
+<FileTree {tree} onSelectedChange={(id) => console.log(id)} />

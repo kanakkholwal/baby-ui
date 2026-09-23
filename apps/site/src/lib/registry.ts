@@ -9,6 +9,7 @@ export const CATEGORY_LABEL: Record<Category, string> = {
 	animated: "Animated",
 	agents: "Agents",
 	text: "Text",
+	charts: "Charts",
 };
 
 export const CATEGORY_BLURB: Record<Category, string> = {
@@ -18,15 +19,25 @@ export const CATEGORY_BLURB: Record<Category, string> = {
 	animated: "Pieces where the motion is the point.",
 	agents: "Interface parts for products that talk back: messages, tools, reasoning.",
 	text: "Copy that moves: reveals, swaps, hovers and loops built for headlines and labels.",
+	charts: "SVG charts on d3 with keyboard, screen-reader and reduced-motion support built in.",
 };
+
+/** Charts live under their own top-level route; every other category under /components. */
+export function categoryHref(category: Category): string {
+	return category === "charts" ? "/charts" : `/components/${category}`;
+}
+
+export function specHref(spec: Pick<ComponentSpec, "category" | "slug">): string {
+	return `${categoryHref(spec.category)}/${spec.slug}`;
+}
 
 /** Nav entries, derived from the specs so a new component shows up without edits here. */
 export function navCategories(): { href: string; label: string; match: string }[] {
 	return CATEGORIES.filter((c) => specs.some((s) => s.category === c)).map(
 		(category) => ({
-			href: `/components/${category}`,
+			href: categoryHref(category),
 			label: CATEGORY_LABEL[category],
-			match: `/components/${category}`,
+			match: categoryHref(category),
 		}),
 	);
 }
@@ -35,7 +46,7 @@ export function navCategories(): { href: string; label: string; match: string }[
 export function siteNav(): { href: string; label: string; match: string }[] {
 	return [
 		{ href: "/components", label: "Components", match: "/components" },
-		...navCategories().filter((c) => c.label === "Agents"),
+		...navCategories().filter((c) => c.label === "Agents" || c.label === "Charts"),
 		{ href: "/docs", label: "Docs", match: "/docs" },
 	];
 }
@@ -52,7 +63,7 @@ export type SearchItem = {
 export function searchItems(): SearchItem[] {
 	return specs
 		.map((s) => ({
-			href: `/components/${s.category}/${s.slug}`,
+			href: specHref(s),
 			name: s.name,
 			slug: s.slug,
 			group: CATEGORY_LABEL[s.category],
@@ -67,8 +78,11 @@ export type SidebarGroup = {
 	items: { slug: string; name: string; href: string; status: ComponentSpec["status"] }[];
 };
 
-export function sidebarGroups(): SidebarGroup[] {
-	return CATEGORIES.map((category) => ({
+/** `scope` splits the charts sidebar from the components sidebar. */
+export function sidebarGroups(scope: "components" | "charts" | "all" = "all"): SidebarGroup[] {
+	return CATEGORIES.filter((c) =>
+		scope === "all" ? true : scope === "charts" ? c === "charts" : c !== "charts",
+	).map((category) => ({
 		category,
 		label: CATEGORY_LABEL[category],
 		// Alphabetical: the sidebar is for finding a known name, not for browsing.
@@ -77,7 +91,7 @@ export function sidebarGroups(): SidebarGroup[] {
 			.map((s) => ({
 				slug: s.slug,
 				name: s.name,
-				href: `/components/${s.category}/${s.slug}`,
+				href: specHref(s),
 				status: s.status,
 			}))
 			.sort((a, b) => a.name.localeCompare(b.name)),
@@ -95,7 +109,7 @@ export function adjacentComponents(
 	category: string,
 	slug: string,
 ): { prev: AdjacentComponent | null; next: AdjacentComponent | null } {
-	const flat = sidebarGroups().flatMap((group) =>
+	const flat = sidebarGroups(category === "charts" ? "charts" : "components").flatMap((group) =>
 		group.items.map((item) => ({ ...item, category: group.category })),
 	);
 	const index = flat.findIndex(

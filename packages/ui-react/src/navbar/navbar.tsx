@@ -51,14 +51,14 @@ export function Navbar({
 		return () => window.removeEventListener("scroll", onScroll);
 	}, [sticky]);
 
+	function measure() {
+		const el = list.current?.querySelector<HTMLElement>('[aria-current="page"]');
+		setPill(el ? { left: el.offsetLeft, width: el.offsetWidth } : { left: 0, width: 0 });
+	}
+
+	useEffect(measure, [active, links]);
+
 	useEffect(() => {
-		const measure = () => {
-			const el = list.current?.querySelector<HTMLElement>('[aria-current="page"]');
-			setPill(
-				el ? { left: el.offsetLeft, width: el.offsetWidth } : { left: 0, width: 0 },
-			);
-		};
-		measure();
 		if (!list.current) return;
 		const observer = new ResizeObserver(measure);
 		observer.observe(list.current);

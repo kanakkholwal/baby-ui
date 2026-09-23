@@ -1046,3 +1046,22 @@
 		transform: none;
 	}
 }
+
+.theme-toggle-icon {
+	display: inline-flex;
+	animation: theme-toggle-icon-in 200ms var(--ease-in-out) both;
+}
+
+@keyframes theme-toggle-icon-in {
+	from {
+		opacity: 0;
+		transform: scale(0.25);
+		filter: blur(8px);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.theme-toggle-icon {
+		animation: none;
+	}
+}

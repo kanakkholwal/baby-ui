@@ -16,6 +16,7 @@ const items = $derived(data.slugs.map((slug) => specs.find((s) => s.slug === slu
 </svelte:head>
 
 <div class="min-w-0 py-8 xl:col-span-2">
+	{#if data.category !== "charts"}
 	<nav aria-label="Breadcrumb" class="flex items-center gap-1.5 text-sm">
 		<a href="/components" class="text-muted-foreground transition-colors hover:text-foreground">
 			Components
@@ -23,6 +24,7 @@ const items = $derived(data.slugs.map((slug) => specs.find((s) => s.slug === slu
 		<span class="text-muted-foreground">/</span>
 		<span class="font-medium text-foreground">{label}</span>
 	</nav>
+	{/if}
 
 	<h1 class="mt-4 font-semibold text-3xl text-foreground tracking-tight">{label}</h1>
 	<p class="mt-2 max-w-2xl text-muted-foreground">{CATEGORY_BLURB[data.category]}</p>

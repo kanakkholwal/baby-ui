@@ -8,6 +8,7 @@ export const CATEGORIES = [
 	"animated",
 	"agents",
 	"text",
+	"charts",
 ] as const;
 export const FRAMEWORKS = ["react", "svelte"] as const;
 

@@ -19,7 +19,13 @@ import PropsRail from "$lib/components/props-rail.svelte";
 import PropsTable from "$lib/components/props-table.svelte";
 import Tabs from "$lib/components/tabs.svelte";
 import { prefs } from "$lib/preferences.svelte";
-import { adjacentComponents, CATEGORY_LABEL, defaultProps } from "$lib/registry";
+import {
+	adjacentComponents,
+	CATEGORY_LABEL,
+	categoryHref,
+	defaultProps,
+	specHref,
+} from "$lib/registry";
 import type { PageProps } from "./$types";
 
 let { data }: PageProps = $props();
@@ -90,7 +96,7 @@ const usage = $derived(
 	<div id="overview" class="scroll-mt-24">
 		<nav aria-label="Breadcrumb" class="flex items-center gap-1.5 text-sm">
 			<a
-				href="/components/{data.spec.category}"
+				href={categoryHref(data.spec.category)}
 				class="text-muted-foreground transition-colors hover:text-foreground"
 			>
 				{CATEGORY_LABEL[data.spec.category]}
@@ -110,7 +116,7 @@ const usage = $derived(
 			</div>
 			<div class="flex flex-wrap items-center gap-2 sm:justify-end">
 				<PageMenu
-					markdownUrl="/components/{data.spec.category}/{data.spec.slug}.md"
+					markdownUrl="{specHref(data.spec)}.md"
 					copyText={data.spec.description}
 				/>
 				<div class="flex shrink-0 items-center gap-1.5">
@@ -167,7 +173,9 @@ const usage = $derived(
 		</div>
 		<div id="panel-{tab}" role="tabpanel" aria-labelledby="tab-{tab}" class="mt-4">
 			{#if tab === "preview"}
-				{@render previewStage()}
+				<div class="overflow-x-auto">
+					{@render previewStage()}
+				</div>
 				{#if hasControls}
 					<ControlsPanel spec={data.spec} bind:values />
 				{/if}
@@ -259,7 +267,9 @@ const usage = $derived(
 	<div
 		class={[
 			"mx-auto transition-[max-width] duration-300",
-			viewport === "mobile" ? "max-w-sm" : "max-w-none",
+			// "Desktop" needs a real floor, not just "no cap": the layout's sidebars can
+			// leave under 768px for the card, under a @3xl component's own breakpoint.
+			viewport === "mobile" ? "max-w-sm" : "min-w-3xl max-w-full",
 			fill && "flex h-full flex-col",
 		]}
 	>
