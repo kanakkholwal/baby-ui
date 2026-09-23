@@ -1,5 +1,6 @@
 <script lang="ts">
 import { cn } from "../lib/cn";
+import ScrubField from "../scrub-field/scrub-field.svelte";
 import Select from "../select/select.svelte";
 import SelectContent from "../select/select-content.svelte";
 import SelectItem from "../select/select-item.svelte";
@@ -25,12 +26,22 @@ function chunk<T>(items: T[], size: number): T[][] {
 	return rows;
 }
 
+function freshState(fs: FineTuneField[]): FineTuneState {
+	return {
+		segment: 0,
+		values: Object.fromEntries(fs.map((f) => [f.key, f.value])),
+		type: "",
+	};
+}
+
 let {
 	fields,
 	options = [],
 	labels,
 	size = "md",
-	state = $bindable(),
+	id,
+	state: stateProp,
+	defaultState,
 	onChange,
 	class: classProp,
 }: {
@@ -38,19 +49,24 @@ let {
 	options?: string[];
 	labels?: FineTuneCardLabels;
 	size?: FineTuneCardSize;
+	/** Identifies the subject `fields` describes. Changing it resets uncontrolled edits. */
+	id?: string;
 	state?: FineTuneState;
+	defaultState?: FineTuneState;
 	onChange?: (state: FineTuneState) => void;
 	class?: string;
 } = $props();
 
-// svelte-ignore state_referenced_locally -- intentional one-time seed, matching React's useState(initialValue)
-const initialState: FineTuneState = {
-	segment: 0,
-	values: Object.fromEntries(fields.map((f) => [f.key, f.value])),
-	type: "",
-};
+// svelte-ignore state_referenced_locally -- one-time seed; freshState(fields) reruns whenever `id` changes below
+let internalState = $state(defaultState ?? freshState(fields));
+// svelte-ignore state_referenced_locally -- plain tracking var, updated manually inside the effect below
+let seenId = id;
 
-let dragStart: { x: number; v: number } | null = null;
+$effect(() => {
+	if (stateProp !== undefined || id === seenId) return;
+	seenId = id;
+	internalState = freshState(fields);
+});
 
 const text = $derived({
 	title: labels?.title ?? DEFAULT_LABELS.title,
@@ -62,14 +78,14 @@ const text = $derived({
 });
 
 const classes = $derived(fineTuneCard({ size }));
-const current = $derived(state ?? initialState);
+const current = $derived(stateProp ?? internalState);
 const changed = $derived(
 	fields.some((f) => (current.values[f.key] ?? f.value) !== f.value),
 );
 const edited = $derived(current.segment !== 0 || changed || current.type !== "");
 
 function update(next: FineTuneState) {
-	state = next;
+	if (stateProp === undefined) internalState = next;
 	onChange?.(next);
 }
 
@@ -100,66 +116,6 @@ function selectType(value: string) {
 			{#each [0, 1, 2, 3] as i (i)}<span class="size-1.5 rounded-[2px] border-[1.2px] border-current"></span>{/each}
 		</span>
 	{/if}
-{/snippet}
-
-{#snippet scrubField(field: FineTuneField)}
-	{@const active = (current.values[field.key] ?? field.value) !== field.value}
-	<div
-		class={cn(
-			"flex h-6.5 min-w-0 items-center gap-1 rounded-lg py-1 pr-1 pl-0.5 transition-[background-color,box-shadow] duration-200",
-			active ? "bg-primary/10 ring-1 ring-primary" : "bg-input",
-		)}
-	>
-		<span
-			role="slider"
-			aria-label={field.label}
-			aria-valuenow={current.values[field.key] ?? field.value}
-			aria-valuemin={field.min}
-			aria-valuemax={field.max}
-			tabindex={0}
-			onpointerdown={(event) => {
-				(event.target as HTMLElement).setPointerCapture(event.pointerId);
-				dragStart = { x: event.clientX, v: current.values[field.key] ?? field.value };
-			}}
-			onpointermove={(event) => {
-				if (!dragStart) return;
-				const step = field.step ?? 1;
-				const next = dragStart.v + ((event.clientX - dragStart.x) / 2) * step;
-				setValue(field.key, Math.min(field.max, Math.max(field.min, Math.round(next))));
-			}}
-			onpointerup={() => {
-				dragStart = null;
-			}}
-			onkeydown={(event) => {
-				const step = field.step ?? 1;
-				const mult = event.shiftKey ? 10 : 1;
-				const currentValue = current.values[field.key] ?? field.value;
-				if (event.key === "ArrowUp" || event.key === "ArrowRight") {
-					event.preventDefault();
-					setValue(field.key, Math.min(field.max, Math.max(field.min, Math.round(currentValue + step * mult))));
-				} else if (event.key === "ArrowDown" || event.key === "ArrowLeft") {
-					event.preventDefault();
-					setValue(field.key, Math.min(field.max, Math.max(field.min, Math.round(currentValue - step * mult))));
-				}
-			}}
-			class="flex h-full shrink-0 cursor-ew-resize touch-none select-none items-center rounded-[4px] px-0.5 text-[12px] text-muted-foreground outline-none hover:text-foreground focus-visible:text-primary"
-		>
-			{field.label}
-		</span>
-		<input
-			inputmode="numeric"
-			value={current.values[field.key] ?? field.value}
-			oninput={(event) => {
-				const n = Number(event.currentTarget.value.replace(/[^\d-]/g, ""));
-				if (!Number.isNaN(n)) setValue(field.key, Math.min(field.max, Math.max(field.min, Math.round(n))));
-			}}
-			aria-label={`${field.label} value`}
-			class="min-w-0 flex-1 bg-transparent text-[12px] text-foreground tabular-nums outline-none"
-		/>
-		{#if field.suffix}
-			<span class="shrink-0 pr-0.5 text-[11.5px] text-muted-foreground">{field.suffix}</span>
-		{/if}
-	</div>
 {/snippet}
 
 <div data-slot="fine-tune-card" class={cn(classes.root(), classProp)}>
@@ -210,7 +166,16 @@ function selectType(value: string) {
 		{#each chunk(fields, 2) as pair (pair.map((f) => f.key).join("-"))}
 			<div class="grid min-w-0 grid-cols-2 gap-2">
 				{#each pair as field (field.key)}
-					{@render scrubField(field)}
+					<ScrubField
+						label={field.label}
+						value={current.values[field.key] ?? field.value}
+						onValueChange={(v) => setValue(field.key, v)}
+						min={field.min}
+						max={field.max}
+						step={field.step}
+						suffix={field.suffix}
+						tone={(current.values[field.key] ?? field.value) !== field.value ? "edited" : "default"}
+					/>
 				{/each}
 			</div>
 		{/each}

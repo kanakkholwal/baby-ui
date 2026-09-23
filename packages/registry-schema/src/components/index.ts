@@ -53,6 +53,7 @@ import { reorderList } from "./reorder-list";
 import { responseStream } from "./response-stream";
 import { responsiveDialog } from "./responsive-dialog";
 import { scrollArea } from "./scroll-area";
+import { scrubField } from "./scrub-field";
 import { select } from "./select";
 import { sheet } from "./sheet";
 import { shortcut } from "./shortcut";
@@ -63,6 +64,7 @@ import { slider } from "./slider";
 import { spinner } from "./spinner";
 import { streamingText } from "./streaming-text";
 import { switchComponent } from "./switch";
+import { table } from "./table";
 import { tabs } from "./tabs";
 import { tagInput } from "./tag-input";
 import { taskRows } from "./task-rows";
@@ -91,9 +93,11 @@ export const specs: ComponentSpec[] = [
 	label,
 	progress,
 	radioGroup,
+	scrubField,
 	skeleton,
 	slider,
 	switchComponent,
+	table,
 	tabs,
 	textarea,
 	combobox,

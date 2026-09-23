@@ -6,12 +6,12 @@ import { Badge } from "../badge/badge";
 import type { BadgeVariant } from "../badge/variants";
 import { cn } from "../lib/cn";
 
-export type TableRowStatus = "todo" | "progress" | "done";
+export type FilterRowStatus = "todo" | "progress" | "done";
 
-export type TableRow = {
+export type FilterRow = {
 	task: string;
 	date: string;
-	status: TableRowStatus;
+	status: FilterRowStatus;
 	owner: string;
 };
 
@@ -19,7 +19,7 @@ export type FilterTableLabels = {
 	columns: { task: string; date: string; status: string; owner: string };
 };
 
-const FILTERS: { key: "all" | TableRowStatus; label: string; tone?: string }[] = [
+const FILTERS: { key: "all" | FilterRowStatus; label: string; tone?: string }[] = [
 	{ key: "all", label: "All" },
 	{ key: "todo", label: "To do", tone: "bg-warning" },
 	{ key: "progress", label: "In Progress", tone: "bg-info" },
@@ -30,13 +30,13 @@ const DEFAULT_LABELS: FilterTableLabels = {
 	columns: { task: "Task name", date: "Date", status: "Status", owner: "Owner" },
 };
 
-const STATUS_LABEL: Record<TableRowStatus, string> = {
+const STATUS_LABEL: Record<FilterRowStatus, string> = {
 	todo: "To do",
 	progress: "In Progress",
 	done: "Completed",
 };
 
-const STATUS_VARIANT: Record<TableRowStatus, BadgeVariant> = {
+const STATUS_VARIANT: Record<FilterRowStatus, BadgeVariant> = {
 	todo: "warning",
 	progress: "info",
 	done: "success",
@@ -46,12 +46,12 @@ const GRID_COLS =
 	"grid-cols-[minmax(0,1.3fr)_minmax(0,0.6fr)_minmax(0,0.95fr)_minmax(0,0.9fr)]";
 
 export interface FilterTableProps extends Omit<ComponentProps<"div">, "children"> {
-	rows: TableRow[];
+	rows: FilterRow[];
 	labels?: FilterTableLabels;
 	/** Controlled active filter. Omit to let the table own it. */
-	filter?: "all" | TableRowStatus;
-	defaultFilter?: "all" | TableRowStatus;
-	onFilterChange?: (filter: "all" | TableRowStatus) => void;
+	filter?: "all" | FilterRowStatus;
+	defaultFilter?: "all" | FilterRowStatus;
+	onFilterChange?: (filter: "all" | FilterRowStatus) => void;
 }
 
 /** Status chips directly filter the task table; a hidden row collapses via
@@ -65,18 +65,18 @@ export function FilterTable({
 	onFilterChange,
 	...props
 }: FilterTableProps) {
-	const [internalFilter, setInternalFilter] = useState<"all" | TableRowStatus>(
+	const [internalFilter, setInternalFilter] = useState<"all" | FilterRowStatus>(
 		defaultFilter,
 	);
 	const filter = filterProp ?? internalFilter;
 
-	function setFilter(next: "all" | TableRowStatus) {
+	function setFilter(next: "all" | FilterRowStatus) {
 		if (filterProp === undefined) setInternalFilter(next);
 		onFilterChange?.(next);
 	}
 
 	const counts = useMemo(() => {
-		const byStatus: Record<"all" | TableRowStatus, number> = {
+		const byStatus: Record<"all" | FilterRowStatus, number> = {
 			all: rows.length,
 			todo: 0,
 			progress: 0,

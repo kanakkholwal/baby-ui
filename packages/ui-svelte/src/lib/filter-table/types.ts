@@ -1,9 +1,9 @@
-export type TableRowStatus = "todo" | "progress" | "done";
+export type FilterRowStatus = "todo" | "progress" | "done";
 
-export type TableRow = {
+export type FilterRow = {
 	task: string;
 	date: string;
-	status: TableRowStatus;
+	status: FilterRowStatus;
 	owner: string;
 };
 

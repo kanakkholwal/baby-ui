@@ -165,11 +165,11 @@ export { type DiffLine, FileDiff, type FileDiffProps } from "./file-diff/file-di
 export { FileTree, type FileTreeProps } from "./file-tree/file-tree";
 export type { FileTreeNode } from "./file-tree/types";
 export {
+	type FilterRow,
+	type FilterRowStatus,
 	FilterTable,
 	type FilterTableLabels,
 	type FilterTableProps,
-	type TableRow,
-	type TableRowStatus,
 } from "./filter-table/filter-table";
 export {
 	FineTuneCard,
@@ -284,6 +284,8 @@ export {
 	type ResponsiveDialogVariant,
 } from "./responsive-dialog/responsive-dialog";
 export { ScrollArea, type ScrollAreaProps } from "./scroll-area/scroll-area";
+export { ScrubField, type ScrubFieldProps } from "./scrub-field/scrub-field";
+export type { ScrubFieldSize, ScrubFieldTone } from "./scrub-field/variants";
 export {
 	Select,
 	SelectContent,
@@ -329,6 +331,18 @@ export {
 } from "./streaming-text/streaming-text";
 export type { StreamingTextLayout } from "./streaming-text/variants";
 export { Switch, type SwitchProps } from "./switch/switch";
+export {
+	Table,
+	TableBody,
+	TableCaption,
+	TableCell,
+	TableFooter,
+	TableHead,
+	TableHeader,
+	type TableProps,
+	TableRow,
+} from "./table/table";
+export type { TableDensity } from "./table/variants";
 export {
 	Tabs,
 	TabsContent,

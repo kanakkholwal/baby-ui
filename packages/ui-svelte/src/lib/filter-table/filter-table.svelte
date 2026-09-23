@@ -3,9 +3,9 @@ import type { HTMLAttributes } from "svelte/elements";
 import Badge from "../badge/badge.svelte";
 import type { BadgeVariant } from "../badge/variants";
 import { cn } from "../lib/cn";
-import type { FilterTableLabels, TableRow, TableRowStatus } from "./types";
+import type { FilterRow, FilterRowStatus, FilterTableLabels } from "./types";
 
-const FILTERS: { key: "all" | TableRowStatus; label: string; tone?: string }[] = [
+const FILTERS: { key: "all" | FilterRowStatus; label: string; tone?: string }[] = [
 	{ key: "all", label: "All" },
 	{ key: "todo", label: "To do", tone: "bg-warning" },
 	{ key: "progress", label: "In Progress", tone: "bg-info" },
@@ -16,13 +16,13 @@ const DEFAULT_LABELS: FilterTableLabels = {
 	columns: { task: "Task name", date: "Date", status: "Status", owner: "Owner" },
 };
 
-const STATUS_LABEL: Record<TableRowStatus, string> = {
+const STATUS_LABEL: Record<FilterRowStatus, string> = {
 	todo: "To do",
 	progress: "In Progress",
 	done: "Completed",
 };
 
-const STATUS_VARIANT: Record<TableRowStatus, BadgeVariant> = {
+const STATUS_VARIANT: Record<FilterRowStatus, BadgeVariant> = {
 	todo: "warning",
 	progress: "info",
 	done: "success",
@@ -39,19 +39,19 @@ let {
 	onFilterChange,
 	...rest
 }: {
-	rows: TableRow[];
+	rows: FilterRow[];
 	labels?: FilterTableLabels;
-	filter?: "all" | TableRowStatus;
-	onFilterChange?: (filter: "all" | TableRowStatus) => void;
+	filter?: "all" | FilterRowStatus;
+	onFilterChange?: (filter: "all" | FilterRowStatus) => void;
 } & HTMLAttributes<HTMLDivElement> = $props();
 
-function setFilter(next: "all" | TableRowStatus) {
+function setFilter(next: "all" | FilterRowStatus) {
 	filter = next;
 	onFilterChange?.(next);
 }
 
 const counts = $derived.by(() => {
-	const byStatus: Record<"all" | TableRowStatus, number> = {
+	const byStatus: Record<"all" | FilterRowStatus, number> = {
 		all: rows.length,
 		todo: 0,
 		progress: 0,

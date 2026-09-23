@@ -82,6 +82,7 @@ import {
 	GaugeDemo,
 	PaginationDemo,
 	ScrollAreaDemo,
+	ScrubFieldDemo,
 	ShortcutDemo,
 	ShowMoreDemo,
 	SpinnerDemo,
@@ -94,6 +95,7 @@ import { RecordsTableDemo } from "./records-table";
 import { ResponsiveDialogDemo } from "./responsive-dialog";
 import { SidebarNavDemo } from "./sidebar-nav";
 import { StreamingTextDemo } from "./streaming-text";
+import { TableDemo } from "./table";
 import { TaskRowsDemo } from "./task-rows";
 import { ThinkingStateDemo } from "./thinking-state";
 import { ToolChipsDemo } from "./tool-chips";
@@ -246,6 +248,7 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	progress: ProgressDemo,
 	skeleton: SkeletonDemo,
 	switch: SwitchDemo,
+	table: TableDemo,
 	textarea: TextareaDemo,
 	navbar: NavbarDemo,
 	"bento-grid": BentoGridDemo,
@@ -273,6 +276,7 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	gauge: GaugeDemo,
 	pagination: PaginationDemo,
 	"scroll-area": ScrollAreaDemo,
+	"scrub-field": ScrubFieldDemo,
 	dialog: DialogDemo,
 	drawer: DrawerDemo,
 	"alert-dialog": AlertDialogDemo,

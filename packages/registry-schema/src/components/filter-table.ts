@@ -9,7 +9,7 @@ export const filterTable = defineComponent({
 	props: [
 		{
 			name: "rows",
-			type: "TableRow[]",
+			type: "FilterRow[]",
 			description: "The task rows to show.",
 			control: { kind: "none" },
 		},
@@ -21,14 +21,14 @@ export const filterTable = defineComponent({
 		},
 		{
 			name: "filter",
-			type: '"all" | TableRowStatus',
+			type: '"all" | FilterRowStatus',
 			description: "Controlled active status filter. Omit to let the table own it.",
 			default: "all",
 			control: { kind: "none" },
 		},
 		{
 			name: "onFilterChange",
-			type: '(filter: "all" | TableRowStatus) => void',
+			type: '(filter: "all" | FilterRowStatus) => void',
 			description: "Fired when a filter chip is picked.",
 			control: { kind: "none" },
 		},

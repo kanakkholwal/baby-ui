@@ -38,6 +38,13 @@ export const fineTuneCard = defineComponent({
 			control: { kind: "select", options: SIZES },
 		},
 		{
+			name: "id",
+			type: "string",
+			description:
+				"Identifies the subject `fields` describes (an element/layer id). Changing it resets uncontrolled edits, so switching selection doesn't keep showing edits made against the previous subject.",
+			control: { kind: "none" },
+		},
+		{
 			name: "state",
 			type: "FineTuneState",
 			description:
@@ -49,6 +56,14 @@ export const fineTuneCard = defineComponent({
 			type: "(state: FineTuneState) => void",
 			description: "Fired with the full editable state whenever the user edits it.",
 			control: { kind: "none" },
+		},
+		{
+			name: "element",
+			type: '"button" | "card"',
+			description:
+				"Demo-only: swaps which element's fields are shown, to exercise switching selection (the real component takes `fields` and `id`, not `element`).",
+			default: "button",
+			control: { kind: "select", options: ["button", "card"] },
 		},
 	],
 	motion: {
@@ -85,7 +100,7 @@ export const fineTuneCard = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
-			registryDependencies: ["select"],
+			registryDependencies: ["select", "scrub-field"],
 		},
 		svelte: {
 			entry: "FineTuneCard",
@@ -96,7 +111,7 @@ export const fineTuneCard = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
-			registryDependencies: ["select"],
+			registryDependencies: ["select", "scrub-field"],
 		},
 	},
 	keywords: ["inspector", "scrub", "number", "properties", "editor"],

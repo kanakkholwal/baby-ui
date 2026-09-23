@@ -1,9 +1,9 @@
 <script lang="ts">
-import { FilterTable, type TableRow } from "@baby-ui/svelte";
+import { type FilterRow, FilterTable } from "@baby-ui/svelte";
 
 let { props: _props = {} }: { props?: Record<string, unknown> } = $props();
 
-const ROWS: TableRow[] = [
+const ROWS: FilterRow[] = [
 	{
 		task: "Restock mango sorbet",
 		date: "Dec 03",

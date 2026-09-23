@@ -17,4 +17,3 @@ notices are reproduced here as those licenses require.
 - Source: https://github.com/aidan-neel/sivir-ui
 - License: MIT
 - Copyright (c) 2026 Aidan Neel
-

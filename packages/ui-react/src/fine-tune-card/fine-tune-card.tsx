@@ -1,7 +1,8 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { cn } from "../lib/cn";
+import { ScrubField } from "../scrub-field/scrub-field";
 import {
 	Select,
 	SelectContent,
@@ -78,86 +79,6 @@ function SegmentIcon({ kind }: { kind: (typeof SEGMENTS)[number] }) {
 	);
 }
 
-function ScrubField({
-	label,
-	value,
-	onChange,
-	min,
-	max,
-	step = 1,
-	suffix = "",
-	active,
-}: {
-	label: string;
-	value: number;
-	onChange: (v: number) => void;
-	min: number;
-	max: number;
-	step?: number;
-	suffix?: string;
-	active?: boolean;
-}) {
-	const drag = useRef<{ x: number; v: number } | null>(null);
-	const clamp = (v: number) => Math.min(max, Math.max(min, Math.round(v)));
-
-	return (
-		<div
-			className={cn(
-				"flex h-6.5 min-w-0 items-center gap-1 rounded-lg py-1 pr-1 pl-0.5 transition-[background-color,box-shadow] duration-200",
-				active ? "bg-primary/10 ring-1 ring-primary" : "bg-input",
-			)}
-		>
-			<span
-				role="slider"
-				aria-label={label}
-				aria-valuenow={value}
-				aria-valuemin={min}
-				aria-valuemax={max}
-				tabIndex={0}
-				onPointerDown={(event) => {
-					(event.target as HTMLElement).setPointerCapture(event.pointerId);
-					drag.current = { x: event.clientX, v: value };
-				}}
-				onPointerMove={(event) => {
-					if (!drag.current) return;
-					onChange(clamp(drag.current.v + ((event.clientX - drag.current.x) / 2) * step));
-				}}
-				onPointerUp={() => {
-					drag.current = null;
-				}}
-				onKeyDown={(event) => {
-					const mult = event.shiftKey ? 10 : 1;
-					if (event.key === "ArrowUp" || event.key === "ArrowRight") {
-						event.preventDefault();
-						onChange(clamp(value + step * mult));
-					} else if (event.key === "ArrowDown" || event.key === "ArrowLeft") {
-						event.preventDefault();
-						onChange(clamp(value - step * mult));
-					}
-				}}
-				className="flex h-full shrink-0 cursor-ew-resize touch-none select-none items-center rounded-[4px] px-0.5 text-[12px] text-muted-foreground outline-none hover:text-foreground focus-visible:text-primary"
-			>
-				{label}
-			</span>
-			<input
-				inputMode="numeric"
-				value={value}
-				onChange={(event) => {
-					const n = Number(event.target.value.replace(/[^\d-]/g, ""));
-					if (!Number.isNaN(n)) onChange(clamp(n));
-				}}
-				aria-label={`${label} value`}
-				className="min-w-0 flex-1 bg-transparent text-[12px] text-foreground tabular-nums outline-none"
-			/>
-			{suffix ? (
-				<span className="shrink-0 pr-0.5 text-[11.5px] text-muted-foreground">
-					{suffix}
-				</span>
-			) : null}
-		</div>
-	);
-}
-
 function chunk<T>(items: T[], size: number): T[][] {
 	const rows: T[][] = [];
 	for (let i = 0; i < items.length; i += size) rows.push(items.slice(i, i + size));
@@ -172,6 +93,9 @@ export interface FineTuneCardProps {
 	/** Prominent copy strings, merged over generic defaults. */
 	labels?: FineTuneCardLabels;
 	size?: FineTuneCardSize;
+	/** Identifies the subject `fields` describes (an element/layer id). Changing it resets
+	 * uncontrolled edits, so switching selection doesn't keep showing the old edits. */
+	id?: string;
 	/** Controlled editable state. Omit to let the card own it. */
 	state?: FineTuneState;
 	defaultState?: FineTuneState;
@@ -194,6 +118,7 @@ export function FineTuneCard({
 	options = [],
 	labels,
 	size = "md",
+	id,
 	state: stateProp,
 	defaultState,
 	onChange,
@@ -210,6 +135,11 @@ export function FineTuneCard({
 	const [internalState, setInternalState] = useState<FineTuneState>(
 		() => defaultState ?? initialState(fields),
 	);
+	const [seenId, setSeenId] = useState(id);
+	if (stateProp === undefined && id !== seenId) {
+		setSeenId(id);
+		setInternalState(initialState(fields));
+	}
 	const state = stateProp ?? internalState;
 	const { root } = fineTuneCard({ size });
 
@@ -312,12 +242,12 @@ export function FineTuneCard({
 								key={f.key}
 								label={f.label}
 								value={state.values[f.key] ?? f.value}
-								onChange={(v) => setValue(f.key, v)}
+								onValueChange={(v) => setValue(f.key, v)}
 								min={f.min}
 								max={f.max}
 								step={f.step}
 								suffix={f.suffix}
-								active={(state.values[f.key] ?? f.value) !== f.value}
+								tone={(state.values[f.key] ?? f.value) !== f.value ? "edited" : "default"}
 							/>
 						))}
 					</div>

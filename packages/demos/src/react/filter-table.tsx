@@ -1,10 +1,10 @@
 "use client";
 
-import { FilterTable, type TableRow } from "@baby-ui/react";
+import { type FilterRow, FilterTable } from "@baby-ui/react";
 
 type Props = Record<string, unknown>;
 
-const ROWS: TableRow[] = [
+const ROWS: FilterRow[] = [
 	{
 		task: "Restock mango sorbet",
 		date: "Dec 03",

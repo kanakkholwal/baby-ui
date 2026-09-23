@@ -139,9 +139,9 @@ export { default as FileTree } from "./file-tree/file-tree.svelte";
 export type { FileTreeNode } from "./file-tree/types";
 export { default as FilterTable } from "./filter-table/filter-table.svelte";
 export type {
+	FilterRow,
+	FilterRowStatus,
 	FilterTableLabels,
-	TableRow,
-	TableRowStatus,
 } from "./filter-table/types";
 export { default as FineTuneCard } from "./fine-tune-card/fine-tune-card.svelte";
 export type {
@@ -234,6 +234,8 @@ export { default as ResponsiveDialogHeader } from "./responsive-dialog/responsiv
 export { default as ResponsiveDialogTitle } from "./responsive-dialog/responsive-dialog-title.svelte";
 export { default as ResponsiveDialogTrigger } from "./responsive-dialog/responsive-dialog-trigger.svelte";
 export { default as ScrollArea } from "./scroll-area/scroll-area.svelte";
+export { default as ScrubField } from "./scrub-field/scrub-field.svelte";
+export type { ScrubFieldSize, ScrubFieldTone } from "./scrub-field/variants";
 export { default as Select } from "./select/select.svelte";
 export { default as SelectContent } from "./select/select-content.svelte";
 export { default as SelectGroup } from "./select/select-group.svelte";
@@ -270,6 +272,15 @@ export { default as StreamingText } from "./streaming-text/streaming-text.svelte
 export type { StreamingSource, StreamingToken } from "./streaming-text/types";
 export type { StreamingTextLayout } from "./streaming-text/variants";
 export { default as Switch } from "./switch/switch.svelte";
+export { default as Table } from "./table/table.svelte";
+export { default as TableBody } from "./table/table-body.svelte";
+export { default as TableCaption } from "./table/table-caption.svelte";
+export { default as TableCell } from "./table/table-cell.svelte";
+export { default as TableFooter } from "./table/table-footer.svelte";
+export { default as TableHead } from "./table/table-head.svelte";
+export { default as TableHeader } from "./table/table-header.svelte";
+export { default as TableRow } from "./table/table-row.svelte";
+export type { TableDensity } from "./table/variants";
 export type { TabsSize, TabsVariant } from "./tabs/context";
 export { default as Tabs } from "./tabs/tabs.svelte";
 export { default as TabsContent } from "./tabs/tabs-content.svelte";

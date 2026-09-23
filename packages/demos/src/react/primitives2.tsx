@@ -15,6 +15,7 @@ import {
 	PaginationPrevious,
 	paginationRange,
 	ScrollArea,
+	ScrubField,
 	Shortcut,
 	ShowMore,
 	Spinner,
@@ -284,6 +285,28 @@ const REGIONS = [
 	"Toronto",
 	"Washington DC",
 ];
+
+export function ScrubFieldDemo({ props }: { props: Props }) {
+	const [value, setValue] = useState(Number(props.defaultValue ?? 96));
+	useEffect(() => setValue(Number(props.defaultValue ?? 96)), [props.defaultValue]);
+	return (
+		<div className="w-32">
+			<ScrubField
+				label={(props.label as string) || "W"}
+				value={value}
+				onValueChange={setValue}
+				min={Number(props.min ?? 0)}
+				max={Number(props.max ?? 999)}
+				step={Number(props.step ?? 1)}
+				largeStep={Number(props.largeStep ?? 10)}
+				suffix={(props.suffix as string) || undefined}
+				size={(props.size as "sm" | "md" | "lg") ?? "md"}
+				tone={(props.tone as "default" | "edited") ?? "default"}
+				disabled={Boolean(props.disabled)}
+			/>
+		</div>
+	);
+}
 
 export function ScrollAreaDemo({ props }: { props: Props }) {
 	return (
