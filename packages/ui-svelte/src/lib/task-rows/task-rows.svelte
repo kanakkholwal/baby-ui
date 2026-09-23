@@ -38,10 +38,10 @@ function toggle(row: TaskRow) {
 </script>
 
 {#snippet spinnerRing(active: boolean, step: number | undefined)}
-	{const size = 24}
-	{const stroke = 2}
-	{const r = (size - stroke) / 2}
-	{const c = 2 * Math.PI * r}
+	{@const size = 24}
+	{@const stroke = 2}
+	{@const r = (size - stroke) / 2}
+	{@const c = 2 * Math.PI * r}
 	<span class="relative inline-flex shrink-0 items-center justify-center" style="width: {size}px; height: {size}px">
 		<svg width={size} height={size} aria-hidden="true" class={cn("absolute inset-0", active && "spinner")}>
 			<circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="var(--border)" stroke-width={stroke} />
@@ -110,7 +110,7 @@ function toggle(row: TaskRow) {
 
 <div data-slot="task-rows" class={cn(slots.root(), "max-w-[27.5rem]", classProp)}>
 	{#each rows as row, i (row.key)}
-		{const open = isOpen(row)}
+		{@const open = isOpen(row)}
 		<div
 			data-slot="task-row"
 			class={cn(slots.item(), "card-fade-up")}

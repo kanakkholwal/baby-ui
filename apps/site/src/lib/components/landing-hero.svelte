@@ -77,7 +77,7 @@ function label(slug: string) {
 												{#await item.load()}
 													<Spinner size="sm" class="text-muted-foreground" />
 												{:then mod}
-													{const Demo = mod.default}
+													{@const Demo = mod.default}
 													<div class="pointer-events-none scale-[0.55]">
 														<Demo />
 													</div>

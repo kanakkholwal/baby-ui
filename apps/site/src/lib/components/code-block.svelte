@@ -73,7 +73,7 @@ const BODY =
 		<!-- Panels left of the active one rest off to the left, the rest off to the right,
 		     so a switch slides the incoming text in from its own side. -->
 		{#each all as panel, i (panel.id)}
-			{const shift = i === activeIndex ? 0 : i < activeIndex ? -1 : 1}
+			{@const shift = i === activeIndex ? 0 : i < activeIndex ? -1 : 1}
 			<div
 				role="tabpanel"
 				id="panel-{panel.id}"

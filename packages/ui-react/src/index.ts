@@ -250,6 +250,19 @@ export {
 	type RecommendationOption,
 } from "./recommendation-card/recommendation-card";
 export {
+	type RecordRow,
+	type RecordSortKey,
+	type RecordStrength,
+	type RecordsColumnMeta,
+	type RecordsColumnType,
+	type RecordsDensity,
+	type RecordsPrompt,
+	RecordsTable,
+	type RecordsTableLabels,
+	type RecordsTableProps,
+	type RecordsToolKind,
+} from "./records-table/records-table";
+export {
 	type ReorderItem,
 	ReorderList,
 	type ReorderListProps,
@@ -295,6 +308,15 @@ export {
 export { Shortcut, type ShortcutProps } from "./shortcut/shortcut";
 export type { ShortcutSize, ShortcutVariant } from "./shortcut/variants";
 export { ShowMore, type ShowMoreProps } from "./show-more/show-more";
+export {
+	SidebarNav,
+	type SidebarNavItem,
+	type SidebarNavProps,
+	type SidebarRecent,
+	type SidebarWorkspace,
+	type SidebarWorkspaceAction,
+} from "./sidebar-nav/sidebar-nav";
+export type { SidebarNavSize } from "./sidebar-nav/variants";
 export { Skeleton, type SkeletonProps } from "./skeleton/skeleton";
 export type { SkeletonShape } from "./skeleton/variants";
 export { Slider, type SliderProps } from "./slider/slider";
@@ -343,6 +365,16 @@ export { Toggle, type ToggleProps } from "./toggle/toggle";
 export { ToggleGroup, ToggleGroupItem } from "./toggle-group/toggle-group";
 export { Tool, type ToolProps } from "./tool/tool";
 export type { ToolState } from "./tool/variants";
+export {
+	ToolChips,
+	type ToolChipsLabels,
+	type ToolChipsProps,
+	type ToolDetailLine,
+	type ToolDiff,
+	type ToolDiffLine,
+	type ToolStep,
+} from "./tool-chips/tool-chips";
+export type { ToolChipsSize } from "./tool-chips/variants";
 export { Toolbar, ToolbarButton, type ToolbarProps } from "./toolbar/toolbar";
 export type { ToolbarOrientation } from "./toolbar/variants";
 export {

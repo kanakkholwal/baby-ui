@@ -48,7 +48,7 @@ const BODY =
 	</div>
 	<div class="relative overflow-hidden rounded-[calc(var(--radius-xl)-1px-0.25rem)] bg-background">
 		{#each panels as panel, i (panel.id)}
-			{const shift = i === activeIndex ? 0 : i < activeIndex ? -1 : 1}
+			{@const shift = i === activeIndex ? 0 : i < activeIndex ? -1 : 1}
 			<div
 				role="tabpanel"
 				id="panel-{panel.id}"

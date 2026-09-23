@@ -1,13 +1,14 @@
 "use client";
 
 import { Flowchart, type FlowchartBackground, type StepNode } from "@baby-ui/react";
+import { useState } from "react";
 
 type Props = Record<string, unknown>;
 
 const PURPLE = "#9a5cff";
 const AMBER = "#f09a2f";
 
-const STEPS: StepNode[] = [
+const SEED_STEPS: StepNode[] = [
 	{
 		id: "trigger",
 		row: 0,
@@ -69,11 +70,34 @@ const STEPS: StepNode[] = [
 const EDGES = [{ from: "trigger", to: "cond" }];
 
 export function FlowchartDemo({ props }: { props: Props }) {
+	const [steps, setSteps] = useState<StepNode[]>(() => structuredClone(SEED_STEPS));
+
+	function handleConditionChange(
+		nodeId: string,
+		rowId: string,
+		field: "property" | "value",
+		value: string,
+	) {
+		setSteps((current) =>
+			current.map((node) =>
+				node.id !== nodeId || !node.conditions
+					? node
+					: {
+							...node,
+							conditions: node.conditions.map((row) =>
+								row.id === rowId ? { ...row, [field]: value } : row,
+							),
+						},
+			),
+		);
+	}
+
 	return (
 		<Flowchart
-			steps={STEPS}
+			steps={steps}
 			edges={EDGES}
 			background={(props.background as FlowchartBackground) || undefined}
+			onConditionChange={handleConditionChange}
 		/>
 	);
 }

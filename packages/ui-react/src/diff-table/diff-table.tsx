@@ -58,6 +58,13 @@ function CheckMark({ included, className }: { included: boolean; className: stri
 export interface DiffTableProps {
 	title?: string;
 	rows: DiffRow[];
+	/** Controlled include/exclude map, keyed by row key. Omit to let the table own it. */
+	included?: Record<string, boolean>;
+	defaultIncluded?: Record<string, boolean>;
+	onIncludedChange?: (included: Record<string, boolean>) => void;
+	accepted?: boolean;
+	defaultAccepted?: boolean;
+	onAcceptedChange?: (accepted: boolean) => void;
 	onApply?: (includedKeys: string[]) => void;
 	className?: string;
 }
@@ -67,29 +74,43 @@ export interface DiffTableProps {
 export function DiffTable({
 	title = "Proposed changes",
 	rows,
+	included: includedProp,
+	defaultIncluded,
+	onIncludedChange,
+	accepted: acceptedProp,
+	defaultAccepted = false,
+	onAcceptedChange,
 	onApply,
 	className,
 }: DiffTableProps) {
-	const [included, setIncluded] = useState<Record<string, boolean>>(() =>
-		Object.fromEntries(rows.map((row) => [row.key, row.included ?? true])),
+	const [internalIncluded, setInternalIncluded] = useState<Record<string, boolean>>(
+		() =>
+			defaultIncluded ??
+			Object.fromEntries(rows.map((row) => [row.key, row.included ?? true])),
 	);
-	const [accepted, setAccepted] = useState(false);
+	const included = includedProp ?? internalIncluded;
+	const [internalAccepted, setInternalAccepted] = useState(defaultAccepted);
+	const accepted = acceptedProp ?? internalAccepted;
 
-	const includedKeys = rows.filter((row) => included[row.key]).map((row) => row.key);
+	const isIncluded = (row: DiffRow) => included[row.key] ?? row.included ?? true;
+	const includedKeys = rows.filter(isIncluded).map((row) => row.key);
 	const removals = rows.filter(
-		(row) => row.change === "removed" && included[row.key],
+		(row) => row.change === "removed" && isIncluded(row),
 	).length;
 	const additions = rows.filter(
-		(row) => row.change === "added" && included[row.key],
+		(row) => row.change === "added" && isIncluded(row),
 	).length;
 	const total = removals + additions;
 
 	function toggle(key: string) {
-		setIncluded((current) => ({ ...current, [key]: !current[key] }));
+		const next = { ...included, [key]: !(included[key] ?? true) };
+		if (includedProp === undefined) setInternalIncluded(next);
+		onIncludedChange?.(next);
 	}
 
 	function apply() {
-		setAccepted(true);
+		if (acceptedProp === undefined) setInternalAccepted(true);
+		onAcceptedChange?.(true);
 		onApply?.(includedKeys);
 	}
 
@@ -125,15 +146,15 @@ export function DiffTable({
 					</thead>
 					<tbody>
 						{rows.map((row, index) => {
-							const isIncluded = included[row.key] ?? true;
+							const included_ = isIncluded(row);
 							const interactive = !accepted;
-							const classes = rowClasses(row.change, isIncluded);
+							const classes = rowClasses(row.change, included_);
 							return (
 								// biome-ignore lint/a11y/useSemanticElements: a table row can't be an <input>
 								<tr
 									key={row.key}
 									role="checkbox"
-									aria-checked={isIncluded}
+									aria-checked={included_}
 									tabIndex={interactive ? 0 : undefined}
 									onClick={interactive ? () => toggle(row.key) : undefined}
 									onKeyDown={
@@ -164,7 +185,7 @@ export function DiffTable({
 									<td className={cn("px-3 py-2 text-[12.5px]", classes.detail)}>
 										<span className="flex items-center justify-between gap-2">
 											<span className="min-w-0 truncate">{row.detail}</span>
-											<CheckMark included={isIncluded} className={classes.mark} />
+											<CheckMark included={included_} className={classes.mark} />
 										</span>
 									</td>
 								</tr>

@@ -86,6 +86,28 @@ export function findSpec(category: string, slug: string): ComponentSpec | undefi
 	return specs.find((s) => s.slug === slug && s.category === category);
 }
 
+export type AdjacentComponent = { name: string; href: string };
+
+/** Previous/next in the same order the sidebar lists them: category, then alphabetical. */
+export function adjacentComponents(
+	category: string,
+	slug: string,
+): { prev: AdjacentComponent | null; next: AdjacentComponent | null } {
+	const flat = sidebarGroups().flatMap((group) =>
+		group.items.map((item) => ({ ...item, category: group.category })),
+	);
+	const index = flat.findIndex(
+		(item) => item.category === category && item.slug === slug,
+	);
+	if (index === -1) return { prev: null, next: null };
+	const prev = flat[index - 1];
+	const next = flat[index + 1];
+	return {
+		prev: prev ? { name: prev.name, href: prev.href } : null,
+		next: next ? { name: next.name, href: next.href } : null,
+	};
+}
+
 /** Initial control values, from each prop's declared default. */
 export function defaultProps(spec: ComponentSpec): Record<string, unknown> {
 	const out: Record<string, unknown> = {};

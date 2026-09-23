@@ -28,7 +28,7 @@ const iframeSrc = $derived(
 
 <div
 	class={[
-		"relative grid min-h-88 place-items-center overflow-hidden rounded-xl border border-border bg-[radial-gradient(var(--border)_1px,transparent_1px)] [background-size:16px_16px] p-8",
+		"relative grid min-h-88 grid-cols-[minmax(0,1fr)] place-items-center overflow-hidden rounded-xl border border-border bg-[radial-gradient(var(--border)_1px,transparent_1px)] [background-size:16px_16px] p-8",
 		classProp,
 	]}
 >
@@ -39,7 +39,7 @@ const iframeSrc = $derived(
 				<span>Loading preview…</span>
 			</div>
 		{:then mod}
-			{const Demo = mod.default}
+			{@const Demo = mod.default}
 			<Demo {props} />
 		{:catch}
 			<p class="text-muted-foreground text-sm">Couldn't load this preview.</p>

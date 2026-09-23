@@ -30,6 +30,7 @@ let {
 	options = [],
 	labels,
 	size = "md",
+	state = $bindable(),
 	onChange,
 	class: classProp,
 }: {
@@ -37,9 +38,19 @@ let {
 	options?: string[];
 	labels?: FineTuneCardLabels;
 	size?: FineTuneCardSize;
+	state?: FineTuneState;
 	onChange?: (state: FineTuneState) => void;
 	class?: string;
 } = $props();
+
+// svelte-ignore state_referenced_locally -- intentional one-time seed, matching React's useState(initialValue)
+const initialState: FineTuneState = {
+	segment: 0,
+	values: Object.fromEntries(fields.map((f) => [f.key, f.value])),
+	type: "",
+};
+
+let dragStart: { x: number; v: number } | null = null;
 
 const text = $derived({
 	title: labels?.title ?? DEFAULT_LABELS.title,
@@ -49,34 +60,30 @@ const text = $derived({
 	adjust: labels?.adjust ?? DEFAULT_LABELS.adjust,
 	edited: labels?.edited ?? DEFAULT_LABELS.edited,
 });
-let seg = $state(0);
-// svelte-ignore state_referenced_locally -- intentional one-time seed, matching React's useState(initialValue)
-let values = $state<Record<string, number>>(
-	Object.fromEntries(fields.map((f) => [f.key, f.value])),
-);
-let typeValue = $state("");
-let lastFiredType = "";
-let dragStart: { x: number; v: number } | null = null;
 
 const classes = $derived(fineTuneCard({ size }));
-const changed = $derived(fields.some((f) => values[f.key] !== f.value));
-const edited = $derived(seg !== 0 || changed || typeValue !== "");
+const current = $derived(state ?? initialState);
+const changed = $derived(
+	fields.some((f) => (current.values[f.key] ?? f.value) !== f.value),
+);
+const edited = $derived(current.segment !== 0 || changed || current.type !== "");
+
+function update(next: FineTuneState) {
+	state = next;
+	onChange?.(next);
+}
 
 function selectSeg(i: number) {
-	seg = i;
-	onChange?.({ segment: i, values, type: typeValue });
+	update({ ...current, segment: i });
 }
 
 function setValue(key: string, v: number) {
-	values[key] = v;
-	onChange?.({ segment: seg, values, type: typeValue });
+	update({ ...current, values: { ...current.values, [key]: v } });
 }
 
-$effect(() => {
-	if (typeValue === lastFiredType) return;
-	lastFiredType = typeValue;
-	onChange?.({ segment: seg, values, type: typeValue });
-});
+function selectType(value: string) {
+	update({ ...current, type: value });
+}
 </script>
 
 {#snippet segmentIcon(kind: (typeof SEGMENTS)[number])}
@@ -96,7 +103,7 @@ $effect(() => {
 {/snippet}
 
 {#snippet scrubField(field: FineTuneField)}
-	{const active = (values[field.key] ?? field.value) !== field.value}
+	{@const active = (current.values[field.key] ?? field.value) !== field.value}
 	<div
 		class={cn(
 			"flex h-6.5 min-w-0 items-center gap-1 rounded-lg py-1 pr-1 pl-0.5 transition-[background-color,box-shadow] duration-200",
@@ -106,13 +113,13 @@ $effect(() => {
 		<span
 			role="slider"
 			aria-label={field.label}
-			aria-valuenow={values[field.key] ?? field.value}
+			aria-valuenow={current.values[field.key] ?? field.value}
 			aria-valuemin={field.min}
 			aria-valuemax={field.max}
 			tabindex={0}
 			onpointerdown={(event) => {
 				(event.target as HTMLElement).setPointerCapture(event.pointerId);
-				dragStart = { x: event.clientX, v: values[field.key] ?? field.value };
+				dragStart = { x: event.clientX, v: current.values[field.key] ?? field.value };
 			}}
 			onpointermove={(event) => {
 				if (!dragStart) return;
@@ -126,13 +133,13 @@ $effect(() => {
 			onkeydown={(event) => {
 				const step = field.step ?? 1;
 				const mult = event.shiftKey ? 10 : 1;
-				const current = values[field.key] ?? field.value;
+				const currentValue = current.values[field.key] ?? field.value;
 				if (event.key === "ArrowUp" || event.key === "ArrowRight") {
 					event.preventDefault();
-					setValue(field.key, Math.min(field.max, Math.max(field.min, Math.round(current + step * mult))));
+					setValue(field.key, Math.min(field.max, Math.max(field.min, Math.round(currentValue + step * mult))));
 				} else if (event.key === "ArrowDown" || event.key === "ArrowLeft") {
 					event.preventDefault();
-					setValue(field.key, Math.min(field.max, Math.max(field.min, Math.round(current - step * mult))));
+					setValue(field.key, Math.min(field.max, Math.max(field.min, Math.round(currentValue - step * mult))));
 				}
 			}}
 			class="flex h-full shrink-0 cursor-ew-resize touch-none select-none items-center rounded-[4px] px-0.5 text-[12px] text-muted-foreground outline-none hover:text-foreground focus-visible:text-primary"
@@ -141,7 +148,7 @@ $effect(() => {
 		</span>
 		<input
 			inputmode="numeric"
-			value={values[field.key] ?? field.value}
+			value={current.values[field.key] ?? field.value}
 			oninput={(event) => {
 				const n = Number(event.currentTarget.value.replace(/[^\d-]/g, ""));
 				if (!Number.isNaN(n)) setValue(field.key, Math.min(field.max, Math.max(field.min, Math.round(n))));
@@ -183,17 +190,17 @@ $effect(() => {
 			<span
 				aria-hidden="true"
 				class="absolute inset-y-0.5 rounded-md bg-card shadow-sm transition-transform duration-300 ease-[var(--ease-out)]"
-				style="width: calc((100% - 4px) / 3); left: 2px; transform: translateX({seg * 100}%);"
+				style="width: calc((100% - 4px) / 3); left: 2px; transform: translateX({current.segment * 100}%);"
 			></span>
 			{#each SEGMENTS as s, i (s)}
 				<button
 					type="button"
 					aria-label={`${s} layout`}
-					aria-pressed={i === seg}
+					aria-pressed={i === current.segment}
 					onclick={() => selectSeg(i)}
 					class={cn(
 						"relative z-10 flex h-6 items-center justify-center transition-colors duration-200",
-						i === seg ? "text-primary" : "text-muted-foreground",
+						i === current.segment ? "text-primary" : "text-muted-foreground",
 					)}
 				>
 					{@render segmentIcon(s)}
@@ -212,7 +219,10 @@ $effect(() => {
 	{#if options.length > 0}
 		<div class="flex items-center justify-between px-3 py-2">
 			<span class="text-[12px] text-muted-foreground">{text.type}</span>
-			<Select bind:value={typeValue} items={options.map((item) => ({ value: item, label: item }))}>
+			<Select
+				bind:value={() => current.type, selectType}
+				items={options.map((item) => ({ value: item, label: item }))}
+			>
 				<SelectTrigger class="h-6.5 w-30 rounded-lg px-2 text-[12px]">
 					<SelectValue placeholder={text.placeholder} />
 				</SelectTrigger>

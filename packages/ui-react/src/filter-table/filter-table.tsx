@@ -48,6 +48,10 @@ const GRID_COLS =
 export interface FilterTableProps extends Omit<ComponentProps<"div">, "children"> {
 	rows: TableRow[];
 	labels?: FilterTableLabels;
+	/** Controlled active filter. Omit to let the table own it. */
+	filter?: "all" | TableRowStatus;
+	defaultFilter?: "all" | TableRowStatus;
+	onFilterChange?: (filter: "all" | TableRowStatus) => void;
 }
 
 /** Status chips directly filter the task table; a hidden row collapses via
@@ -56,9 +60,20 @@ export function FilterTable({
 	className,
 	rows,
 	labels = DEFAULT_LABELS,
+	filter: filterProp,
+	defaultFilter = "all",
+	onFilterChange,
 	...props
 }: FilterTableProps) {
-	const [filter, setFilter] = useState<"all" | TableRowStatus>("all");
+	const [internalFilter, setInternalFilter] = useState<"all" | TableRowStatus>(
+		defaultFilter,
+	);
+	const filter = filterProp ?? internalFilter;
+
+	function setFilter(next: "all" | TableRowStatus) {
+		if (filterProp === undefined) setInternalFilter(next);
+		onFilterChange?.(next);
+	}
 
 	const counts = useMemo(() => {
 		const byStatus: Record<"all" | TableRowStatus, number> = {

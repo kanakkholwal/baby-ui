@@ -18,12 +18,12 @@ let {
 		data-slot="select-content"
 		class={cn(
 			UNFOLD,
-			"static z-50 max-h-[min(16rem,var(--bits-select-content-available-height))] overflow-x-hidden overflow-y-auto",
+			"static z-50 max-h-[min(16rem,var(--bits-select-content-available-height))] w-[var(--bits-select-anchor-width)] overflow-x-hidden overflow-y-auto",
 			"scroll-area rounded-xl border border-border bg-popover p-1 shadow-2xl",
 			classProp,
 		)}
 	>
-		<SelectPrimitive.Viewport class="w-[var(--bits-select-anchor-width)]">
+		<SelectPrimitive.Viewport>
 			{@render children?.()}
 		</SelectPrimitive.Viewport>
 	</SelectPrimitive.Content>

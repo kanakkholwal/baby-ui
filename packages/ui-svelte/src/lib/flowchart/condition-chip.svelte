@@ -7,7 +7,7 @@ import SelectValue from "../select/select-value.svelte";
 import type { FlowchartOption } from "./types";
 
 let {
-	value: initialValue,
+	value,
 	options,
 	onChange,
 	width,
@@ -20,22 +20,11 @@ let {
 	dot?: boolean;
 } = $props();
 
-// svelte-ignore state_referenced_locally -- intentional one-time seed, matching React's useState(initialValue)
-let value = $state(initialValue);
-// svelte-ignore state_referenced_locally -- intentional one-time seed, matching React's useRef(initialValue)
-let lastFired = initialValue;
-
 const current = $derived(options.find((o) => o.value === value));
-
-$effect(() => {
-	if (value === lastFired) return;
-	lastFired = value;
-	onChange(value);
-});
 </script>
 
 <span data-ui class="relative inline-flex min-w-0">
-	<Select bind:value>
+	<Select bind:value={() => value, onChange}>
 		<SelectTrigger
 			class="h-6 min-w-0 gap-1 rounded-md border-none bg-input px-1.5 font-medium text-[12px] text-foreground [&>svg]:size-3"
 		>

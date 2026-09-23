@@ -1,0 +1,220 @@
+<script lang="ts">
+import HoverCard from "../hover-card/hover-card.svelte";
+import HoverCardContent from "../hover-card/hover-card-content.svelte";
+import HoverCardTrigger from "../hover-card/hover-card-trigger.svelte";
+import { cn } from "../lib/cn";
+import type { ToolChipsLabels, ToolDiff, ToolStep } from "./types";
+import { type ToolChipsSize, toolChips } from "./variants";
+
+let {
+	steps,
+	diffs = [],
+	hiddenDiffCount = 0,
+	labels,
+	size = "md",
+	open = $bindable(true),
+	onToggleRow,
+	class: classProp,
+}: {
+	steps: ToolStep[];
+	diffs?: ToolDiff[];
+	hiddenDiffCount?: number;
+	labels?: ToolChipsLabels;
+	size?: ToolChipsSize;
+	open?: boolean;
+	onToggleRow?: (label: string, open: boolean) => void;
+	class?: string;
+} = $props();
+
+let openRows = $state<Set<string>>(new Set());
+
+const classes = $derived(toolChips({ size }));
+const header = $derived(
+	labels?.header ?? `${steps.length} tool call${steps.length === 1 ? "" : "s"}`,
+);
+
+function toggleRow(label: string) {
+	const next = new Set(openRows);
+	if (next.has(label)) next.delete(label);
+	else next.add(label);
+	openRows = next;
+	onToggleRow?.(label, next.has(label));
+}
+</script>
+
+{#snippet dotIcon()}
+	<span aria-hidden="true" class="size-1.5 rounded-full bg-current"></span>
+{/snippet}
+
+<div data-slot="tool-chips" class={cn(classes.root(), classProp)}>
+	<button
+		type="button"
+		aria-expanded={open}
+		onclick={() => (open = !open)}
+		class="-mx-1.5 flex w-fit items-center gap-1.5 rounded-md px-1.5 py-1 text-[12.5px] text-muted-foreground transition-colors duration-100 hover:bg-foreground/[0.06]"
+	>
+		<svg
+			width="12"
+			height="12"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2.2"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+			aria-hidden="true"
+			class="transition-transform duration-200"
+			style:transform={open ? "rotate(0deg)" : "rotate(-90deg)"}
+		>
+			<path d="M6 9l6 6 6-6" />
+		</svg>
+		<span class="tabular-nums">{header}</span>
+	</button>
+
+	<div
+		class="grid transition-[grid-template-rows,opacity] duration-300"
+		style:grid-template-rows={open ? "1fr" : "0fr"}
+		style:opacity={open ? 1 : 0}
+	>
+		<div class="-mx-1 overflow-hidden px-1.5 pb-1">
+			<div class="mt-1.5 flex flex-col gap-1">
+				{#each steps as row, index (row.label)}
+					{@const rowOpen = openRows.has(row.label)}
+					<div class="card-fade-up" style="animation-delay: calc(var(--stagger-step) * {index});">
+						<button
+							type="button"
+							aria-expanded={rowOpen}
+							onclick={() => toggleRow(row.label)}
+							class="group/row -mx-[3px] flex h-7 w-[calc(100%+6px)] min-w-0 items-center gap-2 rounded-md px-[3px] text-left transition-colors duration-100 hover:bg-foreground/[0.06]"
+						>
+							<span class="relative flex size-4 shrink-0 items-center justify-center text-muted-foreground">
+								<span
+									aria-hidden="true"
+									class={cn(
+										"transition-opacity duration-100 group-hover/row:opacity-0",
+										rowOpen && "opacity-0",
+									)}
+								>
+									{#if row.icon}
+										{@render row.icon()}
+									{:else}
+										{@render dotIcon()}
+									{/if}
+								</span>
+								<svg
+									width="12"
+									height="12"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2.2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									aria-hidden="true"
+									class={cn(
+										"absolute transition-[opacity,transform] duration-150 group-hover/row:opacity-100",
+										rowOpen ? "opacity-100" : "opacity-0",
+									)}
+									style:transform={rowOpen ? "rotate(0deg)" : "rotate(-90deg)"}
+								>
+									<path d="M6 9l6 6 6-6" />
+								</svg>
+							</span>
+							<span class="shrink-0 font-medium text-[12.5px] text-foreground">{row.label}</span>
+							<span
+								class={cn(
+									"inline-flex h-5.5 min-w-0 flex-1 cursor-pointer items-center truncate rounded-full bg-input px-1.5 text-[11.5px] text-muted-foreground shadow-xs transition-colors duration-100 hover:bg-foreground/[0.06]",
+									row.mono && "font-mono",
+								)}
+							>
+								{row.chip}
+							</span>
+						</button>
+
+						<div
+							class="grid transition-[grid-template-rows,opacity] duration-300 ease-[var(--ease-out)]"
+							style:grid-template-rows={rowOpen ? "1fr" : "0fr"}
+							style:opacity={rowOpen ? 1 : 0}
+						>
+							<div class="min-h-0 overflow-hidden">
+								<div class="mt-0.5 mb-1 ml-2 flex flex-col gap-0.5 border-border border-l py-0.5 pl-3.5">
+									{#each row.detail as line (line.text)}
+										<span
+											class={cn(
+												"truncate text-[11.5px] leading-[1.6]",
+												row.detailMono && "font-mono",
+												line.tone === "add" ? "text-success" : "text-muted-foreground",
+											)}
+										>
+											{line.text}
+										</span>
+									{/each}
+								</div>
+							</div>
+						</div>
+					</div>
+				{/each}
+			</div>
+
+			{#if diffs.length > 0}
+				<div class="mt-2.5 flex max-w-full flex-wrap gap-1.5 border-border border-t pt-2.5">
+					{#each diffs as diff, index (diff.file)}
+						<HoverCard>
+							<HoverCardTrigger
+								aria-label={`Show diff for ${diff.file}`}
+								class="card-fade-up inline-flex h-7 max-w-full items-center gap-2 rounded-full bg-card px-2 font-mono text-[11.5px] text-foreground shadow-sm transition-colors duration-100 hover:bg-foreground/[0.06]"
+								style="animation-delay: calc(var(--stagger-step) * {steps.length + index});"
+							>
+								<span class="min-w-0 truncate">{diff.file}</span>
+								<span class="shrink-0 text-success tabular-nums">+{diff.add}</span>
+								{#if diff.del > 0}
+									<span class="shrink-0 text-destructive tabular-nums">−{diff.del}</span>
+								{/if}
+							</HoverCardTrigger>
+							{#if diff.lines?.length}
+								<HoverCardContent
+									align="start"
+									class="w-72 overflow-hidden rounded-[10px] border-none p-0 shadow-2xl"
+								>
+									<div class="flex items-center justify-between border-border border-b px-2.5 py-1.5 font-mono text-[11px]">
+										<span class="min-w-0 truncate text-muted-foreground">{diff.file}</span>
+										<span class="shrink-0 tabular-nums">
+											<span class="text-success">+{diff.add}</span>
+											{#if diff.del > 0}
+												<span class="text-destructive"> −{diff.del}</span>
+											{/if}
+										</span>
+									</div>
+									<div class="py-1 font-mono text-[11px] leading-[1.8]">
+										{#each diff.lines as line, lineIndex (lineIndex)}
+											<div
+												class={cn(
+													"flex gap-2 whitespace-pre px-2.5",
+													line.tone === "add"
+														? "bg-success/10 text-success"
+														: line.tone === "del"
+															? "bg-destructive/10 text-destructive"
+															: "text-muted-foreground",
+												)}
+											>
+												<span class="w-3 shrink-0 select-none"
+													>{line.tone === "add" ? "+" : line.tone === "del" ? "−" : " "}</span
+												>
+												<span class="min-w-0 truncate">{line.text}</span>
+											</div>
+										{/each}
+									</div>
+								</HoverCardContent>
+							{/if}
+						</HoverCard>
+					{/each}
+					{#if hiddenDiffCount > 0}
+						<span class="inline-flex h-7 items-center rounded-full px-1.5 font-mono text-[11.5px] text-muted-foreground">
+							+{hiddenDiffCount} more
+						</span>
+					{/if}
+				</div>
+			{/if}
+		</div>
+	</div>
+</div>

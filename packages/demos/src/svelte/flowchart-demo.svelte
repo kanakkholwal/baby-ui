@@ -6,7 +6,7 @@ let { props = {} }: { props?: Record<string, unknown> } = $props();
 const PURPLE = "#9a5cff";
 const AMBER = "#f09a2f";
 
-const STEPS: StepNode[] = [
+const SEED_STEPS: StepNode[] = [
 	{
 		id: "trigger",
 		row: 0,
@@ -66,10 +66,24 @@ const STEPS: StepNode[] = [
 ];
 
 const EDGES = [{ from: "trigger", to: "cond" }];
+
+let steps = $state(structuredClone(SEED_STEPS));
+
+function handleConditionChange(
+	nodeId: string,
+	rowId: string,
+	field: "property" | "value",
+	value: string,
+) {
+	const node = steps.find((n) => n.id === nodeId);
+	const row = node?.conditions?.find((r) => r.id === rowId);
+	if (row) row[field] = value;
+}
 </script>
 
 <Flowchart
-	steps={STEPS}
+	{steps}
 	edges={EDGES}
 	background={(props.background as FlowchartBackground) || undefined}
+	onConditionChange={handleConditionChange}
 />

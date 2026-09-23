@@ -89,6 +89,23 @@ Any agent (Claude Code, Codex, Cursor, Copilot) should read this file first.
   which auto-advanced a `status: "sequence"` row through a canned pending → failed →
   succeeded arc via an internal `useTick`, and separately hardcoded an "auto-open" check to a
   literal demo row key instead of a structural condition).
+- **HARD RULE:** every component (any category) is a fully controlled component. Every piece of
+  state a caller might reasonably read or drive — not just open/closed, but selected value,
+  active tab/segment, expanded rows, filter, an included/excluded set, whatever the component
+  owns — exposes a `value`/`defaultValue`/`onValueChange`-shaped triad: React reads
+  `valueProp ?? internalState` directly in render (never a `useState(initialValue)` seeded once
+  and left to drift); Svelte uses `$bindable()`, or reads the prop directly with no shadow copy.
+  A prop that only fires a one-shot callback with no way to set the value back, or internal state
+  seeded once from a prop that never re-syncs when that prop changes later, is not controlled.
+  Caught repeatedly in one pass: `DiffTable`/`FilterTable`/`FineTuneCard`/`Flowchart`/
+  `MorphingModal` all shipped fire-and-forget-only (no way to drive them from outside);
+  `ConditionChip`/`PickerSelect` (Svelte) seeded `$state` once from a `value` prop and silently
+  went stale on every later change, which a demo control dial (or any real controlled usage)
+  surfaced as "changing this does nothing."
+- **HARD RULE:** every prop and every variant/size option must produce an observably distinct
+  visual or functional change from every other value of the same axis. No two enum members of a
+  `tv()` variant render identically; no boolean prop is a no-op. If two values genuinely can't be
+  told apart, collapse them into one value instead of shipping a dead option.
 - React and Svelte ports change together, same spec, same classes, same measured motion.
 - Motion is CSS-only: `--duration-*`, `--ease-*`, `--enter-scale`, `--press-scale`. Exits
   mirror entrances and use `--duration-exit`. Anchored surfaces grow from the trigger edge

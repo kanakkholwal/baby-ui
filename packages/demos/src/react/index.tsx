@@ -90,10 +90,13 @@ import {
 	TypographyDemo,
 } from "./primitives2";
 import { RecommendationCardDemo } from "./recommendation-card";
+import { RecordsTableDemo } from "./records-table";
 import { ResponsiveDialogDemo } from "./responsive-dialog";
+import { SidebarNavDemo } from "./sidebar-nav";
 import { StreamingTextDemo } from "./streaming-text";
 import { TaskRowsDemo } from "./task-rows";
 import { ThinkingStateDemo } from "./thinking-state";
+import { ToolChipsDemo } from "./tool-chips";
 
 type Props = Record<string, unknown>;
 
@@ -297,6 +300,7 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"context-cards": ContextCardsDemo,
 	"filter-table": FilterTableDemo,
 	"diff-table": DiffTableDemo,
+	"records-table": RecordsTableDemo,
 	"fine-tune-card": FineTuneCardDemo,
 	flowchart: FlowchartDemo,
 	"loading-state": LoadingStateDemo,
@@ -306,4 +310,6 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"task-rows": TaskRowsDemo,
 	"streaming-text": StreamingTextDemo,
 	"agent-screen": AgentScreenDemo,
+	"tool-chips": ToolChipsDemo,
+	"sidebar-nav": SidebarNavDemo,
 };

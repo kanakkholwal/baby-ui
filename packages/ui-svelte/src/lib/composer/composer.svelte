@@ -191,7 +191,7 @@ function onKeyDown(event: KeyboardEvent) {
 						<span class="truncate text-muted-foreground">{currentModelOption?.label ?? "Choose model"}</span>
 					</span>
 				</SelectTrigger>
-				<SelectContent align="start" class="w-52 [&_[data-select-viewport]]:w-full">
+				<SelectContent align="start" class="w-52">
 					{#each models as m (m.value)}
 						<SelectItem value={m.value} disabled={m.disabled} class="py-2">
 							<span class="flex min-w-0 items-center gap-2">

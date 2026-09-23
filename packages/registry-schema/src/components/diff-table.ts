@@ -26,6 +26,32 @@ export const diffTable = defineComponent({
 			control: { kind: "none" },
 		},
 		{
+			name: "included",
+			type: "Record<string, boolean>",
+			description:
+				"Controlled include/exclude map, keyed by row key. Omit to let the table own it, seeded from each row's own `included`.",
+			control: { kind: "none" },
+		},
+		{
+			name: "onIncludedChange",
+			type: "(included: Record<string, boolean>) => void",
+			description: "Fired with the full map whenever a row is toggled.",
+			control: { kind: "none" },
+		},
+		{
+			name: "accepted",
+			type: "boolean",
+			description: "Controlled applied state. Omit to let the table own it.",
+			default: false,
+			control: { kind: "none" },
+		},
+		{
+			name: "onAcceptedChange",
+			type: "(accepted: boolean) => void",
+			description: "Fired with `true` when Apply is pressed.",
+			control: { kind: "none" },
+		},
+		{
 			name: "onApply",
 			type: "(includedKeys: string[]) => void",
 			description:

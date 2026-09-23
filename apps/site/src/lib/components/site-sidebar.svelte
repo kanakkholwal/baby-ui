@@ -47,7 +47,7 @@ $effect(() => {
 			<CollapsibleContent class="px-0 pb-0 duration-300">
 				<div class="ml-3 border-border border-l">
 					{#each GUIDES as item (item.href)}
-						{const active = page.url.pathname === item.href}
+						{@const active = page.url.pathname === item.href}
 						<a
 							href={item.href}
 							onclick={onNavigate}
@@ -79,7 +79,7 @@ $effect(() => {
 				<CollapsibleContent class="px-0 pb-0 duration-300">
 					<div class="ml-3 border-border border-l">
 						{#each group.items as item (item.slug)}
-							{const active = page.url.pathname === item.href}
+							{@const active = page.url.pathname === item.href}
 							<a
 								href={item.href}
 								onclick={onNavigate}

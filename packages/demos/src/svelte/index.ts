@@ -72,6 +72,7 @@ export const demos: Record<string, DemoLoader> = {
 	"context-cards": () => import("./context-cards-demo.svelte"),
 	"filter-table": () => import("./filter-table-demo.svelte"),
 	"diff-table": () => import("./diff-table-demo.svelte"),
+	"records-table": () => import("./records-table-demo.svelte"),
 	"fine-tune-card": () => import("./fine-tune-card-demo.svelte"),
 	flowchart: () => import("./flowchart-demo.svelte"),
 	"loading-state": () => import("./loading-state-demo.svelte"),
@@ -81,4 +82,6 @@ export const demos: Record<string, DemoLoader> = {
 	"task-rows": () => import("./task-rows-demo.svelte"),
 	"streaming-text": () => import("./streaming-text-demo.svelte"),
 	"agent-screen": () => import("./agent-screen-demo.svelte"),
+	"tool-chips": () => import("./tool-chips-demo.svelte"),
+	"sidebar-nav": () => import("./sidebar-nav-demo.svelte"),
 };

@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { cn } from "../lib/cn";
 import { invert, MORPH_EASE, MORPH_MS, type MorphSpring } from "./use-morph";
 
@@ -13,6 +13,9 @@ export interface MorphingModalProps {
 	spring?: MorphSpring;
 	dismissOnBackdrop?: boolean;
 	backdropBlur?: number;
+	open?: boolean;
+	defaultOpen?: boolean;
+	onOpenChange?: (open: boolean) => void;
 }
 
 const reduced = () =>
@@ -27,11 +30,17 @@ export function MorphingModal({
 	spring = "gentle",
 	dismissOnBackdrop = true,
 	backdropBlur = 8,
+	open: openProp,
+	defaultOpen = false,
+	onOpenChange,
 }: MorphingModalProps) {
 	const triggerRef = useRef<HTMLButtonElement>(null);
 	const dialogRef = useRef<HTMLDialogElement>(null);
 	const panelRef = useRef<HTMLDivElement>(null);
 	const [hidden, setHidden] = useState(false);
+	const [internalOpen, setInternalOpen] = useState(defaultOpen);
+	const isOpen = openProp ?? internalOpen;
+	const wasOpen = useRef(false);
 	const titleId = useId();
 
 	async function animateMorph(reverse: boolean) {
@@ -58,17 +67,31 @@ export function MorphingModal({
 		}).finished;
 	}
 
-	async function open() {
+	async function runOpen() {
 		dialogRef.current?.showModal();
 		setHidden(true);
 		await animateMorph(false);
 	}
 
-	async function close() {
+	async function runClose() {
 		await animateMorph(true);
 		setHidden(false);
 		dialogRef.current?.close();
 		triggerRef.current?.focus();
+	}
+
+	// Drives the native dialog + FLIP animation from resolved open state, so a
+	// controlled `open` prop and the internal trigger/close click both funnel here.
+	useEffect(() => {
+		if (isOpen === wasOpen.current) return;
+		wasOpen.current = isOpen;
+		if (isOpen) void runOpen();
+		else void runClose();
+	}, [isOpen]);
+
+	function setOpen(next: boolean) {
+		if (openProp === undefined) setInternalOpen(next);
+		onOpenChange?.(next);
 	}
 
 	return (
@@ -76,7 +99,7 @@ export function MorphingModal({
 			<button
 				ref={triggerRef}
 				type="button"
-				onClick={open}
+				onClick={() => setOpen(true)}
 				style={{ opacity: hidden ? 0 : 1 }}
 				className="cursor-pointer rounded-2xl text-left outline-none focus-visible:ring-2 focus-visible:ring-ring"
 			>
@@ -89,10 +112,10 @@ export function MorphingModal({
 				aria-labelledby={titleId}
 				onCancel={(e) => {
 					e.preventDefault();
-					close();
+					setOpen(false);
 				}}
 				onClick={(e) => {
-					if (dismissOnBackdrop && e.target === dialogRef.current) close();
+					if (dismissOnBackdrop && e.target === dialogRef.current) setOpen(false);
 				}}
 				style={{ ["--morph-blur" as string]: `${backdropBlur}px` }}
 				className="morph-dialog m-auto bg-transparent p-0 text-foreground backdrop:bg-black/40"
@@ -110,9 +133,9 @@ export function MorphingModal({
 						</h2>
 						<button
 							type="button"
-							onClick={close}
+							onClick={() => setOpen(false)}
 							aria-label="Close"
-							className="rounded-md p-1 text-muted-foreground transition-colors hover:text-foreground"
+							className="rounded-md p-1 text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground"
 						>
 							<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-4">
 								<path

@@ -21,38 +21,50 @@ function rowClasses(change: DiffRowChange, included: boolean) {
 let {
 	title = "Proposed changes",
 	rows,
+	included = $bindable(),
+	onIncludedChange,
+	accepted = $bindable(false),
+	onAcceptedChange,
 	onApply,
 	class: classProp,
 }: {
 	title?: string;
 	rows: DiffRow[];
+	included?: Record<string, boolean>;
+	onIncludedChange?: (included: Record<string, boolean>) => void;
+	accepted?: boolean;
+	onAcceptedChange?: (accepted: boolean) => void;
 	onApply?: (includedKeys: string[]) => void;
 	class?: string;
 } = $props();
 
-// svelte-ignore state_referenced_locally -- intentional one-time seed, matching React's useState(initialValue)
-let included = $state<Record<string, boolean>>(
-	Object.fromEntries(rows.map((row) => [row.key, row.included ?? true])),
-);
-let accepted = $state(false);
+if (included === undefined) {
+	// svelte-ignore state_referenced_locally -- intentional one-time seed, matching React's useState(initialValue)
+	included = Object.fromEntries(rows.map((row) => [row.key, row.included ?? true]));
+}
 
-const includedKeys = $derived(
-	rows.filter((row) => included[row.key]).map((row) => row.key),
-);
+function isIncluded(row: DiffRow) {
+	return included?.[row.key] ?? row.included ?? true;
+}
+
+const includedKeys = $derived(rows.filter(isIncluded).map((row) => row.key));
 const removals = $derived(
-	rows.filter((row) => row.change === "removed" && included[row.key]).length,
+	rows.filter((row) => row.change === "removed" && isIncluded(row)).length,
 );
 const additions = $derived(
-	rows.filter((row) => row.change === "added" && included[row.key]).length,
+	rows.filter((row) => row.change === "added" && isIncluded(row)).length,
 );
 const total = $derived(removals + additions);
 
 function toggle(key: string) {
-	included[key] = !included[key];
+	const next = { ...included, [key]: !(included?.[key] ?? true) };
+	included = next;
+	onIncludedChange?.(next);
 }
 
 function apply() {
 	accepted = true;
+	onAcceptedChange?.(true);
 	onApply?.(includedKeys);
 }
 </script>
@@ -104,12 +116,12 @@ function apply() {
 			</thead>
 			<tbody>
 				{#each rows as row, index (row.key)}
-					{const isIncluded = included[row.key] ?? true}
-					{const interactive = !accepted}
-					{const classes = rowClasses(row.change, isIncluded)}
+					{@const rowIncluded = isIncluded(row)}
+					{@const interactive = !accepted}
+					{@const classes = rowClasses(row.change, rowIncluded)}
 					<tr
 						role="checkbox"
-						aria-checked={isIncluded}
+						aria-checked={rowIncluded}
 						tabindex={interactive ? 0 : undefined}
 						onclick={interactive ? () => toggle(row.key) : undefined}
 						onkeydown={interactive
@@ -134,7 +146,7 @@ function apply() {
 						<td class={cn("px-3 py-2 text-[12.5px]", classes.detail)}>
 							<span class="flex items-center justify-between gap-2">
 								<span class="min-w-0 truncate">{row.detail}</span>
-								{@render checkMark(isIncluded, classes.mark)}
+								{@render checkMark(rowIncluded, classes.mark)}
 							</span>
 						</td>
 					</tr>

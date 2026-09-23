@@ -10,6 +10,19 @@ export const morphingModal = defineComponent({
 
 	props: [
 		{
+			name: "open",
+			type: "boolean",
+			description: "Controlled open state. Omit to let the modal own it.",
+			control: { kind: "none" },
+		},
+		{
+			name: "onOpenChange",
+			type: "(open: boolean) => void",
+			description:
+				"Fired when the trigger, the close button, Escape or the backdrop opens or closes the modal.",
+			control: { kind: "none" },
+		},
+		{
 			name: "spring",
 			type: '"snappy" | "gentle" | "bouncy"',
 			description: "Named spring that drives the morph in both directions.",

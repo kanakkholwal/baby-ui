@@ -172,9 +172,20 @@ export interface FineTuneCardProps {
 	/** Prominent copy strings, merged over generic defaults. */
 	labels?: FineTuneCardLabels;
 	size?: FineTuneCardSize;
+	/** Controlled editable state. Omit to let the card own it. */
+	state?: FineTuneState;
+	defaultState?: FineTuneState;
 	/** Called with the full editable state whenever the user edits it. */
 	onChange?: (state: FineTuneState) => void;
 	className?: string;
+}
+
+function initialState(fields: FineTuneField[]): FineTuneState {
+	return {
+		segment: 0,
+		values: Object.fromEntries(fields.map((f) => [f.key, f.value])),
+		type: "",
+	};
 }
 
 /** A scrub handle drags (pointer), arrows (⇧ for ×10) or types directly to change a value. */
@@ -183,6 +194,8 @@ export function FineTuneCard({
 	options = [],
 	labels,
 	size = "md",
+	state: stateProp,
+	defaultState,
 	onChange,
 	className,
 }: FineTuneCardProps) {
@@ -194,33 +207,31 @@ export function FineTuneCard({
 		adjust: labels?.adjust ?? DEFAULT_LABELS.adjust,
 		edited: labels?.edited ?? DEFAULT_LABELS.edited,
 	};
-	const [seg, setSeg] = useState(0);
-	const [values, setValues] = useState<Record<string, number>>(() =>
-		Object.fromEntries(fields.map((f) => [f.key, f.value])),
+	const [internalState, setInternalState] = useState<FineTuneState>(
+		() => defaultState ?? initialState(fields),
 	);
-	const [typeValue, setTypeValue] = useState("");
+	const state = stateProp ?? internalState;
 	const { root } = fineTuneCard({ size });
 
+	function update(next: FineTuneState) {
+		if (stateProp === undefined) setInternalState(next);
+		onChange?.(next);
+	}
+
 	function selectSeg(i: number) {
-		setSeg(i);
-		onChange?.({ segment: i, values, type: typeValue });
+		update({ ...state, segment: i });
 	}
 
 	function setValue(key: string, v: number) {
-		setValues((current) => {
-			const next = { ...current, [key]: v };
-			onChange?.({ segment: seg, values: next, type: typeValue });
-			return next;
-		});
+		update({ ...state, values: { ...state.values, [key]: v } });
 	}
 
 	function selectType(value: string) {
-		setTypeValue(value);
-		onChange?.({ segment: seg, values, type: value });
+		update({ ...state, type: value });
 	}
 
-	const changed = fields.some((f) => values[f.key] !== f.value);
-	const edited = seg !== 0 || changed || typeValue !== "";
+	const changed = fields.some((f) => (state.values[f.key] ?? f.value) !== f.value);
+	const edited = state.segment !== 0 || changed || state.type !== "";
 
 	return (
 		<div data-slot="fine-tune-card" className={cn(root(), className)}>
@@ -272,7 +283,7 @@ export function FineTuneCard({
 						style={{
 							width: "calc((100% - 4px) / 3)",
 							left: 2,
-							transform: `translateX(${seg * 100}%)`,
+							transform: `translateX(${state.segment * 100}%)`,
 						}}
 					/>
 					{SEGMENTS.map((s, i) => (
@@ -280,11 +291,11 @@ export function FineTuneCard({
 							key={s}
 							type="button"
 							aria-label={`${s} layout`}
-							aria-pressed={i === seg}
+							aria-pressed={i === state.segment}
 							onClick={() => selectSeg(i)}
 							className={cn(
 								"relative z-10 flex h-6 items-center justify-center transition-colors duration-200",
-								i === seg ? "text-primary" : "text-muted-foreground",
+								i === state.segment ? "text-primary" : "text-muted-foreground",
 							)}
 						>
 							<SegmentIcon kind={s} />
@@ -300,13 +311,13 @@ export function FineTuneCard({
 							<ScrubField
 								key={f.key}
 								label={f.label}
-								value={values[f.key] ?? f.value}
+								value={state.values[f.key] ?? f.value}
 								onChange={(v) => setValue(f.key, v)}
 								min={f.min}
 								max={f.max}
 								step={f.step}
 								suffix={f.suffix}
-								active={(values[f.key] ?? f.value) !== f.value}
+								active={(state.values[f.key] ?? f.value) !== f.value}
 							/>
 						))}
 					</div>
@@ -316,7 +327,7 @@ export function FineTuneCard({
 			{options.length > 0 ? (
 				<div className="flex items-center justify-between px-3 py-2">
 					<span className="text-[12px] text-muted-foreground">{text.type}</span>
-					<Select value={typeValue} onValueChange={selectType}>
+					<Select value={state.type} onValueChange={selectType}>
 						<SelectTrigger className="h-6.5 w-30 rounded-lg px-2 text-[12px]">
 							<SelectValue placeholder={text.placeholder} />
 						</SelectTrigger>

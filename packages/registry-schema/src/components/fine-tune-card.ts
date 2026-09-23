@@ -37,6 +37,19 @@ export const fineTuneCard = defineComponent({
 			default: "md",
 			control: { kind: "select", options: SIZES },
 		},
+		{
+			name: "state",
+			type: "FineTuneState",
+			description:
+				"Controlled editable state (`segment`/`values`/`type`). Omit to let the card own it.",
+			control: { kind: "none" },
+		},
+		{
+			name: "onChange",
+			type: "(state: FineTuneState) => void",
+			description: "Fired with the full editable state whenever the user edits it.",
+			control: { kind: "none" },
+		},
 	],
 	motion: {
 		springs: [],

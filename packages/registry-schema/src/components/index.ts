@@ -48,6 +48,7 @@ import { question } from "./question";
 import { radioGroup } from "./radio-group";
 import { reasoning } from "./reasoning";
 import { recommendationCard } from "./recommendation-card";
+import { recordsTable } from "./records-table";
 import { reorderList } from "./reorder-list";
 import { responseStream } from "./response-stream";
 import { responsiveDialog } from "./responsive-dialog";
@@ -56,6 +57,7 @@ import { select } from "./select";
 import { sheet } from "./sheet";
 import { shortcut } from "./shortcut";
 import { showMore } from "./show-more";
+import { sidebarNav } from "./sidebar-nav";
 import { skeleton } from "./skeleton";
 import { slider } from "./slider";
 import { spinner } from "./spinner";
@@ -71,6 +73,7 @@ import { toast } from "./toast";
 import { toggle } from "./toggle";
 import { toggleGroup } from "./toggle-group";
 import { tool } from "./tool";
+import { toolChips } from "./tool-chips";
 import { toolbar } from "./toolbar";
 import { tooltip } from "./tooltip";
 import { typography } from "./typography";
@@ -138,12 +141,15 @@ export const specs: ComponentSpec[] = [
 	conversation,
 	question,
 	tool,
+	toolChips,
 	responsiveDialog,
 	contextCards,
 	filterTable,
 	diffTable,
+	recordsTable,
 	fineTuneCard,
 	flowchart,
+	sidebarNav,
 	loadingState,
 	recommendationCard,
 	chatComposer,

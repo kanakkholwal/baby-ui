@@ -208,6 +208,17 @@ export type {
 	RecommendationLabels,
 	RecommendationOption,
 } from "./recommendation-card/types";
+export { default as RecordsTable } from "./records-table/records-table.svelte";
+export type {
+	RecordRow,
+	RecordSortKey,
+	RecordsColumnMeta,
+	RecordsColumnType,
+	RecordsPrompt,
+	RecordsTableLabels,
+	RecordsToolKind,
+} from "./records-table/types";
+export type { RecordStrength, RecordsDensity } from "./records-table/variants";
 export {
 	default as ReorderList,
 	type ReorderItem,
@@ -243,6 +254,14 @@ export type { SheetSide } from "./sheet/variants";
 export { default as Shortcut } from "./shortcut/shortcut.svelte";
 export type { ShortcutSize, ShortcutVariant } from "./shortcut/variants";
 export { default as ShowMore } from "./show-more/show-more.svelte";
+export { default as SidebarNav } from "./sidebar-nav/sidebar-nav.svelte";
+export type {
+	SidebarNavItem,
+	SidebarRecent,
+	SidebarWorkspace,
+	SidebarWorkspaceAction,
+} from "./sidebar-nav/types";
+export type { SidebarNavSize } from "./sidebar-nav/variants";
 export { default as Skeleton } from "./skeleton/skeleton.svelte";
 export type { SkeletonShape } from "./skeleton/variants";
 export { default as Slider } from "./slider/slider.svelte";
@@ -276,6 +295,15 @@ export { default as ToggleGroup } from "./toggle-group/toggle-group.svelte";
 export { default as ToggleGroupItem } from "./toggle-group/toggle-group-item.svelte";
 export { default as Tool } from "./tool/tool.svelte";
 export type { ToolState } from "./tool/variants";
+export { default as ToolChips } from "./tool-chips/tool-chips.svelte";
+export type {
+	ToolChipsLabels,
+	ToolDetailLine,
+	ToolDiff,
+	ToolDiffLine,
+	ToolStep,
+} from "./tool-chips/types";
+export type { ToolChipsSize } from "./tool-chips/variants";
 export { default as Toolbar } from "./toolbar/toolbar.svelte";
 export { default as ToolbarButton } from "./toolbar/toolbar-button.svelte";
 export type { ToolbarOrientation } from "./toolbar/variants";

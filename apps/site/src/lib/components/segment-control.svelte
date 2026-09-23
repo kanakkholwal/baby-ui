@@ -12,7 +12,7 @@ let {
 
 <div class="inline-flex items-center gap-0.5 rounded-lg bg-card p-0.5">
 	{#each options as option (option.id)}
-		{const Glyph = option.icon}
+		{@const Glyph = option.icon}
 		<button
 			type="button"
 			onclick={() => onPick(option.id)}

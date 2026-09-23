@@ -3,6 +3,8 @@ import { registry } from "virtual:docvia/source";
 import { demos } from "@baby-ui/demos/svelte";
 import { specs } from "@baby-ui/registry-schema/components";
 import { Renderer } from "@docvia/renderer-svelte";
+import IconArrowLeft from "@tabler/icons-svelte/icons/arrow-left";
+import IconArrowRight from "@tabler/icons-svelte/icons/arrow-right";
 import IconChevronRight from "@tabler/icons-svelte/icons/chevron-right";
 import IconList from "@tabler/icons-svelte/icons/list";
 import CodeBlock from "$lib/components/code-block.svelte";
@@ -17,7 +19,7 @@ import PropsRail from "$lib/components/props-rail.svelte";
 import PropsTable from "$lib/components/props-table.svelte";
 import Tabs from "$lib/components/tabs.svelte";
 import { prefs } from "$lib/preferences.svelte";
-import { CATEGORY_LABEL, defaultProps } from "$lib/registry";
+import { adjacentComponents, CATEGORY_LABEL, defaultProps } from "$lib/registry";
 import type { PageProps } from "./$types";
 
 let { data }: PageProps = $props();
@@ -52,6 +54,7 @@ $effect(() => {
 });
 
 const port = $derived(data.ports.find((p) => p.framework === framework) ?? data.ports[0]);
+const adjacent = $derived(adjacentComponents(data.spec.category, data.spec.slug));
 const hasControls = $derived(data.spec.props.some((p) => p.control.kind !== "none"));
 const related = $derived(
 	specs
@@ -105,10 +108,42 @@ const usage = $derived(
 					</span>
 				{/if}
 			</div>
-			<PageMenu
-				markdownUrl="/components/{data.spec.category}/{data.spec.slug}.md"
-				copyText={data.spec.description}
-			/>
+			<div class="flex flex-wrap items-center gap-2 sm:justify-end">
+				<PageMenu
+					markdownUrl="/components/{data.spec.category}/{data.spec.slug}.md"
+					copyText={data.spec.description}
+				/>
+				<div class="flex shrink-0 items-center gap-1.5">
+					<a
+						href={adjacent.prev?.href}
+						aria-label={adjacent.prev ? `Previous: ${adjacent.prev.name}` : "No previous component"}
+						aria-disabled={!adjacent.prev}
+						tabindex={adjacent.prev ? 0 : -1}
+						class={[
+							"grid size-8 place-items-center rounded-xl border border-border bg-card/20 text-muted-foreground transition-colors",
+							adjacent.prev
+								? "hover:bg-foreground/[0.06] hover:text-foreground"
+								: "pointer-events-none opacity-40",
+						]}
+					>
+						<IconArrowLeft size={15} stroke={1.6} />
+					</a>
+					<a
+						href={adjacent.next?.href}
+						aria-label={adjacent.next ? `Next: ${adjacent.next.name}` : "No next component"}
+						aria-disabled={!adjacent.next}
+						tabindex={adjacent.next ? 0 : -1}
+						class={[
+							"grid size-8 place-items-center rounded-xl border border-border bg-card/20 text-muted-foreground transition-colors",
+							adjacent.next
+								? "hover:bg-foreground/[0.06] hover:text-foreground"
+								: "pointer-events-none opacity-40",
+						]}
+					>
+						<IconArrowRight size={15} stroke={1.6} />
+					</a>
+				</div>
+			</div>
 		</div>
 
 		<p class="mt-2 max-w-2xl text-muted-foreground">{data.spec.description}</p>
@@ -192,6 +227,31 @@ const usage = $derived(
 				{/each}
 			</div>
 		</section>
+	{/if}
+
+	{#if adjacent.prev || adjacent.next}
+		<nav aria-label="Component pages" class="mt-12 flex items-center justify-between gap-3 border-border border-t pt-6">
+			{#if adjacent.prev}
+				<a
+					href={adjacent.prev.href}
+					class="inline-flex items-center gap-1.5 rounded-full border border-border bg-card/20 py-2 pr-4 pl-3 font-medium text-foreground text-sm transition-colors hover:bg-foreground/[0.06]"
+				>
+					<IconArrowLeft size={15} stroke={1.6} class="shrink-0 text-muted-foreground" />
+					{adjacent.prev.name}
+				</a>
+			{:else}
+				<span></span>
+			{/if}
+			{#if adjacent.next}
+				<a
+					href={adjacent.next.href}
+					class="inline-flex items-center gap-1.5 rounded-full border border-border bg-card/20 py-2 pr-3 pl-4 font-medium text-foreground text-sm transition-colors hover:bg-foreground/[0.06]"
+				>
+					{adjacent.next.name}
+					<IconArrowRight size={15} stroke={1.6} class="shrink-0 text-muted-foreground" />
+				</a>
+			{/if}
+		</nav>
 	{/if}
 </div>
 

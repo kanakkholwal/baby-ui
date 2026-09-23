@@ -19,6 +19,19 @@ export const filterTable = defineComponent({
 			description: "Column header text.",
 			control: { kind: "none" },
 		},
+		{
+			name: "filter",
+			type: '"all" | TableRowStatus',
+			description: "Controlled active status filter. Omit to let the table own it.",
+			default: "all",
+			control: { kind: "none" },
+		},
+		{
+			name: "onFilterChange",
+			type: '(filter: "all" | TableRowStatus) => void',
+			description: "Fired when a filter chip is picked.",
+			control: { kind: "none" },
+		},
 	],
 	motion: {
 		springs: [],

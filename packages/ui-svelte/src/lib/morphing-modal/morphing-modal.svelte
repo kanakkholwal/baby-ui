@@ -12,6 +12,8 @@ type Props = {
 	spring?: MorphSpring;
 	dismissOnBackdrop?: boolean;
 	backdropBlur?: number;
+	open?: boolean;
+	onOpenChange?: (open: boolean) => void;
 };
 
 let {
@@ -22,12 +24,15 @@ let {
 	spring = "gentle",
 	dismissOnBackdrop = true,
 	backdropBlur = 8,
+	open = $bindable(false),
+	onOpenChange,
 }: Props = $props();
 
 let triggerEl = $state<HTMLButtonElement>();
 let dialog = $state<HTMLDialogElement>();
 let panel = $state<HTMLDivElement>();
 let hidden = $state(false);
+let wasOpen = false;
 
 const titleId = $props.id();
 
@@ -58,24 +63,38 @@ function animateMorph(reverse: boolean): Promise<void> {
 		.finished.then(() => undefined);
 }
 
-async function open() {
+async function runOpen() {
 	dialog?.showModal();
 	hidden = true;
 	await animateMorph(false);
 }
 
-async function close() {
+async function runClose() {
 	await animateMorph(true);
 	hidden = false;
 	dialog?.close();
 	triggerEl?.focus();
+}
+
+// Drives the native dialog + FLIP animation from resolved open state, so a
+// bound `open` prop and the internal trigger/close click both funnel here.
+$effect(() => {
+	if (open === wasOpen) return;
+	wasOpen = open;
+	if (open) void runOpen();
+	else void runClose();
+});
+
+function setOpen(next: boolean) {
+	open = next;
+	onOpenChange?.(next);
 }
 </script>
 
 <button
 	bind:this={triggerEl}
 	type="button"
-	onclick={open}
+	onclick={() => setOpen(true)}
 	style:opacity={hidden ? 0 : 1}
 	class="cursor-pointer rounded-2xl text-left outline-none focus-visible:ring-2 focus-visible:ring-ring"
 >
@@ -87,10 +106,10 @@ async function close() {
 	aria-labelledby={titleId}
 	oncancel={(e) => {
 		e.preventDefault();
-		close();
+		setOpen(false);
 	}}
 	onclick={(e) => {
-		if (dismissOnBackdrop && e.target === dialog) close();
+		if (dismissOnBackdrop && e.target === dialog) setOpen(false);
 	}}
 	style:--morph-blur="{backdropBlur}px"
 	class="morph-dialog m-auto bg-transparent p-0 text-foreground backdrop:bg-black/40"
@@ -106,9 +125,9 @@ async function close() {
 			<h2 id={titleId} class="font-medium text-foreground text-lg">{title}</h2>
 			<button
 				type="button"
-				onclick={close}
+				onclick={() => setOpen(false)}
 				aria-label="Close"
-				class="rounded-md p-1 text-muted-foreground transition-colors hover:text-foreground"
+				class="rounded-md p-1 text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground"
 			>
 				<svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class="size-4">
 					<path d="m4 4 8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />

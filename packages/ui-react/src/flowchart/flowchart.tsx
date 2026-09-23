@@ -115,59 +115,41 @@ function ConditionRows({
 		value: string,
 	) => void;
 }) {
-	const [state, setState] = useState<Record<string, { property: string; value: string }>>(
-		() =>
-			Object.fromEntries(
-				conditions.map((row) => [row.id, { property: row.property, value: row.value }]),
-			),
-	);
-
 	function update(rowId: string, field: "property" | "value", value: string) {
-		const row = conditions.find((r) => r.id === rowId);
-		setState((current) => {
-			const base = current[rowId] ?? {
-				property: row?.property ?? "",
-				value: row?.value ?? "",
-			};
-			return { ...current, [rowId]: { ...base, [field]: value } };
-		});
 		onConditionChange?.(nodeId, rowId, field, value);
 	}
 
 	return (
 		<div className="flex flex-col gap-1.5 px-3 py-2.5">
-			{conditions.map((row) => {
-				const current = state[row.id] ?? { property: row.property, value: row.value };
-				return (
-					<div
-						key={row.id}
-						className="flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1.5"
-					>
-						<span className="w-8 shrink-0 text-[12.5px] text-muted-foreground">
-							{row.connector}
-						</span>
-						<Badge variant="secondary" size="sm">
-							{row.source}
-						</Badge>
-						<ConditionChip
-							value={current.property}
-							options={row.propertyOptions}
-							onValueChange={(v) => update(row.id, "property", v)}
-							width="w-36"
-						/>
-						<span className="text-[12.5px] text-muted-foreground">
-							{row.comparator ?? "is"}
-						</span>
-						<ConditionChip
-							value={current.value}
-							options={row.valueOptions}
-							onValueChange={(v) => update(row.id, "value", v)}
-							dot={row.dot}
-							width="w-56"
-						/>
-					</div>
-				);
-			})}
+			{conditions.map((row) => (
+				<div
+					key={row.id}
+					className="flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1.5"
+				>
+					<span className="w-8 shrink-0 text-[12.5px] text-muted-foreground">
+						{row.connector}
+					</span>
+					<Badge variant="secondary" size="sm">
+						{row.source}
+					</Badge>
+					<ConditionChip
+						value={row.property}
+						options={row.propertyOptions}
+						onValueChange={(v) => update(row.id, "property", v)}
+						width="w-36"
+					/>
+					<span className="text-[12.5px] text-muted-foreground">
+						{row.comparator ?? "is"}
+					</span>
+					<ConditionChip
+						value={row.value}
+						options={row.valueOptions}
+						onValueChange={(v) => update(row.id, "value", v)}
+						dot={row.dot}
+						width="w-56"
+					/>
+				</div>
+			))}
 		</div>
 	);
 }
