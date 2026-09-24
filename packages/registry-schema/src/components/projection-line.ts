@@ -65,12 +65,7 @@ export const projectionLine = defineComponent({
 			"Dash pattern, not colour alone, separates the forecast from the series.",
 		],
 	},
-	licenseOrigin: {
-		source: "bklit-ui",
-		url: "https://github.com/bklit/bklit-ui",
-		license: "MIT",
-		copyright: "Copyright (c) 2026 uixmat",
-	},
+	
 	impl: {
 		react: {
 			entry: "ProjectionLine",

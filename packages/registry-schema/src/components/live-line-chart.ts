@@ -147,12 +147,7 @@ export const liveLineChart = defineComponent({
 			"Momentum is shown by colour and by an up, down or flat arrow in the badge.",
 		],
 	},
-	licenseOrigin: {
-		source: "bklit-ui",
-		url: "https://github.com/bklit/bklit-ui",
-		license: "MIT",
-		copyright: "Copyright (c) 2026 uixmat",
-	},
+	
 	impl: {
 		react: {
 			entry: "LiveLineChart",

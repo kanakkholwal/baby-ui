@@ -99,12 +99,7 @@ export const gaugeChart = defineComponent({
 			"The value is printed as text, so the reading never rests on the notches alone.",
 		],
 	},
-	licenseOrigin: {
-		source: "bklit-ui",
-		url: "https://github.com/bklit/bklit-ui",
-		license: "MIT",
-		copyright: "Copyright (c) 2026 uixmat",
-	},
+	
 	impl: {
 		react: {
 			entry: "GaugeChart",

@@ -64,12 +64,7 @@ export const chartMarkers = defineComponent({
 			"Stacks are buttons with aria-expanded; fanned markers join the tab order only while open.",
 		],
 	},
-	licenseOrigin: {
-		source: "bklit-ui",
-		url: "https://github.com/bklit/bklit-ui",
-		license: "MIT",
-		copyright: "Copyright (c) 2026 uixmat",
-	},
+
 	impl: {
 		react: {
 			entry: "ChartMarkers",

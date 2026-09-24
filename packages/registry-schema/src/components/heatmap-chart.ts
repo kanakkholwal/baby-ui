@@ -114,12 +114,7 @@ export const heatmapChart = defineComponent({
 			"Every day is in the hidden data table; patterns add a non-colour cue for the levels.",
 		],
 	},
-	licenseOrigin: {
-		source: "bklit-ui",
-		url: "https://github.com/bklit/bklit-ui",
-		license: "MIT",
-		copyright: "Copyright (c) 2026 uixmat",
-	},
+	
 	impl: {
 		react: {
 			entry: "HeatmapChart",

@@ -97,12 +97,7 @@ export const pieChart = defineComponent({
 			"A visually hidden table lists every slice with its value and share; slice labels print the share, so colour is never the only cue.",
 		],
 	},
-	licenseOrigin: {
-		source: "bklit-ui",
-		url: "https://github.com/bklit/bklit-ui",
-		license: "MIT",
-		copyright: "Copyright (c) 2026 uixmat",
-	},
+	
 	impl: {
 		react: {
 			entry: "PieChart",

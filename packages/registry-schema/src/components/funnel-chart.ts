@@ -104,12 +104,7 @@ export const funnelChart = defineComponent({
 			"The hidden table lists each stage with its share of the first and of the previous stage.",
 		],
 	},
-	licenseOrigin: {
-		source: "bklit-ui",
-		url: "https://github.com/bklit/bklit-ui",
-		license: "MIT",
-		copyright: "Copyright (c) 2026 uixmat",
-	},
+	
 	impl: {
 		react: {
 			entry: "FunnelChart",

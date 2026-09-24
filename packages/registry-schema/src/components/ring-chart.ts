@@ -79,12 +79,7 @@ export const ringChart = defineComponent({
 			"A visually hidden table lists every ring's value, maximum and progress.",
 		],
 	},
-	licenseOrigin: {
-		source: "bklit-ui",
-		url: "https://github.com/bklit/bklit-ui",
-		license: "MIT",
-		copyright: "Copyright (c) 2026 uixmat",
-	},
+	
 	impl: {
 		react: {
 			entry: "RingChart",

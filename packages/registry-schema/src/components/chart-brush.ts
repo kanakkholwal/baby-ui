@@ -76,12 +76,7 @@ export const chartBrush = defineComponent({
 			"The strip is one slider whose value text reads the window's start and end dates in the chart's locale.",
 		],
 	},
-	licenseOrigin: {
-		source: "bklit-ui",
-		url: "https://github.com/bklit/bklit-ui",
-		license: "MIT",
-		copyright: "Copyright (c) 2026 uixmat",
-	},
+
 	impl: {
 		react: {
 			entry: "ChartBrush",

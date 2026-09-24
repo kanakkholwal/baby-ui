@@ -80,6 +80,8 @@ export interface ChartFrameProps {
 	/** Read out after keyboard moves only; pointer moves stay quiet. */
 	announcement: string;
 	phase?: ChartPhase;
+	/** Runs before the default keys; return true when it handled the event. */
+	onKey?: (event: KeyboardEvent<HTMLDivElement>) => boolean;
 	className?: string;
 	children: (frame: {
 		width: number;
@@ -99,6 +101,7 @@ export function ChartFrame({
 	interactive,
 	announcement,
 	phase,
+	onKey,
 	className,
 	children,
 }: ChartFrameProps) {
@@ -126,6 +129,11 @@ export function ChartFrame({
 
 	const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
 		if (!interactive || count === 0) return;
+		if (onKey?.(event)) {
+			event.preventDefault();
+			setFromKeyboard(true);
+			return;
+		}
 		const last = count - 1;
 		const step = Math.max(1, Math.ceil(count / 10));
 		const current = activeIndex;

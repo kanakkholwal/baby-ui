@@ -54,12 +54,7 @@ export const chartSeries = defineComponent({
 			"The dashed tail and marker appearance give a second cue besides colour.",
 		],
 	},
-	licenseOrigin: {
-		source: "bklit-ui",
-		url: "https://github.com/bklit/bklit-ui",
-		license: "MIT",
-		copyright: "Copyright (c) 2026 uixmat",
-	},
+
 	impl: {
 		react: {
 			entry: "LoadingPulse",

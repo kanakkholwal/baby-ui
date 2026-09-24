@@ -1,11 +1,6 @@
 import { defineComponent } from "../index";
 
-const BKLIT = {
-	source: "bklit-ui",
-	url: "https://github.com/bklit/bklit-ui",
-	license: "MIT",
-	copyright: "Copyright (c) 2026 uixmat",
-};
+
 
 export const chart = defineComponent({
 	slug: "chart",
@@ -152,7 +147,6 @@ export const chart = defineComponent({
 			"Legend entries are real toggles (aria-pressed), so hiding a series works from the keyboard and colour is never the only cue.",
 		],
 	},
-	licenseOrigin: BKLIT,
 	impl: {
 		react: {
 			entry: "ChartContainer",
@@ -349,7 +343,6 @@ export const lineChart = defineComponent({
 			"Each Line registers its series, so the summary, table and live region list it.",
 		],
 	},
-	licenseOrigin: BKLIT,
 	impl: {
 		react: {
 			entry: "LineChart",

@@ -90,12 +90,7 @@ export const sunburstChart = defineComponent({
 			"Keyboard moves announce the full path, value and share of the focus; the hidden table lists every node by path.",
 		],
 	},
-	licenseOrigin: {
-		source: "bklit-ui",
-		url: "https://github.com/bklit/bklit-ui",
-		license: "MIT",
-		copyright: "Copyright (c) 2026 uixmat",
-	},
+	
 	impl: {
 		react: {
 			entry: "SunburstChart",

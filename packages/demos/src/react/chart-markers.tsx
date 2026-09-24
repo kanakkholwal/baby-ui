@@ -5,8 +5,8 @@ import {
 	type ChartConfig,
 	ChartContainer,
 	type ChartMarkerAppearance,
-	type ChartMarkerSize,
 	ChartMarkers,
+	type ChartMarkerSize,
 	ChartMarkerTooltip,
 	ChartTooltip,
 	ChartTooltipContent,
@@ -23,7 +23,7 @@ type Props = Record<string, unknown>;
 const config = VISITORS_CONFIG satisfies ChartConfig;
 const markers = EVENTS.map((event, i) =>
 	i === 0
-		? { ...event, href: "https://github.com/bklit/bklit-ui", target: "_blank" as const }
+		? { ...event, href: "https://github.com/kanakkholwal/baby-ui", target: "_blank" as const }
 		: event,
 );
 

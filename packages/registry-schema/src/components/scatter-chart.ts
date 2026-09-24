@@ -71,12 +71,7 @@ export const scatterChart = defineComponent({
 			"Every series has its own marker shape, so series never differ by colour alone.",
 		],
 	},
-	licenseOrigin: {
-		source: "bklit-ui",
-		url: "https://github.com/bklit/bklit-ui",
-		license: "MIT",
-		copyright: "Copyright (c) 2026 uixmat",
-	},
+	
 	impl: {
 		react: {
 			entry: "ScatterChart",

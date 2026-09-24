@@ -105,12 +105,7 @@ export const areaChart = defineComponent({
 			"The pattern variant hatches each fill so stacked series stay apart without colour.",
 		],
 	},
-	licenseOrigin: {
-		source: "bklit-ui",
-		url: "https://github.com/bklit/bklit-ui",
-		license: "MIT",
-		copyright: "Copyright (c) 2026 uixmat",
-	},
+
 	impl: {
 		react: {
 			entry: "AreaChart",

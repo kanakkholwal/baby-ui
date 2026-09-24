@@ -1,14 +1,17 @@
 "use client";
 
-import { useId } from "react";
+import { useId, useRef } from "react";
 import { cn } from "../lib/cn";
 import type { ChartPhase } from "./core";
 import { useCartesian } from "./frame";
+import { usePlot } from "./time-series";
 import {
 	type ChartBackgroundVariant,
 	type ChartReferenceTone,
+	type ChartSelectionEdge,
 	chartBackground,
 	chartReferenceArea,
+	chartSelection,
 } from "./variants";
 
 /** bklit shows bands from the grid retween on, so they settle with the series. */
@@ -110,6 +113,33 @@ export function Background({ variant = "dots", className }: BackgroundProps) {
 				)}
 			</defs>
 			<rect width={innerWidth} height={innerHeight} fill={`url(#${id})`} />
+		</g>
+	);
+}
+
+export interface SelectionAreaProps {
+	edge?: ChartSelectionEdge;
+	className?: string;
+}
+
+/** The dragged or Shift+Arrow range; fades in and out over 150ms like bklit's segment. */
+export function SelectionArea({ edge = "dashed", className }: SelectionAreaProps) {
+	const { selectionX, innerHeight } = usePlot();
+	const last = useRef<[number, number] | null>(null);
+	if (selectionX) last.current = selectionX;
+	const shown = last.current;
+	const styles = chartSelection({ edge });
+	if (!shown) return null;
+	const [x0, x1] = shown;
+	return (
+		<g
+			data-slot="chart-selection"
+			className={cn(styles.root(), className)}
+			style={{ opacity: selectionX ? 1 : 0 }}
+		>
+			<rect className={styles.area()} x={x0} width={x1 - x0} height={innerHeight} />
+			<line className={styles.edge()} x1={x0} x2={x0} y2={innerHeight} />
+			<line className={styles.edge()} x1={x1} x2={x1} y2={innerHeight} />
 		</g>
 	);
 }

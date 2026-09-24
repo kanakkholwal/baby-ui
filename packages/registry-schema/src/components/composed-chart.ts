@@ -82,12 +82,7 @@ export const composedChart = defineComponent({
 			"Every SeriesBar, Line and Area registers, so tooltip rows, summary and table list them all.",
 		],
 	},
-	licenseOrigin: {
-		source: "bklit-ui",
-		url: "https://github.com/bklit/bklit-ui",
-		license: "MIT",
-		copyright: "Copyright (c) 2026 uixmat",
-	},
+	
 	impl: {
 		react: {
 			entry: "ComposedChart",

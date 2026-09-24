@@ -87,12 +87,7 @@ export const radarChart = defineComponent({
 			"Each series also has its own stroke dash and marker shape, so colour is never the only cue.",
 		],
 	},
-	licenseOrigin: {
-		source: "bklit-ui",
-		url: "https://github.com/bklit/bklit-ui",
-		license: "MIT",
-		copyright: "Copyright (c) 2026 uixmat",
-	},
+	
 	impl: {
 		react: {
 			entry: "RadarChart",

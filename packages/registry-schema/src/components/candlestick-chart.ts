@@ -83,12 +83,7 @@ export const candlestickChart = defineComponent({
 			"The data table lists open, high, low and close for every row.",
 		],
 	},
-	licenseOrigin: {
-		source: "bklit-ui",
-		url: "https://github.com/bklit/bklit-ui",
-		license: "MIT",
-		copyright: "Copyright (c) 2026 uixmat",
-	},
+
 	impl: {
 		react: {
 			entry: "CandlestickChart",

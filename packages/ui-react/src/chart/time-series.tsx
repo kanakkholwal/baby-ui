@@ -4,6 +4,7 @@ import { extent } from "d3-array";
 import { type ScaleLinear, type ScaleTime, scaleLinear, scaleTime } from "d3-scale";
 import {
 	createContext,
+	type KeyboardEvent,
 	type PointerEvent,
 	type ReactNode,
 	useCallback,
@@ -19,6 +20,7 @@ import { useChart } from "./chart";
 import {
 	type ActivePoint,
 	type ChartPhase,
+	type ChartSelection,
 	type ChartStatus,
 	type Datum,
 	DEFAULT_MARGIN,
@@ -29,6 +31,7 @@ import {
 	nearestIndex,
 	nextPhase,
 	resolveDomain,
+	selectionBetween,
 	type SeriesConfig,
 	shouldTweenDomain,
 	summarize,
@@ -56,6 +59,10 @@ export interface PlotContextValue extends CartesianContextValue {
 	labels: string[];
 	series: SeriesConfig[];
 	register: (series: SeriesConfig) => () => void;
+	/** Only time-series roots support selection; other roots leave these unset. */
+	selection?: ChartSelection | null;
+	/** Plot-space x of the selection edges, when one exists. */
+	selectionX?: [number, number] | null;
 }
 
 const PlotContext = createContext<PlotContextValue | null>(null);
@@ -98,6 +105,10 @@ export interface TimeSeriesChartProps {
 	activeIndex?: number | null;
 	defaultActiveIndex?: number | null;
 	onActiveIndexChange?: (index: number | null) => void;
+	/** Range picked by dragging across the plot or Shift+Arrow. */
+	selection?: ChartSelection | null;
+	defaultSelection?: ChartSelection | null;
+	onSelectionChange?: (selection: ChartSelection | null) => void;
 	className?: string;
 	children?: ReactNode;
 }
@@ -262,6 +273,9 @@ export function TimeSeriesChart({
 	activeIndex: activeIndexProp,
 	defaultActiveIndex = null,
 	onActiveIndexChange,
+	selection: selectionProp,
+	defaultSelection = null,
+	onSelectionChange,
 	roleDescription,
 	className,
 	children,
@@ -310,6 +324,38 @@ export function TimeSeriesChart({
 		onActiveIndexChange,
 	);
 	const interactive = phase === "ready" && data.length > 0;
+	const [internalSelection, setInternalSelection] = useState(defaultSelection);
+	const selection = selectionProp !== undefined ? selectionProp : internalSelection;
+	const [selectionSpoken, setSelectionSpoken] = useState(false);
+	const setSelection = useCallback(
+		(next: ChartSelection | null, fromKeyboard: boolean) => {
+			setSelectionSpoken(fromKeyboard);
+			if (selectionProp === undefined) setInternalSelection(next);
+			onSelectionChange?.(next);
+		},
+		[selectionProp, onSelectionChange],
+	);
+	// The fixed end of a keyboard selection; the active index is the moving end.
+	const anchor = useRef<number | null>(null);
+	const onKey = (event: KeyboardEvent<HTMLDivElement>) => {
+		if (event.key === "Escape" && selection) {
+			anchor.current = null;
+			setSelection(null, true);
+			return true;
+		}
+		if (!event.shiftKey || (event.key !== "ArrowLeft" && event.key !== "ArrowRight"))
+			return false;
+		const from = activeIndex ?? 0;
+		if (anchor.current === null || !selection) anchor.current = from;
+		const step = event.key === "ArrowRight" ? 1 : -1;
+		const moving = Math.min(data.length - 1, Math.max(0, from + step));
+		setActive(moving, true);
+		setSelection(
+			moving === anchor.current ? null : selectionBetween(anchor.current, moving),
+			true,
+		);
+		return true;
+	};
 
 	const seriesLabel = (key: string) => {
 		const label = config[key]?.label;
@@ -327,8 +373,16 @@ export function TimeSeriesChart({
 			};
 		});
 	const activeDatum = activeIndex !== null && interactive ? data[activeIndex] : undefined;
+	const range = selection ? [data[selection.start], data[selection.end]] : null;
 	const announcement =
-		activeDatum && instant
+		selectionSpoken && range?.[0] && range[1]
+			? `${title(range[0])} to ${title(range[1])}: ${rows(range[0])
+					.map((r, i) => {
+						const to = rows(range[1] as Datum)[i]?.value;
+						return `${r.label} ${r.value === null ? "" : format.number(r.value)} to ${to == null ? "" : format.number(to)}`;
+					})
+					.join(", ")}`
+			: activeDatum && instant
 			? `${title(activeDatum)}: ${rows(activeDatum)
 					.map((r) => `${r.label} ${r.value === null ? "" : format.number(r.value)}`)
 					.join(", ")}`
@@ -362,6 +416,7 @@ export function TimeSeriesChart({
 			interactive={interactive}
 			announcement={announcement}
 			phase={phase}
+			onKey={onKey}
 			className={className}
 		>
 			{(frame) => (
@@ -388,6 +443,8 @@ export function TimeSeriesChart({
 						instant={instant}
 						interactive={interactive}
 						setActive={setActive}
+						selection={selection}
+						setSelection={setSelection}
 						title={title}
 						rows={rows}
 					>
@@ -417,6 +474,8 @@ function TimeSeriesPlot({
 	instant,
 	interactive,
 	setActive,
+	selection,
+	setSelection,
 	title,
 	rows,
 	children,
@@ -438,6 +497,8 @@ function TimeSeriesPlot({
 	instant: boolean;
 	interactive: boolean;
 	setActive: (index: number | null, fromKeyboard: boolean) => void;
+	selection: ChartSelection | null;
+	setSelection: (selection: ChartSelection | null, fromKeyboard: boolean) => void;
 	title: (datum: Datum) => string;
 	rows: (datum: Datum) => TooltipRow[];
 	children?: ReactNode;
@@ -471,11 +532,31 @@ function TimeSeriesPlot({
 	);
 
 	const pending = useRef<{ index: number; frame: number } | null>(null);
-	const onPointerMove = (event: PointerEvent<SVGSVGElement>) => {
-		if (!interactive) return;
+	const drag = useRef<number | null>(null);
+	const indexAt = (event: PointerEvent<SVGSVGElement>) => {
 		const bounds = event.currentTarget.getBoundingClientRect();
 		const time = xScale.invert(event.clientX - bounds.left - margin.left).getTime();
-		const index = nearestIndex(data, xKey, time);
+		return nearestIndex(data, xKey, time);
+	};
+	// Touch keeps scrubbing; mouse and pen drag out a range.
+	const onPointerDown = (event: PointerEvent<SVGSVGElement>) => {
+		if (!interactive || event.pointerType === "touch" || event.button !== 0) return;
+		drag.current = indexAt(event);
+		event.currentTarget.setPointerCapture(event.pointerId);
+	};
+	const onPointerUp = (event: PointerEvent<SVGSVGElement>) => {
+		if (drag.current === null) return;
+		if (indexAt(event) === drag.current) setSelection(null, false);
+		drag.current = null;
+	};
+	const onPointerMove = (event: PointerEvent<SVGSVGElement>) => {
+		if (!interactive) return;
+		const index = indexAt(event);
+		if (drag.current !== null && index !== drag.current) {
+			setSelection(selectionBetween(drag.current, index), false);
+			if (activeIndex !== null) setActive(null, false);
+			return;
+		}
 		if (pending.current) {
 			pending.current.index = index;
 			return;
@@ -488,6 +569,7 @@ function TimeSeriesPlot({
 		pending.current = { index, frame: raf };
 	};
 	const onPointerLeave = () => {
+		if (drag.current !== null) return;
 		if (pending.current) cancelAnimationFrame(pending.current.frame);
 		pending.current = null;
 		if (activeIndex !== null) setActive(null, false);
@@ -505,6 +587,11 @@ function TimeSeriesPlot({
 		return { index: activeIndex, datum, x: x(datum), y };
 	}, [activeIndex, interactive, data, series, yScale, x]);
 
+	const selectionX = useMemo<[number, number] | null>(() => {
+		const a = selection ? data[selection.start] : undefined;
+		const b = selection ? data[selection.end] : undefined;
+		return a && b ? [x(a), x(b)] : null;
+	}, [selection, data, x]);
 	const plot = useMemo<PlotContextValue>(
 		() => ({
 			width: frame.width,
@@ -526,8 +613,12 @@ function TimeSeriesPlot({
 			labels,
 			series,
 			register,
+			selection,
+			selectionX,
 		}),
 		[
+			selection,
+			selectionX,
 			frame,
 			innerWidth,
 			innerHeight,
@@ -560,6 +651,8 @@ function TimeSeriesPlot({
 						height={frame.height}
 						className="absolute inset-0 block overflow-visible"
 						style={{ cursor: interactive ? "crosshair" : undefined }}
+						onPointerDown={onPointerDown}
+						onPointerUp={onPointerUp}
 						onPointerMove={onPointerMove}
 						onPointerLeave={onPointerLeave}
 					>

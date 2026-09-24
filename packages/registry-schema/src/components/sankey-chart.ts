@@ -86,12 +86,7 @@ export const sankeyChart = defineComponent({
 			"The hidden data table lists every flow with its share, so the diagram never relies on colour.",
 		],
 	},
-	licenseOrigin: {
-		source: "bklit-ui",
-		url: "https://github.com/bklit/bklit-ui",
-		license: "MIT",
-		copyright: "Copyright (c) 2026 uixmat",
-	},
+	
 	impl: {
 		react: {
 			entry: "SankeyChart",
