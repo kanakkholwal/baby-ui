@@ -13,8 +13,9 @@ import { createPortal } from "react-dom";
 import { cn } from "../lib/cn";
 import { useChart } from "./chart";
 import { type ActivePoint, type Datum, toDate } from "./core";
+import { ActivePointProvider, useActivePoint } from "./frame";
 import { CHART_SPRING, Spring, type SpringConfig } from "./motion";
-import { ActivePointProvider, useActivePoint, usePlot } from "./time-series";
+import { usePlot } from "./time-series";
 import { type ChartTooltipIndicator, chartTooltip } from "./variants";
 
 const TICKER_ROW = 24;
@@ -195,24 +196,31 @@ function DatePill({ active, instant }: { active: ActivePoint | null; instant: bo
 	);
 }
 
-function TooltipBox({
-	active,
-	instant,
-	children,
-	className,
-}: {
-	active: ActivePoint | null;
+export interface ChartTooltipPanelProps {
+	/** Point the panel sits beside, in plot-element pixels; null hides it. */
+	anchor: { x: number; y: number } | null;
 	instant: boolean;
-	children: ReactNode;
+	/** Plot size, so the panel flips and clamps inside it. */
+	bounds: { width: number; height: number };
 	className?: string;
-}) {
-	const { width, height, margin } = usePlot();
+	children: ReactNode;
+}
+
+/** bklit's floating panel: 100/20 follow spring, and a 300/25 entrance that replays on every flip. */
+export function ChartTooltipPanel({
+	anchor,
+	instant,
+	bounds,
+	className,
+	children,
+}: ChartTooltipPanelProps) {
+	const activeContext = useActivePoint();
 	const outerRef = useRef<HTMLDivElement>(null);
 	const panelRef = useRef<HTMLDivElement>(null);
 	const sizeRef = useRef({ w: 180, h: 80 });
 	const [flipped, setFlipped] = useState(false);
 	const lastActive = useRef<ActivePoint | null>(null);
-	if (active) lastActive.current = active;
+	if (activeContext.active) lastActive.current = activeContext.active;
 	const left = useSpring(CHART_SPRING.tooltipBox, (v) => {
 		if (outerRef.current) outerRef.current.style.left = `${v}px`;
 	});
@@ -227,22 +235,20 @@ function TooltipBox({
 		panel.style.opacity = String(Math.min(1, Math.max(0, p)));
 	});
 
-	const anchor = active ? active.x + margin.left : null;
+	const ax = anchor?.x ?? null;
+	const ay = anchor?.y ?? 0;
 	const shown = useRef(false);
 	useLayoutEffect(() => {
-		if (anchor === null) {
+		if (ax === null) {
 			shown.current = false;
 			return;
 		}
 		const el = outerRef.current;
 		if (el) sizeRef.current = { w: el.offsetWidth || 180, h: el.offsetHeight || 80 };
 		const { w, h } = sizeRef.current;
-		const flip = anchor + w + BOX_OFFSET > width;
-		const tx = flip ? anchor - BOX_OFFSET - w : anchor + BOX_OFFSET;
-		const ty = Math.max(
-			BOX_OFFSET,
-			Math.min(margin.top - h / 2, height - h - BOX_OFFSET),
-		);
+		const flip = ax + w + BOX_OFFSET > bounds.width;
+		const tx = flip ? ax - BOX_OFFSET - w : ax + BOX_OFFSET;
+		const ty = Math.max(BOX_OFFSET, Math.min(ay - h / 2, bounds.height - h - BOX_OFFSET));
 		if (!shown.current || instant) {
 			left.jump(tx);
 			top.jump(ty);
@@ -257,13 +263,13 @@ function TooltipBox({
 			if (flip !== flipped) setFlipped(flip);
 		}
 		shown.current = true;
-	}, [anchor, instant, width, height, margin.top, flipped, left, top, entrance]);
+	}, [ax, ay, instant, bounds.width, bounds.height, flipped, left, top, entrance]);
 
 	return (
 		<div
 			ref={outerRef}
 			data-slot="chart-tooltip"
-			data-open={active ? "" : undefined}
+			data-open={anchor ? "" : undefined}
 			aria-hidden="true"
 			className="pointer-events-none absolute z-30 opacity-0 transition-opacity duration-[var(--duration-exit)] ease-[var(--ease-out)] data-open:opacity-100 data-open:duration-100"
 		>
@@ -272,7 +278,9 @@ function TooltipBox({
 				className={cn(chartTooltip().panel(), className)}
 				style={{ transformOrigin: flipped ? "right top" : "left top" }}
 			>
-				<ActivePointProvider value={{ active: active ?? lastActive.current, instant }}>
+				<ActivePointProvider
+					value={{ ...activeContext, active: activeContext.active ?? lastActive.current }}
+				>
 					{children}
 				</ActivePointProvider>
 			</div>
@@ -284,9 +292,9 @@ export interface ChartTooltipContentProps {
 	indicator?: ChartTooltipIndicator;
 	hideLabel?: boolean;
 	hideIndicator?: boolean;
-	/** Read the title from this key instead of formatting the row's date. */
+	/** Read the title from this key instead of the chart's own label for the datum. */
 	labelKey?: string;
-	labelFormatter?: (date: Date, datum: Datum) => ReactNode;
+	labelFormatter?: (label: string, datum: Datum) => ReactNode;
 	formatter?: (value: number, key: string, datum: Datum) => ReactNode;
 	className?: string;
 }
@@ -301,40 +309,36 @@ export function ChartTooltipContent({
 	className,
 }: ChartTooltipContentProps) {
 	const { config, format } = useChart();
-	const { series, xKey } = usePlot();
-	const { active } = useActivePoint();
+	const { active, title, rows } = useActivePoint();
 	if (!active) return null;
 	const styles = chartTooltip({ indicator });
-	const date = toDate(active.datum[xKey]);
-	const title = labelFormatter
-		? labelFormatter(date, active.datum)
-		: labelKey
-			? String(active.datum[labelKey] ?? "")
-			: format.title(date);
+	const label = labelKey ? String(active.datum[labelKey] ?? "") : title(active.datum);
 	return (
 		<div className={className}>
-			{hideLabel ? null : <div className={styles.title()}>{title}</div>}
+			{hideLabel ? null : (
+				<div className={styles.title()}>
+					{labelFormatter ? labelFormatter(label, active.datum) : label}
+				</div>
+			)}
 			<div className={styles.rows()}>
-				{series.map((s) => {
-					const value = active.datum[s.key];
-					const entry = config[s.key];
-					const Icon = entry?.icon;
+				{rows(active.datum).map((row) => {
+					const Icon = config[row.key]?.icon;
 					return (
-						<div key={s.key} className={styles.row()}>
+						<div key={row.key} className={styles.row()}>
 							{Icon ? (
 								<Icon />
 							) : hideIndicator ? null : (
 								<span
 									className={styles.indicator()}
-									style={{ "--indicator": s.color } as CSSProperties}
+									style={{ "--indicator": row.color } as CSSProperties}
 								/>
 							)}
-							<span className={styles.label()}>{entry?.label ?? s.key}</span>
-							{typeof value === "number" ? (
+							<span className={styles.label()}>{row.label}</span>
+							{row.value !== null ? (
 								<span className={styles.value()}>
 									{formatter
-										? formatter(value, s.key, active.datum)
-										: format.number(value)}
+										? formatter(row.value, row.key, active.datum)
+										: format.number(row.value)}
 								</span>
 							) : null}
 						</div>
@@ -363,7 +367,7 @@ export function ChartTooltip({
 	datePill = true,
 	className,
 }: ChartTooltipProps) {
-	const { plotEl, series } = usePlot();
+	const { plotEl, series, width, height, margin } = usePlot();
 	const { active, instant } = useActivePoint();
 	return (
 		<>
@@ -382,9 +386,14 @@ export function ChartTooltip({
 			{plotEl
 				? createPortal(
 						<>
-							<TooltipBox active={active} instant={instant} className={className}>
+							<ChartTooltipPanel
+								anchor={active ? { x: active.x + margin.left, y: margin.top } : null}
+								instant={instant}
+								bounds={{ width, height }}
+								className={className}
+							>
 								{content ?? <ChartTooltipContent />}
-							</TooltipBox>
+							</ChartTooltipPanel>
 							{datePill ? <DatePill active={active} instant={instant} /> : null}
 						</>,
 						plotEl,

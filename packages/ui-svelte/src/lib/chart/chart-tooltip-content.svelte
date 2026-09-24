@@ -1,7 +1,7 @@
 <script lang="ts">
 import type { Component, Snippet } from "svelte";
-import { useActivePoint, useChart, usePlot } from "./context";
-import { type Datum, toDate } from "./core";
+import { useActivePoint, useChart } from "./context";
+import type { Datum } from "./core";
 import { type ChartTooltipIndicator, chartTooltip } from "./variants";
 
 let {
@@ -16,52 +16,47 @@ let {
 	indicator?: ChartTooltipIndicator;
 	hideLabel?: boolean;
 	hideIndicator?: boolean;
-	/** Read the title from this key instead of formatting the row's date. */
+	/** Read the title from this key instead of the chart's own label for the datum. */
 	labelKey?: string;
-	labelFormatter?: Snippet<[{ date: Date; datum: Datum }]>;
+	labelFormatter?: Snippet<[{ label: string; datum: Datum }]>;
 	formatter?: Snippet<[{ value: number; key: string; datum: Datum }]>;
 	class?: string;
 } = $props();
 
 const chart = useChart();
-const plot = usePlot();
 const pointer = useActivePoint();
 const styles = $derived(chartTooltip({ indicator }));
 </script>
 
 {#if pointer.active}
 	{@const active = pointer.active}
-	{@const date = toDate(active.datum[plot.xKey])}
+	{@const label = labelKey ? String(active.datum[labelKey] ?? "") : pointer.title(active.datum)}
 	<div class={className}>
 		{#if !hideLabel}
 			<div class={styles.title()}>
 				{#if labelFormatter}
-					{@render labelFormatter({ date, datum: active.datum })}
-				{:else if labelKey}
-					{String(active.datum[labelKey] ?? "")}
+					{@render labelFormatter({ label, datum: active.datum })}
 				{:else}
-					{chart.format.title(date)}
+					{label}
 				{/if}
 			</div>
 		{/if}
 		<div class={styles.rows()}>
-			{#each plot.series as s (s.key)}
-				{@const value = active.datum[s.key]}
-				{@const entry = chart.config[s.key]}
-				{@const Icon = entry?.icon as Component | undefined}
+			{#each pointer.rows(active.datum) as row (row.key)}
+				{@const Icon = chart.config[row.key]?.icon as Component | undefined}
 				<div class={styles.row()}>
 					{#if Icon}
 						<Icon />
 					{:else if !hideIndicator}
-						<span class={styles.indicator()} style="--indicator: {s.color}"></span>
+						<span class={styles.indicator()} style="--indicator: {row.color}"></span>
 					{/if}
-					<span class={styles.label()}>{(entry?.label as string | undefined) ?? s.key}</span>
-					{#if typeof value === "number"}
+					<span class={styles.label()}>{row.label}</span>
+					{#if row.value !== null}
 						<span class={styles.value()}>
 							{#if formatter}
-								{@render formatter({ value, key: s.key, datum: active.datum })}
+								{@render formatter({ value: row.value, key: row.key, datum: active.datum })}
 							{:else}
-								{chart.format.number(value)}
+								{chart.format.number(row.value)}
 							{/if}
 						</span>
 					{/if}

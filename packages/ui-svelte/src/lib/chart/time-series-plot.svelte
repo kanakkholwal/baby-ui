@@ -1,0 +1,218 @@
+<script lang="ts">
+import { extent } from "d3-array";
+import { scaleLinear, scaleTime } from "d3-scale";
+import type { Snippet } from "svelte";
+import { setActivePoint, setPlot, type TickScale, useChart } from "./context";
+import {
+	type ActivePoint,
+	type ChartPhase,
+	type Datum,
+	DEFAULT_MARGIN,
+	type Domain,
+	type Margin,
+	nearestIndex,
+	type SeriesConfig,
+	type TooltipRow,
+	toDate,
+} from "./core";
+import { createRevealClip } from "./lifecycle.svelte";
+
+let {
+	frame,
+	data,
+	xExtent,
+	extentMax,
+	xKey,
+	margin: marginProp,
+	domain,
+	series,
+	register,
+	phase,
+	animate,
+	advance,
+	clipId,
+	activeIndex,
+	instant,
+	interactive,
+	setActive,
+	title,
+	rows,
+	children,
+}: {
+	frame: { width: number; height: number; el: HTMLDivElement | null };
+	data: Datum[];
+	xExtent?: [number, number];
+	extentMax?: number;
+	xKey: string;
+	margin?: Partial<Margin>;
+	domain: Domain;
+	series: SeriesConfig[];
+	register: (series: SeriesConfig) => () => void;
+	phase: ChartPhase;
+	animate: boolean;
+	advance: (event: "done") => void;
+	clipId: string;
+	activeIndex: number | null;
+	instant: boolean;
+	interactive: boolean;
+	setActive: (index: number | null, fromKeyboard: boolean) => void;
+	title: (datum: Datum) => string;
+	rows: (datum: Datum) => TooltipRow[];
+	children?: Snippet;
+} = $props();
+
+const chart = useChart();
+const margin = $derived<Margin>({ ...DEFAULT_MARGIN, ...marginProp });
+const innerWidth = $derived(Math.max(0, frame.width - margin.left - margin.right));
+const innerHeight = $derived(Math.max(0, frame.height - margin.top - margin.bottom));
+const clip = createRevealClip({
+	phase: () => phase,
+	innerWidth: () => innerWidth,
+	animate: () => animate,
+	advance: (event) => advance(event),
+});
+
+const xScale = $derived.by(() => {
+	if (xExtent) return scaleTime().domain(xExtent).range([0, innerWidth]);
+	const [min = 0, max = min] = extent(data, (d) => toDate(d[xKey]).getTime());
+	return scaleTime()
+		.domain([min, Math.max(max, extentMax ?? max)])
+		.range([0, innerWidth]);
+});
+const yScale = $derived(scaleLinear().domain(domain).range([innerHeight, 0]));
+const x = $derived((d: Datum) => xScale(toDate(d[xKey])));
+const labels = $derived(data.map((d) => chart.format.tick(toDate(d[xKey]))));
+
+let pending: { index: number; frame: number } | null = null;
+function onpointermove(event: PointerEvent & { currentTarget: SVGSVGElement }) {
+	if (!interactive) return;
+	const bounds = event.currentTarget.getBoundingClientRect();
+	const time = xScale.invert(event.clientX - bounds.left - margin.left).getTime();
+	const index = nearestIndex(data, xKey, time);
+	if (pending) {
+		pending.index = index;
+		return;
+	}
+	const raf = requestAnimationFrame(() => {
+		const next = pending?.index ?? index;
+		pending = null;
+		if (next !== activeIndex) setActive(next, false);
+	});
+	pending = { index, frame: raf };
+}
+function onpointerleave() {
+	if (pending) cancelAnimationFrame(pending.frame);
+	pending = null;
+	if (activeIndex !== null) setActive(null, false);
+}
+
+const active = $derived.by<ActivePoint | null>(() => {
+	if (activeIndex === null || !interactive) return null;
+	const datum = data[activeIndex];
+	if (!datum) return null;
+	const y: Record<string, number> = {};
+	for (const s of series) {
+		const value = datum[s.key];
+		if (typeof value === "number") y[s.key] = yScale(value);
+	}
+	return { index: activeIndex, datum, x: x(datum), y };
+});
+
+setPlot({
+	get width() {
+		return frame.width;
+	},
+	get height() {
+		return frame.height;
+	},
+	get innerWidth() {
+		return innerWidth;
+	},
+	get innerHeight() {
+		return innerHeight;
+	},
+	get margin() {
+		return margin;
+	},
+	get rowScale() {
+		return yScale as unknown as TickScale;
+	},
+	get columnScale() {
+		return xScale as unknown as TickScale;
+	},
+	get phase() {
+		return phase;
+	},
+	get animate() {
+		return animate;
+	},
+	get clipId() {
+		return clipId;
+	},
+	get plotEl() {
+		return frame.el;
+	},
+	get data() {
+		return data;
+	},
+	get xKey() {
+		return xKey;
+	},
+	get xScale() {
+		return xScale;
+	},
+	get yScale() {
+		return yScale;
+	},
+	get x() {
+		return x;
+	},
+	get labels() {
+		return labels;
+	},
+	get series() {
+		return series;
+	},
+	register: (s: SeriesConfig) => register(s),
+});
+setActivePoint({
+	get active() {
+		return active;
+	},
+	get instant() {
+		return instant;
+	},
+	get title() {
+		return title;
+	},
+	get rows() {
+		return rows;
+	},
+});
+</script>
+
+<svg
+	aria-hidden="true"
+	width={frame.width}
+	height={frame.height}
+	class="absolute inset-0 block overflow-visible"
+	style:cursor={interactive ? "crosshair" : undefined}
+	{onpointermove}
+	{onpointerleave}
+>
+	<defs>
+		<clipPath id={clipId}>
+			<rect
+				bind:this={clip.rect}
+				x={-clip.pad}
+				y={-clip.pad}
+				width={clip.width}
+				height={innerHeight + clip.pad * 2}
+			/>
+		</clipPath>
+	</defs>
+	<g transform="translate({margin.left},{margin.top})">
+		<rect width={innerWidth} height={innerHeight} fill="transparent" />
+		{@render children?.()}
+	</g>
+</svg>

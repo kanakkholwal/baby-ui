@@ -1,9 +1,21 @@
-import { Message } from "@baby-ui/react";
+import {
+	Message,
+	MessageAvatar,
+	MessageBubble,
+	MessageContent,
+	MessageHeader,
+} from "@baby-ui/react";
 
 export function Example() {
 	return (
-		<Message name="Assistant" showActions>
-			Every component satisfies the same spec in both frameworks.
+		<Message>
+			<MessageAvatar>A</MessageAvatar>
+			<MessageContent>
+				<MessageHeader>Assistant</MessageHeader>
+				<MessageBubble>
+					Every component satisfies the same spec in both frameworks.
+				</MessageBubble>
+			</MessageContent>
 		</Message>
 	);
 }

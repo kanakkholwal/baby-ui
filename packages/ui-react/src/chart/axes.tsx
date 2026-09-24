@@ -1,11 +1,18 @@
 "use client";
 
-import { useId, useMemo } from "react";
+import { useEffect, useId, useMemo, useRef } from "react";
 import { cn } from "../lib/cn";
 import { useChart } from "./chart";
 import { evenTickIndices, toDate } from "./core";
-import { CHART_DURATION, CHART_EASE_CSS } from "./motion";
-import { useActivePoint, usePlot } from "./time-series";
+import { useActivePoint, useCartesian } from "./frame";
+import {
+	CHART_DURATION,
+	CHART_EASE_CSS,
+	type Playback,
+	prefersReducedMotion,
+	tween,
+} from "./motion";
+import { usePlot } from "./time-series";
 import { type ChartGridVariant, chartAxis, chartGrid } from "./variants";
 
 const slide = `transform ${CHART_DURATION.update}ms ${CHART_EASE_CSS}`;
@@ -19,8 +26,13 @@ export interface CartesianGridProps {
 	columns?: number;
 	/** Fade row ends into the plot edges. */
 	fade?: boolean;
+	/** Sweep a highlight band across the rows while the chart is loading. */
+	shimmer?: boolean;
 	className?: string;
 }
+
+const SHIMMER_LENGTH = 140;
+const SHIMMER_CYCLE = 2200;
 
 export function CartesianGrid({
 	variant = "dashed",
@@ -29,54 +41,107 @@ export function CartesianGrid({
 	rows = 5,
 	columns = 10,
 	fade = true,
+	shimmer = true,
 	className,
 }: CartesianGridProps) {
-	const { yScale, xScale, innerWidth, innerHeight } = usePlot();
+	const { rowScale, columnScale, innerWidth, innerHeight, phase } = useCartesian();
 	const maskId = `${useId().replace(/:/g, "")}-grid-fade`;
+	const gradientRef = useRef<SVGLinearGradientElement>(null);
 	const line = cn(chartGrid({ variant }), className);
+	const shimmering = shimmer && horizontal && phase === "loading" && innerWidth > 0;
+
+	useEffect(() => {
+		if (!shimmering || prefersReducedMotion()) return;
+		let playback: Playback | null = null;
+		const cycle = () => {
+			playback = tween({
+				duration: SHIMMER_CYCLE,
+				onUpdate: (p) => {
+					const x = -SHIMMER_LENGTH + p * (innerWidth + SHIMMER_LENGTH * 2);
+					gradientRef.current?.setAttribute("gradientTransform", `translate(${x}, 0)`);
+				},
+				onComplete: cycle,
+			});
+		};
+		cycle();
+		return () => playback?.stop();
+	}, [shimmering, innerWidth]);
+
+	const rowTicks = horizontal && rowScale ? rowScale.ticks(rows) : [];
+	const rowLines = (stroke?: string) =>
+		rowTicks.map((tick) => (
+			<line
+				key={String(tick)}
+				className={line}
+				stroke={stroke}
+				x1={0}
+				x2={innerWidth}
+				y1={0}
+				y2={0}
+				style={{
+					transform: `translateY(${rowScale?.(tick) ?? 0}px)`,
+					transition: slide,
+				}}
+			/>
+		));
+
 	return (
 		<g data-slot="chart-grid">
-			{horizontal && fade ? (
-				<defs>
-					<linearGradient id={`${maskId}-g`} x1="0%" x2="100%" y1="0%" y2="0%">
-						<stop offset="0%" stopColor="white" stopOpacity={0} />
-						<stop offset="10%" stopColor="white" stopOpacity={1} />
-						<stop offset="90%" stopColor="white" stopOpacity={1} />
-						<stop offset="100%" stopColor="white" stopOpacity={0} />
+			<defs>
+				{horizontal && fade ? (
+					<>
+						<linearGradient id={`${maskId}-g`} x1="0%" x2="100%" y1="0%" y2="0%">
+							<stop offset="0%" stopColor="white" stopOpacity={0} />
+							<stop offset="10%" stopColor="white" stopOpacity={1} />
+							<stop offset="90%" stopColor="white" stopOpacity={1} />
+							<stop offset="100%" stopColor="white" stopOpacity={0} />
+						</linearGradient>
+						<mask id={maskId}>
+							<rect width={innerWidth} height={innerHeight} fill={`url(#${maskId}-g)`} />
+						</mask>
+					</>
+				) : null}
+				{shimmering ? (
+					<linearGradient
+						ref={gradientRef}
+						id={`${maskId}-shimmer`}
+						gradientUnits="userSpaceOnUse"
+						x1={0}
+						x2={SHIMMER_LENGTH}
+						y1={0}
+						y2={0}
+						className="text-foreground/70"
+					>
+						<stop offset="0%" stopColor="currentColor" stopOpacity={0} />
+						<stop offset="35%" stopColor="currentColor" stopOpacity={0.45} />
+						<stop offset="50%" stopColor="currentColor" stopOpacity={1} />
+						<stop offset="65%" stopColor="currentColor" stopOpacity={0.45} />
+						<stop offset="100%" stopColor="currentColor" stopOpacity={0} />
 					</linearGradient>
-					<mask id={maskId}>
-						<rect width={innerWidth} height={innerHeight} fill={`url(#${maskId}-g)`} />
-					</mask>
-				</defs>
-			) : null}
+				) : null}
+			</defs>
 			{horizontal ? (
 				<g mask={fade ? `url(#${maskId})` : undefined}>
-					{yScale.ticks(rows).map((tick) => (
-						<line
-							key={tick}
-							className={line}
-							x1={0}
-							x2={innerWidth}
-							y1={0}
-							y2={0}
-							style={{ transform: `translateY(${yScale(tick)}px)`, transition: slide }}
-						/>
-					))}
+					{rowLines()}
+					{shimmering ? (
+						<g data-slot="chart-grid-shimmer">{rowLines(`url(#${maskId}-shimmer)`)}</g>
+					) : null}
 				</g>
 			) : null}
-			{vertical
-				? xScale
-						.ticks(columns)
-						.map((tick) => (
+			{vertical && columnScale
+				? columnScale.ticks(columns).map((tick) => {
+						const x = columnScale(tick);
+						return (
 							<line
-								key={tick.getTime()}
+								key={String(tick)}
 								className={line}
-								x1={xScale(tick)}
-								x2={xScale(tick)}
+								x1={x}
+								x2={x}
 								y1={0}
 								y2={innerHeight}
 							/>
-						))
+						);
+					})
 				: null}
 		</g>
 	);

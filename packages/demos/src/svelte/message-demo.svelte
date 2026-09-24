@@ -1,30 +1,44 @@
 <script lang="ts">
 import {
 	Message,
-	type MessageLayout,
+	type MessageAlign,
+	MessageAvatar,
+	MessageBubble,
+	type MessageBubbleVariant,
+	MessageContent,
+	MessageFooter,
+	MessageGroup,
+	MessageHeader,
 	type MessageMotion,
-	type MessageTone,
 } from "@baby-ui/svelte";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+
+const align = $derived((props.align as MessageAlign) ?? "start");
+const motion = $derived((props.motion as MessageMotion) ?? "spring");
+const variant = $derived((props.variant as MessageBubbleVariant) ?? "default");
+const animated = $derived(props.animated !== false);
 </script>
 
-<div class="flex w-96 flex-col gap-4">
-	<Message align="end" name="Kanak Kholwal" tone="solid" showActions={false}>
-		Why is the dock magnifying from the wrong centre?
+<MessageGroup class="w-96">
+	<Message align="end" animated={false}>
+		<MessageContent>
+			<MessageBubble variant="primary">
+				Why is the dock magnifying from the wrong centre?
+			</MessageBubble>
+		</MessageContent>
 	</Message>
-	{#key props.motion}
-		<Message
-			align={(props.align as "start" | "end") ?? "start"}
-			name={(props.name as string) || "Assistant"}
-			tone={(props.tone as MessageTone) ?? "surface"}
-			layout={(props.layout as MessageLayout) ?? "default"}
-			motion={(props.motion as MessageMotion) ?? "none"}
-			pending={Boolean(props.pending)}
-			showActions={props.showActions !== false}
-		>
-			Because the item's own width grows as it magnifies, so its measured centre moves
-			with it. Measure from the resting rect instead.
+	{#key `${align}-${motion}-${animated}`}
+		<Message {align} {motion} {animated}>
+			<MessageAvatar>A</MessageAvatar>
+			<MessageContent>
+				<MessageHeader>Assistant</MessageHeader>
+				<MessageBubble {variant}>
+					Because the item's own width grows as it magnifies, so its measured centre
+					moves with it. Measure from the resting rect instead.
+				</MessageBubble>
+				<MessageFooter>Just now</MessageFooter>
+			</MessageContent>
 		</Message>
 	{/key}
-</div>
+</MessageGroup>

@@ -1,35 +1,38 @@
 import { tv, type VariantProps } from "tailwind-variants";
 
 export const message = tv({
-	slots: {
-		root: "group/message flex w-full gap-3",
-		stack: "flex min-w-0 flex-col gap-1.5",
-		bubble: "rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed",
-	},
+	base: "group/message relative flex w-full min-w-0 gap-2 text-sm",
 	variants: {
-		tone: {
-			surface: { bubble: "border border-border bg-card text-foreground" },
-			solid: { bubble: "bg-primary text-primary-foreground" },
-			muted: { bubble: "bg-muted text-foreground" },
-			outline: { bubble: "border border-border bg-transparent text-foreground" },
-			destructive: { bubble: "bg-destructive text-destructive-foreground" },
-			raw: { bubble: "bg-transparent" },
+		align: {
+			start: "origin-bottom-left flex-row",
+			end: "origin-bottom-right flex-row-reverse",
 		},
-		layout: {
-			default: { stack: "max-w-[85%]" },
-			compact: { stack: "max-w-[85%]" },
-			wide: { stack: "max-w-full" },
-		},
+		// Data-only: the entrance is a plain class swap in message.svelte, not a tv() class,
+		// same engine TextTransition uses. This purely derives the prop's type.
 		motion: {
-			none: { root: "" },
-			fade: { root: "fade-in" },
-			slide: { root: "card-fade-up" },
-			imessage: { root: "imessage-in" },
+			spring: "",
+			fade: "",
+			none: "",
 		},
 	},
-	defaultVariants: { tone: "surface", layout: "default", motion: "none" },
+	defaultVariants: { align: "start", motion: "spring" },
 });
 
-export type MessageTone = NonNullable<VariantProps<typeof message>["tone"]>;
-export type MessageLayout = NonNullable<VariantProps<typeof message>["layout"]>;
+export type MessageAlign = NonNullable<VariantProps<typeof message>["align"]>;
 export type MessageMotion = NonNullable<VariantProps<typeof message>["motion"]>;
+
+export const messageBubble = tv({
+	base: "w-fit max-w-full wrap-break-word rounded-3xl px-4 py-2.5",
+	variants: {
+		variant: {
+			default: "bg-muted text-foreground",
+			primary: "bg-primary text-primary-foreground",
+			ghost: "rounded-none bg-transparent px-0 py-0",
+		},
+	},
+	defaultVariants: { variant: "default" },
+});
+
+export type MessageBubbleVariant = NonNullable<
+	VariantProps<typeof messageBubble>["variant"]
+>;

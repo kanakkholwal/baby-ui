@@ -66,6 +66,7 @@ export const CHART_SPRING = {
 	highlight: { stiffness: 180, damping: 28 },
 	panel: { stiffness: 300, damping: 25 },
 	ticker: { stiffness: 400, damping: 35 },
+	pop: { stiffness: 400, damping: 25 },
 } as const satisfies Record<string, SpringConfig>;
 
 export function prefersReducedMotion(): boolean {

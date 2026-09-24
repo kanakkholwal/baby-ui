@@ -20,11 +20,15 @@
 	"dependencies": {
 		"@baby-ui/react": "workspace:*",
 		"@baby-ui/svelte": "workspace:*",
-		"@baby-ui/registry-schema": "workspace:*"
+		"@baby-ui/registry-schema": "workspace:*",
+		"topojson-client": "catalog:",
+		"world-atlas": "catalog:"
 	},
 	"devDependencies": {
 		"@sveltejs/vite-plugin-svelte": "catalog:",
+		"@types/geojson": "catalog:",
 		"@types/react": "catalog:",
+		"@types/topojson-client": "catalog:",
 		"react": "catalog:",
 		"svelte": "catalog:",
 		"svelte-check": "catalog:",

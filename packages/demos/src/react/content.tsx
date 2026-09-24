@@ -12,6 +12,8 @@ import {
 	FileDiff,
 	Markdown,
 	Message,
+	MessageBubble,
+	MessageContent,
 	Question,
 	type QuestionAnswers,
 	type QuestionItem,
@@ -270,7 +272,7 @@ export function ComposerDemo({ props }: { props: Props }) {
 
 const INLINE_CODE =
 	"rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-xs";
-const USER_BUBBLE = "rounded-xl bg-input text-foreground";
+const USER_BUBBLE = "rounded-xl bg-input text-foreground px-4 py-2.5";
 
 export function ConversationDemo({ props }: { props: Props }) {
 	return (
@@ -280,9 +282,13 @@ export function ConversationDemo({ props }: { props: Props }) {
 		>
 			<Conversation className="h-full">
 				<ConversationContent>
-					<Message align="end" tone="raw" layout="compact" bubbleClassName={USER_BUBBLE}>
-						Investigate why checkout latency rose after 14:00 UTC. Focus on the latest
-						release and give me a safe mitigation.
+					<Message align="end" animated={false}>
+						<MessageContent>
+							<MessageBubble variant="ghost" className={USER_BUBBLE}>
+								Investigate why checkout latency rose after 14:00 UTC. Focus on the latest
+								release and give me a safe mitigation.
+							</MessageBubble>
+						</MessageContent>
 					</Message>
 
 					<Reasoning duration={4.8}>Compared traces with the release timeline</Reasoning>
@@ -310,8 +316,12 @@ export function ConversationDemo({ props }: { props: Props }) {
 						</blockquote>
 					</div>
 
-					<Message align="end" tone="raw" layout="compact" bubbleClassName={USER_BUBBLE}>
-						Show me the smallest rollback and how to verify it.
+					<Message align="end" animated={false}>
+						<MessageContent>
+							<MessageBubble variant="ghost" className={USER_BUBBLE}>
+								Show me the smallest rollback and how to verify it.
+							</MessageBubble>
+						</MessageContent>
 					</Message>
 
 					<p className="text-foreground text-sm">Use the targeted flag first:</p>

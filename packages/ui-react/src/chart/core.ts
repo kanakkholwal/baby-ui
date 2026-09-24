@@ -37,6 +37,13 @@ export interface ActivePoint {
 	y: Record<string, number>;
 }
 
+export interface TooltipRow {
+	key: string;
+	label: string;
+	color: string;
+	value: number | null;
+}
+
 export type ChartStatus = "loading" | "ready";
 
 /** bklit's lifecycle: the series conceals, the grid retweens, then the series reveals. */
@@ -203,6 +210,8 @@ export interface Formatters {
 	title: (date: Date) => string;
 	number: (value: number) => string;
 	compact: (value: number) => string;
+	/** Takes a ratio: 0.278 formats as 27.8%. */
+	percent: (ratio: number) => string;
 	month: (date: Date) => string;
 	day: (date: Date) => string;
 }
@@ -221,7 +230,12 @@ export function createFormatters(locale?: string): Formatters {
 		notation: "compact",
 		maximumFractionDigits: 1,
 	});
+	const percent = new Intl.NumberFormat(locale, {
+		style: "percent",
+		maximumFractionDigits: 1,
+	});
 	return {
+		percent: (ratio) => percent.format(ratio),
 		tick: (date) => tick.format(date),
 		title: (date) => title.format(date),
 		number: (value) => number.format(value),

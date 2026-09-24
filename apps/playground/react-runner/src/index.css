@@ -1,5 +1,6 @@
 @import "@baby-ui/tokens/theme.css";
 @source "../../../../packages/ui-react/src";
+@source "../../../../packages/demos/src";
 
 html,
 body,

@@ -57,8 +57,6 @@ import {
 	Slider,
 	Toaster,
 	type ToasterProps,
-	Toolbar,
-	ToolbarButton,
 	toast,
 } from "@baby-ui/react";
 import { useId, useState } from "react";
@@ -391,43 +389,6 @@ export function CommandDemo({ props }: { props: Props }) {
 				</Command>
 			</CommandDialog>
 		</div>
-	);
-}
-
-const TOOLS = [
-	{
-		id: "bold",
-		label: "Bold",
-		path: "M5 3h4.5a2.5 2.5 0 0 1 0 5H5zm0 5h5a2.5 2.5 0 0 1 0 5H5z",
-	},
-	{ id: "italic", label: "Italic", path: "M10 3H6.5M9.5 13H6M9 3 7 13" },
-	{
-		id: "link",
-		label: "Link",
-		path: "M6.5 9.5 9.5 6.5M7 4.5 8.5 3a2.8 2.8 0 0 1 4 4l-1.5 1.5M9 11.5 7.5 13a2.8 2.8 0 0 1-4-4L5 7.5",
-	},
-];
-
-export function ToolbarDemo({ props }: { props: Props }) {
-	return (
-		<Toolbar
-			orientation={(props.orientation as "horizontal" | "vertical") ?? "horizontal"}
-			label={(props.label as string) || "Formatting"}
-		>
-			{TOOLS.map((tool) => (
-				<ToolbarButton key={tool.id} aria-label={tool.label}>
-					<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-4">
-						<path
-							d={tool.path}
-							stroke="currentColor"
-							strokeWidth="1.4"
-							strokeLinecap="round"
-							strokeLinejoin="round"
-						/>
-					</svg>
-				</ToolbarButton>
-			))}
-		</Toolbar>
 	);
 }
 

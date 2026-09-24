@@ -3,6 +3,8 @@ import {
 	ConversationContent,
 	ConversationScrollButton,
 	Message,
+	MessageBubble,
+	MessageContent,
 } from "@baby-ui/react";
 
 export function Example() {
@@ -10,10 +12,18 @@ export function Example() {
 		<div style={{ height: "20rem" }}>
 			<Conversation className="h-full">
 				<ConversationContent>
-					<Message align="end" name="You" tone="solid">
-						What does the registry emit?
+					<Message align="end">
+						<MessageContent>
+							<MessageBubble variant="primary">
+								What does the registry emit?
+							</MessageBubble>
+						</MessageContent>
 					</Message>
-					<Message>One JSON item per component, per framework.</Message>
+					<Message>
+						<MessageContent>
+							<MessageBubble>One JSON item per component, per framework.</MessageBubble>
+						</MessageContent>
+					</Message>
 				</ConversationContent>
 				<ConversationScrollButton />
 			</Conversation>

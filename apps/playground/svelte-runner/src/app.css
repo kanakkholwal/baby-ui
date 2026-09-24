@@ -1,5 +1,6 @@
 @import "@baby-ui/tokens/theme.css";
 @source "../../../../packages/ui-svelte/src/lib";
+@source "../../../../packages/demos/src";
 
 html,
 body,

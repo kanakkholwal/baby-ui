@@ -9,9 +9,15 @@ import {
 	BreadcrumbPage,
 	BreadcrumbSeparator,
 	Message,
-	type MessageLayout,
+	type MessageAlign,
+	MessageAvatar,
+	MessageBubble,
+	type MessageBubbleVariant,
+	MessageContent,
+	MessageFooter,
+	MessageGroup,
+	MessageHeader,
 	type MessageMotion,
-	type MessageTone,
 	RadioGroup,
 	RadioGroupItem,
 	Reasoning,
@@ -164,25 +170,36 @@ export function TabsDemo({ props }: { props: Props }) {
 }
 
 export function MessageDemo({ props }: { props: Props }) {
+	const align = (props.align as MessageAlign) ?? "start";
+	const motion = (props.motion as MessageMotion) ?? "spring";
+	const variant = (props.variant as MessageBubbleVariant) ?? "default";
+	const animated = props.animated !== false;
 	return (
-		<div className="flex w-96 flex-col gap-4">
-			<Message align="end" name="Kanak Kholwal" tone="solid" showActions={false}>
-				Why is the dock magnifying from the wrong centre?
+		<MessageGroup className="w-96">
+			<Message align="end" animated={false}>
+				<MessageContent>
+					<MessageBubble variant="primary">
+						Why is the dock magnifying from the wrong centre?
+					</MessageBubble>
+				</MessageContent>
 			</Message>
 			<Message
-				key={String(props.motion)}
-				align={(props.align as "start" | "end") ?? "start"}
-				name={(props.name as string) || "Assistant"}
-				tone={(props.tone as MessageTone) ?? "surface"}
-				layout={(props.layout as MessageLayout) ?? "default"}
-				motion={(props.motion as MessageMotion) ?? "none"}
-				pending={Boolean(props.pending)}
-				showActions={props.showActions !== false}
+				key={`${align}-${motion}-${animated}`}
+				align={align}
+				motion={motion}
+				animated={animated}
 			>
-				Because the item&apos;s own width grows as it magnifies, so its measured centre
-				moves with it. Measure from the resting rect instead.
+				<MessageAvatar>A</MessageAvatar>
+				<MessageContent>
+					<MessageHeader>Assistant</MessageHeader>
+					<MessageBubble variant={variant}>
+						Because the item&apos;s own width grows as it magnifies, so its measured
+						centre moves with it. Measure from the resting rect instead.
+					</MessageBubble>
+					<MessageFooter>Just now</MessageFooter>
+				</MessageContent>
 			</Message>
-		</div>
+		</MessageGroup>
 	);
 }
 

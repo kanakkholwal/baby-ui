@@ -95,3 +95,57 @@ export const chartLegend = tv({
 });
 
 export type ChartLegendAlign = NonNullable<VariantProps<typeof chartLegend>["align"]>;
+
+export const chartReferenceArea = tv({
+	slots: {
+		area: "transition-opacity duration-[420ms] ease-[cubic-bezier(0,0,0.58,1)]",
+		edge: "fill-none [stroke-dasharray:4_4]",
+		label: "font-medium text-[11px]",
+	},
+	variants: {
+		tone: {
+			muted: {
+				area: "fill-foreground/[0.04]",
+				edge: "stroke-border-strong",
+				label: "fill-muted-foreground",
+			},
+			highlight: {
+				area: "fill-chart-4/10",
+				edge: "stroke-chart-4/60",
+				label: "fill-chart-4",
+			},
+			positive: {
+				area: "fill-chart-positive/10",
+				edge: "stroke-chart-positive/60",
+				label: "fill-chart-positive",
+			},
+			negative: {
+				area: "fill-chart-negative/10",
+				edge: "stroke-chart-negative/60",
+				label: "fill-chart-negative",
+			},
+		},
+	},
+	defaultVariants: { tone: "muted" },
+});
+
+export type ChartReferenceTone = NonNullable<
+	VariantProps<typeof chartReferenceArea>["tone"]
+>;
+
+export const chartBackground = tv({
+	base: "text-foreground/[0.07] transition-opacity duration-[420ms] ease-[cubic-bezier(0,0,0.58,1)]",
+	variants: {
+		variant: {
+			dots: "",
+			lines: "",
+			grid: "",
+			gradient: "text-chart-1/[0.12]",
+		},
+	},
+	defaultVariants: { variant: "dots" },
+});
+
+export type ChartBackgroundVariant = NonNullable<
+	VariantProps<typeof chartBackground>["variant"]
+>;

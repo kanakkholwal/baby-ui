@@ -5,6 +5,8 @@ import {
 	ConversationContent,
 	ConversationScrollButton,
 	Message,
+	MessageBubble,
+	MessageContent,
 	Reasoning,
 } from "@baby-ui/svelte";
 
@@ -12,7 +14,7 @@ let { props = {} }: { props?: Record<string, unknown> } = $props();
 
 const INLINE_CODE =
 	"rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-xs";
-const USER_BUBBLE = "rounded-xl bg-input text-foreground";
+const USER_BUBBLE = "rounded-xl bg-input text-foreground px-4 py-2.5";
 </script>
 
 <div
@@ -21,9 +23,13 @@ const USER_BUBBLE = "rounded-xl bg-input text-foreground";
 >
 	<Conversation class="h-full">
 		<ConversationContent>
-			<Message align="end" tone="raw" layout="compact" bubbleClass={USER_BUBBLE}>
-				Investigate why checkout latency rose after 14:00 UTC. Focus on the latest
-				release and give me a safe mitigation.
+			<Message align="end" animated={false}>
+				<MessageContent>
+					<MessageBubble variant="ghost" class={USER_BUBBLE}>
+						Investigate why checkout latency rose after 14:00 UTC. Focus on the latest
+						release and give me a safe mitigation.
+					</MessageBubble>
+				</MessageContent>
 			</Message>
 
 			<Reasoning duration={4.8}>Compared traces with the release timeline</Reasoning>
@@ -45,8 +51,12 @@ const USER_BUBBLE = "rounded-xl bg-input text-foreground";
 				</blockquote>
 			</div>
 
-			<Message align="end" tone="raw" layout="compact" bubbleClass={USER_BUBBLE}>
-				Show me the smallest rollback and how to verify it.
+			<Message align="end" animated={false}>
+				<MessageContent>
+					<MessageBubble variant="ghost" class={USER_BUBBLE}>
+						Show me the smallest rollback and how to verify it.
+					</MessageBubble>
+				</MessageContent>
 			</Message>
 
 			<p class="text-foreground text-sm">Use the targeted flag first:</p>

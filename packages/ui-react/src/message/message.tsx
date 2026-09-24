@@ -1,175 +1,159 @@
 "use client";
 
-import { type ReactNode, useRef, useState } from "react";
+import type { ComponentProps } from "react";
 import { cn } from "../lib/cn";
 import {
-	type MessageLayout,
+	type MessageAlign,
+	type MessageBubbleVariant,
 	type MessageMotion,
-	type MessageTone,
 	message,
+	messageBubble,
 } from "./variants";
 
-export interface MessageProps {
-	children?: ReactNode;
-	align?: "start" | "end";
-	name?: string;
-	pending?: boolean;
-	showActions?: boolean;
-	onRetry?: () => void;
-	tone?: MessageTone;
-	layout?: MessageLayout;
-	motion?: MessageMotion;
-	className?: string;
-	bubbleClassName?: string;
+export type { MessageAlign, MessageBubbleVariant, MessageMotion };
+
+export type MessageGroupProps = ComponentProps<"div">;
+
+/** Groups several messages from one sender. `overflow-x-clip` (not `hidden`) swallows a
+ * row's sideways entrance travel without creating a scroll container. */
+export function MessageGroup({ className, ...props }: MessageGroupProps) {
+	return (
+		<div
+			data-slot="message-group"
+			className={cn("flex min-w-0 flex-col gap-2 overflow-x-clip", className)}
+			{...props}
+		/>
+	);
 }
 
-const ACTION =
-	"grid size-6 place-items-center rounded-md text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground";
+export interface MessageProps extends ComponentProps<"article"> {
+	/** Which side the message belongs to. `end` reads as sent (row reversed, entrance from
+	 * the right); `start` reads as received (entrance from the left). */
+	align?: MessageAlign;
+	/** Play the entrance. Set false for history already on screen, so only newly arriving
+	 * messages animate. */
+	animated?: boolean;
+	motion?: MessageMotion;
+}
 
 export function Message({
-	children,
 	align = "start",
-	name = "Assistant",
-	pending = false,
-	showActions = true,
-	onRetry,
-	tone = "surface",
-	layout = "default",
-	motion = "none",
+	animated = true,
+	motion = "spring",
 	className,
-	bubbleClassName,
+	...props
 }: MessageProps) {
-	const isEnd = align === "end";
-	const compact = layout === "compact";
-	const initials = name
-		.trim()
-		.split(/\s+/)
-		.slice(0, 2)
-		.map((w) => w[0] ?? "")
-		.join("")
-		.toUpperCase();
-	const { root, stack, bubble } = message({ tone, layout, motion });
-	const bubbleRef = useRef<HTMLDivElement>(null);
-	const [copied, setCopied] = useState(false);
-	const [copyFailed, setCopyFailed] = useState(false);
-
-	async function copyText() {
-		try {
-			await navigator.clipboard.writeText(bubbleRef.current?.textContent?.trim() ?? "");
-			setCopied(true);
-		} catch {
-			// Clipboard access can be denied outside a secure context; say so rather than doing nothing.
-			setCopyFailed(true);
-		}
-		setTimeout(() => {
-			setCopied(false);
-			setCopyFailed(false);
-		}, 1500);
-	}
+	const enter = animated && motion !== "none";
+	const entranceClass = enter
+		? motion === "fade"
+			? "fade-in"
+			: align === "end"
+				? "message-spring-end"
+				: "message-spring-start"
+		: undefined;
 
 	return (
 		<article
-			aria-label={`${name} said`}
+			data-slot="message"
+			data-align={align}
+			className={cn(message({ align, motion }), entranceClass, className)}
+			{...props}
+		/>
+	);
+}
+
+/** A styled slot, not an image component: pass your own `<img>`/`<AvatarFallback>`/icon
+ * as children. Lifts clear of a footer line when one is present in the same message. */
+export function MessageAvatar({ className, ...props }: ComponentProps<"div">) {
+	return (
+		<div
+			data-slot="message-avatar"
 			className={cn(
-				root(),
-				isEnd && (compact ? "justify-end" : "flex-row-reverse"),
+				"flex w-fit min-w-8 shrink-0 items-center justify-center self-end overflow-hidden rounded-full bg-muted transition-transform duration-300 ease-[var(--ease-out)] group-has-data-[slot=message-footer]/message:-translate-y-8 motion-reduce:transition-none",
 				className,
 			)}
-		>
-			{compact ? null : (
-				<span
-					aria-hidden
-					className="grid size-7 shrink-0 place-items-center rounded-full bg-card font-medium text-[11px] text-muted-foreground"
-				>
-					{initials}
-				</span>
+			{...props}
+		/>
+	);
+}
+
+export function MessageContent({ className, ...props }: ComponentProps<"div">) {
+	return (
+		<div
+			data-slot="message-content"
+			className={cn(
+				"flex w-full min-w-0 flex-col gap-2 wrap-break-word group-data-[align=end]/message:*:data-[slot]:self-end",
+				className,
 			)}
+			{...props}
+		/>
+	);
+}
 
-			<div className={cn(stack(), isEnd && "items-end")}>
-				<div ref={bubbleRef} className={cn(bubble(), bubbleClassName)}>
-					{pending ? (
-						<span role="status" className="flex items-center gap-1 py-1">
-							<span className="sr-only">Thinking</span>
-							{[0, 1, 2].map((dot) => (
-								<span
-									key={dot}
-									style={{ animationDelay: `${dot * 160}ms` }}
-									className="typing-dot size-1.5 rounded-full bg-current opacity-40"
-								/>
-							))}
-						</span>
-					) : (
-						children
-					)}
-				</div>
+export interface MessageBubbleProps extends ComponentProps<"div"> {
+	/** `default` is a muted pill for received messages, `primary` a filled pill for sent
+	 * ones, `ghost` drops the pill for bare text like a streamed reply. */
+	variant?: MessageBubbleVariant;
+}
 
-				{showActions && !pending && !compact ? (
-					<div className="flex items-center gap-0.5 opacity-0 transition-opacity duration-150 group-focus-within/message:opacity-100 group-hover/message:opacity-100 motion-reduce:transition-none">
-						<button
-							type="button"
-							onClick={copyText}
-							aria-label={
-								copied ? "Copied" : copyFailed ? "Press Ctrl+C" : "Copy message"
-							}
-							className={ACTION}
-						>
-							{copied ? (
-								<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-3.5">
-									<path
-										d="M3.5 8.4 6.4 11 12.5 4.5"
-										stroke="currentColor"
-										strokeWidth="1.4"
-										strokeLinecap="round"
-										strokeLinejoin="round"
-									/>
-								</svg>
-							) : (
-								<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-3.5">
-									<rect
-										x="5.5"
-										y="5.5"
-										width="8"
-										height="8"
-										rx="1.8"
-										stroke="currentColor"
-										strokeWidth="1.3"
-									/>
-									<path
-										d="M10.5 2.5H3.6A1.6 1.6 0 0 0 2 4.1V11"
-										stroke="currentColor"
-										strokeWidth="1.3"
-										strokeLinecap="round"
-									/>
-								</svg>
-							)}
-						</button>
-						{onRetry ? (
-							<button
-								type="button"
-								onClick={onRetry}
-								aria-label="Retry"
-								className={ACTION}
-							>
-								<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-3.5">
-									<path
-										d="M13 8a5 5 0 1 1-1.6-3.7"
-										stroke="currentColor"
-										strokeWidth="1.3"
-										strokeLinecap="round"
-									/>
-									<path
-										d="M13 2.5V5h-2.5"
-										stroke="currentColor"
-										strokeWidth="1.3"
-										strokeLinecap="round"
-										strokeLinejoin="round"
-									/>
-								</svg>
-							</button>
-						) : null}
-					</div>
-				) : null}
-			</div>
-		</article>
+export function MessageBubble({
+	className,
+	variant = "default",
+	...props
+}: MessageBubbleProps) {
+	return (
+		<div
+			data-slot="message-bubble"
+			data-variant={variant}
+			className={cn(messageBubble({ variant }), className)}
+			{...props}
+		/>
+	);
+}
+
+export function MessageHeader({ className, ...props }: ComponentProps<"div">) {
+	return (
+		<div
+			data-slot="message-header"
+			className={cn(
+				"flex min-w-0 max-w-full items-center px-3 font-medium text-muted-foreground text-xs group-has-data-[variant=ghost]/message:px-0",
+				className,
+			)}
+			{...props}
+		/>
+	);
+}
+
+export function MessageFooter({ className, ...props }: ComponentProps<"div">) {
+	return (
+		<div
+			data-slot="message-footer"
+			className={cn(
+				"flex min-w-0 max-w-full items-center px-3 font-medium text-muted-foreground text-xs group-has-data-[variant=ghost]/message:px-0 group-data-[align=end]/message:justify-end",
+				className,
+			)}
+			{...props}
+		/>
+	);
+}
+
+/** A three-dot "thinking" indicator, styled to sit inside a `MessageBubble`. */
+export function MessageTyping({ className, ...props }: ComponentProps<"span">) {
+	return (
+		<span
+			role="status"
+			data-slot="message-typing"
+			className={cn("flex items-center gap-1 py-1", className)}
+			{...props}
+		>
+			<span className="sr-only">Thinking</span>
+			{[0, 1, 2].map((dot) => (
+				<span
+					key={dot}
+					style={{ animationDelay: `${dot * 160}ms` }}
+					className="typing-dot size-1.5 rounded-full bg-current opacity-40"
+				/>
+			))}
+		</span>
 	);
 }

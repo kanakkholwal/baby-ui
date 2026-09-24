@@ -4,7 +4,6 @@ import { extent } from "d3-array";
 import { type ScaleLinear, type ScaleTime, scaleLinear, scaleTime } from "d3-scale";
 import {
 	createContext,
-	type KeyboardEvent,
 	type PointerEvent,
 	type ReactNode,
 	useCallback,
@@ -16,7 +15,6 @@ import {
 	useRef,
 	useState,
 } from "react";
-import { cn } from "../lib/cn";
 import { useChart } from "./chart";
 import {
 	type ActivePoint,
@@ -34,42 +32,33 @@ import {
 	type SeriesConfig,
 	shouldTweenDomain,
 	summarize,
+	type TooltipRow,
 	toDate,
 } from "./core";
+import {
+	ActivePointProvider,
+	type CartesianContextValue,
+	CartesianProvider,
+	ChartFrame,
+	type TickScale,
+} from "./frame";
 import { CHART_DURATION, type Playback, tween } from "./motion";
-import { chart } from "./variants";
 
 /** Room around the reveal clip so round caps and dots at the plot edge are not cut. */
 const CLIP_PAD = 8;
 
-export interface PlotContextValue {
+export interface PlotContextValue extends CartesianContextValue {
 	data: Datum[];
 	xKey: string;
-	width: number;
-	height: number;
-	innerWidth: number;
-	innerHeight: number;
-	margin: Margin;
 	xScale: ScaleTime<number, number>;
 	yScale: ScaleLinear<number, number>;
 	x: (datum: Datum) => number;
 	labels: string[];
 	series: SeriesConfig[];
 	register: (series: SeriesConfig) => () => void;
-	phase: ChartPhase;
-	animate: boolean;
-	clipId: string;
-	plotEl: HTMLDivElement | null;
-}
-
-export interface ActiveContextValue {
-	active: ActivePoint | null;
-	/** True when the last move came from the keyboard, so followers jump instead of springing. */
-	instant: boolean;
 }
 
 const PlotContext = createContext<PlotContextValue | null>(null);
-const ActiveContext = createContext<ActiveContextValue>({ active: null, instant: false });
 
 export function usePlot(): PlotContextValue {
 	const context = useContext(PlotContext);
@@ -78,11 +67,27 @@ export function usePlot(): PlotContextValue {
 	return context;
 }
 
-export const useActivePoint = () => useContext(ActiveContext);
-export const ActivePointProvider = ActiveContext.Provider;
+export const PlotProvider = PlotContext.Provider;
+
+/** Extra room a part needs beyond the data: x in epoch ms, y in value units. */
+export interface ChartExtent {
+	x?: [number, number];
+	y?: [number, number];
+}
+
+const ExtentContext = createContext<(id: string, extent: ChartExtent) => () => void>(
+	() => () => {},
+);
+
+/** Lets a part such as ProjectionLine widen the x and y domains; returns an unregister. */
+export const useExtentRegistry = () => useContext(ExtentContext);
+
+const EXTENT_KEY = "__extent";
 
 export interface TimeSeriesChartProps {
 	data: Datum[];
+	/** Visible date window, e.g. from ChartBrush; y-domain and interaction follow it. */
+	xDomain?: [Date, Date];
 	/** Key holding each row's date. */
 	xKey?: string;
 	/** Header of the date column in the screen-reader table. */
@@ -97,49 +102,8 @@ export interface TimeSeriesChartProps {
 	children?: ReactNode;
 }
 
-export function TimeSeriesChart({
-	data,
-	xKey = "date",
-	xLabel = "Date",
-	margin: marginProp,
-	status = "ready",
-	animate = true,
-	activeIndex: activeIndexProp,
-	defaultActiveIndex = null,
-	onActiveIndexChange,
-	roleDescription,
-	className,
-	children,
-}: TimeSeriesChartProps & { roleDescription: string }) {
-	const chartContext = useChart();
-	const { format, hidden, config } = chartContext;
-	const plotRef = useRef<HTMLDivElement>(null);
-	const [plotEl, setPlotEl] = useState<HTMLDivElement | null>(null);
-	const [size, setSize] = useState({ width: 0, height: 0 });
-	const uid = useId().replace(/:/g, "");
-	const clipId = `${uid}-reveal`;
-
-	useLayoutEffect(() => {
-		const el = plotRef.current;
-		if (!el) return;
-		setPlotEl(el);
-		const measure = () =>
-			setSize({ width: Math.floor(el.clientWidth), height: Math.floor(el.clientHeight) });
-		measure();
-		const observer = new ResizeObserver(measure);
-		observer.observe(el);
-		return () => observer.disconnect();
-	}, []);
-
-	const { top = DEFAULT_MARGIN.top, right = DEFAULT_MARGIN.right } = marginProp ?? {};
-	const { bottom = DEFAULT_MARGIN.bottom, left = DEFAULT_MARGIN.left } = marginProp ?? {};
-	const margin = useMemo(
-		() => ({ top, right, bottom, left }),
-		[top, right, bottom, left],
-	);
-	const innerWidth = Math.max(0, size.width - margin.left - margin.right);
-	const innerHeight = Math.max(0, size.height - margin.top - margin.bottom);
-
+/** Series registry shared by every cartesian root; order follows first registration. */
+export function useSeriesRegistry(hidden: ReadonlySet<string>) {
 	const [registered, setRegistered] = useState<SeriesConfig[]>([]);
 	const register = useCallback((next: SeriesConfig) => {
 		setRegistered((prev) => {
@@ -154,17 +118,11 @@ export function TimeSeriesChart({
 		() => registered.filter((s) => !hidden.has(s.key)),
 		[registered, hidden],
 	);
-	const seriesKeys = series.map((s) => s.key).join("|");
+	return { registered, series, register };
+}
 
-	const target = useMemo(
-		() =>
-			resolveDomain(
-				data,
-				series.map((s) => s.key),
-			),
-		[data, seriesKeys],
-	);
-
+/** bklit's lifecycle: status flips conceal, retween the domain, then reveal on completion. */
+export function useChartPhase(status: ChartStatus, animate: boolean) {
 	const [phase, setPhase] = useState<ChartPhase>(() =>
 		status === "loading" ? "loading" : animate ? "revealing" : "ready",
 	);
@@ -179,15 +137,25 @@ export function TimeSeriesChart({
 		prevStatus.current = status;
 		advance(status === "ready" ? "status-ready" : "status-loading");
 	}, [status, advance]);
+	return { phase, advance };
+}
 
+/** Value domain that tweens through lifecycle phases and data changes. */
+export function useAnimatedDomain(
+	target: Domain,
+	phase: ChartPhase,
+	status: ChartStatus,
+	animate: boolean,
+	advance: (event: "done") => void,
+) {
 	const [domain, setDomain] = useState<Domain>(() =>
 		status === "loading" ? LOADING_DOMAIN : target,
 	);
 	const domainRef = useRef(domain);
-	const domainTween = useRef<Playback | null>(null);
-	const moveDomain = useCallback(
+	const playback = useRef<Playback | null>(null);
+	const move = useCallback(
 		(to: Domain, onDone?: () => void) => {
-			domainTween.current?.stop();
+			playback.current?.stop();
 			const from = domainRef.current;
 			const apply = (next: Domain) => {
 				domainRef.current = next;
@@ -198,7 +166,7 @@ export function TimeSeriesChart({
 				onDone?.();
 				return;
 			}
-			domainTween.current = tween({
+			playback.current = tween({
 				duration: CHART_DURATION.update,
 				onUpdate: (p) => apply(lerpDomain(from, to, p)),
 				onComplete: onDone,
@@ -206,31 +174,37 @@ export function TimeSeriesChart({
 		},
 		[animate],
 	);
-	useEffect(() => () => domainTween.current?.stop(), []);
-
+	useEffect(() => () => playback.current?.stop(), []);
 	useEffect(() => {
-		if (phase === "gridTweenReady") moveDomain(target, () => advance("done"));
-		else if (phase === "gridTweenLoading")
-			moveDomain(LOADING_DOMAIN, () => advance("done"));
+		if (phase === "gridTweenReady") move(target, () => advance("done"));
+		else if (phase === "gridTweenLoading") move(LOADING_DOMAIN, () => advance("done"));
 		// Only the phase change starts a lifecycle tween; target changes are handled below.
 	}, [phase]);
-
 	useEffect(() => {
-		if (phase === "ready") moveDomain(target);
+		if (phase === "ready") move(target);
 		else if (phase === "revealing") {
-			domainTween.current?.stop();
+			playback.current?.stop();
 			domainRef.current = target;
 			setDomain(target);
 		}
 	}, [target]);
+	return domain;
+}
 
-	const clipRef = useRef<SVGRectElement>(null);
-	const hasSize = innerWidth > 0;
+/** Left-to-right clip reveal and its mirrored conceal; the phase advances when the clip lands. */
+export function useRevealClip(
+	phase: ChartPhase,
+	innerWidth: number,
+	animate: boolean,
+	advance: (event: "done") => void,
+) {
+	const ref = useRef<SVGRectElement>(null);
 	const widthRef = useRef(innerWidth);
 	widthRef.current = innerWidth;
+	const hasSize = innerWidth > 0;
 	useLayoutEffect(() => {
 		if ((phase !== "revealing" && phase !== "concealing") || !hasSize) return;
-		const rect = clipRef.current;
+		const rect = ref.current;
 		if (!rect) return;
 		const full = widthRef.current + CLIP_PAD * 2;
 		const reveal = phase === "revealing";
@@ -247,11 +221,245 @@ export function TimeSeriesChart({
 		});
 		return () => playback.stop();
 	}, [phase, hasSize, animate, advance]);
+	const full = innerWidth + CLIP_PAD * 2;
+	const width =
+		phase === "ready"
+			? full
+			: phase === "revealing" || phase === "concealing"
+				? undefined
+				: 0;
+	return { ref, width, pad: CLIP_PAD };
+}
+
+/** Controlled active index with the pointer/keyboard source tracked for jump-vs-spring. */
+export function useActiveIndex(
+	prop: number | null | undefined,
+	defaultValue: number | null,
+	onChange?: (index: number | null) => void,
+) {
+	const [internal, setInternal] = useState<number | null>(defaultValue);
+	const activeIndex = prop !== undefined ? prop : internal;
+	const [instant, setInstant] = useState(false);
+	const setActive = useCallback(
+		(index: number | null, fromKeyboard: boolean) => {
+			setInstant(fromKeyboard);
+			if (prop === undefined) setInternal(index);
+			onChange?.(index);
+		},
+		[prop, onChange],
+	);
+	return { activeIndex, instant, setActive };
+}
+
+export function TimeSeriesChart({
+	data: allData,
+	xDomain,
+	xKey = "date",
+	xLabel = "Date",
+	margin: marginProp,
+	status = "ready",
+	animate = true,
+	activeIndex: activeIndexProp,
+	defaultActiveIndex = null,
+	onActiveIndexChange,
+	roleDescription,
+	className,
+	children,
+}: TimeSeriesChartProps & { roleDescription: string }) {
+	const chartContext = useChart();
+	const { format, hidden, config } = chartContext;
+	const clipId = `${useId().replace(/:/g, "")}-reveal`;
+	const { series, register } = useSeriesRegistry(hidden);
+	const seriesKeys = series.map((s) => s.key).join("|");
+	const windowStart = xDomain?.[0].getTime();
+	const windowEnd = xDomain?.[1].getTime();
+	const data = useMemo(() => {
+		if (windowStart === undefined || windowEnd === undefined) return allData;
+		return allData.filter((d) => {
+			const time = toDate(d[xKey]).getTime();
+			return time >= windowStart && time <= windowEnd;
+		});
+	}, [allData, xKey, windowStart, windowEnd]);
+	const [extents, setExtents] = useState<Map<string, ChartExtent>>(() => new Map());
+	const registerExtent = useCallback((id: string, extent: ChartExtent) => {
+		setExtents((prev) => new Map(prev).set(id, extent));
+		return () =>
+			setExtents((prev) => {
+				const next = new Map(prev);
+				next.delete(id);
+				return next;
+			});
+	}, []);
+	const target = useMemo(() => {
+		const keys = seriesKeys ? seriesKeys.split("|") : [];
+		const extra = [...extents.values()].flatMap((e) =>
+			e.y ? e.y.map((value) => ({ [EXTENT_KEY]: value })) : [],
+		);
+		if (!extra.length) return resolveDomain(data, keys);
+		return resolveDomain([...data, ...extra], [...keys, EXTENT_KEY]);
+	}, [data, seriesKeys, extents]);
+	const extentMax = useMemo(() => {
+		const ends = [...extents.values()].flatMap((e) => (e.x ? [e.x[1]] : []));
+		return ends.length ? Math.max(...ends) : undefined;
+	}, [extents]);
+	const { phase, advance } = useChartPhase(status, animate);
+	const domain = useAnimatedDomain(target, phase, status, animate, advance);
+	const { activeIndex, instant, setActive } = useActiveIndex(
+		activeIndexProp,
+		defaultActiveIndex,
+		onActiveIndexChange,
+	);
+	const interactive = phase === "ready" && data.length > 0;
+
+	const seriesLabel = (key: string) => {
+		const label = config[key]?.label;
+		return typeof label === "string" ? label : key;
+	};
+	const title = (datum: Datum) => format.title(toDate(datum[xKey]));
+	const rows = (datum: Datum) =>
+		series.map((s) => {
+			const value = datum[s.key];
+			return {
+				key: s.key,
+				label: seriesLabel(s.key),
+				color: s.color,
+				value: typeof value === "number" ? value : null,
+			};
+		});
+	const activeDatum = activeIndex !== null && interactive ? data[activeIndex] : undefined;
+	const announcement =
+		activeDatum && instant
+			? `${title(activeDatum)}: ${rows(activeDatum)
+					.map((r) => `${r.label} ${r.value === null ? "" : format.number(r.value)}`)
+					.join(", ")}`
+			: "";
+
+	return (
+		<ChartFrame
+			roleDescription={roleDescription}
+			summary={
+				chartContext.description ??
+				summarize({
+					data,
+					xKey,
+					series: series.map((s) => ({ key: s.key, label: seriesLabel(s.key) })),
+					format,
+				})
+			}
+			table={{
+				columns: [xLabel, ...series.map((s) => seriesLabel(s.key))],
+				rows: data.map((datum) => ({
+					header: title(datum),
+					cells: series.map((s) => {
+						const value = datum[s.key];
+						return typeof value === "number" ? format.number(value) : "";
+					}),
+				})),
+			}}
+			count={data.length}
+			activeIndex={activeIndex}
+			onActiveChange={setActive}
+			interactive={interactive}
+			announcement={announcement}
+			phase={phase}
+			className={className}
+		>
+			{(frame) => (
+				<ExtentContext.Provider value={registerExtent}>
+					<TimeSeriesPlot
+						frame={frame}
+						data={data}
+						xExtent={
+							windowStart !== undefined && windowEnd !== undefined
+								? [windowStart, windowEnd]
+								: undefined
+						}
+						extentMax={extentMax}
+						xKey={xKey}
+						marginProp={marginProp}
+						domain={domain}
+						series={series}
+						register={register}
+						phase={phase}
+						animate={animate}
+						advance={advance}
+						clipId={clipId}
+						activeIndex={activeIndex}
+						instant={instant}
+						interactive={interactive}
+						setActive={setActive}
+						title={title}
+						rows={rows}
+					>
+						{children}
+					</TimeSeriesPlot>
+				</ExtentContext.Provider>
+			)}
+		</ChartFrame>
+	);
+}
+
+function TimeSeriesPlot({
+	frame,
+	data,
+	xExtent,
+	extentMax,
+	xKey,
+	marginProp,
+	domain,
+	series,
+	register,
+	phase,
+	animate,
+	advance,
+	clipId,
+	activeIndex,
+	instant,
+	interactive,
+	setActive,
+	title,
+	rows,
+	children,
+}: {
+	frame: { width: number; height: number; el: HTMLDivElement | null };
+	data: Datum[];
+	xExtent?: [number, number];
+	extentMax?: number;
+	xKey: string;
+	marginProp?: Partial<Margin>;
+	domain: Domain;
+	series: SeriesConfig[];
+	register: (series: SeriesConfig) => () => void;
+	phase: ChartPhase;
+	animate: boolean;
+	advance: (event: "done") => void;
+	clipId: string;
+	activeIndex: number | null;
+	instant: boolean;
+	interactive: boolean;
+	setActive: (index: number | null, fromKeyboard: boolean) => void;
+	title: (datum: Datum) => string;
+	rows: (datum: Datum) => TooltipRow[];
+	children?: ReactNode;
+}) {
+	const { format } = useChart();
+	const { top = DEFAULT_MARGIN.top, right = DEFAULT_MARGIN.right } = marginProp ?? {};
+	const { bottom = DEFAULT_MARGIN.bottom, left = DEFAULT_MARGIN.left } = marginProp ?? {};
+	const margin = useMemo(
+		() => ({ top, right, bottom, left }),
+		[top, right, bottom, left],
+	);
+	const innerWidth = Math.max(0, frame.width - margin.left - margin.right);
+	const innerHeight = Math.max(0, frame.height - margin.top - margin.bottom);
+	const clip = useRevealClip(phase, innerWidth, animate, advance);
 
 	const xScale = useMemo(() => {
+		if (xExtent) return scaleTime().domain(xExtent).range([0, innerWidth]);
 		const [min = 0, max = min] = extent(data, (d) => toDate(d[xKey]).getTime());
-		return scaleTime().domain([min, max]).range([0, innerWidth]);
-	}, [data, xKey, innerWidth]);
+		return scaleTime()
+			.domain([min, Math.max(max, extentMax ?? max)])
+			.range([0, innerWidth]);
+	}, [data, xKey, innerWidth, xExtent?.[0], xExtent?.[1], extentMax]);
 	const yScale = useMemo(
 		() => scaleLinear().domain(domain).range([innerHeight, 0]),
 		[domain, innerHeight],
@@ -261,19 +469,6 @@ export function TimeSeriesChart({
 		() => data.map((d) => format.tick(toDate(d[xKey]))),
 		[data, xKey, format],
 	);
-
-	const [internalActive, setInternalActive] = useState<number | null>(defaultActiveIndex);
-	const activeIndex = activeIndexProp !== undefined ? activeIndexProp : internalActive;
-	const [instant, setInstant] = useState(false);
-	const setActive = useCallback(
-		(index: number | null, fromKeyboard: boolean) => {
-			setInstant(fromKeyboard);
-			if (activeIndexProp === undefined) setInternalActive(index);
-			onActiveIndexChange?.(index);
-		},
-		[activeIndexProp, onActiveIndexChange],
-	);
-	const interactive = phase === "ready" && data.length > 0;
 
 	const pending = useRef<{ index: number; frame: number } | null>(null);
 	const onPointerMove = (event: PointerEvent<SVGSVGElement>) => {
@@ -285,53 +480,17 @@ export function TimeSeriesChart({
 			pending.current.index = index;
 			return;
 		}
-		const frame = requestAnimationFrame(() => {
+		const raf = requestAnimationFrame(() => {
 			const next = pending.current?.index ?? index;
 			pending.current = null;
 			if (next !== activeIndex) setActive(next, false);
 		});
-		pending.current = { index, frame };
+		pending.current = { index, frame: raf };
 	};
 	const onPointerLeave = () => {
 		if (pending.current) cancelAnimationFrame(pending.current.frame);
 		pending.current = null;
 		if (activeIndex !== null) setActive(null, false);
-	};
-
-	const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-		if (!interactive) return;
-		const last = data.length - 1;
-		const step = Math.max(1, Math.ceil(data.length / 10));
-		const current = activeIndex;
-		let next: number | null;
-		switch (event.key) {
-			case "ArrowRight":
-				next = current === null ? 0 : Math.min(last, current + 1);
-				break;
-			case "ArrowLeft":
-				next = current === null ? last : Math.max(0, current - 1);
-				break;
-			case "PageDown":
-				next = Math.min(last, (current ?? -1) + step);
-				break;
-			case "PageUp":
-				next = Math.max(0, (current ?? last + 1) - step);
-				break;
-			case "Home":
-				next = 0;
-				break;
-			case "End":
-				next = last;
-				break;
-			case "Escape":
-				if (current === null) return;
-				next = null;
-				break;
-			default:
-				return;
-		}
-		event.preventDefault();
-		setActive(next, true);
 	};
 
 	const active = useMemo<ActivePoint | null>(() => {
@@ -346,161 +505,82 @@ export function TimeSeriesChart({
 		return { index: activeIndex, datum, x: x(datum), y };
 	}, [activeIndex, interactive, data, series, yScale, x]);
 
-	const seriesLabel = (key: string) => {
-		const label = config[key]?.label;
-		return typeof label === "string" ? label : key;
-	};
-	const announcement =
-		active && instant
-			? `${format.title(toDate(active.datum[xKey]))}: ${series
-					.map((s) => {
-						const value = active.datum[s.key];
-						return `${seriesLabel(s.key)} ${typeof value === "number" ? format.number(value) : ""}`;
-					})
-					.join(", ")}`
-			: "";
-	const summary =
-		chartContext.description ??
-		summarize({
-			data,
-			xKey,
-			series: series.map((s) => ({ key: s.key, label: seriesLabel(s.key) })),
-			format,
-		});
-
 	const plot = useMemo<PlotContextValue>(
 		() => ({
-			data,
-			xKey,
-			width: size.width,
-			height: size.height,
+			width: frame.width,
+			height: frame.height,
 			innerWidth,
 			innerHeight,
 			margin,
+			rowScale: yScale as unknown as TickScale,
+			columnScale: xScale as unknown as TickScale,
+			phase,
+			animate,
+			clipId,
+			plotEl: frame.el,
+			data,
+			xKey,
 			xScale,
 			yScale,
 			x,
 			labels,
 			series,
 			register,
-			phase,
-			animate,
-			clipId,
-			plotEl,
 		}),
 		[
-			data,
-			xKey,
-			size,
+			frame,
 			innerWidth,
 			innerHeight,
 			margin,
-			xScale,
 			yScale,
+			xScale,
+			phase,
+			animate,
+			clipId,
+			data,
+			xKey,
 			x,
 			labels,
 			series,
 			register,
-			phase,
-			animate,
-			clipId,
-			plotEl,
 		],
 	);
-	const activeValue = useMemo(() => ({ active, instant }), [active, instant]);
-	const clipFull = innerWidth + CLIP_PAD * 2;
-	const clipWidth =
-		phase === "ready"
-			? clipFull
-			: phase === "revealing" || phase === "concealing"
-				? undefined
-				: 0;
-	const styles = chart();
+	const activeValue = useMemo(
+		() => ({ active, instant, title, rows }),
+		[active, instant, title, rows],
+	);
 
 	return (
 		<PlotContext.Provider value={plot}>
-			<ActiveContext.Provider value={activeValue}>
-				{/* biome-ignore lint/a11y/useSemanticElements: a fieldset is for form controls; this is a chart widget */}
-				<div
-					ref={plotRef}
-					data-slot="chart-plot"
-					data-phase={phase}
-					role="group"
-					aria-roledescription={roleDescription}
-					aria-labelledby={`${uid}-title`}
-					aria-describedby={`${uid}-summary`}
-					// biome-ignore lint/a11y/noNoninteractiveTabindex: the plot is a keyboard-navigable widget
-					tabIndex={0}
-					onKeyDown={onKeyDown}
-					onBlur={() => activeIndex !== null && instant && setActive(null, true)}
-					className={cn(styles.plot(), className)}
-				>
-					<span id={`${uid}-title`} className={styles.srOnly()}>
-						{chartContext.title}
-					</span>
-					{size.width > 0 && size.height > 0 ? (
-						<svg
-							aria-hidden="true"
-							width={size.width}
-							height={size.height}
-							className="absolute inset-0 block overflow-visible"
-							style={{ cursor: interactive ? "crosshair" : undefined }}
-							onPointerMove={onPointerMove}
-							onPointerLeave={onPointerLeave}
-						>
-							<defs>
-								<clipPath id={clipId}>
-									<rect
-										ref={clipRef}
-										x={-CLIP_PAD}
-										y={-CLIP_PAD}
-										width={clipWidth}
-										height={innerHeight + CLIP_PAD * 2}
-									/>
-								</clipPath>
-							</defs>
-							<g transform={`translate(${margin.left},${margin.top})`}>
-								<rect width={innerWidth} height={innerHeight} fill="transparent" />
-								{children}
-							</g>
-						</svg>
-					) : null}
-					<p id={`${uid}-summary`} className={styles.srOnly()}>
-						{summary}
-					</p>
-					<table className={styles.srOnly()}>
-						<caption>{chartContext.title}</caption>
-						<thead>
-							<tr>
-								<th scope="col">{xLabel}</th>
-								{series.map((s) => (
-									<th key={s.key} scope="col">
-										{seriesLabel(s.key)}
-									</th>
-								))}
-							</tr>
-						</thead>
-						<tbody>
-							{data.map((datum, index) => (
-								<tr key={index}>
-									<th scope="row">{format.title(toDate(datum[xKey]))}</th>
-									{series.map((s) => {
-										const value = datum[s.key];
-										return (
-											<td key={s.key}>
-												{typeof value === "number" ? format.number(value) : ""}
-											</td>
-										);
-									})}
-								</tr>
-							))}
-						</tbody>
-					</table>
-					<div aria-live="polite" className={styles.srOnly()}>
-						{announcement}
-					</div>
-				</div>
-			</ActiveContext.Provider>
+			<CartesianProvider value={plot}>
+				<ActivePointProvider value={activeValue}>
+					<svg
+						aria-hidden="true"
+						width={frame.width}
+						height={frame.height}
+						className="absolute inset-0 block overflow-visible"
+						style={{ cursor: interactive ? "crosshair" : undefined }}
+						onPointerMove={onPointerMove}
+						onPointerLeave={onPointerLeave}
+					>
+						<defs>
+							<clipPath id={clipId}>
+								<rect
+									ref={clip.ref}
+									x={-clip.pad}
+									y={-clip.pad}
+									width={clip.width}
+									height={innerHeight + clip.pad * 2}
+								/>
+							</clipPath>
+						</defs>
+						<g transform={`translate(${margin.left},${margin.top})`}>
+							<rect width={innerWidth} height={innerHeight} fill="transparent" />
+							{children}
+						</g>
+					</svg>
+				</ActivePointProvider>
+			</CartesianProvider>
 		</PlotContext.Provider>
 	);
 }

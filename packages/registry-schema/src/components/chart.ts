@@ -86,6 +86,23 @@ export const chart = defineComponent({
 			control: { kind: "select", options: ["start", "center", "end"] },
 		},
 		{
+			name: "background",
+			type: '"none" | "dots" | "lines" | "grid" | "gradient"',
+			description: "Background part's `variant`; the demo omits it at none.",
+			default: "none",
+			control: { kind: "select", options: ["none", "dots", "lines", "grid", "gradient"] },
+		},
+		{
+			name: "tone",
+			type: '"muted" | "highlight" | "positive" | "negative"',
+			description: "ReferenceArea: band colour. The demo shows a target band when set.",
+			default: "none",
+			control: {
+				kind: "select",
+				options: ["none", "muted", "highlight", "positive", "negative"],
+			},
+		},
+		{
 			name: "status",
 			type: '"loading" | "ready"',
 			description:
@@ -98,6 +115,13 @@ export const chart = defineComponent({
 			type: "number | null",
 			description:
 				"On the chart root: the datum under the pointer or keyboard. Controlled with onActiveIndexChange; bindable in Svelte.",
+			control: { kind: "none" },
+		},
+		{
+			name: "xDomain",
+			type: "[Date, Date]",
+			description:
+				"On the chart root: visible date window, e.g. from ChartBrush. Y-domain, keyboard and table follow it; the y-domain retweens on change.",
 			control: { kind: "none" },
 		},
 	],
@@ -134,7 +158,9 @@ export const chart = defineComponent({
 			entry: "ChartContainer",
 			files: [
 				{ path: "chart/chart.tsx", type: "registry:ui" },
+				{ path: "chart/frame.tsx", type: "registry:ui" },
 				{ path: "chart/time-series.tsx", type: "registry:ui" },
+				{ path: "chart/annotations.tsx", type: "registry:ui" },
 				{ path: "chart/axes.tsx", type: "registry:ui" },
 				{ path: "chart/tooltip.tsx", type: "registry:ui" },
 				{ path: "chart/core.ts", type: "registry:ui" },
@@ -159,16 +185,22 @@ export const chart = defineComponent({
 				{ path: "chart/chart-style.svelte", type: "registry:ui" },
 				{ path: "chart/chart-legend.svelte", type: "registry:ui" },
 				{ path: "chart/chart-legend-content.svelte", type: "registry:ui" },
+				{ path: "chart/chart-frame.svelte", type: "registry:ui" },
 				{ path: "chart/time-series-chart.svelte", type: "registry:ui" },
+				{ path: "chart/time-series-plot.svelte", type: "registry:ui" },
+				{ path: "chart/reference-area.svelte", type: "registry:ui" },
+				{ path: "chart/background.svelte", type: "registry:ui" },
 				{ path: "chart/cartesian-grid.svelte", type: "registry:ui" },
 				{ path: "chart/x-axis.svelte", type: "registry:ui" },
 				{ path: "chart/y-axis.svelte", type: "registry:ui" },
 				{ path: "chart/chart-tooltip.svelte", type: "registry:ui" },
 				{ path: "chart/chart-tooltip-dot.svelte", type: "registry:ui" },
-				{ path: "chart/chart-tooltip-layer.svelte", type: "registry:ui" },
+				{ path: "chart/chart-tooltip-panel.svelte", type: "registry:ui" },
+				{ path: "chart/chart-date-pill.svelte", type: "registry:ui" },
 				{ path: "chart/chart-tooltip-content.svelte", type: "registry:ui" },
 				{ path: "chart/context.ts", type: "registry:ui" },
 				{ path: "chart/follow.svelte.ts", type: "registry:ui" },
+				{ path: "chart/lifecycle.svelte.ts", type: "registry:ui" },
 				{ path: "chart/core.ts", type: "registry:ui" },
 				{ path: "chart/motion.ts", type: "registry:ui" },
 				{ path: "chart/variants.ts", type: "registry:ui" },
@@ -227,7 +259,8 @@ export const lineChart = defineComponent({
 		{
 			name: "fadeEdges",
 			type: 'boolean | "left" | "right"',
-			description: "Line: fade the stroke into the plot edges.",
+			description:
+				"Line: fade the stroke into the plot edges. `true` fades both, `false` fades neither.",
 			default: "both",
 			control: { kind: "select", options: ["both", "left", "right", "none"] },
 		},
@@ -238,6 +271,51 @@ export const lineChart = defineComponent({
 				"Loading conceals the lines and retweens the grid; ready replays the reveal.",
 			default: "ready",
 			control: { kind: "select", options: ["ready", "loading"] },
+		},
+		{
+			name: "loadingStyle",
+			type: '"pulse" | "sweep"',
+			description:
+				"Line: what shows while status is loading. Pulse travels one eased 2.2s sweep; sweep shimmers over a placeholder silhouette.",
+			default: "pulse",
+			control: { kind: "select", options: ["pulse", "sweep"] },
+		},
+		{
+			name: "showMarkers",
+			type: "boolean",
+			description: "Line: a marker per datum, fading in with the reveal edge.",
+			default: false,
+			control: { kind: "boolean" },
+		},
+		{
+			name: "terminalMarker",
+			type: "boolean",
+			description: "Line: hollow ring on the last datum.",
+			default: false,
+			control: { kind: "boolean" },
+		},
+		{
+			name: "dashFromIndex",
+			type: "number",
+			description:
+				"Line: data index from which the stroke turns dashed, e.g. an incomplete period. The demo turns it off at -1.",
+			default: -1,
+			control: { kind: "number", min: -1, max: 28, step: 1 },
+		},
+		{
+			name: "showHighlight",
+			type: "boolean",
+			description: "Line: brighten the stroke one point either side of the active point.",
+			default: true,
+			control: { kind: "boolean" },
+		},
+		{
+			name: "encoding",
+			type: '"dashed" | "dotted"',
+			description:
+				"ProfitLossLine: how the negative side differs beyond colour. The demo swaps in a profit/loss series when set.",
+			default: "none",
+			control: { kind: "select", options: ["none", "dashed", "dotted"] },
 		},
 		{
 			name: "xKey",
@@ -260,6 +338,9 @@ export const lineChart = defineComponent({
 		behaviour: [
 			"New data morphs the line over 500ms on cubic-bezier(0.85, 0, 0.15, 1), point by point by date; new points grow out of their neighbour.",
 			"While the pointer is on the plot every line dims to 30% over 400ms; hovering a legend entry dims the others the same way.",
+			"The highlight band spans one point either side of the active one and follows on a 180/28 spring; its stroke fades in over 400ms.",
+			"Loading pulse: one 2.2s sweep on cubic-bezier(0.85, 0, 0.15, 1), growing to the right then chasing its tail, 280ms apart; it exits from where it is when data arrives.",
+			"Profit/loss segments dim to 25% over 200ms when the active point sits on the other side of the baseline.",
 		],
 	},
 	a11y: {
@@ -278,18 +359,19 @@ export const lineChart = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "d3-shape"],
-			registryDependencies: ["chart"],
+			registryDependencies: ["chart", "chart-series"],
 		},
 		svelte: {
 			entry: "LineChart",
 			files: [
 				{ path: "line-chart/line-chart.svelte", type: "registry:ui" },
 				{ path: "line-chart/line.svelte", type: "registry:ui" },
+				{ path: "line-chart/profit-loss-line.svelte", type: "registry:ui" },
 				{ path: "line-chart/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "d3-shape"],
-			registryDependencies: ["chart"],
+			registryDependencies: ["chart", "chart-series"],
 		},
 	},
 	keywords: ["line", "chart", "time series", "trend"],

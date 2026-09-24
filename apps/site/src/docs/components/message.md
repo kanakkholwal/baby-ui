@@ -1,34 +1,53 @@
 ---
 title: Message
-description: Chat turn with sender-aware alignment, an independent colour variant, and actions that appear on hover.
+description: Composable chat-turn parts, shadcn-primitive style, with a spring entrance and independent colour variant.
 component: message
 category: agents
 tags: [message, chat, ai]
 ---
 
-`align` only drives which side the turn sits on; `tone` picks the bubble's colour on its own,
-so Message works anywhere a coloured turn is useful, not only in a two-party chat where one
-side is always the same colour.
+Message is a set of parts, not one component with a dozen props. Compose the ones you need;
+`Message` only owns alignment and the entrance, everything else (avatar, header, bubble colour,
+footer) is a separate part that reads `Message`'s state off `data-*` attributes and group
+selectors, the same way shadcn's own primitives compose.
 
-## Colour, layout and motion are independent
+## Parts
 
-`tone` covers the palette: `surface` (neutral, the default received-style look), `solid`
-(high-emphasis fill), `muted`, `outline`, `destructive` (a failed-to-send or system turn), and
-`raw`, which drops only the border and background (padding and shape stay) so you supply your
-own surface via `bubbleClassName`. `layout="compact"` drops the avatar for dense reuse, such as a plain turn
-inside Conversation; `layout="wide"` removes the 85% width clamp. `motion="imessage"` plays a
-slide-up-with-scale-overshoot on mount, matching iMessage's bubble pop; `fade` and `slide` are
-plainer entrances.
+- `MessageGroup`: wraps several turns from one sender; clips sideways entrance travel.
+- `Message`: the row. Owns `align` and the entrance; everything else is a child.
+- `MessageAvatar`: a styled slot, not an image component; pass your own `<img>`/icon.
+- `MessageContent`: the column of header/bubble/footer; self-aligns to `Message`'s `align`.
+- `MessageBubble`: the coloured pill; `variant` is its own axis, independent of `align`.
+- `MessageHeader` / `MessageFooter`: thin metadata rows (sender name, timestamp).
+- `MessageTyping`: a three-dot "thinking" indicator, styled to sit inside a bubble.
 
-## Hover actions stay reachable
+```tsx
+<Message align="end">
+  <MessageContent>
+    <MessageBubble variant="primary">What does the registry emit?</MessageBubble>
+  </MessageContent>
+</Message>
+```
 
-Copy fades in on hover and reads the rendered bubble's own text, no `text` prop needed. Retry
-only renders when you pass `onRetry`, so it's never a button that does nothing. Both appear on
-`focus-within` too and never leave the tab order; actions that exist only on hover are
-invisible to a keyboard, which turns a convenience into a trap.
+## Colour and alignment are independent
 
-## Waiting is not progress
+`align` (`start`/`end`) only decides which side the row sits on and which way it enters from.
+`MessageBubble`'s `variant` picks the pill's colour on its own: `default` (muted, the
+received-style look), `primary` (filled, for sent turns), `ghost` (drops the pill entirely,
+for bare text like a streamed reply). Nothing ties a colour to a side, so a `start`-aligned
+turn can use `primary` and an `end`-aligned one can use `ghost`.
 
-The pending state is three dots on a staggered loop. It deliberately does not look like
-a progress bar, because nothing is being measured -- a bar would be claiming knowledge
-the interface does not have.
+## Motion
+
+`motion="spring"` (the default) plays a CSS overshoot standing in for a real spring: slide in
+from the side `align` points away from, with a scale settle, the same `--ease-spring` token
+and 420ms duration TextTransition's spring preset uses. `fade` is opacity-only; `none` skips
+the entrance. `animated={false}` skips it regardless of `motion`, for history already on
+screen, so only a newly arriving message plays its entrance.
+
+## Layout follows the parts you include
+
+There's no `layout` prop. Drop `MessageAvatar` for a dense turn; drop `MessageHeader` and
+`MessageFooter` for a bare bubble; nest a `MessageTyping` inside `MessageBubble` in place of
+its text while a reply is pending. The row's own width already stays unconstrained, so a wide
+turn is just a wide `MessageBubble`.

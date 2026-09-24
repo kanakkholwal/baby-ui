@@ -1065,3 +1065,66 @@
 		animation: none;
 	}
 }
+
+.logo-carousel-enter {
+	animation: logo-carousel-enter 500ms cubic-bezier(0.25, 0.46, 0.45, 0.94) var(--lc-delay, 0ms)
+		both;
+}
+
+.logo-carousel-exit {
+	animation: logo-carousel-exit 500ms cubic-bezier(0.25, 0.46, 0.45, 0.94) var(--lc-delay, 0ms)
+		both;
+}
+
+@keyframes logo-carousel-enter {
+	from {
+		opacity: 0;
+		transform: translateY(60%);
+	}
+}
+
+@keyframes logo-carousel-exit {
+	to {
+		opacity: 0;
+		transform: translateY(-60%);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.logo-carousel-enter,
+	.logo-carousel-exit {
+		animation: none;
+	}
+}
+
+/* A CSS overshoot standing in for Message's original JS spring (stiffness 420, damping
+   20): same --ease-spring token TextTransition's "spring-scale-in" preset uses, at the
+   same 420ms, since both are a scale-and-settle entrance of the same character. */
+.message-spring-start {
+	animation: message-enter-start 420ms var(--ease-spring) both;
+}
+
+.message-spring-end {
+	animation: message-enter-end 420ms var(--ease-spring) both;
+}
+
+@keyframes message-enter-start {
+	from {
+		opacity: 0;
+		transform: scale(0.9) translateX(-24px);
+	}
+}
+
+@keyframes message-enter-end {
+	from {
+		opacity: 0;
+		transform: scale(0.9) translateX(24px);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.message-spring-start,
+	.message-spring-end {
+		animation: none;
+	}
+}

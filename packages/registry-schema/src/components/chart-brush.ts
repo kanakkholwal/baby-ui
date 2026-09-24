@@ -1,0 +1,124 @@
+import { defineComponent } from "../index";
+
+export const chartBrush = defineComponent({
+	slug: "chart-brush",
+	name: "Chart Brush",
+	description:
+		"Overview strip under a time-series chart; drag, resize or key the window the chart shows.",
+	category: "charts",
+	status: "alpha",
+	props: [
+		{
+			name: "data",
+			type: "Record<string, unknown>[]",
+			description: "The full series, same rows as the chart it drives.",
+			required: true,
+			control: { kind: "none" },
+		},
+		{
+			name: "dataKeys",
+			type: "string[]",
+			description: "Series drawn in the strip; hidden legend entries drop out.",
+			required: true,
+			control: { kind: "none" },
+		},
+		{
+			name: "range",
+			type: "[Date, Date]",
+			description:
+				"Selected window; pass it to the chart's xDomain. Controlled with onRangeChange; bindable in Svelte.",
+			control: { kind: "none" },
+		},
+		{
+			name: "variant",
+			type: '"area" | "line"',
+			description: "Overview drawn as filled areas or bare lines.",
+			default: "area",
+			control: { kind: "select", options: ["area", "line"] },
+		},
+		{
+			name: "height",
+			type: "number",
+			description: "Strip height in pixels.",
+			default: 64,
+			control: { kind: "number", min: 40, max: 120, step: 8 },
+		},
+		{
+			name: "margin",
+			type: "{ left?: number; right?: number }",
+			description: "Match the chart's side margins so the strip lines up.",
+			control: { kind: "none" },
+		},
+		{
+			name: "label",
+			type: "string",
+			description: "Accessible name of the range slider.",
+			default: "Visible range",
+			control: { kind: "none" },
+		},
+	],
+	motion: {
+		springs: [],
+		reducedMotion: "Unchanged: the brush itself does not animate.",
+		behaviour: [
+			"The window tracks the pointer with no easing; the chart it drives retweens its y-domain over 500ms and morphs its lines.",
+		],
+	},
+	a11y: {
+		role: "slider",
+		keyboard: [
+			"Arrow keys slide the window one point",
+			"Shift+arrows resize the window's end",
+			"Page Up and Page Down slide by the window's span",
+			"Home and End jump to either edge",
+		],
+		notes: [
+			"The strip is one slider whose value text reads the window's start and end dates in the chart's locale.",
+		],
+	},
+	licenseOrigin: {
+		source: "bklit-ui",
+		url: "https://github.com/bklit/bklit-ui",
+		license: "MIT",
+		copyright: "Copyright (c) 2026 uixmat",
+	},
+	impl: {
+		react: {
+			entry: "ChartBrush",
+			files: [
+				{ path: "chart-brush/chart-brush.tsx", type: "registry:ui" },
+				{ path: "chart-brush/geometry.ts", type: "registry:ui" },
+				{ path: "chart-brush/variants.ts", type: "registry:ui" },
+				{ path: "lib/cn.ts", type: "registry:lib" },
+			],
+			dependencies: [
+				"clsx",
+				"tailwind-merge",
+				"tailwind-variants",
+				"d3-array",
+				"d3-scale",
+				"d3-shape",
+			],
+			registryDependencies: ["chart", "line-chart"],
+		},
+		svelte: {
+			entry: "ChartBrush",
+			files: [
+				{ path: "chart-brush/chart-brush.svelte", type: "registry:ui" },
+				{ path: "chart-brush/geometry.ts", type: "registry:ui" },
+				{ path: "chart-brush/variants.ts", type: "registry:ui" },
+				{ path: "lib/cn.ts", type: "registry:lib" },
+			],
+			dependencies: [
+				"clsx",
+				"tailwind-merge",
+				"tailwind-variants",
+				"d3-array",
+				"d3-scale",
+				"d3-shape",
+			],
+			registryDependencies: ["chart", "line-chart"],
+		},
+	},
+	keywords: ["brush", "range", "zoom", "overview", "chart", "slider"],
+});

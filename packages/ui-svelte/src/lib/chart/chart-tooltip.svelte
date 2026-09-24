@@ -2,8 +2,10 @@
 
 <script lang="ts">
 import type { Snippet } from "svelte";
+import ChartDatePill from "./chart-date-pill.svelte";
+import ChartTooltipContent from "./chart-tooltip-content.svelte";
 import ChartTooltipDot from "./chart-tooltip-dot.svelte";
-import ChartTooltipLayer from "./chart-tooltip-layer.svelte";
+import ChartTooltipPanel from "./chart-tooltip-panel.svelte";
 import { useActivePoint, usePlot } from "./context";
 import { follow } from "./follow.svelte";
 import { CHART_SPRING, Spring } from "./motion";
@@ -64,5 +66,20 @@ follow(
 	{/each}
 {/if}
 {#if plot.plotEl}
-	<ChartTooltipLayer target={plot.plotEl} {content} {datePill} class={className} />
+	<ChartTooltipPanel
+		target={plot.plotEl}
+		anchor={pointer.active ? { x: pointer.active.x + plot.margin.left, y: plot.margin.top } : null}
+		instant={pointer.instant}
+		bounds={{ width: plot.width, height: plot.height }}
+		class={className}
+	>
+		{#if content}
+			{@render content()}
+		{:else}
+			<ChartTooltipContent />
+		{/if}
+	</ChartTooltipPanel>
+	{#if datePill}
+		<ChartDatePill target={plot.plotEl} />
+	{/if}
 {/if}

@@ -20,6 +20,9 @@ export { default as AlertDialogTitle } from "./alert-dialog/alert-dialog-title.s
 export { default as AlertDialogTrigger } from "./alert-dialog/alert-dialog-trigger.svelte";
 export { default as AnimatedGradientText } from "./animated-gradient-text/animated-gradient-text.svelte";
 export type { GradientTextTone } from "./animated-gradient-text/variants";
+export { default as Area } from "./area-chart/area.svelte";
+export { default as AreaChart } from "./area-chart/area-chart.svelte";
+export type { AreaVariant } from "./area-chart/variants";
 export { default as Attachment } from "./attachment/attachment.svelte";
 export type { AttachmentStatus } from "./attachment/variants";
 export { default as Avatar } from "./avatar/avatar.svelte";
@@ -27,6 +30,18 @@ export { default as AvatarFallback } from "./avatar/avatar-fallback.svelte";
 export { default as AvatarImage } from "./avatar/avatar-image.svelte";
 export { default as Badge } from "./badge/badge.svelte";
 export type { BadgeSize, BadgeVariant } from "./badge/variants";
+export { default as Bar } from "./bar-chart/bar.svelte";
+export { default as BarChart } from "./bar-chart/bar-chart.svelte";
+export { default as BarTooltip } from "./bar-chart/bar-tooltip.svelte";
+export { default as BarXAxis } from "./bar-chart/bar-x-axis.svelte";
+export { default as BarYAxis } from "./bar-chart/bar-y-axis.svelte";
+export { type BarContextValue, useBarChart } from "./bar-chart/context";
+export type {
+	BarEntrance,
+	BarLineCap,
+	BarOrientationVariant,
+	BarVariant,
+} from "./bar-chart/variants";
 export { default as BentoCell } from "./bento-grid/bento-cell.svelte";
 export { default as BentoGrid } from "./bento-grid/bento-grid.svelte";
 export type { BentoSpan } from "./bento-grid/variants";
@@ -41,6 +56,10 @@ export { default as BreadcrumbPage } from "./breadcrumb/breadcrumb-page.svelte";
 export { default as BreadcrumbSeparator } from "./breadcrumb/breadcrumb-separator.svelte";
 export { default as Button } from "./button/button.svelte";
 export type { ButtonSize, ButtonVariant } from "./button/variants";
+export { default as Candlestick } from "./candlestick-chart/candlestick.svelte";
+export { default as CandlestickChart } from "./candlestick-chart/candlestick-chart.svelte";
+export type { CandlestickLabels } from "./candlestick-chart/context";
+export type { CandlestickSize } from "./candlestick-chart/variants";
 export { default as Card } from "./card/card.svelte";
 export { default as CardAction } from "./card/card-action.svelte";
 export { default as CardContent } from "./card/card-content.svelte";
@@ -49,35 +68,86 @@ export { default as CardFooter } from "./card/card-footer.svelte";
 export { default as CardHeader } from "./card/card-header.svelte";
 export { default as CardTitle } from "./card/card-title.svelte";
 export type { CardVariant } from "./card/variants";
+export { default as Background } from "./chart/background.svelte";
 export { default as CartesianGrid } from "./chart/cartesian-grid.svelte";
 export { default as ChartContainer } from "./chart/chart-container.svelte";
+export { default as ChartFrame } from "./chart/chart-frame.svelte";
 export { default as ChartLegend } from "./chart/chart-legend.svelte";
 export { default as ChartLegendContent } from "./chart/chart-legend-content.svelte";
 export { default as ChartStyle } from "./chart/chart-style.svelte";
 export { default as ChartTooltip } from "./chart/chart-tooltip.svelte";
 export { default as ChartTooltipContent } from "./chart/chart-tooltip-content.svelte";
+export { default as ChartTooltipPanel } from "./chart/chart-tooltip-panel.svelte";
 export {
 	type ActiveContextValue,
+	type CartesianContextValue,
 	type ChartConfig,
 	type ChartContextValue,
 	type PlotContextValue,
+	portal,
+	setActivePoint,
+	setCartesian,
+	type TickScale,
 	useActivePoint,
+	useCartesian,
 	useChart,
 	usePlot,
 } from "./chart/context";
-export type { ActivePoint, ChartStatus, Datum, FadeEdges, Margin } from "./chart/core";
-export { default as TimeSeriesChart } from "./chart/time-series-chart.svelte";
+export type {
+	ActivePoint,
+	ChartPhase,
+	ChartStatus,
+	Datum,
+	Domain,
+	FadeEdges,
+	Margin,
+	SeriesConfig,
+	TooltipRow,
+} from "./chart/core";
+export {
+	createAnimatedDomain,
+	createChartPhase,
+	createRevealClip,
+	createSeriesRegistry,
+} from "./chart/lifecycle.svelte";
+export { default as ReferenceArea } from "./chart/reference-area.svelte";
+export {
+	type ChartExtent,
+	default as TimeSeriesChart,
+	useExtentRegistry,
+} from "./chart/time-series-chart.svelte";
 export type {
 	ChartAspect,
+	ChartBackgroundVariant,
 	ChartGridVariant,
 	ChartLegendAlign,
+	ChartReferenceTone,
 	ChartTooltipIndicator,
 } from "./chart/variants";
 export { default as XAxis } from "./chart/x-axis.svelte";
 export { default as YAxis } from "./chart/y-axis.svelte";
+export { default as ChartBrush } from "./chart-brush/chart-brush.svelte";
+export type { ChartBrushVariant } from "./chart-brush/variants";
+export { default as ChartMarkerTooltip } from "./chart-markers/chart-marker-tooltip.svelte";
+export { default as ChartMarkers } from "./chart-markers/chart-markers.svelte";
+export type { ChartMarker } from "./chart-markers/types";
+export type { ChartMarkerAppearance, ChartMarkerSize } from "./chart-markers/variants";
+export { default as DashTail } from "./chart-series/dash-tail.svelte";
+export { default as HighlightBand } from "./chart-series/highlight-band.svelte";
+export { default as LoadingPulse } from "./chart-series/loading-pulse.svelte";
+export { default as LoadingSweep } from "./chart-series/loading-sweep.svelte";
+export { default as SeriesMarkers } from "./chart-series/series-markers.svelte";
+export { default as TerminalMarker } from "./chart-series/terminal-marker.svelte";
+export type { SeriesLoadingStyle, SeriesMarkerAppearance } from "./chart-series/variants";
 export { default as ChatComposer } from "./chat-composer/chat-composer.svelte";
 export type { ChatMessage, ChatTopic } from "./chat-composer/types";
 export { default as Checkbox } from "./checkbox/checkbox.svelte";
+export {
+	type ChoroplethLabels,
+	default as ChoroplethChart,
+} from "./choropleth-chart/choropleth-chart.svelte";
+export type { GeoCollection, GeoFeature, ZoomState } from "./choropleth-chart/geometry";
+export type { ChoroplethProjection } from "./choropleth-chart/variants";
 export { default as CircularText } from "./circular-text/circular-text.svelte";
 export type { CircularTextDirection } from "./circular-text/variants";
 export { default as CodeBlock } from "./code-block/code-block.svelte";
@@ -119,6 +189,9 @@ export { default as CommandShortcut } from "./command/command-shortcut.svelte";
 export { default as Composer } from "./composer/composer.svelte";
 export type { ComposerAction, ComposerModel } from "./composer/types";
 export type { ComposerSize } from "./composer/variants";
+export { default as ComposedChart } from "./composed-chart/composed-chart.svelte";
+export { default as SeriesBar } from "./composed-chart/series-bar.svelte";
+export type { SeriesBarVariant } from "./composed-chart/variants";
 export { default as ContextCards } from "./context-cards/context-cards.svelte";
 export type { ContextChunk, ContextChunkTone } from "./context-cards/types";
 export { default as ContextMenu } from "./context-menu/context-menu.svelte";
@@ -204,12 +277,29 @@ export {
 	default as FullscreenNav,
 	type NavLink,
 } from "./fullscreen-nav/fullscreen-nav.svelte";
+export { default as FunnelChart } from "./funnel-chart/funnel-chart.svelte";
+export type { FunnelStage } from "./funnel-chart/geometry";
+export type {
+	FunnelEdges,
+	FunnelLabelLayout,
+	FunnelOrientation,
+} from "./funnel-chart/variants";
 export { default as Gauge } from "./gauge/gauge.svelte";
 export type { GaugeTone } from "./gauge/variants";
+export { default as GaugeChart } from "./gauge-chart/gauge-chart.svelte";
+export type { GaugeChartLayout, GaugeChartTone } from "./gauge-chart/variants";
 export { default as GibberishText } from "./gibberish-text/gibberish-text.svelte";
 export type { GibberishTextSize } from "./gibberish-text/variants";
 export { default as GlitchText } from "./glitch-text/glitch-text.svelte";
 export type { GlitchTextBlendMode, GlitchTextSize } from "./glitch-text/variants";
+export {
+	type HeatmapLevel,
+	type HeatmapWeekStart,
+	heatmapLevelKey,
+} from "./heatmap-chart/calendar";
+export { default as HeatmapChart } from "./heatmap-chart/heatmap-chart.svelte";
+export { default as HeatmapLegend } from "./heatmap-chart/heatmap-legend.svelte";
+export type { HeatmapLegendAlign, HeatmapShape } from "./heatmap-chart/variants";
 export { default as HoverCard } from "./hover-card/hover-card.svelte";
 export { default as HoverCardContent } from "./hover-card/hover-card-content.svelte";
 export { default as HoverCardTrigger } from "./hover-card/hover-card-trigger.svelte";
@@ -223,16 +313,37 @@ export { default as Label } from "./label/label.svelte";
 export { cn } from "./lib/cn";
 export { default as Line } from "./line-chart/line.svelte";
 export { default as LineChart } from "./line-chart/line-chart.svelte";
-export type { LineCurve, LineVariant } from "./line-chart/variants";
+export { default as ProfitLossLine } from "./line-chart/profit-loss-line.svelte";
+export type { LineCurve, LineVariant, ProfitLossEncoding } from "./line-chart/variants";
+export { type LiveContextValue, useLive } from "./live-line-chart/context";
+export type { LiveFrame, LivePoint, Momentum } from "./live-line-chart/live";
+export { default as LiveLine } from "./live-line-chart/live-line.svelte";
+export { default as LiveLineChart } from "./live-line-chart/live-line-chart.svelte";
+export { default as LiveXAxis } from "./live-line-chart/live-x-axis.svelte";
+export { default as LiveYAxis } from "./live-line-chart/live-y-axis.svelte";
+export type {
+	LiveAxisPosition,
+	LiveLineCurve,
+	LiveLineTint,
+	LiveMomentum,
+} from "./live-line-chart/variants";
 export { default as LoadingState } from "./loading-state/loading-state.svelte";
 export type { LoadingStateVariant } from "./loading-state/types";
+export { default as LogoCarousel } from "./logo-carousel/logo-carousel.svelte";
 export { default as Markdown } from "./markdown/markdown.svelte";
 export { default as MaskText } from "./mask-text/mask-text.svelte";
 export type { MaskTextSize } from "./mask-text/variants";
 export { default as MegaNavbar } from "./mega-navbar/mega-navbar.svelte";
 export type { MegaMenuGroup, MegaMenuItem, MegaNavLink } from "./mega-navbar/types";
 export { default as Message } from "./message/message.svelte";
-export type { MessageLayout, MessageMotion, MessageTone } from "./message/variants";
+export { default as MessageGroup } from "./message/message-group.svelte";
+export { default as MessageAvatar } from "./message/message-avatar.svelte";
+export { default as MessageContent } from "./message/message-content.svelte";
+export { default as MessageBubble } from "./message/message-bubble.svelte";
+export { default as MessageHeader } from "./message/message-header.svelte";
+export { default as MessageFooter } from "./message/message-footer.svelte";
+export { default as MessageTyping } from "./message/message-typing.svelte";
+export type { MessageAlign, MessageBubbleVariant, MessageMotion } from "./message/variants";
 export { default as MetisText } from "./metis-text/metis-text.svelte";
 export type { MetisTextDirection } from "./metis-text/variants";
 export { default as MirrorText } from "./mirror-text/mirror-text.svelte";
@@ -248,10 +359,20 @@ export { default as PaginationLink } from "./pagination/pagination-link.svelte";
 export { default as PaginationNext } from "./pagination/pagination-next.svelte";
 export { default as PaginationPrevious } from "./pagination/pagination-previous.svelte";
 export { paginationRange } from "./pagination/range";
+export { default as PieChart } from "./pie-chart/pie-chart.svelte";
+export type { PieHover, PieVariant } from "./pie-chart/variants";
 export { default as Popover } from "./popover/popover.svelte";
 export { default as PopoverContent } from "./popover/popover-content.svelte";
 export { default as PopoverTrigger } from "./popover/popover-trigger.svelte";
 export { default as Progress } from "./progress/progress.svelte";
+export {
+	buildProjection,
+	type ProjectionMethod,
+	type ProjectionMode,
+	type ProjectionPoint,
+} from "./projection-line/geometry";
+export { default as ProjectionLine } from "./projection-line/projection-line.svelte";
+export type { ProjectionLineCurve, ProjectionLineVariant } from "./projection-line/variants";
 export { default as Question } from "./question/question.svelte";
 export type {
 	QuestionAnswer,
@@ -260,6 +381,14 @@ export type {
 	QuestionOption,
 } from "./question/types";
 export type { QuestionLayout } from "./question/variants";
+export type { RadarMetric, RadarSeries } from "./radar-chart/geometry";
+export { default as RadarArea } from "./radar-chart/radar-area.svelte";
+export { default as RadarAxis } from "./radar-chart/radar-axis.svelte";
+export { default as RadarChart } from "./radar-chart/radar-chart.svelte";
+export { default as RadarGrid } from "./radar-chart/radar-grid.svelte";
+export { default as RadarLabels } from "./radar-chart/radar-labels.svelte";
+export { default as RadarTooltip } from "./radar-chart/radar-tooltip.svelte";
+export type { RadarGridShape, RadarVariant } from "./radar-chart/variants";
 export { default as RadioGroup } from "./radio-group/radio-group.svelte";
 export { default as RadioGroupItem } from "./radio-group/radio-group-item.svelte";
 export type { RadioOrientation, RadioSize, RadioVariant } from "./radio-group/variants";
@@ -294,8 +423,21 @@ export { default as ResponsiveDialogFooter } from "./responsive-dialog/responsiv
 export { default as ResponsiveDialogHeader } from "./responsive-dialog/responsive-dialog-header.svelte";
 export { default as ResponsiveDialogTitle } from "./responsive-dialog/responsive-dialog-title.svelte";
 export { default as ResponsiveDialogTrigger } from "./responsive-dialog/responsive-dialog-trigger.svelte";
+export { default as RingChart } from "./ring-chart/ring-chart.svelte";
+export type { RingCap } from "./ring-chart/variants";
 export { default as RollText } from "./roll-text/roll-text.svelte";
 export type { RollStagger, RollTextSize } from "./roll-text/variants";
+export type {
+	SankeyData,
+	SankeyLinkInput,
+	SankeyNodeInput,
+	SankeyText,
+} from "./sankey-chart/layout";
+export { default as SankeyChart } from "./sankey-chart/sankey-chart.svelte";
+export type { SankeyLinkColor, SankeyOrientation } from "./sankey-chart/variants";
+export { default as Scatter } from "./scatter-chart/scatter.svelte";
+export { default as ScatterChart } from "./scatter-chart/scatter-chart.svelte";
+export type { ScatterShape, ScatterSize } from "./scatter-chart/variants";
 export { default as ScrollArea } from "./scroll-area/scroll-area.svelte";
 export { default as ScrollReveal } from "./scroll-reveal/scroll-reveal.svelte";
 export type { ScrollRevealSize } from "./scroll-reveal/variants";
@@ -340,6 +482,9 @@ export type { StaggeredLetterDirection } from "./staggered-letter/variants";
 export { default as StreamingText } from "./streaming-text/streaming-text.svelte";
 export type { StreamingSource, StreamingToken } from "./streaming-text/types";
 export type { StreamingTextLayout } from "./streaming-text/variants";
+export type { SunburstNode } from "./sunburst-chart/geometry";
+export { default as SunburstChart } from "./sunburst-chart/sunburst-chart.svelte";
+export type { SunburstVariant } from "./sunburst-chart/variants";
 export { default as SwapText } from "./swap-text/swap-text.svelte";
 export type { SwapTextSize } from "./swap-text/variants";
 export { default as Switch } from "./switch/switch.svelte";
@@ -409,9 +554,6 @@ export type {
 	ToolStep,
 } from "./tool-chips/types";
 export type { ToolChipsSize } from "./tool-chips/variants";
-export { default as Toolbar } from "./toolbar/toolbar.svelte";
-export { default as ToolbarButton } from "./toolbar/toolbar-button.svelte";
-export type { ToolbarOrientation } from "./toolbar/variants";
 export { default as Tooltip } from "./tooltip/tooltip.svelte";
 export { default as TooltipContent } from "./tooltip/tooltip-content.svelte";
 export { default as TooltipProvider } from "./tooltip/tooltip-provider.svelte";

@@ -25,11 +25,33 @@ export {
 	type AnimatedGradientTextProps,
 } from "./animated-gradient-text/animated-gradient-text";
 export type { GradientTextTone } from "./animated-gradient-text/variants";
+export {
+	Area,
+	AreaChart,
+	type AreaChartProps,
+	type AreaProps,
+} from "./area-chart/area-chart";
+export type { AreaVariant } from "./area-chart/variants";
 export { Attachment, type AttachmentProps } from "./attachment/attachment";
 export type { AttachmentStatus } from "./attachment/variants";
 export { Avatar, AvatarFallback, AvatarImage } from "./avatar/avatar";
 export { Badge, type BadgeProps } from "./badge/badge";
 export type { BadgeSize, BadgeVariant } from "./badge/variants";
+export { Bar, type BarProps } from "./bar-chart/bar";
+export { type BarAxisProps, BarXAxis, BarYAxis } from "./bar-chart/bar-axes";
+export {
+	BarChart,
+	type BarChartProps,
+	type BarContextValue,
+	useBarChart,
+} from "./bar-chart/bar-chart";
+export { BarTooltip, type BarTooltipProps } from "./bar-chart/bar-tooltip";
+export type {
+	BarEntrance,
+	BarLineCap,
+	BarOrientationVariant,
+	BarVariant,
+} from "./bar-chart/variants";
 export { BentoCell, BentoGrid, type BentoSpan } from "./bento-grid/bento-grid";
 export { BoldCopy, type BoldCopyProps } from "./bold-copy/bold-copy";
 export type { BoldCopySize } from "./bold-copy/variants";
@@ -45,6 +67,14 @@ export {
 export { Button, type ButtonProps } from "./button/button";
 export type { ButtonSize, ButtonVariant } from "./button/variants";
 export {
+	Candlestick,
+	CandlestickChart,
+	type CandlestickChartProps,
+	type CandlestickLabels,
+	type CandlestickProps,
+} from "./candlestick-chart/candlestick-chart";
+export type { CandlestickSize } from "./candlestick-chart/variants";
+export {
 	Card,
 	CardAction,
 	CardContent,
@@ -54,6 +84,12 @@ export {
 	CardTitle,
 	type CardVariant,
 } from "./card/card";
+export {
+	Background,
+	type BackgroundProps,
+	ReferenceArea,
+	type ReferenceAreaProps,
+} from "./chart/annotations";
 export {
 	CartesianGrid,
 	type CartesianGridProps,
@@ -72,27 +108,84 @@ export {
 	ChartStyle,
 	useChart,
 } from "./chart/chart";
-export type { ActivePoint, ChartStatus, Datum, FadeEdges, Margin } from "./chart/core";
+export type {
+	ActivePoint,
+	ChartPhase,
+	ChartStatus,
+	Datum,
+	Domain,
+	FadeEdges,
+	Margin,
+	SeriesConfig,
+	TooltipRow,
+} from "./chart/core";
 export {
 	type ActiveContextValue,
+	ActivePointProvider,
+	type CartesianContextValue,
+	CartesianProvider,
+	ChartFrame,
+	type ChartFrameProps,
+	type ChartFrameTable,
+	type TickScale,
+	useActivePoint,
+	useCartesian,
+} from "./chart/frame";
+export {
+	type ChartExtent,
 	type PlotContextValue,
+	PlotProvider,
 	TimeSeriesChart,
 	type TimeSeriesChartProps,
-	useActivePoint,
+	useActiveIndex,
+	useAnimatedDomain,
+	useChartPhase,
+	useExtentRegistry,
 	usePlot,
+	useRevealClip,
+	useSeriesRegistry,
 } from "./chart/time-series";
 export {
 	ChartTooltip,
 	ChartTooltipContent,
 	type ChartTooltipContentProps,
+	ChartTooltipPanel,
+	type ChartTooltipPanelProps,
 	type ChartTooltipProps,
 } from "./chart/tooltip";
 export type {
 	ChartAspect,
+	ChartBackgroundVariant,
 	ChartGridVariant,
 	ChartLegendAlign,
+	ChartReferenceTone,
 	ChartTooltipIndicator,
 } from "./chart/variants";
+export { ChartBrush, type ChartBrushProps } from "./chart-brush/chart-brush";
+export type { ChartBrushVariant } from "./chart-brush/variants";
+export {
+	type ChartMarker,
+	ChartMarkers,
+	type ChartMarkersProps,
+	ChartMarkerTooltip,
+	type ChartMarkerTooltipProps,
+} from "./chart-markers/chart-markers";
+export type { ChartMarkerAppearance, ChartMarkerSize } from "./chart-markers/variants";
+export { DashTail, type DashTailProps } from "./chart-series/dash-tail";
+export { HighlightBand, type HighlightBandProps } from "./chart-series/highlight";
+export {
+	LoadingPulse,
+	type LoadingPulseProps,
+	LoadingSweep,
+	type LoadingSweepProps,
+} from "./chart-series/loading";
+export {
+	SeriesMarkers,
+	type SeriesMarkersProps,
+	TerminalMarker,
+	type TerminalMarkerProps,
+} from "./chart-series/markers";
+export type { SeriesLoadingStyle, SeriesMarkerAppearance } from "./chart-series/variants";
 export {
 	ChatComposer,
 	type ChatComposerProps,
@@ -100,6 +193,13 @@ export {
 	type ChatTopic,
 } from "./chat-composer/chat-composer";
 export { Checkbox, type CheckboxProps } from "./checkbox/checkbox";
+export {
+	ChoroplethChart,
+	type ChoroplethChartProps,
+	type ChoroplethLabels,
+} from "./choropleth-chart/choropleth-chart";
+export type { GeoCollection, GeoFeature, ZoomState } from "./choropleth-chart/geometry";
+export type { ChoroplethProjection } from "./choropleth-chart/variants";
 export { CircularText, type CircularTextProps } from "./circular-text/circular-text";
 export type { CircularTextDirection } from "./circular-text/variants";
 export { CodeBlock, type CodeBlockProps } from "./code-block/code-block";
@@ -144,6 +244,13 @@ export {
 	type ComposerProps,
 } from "./composer/composer";
 export type { ComposerSize } from "./composer/variants";
+export {
+	ComposedChart,
+	type ComposedChartProps,
+	SeriesBar,
+	type SeriesBarProps,
+} from "./composed-chart/composed-chart";
+export type { SeriesBarVariant } from "./composed-chart/variants";
 export {
 	ContextCards,
 	type ContextCardsProps,
@@ -262,12 +369,33 @@ export {
 	type FullscreenNavProps,
 	type NavLink,
 } from "./fullscreen-nav/fullscreen-nav";
+export {
+	FunnelChart,
+	type FunnelChartProps,
+	type FunnelStage,
+} from "./funnel-chart/funnel-chart";
+export type {
+	FunnelEdges,
+	FunnelLabelLayout,
+	FunnelOrientation,
+} from "./funnel-chart/variants";
 export { Gauge, type GaugeProps } from "./gauge/gauge";
 export type { GaugeTone } from "./gauge/variants";
+export { GaugeChart, type GaugeChartProps } from "./gauge-chart/gauge-chart";
+export type { GaugeChartLayout, GaugeChartTone } from "./gauge-chart/variants";
 export { GibberishText, type GibberishTextProps } from "./gibberish-text/gibberish-text";
 export type { GibberishTextSize } from "./gibberish-text/variants";
 export { GlitchText, type GlitchTextProps } from "./glitch-text/glitch-text";
 export type { GlitchTextBlendMode, GlitchTextSize } from "./glitch-text/variants";
+export type { HeatmapLevel, HeatmapWeekStart } from "./heatmap-chart/calendar";
+export {
+	HeatmapChart,
+	type HeatmapChartProps,
+	HeatmapLegend,
+	type HeatmapLegendProps,
+	heatmapLevelKey,
+} from "./heatmap-chart/heatmap-chart";
+export type { HeatmapLegendAlign, HeatmapShape } from "./heatmap-chart/variants";
 export { HoverCard, HoverCardContent, HoverCardTrigger } from "./hover-card/hover-card";
 export { Input, type InputProps } from "./input/input";
 export type { InputSize } from "./input/variants";
@@ -282,13 +410,36 @@ export {
 	LineChart,
 	type LineChartProps,
 	type LineProps,
+	ProfitLossLine,
+	type ProfitLossLineProps,
 } from "./line-chart/line-chart";
-export type { LineCurve, LineVariant } from "./line-chart/variants";
+export type { LineCurve, LineVariant, ProfitLossEncoding } from "./line-chart/variants";
+export type { LiveFrame, LivePoint, Momentum } from "./live-line-chart/live";
+export {
+	LiveXAxis,
+	type LiveXAxisProps,
+	LiveYAxis,
+	type LiveYAxisProps,
+} from "./live-line-chart/live-axes";
+export { LiveLine, type LiveLineProps } from "./live-line-chart/live-line";
+export {
+	type LiveContextValue,
+	LiveLineChart,
+	type LiveLineChartProps,
+	useLive,
+} from "./live-line-chart/live-line-chart";
+export type {
+	LiveAxisPosition,
+	LiveLineCurve,
+	LiveLineTint,
+	LiveMomentum,
+} from "./live-line-chart/variants";
 export {
 	LoadingState,
 	type LoadingStateProps,
 	type LoadingStateVariant,
 } from "./loading-state/loading-state";
+export { LogoCarousel, type LogoCarouselProps } from "./logo-carousel/logo-carousel";
 export { Markdown, type MarkdownProps } from "./markdown/markdown";
 export { MaskText, type MaskTextProps } from "./mask-text/mask-text";
 export type { MaskTextSize } from "./mask-text/variants";
@@ -299,8 +450,20 @@ export {
 	type MegaNavbarProps,
 	type MegaNavLink,
 } from "./mega-navbar/mega-navbar";
-export { Message, type MessageProps } from "./message/message";
-export type { MessageLayout, MessageMotion, MessageTone } from "./message/variants";
+export {
+	Message,
+	MessageAvatar,
+	type MessageBubbleProps,
+	MessageBubble,
+	MessageContent,
+	MessageFooter,
+	MessageGroup,
+	type MessageGroupProps,
+	MessageHeader,
+	type MessageProps,
+	MessageTyping,
+} from "./message/message";
+export type { MessageAlign, MessageBubbleVariant, MessageMotion } from "./message/variants";
 export { MetisText, type MetisTextProps } from "./metis-text/metis-text";
 export type { MetisTextDirection } from "./metis-text/variants";
 export { MirrorText, type MirrorTextProps } from "./mirror-text/mirror-text";
@@ -321,8 +484,18 @@ export {
 	PaginationPrevious,
 } from "./pagination/pagination";
 export { paginationRange } from "./pagination/range";
+export { PieChart, type PieChartProps } from "./pie-chart/pie-chart";
+export type { PieHover, PieVariant } from "./pie-chart/variants";
 export { Popover, PopoverContent, PopoverTrigger } from "./popover/popover";
 export { Progress, type ProgressProps } from "./progress/progress";
+export {
+	buildProjection,
+	type ProjectionMethod,
+	type ProjectionMode,
+	type ProjectionPoint,
+} from "./projection-line/geometry";
+export { ProjectionLine, type ProjectionLineProps } from "./projection-line/projection-line";
+export type { ProjectionLineCurve, ProjectionLineVariant } from "./projection-line/variants";
 export {
 	Question,
 	type QuestionAnswer,
@@ -332,6 +505,20 @@ export {
 	type QuestionProps,
 } from "./question/question";
 export type { QuestionLayout } from "./question/variants";
+export {
+	RadarArea,
+	type RadarAreaProps,
+	RadarAxis,
+	RadarChart,
+	type RadarChartProps,
+	RadarGrid,
+	type RadarGridProps,
+	RadarLabels,
+	type RadarMetric,
+	type RadarSeries,
+	RadarTooltip,
+} from "./radar-chart/radar-chart";
+export type { RadarGridShape, RadarVariant } from "./radar-chart/variants";
 export {
 	RadioGroup,
 	RadioGroupItem,
@@ -380,8 +567,25 @@ export {
 	ResponsiveDialogTrigger,
 	type ResponsiveDialogVariant,
 } from "./responsive-dialog/responsive-dialog";
+export { RingChart, type RingChartProps } from "./ring-chart/ring-chart";
+export type { RingCap } from "./ring-chart/variants";
 export { RollText, type RollTextProps } from "./roll-text/roll-text";
 export type { RollStagger, RollTextSize } from "./roll-text/variants";
+export type {
+	SankeyData,
+	SankeyLinkInput,
+	SankeyNodeInput,
+	SankeyText,
+} from "./sankey-chart/layout";
+export { SankeyChart, type SankeyChartProps } from "./sankey-chart/sankey-chart";
+export type { SankeyLinkColor, SankeyOrientation } from "./sankey-chart/variants";
+export {
+	Scatter,
+	ScatterChart,
+	type ScatterChartProps,
+	type ScatterProps,
+} from "./scatter-chart/scatter-chart";
+export type { ScatterShape, ScatterSize } from "./scatter-chart/variants";
 export { ScrollArea, type ScrollAreaProps } from "./scroll-area/scroll-area";
 export { ScrollReveal, type ScrollRevealProps } from "./scroll-reveal/scroll-reveal";
 export type { ScrollRevealSize } from "./scroll-reveal/variants";
@@ -438,6 +642,12 @@ export {
 	type StreamingToken,
 } from "./streaming-text/streaming-text";
 export type { StreamingTextLayout } from "./streaming-text/variants";
+export {
+	SunburstChart,
+	type SunburstChartProps,
+	type SunburstNode,
+} from "./sunburst-chart/sunburst-chart";
+export type { SunburstVariant } from "./sunburst-chart/variants";
 export { SwapText, type SwapTextProps } from "./swap-text/swap-text";
 export type { SwapTextSize } from "./swap-text/variants";
 export { Switch, type SwitchProps } from "./switch/switch";
@@ -531,8 +741,6 @@ export {
 	type ToolStep,
 } from "./tool-chips/tool-chips";
 export type { ToolChipsSize } from "./tool-chips/variants";
-export { Toolbar, ToolbarButton, type ToolbarProps } from "./toolbar/toolbar";
-export type { ToolbarOrientation } from "./toolbar/variants";
 export {
 	Tooltip,
 	TooltipContent,

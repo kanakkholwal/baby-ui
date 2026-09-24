@@ -23,9 +23,17 @@ import {
 	TabsDemo,
 	TaskStepsDemo,
 } from "./agentic";
+import { AreaChartDemo } from "./area-chart";
+import { BarChartDemo } from "./bar-chart";
+import { CandlestickChartDemo } from "./candlestick-chart";
+import { ChartSeriesDemo } from "./chart-series";
+import { ChartBrushDemo } from "./chart-brush";
+import { ChartMarkersDemo } from "./chart-markers";
 import { ChartDemo, LineChartDemo } from "./charts";
 import { ChatComposerDemo } from "./chat-composer";
+import { ChoroplethChartDemo } from "./choropleth-chart";
 import { CollabCardDemo } from "./collab-card";
+import { ComposedChartDemo } from "./composed-chart";
 import {
 	AttachmentDemo,
 	CodeBlockDemo,
@@ -41,6 +49,7 @@ import {
 	ToolDemo,
 } from "./content";
 import { ContextCardsDemo } from "./context-cards";
+import { LiveLineChartDemo } from "./live-line-chart";
 import {
 	AlertDialogDemo,
 	CommandDemo,
@@ -49,14 +58,16 @@ import {
 	FullscreenNavDemo,
 	SheetDemo,
 	ToastDemo,
-	ToolbarDemo,
 } from "./dialogs";
 import { DiffTableDemo } from "./diff-table";
 import { FilterTableDemo } from "./filter-table";
 import { FineTuneCardDemo } from "./fine-tune-card";
 import { FlowchartDemo } from "./flowchart";
 import { FooterDemo } from "./footer";
+import { FunnelChartDemo } from "./funnel-chart";
+import { GaugeChartDemo } from "./gauge-chart";
 import { LoadingStateDemo } from "./loading-state";
+import { LogoCarouselDemo } from "./logo-carousel";
 import { MegaNavbarDemo } from "./mega-navbar";
 import {
 	ComboboxDemo,
@@ -67,6 +78,10 @@ import {
 	SelectDemo,
 	TooltipDemo,
 } from "./overlays";
+import { HeatmapChartDemo } from "./heatmap-chart";
+import { PieChartDemo } from "./pie-chart";
+import { ProjectionLineDemo } from "./projection-line";
+import { SankeyChartDemo } from "./sankey-chart";
 import {
 	AccordionDemo,
 	AlertDemo,
@@ -94,11 +109,15 @@ import {
 	ToggleGroupDemo,
 	TypographyDemo,
 } from "./primitives2";
+import { RadarChartDemo } from "./radar-chart";
 import { RecommendationCardDemo } from "./recommendation-card";
 import { RecordsTableDemo } from "./records-table";
 import { ResponsiveDialogDemo } from "./responsive-dialog";
+import { RingChartDemo } from "./ring-chart";
+import { ScatterChartDemo } from "./scatter-chart";
 import { SidebarNavDemo } from "./sidebar-nav";
 import { StreamingTextDemo } from "./streaming-text";
+import { SunburstChartDemo } from "./sunburst-chart";
 import { TableDemo } from "./table";
 import { TaskRowsDemo } from "./task-rows";
 import {
@@ -319,7 +338,6 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	sheet: SheetDemo,
 	toast: ToastDemo,
 	command: CommandDemo,
-	toolbar: ToolbarDemo,
 	"fullscreen-nav": FullscreenNavDemo,
 	popover: PopoverDemo,
 	tooltip: TooltipDemo,
@@ -340,13 +358,33 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"context-cards": ContextCardsDemo,
 	"collab-card": CollabCardDemo,
 	chart: ChartDemo,
+	"chart-brush": ChartBrushDemo,
+	"chart-markers": ChartMarkersDemo,
+	"choropleth-chart": ChoroplethChartDemo,
+	"projection-line": ProjectionLineDemo,
+	"chart-series": ChartSeriesDemo,
 	"line-chart": LineChartDemo,
+	"area-chart": AreaChartDemo,
+	"composed-chart": ComposedChartDemo,
+	"live-line-chart": LiveLineChartDemo,
+	"scatter-chart": ScatterChartDemo,
+	"candlestick-chart": CandlestickChartDemo,
+	"bar-chart": BarChartDemo,
+	"pie-chart": PieChartDemo,
+	"heatmap-chart": HeatmapChartDemo,
+	"sankey-chart": SankeyChartDemo,
+	"ring-chart": RingChartDemo,
+	"radar-chart": RadarChartDemo,
+	"gauge-chart": GaugeChartDemo,
+	"sunburst-chart": SunburstChartDemo,
+	"funnel-chart": FunnelChartDemo,
 	"filter-table": FilterTableDemo,
 	"diff-table": DiffTableDemo,
 	"records-table": RecordsTableDemo,
 	"fine-tune-card": FineTuneCardDemo,
 	flowchart: FlowchartDemo,
 	"loading-state": LoadingStateDemo,
+	"logo-carousel": LogoCarouselDemo,
 	"recommendation-card": RecommendationCardDemo,
 	"chat-composer": ChatComposerDemo,
 	"thinking-state": ThinkingStateDemo,
