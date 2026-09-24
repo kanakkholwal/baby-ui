@@ -5,7 +5,7 @@ let { props = {} }: { props?: Record<string, unknown> } = $props();
 </script>
 
 <FillButton
-	tone={(props.tone as FillButtonTone) ?? "accent"}
+	tone={(props.tone as FillButtonTone) ?? "soft"}
 	size={(props.size as FillButtonSize) ?? "md"}
 >
 	Get started

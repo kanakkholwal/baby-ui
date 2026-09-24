@@ -1,6 +1,6 @@
 import { defineComponent } from "../index";
 
-const TONES = ["accent", "inverse"];
+const TONES = ["soft", "outline"];
 const SIZES = ["sm", "md", "lg"];
 
 export const fillButton = defineComponent({
@@ -16,8 +16,8 @@ export const fillButton = defineComponent({
 			name: "tone",
 			type: TONES.map((v) => `"${v}"`).join(" | "),
 			description:
-				"Fill colour: the accent token, or the page background for an inverted look.",
-			default: "accent",
+				"Base surface: a primary tint, or the page background with a border. The fill is always --primary.",
+			default: "soft",
 			control: { kind: "select", options: TONES },
 		},
 		{
