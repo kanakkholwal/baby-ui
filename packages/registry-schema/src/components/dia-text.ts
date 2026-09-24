@@ -8,7 +8,7 @@ export const diaText = defineComponent({
 	description:
 		"A band of colour sweeps across and leaves the text behind it, like the Dia browser.",
 	category: "text",
-	status: "alpha",
+	status: "stable",
 	variants: { size: SIZES },
 	props: [
 		{

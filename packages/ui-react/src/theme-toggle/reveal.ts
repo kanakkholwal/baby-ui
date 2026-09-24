@@ -37,14 +37,33 @@ html[data-theme-reveal="blinds"]::view-transition-old(root) {
 }
 html[data-theme-reveal="blinds"]::view-transition-new(root) {
 	mix-blend-mode: normal;
-	mask-image: linear-gradient(
-		90deg,
-		#000 0 var(--theme-reveal-slat),
-		transparent calc(var(--theme-reveal-slat) + 20px)
-	);
-	mask-size: 72px 100%;
 	mask-repeat: repeat;
+	mask-composite: intersect;
 	animation: theme-reveal-blinds 700ms var(--ease-out);
+}
+html[data-theme-reveal="blinds"][data-theme-reveal-start="top-left"]::view-transition-new(root) {
+	mask-image: linear-gradient(90deg, #000 0 var(--theme-reveal-slat), transparent calc(var(--theme-reveal-slat) + 20px)), linear-gradient(180deg, #000 0 var(--theme-reveal-slat), transparent calc(var(--theme-reveal-slat) + 20px));
+	mask-size: 72px 100%, 100% 72px;
+}
+html[data-theme-reveal="blinds"][data-theme-reveal-start="top-right"]::view-transition-new(root) {
+	mask-image: linear-gradient(270deg, #000 0 var(--theme-reveal-slat), transparent calc(var(--theme-reveal-slat) + 20px)), linear-gradient(180deg, #000 0 var(--theme-reveal-slat), transparent calc(var(--theme-reveal-slat) + 20px));
+	mask-size: 72px 100%, 100% 72px;
+}
+html[data-theme-reveal="blinds"][data-theme-reveal-start="bottom-left"]::view-transition-new(root) {
+	mask-image: linear-gradient(90deg, #000 0 var(--theme-reveal-slat), transparent calc(var(--theme-reveal-slat) + 20px)), linear-gradient(0deg, #000 0 var(--theme-reveal-slat), transparent calc(var(--theme-reveal-slat) + 20px));
+	mask-size: 72px 100%, 100% 72px;
+}
+html[data-theme-reveal="blinds"][data-theme-reveal-start="bottom-right"]::view-transition-new(root) {
+	mask-image: linear-gradient(270deg, #000 0 var(--theme-reveal-slat), transparent calc(var(--theme-reveal-slat) + 20px)), linear-gradient(0deg, #000 0 var(--theme-reveal-slat), transparent calc(var(--theme-reveal-slat) + 20px));
+	mask-size: 72px 100%, 100% 72px;
+}
+html[data-theme-reveal="blinds"][data-theme-reveal-start="center"]::view-transition-new(root) {
+	mask-image: linear-gradient(90deg, transparent calc(50% - var(--theme-reveal-slat) / 2 - 10px), #000 calc(50% - var(--theme-reveal-slat) / 2) calc(50% + var(--theme-reveal-slat) / 2), transparent calc(50% + var(--theme-reveal-slat) / 2 + 10px)), linear-gradient(180deg, transparent calc(50% - var(--theme-reveal-slat) / 2 - 10px), #000 calc(50% - var(--theme-reveal-slat) / 2) calc(50% + var(--theme-reveal-slat) / 2), transparent calc(50% + var(--theme-reveal-slat) / 2 + 10px));
+	mask-size: 72px 100%, 100% 72px;
+}
+html[data-theme-reveal="blinds"][data-theme-reveal-start="bottom-up"]::view-transition-new(root) {
+	mask-image: linear-gradient(0deg, #000 0 var(--theme-reveal-slat), transparent calc(var(--theme-reveal-slat) + 20px));
+	mask-size: 100% 72px;
 }
 @keyframes theme-reveal-rect {
 	from {
@@ -109,7 +128,7 @@ export function ensureRevealStyle() {
 }
 
 type ViewTransitionDocument = Document & {
-	startViewTransition(callback: () => void): { finished: Promise<void> };
+	startViewTransition(callback: () => void): { ready: Promise<void>; finished: Promise<void> };
 };
 
 export function supportsViewTransition(): boolean {
@@ -128,13 +147,17 @@ export function runThemeReveal(
 		root.dataset.themeReveal = "rect";
 	} else if (variant === "blinds") {
 		root.dataset.themeReveal = "blinds";
+		root.dataset.themeRevealStart = start;
 	} else {
 		root.style.setProperty("--theme-reveal-origin", CIRCLE_ORIGIN[start]);
 		root.dataset.themeReveal = variant;
 	}
 
 	const transition = (document as ViewTransitionDocument).startViewTransition(apply);
+	// A skipped transition (hidden tab, rapid re-toggle) rejects `ready`; the theme still applies.
+	transition.ready.catch(() => {});
 	transition.finished.finally(() => {
 		delete root.dataset.themeReveal;
+		delete root.dataset.themeRevealStart;
 	});
 }

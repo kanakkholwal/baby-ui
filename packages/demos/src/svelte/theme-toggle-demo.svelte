@@ -1,6 +1,7 @@
 <script lang="ts">
 import {
 	ThemeToggle,
+	type ThemeToggleStart,
 	type ThemeToggleValue,
 	type ThemeToggleVariant,
 } from "@baby-ui/svelte";
@@ -25,6 +26,7 @@ function onThemeChange(next: ThemeToggleValue) {
 	{theme}
 	{onThemeChange}
 	variant={(props.variant as ThemeToggleVariant) ?? "rectangle"}
+	start={(props.start as ThemeToggleStart) ?? "bottom-up"}
 	class="rounded-xl border border-border bg-background p-2.5"
 	iconClass="size-5"
 />

@@ -26,7 +26,7 @@ import { useEffect, useState } from "react";
 
 type Props = Record<string, unknown>;
 
-const DIA_WORDS = ["smooth.", "focused.", "refined."];
+const DIA_WORDS = ["fast.", "focused.", "effortlessly smooth."];
 const LOOP_ITEMS = ["Design", "Build", "Ship", "Iterate"];
 const MORPH_WORDS = ["fast", "fluid", "alive"];
 const INERTIA_TEXT =

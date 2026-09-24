@@ -8,7 +8,7 @@ export const textInertia = defineComponent({
 	description:
 		"Words get knocked along by the pointer's momentum and spring back into line.",
 	category: "text",
-	status: "alpha",
+	status: "stable",
 	variants: { size: SIZES },
 	props: [
 		{

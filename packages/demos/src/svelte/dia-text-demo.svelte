@@ -3,7 +3,7 @@ import { DiaText, type DiaTextSize } from "@baby-ui/svelte";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
 
-const words = ["smooth.", "focused.", "refined."];
+const words = ["fast.", "focused.", "effortlessly smooth."];
 </script>
 
 <p class="max-w-4xl text-center font-light text-3xl text-foreground tracking-tight sm:text-4xl">

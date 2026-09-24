@@ -8,7 +8,7 @@ export const textLoop = defineComponent({
 	name: "Text Loop",
 	description: "Loops through items, each sliding out as the next slides in behind it.",
 	category: "text",
-	status: "alpha",
+	status: "stable",
 	variants: { direction: DIRECTIONS, size: SIZES },
 	props: [
 		{

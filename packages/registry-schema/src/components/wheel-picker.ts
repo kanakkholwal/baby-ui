@@ -8,7 +8,7 @@ export const wheelPicker = defineComponent({
 	description:
 		"iOS-style barrel columns that flick, snap and loop, for times, dates and lists.",
 	category: "advanced",
-	status: "alpha",
+	status: "stable",
 	variants: { rows: ROWS },
 	props: [
 		{

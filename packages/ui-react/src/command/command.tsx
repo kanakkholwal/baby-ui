@@ -264,6 +264,7 @@ export function CommandItem({
 	className,
 	value,
 	keywords = "",
+	onSelect,
 	onClick,
 	children,
 	...props
@@ -273,13 +274,15 @@ export function CommandItem({
 > & {
 	value: string;
 	keywords?: string;
+	/** Fires on click or Enter, like cmdk. `onClick` is an alias. */
+	onSelect?: () => void;
 	onClick?: () => void;
 }) {
 	return (
 		<CommandPrimitive.Item
 			value={value}
 			keywords={keywords ? keywords.split(/\s+/) : undefined}
-			onSelect={onClick}
+			onSelect={onSelect ?? onClick}
 			data-slot="command-item"
 			className={cn(
 				"relative flex w-full items-center justify-between gap-3 rounded-lg px-2.5 py-2 text-left text-sm transition-colors",

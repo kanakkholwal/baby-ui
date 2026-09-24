@@ -8,7 +8,7 @@ export const weekCalendar = defineComponent({
 	description:
 		"A week strip that swipes between weeks and pulls open into the full month.",
 	category: "advanced",
-	status: "alpha",
+	status: "stable",
 	variants: { variant: VARIANTS },
 	props: [
 		{

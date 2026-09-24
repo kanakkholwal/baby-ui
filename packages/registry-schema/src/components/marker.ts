@@ -31,7 +31,7 @@ export const marker = defineComponent({
 	description:
 		"Hand-drawn annotations that ink themselves around text as it scrolls into view.",
 	category: "text",
-	status: "alpha",
+	status: "stable",
 	variants: { variant: VARIANTS, tone: TONES },
 	props: [
 		{

@@ -8,7 +8,7 @@ export const rollingDigits = defineComponent({
 	name: "Rolling Digits",
 	description: "A number whose changed digits spring in and out, one column at a time.",
 	category: "text",
-	status: "alpha",
+	status: "stable",
 	variants: { direction: DIRECTIONS, size: SIZES },
 	props: [
 		{

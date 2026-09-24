@@ -2,6 +2,7 @@
 
 import {
 	ThemeToggle,
+	type ThemeToggleStart,
 	type ThemeToggleValue,
 	type ThemeToggleVariant,
 } from "@baby-ui/react";
@@ -32,6 +33,7 @@ export function ThemeToggleDemo({ props }: { props: Props }) {
 			theme={theme}
 			onThemeChange={onThemeChange}
 			variant={(props.variant as ThemeToggleVariant) ?? "rectangle"}
+			start={(props.start as ThemeToggleStart) ?? "bottom-up"}
 			className="rounded-xl border border-border bg-background p-2.5"
 			iconClassName="size-5"
 		/>

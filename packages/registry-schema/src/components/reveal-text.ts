@@ -10,7 +10,7 @@ export const revealText = defineComponent({
 	description:
 		"Words or letters rise out of a blur one after another, on mount or in view.",
 	category: "text",
-	status: "alpha",
+	status: "stable",
 	variants: { split: SPLITS, trigger: TRIGGERS, size: SIZES },
 	props: [
 		{

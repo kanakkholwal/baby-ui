@@ -8,7 +8,7 @@ export const shimmerText = defineComponent({
 	description:
 		"Muted text with a bright band sweeping across it, for loading and thinking states.",
 	category: "text",
-	status: "alpha",
+	status: "stable",
 	variants: { size: SIZES },
 	props: [
 		{

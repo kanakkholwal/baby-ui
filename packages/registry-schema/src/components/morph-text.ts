@@ -8,7 +8,7 @@ export const morphText = defineComponent({
 	description:
 		"Display words that melt into one another through a blur and goo threshold.",
 	category: "text",
-	status: "alpha",
+	status: "stable",
 	variants: { size: SIZES },
 	props: [
 		{

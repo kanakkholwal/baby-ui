@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { flushSync } from "react-dom";
 import { cn } from "../lib/cn";
 import { ensureRevealStyle, runThemeReveal, supportsViewTransition } from "./reveal";
 import {
@@ -81,7 +82,8 @@ export function ThemeToggle({
 			return;
 		}
 
-		runThemeReveal(variant, start, () => setTheme(next));
+		// The new snapshot is taken when the callback returns, so the DOM must already be updated.
+		runThemeReveal(variant, start, () => flushSync(() => setTheme(next)));
 	}
 
 	return (

@@ -70,17 +70,11 @@ const pickerTrigger =
 	</svg>
 {/snippet}
 
-{#snippet row(label: string, control: import("svelte").Snippet)}
-	<div class="relative flex h-8 items-center justify-between">
-		<span class="text-[13px] text-muted-foreground">{label}</span>
-		{@render control()}
-	</div>
-{/snippet}
-
 <div data-slot="records-table-config-popover">
 	<div class="pb-2 font-medium text-[13.5px] text-foreground">{title}</div>
 
-	{#snippet typeControl()}
+	<div class="relative flex h-8 items-center justify-between">
+		<span class="text-[13px] text-muted-foreground">{labels.type}</span>
 		<Select
 			bind:value={() => column.type, (v) => onChange({ type: v as RecordsColumnType })}
 			items={typeItems}
@@ -100,10 +94,10 @@ const pickerTrigger =
 				{/each}
 			</SelectContent>
 		</Select>
-	{/snippet}
-	{@render row(labels.type, typeControl)}
+	</div>
 
-	{#snippet toolControl()}
+	<div class="relative flex h-8 items-center justify-between">
+		<span class="text-[13px] text-muted-foreground">{labels.tool}</span>
 		<Select
 			bind:value={() => column.tool, (tool) => onChange({ tool, toolKind: "model" })}
 			items={modelOptions.map((model) => ({ value: model, label: model }))}
@@ -126,10 +120,10 @@ const pickerTrigger =
 				{/each}
 			</SelectContent>
 		</Select>
-	{/snippet}
-	{@render row(labels.tool, toolControl)}
+	</div>
 
-	{#snippet groundingControl()}
+	<div class="relative flex h-8 items-center justify-between">
+		<span class="text-[13px] text-muted-foreground">{labels.grounding}</span>
 		<span class="flex items-center gap-2">
 			<Switch
 				aria-label={labels.grounding}
@@ -147,10 +141,10 @@ const pickerTrigger =
 				</HoverCardContent>
 			</HoverCard>
 		</span>
-	{/snippet}
-	{@render row(labels.grounding, groundingControl)}
+	</div>
 
-	{#snippet inputsControl()}
+	<div class="relative flex h-8 items-center justify-between">
+		<span class="text-[13px] text-muted-foreground">{labels.inputs}</span>
 		<Popover>
 			<PopoverTrigger
 				aria-label={labels.inputs}
@@ -187,8 +181,7 @@ const pickerTrigger =
 				</div>
 			</PopoverContent>
 		</Popover>
-	{/snippet}
-	{@render row(labels.inputs, inputsControl)}
+	</div>
 
 	{#if column.prompt}
 		<div class="mt-2 min-h-[64px] rounded-lg border border-border bg-muted p-3 text-[13px] leading-relaxed">

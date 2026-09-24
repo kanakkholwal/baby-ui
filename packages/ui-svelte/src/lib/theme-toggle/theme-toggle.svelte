@@ -1,4 +1,5 @@
 <script lang="ts">
+import { flushSync } from "svelte";
 import { cn } from "../lib/cn";
 import { ensureRevealStyle, runThemeReveal, supportsViewTransition } from "./reveal";
 import {
@@ -47,7 +48,8 @@ function toggle() {
 		return;
 	}
 
-	runThemeReveal(variant, start, () => setTheme(next));
+	// The new snapshot is taken when the callback returns, so the DOM must already be updated.
+	runThemeReveal(variant, start, () => flushSync(() => setTheme(next)));
 }
 </script>
 
