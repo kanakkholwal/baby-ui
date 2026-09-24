@@ -22,6 +22,32 @@ test("shared chart files are byte-identical across ports", async () => {
 	}
 });
 
+test("every chart family's shared .ts files are byte-identical across ports", async () => {
+	const { readdir } = await import("node:fs/promises");
+	const dirs = (await readdir("packages/ui-react/src")).filter(
+		(d) =>
+			d === "chart" ||
+			d.startsWith("chart-") ||
+			d.endsWith("-chart") ||
+			d === "projection-line",
+	);
+	let compared = 0;
+	for (const dir of dirs) {
+		for (const file of await readdir(`packages/ui-react/src/${dir}`)) {
+			if (!file.endsWith(".ts")) continue;
+			const svelte = await readFile(
+				`packages/ui-svelte/src/lib/${dir}/${file}`,
+				"utf8",
+			).catch(() => null);
+			if (svelte === null) continue;
+			const react = await readFile(`packages/ui-react/src/${dir}/${file}`, "utf8");
+			assert.equal(svelte, react, `${dir}/${file}`);
+			compared++;
+		}
+	}
+	assert.ok(compared >= 40, `compared ${compared} files`);
+});
+
 test("cubicBezier matches the CSS curve at its endpoints and midpoint", () => {
 	const ease = cubicBezier(0.85, 0, 0.15, 1);
 	assert.equal(ease(0), 0);

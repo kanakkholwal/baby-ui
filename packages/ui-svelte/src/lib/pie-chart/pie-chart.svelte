@@ -56,9 +56,8 @@ const rows = $derived(
 );
 const slices = $derived(pieSlices(rows, padAngle));
 const total = $derived(rows.reduce((sum, row) => sum + row.value, 0));
-const share = $derived(
-	(value: number) =>
-		`${chart.format.number(total > 0 ? Math.round((value / total) * 1000) / 10 : 0)}%`,
+const share = $derived((value: number) =>
+	chart.format.percent(total > 0 ? value / total : 0),
 );
 let instant = $state(false);
 function setActive(index: number | null, fromKeyboard: boolean) {

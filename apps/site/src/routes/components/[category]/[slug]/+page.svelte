@@ -26,6 +26,7 @@ import {
 	defaultProps,
 	specHref,
 } from "$lib/registry";
+import { installSourceUrl } from "$lib/source";
 import type { PageProps } from "./$types";
 
 let { data }: PageProps = $props();
@@ -187,8 +188,7 @@ const usage = $derived(
 				<InstallBlock
 					slug={data.spec.slug}
 					dependencies={port.dependencies}
-					files={port.files}
-					css={port.css}
+					source={installSourceUrl(data.spec.category, data.spec.slug, port.framework)}
 					{dialect}
 				/>
 			{/if}

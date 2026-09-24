@@ -646,6 +646,17 @@ export {
 } from "./staggered-letter/staggered-letter";
 export type { StaggeredLetterDirection } from "./staggered-letter/variants";
 export {
+	StatCard,
+	type StatCardChartKind,
+	type StatCardProps,
+	type StatCardSize,
+} from "./stat-card/stat-card";
+export {
+	StatCardMap,
+	type StatCardMapProps,
+	type StatCardMapSize,
+} from "./stat-card-map/stat-card-map";
+export {
 	type StreamingSource,
 	StreamingText,
 	type StreamingTextProps,

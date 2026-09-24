@@ -2,6 +2,7 @@
 
 import {
 	ChartContainer,
+	ChartLegend,
 	RadarArea,
 	RadarAxis,
 	RadarChart,
@@ -11,14 +12,14 @@ import {
 	RadarTooltip,
 	type RadarVariant,
 } from "@baby-ui/react";
-import { RADAR_METRICS, RADAR_SERIES } from "../data/radar";
+import { RADAR_CONFIG, RADAR_METRICS, RADAR_SERIES } from "../data/radar";
 
 type Props = Record<string, unknown>;
 
 export function RadarChartDemo({ props }: { props: Props }) {
 	return (
 		<div className="w-full max-w-md">
-			<ChartContainer config={{}} title="Player profiles" aspect="square">
+			<ChartContainer config={RADAR_CONFIG} title="Player profiles" aspect="square">
 				<RadarChart
 					data={RADAR_SERIES}
 					metrics={RADAR_METRICS}
@@ -34,6 +35,7 @@ export function RadarChartDemo({ props }: { props: Props }) {
 					))}
 					<RadarTooltip />
 				</RadarChart>
+				<ChartLegend />
 			</ChartContainer>
 		</div>
 	);

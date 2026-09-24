@@ -39,6 +39,7 @@ import {
 	ringPath,
 	seriesColor,
 	seriesDash,
+	seriesKey,
 	seriesPoints,
 } from "./geometry";
 import { type RadarGridShape, type RadarVariant, radar } from "./variants";
@@ -415,6 +416,7 @@ export interface RadarAreaProps {
 export function RadarArea({ index, showPoints = true, className }: RadarAreaProps) {
 	const { data, metrics, radius, levels, max, variant, animate, setActive } = useRadar();
 	const { active, instant } = useActivePoint();
+	const { hidden } = useChart();
 	const groupRef = useRef<SVGGElement>(null);
 	const scaleRef = useRef<Spring | null>(null);
 	const [progress, setProgress] = useState(animate ? 0 : 1);
@@ -450,6 +452,7 @@ export function RadarArea({ index, showPoints = true, className }: RadarAreaProp
 	);
 	if (!series) return null;
 	const color = seriesColor(series, index);
+	const isHidden = hidden.has(seriesKey(series));
 	const styles = radar({ variant });
 	return (
 		<g
@@ -459,7 +462,8 @@ export function RadarArea({ index, showPoints = true, className }: RadarAreaProp
 			style={
 				{
 					color,
-					opacity: visible ? (isOther ? 0.3 : 1) : 0,
+					opacity: visible && !isHidden ? (isOther ? 0.3 : 1) : 0,
+					pointerEvents: isHidden ? "none" : undefined,
 					filter: isActive ? `drop-shadow(0 0 12px ${color})` : undefined,
 				} as CSSProperties
 			}

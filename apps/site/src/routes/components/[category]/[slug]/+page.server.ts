@@ -6,7 +6,6 @@ import { error } from "@sveltejs/kit";
 import { prepare } from "$lib/docs-nodes";
 import { highlight, langFor } from "$lib/highlight";
 import { findSpec } from "$lib/registry";
-import { componentCss, sourceFiles } from "$lib/registry-items";
 import { usageSnippet } from "$lib/usage";
 import type { EntryGenerator, PageServerLoad } from "./$types";
 
@@ -25,20 +24,6 @@ export const load: PageServerLoad = async ({ params }) => {
 
 	const ports = await Promise.all(
 		FRAMEWORKS.filter((f) => spec.impl[f]).map(async (framework: Framework) => {
-			const files = await Promise.all(
-				sourceFiles(spec.slug, framework).map(async (file) => {
-					const tsLang = langFor(file.path);
-					const jsLang = file.jsPath ? langFor(file.jsPath) : tsLang;
-					return {
-						path: file.path,
-						jsPath: file.jsPath,
-						ts: { code: file.ts, lang: tsLang, html: await highlight(file.ts, tsLang) },
-						js: file.js
-							? { code: file.js, lang: jsLang, html: await highlight(file.js, jsLang) }
-							: null,
-					};
-				}),
-			);
 			const snippet = usageSnippet(spec.slug, framework);
 			const usage = snippet
 				? {
@@ -61,15 +46,10 @@ export const load: PageServerLoad = async ({ params }) => {
 					}
 				: null;
 			const dependencies = spec.impl[framework]?.dependencies ?? [];
-			const cssSource = componentCss(spec.slug, framework);
 			return {
 				framework,
 				usage,
 				dependencies,
-				files,
-				css: cssSource
-					? { code: cssSource, html: await highlight(cssSource, "css") }
-					: null,
 			};
 		}),
 	);

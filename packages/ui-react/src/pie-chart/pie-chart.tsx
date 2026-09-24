@@ -74,8 +74,7 @@ export function PieChart({
 	const slices = useMemo(() => pieSlices(rows, padAngle), [rows, padAngle]);
 	const total = rows.reduce((sum, row) => sum + row.value, 0);
 	const share = useCallback(
-		(value: number) =>
-			`${format.number(total > 0 ? Math.round((value / total) * 1000) / 10 : 0)}%`,
+		(value: number) => format.percent(total > 0 ? value / total : 0),
 		[total, format],
 	);
 	const { activeIndex, instant, setActive } = useActiveIndex(

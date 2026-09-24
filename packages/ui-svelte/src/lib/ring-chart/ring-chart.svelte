@@ -55,10 +55,7 @@ const rows = $derived(
 		(row) => !chart.hidden.has(row.key),
 	),
 );
-const progress = $derived(
-	(row: RingRow) =>
-		`${chart.format.number(Math.round((row.value / row.max) * 1000) / 10)}%`,
-);
+const progress = $derived((row: RingRow) => chart.format.percent(row.value / row.max));
 let instant = $state(false);
 function setActive(index: number | null, fromKeyboard: boolean) {
 	instant = fromKeyboard;

@@ -6,6 +6,8 @@ export interface RadarMetric {
 }
 
 export interface RadarSeries {
+	/** Legend and config key; defaults to the label. */
+	key?: string;
 	label: string;
 	values: Record<string, number>;
 	/** Defaults to the next `--chart-N` slot in order. */
@@ -37,6 +39,8 @@ export const RADAR_SPRING = {
 
 /** Dash per series slot, so series stay apart without colour. */
 export const SERIES_DASH = ["", "6 4", "2 4", "10 4 2 4", "1 3"] as const;
+
+export const seriesKey = (series: RadarSeries) => series.key ?? series.label;
 
 export const seriesColor = (series: RadarSeries, index: number) =>
 	series.color ?? `var(--chart-${(index % 5) + 1})`;

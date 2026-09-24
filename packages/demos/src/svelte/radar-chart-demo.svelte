@@ -1,6 +1,7 @@
 <script lang="ts">
 import {
 	ChartContainer,
+	ChartLegend,
 	RadarArea,
 	RadarAxis,
 	RadarChart,
@@ -10,13 +11,13 @@ import {
 	RadarTooltip,
 	type RadarVariant,
 } from "@baby-ui/svelte";
-import { RADAR_METRICS, RADAR_SERIES } from "../data/radar";
+import { RADAR_CONFIG, RADAR_METRICS, RADAR_SERIES } from "../data/radar";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
 </script>
 
 <div class="w-full max-w-md">
-	<ChartContainer config={{}} title="Player profiles" aspect="square">
+	<ChartContainer config={RADAR_CONFIG} title="Player profiles" aspect="square">
 		<RadarChart
 			data={RADAR_SERIES}
 			metrics={RADAR_METRICS}
@@ -32,5 +33,6 @@ let { props = {} }: { props?: Record<string, unknown> } = $props();
 			{/each}
 			<RadarTooltip />
 		</RadarChart>
+		<ChartLegend />
 	</ChartContainer>
 </div>

@@ -1,7 +1,7 @@
 <svelte:options namespace="svg" />
 
 <script lang="ts">
-import { useActivePoint } from "../chart/context";
+import { useActivePoint, useChart } from "../chart/context";
 import { CHART_DURATION, CHART_EASE, Spring, tween } from "../chart/motion";
 import { cn } from "../lib/cn";
 import { useRadar } from "./context";
@@ -12,6 +12,7 @@ import {
 	RADAR_TIMING,
 	seriesColor,
 	seriesDash,
+	seriesKey,
 	seriesPoints,
 } from "./geometry";
 import { radar } from "./variants";
@@ -75,6 +76,8 @@ const points = $derived(
 	series ? seriesPoints(series, ctx.metrics, ctx.radius, ctx.max, progress) : [],
 );
 const color = $derived(series ? seriesColor(series, index) : "currentColor");
+const chart = useChart();
+const isHidden = $derived(series ? chart.hidden.has(seriesKey(series)) : false);
 const styles = $derived(radar({ variant: ctx.variant }));
 </script>
 
@@ -84,7 +87,8 @@ const styles = $derived(radar({ variant: ctx.variant }));
 		data-series={index}
 		class={cn(styles.area(), className)}
 		style:color
-		style:opacity={visible ? (isOther ? 0.3 : 1) : 0}
+		style:opacity={visible && !isHidden ? (isOther ? 0.3 : 1) : 0}
+		style:pointer-events={isHidden ? "none" : undefined}
 		style:filter={isActive ? `drop-shadow(0 0 12px ${color})` : undefined}
 		onpointerenter={() => ctx.setActive(index, false)}
 		role="presentation"

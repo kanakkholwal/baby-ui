@@ -36,7 +36,7 @@ export const composedChart = defineComponent({
 			description:
 				"On the chart: fixed bar width in px; unset sizes bars to 88% of a slot.",
 			default: 0,
-			control: { kind: "number", min: 0, max: 24, step: 2 },
+			control: { kind: "number", min: 0, max: 20, step: 2 },
 		},
 		{
 			name: "barGap",

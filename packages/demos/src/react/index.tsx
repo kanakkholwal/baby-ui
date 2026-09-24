@@ -116,6 +116,7 @@ import { RingChartDemo } from "./ring-chart";
 import { SankeyChartDemo } from "./sankey-chart";
 import { ScatterChartDemo } from "./scatter-chart";
 import { SidebarNavDemo } from "./sidebar-nav";
+import { StatCardDemo, StatCardMapDemo } from "./stat-card";
 import { StreamingTextDemo } from "./streaming-text";
 import { SunburstChartDemo } from "./sunburst-chart";
 import { TableDemo } from "./table";
@@ -414,6 +415,8 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"jumping-text": JumpingTextDemo,
 	"mask-text": MaskTextDemo,
 	"staggered-letter": StaggeredLetterDemo,
+	"stat-card": StatCardDemo,
+	"stat-card-map": StatCardMapDemo,
 	"cycle-text": CycleTextDemo,
 	counter: CounterDemo,
 	ticker: TickerDemo,

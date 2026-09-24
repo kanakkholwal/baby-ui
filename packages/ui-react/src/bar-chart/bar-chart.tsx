@@ -382,6 +382,8 @@ function BarPlot({
 	const [morph, setMorph] = useState(1);
 	const from = useRef(new Map<string, Rect>());
 	const shown = useRef(new Map<string, Rect>());
+	const shownTargets = useRef(new Map<string, BarRect>());
+	const fromTargets = useRef(new Map<string, BarRect>());
 	const prevSignature = useRef(signature);
 	const phaseRef = useRef(phase);
 	phaseRef.current = phase;
@@ -393,6 +395,7 @@ function BarPlot({
 			return;
 		}
 		from.current = new Map(shown.current);
+		fromTargets.current = new Map(shownTargets.current);
 		setMorph(0);
 		const playback: Playback = tween({ duration: UPDATE_MS, onUpdate: setMorph });
 		return () => playback.stop();
@@ -420,11 +423,21 @@ function BarPlot({
 				});
 			}
 		}
+		// Bars whose category left the data shrink back to the baseline, mirroring the grow.
+		if (phase === "ready" && morph < 1) {
+			for (const [key, origin] of from.current) {
+				const target = fromTargets.current.get(key);
+				if (map.has(key) || !target) continue;
+				const rect = lerpRect(origin, collapsed(origin, orientation, base), morph);
+				map.set(key, { target, rect, progress: 1, elapsed: null });
+			}
+		}
 		return map;
 	}, [targets, orientation, base, phase, clock, data.length, entrance, variant, morph]);
 	// Snapshot after commit, so a morph starts from what was on screen, not the new targets.
 	useLayoutEffect(() => {
 		shown.current = new Map([...displayed].map(([key, d]) => [key, d.rect]));
+		shownTargets.current = new Map([...displayed].map(([key, d]) => [key, d.target]));
 	});
 
 	const pending = useRef<{ index: number; frame: number } | null>(null);

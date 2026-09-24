@@ -13,6 +13,7 @@ import type {
 } from "../chart/core";
 import { CHART_EASE, tween } from "../chart/motion";
 import {
+	type BarRect,
 	barLayout,
 	categoryOf,
 	collapsed,
@@ -148,6 +149,8 @@ const signature = $derived(
 let morph = $state(1);
 let from = new Map<string, Rect>();
 let shown = new Map<string, Rect>();
+let shownTargets = new Map<string, BarRect>();
+let fromTargets = new Map<string, BarRect>();
 // svelte-ignore state_referenced_locally
 let prevSignature = signature;
 $effect.pre(() => {
@@ -160,6 +163,7 @@ $effect.pre(() => {
 			return;
 		}
 		from = new Map(shown);
+		fromTargets = new Map(shownTargets);
 		morph = 0;
 		const playback = tween({
 			duration: UPDATE_MS,
@@ -193,10 +197,20 @@ const displayed = $derived.by(() => {
 			});
 		}
 	}
+	// Bars whose category left the data shrink back to the baseline, mirroring the grow.
+	if (phase === "ready" && morph < 1) {
+		for (const [key, origin] of from) {
+			const target = fromTargets.get(key);
+			if (map.has(key) || !target) continue;
+			const rect = lerpRect(origin, collapsed(origin, orientation, base), morph);
+			map.set(key, { target, rect, progress: 1, elapsed: null });
+		}
+	}
 	return map;
 });
 $effect.pre(() => {
 	shown = new Map([...displayed].map(([key, d]) => [key, d.rect]));
+	shownTargets = new Map([...displayed].map(([key, d]) => [key, d.target]));
 });
 
 let pending: { index: number; frame: number } | null = null;

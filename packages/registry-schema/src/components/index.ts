@@ -102,6 +102,7 @@ import { slider } from "./slider";
 import { spinner } from "./spinner";
 import { splitText } from "./split-text";
 import { staggeredLetter } from "./staggered-letter";
+import { statCard, statCardMap } from "./stat-card";
 import { streamingText } from "./streaming-text";
 import { sunburstChart } from "./sunburst-chart";
 import { swapText } from "./swap-text";
@@ -262,6 +263,8 @@ export const specs: ComponentSpec[] = [
 	chartMarkers,
 	projectionLine,
 	chartBrush,
+	statCard,
+	statCardMap,
 ];
 
 export function getSpec(slug: string): ComponentSpec | undefined {

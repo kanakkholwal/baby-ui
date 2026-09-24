@@ -10,6 +10,7 @@ export const RADAR_METRICS = [
 
 export const RADAR_SERIES = [
 	{
+		key: "forward",
 		label: "Forward",
 		values: {
 			pace: 88,
@@ -21,6 +22,7 @@ export const RADAR_SERIES = [
 		},
 	},
 	{
+		key: "midfielder",
 		label: "Midfielder",
 		values: {
 			pace: 72,
@@ -32,6 +34,7 @@ export const RADAR_SERIES = [
 		},
 	},
 	{
+		key: "defender",
 		label: "Defender",
 		values: {
 			pace: 64,
@@ -43,3 +46,9 @@ export const RADAR_SERIES = [
 		},
 	},
 ];
+
+export const RADAR_CONFIG = {
+	forward: { label: "Forward", color: "var(--chart-1)" },
+	midfielder: { label: "Midfielder", color: "var(--chart-2)" },
+	defender: { label: "Defender", color: "var(--chart-3)" },
+};

@@ -1,7 +1,8 @@
-import type { GeoCollection } from "@baby-ui/react";
+import type { FeatureCollection, Geometry } from "geojson";
 import { feature } from "topojson-client";
 import countries from "world-atlas/countries-110m.json";
 
+type GeoCollection = FeatureCollection<Geometry, Record<string, unknown> | null>;
 type Topology = Parameters<typeof feature>[0];
 const topology = countries as unknown as Topology;
 

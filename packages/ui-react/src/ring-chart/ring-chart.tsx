@@ -78,7 +78,7 @@ export function RingChart({
 		[data, dataKey, maxKey, nameKey, config, hidden],
 	);
 	const progress = useCallback(
-		(row: RingRow) => `${format.number(Math.round((row.value / row.max) * 1000) / 10)}%`,
+		(row: RingRow) => format.percent(row.value / row.max),
 		[format],
 	);
 	const { activeIndex, instant, setActive } = useActiveIndex(
