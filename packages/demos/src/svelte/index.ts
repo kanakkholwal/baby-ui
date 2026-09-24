@@ -149,5 +149,6 @@ export const demos: Record<string, DemoLoader> = {
 	"week-calendar": () => import("./week-calendar-demo.svelte"),
 	"rolling-digits": () => import("./rolling-digits-demo.svelte"),
 	marker: () => import("./marker-demo.svelte"),
+	"wheel-picker": () => import("./wheel-picker-demo.svelte"),
 	"text-explode-imessage": () => import("./text-explode-imessage-demo.svelte"),
 };

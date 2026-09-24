@@ -379,6 +379,7 @@ export { default as Popover } from "./popover/popover.svelte";
 export { default as PopoverContent } from "./popover/popover-content.svelte";
 export { default as PopoverTrigger } from "./popover/popover-trigger.svelte";
 export { default as Progress } from "./progress/progress.svelte";
+export type { ProgressSize, ProgressTone, ProgressVariant } from "./progress/variants";
 export {
 	buildProjection,
 	type ProjectionMethod,
@@ -514,6 +515,7 @@ export type { SidebarNavSize } from "./sidebar-nav/variants";
 export { default as Skeleton } from "./skeleton/skeleton.svelte";
 export type { SkeletonShape } from "./skeleton/variants";
 export { default as Slider } from "./slider/slider.svelte";
+export type { SliderMark, SliderSize } from "./slider/variants";
 export { default as Spinner } from "./spinner/spinner.svelte";
 export { default as SplitText } from "./split-text/split-text.svelte";
 export type { SplitTextSize } from "./split-text/variants";
@@ -619,3 +621,6 @@ export { default as WaveReveal } from "./wave-reveal/wave-reveal.svelte";
 export type { WeekStartsOn } from "./week-calendar/dates";
 export type { WeekCalendarLabels, WeekCalendarVariant } from "./week-calendar/variants";
 export { default as WeekCalendar } from "./week-calendar/week-calendar.svelte";
+export type { WheelPickerOption, WheelPickerRows } from "./wheel-picker/variants";
+export { default as WheelPicker } from "./wheel-picker/wheel-picker.svelte";
+export { default as WheelPickerColumn } from "./wheel-picker/wheel-picker-column.svelte";

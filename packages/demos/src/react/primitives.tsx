@@ -30,6 +30,9 @@ import {
 	type InputSize,
 	Label,
 	Progress,
+	type ProgressSize,
+	type ProgressTone,
+	type ProgressVariant,
 	Skeleton,
 	Switch,
 	Textarea,
@@ -301,20 +304,18 @@ export function ProgressDemo({ props }: { props: Props }) {
 	const value = Number(props.value ?? 68);
 	const indeterminate = Boolean(props.indeterminate);
 	return (
-		<div className="flex w-72 flex-col gap-2">
-			<div className="flex items-baseline justify-between gap-4 text-sm">
-				<span className="truncate text-foreground">design-system.zip</span>
-				<span className="shrink-0 text-muted-foreground text-xs tabular-nums">
-					{indeterminate ? "Preparing…" : `${value}%`}
-				</span>
-			</div>
+		<div className="flex w-72 flex-col items-center gap-2">
 			<Progress
 				value={value}
 				indeterminate={indeterminate}
-				size={(props.size as "sm" | "md" | "lg" | "xl") ?? "md"}
-				label="Upload progress"
+				size={(props.size as ProgressSize) ?? "md"}
+				tone={(props.tone as ProgressTone) ?? "default"}
+				variant={(props.variant as ProgressVariant) ?? "linear"}
+				showValue={props.showValue === true}
+				label={(props.label as string) || "design-system.zip"}
+				helper={(props.helper as string) || "12.4 MB of 18.2 MB, 6s remaining"}
+				indeterminateLabel="Preparing"
 			/>
-			<p className="text-muted-foreground text-xs">12.4 MB of 18.2 MB · 6s remaining</p>
 		</div>
 	);
 }

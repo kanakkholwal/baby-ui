@@ -3,10 +3,15 @@ import { defineComponent } from "../index";
 export const progress = defineComponent({
 	slug: "progress",
 	name: "Progress",
-	description: "Determinate and indeterminate progress bar sharing one track.",
+	description:
+		"Bar or ring progress with tones, a spring-filled value and a glossy indeterminate sweep.",
 	category: "base",
 	status: "stable",
-	variants: { size: ["sm", "md", "lg", "xl"] },
+	variants: {
+		size: ["sm", "md", "lg", "xl"],
+		tone: ["default", "info", "success", "destructive"],
+		variant: ["linear", "circular"],
+	},
 	props: [
 		{
 			name: "value",
@@ -29,14 +34,76 @@ export const progress = defineComponent({
 			default: "md",
 			control: { kind: "select", options: ["sm", "md", "lg", "xl"] },
 		},
+		{
+			name: "variant",
+			type: '"linear" | "circular"',
+			description: "A bar, or a ring with a gap either side of the fill.",
+			default: "linear",
+			control: { kind: "select", options: ["linear", "circular"] },
+		},
+		{
+			name: "tone",
+			type: '"default" | "info" | "success" | "destructive"',
+			description: "Fill colour from the theme.",
+			default: "default",
+			control: { kind: "select", options: ["default", "info", "success", "destructive"] },
+		},
+		{
+			name: "min",
+			type: "number",
+			description: "Value at an empty bar.",
+			default: 0,
+			control: { kind: "none" },
+		},
+		{
+			name: "max",
+			type: "number",
+			description: "Value at a full bar.",
+			default: 100,
+			control: { kind: "none" },
+		},
+		{
+			name: "label",
+			type: "string",
+			description:
+				"Accessible name; also the header title when showValue or helper is set.",
+			control: { kind: "text" },
+		},
+		{
+			name: "helper",
+			type: "string",
+			description: "Secondary line under the label.",
+			control: { kind: "text" },
+		},
+		{
+			name: "showValue",
+			type: "boolean",
+			description: "Header value on a bar, centre value on a ring.",
+			default: false,
+			control: { kind: "boolean" },
+		},
+		{
+			name: "formatValue",
+			type: "(value: number, percent: number) => string",
+			description: "Formats the shown value. Defaults to a rounded percent.",
+			control: { kind: "none" },
+		},
+		{
+			name: "indeterminateLabel",
+			type: "string",
+			description: "Shown in place of the value while indeterminate.",
+			default: "Loading",
+			control: { kind: "none" },
+		},
 	],
 	motion: {
 		springs: [],
 		reducedMotion:
 			"The indeterminate sweep stops and the track shows a static partial fill.",
 		behaviour: [
-			"A determinate bar eases its width over 280ms, so a jump from 10 to 90 reads as progress rather than a cut.",
-			"The indeterminate sweep is a 1.4s linear loop; easing it would imply progress that is not being measured.",
+			"The fill scales on iconiq's softer 84/18 spring, sampled into a CSS linear() easing over 761ms, so a jump from 10 to 90 reads as progress.",
+			"The indeterminate bar sweeps a glossy band across every 1.55s, fading in over the first 14% and out over the last 16%.",
+			"The ring's fill and its gapped track glide together on the same spring; an indeterminate ring spins a 28% arc every 1.15s.",
 		],
 	},
 	a11y: {

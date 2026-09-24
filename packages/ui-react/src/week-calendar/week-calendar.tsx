@@ -253,7 +253,7 @@ export function WeekCalendar({
 				inert={exiting}
 				className={cn(
 					styles.body(),
-					p.id > 0 && (exiting ? "week-calendar-out" : "week-calendar-in"),
+					exiting ? "week-calendar-out" : p.id > 0 && "week-calendar-in",
 				)}
 				onAnimationEnd={
 					exiting

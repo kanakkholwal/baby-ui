@@ -1760,3 +1760,744 @@
 		transform: none;
 	}
 }
+
+/* WheelPicker: each option rides a scroll-driven view() timeline through iconiq's barrel,
+   y = R sin(a), rotateX(-a), a = d * PI / (rows + 2); sampled per visible-row count. */
+.wheel-picker-item-3 {
+	animation: wheel-picker-3 linear both;
+	animation-timeline: view();
+}
+
+.wheel-picker-item-5 {
+	animation: wheel-picker-5 linear both;
+	animation-timeline: view();
+}
+
+.wheel-picker-item-7 {
+	animation: wheel-picker-7 linear both;
+	animation-timeline: view();
+}
+
+@keyframes wheel-picker-3 {
+	0% {
+		opacity: 0.259;
+		transform: translateY(calc(var(--wheel-h) * -0.486)) rotateX(-72deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	2.5% {
+		opacity: 0.317;
+		transform: translateY(calc(var(--wheel-h) * -0.42)) rotateX(-68.4deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	5% {
+		opacity: 0.375;
+		transform: translateY(calc(var(--wheel-h) * -0.36)) rotateX(-64.8deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	7.5% {
+		opacity: 0.432;
+		transform: translateY(calc(var(--wheel-h) * -0.305)) rotateX(-61.2deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	10% {
+		opacity: 0.488;
+		transform: translateY(calc(var(--wheel-h) * -0.256)) rotateX(-57.6deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	12.5% {
+		opacity: 0.543;
+		transform: translateY(calc(var(--wheel-h) * -0.212)) rotateX(-54deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	15% {
+		opacity: 0.596;
+		transform: translateY(calc(var(--wheel-h) * -0.174)) rotateX(-50.4deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	17.5% {
+		opacity: 0.647;
+		transform: translateY(calc(var(--wheel-h) * -0.14)) rotateX(-46.8deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	20% {
+		opacity: 0.695;
+		transform: translateY(calc(var(--wheel-h) * -0.111)) rotateX(-43.2deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	22.5% {
+		opacity: 0.741;
+		transform: translateY(calc(var(--wheel-h) * -0.086)) rotateX(-39.6deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	25% {
+		opacity: 0.784;
+		transform: translateY(calc(var(--wheel-h) * -0.065)) rotateX(-36deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	27.5% {
+		opacity: 0.823;
+		transform: translateY(calc(var(--wheel-h) * -0.047)) rotateX(-32.4deg);
+		color: color-mix(in oklab, var(--foreground) 10%, var(--muted-foreground));
+	}
+	30% {
+		opacity: 0.859;
+		transform: translateY(calc(var(--wheel-h) * -0.033)) rotateX(-28.8deg);
+		color: color-mix(in oklab, var(--foreground) 20%, var(--muted-foreground));
+	}
+	32.5% {
+		opacity: 0.891;
+		transform: translateY(calc(var(--wheel-h) * -0.022)) rotateX(-25.2deg);
+		color: color-mix(in oklab, var(--foreground) 30%, var(--muted-foreground));
+	}
+	35% {
+		opacity: 0.92;
+		transform: translateY(calc(var(--wheel-h) * -0.014)) rotateX(-21.6deg);
+		color: color-mix(in oklab, var(--foreground) 40%, var(--muted-foreground));
+	}
+	37.5% {
+		opacity: 0.944;
+		transform: translateY(calc(var(--wheel-h) * -0.008)) rotateX(-18deg);
+		color: color-mix(in oklab, var(--foreground) 50%, var(--muted-foreground));
+	}
+	40% {
+		opacity: 0.964;
+		transform: translateY(calc(var(--wheel-h) * -0.004)) rotateX(-14.4deg);
+		color: color-mix(in oklab, var(--foreground) 60%, var(--muted-foreground));
+	}
+	42.5% {
+		opacity: 0.98;
+		transform: translateY(calc(var(--wheel-h) * -0.002)) rotateX(-10.8deg);
+		color: color-mix(in oklab, var(--foreground) 70%, var(--muted-foreground));
+	}
+	45% {
+		opacity: 0.991;
+		transform: translateY(calc(var(--wheel-h) * -0.001)) rotateX(-7.2deg);
+		color: color-mix(in oklab, var(--foreground) 80%, var(--muted-foreground));
+	}
+	47.5% {
+		opacity: 0.998;
+		transform: translateY(calc(var(--wheel-h) * 0)) rotateX(-3.6deg);
+		color: color-mix(in oklab, var(--foreground) 90%, var(--muted-foreground));
+	}
+	50% {
+		opacity: 1;
+		transform: translateY(calc(var(--wheel-h) * 0)) rotateX(0deg);
+		color: color-mix(in oklab, var(--foreground) 100%, var(--muted-foreground));
+	}
+	52.5% {
+		opacity: 0.998;
+		transform: translateY(calc(var(--wheel-h) * 0)) rotateX(3.6deg);
+		color: color-mix(in oklab, var(--foreground) 90%, var(--muted-foreground));
+	}
+	55% {
+		opacity: 0.991;
+		transform: translateY(calc(var(--wheel-h) * 0.001)) rotateX(7.2deg);
+		color: color-mix(in oklab, var(--foreground) 80%, var(--muted-foreground));
+	}
+	57.5% {
+		opacity: 0.98;
+		transform: translateY(calc(var(--wheel-h) * 0.002)) rotateX(10.8deg);
+		color: color-mix(in oklab, var(--foreground) 70%, var(--muted-foreground));
+	}
+	60% {
+		opacity: 0.964;
+		transform: translateY(calc(var(--wheel-h) * 0.004)) rotateX(14.4deg);
+		color: color-mix(in oklab, var(--foreground) 60%, var(--muted-foreground));
+	}
+	62.5% {
+		opacity: 0.944;
+		transform: translateY(calc(var(--wheel-h) * 0.008)) rotateX(18deg);
+		color: color-mix(in oklab, var(--foreground) 50%, var(--muted-foreground));
+	}
+	65% {
+		opacity: 0.92;
+		transform: translateY(calc(var(--wheel-h) * 0.014)) rotateX(21.6deg);
+		color: color-mix(in oklab, var(--foreground) 40%, var(--muted-foreground));
+	}
+	67.5% {
+		opacity: 0.891;
+		transform: translateY(calc(var(--wheel-h) * 0.022)) rotateX(25.2deg);
+		color: color-mix(in oklab, var(--foreground) 30%, var(--muted-foreground));
+	}
+	70% {
+		opacity: 0.859;
+		transform: translateY(calc(var(--wheel-h) * 0.033)) rotateX(28.8deg);
+		color: color-mix(in oklab, var(--foreground) 20%, var(--muted-foreground));
+	}
+	72.5% {
+		opacity: 0.823;
+		transform: translateY(calc(var(--wheel-h) * 0.047)) rotateX(32.4deg);
+		color: color-mix(in oklab, var(--foreground) 10%, var(--muted-foreground));
+	}
+	75% {
+		opacity: 0.784;
+		transform: translateY(calc(var(--wheel-h) * 0.065)) rotateX(36deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	77.5% {
+		opacity: 0.741;
+		transform: translateY(calc(var(--wheel-h) * 0.086)) rotateX(39.6deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	80% {
+		opacity: 0.695;
+		transform: translateY(calc(var(--wheel-h) * 0.111)) rotateX(43.2deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	82.5% {
+		opacity: 0.647;
+		transform: translateY(calc(var(--wheel-h) * 0.14)) rotateX(46.8deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	85% {
+		opacity: 0.596;
+		transform: translateY(calc(var(--wheel-h) * 0.174)) rotateX(50.4deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	87.5% {
+		opacity: 0.543;
+		transform: translateY(calc(var(--wheel-h) * 0.212)) rotateX(54deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	90% {
+		opacity: 0.488;
+		transform: translateY(calc(var(--wheel-h) * 0.256)) rotateX(57.6deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	92.5% {
+		opacity: 0.432;
+		transform: translateY(calc(var(--wheel-h) * 0.305)) rotateX(61.2deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	95% {
+		opacity: 0.375;
+		transform: translateY(calc(var(--wheel-h) * 0.36)) rotateX(64.8deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	97.5% {
+		opacity: 0.317;
+		transform: translateY(calc(var(--wheel-h) * 0.42)) rotateX(68.4deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	100% {
+		opacity: 0.259;
+		transform: translateY(calc(var(--wheel-h) * 0.486)) rotateX(72deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+}
+
+@keyframes wheel-picker-5 {
+	0% {
+		opacity: 0.178;
+		transform: translateY(calc(var(--wheel-h) * -0.828)) rotateX(-77.14deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	2.5% {
+		opacity: 0.239;
+		transform: translateY(calc(var(--wheel-h) * -0.716)) rotateX(-73.29deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	5% {
+		opacity: 0.3;
+		transform: translateY(calc(var(--wheel-h) * -0.614)) rotateX(-69.43deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	7.5% {
+		opacity: 0.362;
+		transform: translateY(calc(var(--wheel-h) * -0.521)) rotateX(-65.57deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	10% {
+		opacity: 0.424;
+		transform: translateY(calc(var(--wheel-h) * -0.438)) rotateX(-61.71deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	12.5% {
+		opacity: 0.484;
+		transform: translateY(calc(var(--wheel-h) * -0.363)) rotateX(-57.86deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	15% {
+		opacity: 0.543;
+		transform: translateY(calc(var(--wheel-h) * -0.297)) rotateX(-54deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	17.5% {
+		opacity: 0.6;
+		transform: translateY(calc(var(--wheel-h) * -0.24)) rotateX(-50.14deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	20% {
+		opacity: 0.654;
+		transform: translateY(calc(var(--wheel-h) * -0.189)) rotateX(-46.29deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	22.5% {
+		opacity: 0.705;
+		transform: translateY(calc(var(--wheel-h) * -0.147)) rotateX(-42.43deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	25% {
+		opacity: 0.753;
+		transform: translateY(calc(var(--wheel-h) * -0.111)) rotateX(-38.57deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	27.5% {
+		opacity: 0.798;
+		transform: translateY(calc(var(--wheel-h) * -0.081)) rotateX(-34.71deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	30% {
+		opacity: 0.839;
+		transform: translateY(calc(var(--wheel-h) * -0.057)) rotateX(-30.86deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	32.5% {
+		opacity: 0.876;
+		transform: translateY(calc(var(--wheel-h) * -0.038)) rotateX(-27deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	35% {
+		opacity: 0.908;
+		transform: translateY(calc(var(--wheel-h) * -0.024)) rotateX(-23.14deg);
+		color: color-mix(in oklab, var(--foreground) 10%, var(--muted-foreground));
+	}
+	37.5% {
+		opacity: 0.936;
+		transform: translateY(calc(var(--wheel-h) * -0.014)) rotateX(-19.29deg);
+		color: color-mix(in oklab, var(--foreground) 25%, var(--muted-foreground));
+	}
+	40% {
+		opacity: 0.959;
+		transform: translateY(calc(var(--wheel-h) * -0.007)) rotateX(-15.43deg);
+		color: color-mix(in oklab, var(--foreground) 40%, var(--muted-foreground));
+	}
+	42.5% {
+		opacity: 0.977;
+		transform: translateY(calc(var(--wheel-h) * -0.003)) rotateX(-11.57deg);
+		color: color-mix(in oklab, var(--foreground) 55%, var(--muted-foreground));
+	}
+	45% {
+		opacity: 0.99;
+		transform: translateY(calc(var(--wheel-h) * -0.001)) rotateX(-7.71deg);
+		color: color-mix(in oklab, var(--foreground) 70%, var(--muted-foreground));
+	}
+	47.5% {
+		opacity: 0.997;
+		transform: translateY(calc(var(--wheel-h) * 0)) rotateX(-3.86deg);
+		color: color-mix(in oklab, var(--foreground) 85%, var(--muted-foreground));
+	}
+	50% {
+		opacity: 1;
+		transform: translateY(calc(var(--wheel-h) * 0)) rotateX(0deg);
+		color: color-mix(in oklab, var(--foreground) 100%, var(--muted-foreground));
+	}
+	52.5% {
+		opacity: 0.997;
+		transform: translateY(calc(var(--wheel-h) * 0)) rotateX(3.86deg);
+		color: color-mix(in oklab, var(--foreground) 85%, var(--muted-foreground));
+	}
+	55% {
+		opacity: 0.99;
+		transform: translateY(calc(var(--wheel-h) * 0.001)) rotateX(7.71deg);
+		color: color-mix(in oklab, var(--foreground) 70%, var(--muted-foreground));
+	}
+	57.5% {
+		opacity: 0.977;
+		transform: translateY(calc(var(--wheel-h) * 0.003)) rotateX(11.57deg);
+		color: color-mix(in oklab, var(--foreground) 55%, var(--muted-foreground));
+	}
+	60% {
+		opacity: 0.959;
+		transform: translateY(calc(var(--wheel-h) * 0.007)) rotateX(15.43deg);
+		color: color-mix(in oklab, var(--foreground) 40%, var(--muted-foreground));
+	}
+	62.5% {
+		opacity: 0.936;
+		transform: translateY(calc(var(--wheel-h) * 0.014)) rotateX(19.29deg);
+		color: color-mix(in oklab, var(--foreground) 25%, var(--muted-foreground));
+	}
+	65% {
+		opacity: 0.908;
+		transform: translateY(calc(var(--wheel-h) * 0.024)) rotateX(23.14deg);
+		color: color-mix(in oklab, var(--foreground) 10%, var(--muted-foreground));
+	}
+	67.5% {
+		opacity: 0.876;
+		transform: translateY(calc(var(--wheel-h) * 0.038)) rotateX(27deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	70% {
+		opacity: 0.839;
+		transform: translateY(calc(var(--wheel-h) * 0.057)) rotateX(30.86deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	72.5% {
+		opacity: 0.798;
+		transform: translateY(calc(var(--wheel-h) * 0.081)) rotateX(34.71deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	75% {
+		opacity: 0.753;
+		transform: translateY(calc(var(--wheel-h) * 0.111)) rotateX(38.57deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	77.5% {
+		opacity: 0.705;
+		transform: translateY(calc(var(--wheel-h) * 0.147)) rotateX(42.43deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	80% {
+		opacity: 0.654;
+		transform: translateY(calc(var(--wheel-h) * 0.189)) rotateX(46.29deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	82.5% {
+		opacity: 0.6;
+		transform: translateY(calc(var(--wheel-h) * 0.24)) rotateX(50.14deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	85% {
+		opacity: 0.543;
+		transform: translateY(calc(var(--wheel-h) * 0.297)) rotateX(54deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	87.5% {
+		opacity: 0.484;
+		transform: translateY(calc(var(--wheel-h) * 0.363)) rotateX(57.86deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	90% {
+		opacity: 0.424;
+		transform: translateY(calc(var(--wheel-h) * 0.438)) rotateX(61.71deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	92.5% {
+		opacity: 0.362;
+		transform: translateY(calc(var(--wheel-h) * 0.521)) rotateX(65.57deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	95% {
+		opacity: 0.3;
+		transform: translateY(calc(var(--wheel-h) * 0.614)) rotateX(69.43deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	97.5% {
+		opacity: 0.239;
+		transform: translateY(calc(var(--wheel-h) * 0.716)) rotateX(73.29deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	100% {
+		opacity: 0.178;
+		transform: translateY(calc(var(--wheel-h) * 0.828)) rotateX(77.14deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+}
+
+@keyframes wheel-picker-7 {
+	0% {
+		opacity: 0.134;
+		transform: translateY(calc(var(--wheel-h) * -1.179)) rotateX(-80deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	2.5% {
+		opacity: 0.196;
+		transform: translateY(calc(var(--wheel-h) * -1.02)) rotateX(-76deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	5% {
+		opacity: 0.259;
+		transform: translateY(calc(var(--wheel-h) * -0.875)) rotateX(-72deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	7.5% {
+		opacity: 0.323;
+		transform: translateY(calc(var(--wheel-h) * -0.744)) rotateX(-68deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	10% {
+		opacity: 0.387;
+		transform: translateY(calc(var(--wheel-h) * -0.625)) rotateX(-64deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	12.5% {
+		opacity: 0.451;
+		transform: translateY(calc(var(--wheel-h) * -0.519)) rotateX(-60deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	15% {
+		opacity: 0.513;
+		transform: translateY(calc(var(--wheel-h) * -0.425)) rotateX(-56deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	17.5% {
+		opacity: 0.572;
+		transform: translateY(calc(var(--wheel-h) * -0.343)) rotateX(-52deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	20% {
+		opacity: 0.63;
+		transform: translateY(calc(var(--wheel-h) * -0.271)) rotateX(-48deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	22.5% {
+		opacity: 0.685;
+		transform: translateY(calc(var(--wheel-h) * -0.21)) rotateX(-44deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	25% {
+		opacity: 0.736;
+		transform: translateY(calc(var(--wheel-h) * -0.159)) rotateX(-40deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	27.5% {
+		opacity: 0.784;
+		transform: translateY(calc(var(--wheel-h) * -0.116)) rotateX(-36deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	30% {
+		opacity: 0.827;
+		transform: translateY(calc(var(--wheel-h) * -0.082)) rotateX(-32deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	32.5% {
+		opacity: 0.867;
+		transform: translateY(calc(var(--wheel-h) * -0.055)) rotateX(-28deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	35% {
+		opacity: 0.901;
+		transform: translateY(calc(var(--wheel-h) * -0.035)) rotateX(-24deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	37.5% {
+		opacity: 0.931;
+		transform: translateY(calc(var(--wheel-h) * -0.02)) rotateX(-20deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	40% {
+		opacity: 0.956;
+		transform: translateY(calc(var(--wheel-h) * -0.01)) rotateX(-16deg);
+		color: color-mix(in oklab, var(--foreground) 20%, var(--muted-foreground));
+	}
+	42.5% {
+		opacity: 0.975;
+		transform: translateY(calc(var(--wheel-h) * -0.004)) rotateX(-12deg);
+		color: color-mix(in oklab, var(--foreground) 40%, var(--muted-foreground));
+	}
+	45% {
+		opacity: 0.989;
+		transform: translateY(calc(var(--wheel-h) * -0.001)) rotateX(-8deg);
+		color: color-mix(in oklab, var(--foreground) 60%, var(--muted-foreground));
+	}
+	47.5% {
+		opacity: 0.997;
+		transform: translateY(calc(var(--wheel-h) * 0)) rotateX(-4deg);
+		color: color-mix(in oklab, var(--foreground) 80%, var(--muted-foreground));
+	}
+	50% {
+		opacity: 1;
+		transform: translateY(calc(var(--wheel-h) * 0)) rotateX(0deg);
+		color: color-mix(in oklab, var(--foreground) 100%, var(--muted-foreground));
+	}
+	52.5% {
+		opacity: 0.997;
+		transform: translateY(calc(var(--wheel-h) * 0)) rotateX(4deg);
+		color: color-mix(in oklab, var(--foreground) 80%, var(--muted-foreground));
+	}
+	55% {
+		opacity: 0.989;
+		transform: translateY(calc(var(--wheel-h) * 0.001)) rotateX(8deg);
+		color: color-mix(in oklab, var(--foreground) 60%, var(--muted-foreground));
+	}
+	57.5% {
+		opacity: 0.975;
+		transform: translateY(calc(var(--wheel-h) * 0.004)) rotateX(12deg);
+		color: color-mix(in oklab, var(--foreground) 40%, var(--muted-foreground));
+	}
+	60% {
+		opacity: 0.956;
+		transform: translateY(calc(var(--wheel-h) * 0.01)) rotateX(16deg);
+		color: color-mix(in oklab, var(--foreground) 20%, var(--muted-foreground));
+	}
+	62.5% {
+		opacity: 0.931;
+		transform: translateY(calc(var(--wheel-h) * 0.02)) rotateX(20deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	65% {
+		opacity: 0.901;
+		transform: translateY(calc(var(--wheel-h) * 0.035)) rotateX(24deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	67.5% {
+		opacity: 0.867;
+		transform: translateY(calc(var(--wheel-h) * 0.055)) rotateX(28deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	70% {
+		opacity: 0.827;
+		transform: translateY(calc(var(--wheel-h) * 0.082)) rotateX(32deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	72.5% {
+		opacity: 0.784;
+		transform: translateY(calc(var(--wheel-h) * 0.116)) rotateX(36deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	75% {
+		opacity: 0.736;
+		transform: translateY(calc(var(--wheel-h) * 0.159)) rotateX(40deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	77.5% {
+		opacity: 0.685;
+		transform: translateY(calc(var(--wheel-h) * 0.21)) rotateX(44deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	80% {
+		opacity: 0.63;
+		transform: translateY(calc(var(--wheel-h) * 0.271)) rotateX(48deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	82.5% {
+		opacity: 0.572;
+		transform: translateY(calc(var(--wheel-h) * 0.343)) rotateX(52deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	85% {
+		opacity: 0.513;
+		transform: translateY(calc(var(--wheel-h) * 0.425)) rotateX(56deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	87.5% {
+		opacity: 0.451;
+		transform: translateY(calc(var(--wheel-h) * 0.519)) rotateX(60deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	90% {
+		opacity: 0.387;
+		transform: translateY(calc(var(--wheel-h) * 0.625)) rotateX(64deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	92.5% {
+		opacity: 0.323;
+		transform: translateY(calc(var(--wheel-h) * 0.744)) rotateX(68deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	95% {
+		opacity: 0.259;
+		transform: translateY(calc(var(--wheel-h) * 0.875)) rotateX(72deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	97.5% {
+		opacity: 0.196;
+		transform: translateY(calc(var(--wheel-h) * 1.02)) rotateX(76deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+	100% {
+		opacity: 0.134;
+		transform: translateY(calc(var(--wheel-h) * 1.179)) rotateX(80deg);
+		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.wheel-picker-item-3,
+	.wheel-picker-item-5,
+	.wheel-picker-item-7 {
+		animation: none;
+	}
+}
+
+/* Slider: thumb and fill glide to each new value on iconiq's 180/26 spring, sampled into
+   linear(); position properties cover both Base UI (inset-inline) and bits-ui (left/right). */
+.slider-glide {
+	--slider-spring: linear(0, 0.054, 0.166, 0.296, 0.422, 0.535, 0.631, 0.71, 0.774, 0.826, 0.866, 0.898, 0.922, 0.941, 0.955, 0.966, 0.974, 0.981, 0.985, 0.989, 0.992, 0.994, 0.995, 0.996, 1);
+	transition-property: inset-inline-start, left, right, width, scale, box-shadow;
+	transition-duration: 611ms, 611ms, 611ms, 611ms, var(--duration-press), var(--duration-press);
+	transition-timing-function:
+		var(--slider-spring), var(--slider-spring), var(--slider-spring), var(--slider-spring),
+		var(--ease-out), var(--ease-out);
+}
+
+.slider-glide[data-orientation="vertical"] {
+	transition-property: inset-block-end, bottom, top, height, scale, box-shadow;
+}
+
+/* Progress: the fill scales on iconiq's softer 84/18 spring; the sweep is a glossy band. */
+.progress-fill {
+	transform-origin: left center;
+	transition: transform 761ms
+		linear(0, 0.032, 0.109, 0.206, 0.312, 0.415, 0.513, 0.599, 0.674, 0.74, 0.794, 0.839, 0.875, 0.904, 0.928, 0.946, 0.96, 0.971, 0.979, 0.986, 0.99, 0.994, 0.996, 0.998, 1);
+}
+
+.progress-ring {
+	--progress-spring: linear(0, 0.032, 0.109, 0.206, 0.312, 0.415, 0.513, 0.599, 0.674, 0.74, 0.794, 0.839, 0.875, 0.904, 0.928, 0.946, 0.96, 0.971, 0.979, 0.986, 0.99, 0.994, 0.996, 0.998, 1);
+	transition:
+		stroke-dasharray 761ms var(--progress-spring),
+		transform 761ms var(--progress-spring);
+}
+
+.progress-gloss {
+	background-image: linear-gradient(
+		90deg,
+		transparent 0%,
+		color-mix(in oklab, currentColor 40%, transparent) 16%,
+		color-mix(in oklab, currentColor 80%, transparent) 50%,
+		color-mix(in oklab, currentColor 40%, transparent) 84%,
+		transparent 100%
+	);
+	animation:
+		progress-gloss-move 1.55s cubic-bezier(0.24, 0.04, 0.2, 1) infinite,
+		progress-gloss-fade 1.55s cubic-bezier(0.24, 0.04, 0.2, 1) infinite,
+		progress-gloss-scale 1.55s cubic-bezier(0.24, 0.04, 0.2, 1) infinite;
+}
+
+.progress-spin {
+	animation: spinner 1.15s linear infinite;
+}
+
+@keyframes progress-gloss-move {
+	from {
+		translate: -44% 0;
+	}
+	to {
+		translate: 238% 0;
+	}
+}
+
+@keyframes progress-gloss-fade {
+	0%,
+	100% {
+		opacity: 0;
+	}
+	14%,
+	84% {
+		opacity: 0.92;
+	}
+}
+
+@keyframes progress-gloss-scale {
+	0% {
+		scale: 0.94 1;
+	}
+	50% {
+		scale: 1 1;
+	}
+	100% {
+		scale: 0.96 1;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.slider-glide,
+	.progress-fill,
+	.progress-ring {
+		transition: none;
+	}
+	.progress-gloss,
+	.progress-spin {
+		animation: none;
+	}
+}

@@ -3,9 +3,11 @@ import { defineComponent } from "../index";
 export const slider = defineComponent({
 	slug: "slider",
 	name: "Slider",
-	description: "Range input with a filled track and a thumb that grows on interaction.",
+	description:
+		"Range input whose thumb and fill glide on a spring, with sizes, marks and a live value.",
 	category: "base",
 	status: "stable",
+	variants: { size: ["sm", "md", "lg"] },
 	props: [
 		{
 			name: "value",
@@ -51,6 +53,39 @@ export const slider = defineComponent({
 			control: { kind: "select", options: ["horizontal", "vertical"] },
 		},
 		{
+			name: "size",
+			type: '"sm" | "md" | "lg"',
+			description: "Thumb, track and hit-area scale.",
+			default: "md",
+			control: { kind: "select", options: ["sm", "md", "lg"] },
+		},
+		{
+			name: "showValue",
+			type: "boolean",
+			description: "Header with the label and the live value.",
+			default: false,
+			control: { kind: "boolean" },
+		},
+		{
+			name: "formatValue",
+			type: "(value: number) => string",
+			description: "Formats the header value.",
+			control: { kind: "none" },
+		},
+		{
+			name: "marks",
+			type: "{ value: number; label?: string }[]",
+			description:
+				"Ticks under a horizontal track; a labelled mark jumps there on click.",
+			control: { kind: "none" },
+		},
+		{
+			name: "onValueCommit",
+			type: "(value: number | number[]) => void",
+			description: "Fires once a drag or key press settles.",
+			control: { kind: "none" },
+		},
+		{
 			name: "range",
 			type: "boolean",
 			description:
@@ -61,10 +96,10 @@ export const slider = defineComponent({
 	],
 	motion: {
 		springs: [],
-		reducedMotion: "The thumb does not grow; the fill still tracks the value.",
+		reducedMotion: "Thumb and fill jump straight to the value; the thumb does not grow.",
 		behaviour: [
-			"The thumb scales to 1.15 on hover and 1.25 while dragging, over 140ms.",
-			"The fill has no transition: it must track the pointer exactly or the control feels broken.",
+			"The thumb and fill glide to each new value on iconiq's 180/26 spring, sampled into a CSS linear() easing over 611ms, so steps and key presses slide instead of jumping.",
+			"The thumb scales to 1.08 on hover and 1.15 while dragging; the track thickens by 2px on hover, over 140ms.",
 			"Vertical orientation needs an explicit height on an ancestor (percentage sizing has nothing to resolve against otherwise); the demo sets one directly since it's a one-off layout concern, not a design token.",
 		],
 	},
@@ -90,17 +125,19 @@ export const slider = defineComponent({
 			entry: "Slider",
 			files: [
 				{ path: "slider/slider.tsx", type: "registry:ui" },
+				{ path: "slider/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge", "@base-ui/react"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "@base-ui/react"],
 		},
 		svelte: {
 			entry: "Slider",
 			files: [
 				{ path: "slider/slider.svelte", type: "registry:ui" },
+				{ path: "slider/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge", "bits-ui"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "bits-ui"],
 		},
 	},
 	keywords: ["slider", "range", "form", "input"],

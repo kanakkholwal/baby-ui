@@ -30,6 +30,7 @@ import {
 	type ReasoningVariant,
 	ResponseStream,
 	Slider,
+	type SliderSize,
 	Tabs,
 	TabsContent,
 	TabsList,
@@ -99,6 +100,14 @@ export function RadioGroupDemo({ props }: { props: Props }) {
 	);
 }
 
+const SLIDER_MARKS = [
+	{ value: 0, label: "0" },
+	{ value: 25, label: "25" },
+	{ value: 50, label: "50" },
+	{ value: 75, label: "75" },
+	{ value: 100, label: "100" },
+];
+
 export function SliderDemo({ props }: { props: Props }) {
 	const orientation = (props.orientation as "horizontal" | "vertical") ?? "horizontal";
 	const range = Boolean(props.range);
@@ -107,21 +116,8 @@ export function SliderDemo({ props }: { props: Props }) {
 		setValue(range ? [25, 75] : Number(props.value ?? 50));
 	}, [range, props.value]);
 
-	const display = Array.isArray(value) ? `${value[0]}-${value[1]}` : value;
-
-	const wrapperClass =
-		orientation === "vertical" ? "flex flex-row gap-3" : "flex w-72 flex-col gap-3";
-	const labelClass =
-		orientation === "vertical"
-			? "flex flex-col items-center gap-1 text-sm"
-			: "flex items-baseline justify-between text-sm";
-
 	return (
-		<div className={wrapperClass}>
-			<div className={labelClass}>
-				<span className="text-muted-foreground">Volume</span>
-				<span className="font-mono text-foreground text-xs tabular-nums">{display}</span>
-			</div>
+		<div className={orientation === "vertical" ? "flex h-56" : "w-72"}>
 			<Slider
 				value={value}
 				onValueChange={setValue}
@@ -131,7 +127,9 @@ export function SliderDemo({ props }: { props: Props }) {
 				step={Number(props.step ?? 1)}
 				disabled={Boolean(props.disabled)}
 				label="Volume"
-				style={orientation === "vertical" ? { height: "14rem" } : undefined}
+				size={(props.size as SliderSize) ?? "md"}
+				showValue={props.showValue === true}
+				marks={SLIDER_MARKS}
 			/>
 		</div>
 	);

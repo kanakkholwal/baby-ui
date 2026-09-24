@@ -69,42 +69,48 @@ export function RevealTextDemo({ props }: { props: Props }) {
 	const split = (props.split as RevealTextSplit) ?? "word";
 	const trigger = (props.trigger as RevealTextTrigger) ?? "mount";
 	return (
-		<RevealText
-			key={`${split}-${trigger}-${props.staggerMs}-${props.blur}`}
-			as="h2"
-			text="Design meets motion, one word at a time"
-			split={split}
-			trigger={trigger}
-			once={Boolean(props.once ?? true)}
-			staggerMs={Number(props.staggerMs ?? 90)}
-			delayMs={Number(props.delayMs ?? 0)}
-			blur={Number(props.blur ?? 12)}
-			size={(props.size as RevealTextSize) ?? "inherit"}
-			className="text-center font-semibold text-2xl text-foreground tracking-tight"
-		/>
+		<div className="text-2xl">
+			<RevealText
+				key={`${split}-${trigger}-${props.staggerMs}-${props.blur}`}
+				as="h2"
+				text="Design meets motion, one word at a time"
+				split={split}
+				trigger={trigger}
+				once={Boolean(props.once ?? true)}
+				staggerMs={Number(props.staggerMs ?? 90)}
+				delayMs={Number(props.delayMs ?? 0)}
+				blur={Number(props.blur ?? 12)}
+				size={(props.size as RevealTextSize) ?? "inherit"}
+				className="text-center font-semibold text-foreground tracking-tight"
+			/>
+		</div>
 	);
 }
 
 export function ShimmerTextDemo({ props }: { props: Props }) {
 	return (
-		<ShimmerText
-			text="Agent is thinking ..."
-			durationMs={Number(props.durationMs ?? 2000)}
-			spread={Number(props.spread ?? 2)}
-			size={(props.size as ShimmerTextSize) ?? "inherit"}
-			className="font-light text-lg tracking-tight"
-		/>
+		<div className="text-lg">
+			<ShimmerText
+				text="Agent is thinking ..."
+				durationMs={Number(props.durationMs ?? 2000)}
+				spread={Number(props.spread ?? 2)}
+				size={(props.size as ShimmerTextSize) ?? "inherit"}
+				className="font-light tracking-tight"
+			/>
+		</div>
 	);
 }
 
 export function TextInertiaDemo({ props }: { props: Props }) {
 	return (
-		<TextInertia
-			text={INERTIA_TEXT}
-			intensity={Number(props.intensity ?? 1)}
-			size={(props.size as TextInertiaSize) ?? "inherit"}
-			className="w-full max-w-3xl justify-start text-left text-foreground text-lg leading-relaxed sm:text-xl"
-		/>
+		<div className="w-full max-w-3xl text-lg sm:text-xl">
+			<TextInertia
+				text={INERTIA_TEXT}
+				intensity={Number(props.intensity ?? 1)}
+				size={(props.size as TextInertiaSize) ?? "inherit"}
+				className="justify-start text-left text-foreground leading-relaxed"
+			/>
+		</div>
 	);
 }
 
@@ -137,7 +143,7 @@ export function TypewriterDemo({ props }: { props: Props }) {
 	);
 }
 
-const ROLLING_VALUES = [1284, 1312, 1296, 1450, 9870, 10240];
+const ROLLING_VALUES = [128400, 131250, 129600, 145000, 987000, 1024000];
 
 export function RollingDigitsDemo({ props }: { props: Props }) {
 	const [step, setStep] = useState(0);
@@ -146,17 +152,19 @@ export function RollingDigitsDemo({ props }: { props: Props }) {
 		return () => clearInterval(id);
 	}, []);
 	return (
-		<RollingDigits
-			value={ROLLING_VALUES[step] ?? 0}
-			pad={props.pad === undefined ? undefined : Number(props.pad)}
-			locale={(props.locale as string) || "en-US"}
-			startOnView={props.startOnView !== false}
-			stepMs={Number(props.stepMs ?? 80)}
-			coalesce={props.coalesce === true}
-			direction={(props.direction as RollingDigitsDirection) ?? "dynamic"}
-			offset={Number(props.offset ?? 32)}
-			size={(props.size as RollingDigitsSize) ?? "inherit"}
-			className="font-semibold text-5xl text-foreground tracking-tight"
-		/>
+		<div className="text-5xl">
+			<RollingDigits
+				value={ROLLING_VALUES[step] ?? 0}
+				pad={props.pad === undefined ? undefined : Number(props.pad)}
+				locale={(props.locale as string) || "en-US"}
+				startOnView={props.startOnView !== false}
+				stepMs={Number(props.stepMs ?? 80)}
+				coalesce={props.coalesce === true}
+				direction={(props.direction as RollingDigitsDirection) ?? "dynamic"}
+				offset={Number(props.offset ?? 32)}
+				size={(props.size as RollingDigitsSize) ?? "inherit"}
+				className="font-semibold text-foreground tracking-tight"
+			/>
+		</div>
 	);
 }

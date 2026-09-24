@@ -7,7 +7,7 @@ import {
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
 
-const values = [1284, 1312, 1296, 1450, 9870, 10240];
+const values = [128400, 131250, 129600, 145000, 987000, 1024000];
 let step = $state(0);
 
 $effect(() => {
@@ -16,15 +16,17 @@ $effect(() => {
 });
 </script>
 
-<RollingDigits
-	value={values[step] ?? 0}
-	pad={props.pad === undefined ? undefined : Number(props.pad)}
-	locale={(props.locale as string) || "en-US"}
-	startOnView={props.startOnView !== false}
-	stepMs={Number(props.stepMs ?? 80)}
-	coalesce={props.coalesce === true}
-	direction={(props.direction as RollingDigitsDirection) ?? "dynamic"}
-	offset={Number(props.offset ?? 32)}
-	size={(props.size as RollingDigitsSize) ?? "inherit"}
-	class="font-semibold text-5xl text-foreground tracking-tight"
-/>
+<div class="text-5xl">
+	<RollingDigits
+		value={values[step] ?? 0}
+		pad={props.pad === undefined ? undefined : Number(props.pad)}
+		locale={(props.locale as string) || "en-US"}
+		startOnView={props.startOnView !== false}
+		stepMs={Number(props.stepMs ?? 80)}
+		coalesce={props.coalesce === true}
+		direction={(props.direction as RollingDigitsDirection) ?? "dynamic"}
+		offset={Number(props.offset ?? 32)}
+		size={(props.size as RollingDigitsSize) ?? "inherit"}
+		class="font-semibold text-foreground tracking-tight"
+	/>
+</div>

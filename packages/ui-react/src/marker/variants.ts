@@ -53,7 +53,7 @@ export const marker = tv({
 			success: { decoration: "text-(--success)" },
 			warning: { decoration: "text-(--warning)" },
 			destructive: { decoration: "text-(--destructive)" },
-			accent: { decoration: "text-(--chart-5)" },
+			accent: { decoration: "text-(--chart-3)" },
 		},
 	},
 	compoundVariants: [

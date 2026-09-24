@@ -141,6 +141,7 @@ import { typography } from "./typography";
 import { underlineHoverText } from "./underline-hover-text";
 import { waveReveal } from "./wave-reveal";
 import { weekCalendar } from "./week-calendar";
+import { wheelPicker } from "./wheel-picker";
 
 export const specs: ComponentSpec[] = [
 	accordion,
@@ -287,6 +288,7 @@ export const specs: ComponentSpec[] = [
 	weekCalendar,
 	rollingDigits,
 	marker,
+	wheelPicker,
 ];
 
 export function getSpec(slug: string): ComponentSpec | undefined {

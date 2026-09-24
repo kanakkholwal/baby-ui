@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Slider } from "@baby-ui/svelte";
+import { Slider, type SliderSize } from "@baby-ui/svelte";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
 
@@ -13,18 +13,16 @@ $effect(() => {
 	value = range ? [25, 75] : Number(props.value ?? 50);
 });
 
-let display = $derived(Array.isArray(value) ? `${value[0]}-${value[1]}` : value);
+const marks = [
+	{ value: 0, label: "0" },
+	{ value: 25, label: "25" },
+	{ value: 50, label: "50" },
+	{ value: 75, label: "75" },
+	{ value: 100, label: "100" },
+];
 </script>
 
-<div class="flex gap-3 {orientation === 'vertical' ? 'flex-row' : 'w-72 flex-col'}">
-	<div
-		class="flex text-sm {orientation === 'vertical'
-			? 'flex-col items-center gap-1'
-			: 'items-baseline justify-between'}"
-	>
-		<span class="text-muted-foreground">Volume</span>
-		<span class="font-mono text-foreground text-xs tabular-nums">{display}</span>
-	</div>
+<div class={orientation === "vertical" ? "flex h-56" : "w-72"}>
 	<Slider
 		bind:value
 		{orientation}
@@ -33,6 +31,8 @@ let display = $derived(Array.isArray(value) ? `${value[0]}-${value[1]}` : value)
 		step={Number(props.step ?? 1)}
 		disabled={Boolean(props.disabled)}
 		label="Volume"
-		style={orientation === "vertical" ? "height: 14rem" : undefined}
+		size={(props.size as SliderSize) ?? "md"}
+		showValue={props.showValue === true}
+		{marks}
 	/>
 </div>

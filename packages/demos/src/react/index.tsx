@@ -165,6 +165,7 @@ import { ThemeToggleDemo } from "./theme-toggle";
 import { ThinkingStateDemo } from "./thinking-state";
 import { ToolChipsDemo } from "./tool-chips";
 import { WeekCalendarDemo } from "./week-calendar";
+import { WheelPickerDemo } from "./wheel-picker";
 
 type Props = Record<string, unknown>;
 
@@ -446,4 +447,5 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"week-calendar": WeekCalendarDemo,
 	"rolling-digits": RollingDigitsDemo,
 	marker: MarkerDemo,
+	"wheel-picker": WheelPickerDemo,
 };

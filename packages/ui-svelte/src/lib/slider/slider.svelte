@@ -1,6 +1,7 @@
 <script lang="ts">
 import { Slider as SliderPrimitive } from "bits-ui";
 import { cn } from "../lib/cn";
+import { type SliderMark, type SliderSize, slider, sliderPercent } from "./variants";
 
 let {
 	value = $bindable(50),
@@ -8,59 +9,89 @@ let {
 	max = 100,
 	orientation = "horizontal",
 	label,
+	size = "md",
+	showValue = false,
+	formatValue = (v: number) => String(v),
+	marks = [],
+	onValueChange,
+	onValueCommit,
+	disabled,
 	class: classProp,
 	...rest
 }: Omit<
 	SliderPrimitive.RootProps,
 	"type" | "value" | "min" | "max" | "onValueChange" | "onValueCommit" | "orientation"
 > & {
+	/** Bindable value; an array renders one thumb per entry. */
 	value?: number | number[];
 	min?: number;
 	max?: number;
 	orientation?: "horizontal" | "vertical";
+	/** Accessible name; also the header title when `showValue` is on. */
 	label?: string;
+	size?: SliderSize;
+	/** Header with the label and the live value. */
+	showValue?: boolean;
+	formatValue?: (value: number) => string;
+	/** Ticks under the track; clicking one jumps there. */
+	marks?: SliderMark[];
+	onValueChange?: (value: number | number[]) => void;
+	/** Fires once a drag or key press settles. */
+	onValueCommit?: (value: number | number[]) => void;
 } = $props();
 
-const thumbIndices = $derived(
-	Array.from({ length: Array.isArray(value) ? value.length : 1 }, (_, i) => i),
-);
-const rootClass = $derived(
-	cn(
-		"relative flex items-center",
-		orientation === "vertical" ? "h-full" : "w-full",
-		classProp,
-	),
-);
+const values = $derived(Array.isArray(value) ? value : [value]);
+const styles = $derived(slider({ size }));
+
+function jumpTo(target: number) {
+	if (!Array.isArray(value)) {
+		value = target;
+		onValueChange?.(target);
+		return;
+	}
+	const list = value;
+	const nearest = list.reduce(
+		(best, v, i) =>
+			Math.abs(v - target) < Math.abs((list[best] ?? 0) - target) ? i : best,
+		0,
+	);
+	value = list.map((v, i) => (i === nearest ? target : v));
+	onValueChange?.(value);
+}
 </script>
 
 {#snippet body()}
-	<div
-		class={cn(
-			"relative flex touch-none select-none items-center data-disabled:opacity-50",
-			orientation === "vertical" ? "h-full w-5 flex-col" : "h-5 w-full",
-		)}
-	>
-		<span
-			data-slot="slider-track"
-			class={cn(
-				"relative overflow-hidden rounded-full bg-input",
-				orientation === "vertical" ? "h-full w-1" : "h-1 w-full",
-			)}
-		>
-			<SliderPrimitive.Range
-				data-slot="slider-range"
-				class={cn("rounded-full bg-primary", orientation === "vertical" ? "w-full" : "h-full")}
-			/>
+	{#if showValue}
+		<div class={styles.header()}>
+			<span class={styles.title()}>{label}</span>
+			<span class={styles.value()}>{values.map(formatValue).join(" - ")}</span>
+		</div>
+	{/if}
+	<div data-orientation={orientation} class={styles.control()}>
+		<span data-slot="slider-track" data-orientation={orientation} class={styles.track()}>
+			<SliderPrimitive.Range data-slot="slider-range" class={styles.range()} />
 		</span>
-		{#each thumbIndices as index (index)}
-			<SliderPrimitive.Thumb
-				{index}
-				aria-label={label}
-				data-slot="slider-thumb"
-				class="block size-4 shrink-0 rounded-full border-2 border-primary bg-background shadow-sm outline-none transition-[scale,box-shadow] duration-[var(--duration-press)] ease-[var(--ease-out)] hover:scale-110 active:scale-125 focus-visible:shadow-[0_0_0_4px_var(--ring)] motion-reduce:transition-none"
-			/>
+		{#each values as _, index (index)}
+			<SliderPrimitive.Thumb {index} aria-label={label} data-slot="slider-thumb" class={styles.thumb()} />
 		{/each}
 	</div>
+	{#if marks.length > 0 && orientation === "horizontal"}
+		<div class={styles.marks()}>
+			{#each marks as mark (mark.value)}
+				<span class={styles.mark()} style:left="{sliderPercent(mark.value, min, max)}%">
+					<span aria-hidden="true" class={styles.markDot()}></span>
+					{#if mark.label}
+						<button
+							type="button"
+							{disabled}
+							class={styles.markButton()}
+							onclick={() => jumpTo(mark.value)}>{mark.label}</button
+						>
+					{/if}
+				</span>
+			{/each}
+		</div>
+	{/if}
 {/snippet}
 
 <!-- bits-ui's type/value form a discriminated union that can't narrow from a runtime variable. -->
@@ -71,8 +102,11 @@ const rootClass = $derived(
 		{min}
 		{max}
 		{orientation}
+		{disabled}
+		onValueChange={(next) => onValueChange?.(next)}
+		onValueCommit={(next) => onValueCommit?.(next)}
 		data-slot="slider"
-		class={rootClass}
+		class={cn(styles.root(), classProp)}
 		{...rest}
 	>
 		{@render body()}
@@ -84,8 +118,11 @@ const rootClass = $derived(
 		{min}
 		{max}
 		{orientation}
+		{disabled}
+		onValueChange={(next) => onValueChange?.(next)}
+		onValueCommit={(next) => onValueCommit?.(next)}
 		data-slot="slider"
-		class={rootClass}
+		class={cn(styles.root(), classProp)}
 		{...rest}
 	>
 		{@render body()}

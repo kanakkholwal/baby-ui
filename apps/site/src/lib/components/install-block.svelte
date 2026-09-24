@@ -1,4 +1,5 @@
 <script lang="ts">
+import { Skeleton } from "@baby-ui/svelte";
 import type { InstallSource } from "$lib/source";
 import CodeBlock from "./code-block.svelte";
 import InstallCommand from "./install-command.svelte";
@@ -54,7 +55,21 @@ const tabs = [
 				</li>
 			{/if}
 			{#await load(source)}
-				<li role="status" class="text-muted-foreground text-sm">Loading source files…</li>
+				<li role="status" aria-label="Loading source files" class="w-full">
+					<div class="min-w-0 max-w-full rounded-xl border border-border bg-card p-4">
+						<div class="flex items-center gap-2">
+							<Skeleton width="3rem" height="1.25rem" />
+							<Skeleton width="8rem" height="1rem" />
+						</div>
+						<div class="mt-4 flex flex-col gap-2.5">
+							<Skeleton height="0.8rem" width="90%" />
+							<Skeleton height="0.8rem" width="75%" />
+							<Skeleton height="0.8rem" width="85%" />
+							<Skeleton height="0.8rem" width="60%" />
+							<Skeleton height="0.8rem" width="80%" />
+						</div>
+					</div>
+				</li>
 			{:then { files, css }}
 				<li>
 					<p class="mb-2 text-foreground text-sm">Copy each file to the path shown.</p>

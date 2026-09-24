@@ -251,7 +251,7 @@ function toneOf(date: Date, p: Period): WeekCalendarDayTone {
 		data-period={p.id}
 		aria-hidden={exiting || undefined}
 		inert={exiting}
-		class={cn(styles.body(), p.id > 0 && (exiting ? "week-calendar-out" : "week-calendar-in"))}
+		class={cn(styles.body(), exiting ? "week-calendar-out" : p.id > 0 && "week-calendar-in")}
 		onanimationend={(event) => {
 			if (exiting && event.target === event.currentTarget)
 				leaving = leaving.filter((l) => l.id !== p.id);

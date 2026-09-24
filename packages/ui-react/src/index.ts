@@ -503,6 +503,7 @@ export { PieChart, type PieChartProps } from "./pie-chart/pie-chart";
 export type { PieHover, PieVariant } from "./pie-chart/variants";
 export { Popover, PopoverContent, PopoverTrigger } from "./popover/popover";
 export { Progress, type ProgressProps } from "./progress/progress";
+export type { ProgressSize, ProgressTone, ProgressVariant } from "./progress/variants";
 export {
 	buildProjection,
 	type ProjectionMethod,
@@ -681,6 +682,7 @@ export type { SidebarNavSize } from "./sidebar-nav/variants";
 export { Skeleton, type SkeletonProps } from "./skeleton/skeleton";
 export type { SkeletonShape } from "./skeleton/variants";
 export { Slider, type SliderProps } from "./slider/slider";
+export type { SliderMark, SliderSize } from "./slider/variants";
 export { Spinner, type SpinnerProps } from "./spinner/spinner";
 export { SplitText, type SplitTextProps } from "./split-text/split-text";
 export type { SplitTextSize } from "./split-text/variants";
@@ -835,3 +837,10 @@ export { WaveReveal, type WaveRevealProps } from "./wave-reveal/wave-reveal";
 export type { WeekStartsOn } from "./week-calendar/dates";
 export type { WeekCalendarLabels, WeekCalendarVariant } from "./week-calendar/variants";
 export { WeekCalendar, type WeekCalendarProps } from "./week-calendar/week-calendar";
+export type { WheelPickerOption, WheelPickerRows } from "./wheel-picker/variants";
+export {
+	WheelPicker,
+	WheelPickerColumn,
+	type WheelPickerColumnProps,
+	type WheelPickerProps,
+} from "./wheel-picker/wheel-picker";
