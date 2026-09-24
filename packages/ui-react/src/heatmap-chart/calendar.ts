@@ -28,7 +28,9 @@ export interface HeatmapCalendar {
 /** 0 is Sunday. Week info of the locale dates format in, where the runtime exposes it, else Sunday. */
 export function localeWeekStart(locale?: string): number {
 	try {
-		const info = new Intl.Locale(locale ?? new Intl.DateTimeFormat().resolvedOptions().locale) as Intl.Locale & {
+		const info = new Intl.Locale(
+			locale ?? new Intl.DateTimeFormat().resolvedOptions().locale,
+		) as Intl.Locale & {
 			getWeekInfo?: () => { firstDay: number };
 			weekInfo?: { firstDay: number };
 		};

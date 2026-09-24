@@ -26,9 +26,9 @@ import {
 import { AreaChartDemo } from "./area-chart";
 import { BarChartDemo } from "./bar-chart";
 import { CandlestickChartDemo } from "./candlestick-chart";
-import { ChartSeriesDemo } from "./chart-series";
 import { ChartBrushDemo } from "./chart-brush";
 import { ChartMarkersDemo } from "./chart-markers";
+import { ChartSeriesDemo } from "./chart-series";
 import { ChartDemo, LineChartDemo } from "./charts";
 import { ChatComposerDemo } from "./chat-composer";
 import { ChoroplethChartDemo } from "./choropleth-chart";
@@ -49,7 +49,6 @@ import {
 	ToolDemo,
 } from "./content";
 import { ContextCardsDemo } from "./context-cards";
-import { LiveLineChartDemo } from "./live-line-chart";
 import {
 	AlertDialogDemo,
 	CommandDemo,
@@ -66,6 +65,8 @@ import { FlowchartDemo } from "./flowchart";
 import { FooterDemo } from "./footer";
 import { FunnelChartDemo } from "./funnel-chart";
 import { GaugeChartDemo } from "./gauge-chart";
+import { HeatmapChartDemo } from "./heatmap-chart";
+import { LiveLineChartDemo } from "./live-line-chart";
 import { LoadingStateDemo } from "./loading-state";
 import { LogoCarouselDemo } from "./logo-carousel";
 import { MegaNavbarDemo } from "./mega-navbar";
@@ -78,10 +79,7 @@ import {
 	SelectDemo,
 	TooltipDemo,
 } from "./overlays";
-import { HeatmapChartDemo } from "./heatmap-chart";
 import { PieChartDemo } from "./pie-chart";
-import { ProjectionLineDemo } from "./projection-line";
-import { SankeyChartDemo } from "./sankey-chart";
 import {
 	AccordionDemo,
 	AlertDemo,
@@ -109,11 +107,13 @@ import {
 	ToggleGroupDemo,
 	TypographyDemo,
 } from "./primitives2";
+import { ProjectionLineDemo } from "./projection-line";
 import { RadarChartDemo } from "./radar-chart";
 import { RecommendationCardDemo } from "./recommendation-card";
 import { RecordsTableDemo } from "./records-table";
 import { ResponsiveDialogDemo } from "./responsive-dialog";
 import { RingChartDemo } from "./ring-chart";
+import { SankeyChartDemo } from "./sankey-chart";
 import { ScatterChartDemo } from "./scatter-chart";
 import { SidebarNavDemo } from "./sidebar-nav";
 import { StreamingTextDemo } from "./streaming-text";

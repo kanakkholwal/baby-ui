@@ -238,19 +238,19 @@ export {
 	CommandShortcut,
 } from "./command/command";
 export {
-	Composer,
-	type ComposerAction,
-	type ComposerModel,
-	type ComposerProps,
-} from "./composer/composer";
-export type { ComposerSize } from "./composer/variants";
-export {
 	ComposedChart,
 	type ComposedChartProps,
 	SeriesBar,
 	type SeriesBarProps,
 } from "./composed-chart/composed-chart";
 export type { SeriesBarVariant } from "./composed-chart/variants";
+export {
+	Composer,
+	type ComposerAction,
+	type ComposerModel,
+	type ComposerProps,
+} from "./composer/composer";
+export type { ComposerSize } from "./composer/variants";
 export {
 	ContextCards,
 	type ContextCardsProps,
@@ -453,8 +453,8 @@ export {
 export {
 	Message,
 	MessageAvatar,
-	type MessageBubbleProps,
 	MessageBubble,
+	type MessageBubbleProps,
 	MessageContent,
 	MessageFooter,
 	MessageGroup,
@@ -463,7 +463,11 @@ export {
 	type MessageProps,
 	MessageTyping,
 } from "./message/message";
-export type { MessageAlign, MessageBubbleVariant, MessageMotion } from "./message/variants";
+export type {
+	MessageAlign,
+	MessageBubbleVariant,
+	MessageMotion,
+} from "./message/variants";
 export { MetisText, type MetisTextProps } from "./metis-text/metis-text";
 export type { MetisTextDirection } from "./metis-text/variants";
 export { MirrorText, type MirrorTextProps } from "./mirror-text/mirror-text";
@@ -494,8 +498,14 @@ export {
 	type ProjectionMode,
 	type ProjectionPoint,
 } from "./projection-line/geometry";
-export { ProjectionLine, type ProjectionLineProps } from "./projection-line/projection-line";
-export type { ProjectionLineCurve, ProjectionLineVariant } from "./projection-line/variants";
+export {
+	ProjectionLine,
+	type ProjectionLineProps,
+} from "./projection-line/projection-line";
+export type {
+	ProjectionLineCurve,
+	ProjectionLineVariant,
+} from "./projection-line/variants";
 export {
 	Question,
 	type QuestionAnswer,

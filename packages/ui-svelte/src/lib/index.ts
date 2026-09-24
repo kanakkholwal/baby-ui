@@ -186,12 +186,12 @@ export {
 } from "./command/command-list.svelte";
 export { default as CommandSeparator } from "./command/command-separator.svelte";
 export { default as CommandShortcut } from "./command/command-shortcut.svelte";
-export { default as Composer } from "./composer/composer.svelte";
-export type { ComposerAction, ComposerModel } from "./composer/types";
-export type { ComposerSize } from "./composer/variants";
 export { default as ComposedChart } from "./composed-chart/composed-chart.svelte";
 export { default as SeriesBar } from "./composed-chart/series-bar.svelte";
 export type { SeriesBarVariant } from "./composed-chart/variants";
+export { default as Composer } from "./composer/composer.svelte";
+export type { ComposerAction, ComposerModel } from "./composer/types";
+export type { ComposerSize } from "./composer/variants";
 export { default as ContextCards } from "./context-cards/context-cards.svelte";
 export type { ContextChunk, ContextChunkTone } from "./context-cards/types";
 export { default as ContextMenu } from "./context-menu/context-menu.svelte";
@@ -336,14 +336,18 @@ export type { MaskTextSize } from "./mask-text/variants";
 export { default as MegaNavbar } from "./mega-navbar/mega-navbar.svelte";
 export type { MegaMenuGroup, MegaMenuItem, MegaNavLink } from "./mega-navbar/types";
 export { default as Message } from "./message/message.svelte";
-export { default as MessageGroup } from "./message/message-group.svelte";
 export { default as MessageAvatar } from "./message/message-avatar.svelte";
-export { default as MessageContent } from "./message/message-content.svelte";
 export { default as MessageBubble } from "./message/message-bubble.svelte";
-export { default as MessageHeader } from "./message/message-header.svelte";
+export { default as MessageContent } from "./message/message-content.svelte";
 export { default as MessageFooter } from "./message/message-footer.svelte";
+export { default as MessageGroup } from "./message/message-group.svelte";
+export { default as MessageHeader } from "./message/message-header.svelte";
 export { default as MessageTyping } from "./message/message-typing.svelte";
-export type { MessageAlign, MessageBubbleVariant, MessageMotion } from "./message/variants";
+export type {
+	MessageAlign,
+	MessageBubbleVariant,
+	MessageMotion,
+} from "./message/variants";
 export { default as MetisText } from "./metis-text/metis-text.svelte";
 export type { MetisTextDirection } from "./metis-text/variants";
 export { default as MirrorText } from "./mirror-text/mirror-text.svelte";
@@ -372,7 +376,10 @@ export {
 	type ProjectionPoint,
 } from "./projection-line/geometry";
 export { default as ProjectionLine } from "./projection-line/projection-line.svelte";
-export type { ProjectionLineCurve, ProjectionLineVariant } from "./projection-line/variants";
+export type {
+	ProjectionLineCurve,
+	ProjectionLineVariant,
+} from "./projection-line/variants";
 export { default as Question } from "./question/question.svelte";
 export type {
 	QuestionAnswer,
