@@ -60,18 +60,20 @@ export const attachment = defineComponent({
 		react: {
 			entry: "Attachment",
 			files: [
+				{ path: "attachment/variants.ts", type: "registry:ui" },
 				{ path: "attachment/attachment.tsx", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["tailwind-variants", "clsx", "tailwind-merge"],
 		},
 		svelte: {
 			entry: "Attachment",
 			files: [
+				{ path: "attachment/variants.ts", type: "registry:ui" },
 				{ path: "attachment/attachment.svelte", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["tailwind-variants", "clsx", "tailwind-merge"],
 		},
 	},
 	keywords: ["attachment"],

@@ -59,16 +59,18 @@ export const alertDialog = defineComponent({
 		react: {
 			entry: "AlertDialog",
 			files: [
+				{ path: "button/variants.ts", type: "registry:ui" },
 				{ path: "alert-dialog/alert-dialog.tsx", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["tailwind-variants", "@base-ui/react", "clsx", "tailwind-merge"],
 			// Reuses Dialog's DIALOG_PANEL and DialogVariant type.
 			registryDependencies: ["dialog"],
 		},
 		svelte: {
 			entry: "AlertDialog",
 			files: [
+				{ path: "button/variants.ts", type: "registry:ui" },
 				{ path: "alert-dialog/alert-dialog.svelte", type: "registry:ui" },
 				{ path: "alert-dialog/alert-dialog-trigger.svelte", type: "registry:ui" },
 				{ path: "alert-dialog/alert-dialog-content.svelte", type: "registry:ui" },
@@ -81,7 +83,7 @@ export const alertDialog = defineComponent({
 				{ path: "alert-dialog/context.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["tailwind-variants", "bits-ui", "clsx", "tailwind-merge"],
 			registryDependencies: ["dialog"],
 		},
 	},

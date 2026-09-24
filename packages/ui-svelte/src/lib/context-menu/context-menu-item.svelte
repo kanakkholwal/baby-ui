@@ -1,16 +1,24 @@
 <script lang="ts">
 import { ContextMenu as ContextMenuPrimitive } from "bits-ui";
 import { cn } from "../lib/cn";
-import { menuItem } from "../lib/menu";
+import { type MenuItemVariant, menuItem } from "../lib/menu";
 
 let {
 	class: classProp,
+	variant: variantProp,
 	destructive = false,
 	inset = false,
 	...rest
-}: ContextMenuPrimitive.ItemProps & { destructive?: boolean; inset?: boolean } = $props();
+}: ContextMenuPrimitive.ItemProps & {
+	variant?: MenuItemVariant;
+	/** Alias for `variant="destructive"`. */
+	destructive?: boolean;
+	inset?: boolean;
+} = $props();
 
-const variant = $derived(destructive ? "destructive" : "default");
+const variant = $derived<MenuItemVariant>(
+	variantProp ?? (destructive ? "destructive" : "default"),
+);
 </script>
 
 <ContextMenuPrimitive.Item

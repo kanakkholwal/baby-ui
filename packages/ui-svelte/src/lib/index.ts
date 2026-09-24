@@ -198,9 +198,13 @@ export type { ComposerSize } from "./composer/variants";
 export { default as ContextCards } from "./context-cards/context-cards.svelte";
 export type { ContextChunk, ContextChunkTone } from "./context-cards/types";
 export { default as ContextMenu } from "./context-menu/context-menu.svelte";
+export { default as ContextMenuCheckboxItem } from "./context-menu/context-menu-checkbox-item.svelte";
 export { default as ContextMenuContent } from "./context-menu/context-menu-content.svelte";
+export { default as ContextMenuGroup } from "./context-menu/context-menu-group.svelte";
 export { default as ContextMenuItem } from "./context-menu/context-menu-item.svelte";
 export { default as ContextMenuLabel } from "./context-menu/context-menu-label.svelte";
+export { default as ContextMenuRadioGroup } from "./context-menu/context-menu-radio-group.svelte";
+export { default as ContextMenuRadioItem } from "./context-menu/context-menu-radio-item.svelte";
 export { default as ContextMenuSeparator } from "./context-menu/context-menu-separator.svelte";
 export { default as ContextMenuShortcut } from "./context-menu/context-menu-shortcut.svelte";
 export { default as ContextMenuSub } from "./context-menu/context-menu-sub.svelte";
@@ -425,11 +429,16 @@ export type {
 } from "./recommendation-card/types";
 export { default as RecordsTable } from "./records-table/records-table.svelte";
 export type {
+	ColumnKey,
 	RecordRow,
+	RecordSort,
 	RecordSortKey,
+	RecordsColumnConfig,
 	RecordsColumnMeta,
+	RecordsColumnSettings,
 	RecordsColumnType,
 	RecordsPrompt,
+	RecordsTableConfig,
 	RecordsTableLabels,
 	RecordsToolKind,
 } from "./records-table/types";

@@ -14,6 +14,8 @@ export interface CheckboxProps {
 	size?: CheckboxSize;
 	label?: string;
 	description?: string;
+	/** Accessible name when there is no visible `label`. */
+	"aria-label"?: string;
 	className?: string;
 	name?: string;
 	onCheckedChange?: (checked: boolean) => void;
@@ -26,6 +28,7 @@ export function Checkbox({
 	size = "md",
 	label,
 	description,
+	"aria-label": ariaLabel,
 	className,
 	name,
 	onCheckedChange,
@@ -41,6 +44,7 @@ export function Checkbox({
 			disabled={disabled}
 			name={name}
 			onCheckedChange={onCheckedChange}
+			aria-label={label ? undefined : ariaLabel}
 			data-slot="checkbox"
 			className={cn(frame.box(), !label && !description && className)}
 		>

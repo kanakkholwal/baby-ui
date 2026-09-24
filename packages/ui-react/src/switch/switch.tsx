@@ -12,6 +12,8 @@ export interface SwitchProps {
 	disabled?: boolean;
 	size?: SwitchSize;
 	label?: string;
+	/** Accessible name when there is no visible `label`. */
+	"aria-label"?: string;
 	className?: string;
 	onCheckedChange?: (checked: boolean) => void;
 }
@@ -21,6 +23,7 @@ export function Switch({
 	disabled = false,
 	size = "md",
 	label,
+	"aria-label": ariaLabel,
 	className,
 	onCheckedChange,
 }: SwitchProps) {
@@ -33,7 +36,7 @@ export function Switch({
 			disabled={disabled}
 			onCheckedChange={onCheckedChange}
 			data-slot="switch"
-			aria-label={label ? undefined : "Toggle"}
+			aria-label={label ? undefined : (ariaLabel ?? "Toggle")}
 			className={cn(switchTrack({ size }), !label && className)}
 		>
 			<SwitchPrimitive.Thumb className={switchThumb({ size })} />

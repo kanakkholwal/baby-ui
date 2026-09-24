@@ -54,6 +54,11 @@ const MODEL_OPTIONS = ["GPT-5", "Claude Sonnet 5", "Gemini 2.5 Pro"];
 
 let calculatingColumn = $state<string | null>(null);
 let resolvedCount = $state(0);
+let showAi = $state(false);
+
+$effect.pre(() => {
+	showAi = props.showAiColumn === true;
+});
 
 $effect(() => {
 	if (!calculatingColumn) return;
@@ -78,6 +83,7 @@ function handleCalculate(column: string) {
 	modelOptions={MODEL_OPTIONS}
 	fill={props.fill as boolean | undefined}
 	density={props.density as RecordsDensity | undefined}
+	bind:showAiColumn={showAi}
 	{calculatingColumn}
 	{resolvedCount}
 	onCalculate={handleCalculate}

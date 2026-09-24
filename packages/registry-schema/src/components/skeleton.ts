@@ -54,18 +54,20 @@ export const skeleton = defineComponent({
 		react: {
 			entry: "Skeleton",
 			files: [
+				{ path: "skeleton/variants.ts", type: "registry:ui" },
 				{ path: "skeleton/skeleton.tsx", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["tailwind-variants", "clsx", "tailwind-merge"],
 		},
 		svelte: {
 			entry: "Skeleton",
 			files: [
+				{ path: "skeleton/variants.ts", type: "registry:ui" },
 				{ path: "skeleton/skeleton.svelte", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["tailwind-variants", "clsx", "tailwind-merge"],
 		},
 	},
 	keywords: ["skeleton", "loading", "placeholder", "shimmer"],

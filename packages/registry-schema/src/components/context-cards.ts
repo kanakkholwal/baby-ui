@@ -56,19 +56,21 @@ export const contextCards = defineComponent({
 		react: {
 			entry: "ContextCards",
 			files: [
+				{ path: "context-cards/variants.ts", type: "registry:ui" },
 				{ path: "context-cards/context-cards.tsx", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["tailwind-variants", "clsx", "tailwind-merge"],
 		},
 		svelte: {
 			entry: "ContextCards",
 			files: [
+				{ path: "context-cards/variants.ts", type: "registry:ui" },
 				{ path: "context-cards/context-cards.svelte", type: "registry:ui" },
 				{ path: "context-cards/types.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["tailwind-variants", "clsx", "tailwind-merge"],
 		},
 	},
 	keywords: ["context", "chunks", "retrieval", "rag", "sources"],

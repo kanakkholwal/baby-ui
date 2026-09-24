@@ -75,7 +75,7 @@ export const select = defineComponent({
 				{ path: "lib/anchor.ts", type: "registry:lib" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge", "@base-ui/react"],
+			dependencies: ["tailwind-variants", "clsx", "tailwind-merge", "@base-ui/react"],
 		},
 		svelte: {
 			entry: "Select",
@@ -91,7 +91,7 @@ export const select = defineComponent({
 				{ path: "lib/anchor.ts", type: "registry:lib" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge", "bits-ui"],
+			dependencies: ["tailwind-variants", "clsx", "tailwind-merge", "bits-ui"],
 			// select-separator.svelte is still a plain <hr>: bits-ui's Select module has no
 			// Select-scoped Separator (unlike Base UI's), and this repo has no standalone one yet.
 		},

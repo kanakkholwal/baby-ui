@@ -1,8 +1,12 @@
 <script lang="ts">
 import {
 	ContextMenu,
+	ContextMenuCheckboxItem,
 	ContextMenuContent,
 	ContextMenuItem,
+	ContextMenuLabel,
+	ContextMenuRadioGroup,
+	ContextMenuRadioItem,
 	ContextMenuSeparator,
 	ContextMenuShortcut,
 	ContextMenuSub,
@@ -13,6 +17,8 @@ import {
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
 let last = $state("");
+let grid = $state(true);
+let sort = $state("name");
 </script>
 
 <div class="flex flex-col items-center gap-3">
@@ -44,7 +50,14 @@ let last = $state("");
 				</ContextMenuSubContent>
 			</ContextMenuSub>
 			<ContextMenuSeparator />
-			<ContextMenuItem destructive onclick={() => (last = "delete")}>
+			<ContextMenuCheckboxItem bind:checked={grid}>Show grid</ContextMenuCheckboxItem>
+			<ContextMenuLabel inset>Sort by</ContextMenuLabel>
+			<ContextMenuRadioGroup bind:value={sort}>
+				<ContextMenuRadioItem value="name">Name</ContextMenuRadioItem>
+				<ContextMenuRadioItem value="date">Date modified</ContextMenuRadioItem>
+			</ContextMenuRadioGroup>
+			<ContextMenuSeparator />
+			<ContextMenuItem variant="destructive" onclick={() => (last = "delete")}>
 				Delete
 				<ContextMenuShortcut>⌫</ContextMenuShortcut>
 			</ContextMenuItem>

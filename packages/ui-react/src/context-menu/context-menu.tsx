@@ -59,14 +59,18 @@ export function ContextMenuContent({
 
 export function ContextMenuItem({
 	className,
+	variant: variantProp,
 	destructive = false,
 	inset = false,
 	...props
 }: ComponentProps<typeof ContextMenuPrimitive.Item> & {
+	variant?: MenuItemVariant;
+	/** Alias for `variant="destructive"`. */
 	destructive?: boolean;
 	inset?: boolean;
 }) {
-	const variant: MenuItemVariant = destructive ? "destructive" : "default";
+	const variant: MenuItemVariant =
+		variantProp ?? (destructive ? "destructive" : "default");
 
 	return (
 		<ContextMenuPrimitive.Item
@@ -185,5 +189,71 @@ export function ContextMenuSubContent({
 				/>
 			</Menu.Positioner>
 		</Menu.Portal>
+	);
+}
+
+export function ContextMenuGroup(props: ComponentProps<typeof Menu.Group>) {
+	return <Menu.Group data-slot="context-menu-group" {...props} />;
+}
+
+function Check() {
+	return (
+		<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-3.5">
+			<path
+				d="m3.5 8.5 3 3 6-7"
+				stroke="currentColor"
+				strokeWidth="1.6"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+			/>
+		</svg>
+	);
+}
+
+export function ContextMenuCheckboxItem({
+	className,
+	children,
+	...props
+}: ComponentProps<typeof Menu.CheckboxItem>) {
+	return (
+		<Menu.CheckboxItem
+			data-slot="context-menu-checkbox-item"
+			data-inset=""
+			className={cn(menuItem({ variant: "default" }), className)}
+			{...props}
+		>
+			<span className="pointer-events-none absolute left-2.5 flex size-3.5 items-center justify-center">
+				<Menu.CheckboxItemIndicator>
+					<Check />
+				</Menu.CheckboxItemIndicator>
+			</span>
+			{children}
+		</Menu.CheckboxItem>
+	);
+}
+
+export function ContextMenuRadioGroup(props: ComponentProps<typeof Menu.RadioGroup>) {
+	return <Menu.RadioGroup data-slot="context-menu-radio-group" {...props} />;
+}
+
+export function ContextMenuRadioItem({
+	className,
+	children,
+	...props
+}: ComponentProps<typeof Menu.RadioItem>) {
+	return (
+		<Menu.RadioItem
+			data-slot="context-menu-radio-item"
+			data-inset=""
+			className={cn(menuItem({ variant: "default" }), className)}
+			{...props}
+		>
+			<span className="pointer-events-none absolute left-2.5 flex size-3.5 items-center justify-center">
+				<Menu.RadioItemIndicator>
+					<span className="block size-1.5 rounded-full bg-current" />
+				</Menu.RadioItemIndicator>
+			</span>
+			{children}
+		</Menu.RadioItem>
 	);
 }

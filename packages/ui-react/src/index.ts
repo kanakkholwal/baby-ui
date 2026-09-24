@@ -263,9 +263,13 @@ export {
 } from "./context-cards/context-cards";
 export {
 	ContextMenu,
+	ContextMenuCheckboxItem,
 	ContextMenuContent,
+	ContextMenuGroup,
 	ContextMenuItem,
 	ContextMenuLabel,
+	ContextMenuRadioGroup,
+	ContextMenuRadioItem,
 	ContextMenuSeparator,
 	ContextMenuShortcut,
 	ContextMenuSub,
@@ -570,14 +574,19 @@ export {
 	type RecommendationOption,
 } from "./recommendation-card/recommendation-card";
 export {
+	type ColumnKey,
 	type RecordRow,
+	type RecordSort,
 	type RecordSortKey,
 	type RecordStrength,
+	type RecordsColumnConfig,
 	type RecordsColumnMeta,
+	type RecordsColumnSettings,
 	type RecordsColumnType,
 	type RecordsDensity,
 	type RecordsPrompt,
 	RecordsTable,
+	type RecordsTableConfig,
 	type RecordsTableLabels,
 	type RecordsTableProps,
 	type RecordsToolKind,

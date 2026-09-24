@@ -24,10 +24,12 @@ export const GET: RequestHandler = async () => {
 		.filter((s) => s.status === "stable" || s.status === "beta")
 		.map((s) => url(docsPath(s), "0.6"));
 
-	const docPages = guides
-		.getPages()
-		.filter((p) => !p.data.draft)
-		.map((p) => url(p.url, "0.5"));
+	// Cast, not inferred: `guides`' real type comes from a generated `.docvia/source` file
+	// a fresh CI checkout doesn't have yet, where it resolves to `any`.
+	const guidePages = guides.getPages() as { url: string; data: { draft?: boolean } }[];
+	const docPages = guidePages
+		.filter((page) => !page.data.draft)
+		.map((page) => url(page.url, "0.5"));
 
 	const body = [...staticPages, ...categoryPages, ...componentPages, ...docPages].join(
 		"",

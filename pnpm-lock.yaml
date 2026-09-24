@@ -158,6 +158,9 @@ importers:
       portless:
         specifier: ^0.15.6
         version: 0.15.6
+      takumi-js:
+        specifier: ^2.14.0
+        version: 2.14.0(csstype@3.2.3)(react@19.3.0)
       turbo:
         specifier: ^2.11.1
         version: 2.11.1

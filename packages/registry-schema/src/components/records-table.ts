@@ -8,7 +8,7 @@ export const recordsTable = defineComponent({
 	description:
 		"An AI-spreadsheet grid: columns are configurable properties, each with a type, a tool and a prompt.",
 	category: "advanced",
-	status: "alpha",
+	status: "stable",
 	variants: { density: DENSITIES },
 	props: [
 		{
@@ -21,7 +21,8 @@ export const recordsTable = defineComponent({
 		{
 			name: "labels",
 			type: "Partial<RecordsTableLabels>",
-			description: "Column header text overrides.",
+			description:
+				"Every user-facing string: headers, strength names, menu items, aria labels and footer counts.",
 			control: { kind: "none" },
 		},
 		{
@@ -30,7 +31,7 @@ export const recordsTable = defineComponent({
 			description:
 				"Stretches to fill its container instead of sizing to its own columns.",
 			default: false,
-			control: { kind: "boolean" },
+			control: { kind: "none" },
 		},
 		{
 			name: "density",
@@ -61,8 +62,44 @@ export const recordsTable = defineComponent({
 			control: { kind: "none" },
 		},
 		{
+			name: "selected",
+			type: "string[]",
+			description:
+				"Selected row ids. Controlled with `onSelectedChange` (React also takes `defaultSelected`; Svelte binds).",
+			control: { kind: "none" },
+		},
+		{
+			name: "sort",
+			type: "RecordSort",
+			description:
+				"Sort key and direction. Controlled with `onSortChange` (React `defaultSort`).",
+			control: { kind: "none" },
+		},
+		{
+			name: "pinned",
+			type: "ColumnKey[]",
+			description:
+				"Columns kept sticky while the table scrolls sideways. Controlled with `onPinnedChange` (React `defaultPinned`).",
+			control: { kind: "none" },
+		},
+		{
+			name: "config",
+			type: "RecordsTableConfig",
+			description:
+				"Per-column type, tool, inputs, grounding and behaviour switches. Controlled with `onConfigChange` (React `defaultConfig`).",
+			control: { kind: "none" },
+		},
+		{
+			name: "showAiColumn",
+			type: "boolean",
+			description:
+				"Shows the AI column. Controlled with `onShowAiColumnChange` (React `defaultShowAiColumn`).",
+			default: false,
+			control: { kind: "boolean" },
+		},
+		{
 			name: "onCalculate",
-			type: "(column: string) => void",
+			type: "(column: ColumnKey) => void",
 			description: 'Fired when "Go calculate" is pressed for a column.',
 			control: { kind: "none" },
 		},
@@ -70,9 +107,11 @@ export const recordsTable = defineComponent({
 	motion: {
 		springs: [],
 		reducedMotion:
-			"No motion beyond the shared `animate-pulse` calculating dot and `card-fade-up` for the advanced-settings reveal; both already respect reduced motion via the shared token.",
+			"The calculating dot pulse, sort arrow turn and More settings grid-row collapse all drop to instant under reduced motion.",
 		behaviour: [
 			"Column headers open a config popover (type, tool, inputs, prompt preview) built from the real Select/Popover/Switch/HoverCard primitives, not a hand-rolled menu.",
+			"More settings collapses via grid-template-rows and stays mounted, so it animates both ways.",
+			"Pinned columns stick with an opaque background; widths follow density until resized or reset.",
 			'Row calculation reveal (row-by-row "Calculating…") is entirely driven by `calculatingColumn`/`resolvedCount`; the component never times its own reveal.',
 		],
 	},
@@ -82,7 +121,8 @@ export const recordsTable = defineComponent({
 		],
 		notes: [
 			'Column resize handles are `role="separator"` with an `aria-label` naming the column.',
-			"Sort buttons carry an `aria-label` naming the column being sorted.",
+			"Sort buttons carry an `aria-label` naming the column and `aria-pressed` when active.",
+			"Every checkbox and switch has an accessible name from `labels`.",
 		],
 	},
 	licenseOrigin: {
@@ -99,6 +139,7 @@ export const recordsTable = defineComponent({
 				{ path: "records-table/config-popover.tsx", type: "registry:ui" },
 				{ path: "records-table/tag-list.tsx", type: "registry:ui" },
 				{ path: "records-table/types.ts", type: "registry:ui" },
+				{ path: "records-table/model.ts", type: "registry:ui" },
 				{ path: "records-table/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
@@ -118,9 +159,10 @@ export const recordsTable = defineComponent({
 			files: [
 				{ path: "records-table/records-table.svelte", type: "registry:ui" },
 				{ path: "records-table/config-popover.svelte", type: "registry:ui" },
-				{ path: "records-table/picker-select.svelte", type: "registry:ui" },
+				{ path: "records-table/glyph-icon.svelte", type: "registry:ui" },
 				{ path: "records-table/tag-list.svelte", type: "registry:ui" },
 				{ path: "records-table/types.ts", type: "registry:ui" },
+				{ path: "records-table/model.ts", type: "registry:ui" },
 				{ path: "records-table/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],

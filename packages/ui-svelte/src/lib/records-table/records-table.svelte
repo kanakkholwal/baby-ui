@@ -9,97 +9,33 @@ import Popover from "../popover/popover.svelte";
 import PopoverContent from "../popover/popover-content.svelte";
 import PopoverTrigger from "../popover/popover-trigger.svelte";
 import ConfigPopover from "./config-popover.svelte";
+import GlyphIcon from "./glyph-icon.svelte";
+import {
+	ACTIONS_WIDTH,
+	COLUMN_ORDER,
+	COLUMN_WIDTHS,
+	INPUT_COLUMNS,
+	nextSort,
+	pinOffsets,
+	RECORDS_TABLE_LABELS,
+	resolveColumn,
+	sortRows,
+	strengthLabel,
+	strengthRank,
+	TYPE_GLYPHS,
+	toggleIn,
+	updateColumn,
+} from "./model";
 import TagList from "./tag-list.svelte";
 import type {
 	ColumnKey,
 	RecordRow,
+	RecordSort,
 	RecordSortKey,
-	RecordsColumnMeta,
+	RecordsTableConfig,
 	RecordsTableLabels,
 } from "./types";
-import { TYPE_GLYPHS } from "./types";
 import { type RecordsDensity, recordsTable, strengthDot } from "./variants";
-
-const COMFORTABLE_WIDTHS: Record<ColumnKey, number> = {
-	company: 270,
-	categories: 275,
-	last: 190,
-	strength: 210,
-	links: 175,
-	ai: 240,
-};
-
-const COMPACT_WIDTHS: Record<ColumnKey, number> = {
-	company: 220,
-	categories: 220,
-	last: 155,
-	strength: 180,
-	links: 160,
-	ai: 200,
-};
-
-const STRENGTH_LABEL: Record<string, string> = {
-	strong: "Very strong",
-	weak: "Weak",
-	veryweak: "Very weak",
-	none: "No communication",
-};
-
-const DEFAULT_LABELS: RecordsTableLabels = {
-	company: "Company",
-	categories: "Categories",
-	last: "Last interaction",
-	strength: "Connection strength",
-	links: "Links",
-	ai: "AI column",
-};
-
-function defaultMeta(): Record<ColumnKey, RecordsColumnMeta> {
-	return {
-		company: { type: "Text", tool: "User input", toolKind: "user" },
-		categories: {
-			type: "Multi select",
-			tool: "User input",
-			toolKind: "user",
-			inputs: "Company",
-			prompt: {
-				before: "Tag each ",
-				chip: "Company",
-				after: " with its market categories.",
-			},
-		},
-		last: { type: "Date", tool: "User input", toolKind: "user" },
-		strength: {
-			type: "Single select",
-			tool: "User input",
-			toolKind: "user",
-			inputs: "Last interaction",
-			prompt: {
-				before: "Score the relationship from ",
-				chip: "Last interaction",
-				after: ".",
-			},
-		},
-		links: {
-			type: "URL",
-			tool: "Web search",
-			toolKind: "web",
-			inputs: "Company",
-			prompt: { before: "Find the website for ", chip: "Company", after: "." },
-		},
-		ai: { type: "Text", tool: "Web search", toolKind: "web", inputs: "Company" },
-	};
-}
-
-function strengthRank(strength: RecordRow["strength"]) {
-	return strength === "strong"
-		? 3
-		: strength === "weak"
-			? 2
-			: strength === "veryweak"
-				? 1
-				: 0;
-}
 
 let {
 	rows,
@@ -110,12 +46,24 @@ let {
 	calculatingColumn = null,
 	resolvedCount = 0,
 	onCalculate,
+	selected = $bindable([]),
+	onSelectedChange,
+	sort = $bindable({ key: "name", dir: 1 }),
+	onSortChange,
+	pinned = $bindable([]),
+	onPinnedChange,
+	showAiColumn = $bindable(false),
+	onShowAiColumnChange,
+	config = $bindable({}),
+	onConfigChange,
 	class: classProp,
 }: {
+	/** Every company row shown. Required: this table has no sample data of its own. */
 	rows: RecordRow[];
 	labels?: Partial<RecordsTableLabels>;
 	fill?: boolean;
 	density?: RecordsDensity;
+	/** Real model names offered by the Tool picker; empty offers nothing. */
 	modelOptions?: string[];
 	/** Column currently revealing computed values row by row. `null`/omitted shows none. */
 	calculatingColumn?: string | null;
@@ -123,71 +71,89 @@ let {
 	resolvedCount?: number;
 	/** Fired when "Go calculate" is pressed; the caller owns the reveal timing. */
 	onCalculate?: (column: ColumnKey) => void;
+	selected?: string[];
+	onSelectedChange?: (ids: string[]) => void;
+	sort?: RecordSort;
+	onSortChange?: (sort: RecordSort) => void;
+	/** Columns kept in view while the table scrolls sideways. */
+	pinned?: ColumnKey[];
+	onPinnedChange?: (pinned: ColumnKey[]) => void;
+	showAiColumn?: boolean;
+	onShowAiColumnChange?: (show: boolean) => void;
+	/** Per-column type, tool, inputs, prompt and behaviour settings. */
+	config?: RecordsTableConfig;
+	onConfigChange?: (config: RecordsTableConfig) => void;
 	class?: string;
 } = $props();
 
-const text: RecordsTableLabels = $derived({ ...DEFAULT_LABELS, ...labels });
-let selected = $state<Set<string>>(new Set());
-let sort = $state<{ key: RecordSortKey; dir: 1 | -1 }>({ key: "name", dir: 1 });
-// svelte-ignore state_referenced_locally -- intentional one-time seed, matching React's useState(initialValue)
-let columnWidths = $state<Record<ColumnKey, number>>(
-	density === "compact" ? { ...COMPACT_WIDTHS } : { ...COMFORTABLE_WIDTHS },
-);
+const text: RecordsTableLabels = $derived({ ...RECORDS_TABLE_LABELS, ...labels });
+let widthOverrides = $state<Partial<Record<ColumnKey, number>>>({});
 let resizingColumn = $state<ColumnKey | null>(null);
 let openColumn = $state<ColumnKey | null>(null);
-let columnOverrides = $state<Partial<Record<ColumnKey, Partial<RecordsColumnMeta>>>>({});
-let inputSelections = $state<Partial<Record<ColumnKey, string[]>>>({});
-let pinnedColumns = $state<Set<ColumnKey>>(new Set());
-let aiAdded = $state(false);
-const meta = defaultMeta();
+const classes = $derived(recordsTable({ density }));
 
-const visibleRows = $derived(
-	[...rows].sort((a, b) => {
-		const value =
-			sort.key === "name"
-				? a.name.localeCompare(b.name)
-				: sort.key === "last"
-					? a.last.localeCompare(b.last)
-					: strengthRank(a.strength) - strengthRank(b.strength);
-		return value * sort.dir;
-	}),
+const widths = $derived({ ...COLUMN_WIDTHS[density], ...widthOverrides });
+const visibleColumns = $derived(
+	COLUMN_ORDER.filter((key) => key !== "ai" || showAiColumn),
+);
+const offsets = $derived(pinOffsets(pinned, visibleColumns, widths));
+const visibleRows = $derived(sortRows(rows, sort));
+const allSelected = $derived(
+	visibleRows.length > 0 && visibleRows.every((row) => selected.includes(row.id)),
+);
+const partiallySelected = $derived(
+	!allSelected && visibleRows.some((row) => selected.includes(row.id)),
+);
+const tableWidth = $derived(
+	visibleColumns.reduce((sum, key) => sum + widths[key], ACTIONS_WIDTH),
 );
 
-function columnMeta(key: ColumnKey): RecordsColumnMeta {
-	return { ...meta[key], ...columnOverrides[key] };
+function setSelected(next: string[]) {
+	selected = next;
+	onSelectedChange?.(next);
 }
-
-function updateMeta(key: ColumnKey, next: Partial<RecordsColumnMeta>) {
-	columnOverrides = { ...columnOverrides, [key]: { ...columnOverrides[key], ...next } };
+function setSort(next: RecordSort) {
+	sort = next;
+	onSortChange?.(next);
+}
+function setPinned(next: ColumnKey[]) {
+	pinned = next;
+	onPinnedChange?.(next);
+}
+function setAiShown(next: boolean) {
+	showAiColumn = next;
+	onShowAiColumnChange?.(next);
+}
+function setConfig(next: RecordsTableConfig) {
+	config = next;
+	onConfigChange?.(next);
 }
 
 function isCalc(col: ColumnKey, index: number) {
 	return calculatingColumn === col && index >= resolvedCount;
 }
 
-const allSelected = $derived(
-	visibleRows.length > 0 && visibleRows.every((row) => selected.has(row.id)),
-);
-const partiallySelected = $derived(
-	!allSelected && visibleRows.some((row) => selected.has(row.id)),
-);
-
-function toggleSort(key: RecordSortKey) {
-	sort = sort.key === key ? { key, dir: (sort.dir * -1) as 1 | -1 } : { key, dir: 1 };
+/** Sticky placement for pinned columns. */
+function pinStyle(key: ColumnKey) {
+	const left = offsets[key];
+	return left === undefined
+		? undefined
+		: `position: sticky; left: ${left}px; z-index: 2;`;
 }
-
-function toggleRow(id: string) {
-	const next = new Set(selected);
-	if (next.has(id)) next.delete(id);
-	else next.add(id);
-	selected = next;
+function pinClass(key: ColumnKey, selectedRow = false) {
+	if (offsets[key] === undefined) return undefined;
+	return selectedRow
+		? "bg-[color-mix(in_oklab,var(--primary)_4%,var(--card))]"
+		: "bg-card";
 }
 
 function toggleAll() {
-	const next = new Set(selected);
-	if (allSelected) for (const row of visibleRows) next.delete(row.id);
-	else for (const row of visibleRows) next.add(row.id);
-	selected = next;
+	const ids = visibleRows.map((row) => row.id);
+	setSelected(
+		allSelected
+			? selected.filter((id) => !ids.includes(id))
+			: [...new Set([...selected, ...ids])],
+	);
 }
 
 function startColumnResize(key: ColumnKey, minWidth = 120) {
@@ -195,16 +161,14 @@ function startColumnResize(key: ColumnKey, minWidth = 120) {
 		event.preventDefault();
 		event.stopPropagation();
 		openColumn = null;
-
 		const startX = event.clientX;
-		const startWidth = columnWidths[key];
+		const startWidth = widths[key];
 		document.body.style.cursor = "col-resize";
 		document.body.style.userSelect = "none";
 		resizingColumn = key;
-
 		function move(moveEvent: PointerEvent) {
 			const width = Math.max(minWidth, startWidth + moveEvent.clientX - startX);
-			columnWidths = { ...columnWidths, [key]: width };
+			widthOverrides = { ...widthOverrides, [key]: width };
 		}
 		function finish() {
 			window.removeEventListener("pointermove", move);
@@ -214,96 +178,25 @@ function startColumnResize(key: ColumnKey, minWidth = 120) {
 			document.body.style.userSelect = "";
 			resizingColumn = null;
 		}
-
 		window.addEventListener("pointermove", move);
 		window.addEventListener("pointerup", finish);
 		window.addEventListener("pointercancel", finish);
 	};
 }
 
-const tableWidth = $derived(
-	columnWidths.company +
-		columnWidths.categories +
-		columnWidths.last +
-		columnWidths.strength +
-		columnWidths.links +
-		(aiAdded ? columnWidths.ai : 0) +
-		56,
+const hideAi = () => {
+	setAiShown(false);
+	openColumn = null;
+};
+const footerCell = $derived(
+	cn(classes.cell(), "border-border border-r text-muted-foreground text-xs"),
 );
-
-function inputOptionsFor(exclude: ColumnKey) {
-	return (["company", "categories", "last", "strength", "links"] as ColumnKey[])
-		.filter((key) => key !== exclude)
-		.map((key) => text[key]);
-}
-
-function selectedInputsFor(key: ColumnKey) {
-	return inputSelections[key] ?? (meta[key].inputs ? [meta[key].inputs as string] : []);
-}
-
-function togglePin(key: ColumnKey) {
-	const next = new Set(pinnedColumns);
-	if (next.has(key)) next.delete(key);
-	else next.add(key);
-	pinnedColumns = next;
-}
-
-const classes = $derived(recordsTable({ density }));
 </script>
 
-{#snippet sortIcon(sortKey: RecordSortKey, label: string)}
-	<button
-		type="button"
-		aria-label={`Sort by ${label}`}
-		onclick={(event) => {
-			event.stopPropagation();
-			toggleSort(sortKey);
-		}}
-		class={cn(
-			"shrink-0 cursor-pointer text-muted-foreground transition-opacity",
-			sort.key === sortKey ? "opacity-100" : "opacity-0 hover:opacity-60",
-		)}
-		style:transform={sort.key === sortKey && sort.dir === -1 ? "rotate(180deg)" : undefined}
-	>
-		<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-			<path d="M12 5v14M5 12l7 7 7-7" />
-		</svg>
-	</button>
-{/snippet}
-
-{#snippet resizeHandle(key: ColumnKey, label: string, minWidth?: number)}
-	<!-- svelte-ignore a11y_no_static_element_interactions -- pointer drag handle, not a real separator control -->
-	<!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -- a column resize handle can't be a semantic <hr> -->
-	<span
-		role="separator"
-		aria-orientation="vertical"
-		aria-label={`Resize ${label} column`}
-		onpointerdown={startColumnResize(key, minWidth)}
-		class={cn(
-			"-right-0.5 absolute inset-y-0 w-1 cursor-col-resize touch-none",
-			resizingColumn === key && "bg-primary/40",
-		)}
-	></span>
-{/snippet}
-
-{#snippet typeIcon(key: ColumnKey)}
-	<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-		{#each TYPE_GLYPHS[columnMeta(key).type] ?? TYPE_GLYPHS.Text as shape, i (i)}
-			{#if shape.kind === "circle"}
-				<circle cx={shape.cx} cy={shape.cy} r={shape.r} />
-			{:else if shape.kind === "ellipse"}
-				<ellipse cx={shape.cx} cy={shape.cy} rx={shape.rx} ry={shape.ry} />
-			{:else if shape.kind === "rect"}
-				<rect x={shape.x} y={shape.y} width={shape.width} height={shape.height} rx={shape.rx} />
-			{:else}
-				<path d={shape.d} />
-			{/if}
-		{/each}
-	</svg>
-{/snippet}
-
-{#snippet headerCell(key: ColumnKey, label: string, sortKey: RecordSortKey | undefined, minWidth?: number)}
+{#snippet header(key: ColumnKey, sortKey?: RecordSortKey, withSelectAll = false, onHide?: () => void)}
+	{@const label = text[key]}
 	<th
+		style={pinStyle(key)}
 		class={cn(
 			classes.headerCell(),
 			"relative border-border border-r border-b bg-card text-left font-medium text-[12.5px] text-muted-foreground",
@@ -311,25 +204,33 @@ const classes = $derived(recordsTable({ density }));
 		)}
 	>
 		<div class="flex min-w-0 items-center gap-1.5">
-			<Popover bind:open={() => openColumn === key, (v) => (openColumn = v ? key : null)}>
+			{#if withSelectAll}
+				<Checkbox
+					bind:checked={() => allSelected, () => toggleAll()}
+					indeterminate={partiallySelected}
+					aria-label={text.selectAll}
+					class="shrink-0"
+				/>
+			{/if}
+			<Popover bind:open={() => openColumn === key, (o) => (openColumn = o ? key : null)}>
 				<PopoverTrigger
 					class="min-w-0 items-center gap-1.5 truncate rounded-md px-1 hover:bg-foreground/[0.06]"
-					aria-label={`Configure ${label}`}
+					aria-label={text.configure(label)}
 				>
-					{@render typeIcon(key)}
+					<GlyphIcon glyphs={TYPE_GLYPHS[resolveColumn(key, config, text).type]} />
 					<span class="truncate">{label}</span>
 				</PopoverTrigger>
 				<PopoverContent align="start" class="w-80 p-3">
 					<ConfigPopover
-						title={text[key]}
-						meta={columnMeta(key)}
-						onMetaChange={(next) => updateMeta(key, next)}
-						inputOptions={inputOptionsFor(key)}
-						selectedInputs={selectedInputsFor(key)}
-						onInputsChange={(next) => (inputSelections = { ...inputSelections, [key]: next })}
+						title={label}
+						labels={text}
+						column={resolveColumn(key, config, text)}
+						onChange={(patch) => setConfig(updateColumn(config, key, patch))}
+						inputOptions={INPUT_COLUMNS.filter((k) => k !== key).map((k) => text[k])}
 						{modelOptions}
-						pinned={pinnedColumns.has(key)}
-						onTogglePin={() => togglePin(key)}
+						pinned={pinned.includes(key)}
+						onTogglePin={() => setPinned(toggleIn(pinned, key))}
+						{onHide}
 						calculating={calculatingColumn != null}
 						onCalculate={() => {
 							onCalculate?.(key);
@@ -339,16 +240,44 @@ const classes = $derived(recordsTable({ density }));
 				</PopoverContent>
 			</Popover>
 			{#if sortKey}
-				{@render sortIcon(sortKey, label)}
+				<button
+					type="button"
+					aria-label={text.sortBy(label)}
+					aria-pressed={sort.key === sortKey}
+					onclick={(event) => {
+						event.stopPropagation();
+						setSort(nextSort(sort, sortKey));
+					}}
+					class={cn(
+						"shrink-0 cursor-pointer text-muted-foreground transition-[opacity,rotate] duration-150",
+						sort.key === sortKey ? "opacity-100" : "opacity-0 hover:opacity-60 focus-visible:opacity-60",
+						sort.key === sortKey && sort.dir === -1 && "rotate-180",
+					)}
+				>
+					<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<path d="M12 5v14M5 12l7 7 7-7" />
+					</svg>
+				</button>
 			{/if}
 		</div>
-		{@render resizeHandle(key, label, minWidth)}
+		<!-- svelte-ignore a11y_no_static_element_interactions -- pointer drag handle, not a real separator control -->
+		<!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -- a column resize handle can't be a semantic <hr> -->
+		<span
+			role="separator"
+			aria-orientation="vertical"
+			aria-label={text.resize(label)}
+			onpointerdown={startColumnResize(key)}
+			class={cn(
+				"-right-0.5 absolute inset-y-0 w-1 cursor-col-resize touch-none",
+				resizingColumn === key && "bg-primary/40",
+			)}
+		></span>
 	</th>
 {/snippet}
 
 {#snippet calcCell()}
 	<span class="inline-flex items-center gap-1.5 text-[13px] text-muted-foreground">
-		Calculating…
+		{text.calculating}
 		<span class="size-1.5 animate-pulse rounded-full bg-muted-foreground"></span>
 	</span>
 {/snippet}
@@ -357,89 +286,26 @@ const classes = $derived(recordsTable({ density }));
 	<div data-slot="records-table-scroll" class="overflow-auto rounded-2xl border border-border" style="scrollbar-width: thin;">
 		<table class="border-collapse text-[13px]" style="width: {fill ? '100%' : `${tableWidth}px`}; min-width: {tableWidth}px;">
 			<colgroup>
-				<col style="width: {columnWidths.company}px;" />
-				<col style="width: {columnWidths.categories}px;" />
-				<col style="width: {columnWidths.last}px;" />
-				<col style="width: {columnWidths.strength}px;" />
-				<col style="width: {columnWidths.links}px;" />
-				{#if aiAdded}<col style="width: {columnWidths.ai}px;" />{/if}
-				<col style="width: 56px;" />
+				{#each visibleColumns as key (key)}
+					<col style="width: {widths[key]}px;" />
+				{/each}
+				<col style="width: {ACTIONS_WIDTH}px;" />
 			</colgroup>
 			<thead>
 				<tr>
-					<th class={cn(classes.headerCell(), "border-border border-r border-b bg-card text-left", openColumn === "company" && "bg-primary/[0.04]")}>
-						<div class="flex items-center gap-2">
-							<Checkbox
-								bind:checked={() => allSelected, () => toggleAll()}
-								indeterminate={partiallySelected}
-								label=""
-								class="shrink-0"
-							/>
-							<Popover bind:open={() => openColumn === "company", (v) => (openColumn = v ? "company" : null)}>
-								<PopoverTrigger class="min-w-0 truncate rounded-md px-1 font-medium text-[12.5px] text-muted-foreground hover:bg-foreground/[0.06]">
-									{text.company}
-								</PopoverTrigger>
-								<PopoverContent align="start" class="w-80 p-3">
-									<ConfigPopover
-										title={text.company}
-										meta={columnMeta("company")}
-										onMetaChange={(next) => updateMeta("company", next)}
-										inputOptions={inputOptionsFor("company")}
-										selectedInputs={selectedInputsFor("company")}
-										onInputsChange={(next) => (inputSelections = { ...inputSelections, company: next })}
-										{modelOptions}
-										pinned={pinnedColumns.has("company")}
-										onTogglePin={() => togglePin("company")}
-										calculating={calculatingColumn != null}
-										onCalculate={() => {
-											onCalculate?.("company");
-											openColumn = null;
-										}}
-									/>
-								</PopoverContent>
-							</Popover>
-						</div>
-					</th>
-					{@render headerCell("categories", text.categories, undefined)}
-					{@render headerCell("last", text.last, "last")}
-					{@render headerCell("strength", text.strength, "strength")}
-					{@render headerCell("links", text.links, undefined)}
-					{#if aiAdded}
-						<th class={cn(classes.headerCell(), "border-border border-r border-b bg-card text-left", openColumn === "ai" && "bg-primary/[0.04]")}>
-							<Popover bind:open={() => openColumn === "ai", (v) => (openColumn = v ? "ai" : null)}>
-								<PopoverTrigger class="min-w-0 truncate rounded-md px-1 font-medium text-[12.5px] text-muted-foreground hover:bg-foreground/[0.06]">
-									{text.ai}
-								</PopoverTrigger>
-								<PopoverContent align="start" class="w-80 p-3">
-									<ConfigPopover
-										title={text.ai}
-										meta={columnMeta("ai")}
-										onMetaChange={(next) => updateMeta("ai", next)}
-										inputOptions={inputOptionsFor("ai")}
-										selectedInputs={selectedInputsFor("ai")}
-										onInputsChange={(next) => (inputSelections = { ...inputSelections, ai: next })}
-										{modelOptions}
-										pinned={pinnedColumns.has("ai")}
-										onTogglePin={() => togglePin("ai")}
-										onHide={() => {
-											aiAdded = false;
-											openColumn = null;
-										}}
-										calculating={calculatingColumn != null}
-										onCalculate={() => {
-											onCalculate?.("ai");
-											openColumn = null;
-										}}
-									/>
-								</PopoverContent>
-							</Popover>
-						</th>
+					{@render header("company", "name", true)}
+					{@render header("categories")}
+					{@render header("last", "last")}
+					{@render header("strength", "strength")}
+					{@render header("links")}
+					{#if showAiColumn}
+						{@render header("ai", undefined, false, hideAi)}
 					{/if}
 					<th class={cn(classes.headerCell(), "border-border border-b bg-card px-2")}>
 						<div class="flex items-center gap-1">
 							<DropdownMenu>
 								<DropdownMenuTrigger
-									aria-label="New property"
+									aria-label={text.newProperty}
 									class="flex size-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground"
 								>
 									<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -449,7 +315,7 @@ const classes = $derived(recordsTable({ density }));
 								<DropdownMenuContent align="end">
 									<DropdownMenuItem
 										onclick={() => {
-											aiAdded = true;
+											setAiShown(true);
 											openColumn = "ai";
 										}}
 									>
@@ -459,7 +325,7 @@ const classes = $derived(recordsTable({ density }));
 							</DropdownMenu>
 							<DropdownMenu>
 								<DropdownMenuTrigger
-									aria-label="Table options"
+									aria-label={text.tableOptions}
 									class="flex size-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground"
 								>
 									<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -469,14 +335,12 @@ const classes = $derived(recordsTable({ density }));
 									</svg>
 								</DropdownMenuTrigger>
 								<DropdownMenuContent align="end">
-									<DropdownMenuItem onclick={() => (aiAdded = true)}>Add property</DropdownMenuItem>
-									<DropdownMenuItem onclick={() => (columnWidths = { ...COMPACT_WIDTHS })}>Compact columns</DropdownMenuItem>
-									<DropdownMenuItem
-										onclick={() => (columnWidths = density === "compact" ? { ...COMPACT_WIDTHS } : { ...COMFORTABLE_WIDTHS })}
-									>
-										Reset column widths
+									<DropdownMenuItem onclick={() => setAiShown(true)}>{text.addProperty}</DropdownMenuItem>
+									<DropdownMenuItem onclick={() => (widthOverrides = { ...COLUMN_WIDTHS.compact })}>
+										{text.compactColumns}
 									</DropdownMenuItem>
-									<DropdownMenuItem onclick={() => (selected = new Set())}>Clear selection</DropdownMenuItem>
+									<DropdownMenuItem onclick={() => (widthOverrides = {})}>{text.resetWidths}</DropdownMenuItem>
+									<DropdownMenuItem onclick={() => setSelected([])}>{text.clearSelection}</DropdownMenuItem>
 								</DropdownMenuContent>
 							</DropdownMenu>
 						</div>
@@ -485,14 +349,20 @@ const classes = $derived(recordsTable({ density }));
 			</thead>
 			<tbody>
 				{#each visibleRows as row, index (row.id)}
-					{@const isSelected = selected.has(row.id)}
-					<tr data-slot="records-table-row" class={cn("transition-colors", isSelected && "bg-primary/[0.04]")}>
-						<td class={cn(classes.cell(), "border-border border-r border-b")}>
+					{@const isSelected = selected.includes(row.id)}
+					{@const td = (key: ColumnKey, extra?: string | false) =>
+						cn(classes.cell(), "border-border border-r border-b", pinClass(key, isSelected), extra)}
+					<tr
+						data-slot="records-table-row"
+						data-selected={isSelected || undefined}
+						class={cn("transition-colors", isSelected && "bg-primary/[0.04]")}
+					>
+						<td style={pinStyle("company")} class={td("company")}>
 							<div class="flex min-w-0 items-center gap-2">
 								<span class="w-4 shrink-0 text-[11px] text-muted-foreground tabular-nums">{index + 1}</span>
 								<Checkbox
-									bind:checked={() => isSelected, () => toggleRow(row.id)}
-									label=""
+									bind:checked={() => isSelected, () => setSelected(toggleIn(selected, row.id))}
+									aria-label={text.selectRow(row.name)}
 									class="shrink-0"
 								/>
 								<a
@@ -507,31 +377,31 @@ const classes = $derived(recordsTable({ density }));
 								</a>
 							</div>
 						</td>
-						<td class={cn(classes.cell(), "border-border border-r border-b")}>
+						<td style={pinStyle("categories")} class={td("categories")}>
 							{#if isCalc("categories", index)}
 								{@render calcCell()}
 							{:else}
 								<TagList tags={row.tags} />
 							{/if}
 						</td>
-						<td class={cn(classes.cell(), "border-border border-r border-b", row.last === "No contact" && "text-muted-foreground")}>
+						<td style={pinStyle("last")} class={td("last", row.strength === "none" && "text-muted-foreground")}>
 							{#if isCalc("last", index)}
 								{@render calcCell()}
 							{:else}
 								{row.last}
 							{/if}
 						</td>
-						<td class={cn(classes.cell(), "border-border border-r border-b")}>
+						<td style={pinStyle("strength")} class={td("strength")}>
 							{#if isCalc("strength", index)}
 								{@render calcCell()}
 							{:else}
 								<span class="inline-flex items-center gap-1.5">
 									<span class={strengthDot({ strength: row.strength })}></span>
-									{STRENGTH_LABEL[row.strength]}
+									{strengthLabel(row.strength, text)}
 								</span>
 							{/if}
 						</td>
-						<td class={cn(classes.cell(), "border-border border-r border-b")}>
+						<td style={pinStyle("links")} class={td("links")}>
 							{#if isCalc("links", index)}
 								{@render calcCell()}
 							{:else if row.website}
@@ -542,15 +412,15 @@ const classes = $derived(recordsTable({ density }));
 									</svg>
 								</a>
 							{:else}
-								<span class="text-muted-foreground">—</span>
+								<span class="text-muted-foreground">{text.empty}</span>
 							{/if}
 						</td>
-						{#if aiAdded}
-							<td class={cn(classes.cell(), "border-border border-r border-b")}>
+						{#if showAiColumn}
+							<td style={pinStyle("ai")} class={td("ai")}>
 								{#if isCalc("ai", index)}
 									{@render calcCell()}
 								{:else}
-									<span class={row.aiValue ? undefined : "text-muted-foreground"}>{row.aiValue ?? "—"}</span>
+									<span class={row.aiValue ? undefined : "text-muted-foreground"}>{row.aiValue ?? text.empty}</span>
 								{/if}
 							</td>
 						{/if}
@@ -560,22 +430,22 @@ const classes = $derived(recordsTable({ density }));
 			</tbody>
 			<tfoot>
 				<tr>
-					<td class={cn(classes.cell(), "border-border border-r text-muted-foreground text-xs")}>
-						<span class="tabular-nums">{rows.length}</span> count
-					</td>
-					<td class={cn(classes.cell(), "border-border border-r")}></td>
-					<td class={cn(classes.cell(), "border-border border-r text-muted-foreground text-xs")}>—</td>
-					<td class={cn(classes.cell(), "border-border border-r text-muted-foreground text-xs tabular-nums")}>
+					<td style={pinStyle("company")} class={cn(footerCell, pinClass("company"))}>{text.count(rows.length)}</td>
+					<td style={pinStyle("categories")} class={cn(classes.cell(), "border-border border-r", pinClass("categories"))}></td>
+					<td style={pinStyle("last")} class={cn(footerCell, pinClass("last"))}>{text.empty}</td>
+					<td style={pinStyle("strength")} class={cn(footerCell, "tabular-nums", pinClass("strength"))}>
 						{rows.length
-							? `${Math.round((rows.reduce((sum, row) => sum + strengthRank(row.strength), 0) / rows.length / 3) * 100)}% average`
-							: "—"}
+							? text.average(
+									Math.round((rows.reduce((sum, row) => sum + strengthRank(row.strength), 0) / rows.length / 3) * 100),
+								)
+							: text.empty}
 					</td>
-					<td class={cn(classes.cell(), "border-border border-r text-muted-foreground text-xs")}>
-						{rows.filter((row) => row.website).length} links
+					<td style={pinStyle("links")} class={cn(footerCell, pinClass("links"))}>
+						{text.linkCount(rows.filter((row) => row.website).length)}
 					</td>
-					{#if aiAdded}
-						<td class={cn(classes.cell(), "border-border border-r text-muted-foreground text-xs")}>
-							{rows.filter((row) => row.aiValue).length} filled
+					{#if showAiColumn}
+						<td style={pinStyle("ai")} class={cn(footerCell, pinClass("ai"))}>
+							{text.filled(rows.filter((row) => row.aiValue).length)}
 						</td>
 					{/if}
 					<td class={cn(classes.cell(), "px-2")}></td>

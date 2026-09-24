@@ -11,6 +11,7 @@
 		"build": "turbo run build",
 		"check": "node scripts/check-comments.mjs && node scripts/check-import-extensions.mjs && turbo run check",
 		"component": "node scripts/create-component.mjs",
+		"cover": "node scripts/generate-cover.mjs",
 		"dev": "turbo run dev --filter=@baby-ui/site",
 		"dev:list": "portless list",
 		"dev:stop": "portless prune",
@@ -27,6 +28,7 @@
 		"@types/node": "catalog:",
 		"cross-env": "^10.1.0",
 		"portless": "^0.15.6",
+		"takumi-js": "^2.14.0",
 		"turbo": "^2.11.1",
 		"typescript": "catalog:"
 	}

@@ -57,6 +57,9 @@ const MODEL_OPTIONS = ["GPT-5", "Claude Sonnet 5", "Gemini 2.5 Pro"];
 export function RecordsTableDemo({ props }: { props: Props }) {
 	const [calculatingColumn, setCalculatingColumn] = useState<string | null>(null);
 	const [resolvedCount, setResolvedCount] = useState(0);
+	const [showAi, setShowAi] = useState(false);
+
+	useEffect(() => setShowAi(props.showAiColumn === true), [props.showAiColumn]);
 
 	useEffect(() => {
 		if (!calculatingColumn) return;
@@ -74,6 +77,8 @@ export function RecordsTableDemo({ props }: { props: Props }) {
 			modelOptions={MODEL_OPTIONS}
 			fill={props.fill as boolean | undefined}
 			density={props.density as RecordsDensity | undefined}
+			showAiColumn={showAi}
+			onShowAiColumnChange={setShowAi}
 			calculatingColumn={calculatingColumn}
 			resolvedCount={resolvedCount}
 			onCalculate={(column) => {

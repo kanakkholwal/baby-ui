@@ -46,18 +46,20 @@ export const fileDiff = defineComponent({
 		react: {
 			entry: "FileDiff",
 			files: [
+				{ path: "file-diff/variants.ts", type: "registry:ui" },
 				{ path: "file-diff/file-diff.tsx", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["tailwind-variants", "clsx", "tailwind-merge"],
 		},
 		svelte: {
 			entry: "FileDiff",
 			files: [
+				{ path: "file-diff/variants.ts", type: "registry:ui" },
 				{ path: "file-diff/file-diff.svelte", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["tailwind-variants", "clsx", "tailwind-merge"],
 		},
 	},
 	keywords: ["file", "diff"],

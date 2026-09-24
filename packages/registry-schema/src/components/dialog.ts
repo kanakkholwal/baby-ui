@@ -73,7 +73,7 @@ export const dialog = defineComponent({
 				{ path: "dialog/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			dependencies: ["@base-ui/react", "clsx", "tailwind-merge", "tailwind-variants"],
 		},
 		svelte: {
 			entry: "Dialog",
@@ -90,7 +90,7 @@ export const dialog = defineComponent({
 				{ path: "dialog/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			dependencies: ["bits-ui", "clsx", "tailwind-merge", "tailwind-variants"],
 		},
 	},
 	keywords: ["dialog", "modal"],

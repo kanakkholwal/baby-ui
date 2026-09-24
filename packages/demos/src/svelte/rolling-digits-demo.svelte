@@ -20,7 +20,7 @@ $effect(() => {
 	<RollingDigits
 		value={values[step] ?? 0}
 		pad={props.pad === undefined ? undefined : Number(props.pad)}
-		locale={(props.locale as string) || "en-US"}
+		locale={(props.locale as string) || undefined}
 		startOnView={props.startOnView !== false}
 		stepMs={Number(props.stepMs ?? 80)}
 		coalesce={props.coalesce === true}

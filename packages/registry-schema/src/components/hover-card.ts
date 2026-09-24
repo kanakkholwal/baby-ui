@@ -64,7 +64,7 @@ export const hoverCard = defineComponent({
 				{ path: "lib/anchor.ts", type: "registry:lib" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge", "@base-ui/react"],
+			dependencies: ["tailwind-variants", "clsx", "tailwind-merge", "@base-ui/react"],
 		},
 		svelte: {
 			entry: "HoverCard",
@@ -75,7 +75,7 @@ export const hoverCard = defineComponent({
 				{ path: "lib/anchor.ts", type: "registry:lib" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge", "bits-ui"],
+			dependencies: ["tailwind-variants", "clsx", "tailwind-merge", "bits-ui"],
 		},
 	},
 	keywords: ["hover", "card", "overlay"],

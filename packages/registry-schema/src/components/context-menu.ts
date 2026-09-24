@@ -5,20 +5,60 @@ export const contextMenu = defineComponent({
 	name: "Context Menu",
 	description: "Right-click menu positioned at the pointer, clamped to the viewport.",
 	category: "base",
-	status: "alpha",
-	props: [],
+	status: "stable",
+	variants: { variant: ["default", "destructive"] },
+	props: [
+		{
+			name: "open",
+			type: "boolean",
+			description:
+				"On ContextMenu: controlled open state with onOpenChange; bindable in Svelte.",
+			control: { kind: "none" },
+		},
+		{
+			name: "variant",
+			type: '"default" | "destructive"',
+			description:
+				"On ContextMenuItem: destructive tints the item for irreversible actions.",
+			default: "default",
+			control: { kind: "none" },
+		},
+		{
+			name: "inset",
+			type: "boolean",
+			description:
+				"On items, labels and sub triggers: indents to line up with checkbox and radio items.",
+			default: false,
+			control: { kind: "none" },
+		},
+		{
+			name: "checked",
+			type: "boolean",
+			description:
+				"On ContextMenuCheckboxItem: controlled with onCheckedChange; bindable in Svelte.",
+			control: { kind: "none" },
+		},
+		{
+			name: "value",
+			type: "string",
+			description:
+				"On ContextMenuRadioGroup: the selected radio item; controlled with onValueChange.",
+			control: { kind: "none" },
+		},
+	],
 	motion: {
 		springs: [],
 		reducedMotion: "The menu appears without the scale.",
 		behaviour: [
 			"Opens at the pointer and is clamped so it never renders partly off screen (Base UI/bits-ui popper collision detection).",
 			"A submenu opens to the right of its trigger on hover or click/arrow-right/enter.",
+			"Checkbox and radio items keep the menu open, so several options can be set in one visit.",
 		],
 	},
 	a11y: {
 		role: "menu",
 		keyboard: [
-			"Escape closes the entire menu, including any open submenu",
+			"Escape closes an open submenu first, then the menu",
 			"On a submenu trigger: ArrowRight or Enter opens it and focuses its first item",
 			"Inside an open submenu: ArrowLeft closes just that submenu and returns focus to its trigger",
 		],
@@ -57,6 +97,10 @@ export const contextMenu = defineComponent({
 				{ path: "context-menu/context-menu-sub.svelte", type: "registry:ui" },
 				{ path: "context-menu/context-menu-sub-content.svelte", type: "registry:ui" },
 				{ path: "context-menu/context-menu-sub-trigger.svelte", type: "registry:ui" },
+				{ path: "context-menu/context-menu-group.svelte", type: "registry:ui" },
+				{ path: "context-menu/context-menu-checkbox-item.svelte", type: "registry:ui" },
+				{ path: "context-menu/context-menu-radio-group.svelte", type: "registry:ui" },
+				{ path: "context-menu/context-menu-radio-item.svelte", type: "registry:ui" },
 				{ path: "lib/anchor.ts", type: "registry:lib" },
 				{ path: "lib/menu.ts", type: "registry:lib" },
 				{ path: "lib/cn.ts", type: "registry:lib" },

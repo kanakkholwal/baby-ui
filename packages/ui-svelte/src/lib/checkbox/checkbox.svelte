@@ -10,6 +10,7 @@ type Props = {
 	size?: CheckboxSize;
 	label?: string;
 	description?: string;
+	"aria-label"?: string;
 	class?: string;
 	name?: string;
 };
@@ -21,6 +22,7 @@ let {
 	size = "md",
 	label,
 	description,
+	"aria-label": ariaLabel,
 	class: classProp,
 	name,
 }: Props = $props();
@@ -36,6 +38,7 @@ const id = $props.id();
 		{disabled}
 		bind:checked
 		bind:indeterminate
+		aria-label={label ? undefined : ariaLabel}
 		data-slot="checkbox"
 		class={cn(frame.box(), !label && !description && classProp)}
 	>

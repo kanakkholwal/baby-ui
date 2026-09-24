@@ -58,7 +58,7 @@ export const fullscreenNav = defineComponent({
 				{ path: "fullscreen-nav/fullscreen-nav.tsx", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["@base-ui/react", "clsx", "tailwind-merge"],
 		},
 		svelte: {
 			entry: "FullscreenNav",
@@ -66,7 +66,7 @@ export const fullscreenNav = defineComponent({
 				{ path: "fullscreen-nav/fullscreen-nav.svelte", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["bits-ui", "clsx", "tailwind-merge"],
 		},
 	},
 	keywords: ["fullscreen", "nav"],

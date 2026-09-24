@@ -7,7 +7,7 @@ tags: [context, menu, overlay]
 ---
 
 Positioned from the pointer rather than an element, so it clamps to the viewport instead
-of flipping. Flipping only makes sense when there is an anchor to flip around.
+of flipping. Items take `variant="destructive"` for irreversible actions.
 
 ## Right-click is not an interface
 
@@ -18,6 +18,12 @@ shortcut. Treat the context menu as an accelerator, never as the only path.
 ## Submenus
 
 `ContextMenuSub`, `ContextMenuSubTrigger` and `ContextMenuSubContent` open a submenu to the
-right of its trigger, on hover, on click, or with arrow-right / enter. Arrow-left inside a
-submenu closes just that submenu and returns focus to its trigger; escape closes the whole
-menu tree at once.
+right of its trigger, on hover, on click, or with arrow-right / enter. Arrow-left or escape inside a
+submenu closes just that submenu and returns focus to its trigger; a second escape closes
+the menu.
+
+## Checkbox and radio items
+
+`ContextMenuCheckboxItem` and `ContextMenuRadioGroup` with `ContextMenuRadioItem` are
+controlled like any input (`checked`, `value`, bindable in Svelte) and keep the menu open,
+so several options can be set in one visit.

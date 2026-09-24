@@ -44,7 +44,7 @@ const selected = $derived(regions.find((r) => r.value === value));
 					<ComboboxItem
 						value={region.value}
 						keywords={region.label}
-						onclick={() => {
+						onSelect={() => {
 							value = region.value === value ? "" : region.value;
 							open = false;
 						}}

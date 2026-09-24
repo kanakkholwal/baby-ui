@@ -1,7 +1,12 @@
 "use client";
 
-import type { ReactNode, PointerEvent as ReactPointerEvent } from "react";
-import { useMemo, useRef, useState } from "react";
+import {
+	type CSSProperties,
+	type ReactNode,
+	type PointerEvent as ReactPointerEvent,
+	useMemo,
+	useState,
+} from "react";
 import { Checkbox } from "../checkbox/checkbox";
 import {
 	DropdownMenu,
@@ -11,193 +16,71 @@ import {
 } from "../dropdown-menu/dropdown-menu";
 import { cn } from "../lib/cn";
 import { Popover, PopoverContent, PopoverTrigger } from "../popover/popover";
-import { ConfigPopover, TYPE_GLYPHS } from "./config-popover";
+import { ConfigPopover, GlyphIcon, Icon } from "./config-popover";
+import {
+	ACTIONS_WIDTH,
+	COLUMN_ORDER,
+	COLUMN_WIDTHS,
+	INPUT_COLUMNS,
+	nextSort,
+	pinOffsets,
+	RECORDS_TABLE_LABELS,
+	resolveColumn,
+	sortRows,
+	strengthLabel,
+	strengthRank,
+	TYPE_GLYPHS,
+	toggleIn,
+	updateColumn,
+} from "./model";
 import { TagList } from "./tag-list";
 import type {
+	ColumnKey,
 	RecordRow,
+	RecordSort,
 	RecordSortKey,
-	RecordsColumnMeta,
+	RecordsTableConfig,
 	RecordsTableLabels,
 } from "./types";
 import { type RecordsDensity, recordsTable, strengthDot } from "./variants";
 
 export type {
+	ColumnKey,
 	RecordRow,
+	RecordSort,
 	RecordSortKey,
+	RecordsColumnConfig,
 	RecordsColumnMeta,
+	RecordsColumnSettings,
 	RecordsColumnType,
 	RecordsPrompt,
+	RecordsTableConfig,
 	RecordsTableLabels,
 	RecordsToolKind,
 } from "./types";
 export type { RecordStrength, RecordsDensity } from "./variants";
 
-type ColumnKey = "company" | "categories" | "last" | "strength" | "links" | "ai";
-
-const COMFORTABLE_WIDTHS: Record<ColumnKey, number> = {
-	company: 270,
-	categories: 275,
-	last: 190,
-	strength: 210,
-	links: 175,
-	ai: 240,
-};
-
-const COMPACT_WIDTHS: Record<ColumnKey, number> = {
-	company: 220,
-	categories: 220,
-	last: 155,
-	strength: 180,
-	links: 160,
-	ai: 200,
-};
-
-const STRENGTH_LABEL: Record<string, string> = {
-	strong: "Very strong",
-	weak: "Weak",
-	veryweak: "Very weak",
-	none: "No communication",
-};
-
-const DEFAULT_LABELS: RecordsTableLabels = {
-	company: "Company",
-	categories: "Categories",
-	last: "Last interaction",
-	strength: "Connection strength",
-	links: "Links",
-	ai: "AI column",
-};
-
-function defaultMeta(): Record<ColumnKey, RecordsColumnMeta> {
-	return {
-		company: { type: "Text", tool: "User input", toolKind: "user" },
-		categories: {
-			type: "Multi select",
-			tool: "User input",
-			toolKind: "user",
-			inputs: "Company",
-			prompt: {
-				before: "Tag each ",
-				chip: "Company",
-				after: " with its market categories.",
-			},
-		},
-		last: { type: "Date", tool: "User input", toolKind: "user" },
-		strength: {
-			type: "Single select",
-			tool: "User input",
-			toolKind: "user",
-			inputs: "Last interaction",
-			prompt: {
-				before: "Score the relationship from ",
-				chip: "Last interaction",
-				after: ".",
-			},
-		},
-		links: {
-			type: "URL",
-			tool: "Web search",
-			toolKind: "web",
-			inputs: "Company",
-			prompt: { before: "Find the website for ", chip: "Company", after: "." },
-		},
-		ai: { type: "Text", tool: "Web search", toolKind: "web", inputs: "Company" },
+/** Value from `value` when controlled, else local state; `set` always reports through `onChange`. */
+function useControllable<T>(
+	value: T | undefined,
+	initial: T,
+	onChange?: (next: T) => void,
+) {
+	const [inner, setInner] = useState(initial);
+	const current = value ?? inner;
+	const set = (next: T) => {
+		if (value === undefined) setInner(next);
+		onChange?.(next);
 	};
+	return [current, set] as const;
 }
 
-function Icon({ children, size = 14 }: { children: ReactNode; size?: number }) {
-	return (
-		<svg
-			width={size}
-			height={size}
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth="1.8"
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			aria-hidden
-		>
-			{children}
-		</svg>
-	);
-}
-
-function CalcCell() {
+function CalcCell({ label }: { label: string }) {
 	return (
 		<span className="inline-flex items-center gap-1.5 text-[13px] text-muted-foreground">
-			Calculating…
+			{label}
 			<span className="size-1.5 animate-pulse rounded-full bg-muted-foreground" />
 		</span>
-	);
-}
-
-function HeaderCell({
-	label,
-	sortKey,
-	sort,
-	onSort,
-	onResizeStart,
-	resizing,
-	selected,
-	onPick,
-	paddingClassName,
-}: {
-	label: string;
-	sortKey?: RecordSortKey;
-	sort: { key: RecordSortKey; dir: 1 | -1 };
-	onSort: (key: RecordSortKey) => void;
-	onResizeStart: (event: ReactPointerEvent<HTMLSpanElement>) => void;
-	resizing?: boolean;
-	selected?: boolean;
-	onPick?: ReactNode;
-	paddingClassName: string;
-}) {
-	return (
-		<th
-			className={cn(
-				"relative border-border border-r border-b bg-card text-left font-medium text-[12.5px] text-muted-foreground",
-				paddingClassName,
-				selected && "bg-primary/[0.04]",
-			)}
-		>
-			<div className="flex min-w-0 items-center gap-1.5">
-				{onPick}
-				{sortKey ? (
-					<button
-						type="button"
-						aria-label={`Sort by ${label}`}
-						onClick={(event) => {
-							event.stopPropagation();
-							onSort(sortKey);
-						}}
-						className={cn(
-							"shrink-0 cursor-pointer text-muted-foreground transition-opacity",
-							sort.key === sortKey ? "opacity-100" : "opacity-0 hover:opacity-60",
-						)}
-						style={{
-							transform:
-								sort.key === sortKey && sort.dir === -1 ? "rotate(180deg)" : undefined,
-						}}
-					>
-						<Icon size={12}>
-							<path d="M12 5v14M5 12l7 7 7-7" />
-						</Icon>
-					</button>
-				) : null}
-			</div>
-			{/* biome-ignore lint/a11y/useSemanticElements: a drag handle can't be a semantic <hr> */}
-			<span
-				role="separator"
-				aria-orientation="vertical"
-				aria-label={`Resize ${label} column`}
-				onPointerDown={onResizeStart}
-				className={cn(
-					"-right-0.5 absolute inset-y-0 w-1 cursor-col-resize touch-none",
-					resizing && "bg-primary/40",
-				)}
-			/>
-		</th>
 	);
 }
 
@@ -208,14 +91,32 @@ export interface RecordsTableProps {
 	/** Stretches to fill its container instead of sizing to its own columns. */
 	fill?: boolean;
 	density?: RecordsDensity;
-	/** Real model names offered by the Tool picker; empty hides no UI, it just offers nothing. */
+	/** Real model names offered by the Tool picker; empty offers nothing. */
 	modelOptions?: string[];
 	/** Column currently revealing computed values row by row. `null`/omitted shows none. */
 	calculatingColumn?: string | null;
-	/** Row count already resolved for `calculatingColumn`; drives which rows still show "Calculating…". */
+	/** Row count already resolved for `calculatingColumn`. */
 	resolvedCount?: number;
 	/** Fired when "Go calculate" is pressed for a column; the caller owns the reveal timing. */
-	onCalculate?: (column: string) => void;
+	onCalculate?: (column: ColumnKey) => void;
+	/** Controlled selected row ids. */
+	selected?: string[];
+	defaultSelected?: string[];
+	onSelectedChange?: (ids: string[]) => void;
+	sort?: RecordSort;
+	defaultSort?: RecordSort;
+	onSortChange?: (sort: RecordSort) => void;
+	/** Columns kept in view while the table scrolls sideways. */
+	pinned?: ColumnKey[];
+	defaultPinned?: ColumnKey[];
+	onPinnedChange?: (pinned: ColumnKey[]) => void;
+	showAiColumn?: boolean;
+	defaultShowAiColumn?: boolean;
+	onShowAiColumnChange?: (show: boolean) => void;
+	/** Per-column type, tool, inputs, prompt and behaviour settings. */
+	config?: RecordsTableConfig;
+	defaultConfig?: RecordsTableConfig;
+	onConfigChange?: (config: RecordsTableConfig) => void;
 	className?: string;
 }
 
@@ -230,85 +131,78 @@ export function RecordsTable({
 	calculatingColumn = null,
 	resolvedCount = 0,
 	onCalculate,
+	selected: selectedProp,
+	defaultSelected = [],
+	onSelectedChange,
+	sort: sortProp,
+	defaultSort = { key: "name", dir: 1 },
+	onSortChange,
+	pinned: pinnedProp,
+	defaultPinned = [],
+	onPinnedChange,
+	showAiColumn,
+	defaultShowAiColumn = false,
+	onShowAiColumnChange,
+	config: configProp,
+	defaultConfig = {},
+	onConfigChange,
 	className,
 }: RecordsTableProps) {
-	const text: RecordsTableLabels = { ...DEFAULT_LABELS, ...labels };
-	const [selected, setSelected] = useState<Set<string>>(new Set());
-	const [sort, setSort] = useState<{ key: RecordSortKey; dir: 1 | -1 }>({
-		key: "name",
-		dir: 1,
-	});
-	const [columnWidths, setColumnWidths] = useState<Record<ColumnKey, number>>(
-		density === "compact" ? COMPACT_WIDTHS : COMFORTABLE_WIDTHS,
+	const text: RecordsTableLabels = { ...RECORDS_TABLE_LABELS, ...labels };
+	const [selected, setSelected] = useControllable(
+		selectedProp,
+		defaultSelected,
+		onSelectedChange,
 	);
+	const [sort, setSort] = useControllable(sortProp, defaultSort, onSortChange);
+	const [pinned, setPinned] = useControllable(pinnedProp, defaultPinned, onPinnedChange);
+	const [aiShown, setAiShown] = useControllable(
+		showAiColumn,
+		defaultShowAiColumn,
+		onShowAiColumnChange,
+	);
+	const [config, setConfig] = useControllable(configProp, defaultConfig, onConfigChange);
+	const [widthOverrides, setWidthOverrides] = useState<
+		Partial<Record<ColumnKey, number>>
+	>({});
 	const [resizingColumn, setResizingColumn] = useState<ColumnKey | null>(null);
 	const [openColumn, setOpenColumn] = useState<ColumnKey | null>(null);
-	const [columnOverrides, setColumnOverrides] = useState<
-		Partial<Record<ColumnKey, Partial<RecordsColumnMeta>>>
-	>({});
-	const [inputSelections, setInputSelections] = useState<
-		Partial<Record<ColumnKey, string[]>>
-	>({});
-	const [pinnedColumns, setPinnedColumns] = useState<Set<ColumnKey>>(new Set());
-	const [aiAdded, setAiAdded] = useState(false);
-	const aiThRef = useRef<HTMLTableCellElement>(null);
 	const { root, cell, headerCell } = recordsTable({ density });
-	const meta = useMemo(() => defaultMeta(), []);
 
-	const visibleRows = useMemo(() => {
-		return [...rows].sort((a, b) => {
-			const value =
-				sort.key === "name"
-					? a.name.localeCompare(b.name)
-					: sort.key === "last"
-						? a.last.localeCompare(b.last)
-						: strengthRank(a.strength) - strengthRank(b.strength);
-			return value * sort.dir;
-		});
-	}, [rows, sort]);
-
-	function columnMeta(key: ColumnKey): RecordsColumnMeta {
-		return { ...meta[key], ...columnOverrides[key] };
-	}
-
-	function updateMeta(key: ColumnKey, next: Partial<RecordsColumnMeta>) {
-		setColumnOverrides((current) => ({
-			...current,
-			[key]: { ...current[key], ...next },
-		}));
-	}
-
-	function isCalc(col: ColumnKey, index: number) {
-		return calculatingColumn === col && index >= resolvedCount;
-	}
-
+	const widths = { ...COLUMN_WIDTHS[density], ...widthOverrides };
+	const visibleColumns = COLUMN_ORDER.filter((key) => key !== "ai" || aiShown);
+	const offsets = pinOffsets(pinned, visibleColumns, widths);
+	const visibleRows = useMemo(() => sortRows(rows, sort), [rows, sort]);
 	const allSelected =
-		visibleRows.length > 0 && visibleRows.every((row) => selected.has(row.id));
+		visibleRows.length > 0 && visibleRows.every((row) => selected.includes(row.id));
 	const partiallySelected =
-		!allSelected && visibleRows.some((row) => selected.has(row.id));
+		!allSelected && visibleRows.some((row) => selected.includes(row.id));
+	const tableWidth = visibleColumns.reduce(
+		(sum, key) => sum + widths[key],
+		ACTIONS_WIDTH,
+	);
 
-	function toggleSort(key: RecordSortKey) {
-		setSort((current) =>
-			current.key === key ? { key, dir: (current.dir * -1) as 1 | -1 } : { key, dir: 1 },
-		);
-	}
-
-	function toggleRow(id: string) {
-		setSelected((current) => {
-			const next = new Set(current);
-			if (next.has(id)) next.delete(id);
-			else next.add(id);
-			return next;
-		});
-	}
+	const isCalc = (col: ColumnKey, index: number) =>
+		calculatingColumn === col && index >= resolvedCount;
+	/** Sticky placement for pinned columns; `selectedRow` keeps the row tint opaque over scrolled cells. */
+	const pinStyle = (key: ColumnKey): CSSProperties | undefined =>
+		offsets[key] === undefined
+			? undefined
+			: { position: "sticky", left: offsets[key], zIndex: 2 };
+	const pinClass = (key: ColumnKey, selectedRow = false) =>
+		offsets[key] === undefined
+			? undefined
+			: selectedRow
+				? "bg-[color-mix(in_oklab,var(--primary)_4%,var(--card))]"
+				: "bg-card";
 
 	function toggleAll() {
-		setSelected((current) => {
-			const next = new Set(current);
-			if (allSelected) for (const row of visibleRows) next.delete(row.id);
-			else for (const row of visibleRows) next.add(row.id);
-			return next;
-		});
+		const ids = visibleRows.map((row) => row.id);
+		setSelected(
+			allSelected
+				? selected.filter((id) => !ids.includes(id))
+				: [...new Set([...selected, ...ids])],
+		);
 	}
 
 	function startColumnResize(key: ColumnKey, minWidth = 120) {
@@ -316,16 +210,14 @@ export function RecordsTable({
 			event.preventDefault();
 			event.stopPropagation();
 			setOpenColumn(null);
-
 			const startX = event.clientX;
-			const startWidth = columnWidths[key];
+			const startWidth = widths[key];
 			document.body.style.cursor = "col-resize";
 			document.body.style.userSelect = "none";
 			setResizingColumn(key);
-
 			function move(moveEvent: PointerEvent) {
 				const width = Math.max(minWidth, startWidth + moveEvent.clientX - startX);
-				setColumnWidths((current) => ({ ...current, [key]: width }));
+				setWidthOverrides((current) => ({ ...current, [key]: width }));
 			}
 			function finish() {
 				window.removeEventListener("pointermove", move);
@@ -335,53 +227,23 @@ export function RecordsTable({
 				document.body.style.userSelect = "";
 				setResizingColumn(null);
 			}
-
 			window.addEventListener("pointermove", move);
 			window.addEventListener("pointerup", finish);
 			window.addEventListener("pointercancel", finish);
 		};
 	}
 
-	const tableWidth =
-		columnWidths.company +
-		columnWidths.categories +
-		columnWidths.last +
-		columnWidths.strength +
-		columnWidths.links +
-		(aiAdded ? columnWidths.ai : 0) +
-		56;
-
-	function inputOptionsFor(exclude: ColumnKey) {
-		return (["company", "categories", "last", "strength", "links"] as ColumnKey[])
-			.filter((key) => key !== exclude)
-			.map((key) => text[key]);
-	}
-
-	function selectedInputsFor(key: ColumnKey) {
-		return inputSelections[key] ?? (meta[key].inputs ? [meta[key].inputs as string] : []);
-	}
-
-	function configPopoverFor(key: ColumnKey, onHide?: () => void) {
+	function configPopover(key: ColumnKey, onHide?: () => void) {
 		return (
 			<ConfigPopover
 				title={text[key]}
-				meta={columnMeta(key)}
-				onMetaChange={(next) => updateMeta(key, next)}
-				inputOptions={inputOptionsFor(key)}
-				selectedInputs={selectedInputsFor(key)}
-				onInputsChange={(next) =>
-					setInputSelections((current) => ({ ...current, [key]: next }))
-				}
+				labels={text}
+				column={resolveColumn(key, config, text)}
+				onChange={(patch) => setConfig(updateColumn(config, key, patch))}
+				inputOptions={INPUT_COLUMNS.filter((k) => k !== key).map((k) => text[k])}
 				modelOptions={modelOptions}
-				pinned={pinnedColumns.has(key)}
-				onTogglePin={() =>
-					setPinnedColumns((current) => {
-						const next = new Set(current);
-						if (next.has(key)) next.delete(key);
-						else next.add(key);
-						return next;
-					})
-				}
+				pinned={pinned.includes(key)}
+				onTogglePin={() => setPinned(toggleIn(pinned, key))}
 				onHide={onHide}
 				calculating={calculatingColumn != null}
 				onCalculate={() => {
@@ -391,6 +253,80 @@ export function RecordsTable({
 			/>
 		);
 	}
+
+	function header(
+		key: ColumnKey,
+		sortKey?: RecordSortKey,
+		lead?: ReactNode,
+		onHide?: () => void,
+	) {
+		const label = text[key];
+		return (
+			<th
+				key={key}
+				style={pinStyle(key)}
+				className={cn(
+					headerCell(),
+					"relative border-border border-r border-b bg-card text-left font-medium text-[12.5px] text-muted-foreground",
+					openColumn === key && "bg-primary/[0.04]",
+				)}
+			>
+				<div className="flex min-w-0 items-center gap-1.5">
+					{lead}
+					<Popover
+						open={openColumn === key}
+						onOpenChange={(o) => setOpenColumn(o ? key : null)}
+					>
+						<PopoverTrigger
+							className="min-w-0 items-center gap-1.5 truncate rounded-md px-1 hover:bg-foreground/[0.06]"
+							aria-label={text.configure(label)}
+						>
+							<GlyphIcon glyphs={TYPE_GLYPHS[resolveColumn(key, config, text).type]} />
+							<span className="truncate">{label}</span>
+						</PopoverTrigger>
+						<PopoverContent align="start" className="w-80 p-3">
+							{configPopover(key, onHide)}
+						</PopoverContent>
+					</Popover>
+					{sortKey ? (
+						<button
+							type="button"
+							aria-label={text.sortBy(label)}
+							aria-pressed={sort.key === sortKey}
+							onClick={(event) => {
+								event.stopPropagation();
+								setSort(nextSort(sort, sortKey));
+							}}
+							className={cn(
+								"shrink-0 cursor-pointer text-muted-foreground transition-[opacity,rotate] duration-150",
+								sort.key === sortKey
+									? "opacity-100"
+									: "opacity-0 hover:opacity-60 focus-visible:opacity-60",
+								sort.key === sortKey && sort.dir === -1 && "rotate-180",
+							)}
+						>
+							<Icon size={12}>
+								<path d="M12 5v14M5 12l7 7 7-7" />
+							</Icon>
+						</button>
+					) : null}
+				</div>
+				{/* biome-ignore lint/a11y/useSemanticElements: a drag handle can't be a semantic <hr> */}
+				<span
+					role="separator"
+					aria-orientation="vertical"
+					aria-label={text.resize(label)}
+					onPointerDown={startColumnResize(key)}
+					className={cn(
+						"-right-0.5 absolute inset-y-0 w-1 cursor-col-resize touch-none",
+						resizingColumn === key && "bg-primary/40",
+					)}
+				/>
+			</th>
+		);
+	}
+
+	const footerCell = cn(cell(), "border-border border-r text-muted-foreground text-xs");
 
 	return (
 		<div
@@ -407,180 +343,39 @@ export function RecordsTable({
 					style={{ width: fill ? "100%" : tableWidth, minWidth: tableWidth }}
 				>
 					<colgroup>
-						<col style={{ width: columnWidths.company }} />
-						<col style={{ width: columnWidths.categories }} />
-						<col style={{ width: columnWidths.last }} />
-						<col style={{ width: columnWidths.strength }} />
-						<col style={{ width: columnWidths.links }} />
-						{aiAdded ? <col style={{ width: columnWidths.ai }} /> : null}
-						<col style={{ width: 56 }} />
+						{visibleColumns.map((key) => (
+							<col key={key} style={{ width: widths[key] }} />
+						))}
+						<col style={{ width: ACTIONS_WIDTH }} />
 					</colgroup>
 					<thead>
 						<tr>
-							<th
-								className={cn(
-									headerCell(),
-									"border-border border-r border-b bg-card text-left",
-									openColumn === "company" && "bg-primary/[0.04]",
-								)}
-							>
-								<div className="flex items-center gap-2">
-									<Checkbox
-										checked={allSelected}
-										indeterminate={partiallySelected}
-										onCheckedChange={toggleAll}
-										label=""
-										className="shrink-0"
-									/>
-									<Popover
-										open={openColumn === "company"}
-										onOpenChange={(o) => setOpenColumn(o ? "company" : null)}
-									>
-										<PopoverTrigger className="min-w-0 truncate rounded-md px-1 font-medium text-[12.5px] text-muted-foreground hover:bg-foreground/[0.06]">
-											{text.company}
-										</PopoverTrigger>
-										<PopoverContent align="start" className="w-80 p-3">
-											{configPopoverFor("company")}
-										</PopoverContent>
-									</Popover>
-								</div>
-							</th>
-							<HeaderCell
-								label={text.categories}
-								paddingClassName={headerCell()}
-								sort={sort}
-								onSort={toggleSort}
-								onResizeStart={startColumnResize("categories")}
-								resizing={resizingColumn === "categories"}
-								selected={openColumn === "categories"}
-								onPick={
-									<Popover
-										open={openColumn === "categories"}
-										onOpenChange={(o) => setOpenColumn(o ? "categories" : null)}
-									>
-										<PopoverTrigger
-											className="min-w-0 items-center gap-1.5 truncate rounded-md px-1 hover:bg-foreground/[0.06]"
-											aria-label={`Configure ${text.categories}`}
-										>
-											<Icon size={14}>{TYPE_GLYPHS[columnMeta("categories").type]}</Icon>
-											<span className="truncate">{text.categories}</span>
-										</PopoverTrigger>
-										<PopoverContent align="start" className="w-80 p-3">
-											{configPopoverFor("categories")}
-										</PopoverContent>
-									</Popover>
-								}
-							/>
-							<HeaderCell
-								label={text.last}
-								paddingClassName={headerCell()}
-								sortKey="last"
-								sort={sort}
-								onSort={toggleSort}
-								onResizeStart={startColumnResize("last")}
-								resizing={resizingColumn === "last"}
-								selected={openColumn === "last"}
-								onPick={
-									<Popover
-										open={openColumn === "last"}
-										onOpenChange={(o) => setOpenColumn(o ? "last" : null)}
-									>
-										<PopoverTrigger
-											className="min-w-0 items-center gap-1.5 truncate rounded-md px-1 hover:bg-foreground/[0.06]"
-											aria-label={`Configure ${text.last}`}
-										>
-											<Icon size={14}>{TYPE_GLYPHS[columnMeta("last").type]}</Icon>
-											<span className="truncate">{text.last}</span>
-										</PopoverTrigger>
-										<PopoverContent align="start" className="w-80 p-3">
-											{configPopoverFor("last")}
-										</PopoverContent>
-									</Popover>
-								}
-							/>
-							<HeaderCell
-								label={text.strength}
-								paddingClassName={headerCell()}
-								sortKey="strength"
-								sort={sort}
-								onSort={toggleSort}
-								onResizeStart={startColumnResize("strength")}
-								resizing={resizingColumn === "strength"}
-								selected={openColumn === "strength"}
-								onPick={
-									<Popover
-										open={openColumn === "strength"}
-										onOpenChange={(o) => setOpenColumn(o ? "strength" : null)}
-									>
-										<PopoverTrigger
-											className="min-w-0 items-center gap-1.5 truncate rounded-md px-1 hover:bg-foreground/[0.06]"
-											aria-label={`Configure ${text.strength}`}
-										>
-											<Icon size={14}>{TYPE_GLYPHS[columnMeta("strength").type]}</Icon>
-											<span className="truncate">{text.strength}</span>
-										</PopoverTrigger>
-										<PopoverContent align="start" className="w-80 p-3">
-											{configPopoverFor("strength")}
-										</PopoverContent>
-									</Popover>
-								}
-							/>
-							<HeaderCell
-								label={text.links}
-								paddingClassName={headerCell()}
-								sort={sort}
-								onSort={toggleSort}
-								onResizeStart={startColumnResize("links")}
-								resizing={resizingColumn === "links"}
-								selected={openColumn === "links"}
-								onPick={
-									<Popover
-										open={openColumn === "links"}
-										onOpenChange={(o) => setOpenColumn(o ? "links" : null)}
-									>
-										<PopoverTrigger
-											className="min-w-0 items-center gap-1.5 truncate rounded-md px-1 hover:bg-foreground/[0.06]"
-											aria-label={`Configure ${text.links}`}
-										>
-											<Icon size={14}>{TYPE_GLYPHS[columnMeta("links").type]}</Icon>
-											<span className="truncate">{text.links}</span>
-										</PopoverTrigger>
-										<PopoverContent align="start" className="w-80 p-3">
-											{configPopoverFor("links")}
-										</PopoverContent>
-									</Popover>
-								}
-							/>
-							{aiAdded ? (
-								<th
-									ref={aiThRef}
-									className={cn(
-										headerCell(),
-										"border-border border-r border-b bg-card text-left",
-										openColumn === "ai" && "bg-primary/[0.04]",
-									)}
-								>
-									<Popover
-										open={openColumn === "ai"}
-										onOpenChange={(o) => setOpenColumn(o ? "ai" : null)}
-									>
-										<PopoverTrigger className="min-w-0 truncate rounded-md px-1 font-medium text-[12.5px] text-muted-foreground hover:bg-foreground/[0.06]">
-											{text.ai}
-										</PopoverTrigger>
-										<PopoverContent align="start" className="w-80 p-3">
-											{configPopoverFor("ai", () => {
-												setAiAdded(false);
-												setOpenColumn(null);
-											})}
-										</PopoverContent>
-									</Popover>
-								</th>
-							) : null}
+							{header(
+								"company",
+								"name",
+								<Checkbox
+									checked={allSelected}
+									indeterminate={partiallySelected}
+									onCheckedChange={toggleAll}
+									aria-label={text.selectAll}
+									className="shrink-0"
+								/>,
+							)}
+							{header("categories")}
+							{header("last", "last")}
+							{header("strength", "strength")}
+							{header("links")}
+							{aiShown
+								? header("ai", undefined, undefined, () => {
+										setAiShown(false);
+										setOpenColumn(null);
+									})
+								: null}
 							<th className={cn(headerCell(), "border-border border-b bg-card px-2")}>
 								<div className="flex items-center gap-1">
 									<DropdownMenu>
 										<DropdownMenuTrigger
-											aria-label="New property"
+											aria-label={text.newProperty}
 											className="flex size-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground"
 										>
 											<Icon size={15}>
@@ -590,7 +385,7 @@ export function RecordsTable({
 										<DropdownMenuContent align="end">
 											<DropdownMenuItem
 												onClick={() => {
-													setAiAdded(true);
+													setAiShown(true);
 													setOpenColumn("ai");
 												}}
 											>
@@ -600,7 +395,7 @@ export function RecordsTable({
 									</DropdownMenu>
 									<DropdownMenu>
 										<DropdownMenuTrigger
-											aria-label="Table options"
+											aria-label={text.tableOptions}
 											className="flex size-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground"
 										>
 											<svg
@@ -616,23 +411,19 @@ export function RecordsTable({
 											</svg>
 										</DropdownMenuTrigger>
 										<DropdownMenuContent align="end">
-											<DropdownMenuItem onClick={() => setAiAdded(true)}>
-												Add property
-											</DropdownMenuItem>
-											<DropdownMenuItem onClick={() => setColumnWidths(COMPACT_WIDTHS)}>
-												Compact columns
+											<DropdownMenuItem onClick={() => setAiShown(true)}>
+												{text.addProperty}
 											</DropdownMenuItem>
 											<DropdownMenuItem
-												onClick={() =>
-													setColumnWidths(
-														density === "compact" ? COMPACT_WIDTHS : COMFORTABLE_WIDTHS,
-													)
-												}
+												onClick={() => setWidthOverrides(COLUMN_WIDTHS.compact)}
 											>
-												Reset column widths
+												{text.compactColumns}
 											</DropdownMenuItem>
-											<DropdownMenuItem onClick={() => setSelected(new Set())}>
-												Clear selection
+											<DropdownMenuItem onClick={() => setWidthOverrides({})}>
+												{text.resetWidths}
+											</DropdownMenuItem>
+											<DropdownMenuItem onClick={() => setSelected([])}>
+												{text.clearSelection}
 											</DropdownMenuItem>
 										</DropdownMenuContent>
 									</DropdownMenu>
@@ -642,22 +433,32 @@ export function RecordsTable({
 					</thead>
 					<tbody>
 						{visibleRows.map((row, index) => {
-							const isSelected = selected.has(row.id);
+							const isSelected = selected.includes(row.id);
+							const td = (key: ColumnKey, extra?: string) => ({
+								style: pinStyle(key),
+								className: cn(
+									cell(),
+									"border-border border-r border-b",
+									pinClass(key, isSelected),
+									extra,
+								),
+							});
 							return (
 								<tr
 									key={row.id}
 									data-slot="records-table-row"
+									data-selected={isSelected || undefined}
 									className={cn("transition-colors", isSelected && "bg-primary/[0.04]")}
 								>
-									<td className={cn(cell(), "border-border border-r border-b")}>
+									<td {...td("company")}>
 										<div className="flex min-w-0 items-center gap-2">
 											<span className="w-4 shrink-0 text-[11px] text-muted-foreground tabular-nums">
 												{index + 1}
 											</span>
 											<Checkbox
 												checked={isSelected}
-												onCheckedChange={() => toggleRow(row.id)}
-												label=""
+												onCheckedChange={() => setSelected(toggleIn(selected, row.id))}
+												aria-label={text.selectRow(row.name)}
 												className="shrink-0"
 											/>
 											<a
@@ -675,35 +476,38 @@ export function RecordsTable({
 											</a>
 										</div>
 									</td>
-									<td className={cn(cell(), "border-border border-r border-b")}>
+									<td {...td("categories")}>
 										{isCalc("categories", index) ? (
-											<CalcCell />
+											<CalcCell label={text.calculating} />
 										) : (
 											<TagList tags={row.tags} />
 										)}
 									</td>
 									<td
-										className={cn(
-											cell(),
-											"border-border border-r border-b",
-											row.last === "No contact" && "text-muted-foreground",
+										{...td(
+											"last",
+											row.strength === "none" ? "text-muted-foreground" : undefined,
 										)}
 									>
-										{isCalc("last", index) ? <CalcCell /> : row.last}
+										{isCalc("last", index) ? (
+											<CalcCell label={text.calculating} />
+										) : (
+											row.last
+										)}
 									</td>
-									<td className={cn(cell(), "border-border border-r border-b")}>
+									<td {...td("strength")}>
 										{isCalc("strength", index) ? (
-											<CalcCell />
+											<CalcCell label={text.calculating} />
 										) : (
 											<span className="inline-flex items-center gap-1.5">
 												<span className={strengthDot({ strength: row.strength })} />
-												{STRENGTH_LABEL[row.strength]}
+												{strengthLabel(row.strength, text)}
 											</span>
 										)}
 									</td>
-									<td className={cn(cell(), "border-border border-r border-b")}>
+									<td {...td("links")}>
 										{isCalc("links", index) ? (
-											<CalcCell />
+											<CalcCell label={text.calculating} />
 										) : row.website ? (
 											<a
 												className="inline-flex min-w-0 items-center gap-1 text-primary hover:underline"
@@ -718,18 +522,18 @@ export function RecordsTable({
 												</Icon>
 											</a>
 										) : (
-											<span className="text-muted-foreground">—</span>
+											<span className="text-muted-foreground">{text.empty}</span>
 										)}
 									</td>
-									{aiAdded ? (
-										<td className={cn(cell(), "border-border border-r border-b")}>
+									{aiShown ? (
+										<td {...td("ai")}>
 											{isCalc("ai", index) ? (
-												<CalcCell />
+												<CalcCell label={text.calculating} />
 											) : (
 												<span
 													className={row.aiValue ? undefined : "text-muted-foreground"}
 												>
-													{row.aiValue ?? "—"}
+													{row.aiValue ?? text.empty}
 												</span>
 											)}
 										</td>
@@ -742,48 +546,39 @@ export function RecordsTable({
 					<tfoot>
 						<tr>
 							<td
-								className={cn(
-									cell(),
-									"border-border border-r text-muted-foreground text-xs",
-								)}
+								style={pinStyle("company")}
+								className={cn(footerCell, pinClass("company"))}
 							>
-								<span className="tabular-nums">{rows.length}</span> count
-							</td>
-							<td className={cn(cell(), "border-border border-r")} />
-							<td
-								className={cn(
-									cell(),
-									"border-border border-r text-muted-foreground text-xs",
-								)}
-							>
-								—
+								{text.count(rows.length)}
 							</td>
 							<td
-								className={cn(
-									cell(),
-									"border-border border-r text-muted-foreground text-xs tabular-nums",
-								)}
+								style={pinStyle("categories")}
+								className={cn(cell(), "border-border border-r", pinClass("categories"))}
+							/>
+							<td style={pinStyle("last")} className={cn(footerCell, pinClass("last"))}>
+								{text.empty}
+							</td>
+							<td
+								style={pinStyle("strength")}
+								className={cn(footerCell, "tabular-nums", pinClass("strength"))}
 							>
 								{rows.length
-									? `${Math.round((rows.reduce((sum, row) => sum + strengthRank(row.strength), 0) / rows.length / 3) * 100)}% average`
-									: "—"}
+									? text.average(
+											Math.round(
+												(rows.reduce((sum, row) => sum + strengthRank(row.strength), 0) /
+													rows.length /
+													3) *
+													100,
+											),
+										)
+									: text.empty}
 							</td>
-							<td
-								className={cn(
-									cell(),
-									"border-border border-r text-muted-foreground text-xs",
-								)}
-							>
-								{rows.filter((row) => row.website).length} links
+							<td style={pinStyle("links")} className={cn(footerCell, pinClass("links"))}>
+								{text.linkCount(rows.filter((row) => row.website).length)}
 							</td>
-							{aiAdded ? (
-								<td
-									className={cn(
-										cell(),
-										"border-border border-r text-muted-foreground text-xs",
-									)}
-								>
-									{rows.filter((row) => row.aiValue).length} filled
+							{aiShown ? (
+								<td style={pinStyle("ai")} className={cn(footerCell, pinClass("ai"))}>
+									{text.filled(rows.filter((row) => row.aiValue).length)}
 								</td>
 							) : null}
 							<td className={cn(cell(), "px-2")} />
@@ -793,14 +588,4 @@ export function RecordsTable({
 			</div>
 		</div>
 	);
-}
-
-function strengthRank(strength: RecordRow["strength"]) {
-	return strength === "strong"
-		? 3
-		: strength === "weak"
-			? 2
-			: strength === "veryweak"
-				? 1
-				: 0;
 }

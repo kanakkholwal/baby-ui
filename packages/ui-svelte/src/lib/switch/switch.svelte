@@ -8,6 +8,7 @@ type Props = {
 	disabled?: boolean;
 	size?: SwitchSize;
 	label?: string;
+	"aria-label"?: string;
 	class?: string;
 };
 
@@ -16,6 +17,7 @@ let {
 	disabled = false,
 	size = "md",
 	label,
+	"aria-label": ariaLabel,
 	class: classProp,
 }: Props = $props();
 
@@ -27,7 +29,7 @@ const id = $props.id();
 		{id}
 		{disabled}
 		bind:checked
-		aria-label={label ? undefined : "Toggle"}
+		aria-label={label ? undefined : (ariaLabel ?? "Toggle")}
 		data-slot="switch"
 		class={cn(switchTrack({ size }), !label && classProp)}
 	>

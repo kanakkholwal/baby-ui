@@ -24,3 +24,21 @@ type RecordRow = {
   aiValue?: string;
 };
 ```
+
+## Controlled state
+
+Selection, sort, pinned columns, the AI column and every column's settings are controlled
+triads: `selected`/`onSelectedChange`, `sort`/`onSortChange`, `pinned`/`onPinnedChange`,
+`showAiColumn`/`onShowAiColumnChange`, `config`/`onConfigChange`. React also takes a
+`default*` for each; Svelte binds them.
+
+```tsx
+const [config, setConfig] = useState<RecordsTableConfig>({
+  links: { tool: "Claude Sonnet 5", toolKind: "model", grounding: true },
+});
+
+<RecordsTable rows={rows} config={config} onConfigChange={setConfig} />
+```
+
+Pinned columns stick to the left while the table scrolls. Every string, including aria
+labels and footer counts, comes from `labels`.

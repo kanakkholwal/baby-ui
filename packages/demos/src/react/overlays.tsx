@@ -11,10 +11,15 @@ import {
 	ComboboxInput,
 	ComboboxItem,
 	ComboboxList,
+	type ComboboxSize,
 	ComboboxTrigger,
 	ContextMenu,
+	ContextMenuCheckboxItem,
 	ContextMenuContent,
 	ContextMenuItem,
+	ContextMenuLabel,
+	ContextMenuRadioGroup,
+	ContextMenuRadioItem,
 	ContextMenuSeparator,
 	ContextMenuShortcut,
 	ContextMenuSub,
@@ -48,7 +53,7 @@ import {
 	TooltipContent,
 	TooltipTrigger,
 } from "@baby-ui/react";
-import { type ComponentProps, useState } from "react";
+import { useState } from "react";
 
 type Props = Record<string, unknown>;
 
@@ -191,6 +196,8 @@ export function DropdownMenuDemo({ props }: { props: Props }) {
 
 export function ContextMenuDemo(_: { props: Props }) {
 	const [last, setLast] = useState("");
+	const [grid, setGrid] = useState(true);
+	const [sort, setSort] = useState("name");
 	return (
 		<div className="flex flex-col items-center gap-3">
 			<ContextMenu>
@@ -227,7 +234,16 @@ export function ContextMenuDemo(_: { props: Props }) {
 						</ContextMenuSubContent>
 					</ContextMenuSub>
 					<ContextMenuSeparator />
-					<ContextMenuItem destructive onClick={() => setLast("delete")}>
+					<ContextMenuCheckboxItem checked={grid} onCheckedChange={setGrid}>
+						Show grid
+					</ContextMenuCheckboxItem>
+					<ContextMenuLabel inset>Sort by</ContextMenuLabel>
+					<ContextMenuRadioGroup value={sort} onValueChange={setSort}>
+						<ContextMenuRadioItem value="name">Name</ContextMenuRadioItem>
+						<ContextMenuRadioItem value="date">Date modified</ContextMenuRadioItem>
+					</ContextMenuRadioGroup>
+					<ContextMenuSeparator />
+					<ContextMenuItem variant="destructive" onClick={() => setLast("delete")}>
 						Delete
 						<ContextMenuShortcut>⌫</ContextMenuShortcut>
 					</ContextMenuItem>
@@ -316,7 +332,7 @@ export function ComboboxDemo({ props }: { props: Props }) {
 	const [open, setOpen] = useState(false);
 	const [value, setValue] = useState("");
 	const selected = REGIONS.find((r) => r.value === value);
-	const size = (props.size as ComponentProps<typeof ComboboxTrigger>["size"]) ?? "md";
+	const size = (props.size as ComboboxSize) ?? "md";
 
 	return (
 		<Combobox open={open} onOpenChange={setOpen}>
@@ -347,7 +363,7 @@ export function ComboboxDemo({ props }: { props: Props }) {
 								key={region.value}
 								value={region.value}
 								keywords={region.label}
-								onClick={() => {
+								onSelect={() => {
 									setValue(region.value === value ? "" : region.value);
 									setOpen(false);
 								}}
