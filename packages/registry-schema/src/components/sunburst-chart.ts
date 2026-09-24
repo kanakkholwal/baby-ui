@@ -6,7 +6,7 @@ export const sunburstChart = defineComponent({
 	description:
 		"Hierarchy as nested rings that sweep in, drill down on click or Enter, and grow along the hovered path.",
 	category: "charts",
-	status: "alpha",
+	status: "stable",
 	props: [
 		{
 			name: "data",
@@ -91,6 +91,12 @@ export const sunburstChart = defineComponent({
 		],
 	},
 
+	licenseOrigin: {
+		source: "bklit-ui",
+		url: "https://github.com/bklit/bklit-ui",
+		license: "MIT",
+		copyright: "Copyright (c) 2026 uixmat",
+	},
 	impl: {
 		react: {
 			entry: "SunburstChart",

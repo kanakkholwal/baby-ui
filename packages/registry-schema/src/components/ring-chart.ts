@@ -6,7 +6,7 @@ export const ringChart = defineComponent({
 	description:
 		"Concentric progress rings that expand, then sweep to each value against its maximum.",
 	category: "charts",
-	status: "alpha",
+	status: "stable",
 	props: [
 		{
 			name: "data",
@@ -80,6 +80,12 @@ export const ringChart = defineComponent({
 		],
 	},
 
+	licenseOrigin: {
+		source: "bklit-ui",
+		url: "https://github.com/bklit/bklit-ui",
+		license: "MIT",
+		copyright: "Copyright (c) 2026 uixmat",
+	},
 	impl: {
 		react: {
 			entry: "RingChart",

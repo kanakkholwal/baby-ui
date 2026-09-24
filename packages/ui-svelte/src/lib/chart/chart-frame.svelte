@@ -108,7 +108,7 @@ function onkeydown(event: KeyboardEvent) {
 	bind:this={el}
 	data-slot="chart-plot"
 	data-phase={phase}
-	role="group"
+	role="figure"
 	aria-roledescription={roleDescription}
 	aria-labelledby="{uid}-title"
 	aria-describedby="{uid}-summary"

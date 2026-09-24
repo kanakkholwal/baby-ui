@@ -1,0 +1,120 @@
+import { defineComponent } from "../index";
+
+export const overviewCard = defineComponent({
+	slug: "overview-card",
+	name: "Overview Card",
+	description:
+		"A dashboard hero metric: headline, trend, an optional period switcher and a full-width chart.",
+	category: "charts",
+	status: "alpha",
+	props: [
+		{
+			name: "data",
+			type: "Record<string, unknown>[]",
+			description: "Rows with a date under xKey and a number under dataKey.",
+			required: true,
+			control: { kind: "none" },
+		},
+		{
+			name: "value",
+			type: "number",
+			description: "Headline at rest, e.g. the period total.",
+			required: true,
+			control: { kind: "none" },
+		},
+		{
+			name: "trend",
+			type: "number",
+			description: "Change over the whole period, in percent.",
+			required: true,
+			control: { kind: "none" },
+		},
+		{
+			name: "periods",
+			type: "{ value: string; label: string }[]",
+			description: "Period switcher options. Omit to hide the toggle entirely.",
+			control: { kind: "none" },
+		},
+		{
+			name: "period",
+			type: "string",
+			description: "Selected period. Controlled with onPeriodChange.",
+			control: { kind: "none" },
+		},
+		{
+			name: "chart",
+			type: '"area" | "line"',
+			description: "Chart under the headline.",
+			default: "area",
+			control: { kind: "select", options: ["area", "line"] },
+		},
+		{
+			name: "size",
+			type: '"md" | "lg"',
+			description: "Chart height.",
+			default: "md",
+			control: { kind: "select", options: ["md", "lg"] },
+		},
+		{
+			name: "activeIndex",
+			type: "number | null",
+			description:
+				"The point driving the headline caption. Controlled with onActiveIndexChange; bindable in Svelte.",
+			control: { kind: "none" },
+		},
+	],
+	motion: {
+		springs: [],
+		reducedMotion: "The headline counter and the chart both settle instantly.",
+		behaviour: [
+			"The headline counts up over 400ms when its value changes.",
+			"The chart keeps the area or line chart's own reveal and hover motion.",
+		],
+	},
+	a11y: {
+		keyboard: ["Inherits the chart plot's keyboard model"],
+		notes: [
+			"The trend badge pairs its colour with an arrow and a signed percentage, so direction never rests on colour alone.",
+			"The period switcher is a real ToggleGroup, keyboard operable and announced by name.",
+		],
+	},
+	impl: {
+		react: {
+			entry: "OverviewCard",
+			files: [
+				{ path: "overview-card/overview-card.tsx", type: "registry:ui" },
+				{ path: "overview-card/variants.ts", type: "registry:ui" },
+				{ path: "lib/cn.ts", type: "registry:lib" },
+			],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			registryDependencies: [
+				"chart",
+				"area-chart",
+				"line-chart",
+				"card",
+				"badge",
+				"counter",
+				"toggle-group",
+			],
+		},
+		svelte: {
+			entry: "OverviewCard",
+			files: [
+				{ path: "overview-card/overview-card.svelte", type: "registry:ui" },
+				{ path: "overview-card/variants.ts", type: "registry:ui" },
+				{ path: "lib/cn.ts", type: "registry:lib" },
+			],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			registryDependencies: [
+				"chart",
+				"area-chart",
+				"line-chart",
+				"card",
+				"badge",
+				"counter",
+				"toggle-group",
+			],
+		},
+	},
+	keywords: ["overview", "dashboard", "hero metric", "chart", "card"],
+});

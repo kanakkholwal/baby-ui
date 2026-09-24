@@ -6,7 +6,7 @@ export const chartSeries = defineComponent({
 	description:
 		"Series extras shared by line and area charts: loading pulse and sweep, hover highlight, markers and a dashed tail.",
 	category: "charts",
-	status: "alpha",
+	status: "stable",
 	props: [
 		{
 			name: "markerAppearance",
@@ -55,6 +55,12 @@ export const chartSeries = defineComponent({
 		],
 	},
 
+	licenseOrigin: {
+		source: "bklit-ui",
+		url: "https://github.com/bklit/bklit-ui",
+		license: "MIT",
+		copyright: "Copyright (c) 2026 uixmat",
+	},
 	impl: {
 		react: {
 			entry: "LoadingPulse",

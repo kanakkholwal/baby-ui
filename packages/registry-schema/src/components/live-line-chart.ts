@@ -6,7 +6,7 @@ export const liveLineChart = defineComponent({
 	description:
 		"Streaming line that scrolls with the clock and eases toward the latest value.",
 	category: "charts",
-	status: "alpha",
+	status: "stable",
 	props: [
 		{
 			name: "data",
@@ -148,6 +148,12 @@ export const liveLineChart = defineComponent({
 		],
 	},
 
+	licenseOrigin: {
+		source: "bklit-ui",
+		url: "https://github.com/bklit/bklit-ui",
+		license: "MIT",
+		copyright: "Copyright (c) 2026 uixmat",
+	},
 	impl: {
 		react: {
 			entry: "LiveLineChart",

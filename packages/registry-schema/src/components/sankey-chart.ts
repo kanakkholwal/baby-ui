@@ -6,7 +6,7 @@ export const sankeyChart = defineComponent({
 	description:
 		"Flows between stages, drawn link by link, with every path through a node lit on hover.",
 	category: "charts",
-	status: "alpha",
+	status: "stable",
 	props: [
 		{
 			name: "data",
@@ -87,6 +87,12 @@ export const sankeyChart = defineComponent({
 		],
 	},
 
+	licenseOrigin: {
+		source: "bklit-ui",
+		url: "https://github.com/bklit/bklit-ui",
+		license: "MIT",
+		copyright: "Copyright (c) 2026 uixmat",
+	},
 	impl: {
 		react: {
 			entry: "SankeyChart",

@@ -45,6 +45,7 @@ import { drawer } from "./drawer";
 import { dropdownMenu } from "./dropdown-menu";
 import { fileDiff } from "./file-diff";
 import { fileTree } from "./file-tree";
+import { fillButton } from "./fill-button";
 import { filterTable } from "./filter-table";
 import { fineTuneCard } from "./fine-tune-card";
 import { flowchart } from "./flowchart";
@@ -74,6 +75,7 @@ import { mirrorText } from "./mirror-text";
 import { morphText } from "./morph-text";
 import { morphingModal } from "./morphing-modal";
 import { navbar } from "./navbar";
+import { overviewCard } from "./overview-card";
 import { pagination } from "./pagination";
 import { pieChart } from "./pie-chart";
 import { popover } from "./popover";
@@ -94,6 +96,7 @@ import { rollText } from "./roll-text";
 import { rollingDigits } from "./rolling-digits";
 import { sankeyChart } from "./sankey-chart";
 import { scatterChart } from "./scatter-chart";
+import { scoreCard } from "./score-card";
 import { scrollArea } from "./scroll-area";
 import { scrollProgress } from "./scroll-progress";
 import { scrollReveal } from "./scroll-reveal";
@@ -139,6 +142,7 @@ import { typewriter } from "./typewriter";
 import { typingText } from "./typing-text";
 import { typography } from "./typography";
 import { underlineHoverText } from "./underline-hover-text";
+import { usageCard } from "./usage-card";
 import { waveReveal } from "./wave-reveal";
 import { weekCalendar } from "./week-calendar";
 import { wheelPicker } from "./wheel-picker";
@@ -289,6 +293,10 @@ export const specs: ComponentSpec[] = [
 	rollingDigits,
 	marker,
 	wheelPicker,
+	fillButton,
+	overviewCard,
+	usageCard,
+	scoreCard,
 ];
 
 export function getSpec(slug: string): ComponentSpec | undefined {

@@ -6,7 +6,7 @@ export const gaugeChart = defineComponent({
 	description:
 		"A reading drawn as a notched arc or track whose notches spring in one by one.",
 	category: "charts",
-	status: "alpha",
+	status: "stable",
 	props: [
 		{
 			name: "value",
@@ -100,6 +100,12 @@ export const gaugeChart = defineComponent({
 		],
 	},
 
+	licenseOrigin: {
+		source: "bklit-ui",
+		url: "https://github.com/bklit/bklit-ui",
+		license: "MIT",
+		copyright: "Copyright (c) 2026 uixmat",
+	},
 	impl: {
 		react: {
 			entry: "GaugeChart",

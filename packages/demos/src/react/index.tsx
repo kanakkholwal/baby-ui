@@ -59,6 +59,7 @@ import {
 	ToastDemo,
 } from "./dialogs";
 import { DiffTableDemo } from "./diff-table";
+import { FillButtonDemo } from "./fill-button";
 import { FilterTableDemo } from "./filter-table";
 import { FineTuneCardDemo } from "./fine-tune-card";
 import { FlowchartDemo } from "./flowchart";
@@ -80,6 +81,7 @@ import {
 	SelectDemo,
 	TooltipDemo,
 } from "./overlays";
+import { OverviewCardDemo } from "./overview-card";
 import { PieChartDemo } from "./pie-chart";
 import {
 	AccordionDemo,
@@ -116,6 +118,7 @@ import { ResponsiveDialogDemo } from "./responsive-dialog";
 import { RingChartDemo } from "./ring-chart";
 import { SankeyChartDemo } from "./sankey-chart";
 import { ScatterChartDemo } from "./scatter-chart";
+import { ScoreCardDemo } from "./score-card";
 import { ScrollProgressDemo } from "./scroll-progress";
 import { SidebarNavDemo } from "./sidebar-nav";
 import { StatCardDemo, StatCardMapDemo } from "./stat-card";
@@ -164,6 +167,7 @@ import {
 import { ThemeToggleDemo } from "./theme-toggle";
 import { ThinkingStateDemo } from "./thinking-state";
 import { ToolChipsDemo } from "./tool-chips";
+import { UsageCardDemo } from "./usage-card";
 import { WeekCalendarDemo } from "./week-calendar";
 import { WheelPickerDemo } from "./wheel-picker";
 
@@ -325,6 +329,7 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"file-tree": FileTreeDemo,
 	"morphing-modal": MorphingModalDemo,
 	"copy-button": CopyButtonDemo,
+	"fill-button": FillButtonDemo,
 	"code-block": CodeBlockDemo,
 	markdown: MarkdownDemo,
 	"file-diff": FileDiffDemo,
@@ -448,4 +453,7 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"rolling-digits": RollingDigitsDemo,
 	marker: MarkerDemo,
 	"wheel-picker": WheelPickerDemo,
+	"overview-card": OverviewCardDemo,
+	"usage-card": UsageCardDemo,
+	"score-card": ScoreCardDemo,
 };

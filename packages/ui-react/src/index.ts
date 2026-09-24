@@ -344,6 +344,12 @@ export { type DiffLine, FileDiff, type FileDiffProps } from "./file-diff/file-di
 export { FileTree, type FileTreeProps } from "./file-tree/file-tree";
 export type { FileTreeNode } from "./file-tree/types";
 export {
+	FillButton,
+	type FillButtonProps,
+	type FillButtonSize,
+	type FillButtonTone,
+} from "./fill-button/fill-button";
+export {
 	type FilterRow,
 	type FilterRowStatus,
 	FilterTable,
@@ -494,6 +500,12 @@ export {
 export type { MorphSpring } from "./morphing-modal/use-morph";
 export { Navbar, type NavbarLink, type NavbarProps } from "./navbar/navbar";
 export {
+	OverviewCard,
+	type OverviewCardChart,
+	type OverviewCardProps,
+	type OverviewCardSize,
+} from "./overview-card/overview-card";
+export {
 	Pagination,
 	PaginationContent,
 	PaginationEllipsis,
@@ -643,6 +655,11 @@ export {
 	type ScatterProps,
 } from "./scatter-chart/scatter-chart";
 export type { ScatterShape, ScatterSize } from "./scatter-chart/variants";
+export {
+	ScoreCard,
+	type ScoreCardProps,
+	type ScoreCardSize,
+} from "./score-card/score-card";
 export { ScrollArea, type ScrollAreaProps } from "./scroll-area/scroll-area";
 export {
 	ScrollProgress,
@@ -679,6 +696,7 @@ export type { ShimmerTextSize } from "./shimmer-text/variants";
 export { Shortcut, type ShortcutProps } from "./shortcut/shortcut";
 export type { ShortcutSize, ShortcutVariant } from "./shortcut/variants";
 export { ShowMore, type ShowMoreProps } from "./show-more/show-more";
+export type { SidebarNavLabels } from "./sidebar-nav/labels";
 export {
 	SidebarNav,
 	type SidebarNavItem,
@@ -841,6 +859,11 @@ export {
 	type UnderlineHoverTextProps,
 } from "./underline-hover-text/underline-hover-text";
 export type { UnderlineHoverTextTone } from "./underline-hover-text/variants";
+export {
+	UsageCard,
+	type UsageCardLayout,
+	type UsageCardProps,
+} from "./usage-card/usage-card";
 export type { WaveRevealDirection, WaveRevealMode } from "./wave-reveal/variants";
 export { WaveReveal, type WaveRevealProps } from "./wave-reveal/wave-reveal";
 export type { WeekStartsOn } from "./week-calendar/dates";

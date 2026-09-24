@@ -6,7 +6,7 @@ export const radarChart = defineComponent({
 	description:
 		"Series compared across metrics as polygons that grow out from the centre.",
 	category: "charts",
-	status: "alpha",
+	status: "stable",
 	props: [
 		{
 			name: "data",
@@ -88,6 +88,12 @@ export const radarChart = defineComponent({
 		],
 	},
 
+	licenseOrigin: {
+		source: "bklit-ui",
+		url: "https://github.com/bklit/bklit-ui",
+		license: "MIT",
+		copyright: "Copyright (c) 2026 uixmat",
+	},
 	impl: {
 		react: {
 			entry: "RadarChart",

@@ -1,6 +1,12 @@
 "use client";
 
-import { SidebarNav, type SidebarNavItem, type SidebarRecent } from "@baby-ui/react";
+import {
+	SidebarNav,
+	type SidebarNavItem,
+	type SidebarNavSize,
+	type SidebarRecent,
+} from "@baby-ui/react";
+import { useEffect, useState } from "react";
 
 type Props = Record<string, unknown>;
 
@@ -48,16 +54,8 @@ function EditIcon() {
 
 function LogoIcon() {
 	return (
-		<svg
-			viewBox="0 0 16 16"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth="1.3"
-			strokeLinejoin="round"
-			aria-hidden
-			className="size-4.5"
-		>
-			<path d="M8 1l1.6 4.8L14.4 7.4l-4.8 1.6L8 13.8l-1.6-4.8L1.6 7.4l4.8-1.6z" />
+		<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className="size-4">
+			<path d="M12 22a10 10 0 0 1 10-10A10 10 0 0 1 12 2 10 10 0 0 1 2 12a10 10 0 0 1 10 10z" />
 		</svg>
 	);
 }
@@ -75,6 +73,10 @@ const RECENTS: SidebarRecent[] = [
 ];
 
 export function SidebarNavDemo({ props }: { props: Props }) {
+	const [collapsed, setCollapsed] = useState(props.collapsed === true);
+
+	useEffect(() => setCollapsed(props.collapsed === true), [props.collapsed]);
+
 	return (
 		<SidebarNav
 			workspace={{ name: "Acme Studio", monogram: "A" }}
@@ -87,7 +89,9 @@ export function SidebarNavDemo({ props }: { props: Props }) {
 				{ label: "Invite team members" },
 			]}
 			onSignOut={() => {}}
-			defaultCollapsed={Boolean(props.defaultCollapsed)}
+			size={(props.size as SidebarNavSize) ?? "md"}
+			collapsed={collapsed}
+			onCollapsedChange={setCollapsed}
 			fill
 			className="max-h-[420px]"
 		/>

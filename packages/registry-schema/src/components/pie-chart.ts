@@ -6,7 +6,7 @@ export const pieChart = defineComponent({
 	description:
 		"Pie or donut that sweeps in slice by slice and pops the slice under the pointer.",
 	category: "charts",
-	status: "alpha",
+	status: "stable",
 	props: [
 		{
 			name: "data",
@@ -98,6 +98,12 @@ export const pieChart = defineComponent({
 		],
 	},
 
+	licenseOrigin: {
+		source: "bklit-ui",
+		url: "https://github.com/bklit/bklit-ui",
+		license: "MIT",
+		copyright: "Copyright (c) 2026 uixmat",
+	},
 	impl: {
 		react: {
 			entry: "PieChart",

@@ -6,7 +6,7 @@ export const funnelChart = defineComponent({
 	description:
 		"Stage-by-stage drop-off as layered bands that grow in turn and swell around the stage under the pointer.",
 	category: "charts",
-	status: "alpha",
+	status: "stable",
 	props: [
 		{
 			name: "data",
@@ -113,6 +113,12 @@ export const funnelChart = defineComponent({
 		],
 	},
 
+	licenseOrigin: {
+		source: "bklit-ui",
+		url: "https://github.com/bklit/bklit-ui",
+		license: "MIT",
+		copyright: "Copyright (c) 2026 uixmat",
+	},
 	impl: {
 		react: {
 			entry: "FunnelChart",

@@ -1,145 +1,106 @@
 <script lang="ts">
+import { specs } from "@baby-ui/registry-schema/components";
+import { Button } from "@baby-ui/svelte";
 import IconBrandGithub from "@tabler/icons-svelte/icons/brand-github";
 import Logo from "$lib/components/logo.svelte";
-import { sidebarGroups } from "$lib/registry";
+import { categoryHref, sidebarGroups, specHref } from "$lib/registry";
+import ShowcaseDots from "./showcase-dots.svelte";
 
-const FOOTER_LIMIT = 6;
 const groups = sidebarGroups();
-const base = groups.find((g) => g.category === "base");
-const agents = groups.find((g) => g.category === "agents");
+const PICKS = [
+	"dia-text",
+	"reasoning",
+	"records-table",
+	"rolling-digits",
+	"sidebar-nav",
+	"week-calendar",
+]
+	.map((slug) => specs.find((s) => s.slug === slug))
+	.filter((s) => s !== undefined);
+const RESOURCES = [
+	{ href: "/docs", label: "Docs" },
+	{ href: "/docs/installation", label: "Installation" },
+	{ href: "/docs/changelog", label: "Changelog" },
+	{ href: "/llms.txt", label: "llms.txt" },
+	{ href: "/r/registry.json", label: "registry.json" },
+];
 const year = new Date().getFullYear();
+const LINK = "text-foreground/70 text-sm transition-colors hover:text-foreground";
+const HEAD = "mb-4 font-medium text-muted-foreground text-xs";
+const CELL = "border-border border-r border-b p-6 md:p-8";
 </script>
 
-<footer class="border-border border-t px-4 pt-14 pb-10 md:px-6 xl:px-8">
+<footer class="overflow-hidden px-4 pt-10 md:px-8">
 	<div class="mx-auto max-w-7xl">
-		<div class="grid grid-cols-2 gap-10 md:grid-cols-[1.5fr_1fr_1fr_1fr]">
-			<div class="col-span-2 md:col-span-1">
-				<a href="/" class="flex items-center gap-2 font-semibold text-foreground text-sm">
-					<Logo class="size-5" />
-					Baby UI
-				</a>
-				<p class="mt-3 max-w-[220px] text-muted-foreground text-sm leading-6">
-					Copy-paste components for React and Svelte, built from one spec and one token
-					layer.
-				</p>
-				<a
-					href="https://github.com/kanakkholwal/baby-ui"
-					target="_blank"
-					rel="noreferrer noopener"
-					aria-label="GitHub"
-					class="mt-5 grid size-9 place-items-center rounded-2xl border border-border bg-card/20 text-muted-foreground transition-colors hover:border-border-strong hover:text-foreground"
-				>
-					<IconBrandGithub size={16} stroke={1.6} />
-				</a>
-			</div>
-
-			{#if base}
-				<div>
-					<p class="mb-4 font-semibold text-[11px] text-muted-foreground uppercase tracking-wider">
-						Base
+		<div class="relative border-border border-t border-l">
+			<div class="grid grid-cols-2 md:grid-cols-12">
+				<div class="{CELL} col-span-2 flex flex-col gap-4 md:col-span-4">
+					<a href="/" class="flex items-center gap-2 font-semibold text-foreground text-sm">
+						<Logo class="size-5" />
+						Baby UI
+					</a>
+					<p class="max-w-64 text-foreground/70 text-sm leading-6">
+						Copy-paste components for React and Svelte, built from one spec and one token layer.
 					</p>
+					<div>
+						<Button
+							href="https://github.com/kanakkholwal/baby-ui"
+							target="_blank"
+							rel="noreferrer noopener"
+							size="sm"
+							variant="outline"
+						>
+							<IconBrandGithub stroke={1.6} />
+							Star on GitHub
+						</Button>
+					</div>
+				</div>
+
+				<nav aria-label="Categories" class="{CELL} md:col-span-3">
+					<p class={HEAD}>Components</p>
 					<ul class="space-y-2.5">
-						{#each base.items.slice(0, FOOTER_LIMIT) as item (item.slug)}
+						{#each groups as group (group.category)}
 							<li>
-								<a
-									href={item.href}
-									class="text-muted-foreground text-sm transition-colors hover:text-foreground"
-								>
-									{item.name}
+								<a href={categoryHref(group.category)} class="{LINK} flex items-center justify-between gap-3">
+									{group.label}
+									<span class="text-muted-foreground text-xs tabular-nums">{group.items.length}</span>
 								</a>
 							</li>
 						{/each}
-						<li>
-							<a
-								href="/components/base"
-								class="font-medium text-foreground text-sm transition-colors hover:text-muted-foreground"
-							>
-								View all ({base.items.length})
-							</a>
-						</li>
 					</ul>
-				</div>
-			{/if}
+				</nav>
 
-			{#if agents}
-				<div>
-					<p class="mb-4 font-semibold text-[11px] text-muted-foreground uppercase tracking-wider">
-						Agents
-					</p>
+				<nav aria-label="Picks" class="{CELL} md:col-span-3">
+					<p class={HEAD}>Worth a look</p>
 					<ul class="space-y-2.5">
-						{#each agents.items.slice(0, FOOTER_LIMIT) as item (item.slug)}
-							<li>
-								<a
-									href={item.href}
-									class="text-muted-foreground text-sm transition-colors hover:text-foreground"
-								>
-									{item.name}
-								</a>
-							</li>
+						{#each PICKS as spec (spec.slug)}
+							<li><a href={specHref(spec)} class={LINK}>{spec.name}</a></li>
 						{/each}
-						<li>
-							<a
-								href="/components/agents"
-								class="font-medium text-foreground text-sm transition-colors hover:text-muted-foreground"
-							>
-								View all ({agents.items.length})
-							</a>
-						</li>
 					</ul>
-				</div>
-			{/if}
+				</nav>
 
-			<div>
-				<p class="mb-4 font-semibold text-[11px] text-muted-foreground uppercase tracking-wider">
-					Resources
-				</p>
-				<ul class="space-y-2.5">
-					<li>
-						<a href="/docs" class="text-muted-foreground text-sm transition-colors hover:text-foreground">
-							Docs
-						</a>
-					</li>
-					<li>
-						<a
-							href="/docs/installation"
-							class="text-muted-foreground text-sm transition-colors hover:text-foreground"
-						>
-							Installation
-						</a>
-					</li>
-					<li>
-						<a
-							href="/docs/changelog"
-							class="text-muted-foreground text-sm transition-colors hover:text-foreground"
-						>
-							Changelog
-						</a>
-					</li>
-					<li>
-						<a
-							href="/llms.txt"
-							class="text-muted-foreground text-sm transition-colors hover:text-foreground"
-						>
-							llms.txt
-						</a>
-					</li>
-					<li>
-						<a
-							href="/r/registry.json"
-							class="text-muted-foreground text-sm transition-colors hover:text-foreground"
-						>
-							registry.json
-						</a>
-					</li>
-				</ul>
+				<nav aria-label="Resources" class="{CELL} col-span-2 md:col-span-2">
+					<p class={HEAD}>Resources</p>
+					<ul class="space-y-2.5">
+						{#each RESOURCES as link (link.href)}
+							<li><a href={link.href} class={LINK}>{link.label}</a></li>
+						{/each}
+					</ul>
+				</nav>
 			</div>
+			<ShowcaseDots weights={[4, 3, 3, 2]} class="hidden md:block" />
 		</div>
 
-		<div
-			class="mt-14 flex flex-col gap-3 border-border border-t pt-6 text-muted-foreground text-xs sm:flex-row sm:items-center sm:justify-between"
-		>
+		<div class="flex flex-col gap-2 py-6 text-muted-foreground text-xs sm:flex-row sm:items-center sm:justify-between">
 			<p>Components are yours once copied. Apache License 2.0.</p>
 			<p>© {year} Baby UI.</p>
 		</div>
 	</div>
+
+	<p
+		aria-hidden="true"
+		class="pointer-events-none mx-auto -mb-[0.22em] max-w-7xl select-none text-center font-normal text-[clamp(4rem,19vw,16rem)] text-foreground/[0.05] leading-none tracking-[-0.07em]"
+	>
+		Baby UI
+	</p>
 </footer>

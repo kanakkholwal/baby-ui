@@ -6,6 +6,7 @@ import DropdownMenuItem from "../dropdown-menu/dropdown-menu-item.svelte";
 import DropdownMenuSeparator from "../dropdown-menu/dropdown-menu-separator.svelte";
 import DropdownMenuTrigger from "../dropdown-menu/dropdown-menu-trigger.svelte";
 import { cn } from "../lib/cn";
+import { SIDEBAR_NAV_LABELS, type SidebarNavLabels } from "./labels";
 import type {
 	SidebarNavItem,
 	SidebarRecent,
@@ -23,6 +24,7 @@ let {
 	onSignOut,
 	size = "md",
 	collapsed = $bindable(false),
+	onCollapsedChange,
 	activeNav = $bindable("chats"),
 	onNavigate,
 	activeTitle = $bindable(null),
@@ -34,6 +36,7 @@ let {
 	footerIcon,
 	onFooterClick,
 	fill = false,
+	labels: labelsProp,
 	class: classProp,
 }: {
 	workspace: SidebarWorkspace;
@@ -44,6 +47,7 @@ let {
 	onSignOut?: () => void;
 	size?: SidebarNavSize;
 	collapsed?: boolean;
+	onCollapsedChange?: (collapsed: boolean) => void;
 	activeNav?: string;
 	onNavigate?: (key: string) => void;
 	activeTitle?: string | null;
@@ -55,8 +59,12 @@ let {
 	footerIcon?: Snippet;
 	onFooterClick?: () => void;
 	fill?: boolean;
+	/** Every built-in string, for localisation. */
+	labels?: Partial<SidebarNavLabels>;
 	class?: string;
 } = $props();
+
+const labels = $derived({ ...SIDEBAR_NAV_LABELS, ...labelsProp });
 
 let searchOpen = $state(false);
 let recentsOpen = $state(true);
@@ -72,6 +80,7 @@ const visibleRecents = $derived(
 
 function setCollapsed(next: boolean) {
 	collapsed = next;
+	onCollapsedChange?.(next);
 	if (next) {
 		searchOpen = false;
 		query = "";
@@ -140,8 +149,8 @@ function onGlideOver(group: string, event: MouseEvent) {
 	>
 		<span
 			aria-hidden="true"
-			class="pointer-events-none absolute inset-x-0 rounded-lg bg-foreground/[0.06] transition-[top,height,opacity] duration-150 ease-[var(--ease-out)]"
-			style:top="{glideBox[group]?.top ?? 0}px"
+			class="pointer-events-none absolute inset-x-0 rounded-lg bg-foreground/[0.06] top-0 transition-[transform,height,opacity] duration-150 ease-[var(--ease-out)] motion-reduce:transition-none"
+			style:transform="translateY({glideBox[group]?.top ?? 0}px)"
 			style:height="{glideBox[group]?.height ?? 0}px"
 			style:opacity={glideVisible[group] ? 1 : 0}
 		></span>
@@ -154,6 +163,7 @@ function onGlideOver(group: string, event: MouseEvent) {
 		data-row
 		type="button"
 		{onclick}
+		aria-current={active ? "page" : undefined}
 		title={collapsed ? label : undefined}
 		class={cn(
 			"relative z-10 mx-2 flex h-8 items-center rounded-lg px-2 text-left transition-[background-color,transform] duration-150 active:scale-[0.98]",
@@ -187,21 +197,21 @@ function onGlideOver(group: string, event: MouseEvent) {
 
 <aside
 	data-slot="sidebar-nav"
-	aria-label="Workspace navigation"
+	aria-label={labels.navigation}
 	class={cn(
-		"relative flex shrink-0 overflow-hidden transition-[width] duration-[var(--duration-overlay)] ease-[var(--ease-out)]",
+		"relative flex shrink-0 overflow-hidden transition-[width] duration-[var(--duration-overlay)] ease-[var(--ease-out)] motion-reduce:transition-none",
 		fill ? "h-full" : "h-[600px]",
 		collapsed ? "w-13" : classes,
 		classProp,
 	)}
 >
-	<div class="flex min-h-0 w-56 shrink-0 flex-col">
+	<div class={cn("flex min-h-0 shrink-0 flex-col", classes)}>
 		<div class="relative mb-2.5 h-10 shrink-0">
 			<DropdownMenu>
 				<DropdownMenuTrigger
 					aria-hidden={collapsed}
 					tabindex={collapsed ? -1 : 0}
-					class="absolute top-1 left-2 flex h-8 w-41 items-center rounded-lg px-2 text-left transition-[background-color,transform] duration-100 hover:bg-foreground/[0.06] active:scale-[0.99]"
+					class="absolute top-1 right-12 left-2 flex h-8 items-center rounded-lg px-2 text-left transition-[background-color,transform] duration-100 hover:bg-foreground/[0.06] active:scale-[0.99]"
 				>
 					<span class="flex size-5 shrink-0 items-center justify-center text-foreground">
 						{#if logo}{@render logo()}{/if}
@@ -260,7 +270,7 @@ function onGlideOver(group: string, event: MouseEvent) {
 									/>
 								</svg>
 							</span>
-							<span class="min-w-0 flex-1 truncate text-[13.5px]">Sign out</span>
+							<span class="min-w-0 flex-1 truncate text-[13.5px]">{labels.signOut}</span>
 						</DropdownMenuItem>
 					{/if}
 				</DropdownMenuContent>
@@ -268,7 +278,7 @@ function onGlideOver(group: string, event: MouseEvent) {
 
 			<button
 				type="button"
-				aria-label="Collapse sidebar"
+				aria-label={labels.collapse}
 				aria-hidden={collapsed}
 				tabindex={collapsed ? -1 : 0}
 				onclick={() => setCollapsed(true)}
@@ -278,7 +288,7 @@ function onGlideOver(group: string, event: MouseEvent) {
 			</button>
 			<button
 				type="button"
-				aria-label="Expand sidebar"
+				aria-label={labels.expand}
 				aria-hidden={!collapsed}
 				tabindex={collapsed ? 0 : -1}
 				onclick={() => setCollapsed(false)}
@@ -303,7 +313,7 @@ function onGlideOver(group: string, event: MouseEvent) {
 		{@render glideList("rail", "", navRows as unknown as Snippet)}
 
 		<div class="mt-3 min-h-0 flex-1 overflow-y-auto">
-			<div class={cn("relative mx-2 mb-1 h-8 transition-opacity duration-150", collapsed && "opacity-0")}>
+			<div class={cn("relative mx-2 mb-1 h-8 transition-opacity duration-150", collapsed && "opacity-0")} inert={collapsed}>
 				<button
 					type="button"
 					aria-expanded={recentsOpen}
@@ -318,12 +328,12 @@ function onGlideOver(group: string, event: MouseEvent) {
 					<span class="shrink-0 transition-transform duration-150" style:transform={recentsOpen ? "" : "rotate(-90deg)"}>
 						{@render chevronDownIcon()}
 					</span>
-					<span>Chats</span>
+					<span>{labels.recents}</span>
 				</button>
 
 				<button
 					type="button"
-					aria-label="Search chats"
+					aria-label={labels.search}
 					aria-expanded={searchOpen}
 					onclick={() => {
 						searchOpen = true;
@@ -354,13 +364,13 @@ function onGlideOver(group: string, event: MouseEvent) {
 								query = "";
 							}
 						}}
-						placeholder="Search chats"
-						aria-label="Search chat history"
+						placeholder={labels.search}
+						aria-label={labels.searchInput}
 						class="ml-1.5 min-w-0 flex-1 bg-transparent text-[13px] font-medium text-foreground outline-none placeholder:text-muted-foreground"
 					/>
 					<button
 						type="button"
-						aria-label="Close chat search"
+						aria-label={labels.closeSearch}
 						onclick={() => {
 							searchOpen = false;
 							query = "";
@@ -391,15 +401,16 @@ function onGlideOver(group: string, event: MouseEvent) {
 					</button>
 				{/each}
 				{#if query && visibleRecents.length === 0}
-					<div class="mx-2 px-2 py-2 text-[12.5px] text-muted-foreground">No chats found</div>
+					<div class="mx-2 px-2 py-2 text-[12.5px] text-muted-foreground">{labels.noResults}</div>
 				{/if}
 			{/snippet}
 			<div
 				class={cn(
-					"grid transition-[grid-template-rows,opacity] duration-200 ease-[var(--ease-out)]",
+					"grid transition-[grid-template-rows,opacity] duration-200 ease-[var(--ease-out)] motion-reduce:transition-none",
 					collapsed && "opacity-0",
 				)}
 				style:grid-template-rows={recentsOpen ? "1fr" : "0fr"}
+			inert={collapsed || !recentsOpen}
 			>
 				<div class="overflow-hidden">
 					{@render glideList("recents", "", recentRows as unknown as Snippet)}
@@ -407,7 +418,7 @@ function onGlideOver(group: string, event: MouseEvent) {
 			</div>
 		</div>
 
-		<div class={cn("mx-2 mt-3 w-52 border-border border-t pt-3 transition-opacity duration-150", collapsed && "opacity-0")}>
+		<div class={cn("mx-2 mt-3 border-border border-t pt-3 transition-opacity duration-150", collapsed && "opacity-0")} inert={collapsed}>
 			<button
 				type="button"
 				onclick={onFooterClick ?? onNewChat}

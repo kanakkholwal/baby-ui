@@ -6,7 +6,7 @@ export const chartMarkers = defineComponent({
 	description:
 		"Event markers above a time-series chart that spring in after the reveal and fan out when stacked.",
 	category: "charts",
-	status: "alpha",
+	status: "stable",
 	props: [
 		{
 			name: "items",
@@ -65,6 +65,12 @@ export const chartMarkers = defineComponent({
 		],
 	},
 
+	licenseOrigin: {
+		source: "bklit-ui",
+		url: "https://github.com/bklit/bklit-ui",
+		license: "MIT",
+		copyright: "Copyright (c) 2026 uixmat",
+	},
 	impl: {
 		react: {
 			entry: "ChartMarkers",

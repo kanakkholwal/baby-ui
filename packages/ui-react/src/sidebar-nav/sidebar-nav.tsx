@@ -10,6 +10,7 @@ import {
 	DropdownMenuTrigger,
 } from "../dropdown-menu/dropdown-menu";
 import { cn } from "../lib/cn";
+import { SIDEBAR_NAV_LABELS, type SidebarNavLabels } from "./labels";
 import { type SidebarNavSize, sidebarNav } from "./variants";
 
 export type { SidebarNavSize };
@@ -128,8 +129,12 @@ function GlideList({ children, className }: { children: ReactNode; className?: s
 		>
 			<span
 				aria-hidden
-				className="pointer-events-none absolute inset-x-0 rounded-lg bg-foreground/[0.06] transition-[top,height,opacity] duration-150 ease-[var(--ease-out)]"
-				style={{ top: box?.top ?? 0, height: box?.height ?? 0, opacity: visible ? 1 : 0 }}
+				className="pointer-events-none absolute inset-x-0 rounded-lg bg-foreground/[0.06] top-0 transition-[transform,height,opacity] duration-150 ease-[var(--ease-out)] motion-reduce:transition-none"
+				style={{
+					transform: `translateY(${box?.top ?? 0}px)`,
+					height: box?.height ?? 0,
+					opacity: visible ? 1 : 0,
+				}}
 			/>
 			{children}
 		</div>
@@ -156,6 +161,7 @@ function RailButton({
 			data-row
 			type="button"
 			onClick={onClick}
+			aria-current={active ? "page" : undefined}
 			title={collapsed ? label : undefined}
 			className={cn(
 				"relative z-10 mx-2 flex h-8 items-center rounded-lg px-2 text-left transition-[background-color,transform] duration-150 active:scale-[0.98]",
@@ -217,6 +223,8 @@ export interface SidebarNavProps {
 	footerIcon?: ReactNode;
 	onFooterClick?: () => void;
 	fill?: boolean;
+	/** Every built-in string, for localisation. */
+	labels?: Partial<SidebarNavLabels>;
 	className?: string;
 }
 
@@ -246,8 +254,10 @@ export function SidebarNav({
 	footerIcon,
 	onFooterClick,
 	fill = false,
+	labels: labelsProp,
 	className,
 }: SidebarNavProps) {
+	const labels = { ...SIDEBAR_NAV_LABELS, ...labelsProp };
 	const [internalCollapsed, setInternalCollapsed] = useState(defaultCollapsed);
 	const [internalNav, setInternalNav] = useState(defaultActiveNav);
 	const [internalTitle, setInternalTitle] = useState(defaultActiveTitle);
@@ -286,21 +296,21 @@ export function SidebarNav({
 	return (
 		<aside
 			data-slot="sidebar-nav"
-			aria-label="Workspace navigation"
+			aria-label={labels.navigation}
 			className={cn(
-				"relative flex shrink-0 overflow-hidden transition-[width] duration-[var(--duration-overlay)] ease-[var(--ease-out)]",
+				"relative flex shrink-0 overflow-hidden transition-[width] duration-[var(--duration-overlay)] ease-[var(--ease-out)] motion-reduce:transition-none",
 				fill ? "h-full" : "h-[600px]",
 				isCollapsed ? "w-13" : sidebarNav({ size }),
 				className,
 			)}
 		>
-			<div className="flex min-h-0 w-56 shrink-0 flex-col">
+			<div className={cn("flex min-h-0 shrink-0 flex-col", sidebarNav({ size }))}>
 				<div className="relative mb-2.5 h-10 shrink-0">
 					<DropdownMenu>
 						<DropdownMenuTrigger
 							aria-hidden={isCollapsed}
 							tabIndex={isCollapsed ? -1 : 0}
-							className="absolute top-1 left-2 flex h-8 w-41 items-center rounded-lg px-2 text-left transition-[background-color,transform] duration-100 hover:bg-foreground/[0.06] active:scale-[0.99]"
+							className="absolute top-1 right-12 left-2 flex h-8 items-center rounded-lg px-2 text-left transition-[background-color,transform] duration-100 hover:bg-foreground/[0.06] active:scale-[0.99]"
 						>
 							<span className="flex size-5 shrink-0 items-center justify-center text-foreground">
 								{logo}
@@ -371,7 +381,7 @@ export function SidebarNav({
 											</svg>
 										</span>
 										<span className="min-w-0 flex-1 truncate text-[13.5px]">
-											Sign out
+											{labels.signOut}
 										</span>
 									</DropdownMenuItem>
 								</>
@@ -381,7 +391,7 @@ export function SidebarNav({
 
 					<button
 						type="button"
-						aria-label="Collapse sidebar"
+						aria-label={labels.collapse}
 						aria-hidden={isCollapsed}
 						tabIndex={isCollapsed ? -1 : 0}
 						onClick={() => setCollapsed(true)}
@@ -391,7 +401,7 @@ export function SidebarNav({
 					</button>
 					<button
 						type="button"
-						aria-label="Expand sidebar"
+						aria-label={labels.expand}
 						aria-hidden={!isCollapsed}
 						tabIndex={isCollapsed ? 0 : -1}
 						onClick={() => setCollapsed(false)}
@@ -431,6 +441,7 @@ export function SidebarNav({
 							"relative mx-2 mb-1 h-8 transition-opacity duration-150",
 							isCollapsed && "opacity-0",
 						)}
+						inert={isCollapsed}
 					>
 						<button
 							type="button"
@@ -451,12 +462,12 @@ export function SidebarNav({
 							>
 								<ChevronDownIcon />
 							</span>
-							<span>Chats</span>
+							<span>{labels.recents}</span>
 						</button>
 
 						<button
 							type="button"
-							aria-label="Search chats"
+							aria-label={labels.search}
 							aria-expanded={searchOpen}
 							onClick={() => {
 								setSearchOpen(true);
@@ -492,13 +503,13 @@ export function SidebarNav({
 										setQuery("");
 									}
 								}}
-								placeholder="Search chats"
-								aria-label="Search chat history"
+								placeholder={labels.search}
+								aria-label={labels.searchInput}
 								className="ml-1.5 min-w-0 flex-1 bg-transparent text-[13px] font-medium text-foreground outline-none placeholder:text-muted-foreground"
 							/>
 							<button
 								type="button"
-								aria-label="Close chat search"
+								aria-label={labels.closeSearch}
 								onClick={() => {
 									setSearchOpen(false);
 									setQuery("");
@@ -512,10 +523,11 @@ export function SidebarNav({
 
 					<div
 						className={cn(
-							"grid transition-[grid-template-rows,opacity] duration-200 ease-[var(--ease-out)]",
+							"grid transition-[grid-template-rows,opacity] duration-200 ease-[var(--ease-out)] motion-reduce:transition-none",
 							isCollapsed && "opacity-0",
 						)}
 						style={{ gridTemplateRows: recentsOpen ? "1fr" : "0fr" }}
+						inert={isCollapsed || !recentsOpen}
 					>
 						<div className="overflow-hidden">
 							<GlideList>
@@ -546,7 +558,7 @@ export function SidebarNav({
 								})}
 								{query && visibleRecents.length === 0 ? (
 									<div className="mx-2 px-2 py-2 text-[12.5px] text-muted-foreground">
-										No chats found
+										{labels.noResults}
 									</div>
 								) : null}
 							</GlideList>
@@ -556,9 +568,10 @@ export function SidebarNav({
 
 				<div
 					className={cn(
-						"mx-2 mt-3 w-52 border-border border-t pt-3 transition-opacity duration-150",
+						"mx-2 mt-3 border-border border-t pt-3 transition-opacity duration-150",
 						isCollapsed && "opacity-0",
 					)}
+					inert={isCollapsed}
 				>
 					<button
 						type="button"

@@ -6,7 +6,7 @@ export const heatmapChart = defineComponent({
 	description:
 		"Calendar heatmap of daily values in five levels, with a legend that isolates a level.",
 	category: "charts",
-	status: "alpha",
+	status: "stable",
 	props: [
 		{
 			name: "data",
@@ -115,6 +115,12 @@ export const heatmapChart = defineComponent({
 		],
 	},
 
+	licenseOrigin: {
+		source: "bklit-ui",
+		url: "https://github.com/bklit/bklit-ui",
+		license: "MIT",
+		copyright: "Copyright (c) 2026 uixmat",
+	},
 	impl: {
 		react: {
 			entry: "HeatmapChart",

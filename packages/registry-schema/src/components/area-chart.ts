@@ -6,7 +6,7 @@ export const areaChart = defineComponent({
 	description:
 		"Filled time series that reveal, stack and morph fill and stroke together.",
 	category: "charts",
-	status: "alpha",
+	status: "stable",
 	props: [
 		{
 			name: "data",
@@ -106,6 +106,12 @@ export const areaChart = defineComponent({
 		],
 	},
 
+	licenseOrigin: {
+		source: "bklit-ui",
+		url: "https://github.com/bklit/bklit-ui",
+		license: "MIT",
+		copyright: "Copyright (c) 2026 uixmat",
+	},
 	impl: {
 		react: {
 			entry: "AreaChart",

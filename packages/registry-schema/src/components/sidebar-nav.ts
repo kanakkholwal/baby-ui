@@ -47,9 +47,16 @@ export const sidebarNav = defineComponent({
 			name: "collapsed",
 			type: "boolean",
 			description:
-				"Whether the sidebar is collapsed to its icon rail. Two-way bindable in Svelte.",
+				"Whether the sidebar is collapsed to its icon rail. Controlled with `onCollapsedChange` (React also `defaultCollapsed`); bindable in Svelte.",
 			default: false,
 			control: { kind: "boolean" },
+		},
+		{
+			name: "labels",
+			type: "Partial<SidebarNavLabels>",
+			description:
+				"Every built-in string (aria labels, search, sign out, empty state), for localisation.",
+			control: { kind: "none" },
 		},
 	],
 	motion: {
@@ -66,7 +73,8 @@ export const sidebarNav = defineComponent({
 			"Tab reaches the workspace switcher, every nav row, search and the footer action",
 		],
 		notes: [
-			"Collapsed controls are `aria-hidden` and removed from the tab order rather than left focusable but invisible.",
+			"Collapsed controls are `aria-hidden` or `inert`, and closed recents are `inert`, so nothing invisible stays focusable.",
+			'The active nav row carries `aria-current="page"`.',
 			"The workspace switcher composes the real DropdownMenu, so its own keyboard and focus handling isn't reimplemented here.",
 		],
 	},
@@ -82,6 +90,7 @@ export const sidebarNav = defineComponent({
 			files: [
 				{ path: "sidebar-nav/sidebar-nav.tsx", type: "registry:ui" },
 				{ path: "sidebar-nav/variants.ts", type: "registry:ui" },
+				{ path: "sidebar-nav/labels.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
@@ -93,6 +102,7 @@ export const sidebarNav = defineComponent({
 				{ path: "sidebar-nav/sidebar-nav.svelte", type: "registry:ui" },
 				{ path: "sidebar-nav/types.ts", type: "registry:ui" },
 				{ path: "sidebar-nav/variants.ts", type: "registry:ui" },
+				{ path: "sidebar-nav/labels.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],

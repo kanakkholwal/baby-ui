@@ -6,7 +6,7 @@ export const candlestickChart = defineComponent({
 	description:
 		"OHLC candles that spring up in sequence, hollow when rising and filled when falling.",
 	category: "charts",
-	status: "alpha",
+	status: "stable",
 	props: [
 		{
 			name: "data",
@@ -84,6 +84,12 @@ export const candlestickChart = defineComponent({
 		],
 	},
 
+	licenseOrigin: {
+		source: "bklit-ui",
+		url: "https://github.com/bklit/bklit-ui",
+		license: "MIT",
+		copyright: "Copyright (c) 2026 uixmat",
+	},
 	impl: {
 		react: {
 			entry: "CandlestickChart",

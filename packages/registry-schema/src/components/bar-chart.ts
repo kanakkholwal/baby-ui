@@ -6,7 +6,7 @@ export const barChart = defineComponent({
 	description:
 		"Categories as grouped or stacked bars, flat, as square cells or as glass blocks with depth.",
 	category: "charts",
-	status: "alpha",
+	status: "stable",
 	props: [
 		{
 			name: "data",
@@ -102,6 +102,12 @@ export const barChart = defineComponent({
 		],
 	},
 
+	licenseOrigin: {
+		source: "bklit-ui",
+		url: "https://github.com/bklit/bklit-ui",
+		license: "MIT",
+		copyright: "Copyright (c) 2026 uixmat",
+	},
 	impl: {
 		react: {
 			entry: "BarChart",

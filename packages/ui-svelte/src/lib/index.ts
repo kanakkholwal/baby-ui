@@ -259,6 +259,8 @@ export { default as DropdownMenuTrigger } from "./dropdown-menu/dropdown-menu-tr
 export { type DiffLine, default as FileDiff } from "./file-diff/file-diff.svelte";
 export { default as FileTree } from "./file-tree/file-tree.svelte";
 export type { FileTreeNode } from "./file-tree/types";
+export { default as FillButton } from "./fill-button/fill-button.svelte";
+export type { FillButtonSize, FillButtonTone } from "./fill-button/variants";
 export { default as FilterTable } from "./filter-table/filter-table.svelte";
 export type {
 	FilterRow,
@@ -369,6 +371,8 @@ export type { MorphTextSize } from "./morph-text/variants";
 export type { MorphSpring } from "./morphing-modal/morph";
 export { default as MorphingModal } from "./morphing-modal/morphing-modal.svelte";
 export { default as Navbar } from "./navbar/navbar.svelte";
+export { default as OverviewCard } from "./overview-card/overview-card.svelte";
+export type { OverviewCardChart, OverviewCardSize } from "./overview-card/variants";
 export { default as Pagination } from "./pagination/pagination.svelte";
 export { default as PaginationContent } from "./pagination/pagination-content.svelte";
 export { default as PaginationEllipsis } from "./pagination/pagination-ellipsis.svelte";
@@ -484,6 +488,8 @@ export type { SankeyLinkColor, SankeyOrientation } from "./sankey-chart/variants
 export { default as Scatter } from "./scatter-chart/scatter.svelte";
 export { default as ScatterChart } from "./scatter-chart/scatter-chart.svelte";
 export type { ScatterShape, ScatterSize } from "./scatter-chart/variants";
+export { default as ScoreCard } from "./score-card/score-card.svelte";
+export type { ScoreCardSize } from "./score-card/variants";
 export { default as ScrollArea } from "./scroll-area/scroll-area.svelte";
 export { default as ScrollProgress } from "./scroll-progress/scroll-progress.svelte";
 export type { ScrollProgressPosition } from "./scroll-progress/variants";
@@ -513,6 +519,7 @@ export type { ShimmerTextSize } from "./shimmer-text/variants";
 export { default as Shortcut } from "./shortcut/shortcut.svelte";
 export type { ShortcutSize, ShortcutVariant } from "./shortcut/variants";
 export { default as ShowMore } from "./show-more/show-more.svelte";
+export type { SidebarNavLabels } from "./sidebar-nav/labels";
 export { default as SidebarNav } from "./sidebar-nav/sidebar-nav.svelte";
 export type {
 	SidebarNavItem,
@@ -625,6 +632,8 @@ export { default as Typography } from "./typography/typography.svelte";
 export type { TypographyVariant } from "./typography/variants";
 export { default as UnderlineHoverText } from "./underline-hover-text/underline-hover-text.svelte";
 export type { UnderlineHoverTextTone } from "./underline-hover-text/variants";
+export { default as UsageCard } from "./usage-card/usage-card.svelte";
+export type { UsageCardLayout } from "./usage-card/variants";
 export type { WaveRevealDirection, WaveRevealMode } from "./wave-reveal/variants";
 export { default as WaveReveal } from "./wave-reveal/wave-reveal.svelte";
 export type { WeekStartsOn } from "./week-calendar/dates";

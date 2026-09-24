@@ -6,7 +6,7 @@ export const scatterChart = defineComponent({
 	description:
 		"Time series as markers with a shape per series, revealed left to right and picked by true nearest point.",
 	category: "charts",
-	status: "alpha",
+	status: "stable",
 	props: [
 		{
 			name: "data",
@@ -72,6 +72,12 @@ export const scatterChart = defineComponent({
 		],
 	},
 
+	licenseOrigin: {
+		source: "bklit-ui",
+		url: "https://github.com/bklit/bklit-ui",
+		license: "MIT",
+		copyright: "Copyright (c) 2026 uixmat",
+	},
 	impl: {
 		react: {
 			entry: "ScatterChart",

@@ -6,7 +6,7 @@ export const choroplethChart = defineComponent({
 	description:
 		"Map that shades regions on a five-step scale, fades in, dims around the pointer and zooms.",
 	category: "charts",
-	status: "alpha",
+	status: "stable",
 	props: [
 		{
 			name: "data",
@@ -108,6 +108,12 @@ export const choroplethChart = defineComponent({
 		],
 	},
 
+	licenseOrigin: {
+		source: "bklit-ui",
+		url: "https://github.com/bklit/bklit-ui",
+		license: "MIT",
+		copyright: "Copyright (c) 2026 uixmat",
+	},
 	impl: {
 		react: {
 			entry: "ChoroplethChart",

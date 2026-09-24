@@ -28,7 +28,7 @@ const demoProps = $derived(defaultProps(spec));
 			</p>
 		</div>
 		<div
-			class="grid min-h-44 flex-1 place-items-center overflow-hidden rounded-[19px] bg-card p-4"
+			class="grid min-h-44 max-h-64 flex-1 place-items-center overflow-hidden rounded-[19px] bg-card p-4"
 		>
 			{#if demoPromise}
 				{#await demoPromise}

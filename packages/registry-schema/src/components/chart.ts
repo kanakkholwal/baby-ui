@@ -6,7 +6,7 @@ export const chart = defineComponent({
 	description:
 		"Chart base: container, config, grid, axes, tooltip and legend on d3 and SVG, shared by every chart.",
 	category: "charts",
-	status: "alpha",
+	status: "stable",
 	props: [
 		{
 			name: "config",
@@ -162,6 +162,12 @@ export const chart = defineComponent({
 			"Legend entries are real toggles (aria-pressed), so hiding a series works from the keyboard and colour is never the only cue.",
 		],
 	},
+	licenseOrigin: {
+		source: "bklit-ui",
+		url: "https://github.com/bklit/bklit-ui",
+		license: "MIT",
+		copyright: "Copyright (c) 2026 uixmat",
+	},
 	impl: {
 		react: {
 			entry: "ChartContainer",
@@ -236,7 +242,7 @@ export const lineChart = defineComponent({
 	description:
 		"Time series as lines that reveal, morph on new data and dim around the pointer.",
 	category: "charts",
-	status: "alpha",
+	status: "stable",
 	props: [
 		{
 			name: "data",
@@ -358,6 +364,12 @@ export const lineChart = defineComponent({
 		notes: [
 			"Each Line registers its series, so the summary, table and live region list it.",
 		],
+	},
+	licenseOrigin: {
+		source: "bklit-ui",
+		url: "https://github.com/bklit/bklit-ui",
+		license: "MIT",
+		copyright: "Copyright (c) 2026 uixmat",
 	},
 	impl: {
 		react: {

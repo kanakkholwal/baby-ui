@@ -6,7 +6,7 @@ export const chartBrush = defineComponent({
 	description:
 		"Overview strip under a time-series chart; drag, resize or key the window the chart shows.",
 	category: "charts",
-	status: "alpha",
+	status: "stable",
 	props: [
 		{
 			name: "data",

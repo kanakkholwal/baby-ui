@@ -371,16 +371,10 @@ async function main() {
 	});
 
 	await patch("packages/demos/src/svelte/index.ts", (c) => {
-		const withImport = insertAlphaImport(
-			c,
-			`${pascal}Demo`,
-			`import ${pascal}Demo from "./${slug}-demo.svelte";`,
-			(line) => line.match(/^import (\w+) from/)?.[1] ?? null,
-		);
 		return appendBeforeClose(
-			withImport,
-			"export const demos: Record<string, DemoComponent> = {",
-			`\t"${slug}": as(${pascal}Demo),`,
+			c,
+			"export const demos: Record<string, DemoLoader> = {",
+			`\t"${slug}": () => import("./${slug}-demo.svelte"),`,
 		);
 	});
 

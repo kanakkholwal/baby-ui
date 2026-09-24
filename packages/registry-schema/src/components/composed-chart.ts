@@ -6,7 +6,7 @@ export const composedChart = defineComponent({
 	description:
 		"Bars, lines and areas on one time axis, sharing the domain, tooltip and legend.",
 	category: "charts",
-	status: "alpha",
+	status: "stable",
 	props: [
 		{
 			name: "data",
@@ -83,6 +83,12 @@ export const composedChart = defineComponent({
 		],
 	},
 
+	licenseOrigin: {
+		source: "bklit-ui",
+		url: "https://github.com/bklit/bklit-ui",
+		license: "MIT",
+		copyright: "Copyright (c) 2026 uixmat",
+	},
 	impl: {
 		react: {
 			entry: "ComposedChart",

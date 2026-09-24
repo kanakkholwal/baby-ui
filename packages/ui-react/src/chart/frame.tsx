@@ -173,58 +173,56 @@ export function ChartFrame({
 
 	const styles = chart();
 	return (
-		<>
-			{/* biome-ignore lint/a11y/useSemanticElements: a fieldset is for form controls; this is a chart widget */}
-			<div
-				ref={ref}
-				data-slot="chart-plot"
-				data-phase={phase}
-				role="group"
-				aria-roledescription={roleDescription}
-				aria-labelledby={`${uid}-title`}
-				aria-describedby={`${uid}-summary`}
-				// biome-ignore lint/a11y/noNoninteractiveTabindex: the plot is a keyboard-navigable widget
-				tabIndex={0}
-				onKeyDown={onKeyDown}
-				onPointerDown={() => setFromKeyboard(false)}
-				onBlur={() => {
-					if (fromKeyboard && activeIndex !== null) onActiveChange(null, true);
-				}}
-				className={cn(styles.plot(), className)}
-			>
-				<span id={`${uid}-title`} className={styles.srOnly()}>
-					{title}
-				</span>
-				{size.width > 0 && size.height > 0 ? children({ ...size, el }) : null}
-				<p id={`${uid}-summary`} className={styles.srOnly()}>
-					{summary}
-				</p>
-				<table className={styles.srOnly()}>
-					<caption>{title}</caption>
-					<thead>
-						<tr>
-							{table.columns.map((column) => (
-								<th key={column} scope="col">
-									{column}
-								</th>
+		// biome-ignore lint/a11y/useSemanticElements: <figure> would retype plotEl repo-wide
+		<div
+			ref={ref}
+			data-slot="chart-plot"
+			data-phase={phase}
+			role="figure"
+			aria-roledescription={roleDescription}
+			aria-labelledby={`${uid}-title`}
+			aria-describedby={`${uid}-summary`}
+			// biome-ignore lint/a11y/noNoninteractiveTabindex: the plot is a keyboard-navigable widget
+			tabIndex={0}
+			onKeyDown={onKeyDown}
+			onPointerDown={() => setFromKeyboard(false)}
+			onBlur={() => {
+				if (fromKeyboard && activeIndex !== null) onActiveChange(null, true);
+			}}
+			className={cn(styles.plot(), className)}
+		>
+			<span id={`${uid}-title`} className={styles.srOnly()}>
+				{title}
+			</span>
+			{size.width > 0 && size.height > 0 ? children({ ...size, el }) : null}
+			<p id={`${uid}-summary`} className={styles.srOnly()}>
+				{summary}
+			</p>
+			<table className={styles.srOnly()}>
+				<caption>{title}</caption>
+				<thead>
+					<tr>
+						{table.columns.map((column) => (
+							<th key={column} scope="col">
+								{column}
+							</th>
+						))}
+					</tr>
+				</thead>
+				<tbody>
+					{table.rows.map((row, index) => (
+						<tr key={index}>
+							<th scope="row">{row.header}</th>
+							{row.cells.map((cell, i) => (
+								<td key={i}>{cell}</td>
 							))}
 						</tr>
-					</thead>
-					<tbody>
-						{table.rows.map((row, index) => (
-							<tr key={index}>
-								<th scope="row">{row.header}</th>
-								{row.cells.map((cell, i) => (
-									<td key={i}>{cell}</td>
-								))}
-							</tr>
-						))}
-					</tbody>
-				</table>
-				<div aria-live="polite" className={styles.srOnly()}>
-					{announcement}
-				</div>
+					))}
+				</tbody>
+			</table>
+			<div aria-live="polite" className={styles.srOnly()}>
+				{announcement}
 			</div>
-		</>
+		</div>
 	);
 }

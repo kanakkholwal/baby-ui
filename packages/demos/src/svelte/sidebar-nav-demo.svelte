@@ -1,5 +1,10 @@
 <script lang="ts">
-import { SidebarNav, type SidebarNavItem, type SidebarRecent } from "@baby-ui/svelte";
+import {
+	SidebarNav,
+	type SidebarNavItem,
+	type SidebarNavSize,
+	type SidebarRecent,
+} from "@baby-ui/svelte";
 import type { Snippet } from "svelte";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
@@ -17,7 +22,11 @@ const RECENTS: SidebarRecent[] = [
 ];
 
 // svelte-ignore state_referenced_locally -- intentional one-time seed, matching React's useState(initialValue)
-let collapsed = $state(Boolean(props.defaultCollapsed));
+let collapsed = $state(false);
+
+$effect.pre(() => {
+	collapsed = props.collapsed === true;
+});
 </script>
 
 {#snippet homeIcon()}
@@ -46,8 +55,8 @@ let collapsed = $state(Boolean(props.defaultCollapsed));
 {/snippet}
 
 {#snippet logoIcon()}
-	<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" aria-hidden="true" class="size-4.5">
-		<path d="M8 1l1.6 4.8L14.4 7.4l-4.8 1.6L8 13.8l-1.6-4.8L1.6 7.4l4.8-1.6z" />
+	<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="size-4">
+		<path d="M12 22a10 10 0 0 1 10-10A10 10 0 0 1 12 2 10 10 0 0 1 2 12a10 10 0 0 1 10 10z" />
 	</svg>
 {/snippet}
 
@@ -62,6 +71,7 @@ let collapsed = $state(Boolean(props.defaultCollapsed));
 	newChatIcon={editIcon as unknown as Snippet}
 	workspaceActions={[{ label: "Workspace settings" }, { label: "Invite team members" }]}
 	onSignOut={() => {}}
+	size={(props.size as SidebarNavSize) ?? "md"}
 	bind:collapsed
 	fill
 	class="max-h-[420px]"

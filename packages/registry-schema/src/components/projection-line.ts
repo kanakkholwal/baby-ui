@@ -6,7 +6,7 @@ export const projectionLine = defineComponent({
 	description:
 		"Dashed forecast from the last point to a horizon; the chart widens its axes to fit it.",
 	category: "charts",
-	status: "alpha",
+	status: "stable",
 	props: [
 		{
 			name: "data",
@@ -66,6 +66,12 @@ export const projectionLine = defineComponent({
 		],
 	},
 
+	licenseOrigin: {
+		source: "bklit-ui",
+		url: "https://github.com/bklit/bklit-ui",
+		license: "MIT",
+		copyright: "Copyright (c) 2026 uixmat",
+	},
 	impl: {
 		react: {
 			entry: "ProjectionLine",
