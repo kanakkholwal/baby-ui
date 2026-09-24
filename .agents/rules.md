@@ -185,8 +185,9 @@ on `.svelte-kit/cloudflare`; say so rather than working around it.
 ## Dev servers
 
 Every app's `dev` script runs through `portless` (root devDependency): no more hand-picked
-ports, no port collisions between `apps/site` and the playgrounds. Named routes, not ports:
-`site.localhost`, `shell.localhost`, `react-runner.localhost`, `svelte-runner.localhost`.
+ports, no port collisions between `apps/site` and the playgrounds. Named routes, not ports,
+under one `baby-ui` subdomain: `site.baby-ui.localhost`, `shell.baby-ui.localhost`,
+`react-runner.baby-ui.localhost`, `svelte-runner.baby-ui.localhost`.
 `pnpm dev:list` (`portless list`) shows what's actually running and its PID; `pnpm dev:stop`
 (`portless prune`) kills dev-server processes left behind by a session that ended without a
 clean shutdown: the real fix for stray `vite`/`wrangler` processes piling up across turns,
@@ -194,3 +195,6 @@ which is exactly what accumulates in an agent session that backgrounds dev serve
 verification and doesn't always get to Ctrl+C them. Run `pnpm dev:stop` after any verification
 that spun up a dev server. `portless doctor` reports Node <24 as a hard failure even though the
 actual wrap-and-run path works fine on Node 22; that check is more conservative than reality.
+Every `dev` script is `cross-env PORTLESS_HTTPS=0 portless`, not bare `portless`: HTTPS mode
+generates a local CA via system `openssl`, which plain Windows terminals often don't have on
+PATH (`spawnSync openssl ENOENT`), so HTTP-only is the default here, not a per-machine fix.

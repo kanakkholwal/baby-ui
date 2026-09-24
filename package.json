@@ -25,6 +25,7 @@
 	"devDependencies": {
 		"@biomejs/biome": "^2.5.14",
 		"@types/node": "catalog:",
+		"cross-env": "^10.1.0",
 		"portless": "^0.15.6",
 		"turbo": "^2.11.1",
 		"typescript": "catalog:"

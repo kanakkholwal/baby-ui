@@ -3,7 +3,7 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"dev": "portless",
+		"dev": "cross-env PORTLESS_HTTPS=0 portless",
 		"dev:app": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
@@ -11,7 +11,7 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
 	},
 	"portless": {
-		"name": "site",
+		"name": "site.baby-ui",
 		"script": "dev:app"
 	},
 	"devDependencies": {
