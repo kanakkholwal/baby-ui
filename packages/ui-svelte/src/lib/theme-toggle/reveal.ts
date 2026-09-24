@@ -128,7 +128,10 @@ export function ensureRevealStyle() {
 }
 
 type ViewTransitionDocument = Document & {
-	startViewTransition(callback: () => void): { ready: Promise<void>; finished: Promise<void> };
+	startViewTransition(callback: () => void): {
+		ready: Promise<void>;
+		finished: Promise<void>;
+	};
 };
 
 export function supportsViewTransition(): boolean {

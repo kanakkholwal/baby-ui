@@ -57,8 +57,8 @@ function onEnter(event: PointerEvent, index: number) {
 				aria-current={active ? "page" : undefined}
 				class={[
 					"relative z-[1] flex items-center justify-between gap-2 py-1.5 pr-3 pl-7 text-sm outline-none transition-[color,opacity] duration-150 focus-visible:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset motion-reduce:transition-none",
-					active ? "font-medium text-foreground" : "text-muted-foreground hover:text-foreground",
-					hoveredIndex !== null && !hovered && !active ? "opacity-40" : "",
+					active ? "font-medium text-foreground" : "text-foreground/70 hover:text-foreground",
+					hoveredIndex !== null && !hovered && !active ? "opacity-60" : "",
 				]}
 			>
 				<span class="truncate">{item.name}</span>

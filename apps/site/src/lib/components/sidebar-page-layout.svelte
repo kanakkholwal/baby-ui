@@ -44,7 +44,7 @@ function active(match: string) {
 							"rounded-md px-3 py-1.5 text-sm transition-colors",
 							active(item.match)
 								? "font-medium text-foreground"
-								: "text-muted-foreground hover:text-foreground",
+								: "text-foreground/70 hover:text-foreground",
 						]}
 					>
 						{item.label}
