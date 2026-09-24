@@ -3,11 +3,16 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"dev": "vite dev",
+		"dev": "portless",
+		"dev:app": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
+	},
+	"portless": {
+		"name": "site",
+		"script": "dev:app"
 	},
 	"devDependencies": {
 		"@baby-ui/registry-build": "workspace:*",
@@ -41,7 +46,9 @@
 		"@tabler/icons-svelte": "^3.47.0",
 		"clsx": "catalog:",
 		"detype": "^2.0.8",
+		"mode-watcher": "^1.1.0",
 		"shiki": "catalog:",
+		"takumi-js": "^2.14.0",
 		"tailwind-merge": "catalog:"
 	}
 }

@@ -49,12 +49,7 @@ export const doubleUnderline = defineComponent({
 	a11y: {
 		notes: ["Both strokes are `aria-hidden`; the text itself carries the real content."],
 	},
-	licenseOrigin: {
-		source: "animata",
-		url: "https://animata.design",
-		license: "MIT",
-		copyright: "Copyright (c) Animata",
-	},
+
 	impl: {
 		react: {
 			entry: "DoubleUnderline",

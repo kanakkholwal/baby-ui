@@ -1,6 +1,7 @@
 <script lang="ts">
 import { specs } from "@baby-ui/registry-schema/components";
 import ComponentCard from "$lib/components/component-card.svelte";
+import Seo from "$lib/components/seo.svelte";
 import { CATEGORY_BLURB, CATEGORY_LABEL } from "$lib/registry";
 import type { PageProps } from "./$types";
 
@@ -10,10 +11,12 @@ const label = $derived(CATEGORY_LABEL[data.category]);
 const items = $derived(data.slugs.map((slug) => specs.find((s) => s.slug === slug)));
 </script>
 
-<svelte:head>
-	<title>{label}· Baby UI</title>
-	<meta name="description" content={CATEGORY_BLURB[data.category]} />
-</svelte:head>
+<Seo
+	title={label}
+	description={CATEGORY_BLURB[data.category]}
+	tag="Category"
+	keywords={[label.toLowerCase(), "react components", "svelte components"]}
+/>
 
 <div class="min-w-0 py-8 xl:col-span-2">
 	{#if data.category !== "charts"}

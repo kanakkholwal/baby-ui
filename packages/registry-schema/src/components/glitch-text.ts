@@ -80,12 +80,7 @@ export const glitchText = defineComponent({
 			"The two ghost layers are `aria-hidden`; the base layer carries the real text once.",
 		],
 	},
-	licenseOrigin: {
-		source: "animata",
-		url: "https://animata.design",
-		license: "MIT",
-		copyright: "Copyright (c) Animata",
-	},
+
 	impl: {
 		react: {
 			entry: "GlitchText",

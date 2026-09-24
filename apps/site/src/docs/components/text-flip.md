@@ -6,6 +6,6 @@ category: text
 tags: [text, flip, cycle, loop]
 ---
 
-`words` is a required prop -- there's no baked-in word list. The first word is
-duplicated internally at the end of the stack so the loop reads as continuous, then
-snaps invisibly back to the real first word once the transition settles.
+`words` is required; there is no baked-in list. Drive the word with `index`/`onIndexChange`,
+or leave it uncontrolled and it flips every `intervalMs`. The stack moves one line per
+word and wraps through a copy of the first word, so the loop never slides backwards.

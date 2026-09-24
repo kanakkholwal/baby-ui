@@ -52,12 +52,7 @@ export const staggeredLetter = defineComponent({
 		reducedMotion: "Letters still fade in, without the travel.",
 		behaviour: ["Each letter fades and travels in on mount, staggered by index."],
 	},
-	licenseOrigin: {
-		source: "animata",
-		url: "https://animata.design",
-		license: "MIT",
-		copyright: "Copyright (c) Animata",
-	},
+
 	impl: {
 		react: {
 			entry: "StaggeredLetter",

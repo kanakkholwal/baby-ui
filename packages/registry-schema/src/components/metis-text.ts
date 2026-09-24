@@ -52,12 +52,7 @@ export const metisText = defineComponent({
 		],
 		notes: ["The underline is a decorative `aria-hidden` element."],
 	},
-	licenseOrigin: {
-		source: "animata",
-		url: "https://animata.design",
-		license: "MIT",
-		copyright: "Copyright (c) Animata",
-	},
+
 	impl: {
 		react: {
 			entry: "MetisText",

@@ -27,6 +27,15 @@ async function writeJson(relative: string, value: unknown) {
 	return relative;
 }
 
+// One file per component, not one combined blob, so a request for one slug only loads
+// that slug's source text instead of every component's.
+async function writeGenerated(relative: string, value: unknown) {
+	const path = resolve(REPO_ROOT, "apps/site/src/lib/generated", relative);
+	await mkdir(dirname(path), { recursive: true });
+	await writeFile(path, `${JSON.stringify(value, null, 2)}\n`, "utf8");
+	return `../src/lib/generated/${relative}`;
+}
+
 async function main() {
 	const errors = [
 		...(await Promise.all(FRAMEWORKS.map((f) => verifySprings([...specs], f)))).flat(),
@@ -99,13 +108,9 @@ async function main() {
 
 	// TS and its JS counterpart per file, generated here so prettier and babel never
 	// reach the Worker. The site imports this instead of re-reading the registry JSON.
-	const sources: Record<string, Record<string, unknown[]>> = {};
-	const css: Record<string, Record<string, string>> = {};
 	for (const spec of specs) {
 		const perFramework: Record<string, unknown[]> = {};
-		sources[spec.slug] = perFramework;
 		const perFrameworkCss: Record<string, string> = {};
-		css[spec.slug] = perFrameworkCss;
 		for (const framework of FRAMEWORKS as readonly Framework[]) {
 			const item = await buildItem(spec, framework);
 			if (!item) continue;
@@ -124,35 +129,18 @@ async function main() {
 				}),
 			);
 		}
+		written.push(await writeGenerated(`sources/${spec.slug}.json`, perFramework));
+		written.push(await writeGenerated(`css/${spec.slug}.json`, perFrameworkCss));
 	}
-	const cssPath = resolve(REPO_ROOT, "apps/site/src/lib/generated/css.json");
-	await mkdir(dirname(cssPath), { recursive: true });
-	await writeFile(
-		cssPath,
-		`${JSON.stringify(css, null, 2)}
-`,
-		"utf8",
-	);
-	written.push("../src/lib/generated/css.json");
 
-	const usage: Record<string, Record<string, unknown>> = {};
 	for (const spec of specs) {
 		const perFramework: Record<string, unknown> = {};
-		usage[spec.slug] = perFramework;
 		for (const framework of FRAMEWORKS as readonly Framework[]) {
 			const snippet = await buildUsage(spec, framework);
 			if (snippet) perFramework[framework] = snippet;
 		}
+		written.push(await writeGenerated(`usage/${spec.slug}.json`, perFramework));
 	}
-	const usagePath = resolve(REPO_ROOT, "apps/site/src/lib/generated/usage.json");
-	await mkdir(dirname(usagePath), { recursive: true });
-	await writeFile(
-		usagePath,
-		`${JSON.stringify(usage, null, 2)}
-`,
-		"utf8",
-	);
-	written.push("../src/lib/generated/usage.json");
 
 	const themeCssPath = resolve(REPO_ROOT, "apps/site/src/lib/generated/theme-css.json");
 	await writeFile(
@@ -172,16 +160,6 @@ async function main() {
 		"utf8",
 	);
 	written.push("../src/lib/generated/origins.json");
-
-	const sourcesPath = resolve(REPO_ROOT, "apps/site/src/lib/generated/sources.json");
-	await mkdir(dirname(sourcesPath), { recursive: true });
-	await writeFile(
-		sourcesPath,
-		`${JSON.stringify(sources, null, 2)}
-`,
-		"utf8",
-	);
-	written.push("../src/lib/generated/sources.json");
 
 	await writeFile(resolve(OUT_DIR, "llms.txt"), buildLlmsTxt([...specs]), "utf8");
 	written.push("llms.txt");

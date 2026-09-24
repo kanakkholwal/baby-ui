@@ -1,4 +1,4 @@
-import { type CSSProperties, createElement, type ElementType } from "react";
+import { type CSSProperties, createElement, type ElementType, Fragment } from "react";
 import { cn } from "../lib/cn";
 import { TEXT_TRANSITION_PRESETS, type TextTransitionPreset } from "./presets";
 import { type TextTransitionVariant, textTransition } from "./variants";
@@ -62,25 +62,30 @@ export function TextTransition({
 	} else if (preset.target === "word") {
 		const words = text.trim().split(/\s+/);
 		nodes = words.map((word, index) => (
-			<span
-				key={`${text}-${variant}-${index}-${word}`}
-				className="text-transition-unit inline-block"
-				style={unitStyle(preset, index)}
-			>
-				{word}
-				{index < words.length - 1 ? " " : ""}
-			</span>
+			<Fragment key={`${text}-${variant}-${index}-${word}`}>
+				{index > 0 ? " " : null}
+				<span
+					className="text-transition-unit inline-block"
+					style={unitStyle(preset, index)}
+				>
+					{word}
+				</span>
+			</Fragment>
 		));
 	} else {
-		nodes = [...text].map((char, index) => (
-			<span
-				key={`${text}-${variant}-${index}`}
-				className="text-transition-unit inline-block"
-				style={unitStyle(preset, index)}
-			>
-				{char === " " ? " " : char}
-			</span>
-		));
+		nodes = [...text].map((char, index) =>
+			char.trim() === "" ? (
+				<Fragment key={`${text}-${variant}-${index}`}>{char}</Fragment>
+			) : (
+				<span
+					key={`${text}-${variant}-${index}`}
+					className="text-transition-unit inline-block"
+					style={unitStyle(preset, index)}
+				>
+					{char}
+				</span>
+			),
+		);
 	}
 
 	return createElement(

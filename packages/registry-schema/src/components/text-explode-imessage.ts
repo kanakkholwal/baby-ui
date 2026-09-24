@@ -55,12 +55,7 @@ export const textExplodeIMessage = defineComponent({
 			"A single `sr-only` copy carries the real text; the animated characters are visual only.",
 		],
 	},
-	licenseOrigin: {
-		source: "animata",
-		url: "https://animata.design",
-		license: "MIT",
-		copyright: "Copyright (c) Animata",
-	},
+
 	impl: {
 		react: {
 			entry: "TextExplodeIMessage",

@@ -46,12 +46,7 @@ export const boldCopy = defineComponent({
 			"The background copy is decorative; the foreground copy carries the text once for assistive tech.",
 		],
 	},
-	licenseOrigin: {
-		source: "animata",
-		url: "https://animata.design",
-		license: "MIT",
-		copyright: "Copyright (c) Animata",
-	},
+
 	impl: {
 		react: {
 			entry: "BoldCopy",

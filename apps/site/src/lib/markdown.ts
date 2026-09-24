@@ -22,7 +22,7 @@ export function guideMarkdown(slug: string, title: string, description: string):
 }
 
 /** A component page as plain markdown: install, usage, props, keyboard, then its prose. */
-export function componentMarkdown(spec: ComponentSpec): string {
+export async function componentMarkdown(spec: ComponentSpec): Promise<string> {
 	const out = [`# ${spec.name}`, "", spec.description, ""];
 	out.push("## Install", "");
 	for (const framework of FRAMEWORKS) {
@@ -35,7 +35,7 @@ export function componentMarkdown(spec: ComponentSpec): string {
 		);
 	}
 	for (const framework of FRAMEWORKS) {
-		const usage = usageSnippet(spec.slug, framework);
+		const usage = await usageSnippet(spec.slug, framework);
 		if (!usage) continue;
 		out.push(
 			`## Usage (${framework})`,

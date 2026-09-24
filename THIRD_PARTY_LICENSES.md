@@ -20,6 +20,11 @@ notices are reproduced here as those licenses require.
 - Source: https://github.com/bklit/bklit-ui
 - License: MIT
 
+## iconiq
+
+- Source: https://iconiqui.com
+- License: MIT
+
 ## sivir-ui
 
 - Source: https://github.com/aidan-neel/sivir-ui

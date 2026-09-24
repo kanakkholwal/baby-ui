@@ -59,17 +59,13 @@ export const cycleText = defineComponent({
 	],
 	motion: {
 		springs: [],
-		reducedMotion: "Words still switch, just without the 260ms drift.",
+		reducedMotion: "Words crossfade in place; the width snaps.",
 		behaviour: [
-			"The incoming word fades and drifts up into place; the outgoing word is replaced outright, not animated out.",
+			"The incoming word fades and drifts up 10px into place; the outgoing word keeps drifting up as it fades, over --duration-exit.",
+			"The width eases to the new word over --duration-overlay, so the sentence around it never jumps.",
 		],
 	},
-	licenseOrigin: {
-		source: "animata",
-		url: "https://animata.design",
-		license: "MIT",
-		copyright: "Copyright (c) Animata",
-	},
+
 	impl: {
 		react: {
 			entry: "CycleText",

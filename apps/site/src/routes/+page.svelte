@@ -10,8 +10,18 @@ import ComponentCard from "$lib/components/component-card.svelte";
 import InstallCommand from "$lib/components/install-command.svelte";
 import LandingHero from "$lib/components/landing-hero.svelte";
 import SegmentControl from "$lib/components/segment-control.svelte";
+import Seo from "$lib/components/seo.svelte";
 import SiteFooter from "$lib/components/site-footer.svelte";
 import { type Dialect, prefs } from "$lib/preferences.svelte";
+import { SITE_URL } from "$lib/seo";
+
+const websiteJsonLd = JSON.stringify({
+	"@context": "https://schema.org",
+	"@type": "WebSite",
+	name: "Baby UI",
+	url: SITE_URL,
+	description: "Animated, accessible components for React and Svelte.",
+});
 
 const featured = specs.slice(0, 8);
 
@@ -38,14 +48,12 @@ $effect(() => {
 });
 </script>
 
+<Seo
+	title="Baby UI"
+	description="Animated, accessible components for React and Svelte. Copy-paste, one token layer, zero runtime dependency."
+/>
 <svelte:head>
-	<title>
-		Animated, accessible, and customizable components for React and Svelte. · Baby UI
-	</title>
-	<meta
-		name="description"
-		content="Copy-paste components for React and Svelte that share one token layer."
-	/>
+	{@html `<script type="application/ld+json">${websiteJsonLd}</script>`}
 </svelte:head>
 
 <div class="relative">

@@ -47,6 +47,6 @@ const letterClass = $derived(cn(gibberishText({ size }), classProp));
 
 <span data-slot="gibberish-text">
 	{#each display as char, i (i)}
-		<span class={letterClass}>{char === " " ? " " : char}</span>
+		<span class={letterClass}>{char === " " ? "\u00a0" : char}</span>
 	{/each}
 </span>

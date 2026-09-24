@@ -83,7 +83,7 @@ export function TextExplodeIMessage({
 						if (mode === "hover") setPlaying(false);
 					}}
 				>
-					{char === " " ? " " : char}
+					{char === " " ? "\u00a0" : char}
 				</span>
 			))}
 			<span className="sr-only">{text}</span>

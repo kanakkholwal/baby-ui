@@ -30,12 +30,11 @@ const stepMs = $derived(stepMsProp ?? (mode === "word" ? 50 : 10));
 <div data-slot="jumping-text" class={cn(jumpingText({ size }), classProp)}>
 	{#key text}
 		{#each nodes as node, index (index)}
-			<span
+			{#if node.trim() === ""}{node}{:else}<span
 				class="jump-in inline-block origin-center"
 				style="animation-delay: {index * stepMs}ms; --jump-duration: {durationMs}ms;"
-			>
-				{node === " " ? " " : node}
-			</span>
+				>{node}</span
+			>{/if}
 		{/each}
 	{/key}
 	<span class="sr-only">{text}</span>

@@ -51,12 +51,7 @@ export const animatedGradientText = defineComponent({
 			"Renders as whatever `as` resolves to (a `span` by default) with the real text as its content; nothing is decorative-only or hidden from assistive tech.",
 		],
 	},
-	licenseOrigin: {
-		source: "animata",
-		url: "https://animata.design",
-		license: "MIT",
-		copyright: "Copyright (c) Animata",
-	},
+
 	impl: {
 		react: {
 			entry: "AnimatedGradientText",

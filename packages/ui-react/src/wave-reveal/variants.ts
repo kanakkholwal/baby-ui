@@ -2,7 +2,8 @@ import { tv, type VariantProps } from "tailwind-variants";
 
 export const waveReveal = tv({
 	slots: {
-		root: "relative flex flex-wrap whitespace-pre-wrap",
+		root: "relative",
+		word: "inline-block whitespace-nowrap",
 		unit: "inline-block",
 	},
 	variants: {

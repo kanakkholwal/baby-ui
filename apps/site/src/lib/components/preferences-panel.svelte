@@ -18,10 +18,13 @@ import IconBrandReact from "@tabler/icons-svelte/icons/brand-react";
 import IconBrandSvelte from "@tabler/icons-svelte/icons/brand-svelte";
 import IconBrandTypescript from "@tabler/icons-svelte/icons/brand-typescript";
 import IconCheck from "@tabler/icons-svelte/icons/check";
-import { type Appearance, type Dialect, prefs, THEMES } from "$lib/preferences.svelte";
+import { setMode, userPrefersMode } from "mode-watcher";
+import { type Dialect, prefs, THEMES } from "$lib/preferences.svelte";
 import SegmentControl from "./segment-control.svelte";
 
-const APPEARANCE: { value: Appearance; label: string }[] = [
+type Mode = Parameters<typeof setMode>[0];
+
+const APPEARANCE: { value: Mode; label: string }[] = [
 	{ value: "light", label: "Light" },
 	{ value: "dark", label: "Dark" },
 	{ value: "system", label: "System" },
@@ -37,10 +40,10 @@ const DIALECTS: { id: Dialect; label: string; icon: Icon }[] = [
 	{ id: "js", label: "JS", icon: IconBrandJavascript },
 ];
 
-let appearance = $state<string>(prefs.appearance);
+let appearance = $state<string>(userPrefersMode.current);
 
 $effect(() => {
-	if (appearance !== prefs.appearance) prefs.set("appearance", appearance as Appearance);
+	if (appearance !== userPrefersMode.current) setMode(appearance as Mode);
 });
 </script>
 

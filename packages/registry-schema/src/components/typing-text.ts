@@ -97,12 +97,7 @@ export const typingText = defineComponent({
 			"The text updates live in the DOM as it types; treat as decorative copy for headings/labels, not content a screen reader user needs to read mid-cycle.",
 		],
 	},
-	licenseOrigin: {
-		source: "animata",
-		url: "https://animata.design",
-		license: "MIT",
-		copyright: "Copyright (c) Animata",
-	},
+
 	impl: {
 		react: {
 			entry: "TypingText",

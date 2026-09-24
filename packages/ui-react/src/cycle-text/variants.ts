@@ -1,12 +1,16 @@
 import { tv, type VariantProps } from "tailwind-variants";
 
 export const cycleText = tv({
-	base: "inline-block",
+	slots: {
+		root: "relative inline-block whitespace-nowrap align-bottom transition-[width] duration-(--duration-overlay) ease-(--ease-out) motion-reduce:transition-none",
+		word: "inline-block",
+		leaving: "pointer-events-none absolute top-0 left-0 inline-block",
+	},
 	variants: {
 		size: {
-			sm: "text-lg",
-			md: "text-xl",
-			lg: "text-3xl",
+			sm: { root: "text-lg" },
+			md: { root: "text-xl" },
+			lg: { root: "text-3xl" },
 		},
 	},
 	defaultVariants: { size: "md" },

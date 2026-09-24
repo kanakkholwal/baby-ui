@@ -216,6 +216,8 @@ export { default as Counter } from "./counter/counter.svelte";
 export type { CounterDirection, CounterSize } from "./counter/variants";
 export { default as CycleText } from "./cycle-text/cycle-text.svelte";
 export type { CycleTextSize } from "./cycle-text/variants";
+export { default as DiaText } from "./dia-text/dia-text.svelte";
+export type { DiaTextSize } from "./dia-text/variants";
 export type { DialogSize, DialogVariant } from "./dialog/context";
 export { default as Dialog } from "./dialog/dialog.svelte";
 export { default as DialogClose } from "./dialog/dialog-close.svelte";
@@ -335,6 +337,8 @@ export { default as LoadingState } from "./loading-state/loading-state.svelte";
 export type { LoadingStateVariant } from "./loading-state/types";
 export { default as LogoCarousel } from "./logo-carousel/logo-carousel.svelte";
 export { default as Markdown } from "./markdown/markdown.svelte";
+export { default as Marker } from "./marker/marker.svelte";
+export type { MarkerTone, MarkerVariant } from "./marker/variants";
 export { default as MaskText } from "./mask-text/mask-text.svelte";
 export type { MaskTextSize } from "./mask-text/variants";
 export { default as MegaNavbar } from "./mega-navbar/mega-navbar.svelte";
@@ -356,6 +360,8 @@ export { default as MetisText } from "./metis-text/metis-text.svelte";
 export type { MetisTextDirection } from "./metis-text/variants";
 export { default as MirrorText } from "./mirror-text/mirror-text.svelte";
 export type { MirrorTextDirection } from "./mirror-text/variants";
+export { default as MorphText } from "./morph-text/morph-text.svelte";
+export type { MorphTextSize } from "./morph-text/variants";
 export type { MorphSpring } from "./morphing-modal/morph";
 export { default as MorphingModal } from "./morphing-modal/morphing-modal.svelte";
 export { default as Navbar } from "./navbar/navbar.svelte";
@@ -404,6 +410,13 @@ export { default as RadioGroup } from "./radio-group/radio-group.svelte";
 export { default as RadioGroupItem } from "./radio-group/radio-group-item.svelte";
 export type { RadioOrientation, RadioSize, RadioVariant } from "./radio-group/variants";
 export { default as Reasoning } from "./reasoning/reasoning.svelte";
+export { default as ReasoningStep } from "./reasoning/reasoning-step.svelte";
+export { default as ReasoningStepDetails } from "./reasoning/reasoning-step-details.svelte";
+export { default as ReasoningStepImage } from "./reasoning/reasoning-step-image.svelte";
+export { default as ReasoningStepSource } from "./reasoning/reasoning-step-source.svelte";
+export { default as ReasoningStepSources } from "./reasoning/reasoning-step-sources.svelte";
+export { default as ReasoningSteps } from "./reasoning/reasoning-steps.svelte";
+export type { ReasoningStepStatus, ReasoningVariant } from "./reasoning/variants";
 export { default as RecommendationCard } from "./recommendation-card/recommendation-card.svelte";
 export type {
 	RecommendationLabels,
@@ -434,10 +447,22 @@ export { default as ResponsiveDialogFooter } from "./responsive-dialog/responsiv
 export { default as ResponsiveDialogHeader } from "./responsive-dialog/responsive-dialog-header.svelte";
 export { default as ResponsiveDialogTitle } from "./responsive-dialog/responsive-dialog-title.svelte";
 export { default as ResponsiveDialogTrigger } from "./responsive-dialog/responsive-dialog-trigger.svelte";
+export { default as RevealText } from "./reveal-text/reveal-text.svelte";
+export type {
+	RevealTextSize,
+	RevealTextSplit,
+	RevealTextTrigger,
+} from "./reveal-text/variants";
 export { default as RingChart } from "./ring-chart/ring-chart.svelte";
 export type { RingCap } from "./ring-chart/variants";
 export { default as RollText } from "./roll-text/roll-text.svelte";
 export type { RollStagger, RollTextSize } from "./roll-text/variants";
+export type { RollingDigitsLocale } from "./rolling-digits/format";
+export { default as RollingDigits } from "./rolling-digits/rolling-digits.svelte";
+export type {
+	RollingDigitsDirection,
+	RollingDigitsSize,
+} from "./rolling-digits/variants";
 export type {
 	SankeyData,
 	SankeyLinkInput,
@@ -450,6 +475,8 @@ export { default as Scatter } from "./scatter-chart/scatter.svelte";
 export { default as ScatterChart } from "./scatter-chart/scatter-chart.svelte";
 export type { ScatterShape, ScatterSize } from "./scatter-chart/variants";
 export { default as ScrollArea } from "./scroll-area/scroll-area.svelte";
+export { default as ScrollProgress } from "./scroll-progress/scroll-progress.svelte";
+export type { ScrollProgressPosition } from "./scroll-progress/variants";
 export { default as ScrollReveal } from "./scroll-reveal/scroll-reveal.svelte";
 export type { ScrollRevealSize } from "./scroll-reveal/variants";
 export { default as ScrubField } from "./scrub-field/scrub-field.svelte";
@@ -471,6 +498,8 @@ export { default as SheetHeader } from "./sheet/sheet-header.svelte";
 export { default as SheetTitle } from "./sheet/sheet-title.svelte";
 export { default as SheetTrigger } from "./sheet/sheet-trigger.svelte";
 export type { SheetSide } from "./sheet/variants";
+export { default as ShimmerText } from "./shimmer-text/shimmer-text.svelte";
+export type { ShimmerTextSize } from "./shimmer-text/variants";
 export { default as Shortcut } from "./shortcut/shortcut.svelte";
 export type { ShortcutSize, ShortcutVariant } from "./shortcut/variants";
 export { default as ShowMore } from "./show-more/show-more.svelte";
@@ -536,6 +565,10 @@ export type {
 } from "./text-explode-imessage/variants";
 export { default as TextFlip } from "./text-flip/text-flip.svelte";
 export type { TextFlipSize } from "./text-flip/variants";
+export { default as TextInertia } from "./text-inertia/text-inertia.svelte";
+export type { TextInertiaSize } from "./text-inertia/variants";
+export { default as TextLoop } from "./text-loop/text-loop.svelte";
+export type { TextLoopDirection, TextLoopSize } from "./text-loop/variants";
 export type {
 	TextTransitionPreset,
 	TextTransitionTarget,
@@ -573,6 +606,8 @@ export { default as Tooltip } from "./tooltip/tooltip.svelte";
 export { default as TooltipContent } from "./tooltip/tooltip-content.svelte";
 export { default as TooltipProvider } from "./tooltip/tooltip-provider.svelte";
 export { default as TooltipTrigger } from "./tooltip/tooltip-trigger.svelte";
+export { default as Typewriter } from "./typewriter/typewriter.svelte";
+export type { TypewriterCursor } from "./typewriter/variants";
 export { default as TypingText } from "./typing-text/typing-text.svelte";
 export type { TypingTextSize } from "./typing-text/variants";
 export { default as Typography } from "./typography/typography.svelte";
@@ -581,3 +616,6 @@ export { default as UnderlineHoverText } from "./underline-hover-text/underline-
 export type { UnderlineHoverTextTone } from "./underline-hover-text/variants";
 export type { WaveRevealDirection, WaveRevealMode } from "./wave-reveal/variants";
 export { default as WaveReveal } from "./wave-reveal/wave-reveal.svelte";
+export type { WeekStartsOn } from "./week-calendar/dates";
+export type { WeekCalendarLabels, WeekCalendarVariant } from "./week-calendar/variants";
+export { default as WeekCalendar } from "./week-calendar/week-calendar.svelte";

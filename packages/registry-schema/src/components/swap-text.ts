@@ -84,12 +84,7 @@ export const swapText = defineComponent({
 			"A real `<button>`; toggling is reachable by keyboard (Enter/Space) even when `supportsHover` is off.",
 		],
 	},
-	licenseOrigin: {
-		source: "animata",
-		url: "https://animata.design",
-		license: "MIT",
-		copyright: "Copyright (c) Animata",
-	},
+
 	impl: {
 		react: {
 			entry: "SwapText",

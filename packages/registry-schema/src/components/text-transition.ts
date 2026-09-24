@@ -79,12 +79,7 @@ export const textTransition = defineComponent({
 			"Renders as whatever `as` resolves to (a `span` by default) with the real text as visible content across every unit.",
 		],
 	},
-	licenseOrigin: {
-		source: "animata",
-		url: "https://animata.design",
-		license: "MIT",
-		copyright: "Copyright (c) Animata",
-	},
+
 	impl: {
 		react: {
 			entry: "TextTransition",

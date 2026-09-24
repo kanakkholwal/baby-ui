@@ -58,12 +58,7 @@ export const circularText = defineComponent({
 			"Renders the real text as its content, split into one span per character for placement.",
 		],
 	},
-	licenseOrigin: {
-		source: "animata",
-		url: "https://animata.design",
-		license: "MIT",
-		copyright: "Copyright (c) Animata",
-	},
+
 	impl: {
 		react: {
 			entry: "CircularText",

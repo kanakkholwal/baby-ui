@@ -59,12 +59,7 @@ export const mirrorText = defineComponent({
 			"The four visual rows are `aria-hidden`; a single `sr-only` copy carries the real text once.",
 		],
 	},
-	licenseOrigin: {
-		source: "animata",
-		url: "https://animata.design",
-		license: "MIT",
-		copyright: "Copyright (c) Animata",
-	},
+
 	impl: {
 		react: {
 			entry: "MirrorText",

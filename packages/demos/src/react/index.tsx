@@ -69,6 +69,7 @@ import { HeatmapChartDemo } from "./heatmap-chart";
 import { LiveLineChartDemo } from "./live-line-chart";
 import { LoadingStateDemo } from "./loading-state";
 import { LogoCarouselDemo } from "./logo-carousel";
+import { MarkerDemo } from "./marker";
 import { MegaNavbarDemo } from "./mega-navbar";
 import {
 	ComboboxDemo,
@@ -115,6 +116,7 @@ import { ResponsiveDialogDemo } from "./responsive-dialog";
 import { RingChartDemo } from "./ring-chart";
 import { SankeyChartDemo } from "./sankey-chart";
 import { ScatterChartDemo } from "./scatter-chart";
+import { ScrollProgressDemo } from "./scroll-progress";
 import { SidebarNavDemo } from "./sidebar-nav";
 import { StatCardDemo, StatCardMapDemo } from "./stat-card";
 import { StreamingTextDemo } from "./streaming-text";
@@ -149,9 +151,20 @@ import {
 	UnderlineHoverTextDemo,
 	WaveRevealDemo,
 } from "./text";
+import {
+	DiaTextDemo,
+	MorphTextDemo,
+	RevealTextDemo,
+	RollingDigitsDemo,
+	ShimmerTextDemo,
+	TextInertiaDemo,
+	TextLoopDemo,
+	TypewriterDemo,
+} from "./text-motion";
 import { ThemeToggleDemo } from "./theme-toggle";
 import { ThinkingStateDemo } from "./thinking-state";
 import { ToolChipsDemo } from "./tool-chips";
+import { WeekCalendarDemo } from "./week-calendar";
 
 type Props = Record<string, unknown>;
 
@@ -422,4 +435,15 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	ticker: TickerDemo,
 	"scroll-reveal": ScrollRevealDemo,
 	"text-explode-imessage": TextExplodeIMessageDemo,
+	"dia-text": DiaTextDemo,
+	"morph-text": MorphTextDemo,
+	"reveal-text": RevealTextDemo,
+	"scroll-progress": ScrollProgressDemo,
+	"shimmer-text": ShimmerTextDemo,
+	"text-inertia": TextInertiaDemo,
+	"text-loop": TextLoopDemo,
+	typewriter: TypewriterDemo,
+	"week-calendar": WeekCalendarDemo,
+	"rolling-digits": RollingDigitsDemo,
+	marker: MarkerDemo,
 };

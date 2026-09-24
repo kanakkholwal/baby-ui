@@ -288,6 +288,8 @@ export { Counter, type CounterProps } from "./counter/counter";
 export type { CounterDirection, CounterSize } from "./counter/variants";
 export { CycleText, type CycleTextProps } from "./cycle-text/cycle-text";
 export type { CycleTextSize } from "./cycle-text/variants";
+export { DiaText, type DiaTextProps } from "./dia-text/dia-text";
+export type { DiaTextSize } from "./dia-text/variants";
 export {
 	Dialog,
 	DialogClose,
@@ -446,6 +448,8 @@ export {
 } from "./loading-state/loading-state";
 export { LogoCarousel, type LogoCarouselProps } from "./logo-carousel/logo-carousel";
 export { Markdown, type MarkdownProps } from "./markdown/markdown";
+export { Marker, type MarkerProps } from "./marker/marker";
+export type { MarkerTone, MarkerVariant } from "./marker/variants";
 export { MaskText, type MaskTextProps } from "./mask-text/mask-text";
 export type { MaskTextSize } from "./mask-text/variants";
 export {
@@ -477,6 +481,8 @@ export { MetisText, type MetisTextProps } from "./metis-text/metis-text";
 export type { MetisTextDirection } from "./metis-text/variants";
 export { MirrorText, type MirrorTextProps } from "./mirror-text/mirror-text";
 export type { MirrorTextDirection } from "./mirror-text/variants";
+export { MorphText, type MorphTextProps } from "./morph-text/morph-text";
+export type { MorphTextSize } from "./morph-text/variants";
 export {
 	MorphingModal,
 	type MorphingModalProps,
@@ -541,7 +547,21 @@ export {
 	type RadioSize,
 	type RadioVariant,
 } from "./radio-group/radio-group";
-export { Reasoning, type ReasoningProps } from "./reasoning/reasoning";
+export {
+	Reasoning,
+	type ReasoningProps,
+	ReasoningStep,
+	ReasoningStepDetails,
+	type ReasoningStepDetailsProps,
+	ReasoningStepImage,
+	type ReasoningStepImageProps,
+	type ReasoningStepProps,
+	ReasoningStepSource,
+	type ReasoningStepSourceProps,
+	ReasoningStepSources,
+	ReasoningSteps,
+} from "./reasoning/reasoning";
+export type { ReasoningStepStatus, ReasoningVariant } from "./reasoning/variants";
 export {
 	RecommendationCard,
 	type RecommendationCardProps,
@@ -582,10 +602,22 @@ export {
 	ResponsiveDialogTrigger,
 	type ResponsiveDialogVariant,
 } from "./responsive-dialog/responsive-dialog";
+export { RevealText, type RevealTextProps } from "./reveal-text/reveal-text";
+export type {
+	RevealTextSize,
+	RevealTextSplit,
+	RevealTextTrigger,
+} from "./reveal-text/variants";
 export { RingChart, type RingChartProps } from "./ring-chart/ring-chart";
 export type { RingCap } from "./ring-chart/variants";
 export { RollText, type RollTextProps } from "./roll-text/roll-text";
 export type { RollStagger, RollTextSize } from "./roll-text/variants";
+export type { RollingDigitsLocale } from "./rolling-digits/format";
+export { RollingDigits, type RollingDigitsProps } from "./rolling-digits/rolling-digits";
+export type {
+	RollingDigitsDirection,
+	RollingDigitsSize,
+} from "./rolling-digits/variants";
 export type {
 	SankeyData,
 	SankeyLinkInput,
@@ -602,6 +634,11 @@ export {
 } from "./scatter-chart/scatter-chart";
 export type { ScatterShape, ScatterSize } from "./scatter-chart/variants";
 export { ScrollArea, type ScrollAreaProps } from "./scroll-area/scroll-area";
+export {
+	ScrollProgress,
+	type ScrollProgressProps,
+} from "./scroll-progress/scroll-progress";
+export type { ScrollProgressPosition } from "./scroll-progress/variants";
 export { ScrollReveal, type ScrollRevealProps } from "./scroll-reveal/scroll-reveal";
 export type { ScrollRevealSize } from "./scroll-reveal/variants";
 export { ScrubField, type ScrubFieldProps } from "./scrub-field/scrub-field";
@@ -627,6 +664,8 @@ export {
 	SheetTitle,
 	SheetTrigger,
 } from "./sheet/sheet";
+export { ShimmerText, type ShimmerTextProps } from "./shimmer-text/shimmer-text";
+export type { ShimmerTextSize } from "./shimmer-text/variants";
 export { Shortcut, type ShortcutProps } from "./shortcut/shortcut";
 export type { ShortcutSize, ShortcutVariant } from "./shortcut/variants";
 export { ShowMore, type ShowMoreProps } from "./show-more/show-more";
@@ -728,6 +767,10 @@ export type {
 } from "./text-explode-imessage/variants";
 export { TextFlip, type TextFlipProps } from "./text-flip/text-flip";
 export type { TextFlipSize } from "./text-flip/variants";
+export { TextInertia, type TextInertiaProps } from "./text-inertia/text-inertia";
+export type { TextInertiaSize } from "./text-inertia/variants";
+export { TextLoop, type TextLoopProps } from "./text-loop/text-loop";
+export type { TextLoopDirection, TextLoopSize } from "./text-loop/variants";
 export type {
 	TextTransitionPreset,
 	TextTransitionTarget,
@@ -773,6 +816,8 @@ export {
 	TooltipProvider,
 	TooltipTrigger,
 } from "./tooltip/tooltip";
+export { Typewriter, type TypewriterProps } from "./typewriter/typewriter";
+export type { TypewriterCursor } from "./typewriter/variants";
 export { TypingText, type TypingTextProps } from "./typing-text/typing-text";
 export type { TypingTextSize } from "./typing-text/variants";
 export {
@@ -787,3 +832,6 @@ export {
 export type { UnderlineHoverTextTone } from "./underline-hover-text/variants";
 export type { WaveRevealDirection, WaveRevealMode } from "./wave-reveal/variants";
 export { WaveReveal, type WaveRevealProps } from "./wave-reveal/wave-reveal";
+export type { WeekStartsOn } from "./week-calendar/dates";
+export type { WeekCalendarLabels, WeekCalendarVariant } from "./week-calendar/variants";
+export { WeekCalendar, type WeekCalendarProps } from "./week-calendar/week-calendar";

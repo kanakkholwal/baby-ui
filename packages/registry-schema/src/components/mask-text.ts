@@ -58,12 +58,7 @@ export const maskText = defineComponent({
 			"`revealText` is `aria-hidden`; `baseText` carries the real content for assistive tech.",
 		],
 	},
-	licenseOrigin: {
-		source: "animata",
-		url: "https://animata.design",
-		license: "MIT",
-		copyright: "Copyright (c) Animata",
-	},
+
 	impl: {
 		react: {
 			entry: "MaskText",

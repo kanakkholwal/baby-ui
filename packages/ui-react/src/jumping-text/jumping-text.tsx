@@ -1,4 +1,4 @@
-import type { CSSProperties } from "react";
+import { type CSSProperties, Fragment } from "react";
 import { cn } from "../lib/cn";
 import { type JumpingTextMode, type JumpingTextSize, jumpingText } from "./variants";
 
@@ -33,20 +33,24 @@ export function JumpingText({
 	const step = stepMs ?? (mode === "word" ? 50 : 10);
 	return (
 		<div data-slot="jumping-text" className={cn(jumpingText({ size }), className)}>
-			{nodes.map((node, index) => (
-				<span
-					key={`${text}-${index}`}
-					className="jump-in inline-block origin-center"
-					style={
-						{
-							animationDelay: `${index * step}ms`,
-							"--jump-duration": `${durationMs}ms`,
-						} as CSSProperties
-					}
-				>
-					{node === " " ? " " : node}
-				</span>
-			))}
+			{nodes.map((node, index) =>
+				node.trim() === "" ? (
+					<Fragment key={`${text}-${index}`}>{node}</Fragment>
+				) : (
+					<span
+						key={`${text}-${index}`}
+						className="jump-in inline-block origin-center"
+						style={
+							{
+								animationDelay: `${index * step}ms`,
+								"--jump-duration": `${durationMs}ms`,
+							} as CSSProperties
+						}
+					>
+						{node}
+					</span>
+				),
+			)}
 			<span className="sr-only">{text}</span>
 		</div>
 	);

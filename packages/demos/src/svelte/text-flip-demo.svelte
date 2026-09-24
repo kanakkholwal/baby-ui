@@ -8,6 +8,7 @@ const words = ["fantastic", "love", "fire", "awesome"];
 <TextFlip
 	label={(props.label as string) || "Coding is"}
 	{words}
+	defaultIndex={Number(props.defaultIndex ?? 0)}
 	intervalMs={Number(props.intervalMs ?? 2000)}
 	size={(props.size as TextFlipSize) ?? "lg"}
 />

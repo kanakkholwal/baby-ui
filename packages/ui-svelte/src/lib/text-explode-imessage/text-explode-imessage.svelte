@@ -75,7 +75,7 @@ function trigger() {
 				if (mode === "hover") playing = false;
 			}}
 		>
-			{char === " " ? " " : char}
+			{char === " " ? "\u00a0" : char}
 		</span>
 	{/each}
 	<span class="sr-only">{text}</span>

@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { cn } from "../lib/cn";
 import {
 	type WaveRevealDirection,
@@ -28,7 +29,7 @@ export function WaveReveal({
 	staggerMs = 50,
 	className,
 }: WaveRevealProps) {
-	const { root, unit } = waveReveal({ direction });
+	const { root, word: wordClass, unit } = waveReveal({ direction });
 	const words = text.trim().split(/\s+/);
 	const animClass = waveAnimationClass(direction, blur);
 	let unitIndex = 0;
@@ -38,27 +39,29 @@ export function WaveReveal({
 			<span className="sr-only">{text}</span>
 			<span aria-hidden className="contents">
 				{words.map((word, wordIndex) => (
-					<span key={`${wordIndex}-${word}`} className="contents">
-						{mode === "word" ? (
-							<span
-								className={cn(unit(), animClass)}
-								style={{ animationDelay: `${unitIndex++ * staggerMs}ms` }}
-							>
-								{word}
-							</span>
-						) : (
-							word.split("").map((letter, letterIndex) => (
+					<Fragment key={`${wordIndex}-${word}`}>
+						{wordIndex > 0 ? " " : null}
+						<span className={wordClass()}>
+							{mode === "word" ? (
 								<span
-									key={`${wordIndex}-${letterIndex}`}
 									className={cn(unit(), animClass)}
 									style={{ animationDelay: `${unitIndex++ * staggerMs}ms` }}
 								>
-									{letter === " " ? " " : letter}
+									{word}
 								</span>
-							))
-						)}
-						{wordIndex < words.length - 1 ? " " : null}
-					</span>
+							) : (
+								word.split("").map((letter, letterIndex) => (
+									<span
+										key={`${wordIndex}-${letterIndex}`}
+										className={cn(unit(), animClass)}
+										style={{ animationDelay: `${unitIndex++ * staggerMs}ms` }}
+									>
+										{letter}
+									</span>
+								))
+							)}
+						</span>
+					</Fragment>
 				))}
 			</span>
 		</div>

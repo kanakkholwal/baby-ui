@@ -46,12 +46,7 @@ export const underlineHoverText = defineComponent({
 			"The baseline and stroke are `aria-hidden`; the label carries the real text.",
 		],
 	},
-	licenseOrigin: {
-		source: "animata",
-		url: "https://animata.design",
-		license: "MIT",
-		copyright: "Copyright (c) Animata",
-	},
+
 	impl: {
 		react: {
 			entry: "UnderlineHoverText",

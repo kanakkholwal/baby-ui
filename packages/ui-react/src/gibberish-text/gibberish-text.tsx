@@ -34,7 +34,7 @@ function Letter({
 		return () => clearInterval(interval);
 	}, [letter, speedMs]);
 
-	return <span className={className}>{display === " " ? " " : display}</span>;
+	return <span className={className}>{display === " " ? "\u00a0" : display}</span>;
 }
 
 export interface GibberishTextProps {

@@ -39,14 +39,13 @@ export const ticker = defineComponent({
 		behaviour: [
 			"Each digit is a 10-row strip that translates to the active row; non-digit characters (commas, signs) pass through unanimated.",
 			"A CSS transition, not a keyframe animation, so a new `value` replays it without remounting.",
+			"Digits roll up from 0 on mount and are keyed from the right, so a value gaining a digit keeps the rest in place.",
 		],
 	},
-	licenseOrigin: {
-		source: "animata",
-		url: "https://animata.design",
-		license: "MIT",
-		copyright: "Copyright (c) Animata",
+	a11y: {
+		notes: ["The digit strips are hidden; an sr-only span carries the value."],
 	},
+
 	impl: {
 		react: {
 			entry: "Ticker",

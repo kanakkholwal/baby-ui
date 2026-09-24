@@ -39,12 +39,7 @@ export const jitterText = defineComponent({
 			"A continuous, small x/y/rotate wobble, alternating direction each cycle.",
 		],
 	},
-	licenseOrigin: {
-		source: "animata",
-		url: "https://animata.design",
-		license: "MIT",
-		copyright: "Copyright (c) Animata",
-	},
+
 	impl: {
 		react: {
 			entry: "JitterText",

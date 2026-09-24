@@ -1,4 +1,6 @@
-import type { CSSProperties } from "react";
+"use client";
+
+import { type CSSProperties, useEffect, useState } from "react";
 import { cn } from "../lib/cn";
 import { type TickerSize, ticker } from "./variants";
 
@@ -17,20 +19,32 @@ const ROWS = Array.from({ length: 10 }, (_, i) => i);
 const DIGIT_RE = /^[0-9]$/;
 
 export function Ticker({ value, durationMs = 500, size = "md", className }: TickerProps) {
+	const [mounted, setMounted] = useState(false);
+	useEffect(() => {
+		const frame = requestAnimationFrame(() => setMounted(true));
+		return () => cancelAnimationFrame(frame);
+	}, []);
 	const parts = [...value];
 	return (
 		<span data-slot="ticker" className={cn(ticker({ size }), className)}>
+			<span className="sr-only">{value}</span>
 			{parts.map((part, index) => {
+				// Keyed from the right so digits keep their place when the value grows.
+				const key = parts.length - index;
 				if (!DIGIT_RE.test(part)) {
-					return <span key={`${index}-${part}`}>{part}</span>;
+					return (
+						<span key={`${key}-${part}`} aria-hidden="true">
+							{part}
+						</span>
+					);
 				}
 				return (
-					<span key={`${index}-digit`} className="ticker-digit">
+					<span key={`${key}-digit`} className="ticker-digit" aria-hidden="true">
 						<span
 							className="ticker-digit__track"
 							style={
 								{
-									"--ticker-index": part,
+									"--ticker-index": mounted ? part : 0,
 									"--ticker-duration": `${durationMs}ms`,
 								} as CSSProperties
 							}

@@ -37,7 +37,7 @@ function delayFor(index: number) {
 	<span aria-hidden="true" class="contents">
 		{#each words as word, wordIndex (`${wordIndex}-${word}`)}
 			{@const baseIndex = words.slice(0, wordIndex).reduce((n, w) => n + (mode === "word" ? 1 : w.length), 0)}
-			<span class="contents">
+			{#if wordIndex > 0}{" "}{/if}<span class={classes.word()}>
 				{#if mode === "word"}
 					<span class={cn(classes.unit(), animClass)} style="animation-delay: {delayFor(baseIndex)}">
 						{word}
@@ -48,11 +48,10 @@ function delayFor(index: number) {
 							class={cn(classes.unit(), animClass)}
 							style="animation-delay: {delayFor(baseIndex + letterIndex)}"
 						>
-							{letter === " " ? " " : letter}
+							{letter}
 						</span>
 					{/each}
 				{/if}
-				{#if wordIndex < words.length - 1}{" "}{/if}
 			</span>
 		{/each}
 	</span>

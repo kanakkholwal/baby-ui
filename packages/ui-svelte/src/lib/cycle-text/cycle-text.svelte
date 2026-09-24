@@ -25,34 +25,69 @@ let {
 	class?: string;
 } = $props();
 
+type Shown = { index: number; key: number };
+
+const count = $derived(words.length);
 // svelte-ignore state_referenced_locally -- intentional one-time seed, matching React's useState(initialValue)
 let internalIndex = $state(defaultIndex);
-const index = $derived(indexProp ?? internalIndex);
+const index = $derived(
+	count > 0 ? (((indexProp ?? internalIndex) % count) + count) % count : 0,
+);
+// svelte-ignore state_referenced_locally -- seeded once; later changes flow through the effect
+let shown = $state<Shown>({ index, key: 0 });
+let leaving = $state<Shown[]>([]);
+let wordEl = $state<HTMLSpanElement | null>(null);
+let width = $state<number>();
 
-function setIndex(next: number) {
-	if (indexProp === undefined) internalIndex = next;
-	onIndexChange?.(next);
-}
+$effect.pre(() => {
+	if (shown.index === index) return;
+	leaving.push(shown);
+	shown = { index, key: shown.key + 1 };
+});
 
 $effect(() => {
-	if (indexProp !== undefined || words.length <= 1) return;
+	if (indexProp !== undefined || count <= 1) return;
 	const id = setInterval(() => {
-		setIndex((index + 1) % words.length);
+		const next = (index + 1) % count;
+		internalIndex = next;
+		onIndexChange?.(next);
 	}, intervalMs);
 	return () => clearInterval(id);
 });
 
-const safeIndex = $derived(((index % words.length) + words.length) % words.length);
-const word = $derived(words[safeIndex] ?? "");
+$effect(() => {
+	const node = wordEl;
+	if (!node) return;
+	const measure = () => (width = node.offsetWidth);
+	measure();
+	const observer = new ResizeObserver(measure);
+	observer.observe(node);
+	return () => observer.disconnect();
+});
+
+const styles = $derived(cycleText({ size }));
 </script>
 
-<svelte:element this={as} data-slot="cycle-text" class={cn(cycleText({ size }), classProp)}>
-	{#key safeIndex}
+<svelte:element
+	this={as}
+	data-slot="cycle-text"
+	class={cn(styles.root(), classProp)}
+	style:width={width === undefined ? undefined : `${width}px`}
+>
+	{#each leaving as item (item.key)}
 		<span
-			class="text-transition-unit inline-block"
-			style="--tt-duration: {durationMs}ms; --tt-from-opacity: 0; --tt-from-y: 10px;"
+			aria-hidden="true"
+			class={cn(styles.leaving(), "cycle-text-exit")}
+			onanimationend={() => (leaving = leaving.filter((l) => l.key !== item.key))}
+			>{words[item.index]}</span
 		>
-			{word}
-		</span>
+	{/each}
+	{#key shown.key}
+		<span
+			bind:this={wordEl}
+			class={cn(styles.word(), shown.key > 0 && "text-transition-unit")}
+			style="--tt-duration: {durationMs}ms; --tt-from-opacity: 0; --tt-from-y: 10px;"
+			>{words[index]}</span
+		>
 	{/key}
 </svelte:element>

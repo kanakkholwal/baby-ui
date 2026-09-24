@@ -56,11 +56,11 @@ const classes = $derived(textTransition({ variant }));
 			{@render unit(preset, 0, text)}
 		{:else if preset.target === "word"}
 			{#each words as word, index (index)}
-				{@render unit(preset, index, word + (index < words.length - 1 ? " " : ""))}
+				{#if index > 0}{" "}{/if}{@render unit(preset, index, word)}
 			{/each}
 		{:else}
 			{#each characters as char, index (index)}
-				{@render unit(preset, index, char === " " ? " " : char)}
+				{#if char.trim() === ""}{char}{:else}{@render unit(preset, index, char)}{/if}
 			{/each}
 		{/if}
 	{/key}

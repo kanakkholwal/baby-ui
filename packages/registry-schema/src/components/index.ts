@@ -37,6 +37,7 @@ import { conversation } from "./conversation";
 import { copyButton } from "./copy-button";
 import { counter } from "./counter";
 import { cycleText } from "./cycle-text";
+import { diaText } from "./dia-text";
 import { dialog } from "./dialog";
 import { diffTable } from "./diff-table";
 import { doubleUnderline } from "./double-underline";
@@ -64,11 +65,13 @@ import { liveLineChart } from "./live-line-chart";
 import { loadingState } from "./loading-state";
 import { logoCarousel } from "./logo-carousel";
 import { markdown } from "./markdown";
+import { marker } from "./marker";
 import { maskText } from "./mask-text";
 import { megaNavbar } from "./mega-navbar";
 import { message } from "./message";
 import { metisText } from "./metis-text";
 import { mirrorText } from "./mirror-text";
+import { morphText } from "./morph-text";
 import { morphingModal } from "./morphing-modal";
 import { navbar } from "./navbar";
 import { pagination } from "./pagination";
@@ -85,15 +88,19 @@ import { recordsTable } from "./records-table";
 import { reorderList } from "./reorder-list";
 import { responseStream } from "./response-stream";
 import { responsiveDialog } from "./responsive-dialog";
+import { revealText } from "./reveal-text";
 import { ringChart } from "./ring-chart";
 import { rollText } from "./roll-text";
+import { rollingDigits } from "./rolling-digits";
 import { sankeyChart } from "./sankey-chart";
 import { scatterChart } from "./scatter-chart";
 import { scrollArea } from "./scroll-area";
+import { scrollProgress } from "./scroll-progress";
 import { scrollReveal } from "./scroll-reveal";
 import { scrubField } from "./scrub-field";
 import { select } from "./select";
 import { sheet } from "./sheet";
+import { shimmerText } from "./shimmer-text";
 import { shortcut } from "./shortcut";
 import { showMore } from "./show-more";
 import { sidebarNav } from "./sidebar-nav";
@@ -115,6 +122,8 @@ import { taskSteps } from "./task-steps";
 import { textBorderAnimation } from "./text-border-animation";
 import { textExplodeIMessage } from "./text-explode-imessage";
 import { textFlip } from "./text-flip";
+import { textInertia } from "./text-inertia";
+import { textLoop } from "./text-loop";
 import { textTransition } from "./text-transition";
 import { textarea } from "./textarea";
 import { themeToggle } from "./theme-toggle";
@@ -126,10 +135,12 @@ import { toggleGroup } from "./toggle-group";
 import { tool } from "./tool";
 import { toolChips } from "./tool-chips";
 import { tooltip } from "./tooltip";
+import { typewriter } from "./typewriter";
 import { typingText } from "./typing-text";
 import { typography } from "./typography";
 import { underlineHoverText } from "./underline-hover-text";
 import { waveReveal } from "./wave-reveal";
+import { weekCalendar } from "./week-calendar";
 
 export const specs: ComponentSpec[] = [
 	accordion,
@@ -265,6 +276,17 @@ export const specs: ComponentSpec[] = [
 	chartBrush,
 	statCard,
 	statCardMap,
+	diaText,
+	morphText,
+	revealText,
+	scrollProgress,
+	shimmerText,
+	textInertia,
+	textLoop,
+	typewriter,
+	weekCalendar,
+	rollingDigits,
+	marker,
 ];
 
 export function getSpec(slug: string): ComponentSpec | undefined {

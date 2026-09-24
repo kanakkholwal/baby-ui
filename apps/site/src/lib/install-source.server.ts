@@ -9,7 +9,7 @@ export async function installSource(
 	framework: Framework,
 ): Promise<InstallSource> {
 	const files = await Promise.all(
-		sourceFiles(slug, framework).map(async (file) => {
+		(await sourceFiles(slug, framework)).map(async (file) => {
 			const tsLang = langFor(file.path);
 			const jsLang = file.jsPath ? langFor(file.jsPath) : tsLang;
 			return {
@@ -22,6 +22,6 @@ export async function installSource(
 			};
 		}),
 	);
-	const css = componentCss(slug, framework);
+	const css = await componentCss(slug, framework);
 	return { files, css: css ? { code: css, html: await highlight(css, "css") } : null };
 }

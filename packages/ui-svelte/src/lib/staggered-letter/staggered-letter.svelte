@@ -33,7 +33,7 @@ const travel = $derived(direction === "up" ? "150px" : "-150px");
 					class="text-transition-unit"
 					style="--tt-duration: {durationMs}ms; --tt-delay: {index * delayMs}ms; --tt-from-opacity: 0; --tt-from-y: {travel};"
 				>
-					{letter === " " ? " " : letter}
+					{letter === " " ? "\u00a0" : letter}
 				</div>
 			{/each}
 		{/key}

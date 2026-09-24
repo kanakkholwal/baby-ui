@@ -10,10 +10,10 @@ export const entries: EntryGenerator = () =>
 		.filter((spec) => spec.category !== "charts")
 		.map((spec) => ({ category: spec.category, slug: spec.slug }));
 
-export const GET: RequestHandler = ({ params }) => {
+export const GET: RequestHandler = async ({ params }) => {
 	const spec = findSpec(params.category, params.slug);
 	if (!spec) throw error(404);
-	return new Response(componentMarkdown(spec), {
+	return new Response(await componentMarkdown(spec), {
 		headers: { "content-type": "text/markdown; charset=utf-8" },
 	});
 };

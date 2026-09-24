@@ -7,6 +7,7 @@ import IconArrowLeft from "@tabler/icons-svelte/icons/arrow-left";
 import IconArrowRight from "@tabler/icons-svelte/icons/arrow-right";
 import IconChevronRight from "@tabler/icons-svelte/icons/chevron-right";
 import IconList from "@tabler/icons-svelte/icons/list";
+import { page } from "$app/state";
 import CodeBlock from "$lib/components/code-block.svelte";
 import ComponentCard from "$lib/components/component-card.svelte";
 import ControlsPanel from "$lib/components/controls-panel.svelte";
@@ -17,6 +18,7 @@ import PageMenu from "$lib/components/page-menu.svelte";
 import PreviewToolbar from "$lib/components/preview-toolbar.svelte";
 import PropsRail from "$lib/components/props-rail.svelte";
 import PropsTable from "$lib/components/props-table.svelte";
+import Seo from "$lib/components/seo.svelte";
 import Tabs from "$lib/components/tabs.svelte";
 import { prefs } from "$lib/preferences.svelte";
 import {
@@ -26,6 +28,7 @@ import {
 	defaultProps,
 	specHref,
 } from "$lib/registry";
+import { absoluteUrl } from "$lib/seo";
 import { installSourceUrl } from "$lib/source";
 import type { PageProps } from "./$types";
 
@@ -86,11 +89,37 @@ const outline = $derived(
 const usage = $derived(
 	dialect === "js" && port?.usage?.js ? port.usage.js : (port?.usage?.ts ?? null),
 );
+const breadcrumbJsonLd = $derived(
+	JSON.stringify({
+		"@context": "https://schema.org",
+		"@type": "BreadcrumbList",
+		itemListElement: [
+			{
+				"@type": "ListItem",
+				position: 1,
+				name: CATEGORY_LABEL[data.spec.category],
+				item: absoluteUrl(page.url.origin, categoryHref(data.spec.category)),
+			},
+			{
+				"@type": "ListItem",
+				position: 2,
+				name: data.spec.name,
+				item: absoluteUrl(page.url.origin, specHref(data.spec)),
+			},
+		],
+	}),
+);
 </script>
 
+<Seo
+	title={data.spec.name}
+	description={data.spec.description}
+	tag={CATEGORY_LABEL[data.spec.category]}
+	keywords={data.spec.keywords}
+	noindex={data.spec.status === "alpha" || data.spec.status === "experimental"}
+/>
 <svelte:head>
-	<title>{data.spec.name} · Baby UI</title>
-	<meta name="description" content={data.spec.description} />
+	{@html `<script type="application/ld+json">${breadcrumbJsonLd}</script>`}
 </svelte:head>
 
 <div class="min-w-0 py-8">

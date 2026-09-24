@@ -1,57 +1,86 @@
 <script lang="ts">
 import { cn } from "../lib/cn";
-import { type TextFlipSize, textFlip } from "./variants";
+import { flipStep, type TextFlipSize, textFlip } from "./variants";
 
 let {
 	label,
 	words,
+	index: indexProp,
+	defaultIndex = 0,
+	onIndexChange,
 	intervalMs = 2000,
 	size = "lg",
-	class: classProp,
+	class: className,
 }: {
+	/** Fixed leading label, e.g. "Coding is". */
 	label: string;
+	/** Words that cycle after the label, looping back to the first. */
 	words: string[];
+	/** Controlled: which word is showing. Omit to let the component flip on its own. */
+	index?: number;
+	defaultIndex?: number;
+	onIndexChange?: (index: number) => void;
+	/** Time each word holds before flipping to the next. Only runs while uncontrolled. */
 	intervalMs?: number;
 	size?: TextFlipSize;
 	class?: string;
 } = $props();
 
-let step = $state(0);
-let stackEl: HTMLDivElement | undefined;
-const extended = $derived([...words, words[0]]);
-const classes = $derived(textFlip({ size }));
+type View = { index: number; step: number; snap: boolean };
+
+const count = $derived(words.length);
+// svelte-ignore state_referenced_locally -- one-time seed, like React's useState(initialValue)
+let internalIndex = $state(defaultIndex);
+const index = $derived(
+	count > 0 ? (((indexProp ?? internalIndex) % count) + count) % count : 0,
+);
+// svelte-ignore state_referenced_locally -- seeded once; later changes flow through the effect
+let view = $state<View>({ index, step: index, snap: false });
+
+$effect.pre(() => {
+	if (view.index !== index) {
+		view = { index, step: flipStep(view.index, index, count), snap: false };
+	}
+});
 
 $effect(() => {
-	if (words.length <= 1) return;
+	if (indexProp !== undefined || count <= 1) return;
 	const id = setInterval(() => {
-		step += 1;
+		const next = (index + 1) % count;
+		internalIndex = next;
+		onIndexChange?.(next);
 	}, intervalMs);
 	return () => clearInterval(id);
 });
 
 $effect(() => {
-	const el = stackEl;
-	if (!el || step !== words.length) return;
-	function snapBack() {
-		if (!el) return;
-		el.style.transitionDuration = "0s";
-		step = 0;
-		requestAnimationFrame(() => {
-			el.style.transitionDuration = "";
+	if (!view.snap) return;
+	let frame = requestAnimationFrame(() => {
+		frame = requestAnimationFrame(() => {
+			view = { ...view, snap: false };
 		});
-	}
-	el.addEventListener("transitionend", snapBack, { once: true });
-	return () => el.removeEventListener("transitionend", snapBack);
+	});
+	return () => cancelAnimationFrame(frame);
 });
+
+const styles = $derived(textFlip({ size }));
 </script>
 
-<div data-slot="text-flip" class={cn(classes.root(), classProp)}>
-	<span class={classes.label()}>{label}</span>
-	<span class={classes.window()}>
-		<div bind:this={stackEl} class="text-flip-stack" style="--flip-step: {step}">
-			{#each extended as text, index (index)}
-				<span class={classes.word()}>{text}</span>
+<div data-slot="text-flip" class={cn(styles.root(), className)}>
+	<span class={styles.label()}>{label}</span>
+	<span class={styles.window()} aria-hidden="true">
+		<span
+			class={styles.stack()}
+			data-snap={view.snap ? "" : undefined}
+			style:--flip-step={view.step}
+			ontransitionend={() => {
+				if (view.step === count) view = { ...view, step: 0, snap: true };
+			}}
+		>
+			{#each [...words, words[0]] as text, i (i)}
+				<span class={styles.word()}>{text}</span>
 			{/each}
-		</div>
+		</span>
 	</span>
+	<span class={styles.srOnly()}>{words[index]}</span>
 </div>

@@ -24,7 +24,7 @@ export const load: PageServerLoad = async ({ params }) => {
 
 	const ports = await Promise.all(
 		FRAMEWORKS.filter((f) => spec.impl[f]).map(async (framework: Framework) => {
-			const snippet = usageSnippet(spec.slug, framework);
+			const snippet = await usageSnippet(spec.slug, framework);
 			const usage = snippet
 				? {
 						path: snippet.path,

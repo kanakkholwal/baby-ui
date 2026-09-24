@@ -40,12 +40,7 @@ export const textBorderAnimation = defineComponent({
 		],
 	},
 	a11y: { notes: ["The bar is decorative; the label carries the real text."] },
-	licenseOrigin: {
-		source: "animata",
-		url: "https://animata.design",
-		license: "MIT",
-		copyright: "Copyright (c) Animata",
-	},
+
 	impl: {
 		react: {
 			entry: "TextBorderAnimation",

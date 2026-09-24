@@ -1,7 +1,7 @@
 import type { Framework } from "@baby-ui/registry-schema";
+import { mode } from "mode-watcher";
 import { persisted } from "./persisted-state.svelte";
 
-export type Appearance = "light" | "dark" | "system";
 export type Dialect = "ts" | "js";
 export type PackageManager = "bun" | "npm" | "pnpm" | "yarn";
 
@@ -96,7 +96,6 @@ const THEME_KEY = "baby-ui:theme";
 type Stored = {
 	framework: Framework;
 	dialect: Dialect;
-	appearance: Appearance;
 	pm: PackageManager;
 };
 
@@ -104,7 +103,6 @@ const DEFAULT_STORED: Stored = {
 	framework: "svelte",
 	dialect: "ts",
 	pm: "bun",
-	appearance: "dark",
 };
 
 class Preferences {
@@ -122,23 +120,15 @@ class Preferences {
 	get pm() {
 		return this.#stored.current.pm;
 	}
-	get appearance() {
-		return this.#stored.current.appearance;
-	}
 	get theme() {
 		return this.#theme.current;
 	}
 
-	/** Applies `appearance`/`theme` to the DOM. Call from an `$effect` in the
-	 * root layout so it reruns on every change, local or cross-tab. */
+	/** Applies the brand ramp for the current mode-watcher mode and `theme`.
+	 * Call from an `$effect` in the root layout so it reruns on any change. */
 	apply() {
 		const root = document.documentElement;
-		const dark =
-			this.appearance === "system"
-				? matchMedia("(prefers-color-scheme: dark)").matches
-				: this.appearance === "dark";
-		root.classList.toggle("dark", dark);
-		root.style.colorScheme = dark ? "dark" : "light";
+		const dark = mode.current !== "light";
 
 		const entry = THEMES.find((t) => t.id === this.theme) ?? THEMES[0];
 		const ramp = "light" in entry ? (dark ? entry.dark : entry.light) : undefined;

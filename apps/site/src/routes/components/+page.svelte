@@ -1,16 +1,17 @@
 <script lang="ts">
 import { specs } from "@baby-ui/registry-schema/components";
 import ComponentCard from "$lib/components/component-card.svelte";
+import Seo from "$lib/components/seo.svelte";
 import { CATEGORY_LABEL } from "$lib/registry";
 import type { PageProps } from "./$types";
 
 let { data }: PageProps = $props();
 </script>
 
-<svelte:head>
-	<title>Components· Baby UI</title>
-	<meta name="description" content="Every component in the registry, in React and Svelte." />
-</svelte:head>
+<Seo
+	title="Components"
+	description="Every component in the registry, in React and Svelte: {specs.filter((s) => s.category !== 'charts').length} components built from one spec."
+/>
 
 <div class="min-w-0 py-8 xl:col-span-2">
 	<h1 class="font-semibold text-3xl text-foreground tracking-tight">Components</h1>

@@ -60,12 +60,7 @@ export const jumpingText = defineComponent({
 			"A single `sr-only` copy carries the real text; the animated units are visual only.",
 		],
 	},
-	licenseOrigin: {
-		source: "animata",
-		url: "https://animata.design",
-		license: "MIT",
-		copyright: "Copyright (c) Animata",
-	},
+
 	impl: {
 		react: {
 			entry: "JumpingText",

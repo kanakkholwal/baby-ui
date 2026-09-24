@@ -69,6 +69,7 @@ export async function cssFor(sources: string[]): Promise<Css | undefined> {
 				if (child.type !== "rule" || child.selector === ":root" || !used(child.selector))
 					return;
 				inner[child.selector.replace(/\s+/g, " ")] = decls(child);
+				noteAnimations(child);
 			});
 			if (Object.keys(inner).length) out[`@media ${node.params}`] = inner;
 		}

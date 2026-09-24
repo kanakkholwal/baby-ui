@@ -45,12 +45,7 @@ export const splitText = defineComponent({
 			"The split letters are `aria-hidden`; a single `sr-only` copy carries the real text.",
 		],
 	},
-	licenseOrigin: {
-		source: "animata",
-		url: "https://animata.design",
-		license: "MIT",
-		copyright: "Copyright (c) Animata",
-	},
+
 	impl: {
 		react: {
 			entry: "SplitText",

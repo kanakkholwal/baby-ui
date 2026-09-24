@@ -5,12 +5,18 @@ import IconList from "@tabler/icons-svelte/icons/list";
 import MobileNavDrawer from "$lib/components/mobile-nav-drawer.svelte";
 import PageMenu from "$lib/components/page-menu.svelte";
 import PropsRail from "$lib/components/props-rail.svelte";
+import Seo from "$lib/components/seo.svelte";
 import type { PageProps } from "./$types";
 
 let { data }: PageProps = $props();
 </script>
 
-<svelte:head><title>{data.page.data?.title ?? "Docs"} · Baby UI</title></svelte:head>
+<Seo
+	title={data.page.data?.title ?? "Docs"}
+	description={data.page.data?.description ?? "Baby UI documentation."}
+	keywords={data.page.data?.tags}
+	noindex={data.page.data?.draft === true}
+/>
 
 {#snippet railContent()}
 	<PropsRail slug={data.slug} outline={data.headings} />

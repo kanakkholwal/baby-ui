@@ -22,12 +22,32 @@ export const textFlip = defineComponent({
 			name: "words",
 			type: "string[]",
 			description: "Words that cycle after the label, looping back to the first.",
+			required: true,
+			control: { kind: "none" },
+		},
+		{
+			name: "index",
+			type: "number",
+			description: "Controlled: which word is showing. Omit to let the component flip.",
+			control: { kind: "none" },
+		},
+		{
+			name: "defaultIndex",
+			type: "number",
+			description: "Uncontrolled starting index.",
+			default: 0,
+			control: { kind: "number", min: 0, max: 3, step: 1 },
+		},
+		{
+			name: "onIndexChange",
+			type: "(index: number) => void",
+			description: "Fired every time the shown word changes.",
 			control: { kind: "none" },
 		},
 		{
 			name: "intervalMs",
 			type: "number",
-			description: "Time each word holds before flipping to the next.",
+			description: "Time each word holds before flipping. Only runs while uncontrolled.",
 			default: 2000,
 			control: { kind: "number", min: 500, max: 5000, step: 100 },
 		},
@@ -43,20 +63,14 @@ export const textFlip = defineComponent({
 		springs: [],
 		reducedMotion: "Words still switch, just without the slide.",
 		behaviour: [
-			"The word stack steps up by one line per interval; the first word is duplicated at the end so the loop-back reads as continuous, then snaps invisibly back to the real first word once the transition finishes.",
+			"The stack slides up one line per word on --duration-overlay and --ease-out.",
+			"Wrapping rolls onto a copy of the first word, then snaps back to the real one with the transition off.",
 		],
 	},
 	a11y: {
-		notes: [
-			"The cycling word stack updates live in the DOM; treat as decorative copy, not content a screen reader user needs to catch mid-cycle.",
-		],
+		notes: ["The moving stack is hidden; an sr-only span carries the current word."],
 	},
-	licenseOrigin: {
-		source: "animata",
-		url: "https://animata.design",
-		license: "MIT",
-		copyright: "Copyright (c) Animata",
-	},
+
 	impl: {
 		react: {
 			entry: "TextFlip",

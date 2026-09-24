@@ -69,12 +69,7 @@ export const counter = defineComponent({
 			"Changing `value` re-counts from wherever the display currently sits.",
 		],
 	},
-	licenseOrigin: {
-		source: "animata",
-		url: "https://animata.design",
-		license: "MIT",
-		copyright: "Copyright (c) Animata",
-	},
+
 	impl: {
 		react: {
 			entry: "Counter",

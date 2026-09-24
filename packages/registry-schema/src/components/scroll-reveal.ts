@@ -53,12 +53,7 @@ export const scrollReveal = defineComponent({
 			"Every word is real, always-present text (not `aria-hidden`); only its opacity/blur changes, so assistive tech reads the full sentence regardless of scroll position.",
 		],
 	},
-	licenseOrigin: {
-		source: "animata",
-		url: "https://animata.design",
-		license: "MIT",
-		copyright: "Copyright (c) Animata",
-	},
+
 	impl: {
 		react: {
 			entry: "ScrollReveal",

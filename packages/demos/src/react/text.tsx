@@ -60,6 +60,7 @@ import {
 	type WaveRevealDirection,
 	type WaveRevealMode,
 } from "@baby-ui/react";
+import { useEffect, useState } from "react";
 
 type Props = Record<string, unknown>;
 
@@ -285,6 +286,7 @@ export function TextFlipDemo({ props }: { props: Props }) {
 		<TextFlip
 			label={(props.label as string) || "Coding is"}
 			words={FLIP_WORDS}
+			defaultIndex={Number(props.defaultIndex ?? 0)}
 			intervalMs={Number(props.intervalMs ?? 2000)}
 			size={(props.size as TextFlipSize) ?? "lg"}
 		/>
@@ -377,10 +379,17 @@ export function CounterDemo({ props }: { props: Props }) {
 	);
 }
 
+const TICKER_VALUES = ["1,024", "1,387", "2,941", "2,108", "9,999", "10,240"];
+
 export function TickerDemo({ props }: { props: Props }) {
+	const [step, setStep] = useState(0);
+	useEffect(() => {
+		const id = setInterval(() => setStep((s) => (s + 1) % TICKER_VALUES.length), 1800);
+		return () => clearInterval(id);
+	}, []);
 	return (
 		<Ticker
-			value={(props.value as string) || "1,024"}
+			value={(props.value as string) || (TICKER_VALUES[step] ?? "")}
 			durationMs={Number(props.durationMs ?? 500)}
 			size={(props.size as TickerSize) ?? "md"}
 		/>

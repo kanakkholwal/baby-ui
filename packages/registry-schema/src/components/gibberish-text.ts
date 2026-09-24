@@ -46,12 +46,7 @@ export const gibberishText = defineComponent({
 			"The scrambling happens per-character in the DOM text itself, so a screen reader announcing mid-scramble would read garbage: this component suits decorative headings, not primary content a reader depends on before it settles.",
 		],
 	},
-	licenseOrigin: {
-		source: "animata",
-		url: "https://animata.design",
-		license: "MIT",
-		copyright: "Copyright (c) Animata",
-	},
+
 	impl: {
 		react: {
 			entry: "GibberishText",
