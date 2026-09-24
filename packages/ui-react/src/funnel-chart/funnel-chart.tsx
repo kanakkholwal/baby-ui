@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useId, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useChart } from "../chart/chart";
 import type { ActivePoint, Datum } from "../chart/core";
 import { ActivePointProvider, ChartFrame } from "../chart/frame";
@@ -19,9 +19,11 @@ import {
 	stageColor,
 } from "./geometry";
 import {
+	FUNNEL_PATTERN_TILE,
 	type FunnelEdges,
 	type FunnelLabelLayout,
 	type FunnelOrientation,
+	type FunnelPattern,
 	funnelChart,
 	funnelEdges,
 } from "./variants";
@@ -33,6 +35,8 @@ export interface FunnelChartProps {
 	orientation?: FunnelOrientation;
 	edges?: FunnelEdges;
 	labelLayout?: FunnelLabelLayout;
+	/** Texture over each stage's innermost ring, a non-colour cue. */
+	pattern?: FunnelPattern;
 	/** Halo rings per stage; the innermost is the stage's solid colour. */
 	layers?: number;
 	/** Pixels between stages. */
@@ -57,6 +61,7 @@ export function FunnelChart({
 	orientation = "horizontal",
 	edges = "curved",
 	labelLayout = "spread",
+	pattern = "none",
 	layers = 3,
 	gap = 4,
 	grid = false,
@@ -121,6 +126,7 @@ export function FunnelChart({
 					orientation={orientation}
 					edges={edges}
 					labelLayout={labelLayout}
+					pattern={pattern}
 					layers={layers}
 					gap={gap}
 					grid={grid}
@@ -143,6 +149,7 @@ function FunnelPlot({
 	orientation,
 	edges,
 	labelLayout,
+	pattern,
 	layers,
 	gap,
 	grid,
@@ -159,6 +166,7 @@ function FunnelPlot({
 	orientation: FunnelOrientation;
 	edges: FunnelEdges;
 	labelLayout: FunnelLabelLayout;
+	pattern: FunnelPattern;
 	layers: number;
 	gap: number;
 	grid: boolean;
@@ -187,7 +195,8 @@ function FunnelPlot({
 			),
 		[data, along, across, gap, layers, edges, vertical],
 	);
-	const styles = funnelChart({ orientation, labelLayout });
+	const styles = funnelChart({ orientation, labelLayout, pattern });
+	const uid = useId().replace(/:/g, "");
 
 	const n = data.length;
 	const enterTotal = (n - 1) * STAGE_STAGGER + LABEL_DELAY + CHART_DURATION.enter;
@@ -293,11 +302,32 @@ function FunnelPlot({
 										: `0 ${frame.height / 2}px`,
 								}}
 							>
+								{pattern !== "none" ? (
+									<defs>
+										<pattern
+											id={`${uid}-pattern-${cell.index}`}
+											width={8}
+											height={8}
+											patternUnits="userSpaceOnUse"
+										>
+											<rect
+												width={8}
+												height={8}
+												fill={stageColor(cell.index, n, cell.stage)}
+											/>
+											<path d={FUNNEL_PATTERN_TILE[pattern]} className={styles.mark()} />
+										</pattern>
+									</defs>
+								) : null}
 								{cell.rings.map((ring, i) => (
 									<Ring
 										key={i}
 										ring={ring}
-										color={stageColor(cell.index, n, cell.stage)}
+										color={
+											pattern !== "none" && i === cell.rings.length - 1
+												? `url(#${uid}-pattern-${cell.index})`
+												: stageColor(cell.index, n, cell.stage)
+										}
 										active={activeIndex === cell.index}
 										instant={instant}
 										vertical={vertical}

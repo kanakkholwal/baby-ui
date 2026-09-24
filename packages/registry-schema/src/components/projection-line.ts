@@ -65,7 +65,7 @@ export const projectionLine = defineComponent({
 			"Dash pattern, not colour alone, separates the forecast from the series.",
 		],
 	},
-	
+
 	impl: {
 		react: {
 			entry: "ProjectionLine",

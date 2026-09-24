@@ -44,6 +44,16 @@ export interface TooltipRow {
 	value: number | null;
 }
 
+/** Inclusive index range picked by dragging or Shift+Arrow; `start <= end` always. */
+export interface ChartSelection {
+	start: number;
+	end: number;
+}
+
+export function selectionBetween(a: number, b: number): ChartSelection {
+	return a <= b ? { start: a, end: b } : { start: b, end: a };
+}
+
 export type ChartStatus = "loading" | "ready";
 
 /** bklit's lifecycle: the series conceals, the grid retweens, then the series reveals. */

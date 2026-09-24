@@ -91,7 +91,7 @@ const base = $derived(chart.value(0));
 		>
 			{#if chart.variant === "squares"}
 				<BarSquares {d} {vertical} {color} />
-			{:else if chart.variant === "depth" && vertical && d.target.value >= 0}
+			{:else if chart.variant === "depth"}
 				<BarDepth
 					{d}
 					{color}

@@ -1,4 +1,5 @@
 import type { Framework } from "@baby-ui/registry-schema";
+import { persisted } from "./persisted-state.svelte";
 
 export type Appearance = "light" | "dark" | "system";
 export type Dialect = "ts" | "js";
@@ -99,56 +100,37 @@ type Stored = {
 	pm: PackageManager;
 };
 
-function read(): Partial<Stored> {
-	try {
-		return JSON.parse(localStorage.getItem(KEY) ?? "{}") as Partial<Stored>;
-	} catch {
-		return {};
-	}
-}
+const DEFAULT_STORED: Stored = {
+	framework: "svelte",
+	dialect: "ts",
+	pm: "bun",
+	appearance: "dark",
+};
 
 class Preferences {
-	framework = $state<Framework>("svelte");
-	dialect = $state<Dialect>("ts");
-	pm = $state<PackageManager>("bun");
-	appearance = $state<Appearance>("dark");
-	theme = $state<ThemeId>("default");
+	#stored = persisted<Stored>(KEY, DEFAULT_STORED);
+	// The theme is a try-it-out control, so it lasts the tab and not longer.
+	#theme = persisted<ThemeId>(THEME_KEY, "default", { storage: "session" });
 	open = $state(false);
 
-	/** Called once from the root layout, where `document` exists. */
-	hydrate() {
-		const saved = read();
-		if (saved.framework) this.framework = saved.framework;
-		if (saved.dialect) this.dialect = saved.dialect;
-		if (saved.pm) this.pm = saved.pm;
-		if (saved.appearance) this.appearance = saved.appearance;
-		try {
-			const session = sessionStorage.getItem(THEME_KEY) as ThemeId | null;
-			if (session && THEMES.some((t) => t.id === session)) this.theme = session;
-		} catch {
-			// Storage can be blocked; the default theme still applies.
-		}
-		this.apply();
+	get framework() {
+		return this.#stored.current.framework;
+	}
+	get dialect() {
+		return this.#stored.current.dialect;
+	}
+	get pm() {
+		return this.#stored.current.pm;
+	}
+	get appearance() {
+		return this.#stored.current.appearance;
+	}
+	get theme() {
+		return this.#theme.current;
 	}
 
-	save() {
-		try {
-			localStorage.setItem(
-				KEY,
-				JSON.stringify({
-					framework: this.framework,
-					dialect: this.dialect,
-					pm: this.pm,
-					appearance: this.appearance,
-				}),
-			);
-			// The theme is a try-it-out control, so it lasts the tab and not longer.
-			sessionStorage.setItem(THEME_KEY, this.theme);
-		} catch {
-			// A blocked storage API should not stop the preference taking effect.
-		}
-	}
-
+	/** Applies `appearance`/`theme` to the DOM. Call from an `$effect` in the
+	 * root layout so it reruns on every change, local or cross-tab. */
 	apply() {
 		const root = document.documentElement;
 		const dark =
@@ -176,9 +158,11 @@ class Preferences {
 		key: K,
 		value: K extends keyof Stored ? Stored[K] : ThemeId,
 	) {
-		this[key] = value as never;
-		this.apply();
-		this.save();
+		if (key === "theme") {
+			this.#theme.current = value as ThemeId;
+		} else {
+			this.#stored.current = { ...this.#stored.current, [key]: value };
+		}
 	}
 }
 

@@ -1,8 +1,8 @@
-/** Deterministic sample categories for bar chart demos: eight months of revenue and profit. */
+/** Deterministic sample categories for bar chart demos: eight months of revenue and profit, March a loss. */
 export const MONTHLY = [
 	{ name: "Jan", revenue: 12400, profit: 4500 },
 	{ name: "Feb", revenue: 15100, profit: 5200 },
-	{ name: "Mar", revenue: 13800, profit: 3900 },
+	{ name: "Mar", revenue: 13800, profit: -2100 },
 	{ name: "Apr", revenue: 17900, profit: 6800 },
 	{ name: "May", revenue: 16200, profit: 5600 },
 	{ name: "Jun", revenue: 20400, profit: 7900 },

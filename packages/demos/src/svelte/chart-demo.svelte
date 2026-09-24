@@ -11,6 +11,7 @@ import {
 	type ChartLegendAlign,
 	ChartLegendContent,
 	type ChartReferenceTone,
+	type ChartSelectionEdge,
 	type ChartStatus,
 	ChartTooltip,
 	ChartTooltipContent,
@@ -18,6 +19,7 @@ import {
 	Line,
 	LineChart,
 	ReferenceArea,
+	SelectionArea,
 	XAxis,
 	YAxis,
 } from "@baby-ui/svelte";
@@ -50,6 +52,7 @@ const BASE_PARTS = ["Grid", "Axes", "Tooltip", "Legend"];
 			{/if}
 			<YAxis />
 			<XAxis />
+			<SelectionArea edge={(props.edge as ChartSelectionEdge) ?? "dashed"} />
 			<Line dataKey="desktop" />
 			<Line dataKey="mobile" />
 			<ChartTooltip datePill={props.datePill !== false}>

@@ -4,6 +4,7 @@ import type {
 	ActivePoint,
 	ChartConfigShape,
 	ChartPhase,
+	ChartSelection,
 	Datum,
 	Formatters,
 	Margin,
@@ -53,6 +54,10 @@ export interface PlotContextValue extends CartesianContextValue {
 	readonly labels: string[];
 	readonly series: SeriesConfig[];
 	register: (series: SeriesConfig) => () => void;
+	/** Only time-series roots support selection; other roots leave these unset. */
+	readonly selection?: ChartSelection | null;
+	/** Plot-space x of the selection edges, when one exists. */
+	readonly selectionX?: [number, number] | null;
 }
 
 export interface ActiveContextValue {

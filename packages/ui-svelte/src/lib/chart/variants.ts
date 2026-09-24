@@ -149,3 +149,21 @@ export const chartBackground = tv({
 export type ChartBackgroundVariant = NonNullable<
 	VariantProps<typeof chartBackground>["variant"]
 >;
+
+export const chartSelection = tv({
+	slots: {
+		root: "pointer-events-none transition-opacity duration-150 ease-[cubic-bezier(0,0,0.58,1)]",
+		area: "fill-foreground/[0.06]",
+		edge: "fill-none stroke-muted-foreground",
+	},
+	variants: {
+		edge: {
+			dashed: { edge: "[stroke-dasharray:4_4]" },
+			solid: { edge: "" },
+			none: { edge: "hidden" },
+		},
+	},
+	defaultVariants: { edge: "dashed" },
+});
+
+export type ChartSelectionEdge = NonNullable<VariantProps<typeof chartSelection>["edge"]>;

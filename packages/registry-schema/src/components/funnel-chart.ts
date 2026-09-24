@@ -37,6 +37,14 @@ export const funnelChart = defineComponent({
 			control: { kind: "select", options: ["spread", "grouped"] },
 		},
 		{
+			name: "pattern",
+			type: '"none" | "lines" | "dots" | "grid"',
+			description:
+				"Texture over each stage's solid ring, so stages never differ by colour alone.",
+			default: "none",
+			control: { kind: "select", options: ["none", "lines", "dots", "grid"] },
+		},
+		{
 			name: "layers",
 			type: "number",
 			description: "Halo rings per stage; the innermost is solid.",
@@ -104,7 +112,7 @@ export const funnelChart = defineComponent({
 			"The hidden table lists each stage with its share of the first and of the previous stage.",
 		],
 	},
-	
+
 	impl: {
 		react: {
 			entry: "FunnelChart",

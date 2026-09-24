@@ -99,7 +99,7 @@ export const gaugeChart = defineComponent({
 			"The value is printed as text, so the reading never rests on the notches alone.",
 		],
 	},
-	
+
 	impl: {
 		react: {
 			entry: "GaugeChart",

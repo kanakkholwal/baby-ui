@@ -31,8 +31,8 @@ import {
 	nearestIndex,
 	nextPhase,
 	resolveDomain,
-	selectionBetween,
 	type SeriesConfig,
+	selectionBetween,
 	shouldTweenDomain,
 	summarize,
 	type TooltipRow,
@@ -383,10 +383,10 @@ export function TimeSeriesChart({
 					})
 					.join(", ")}`
 			: activeDatum && instant
-			? `${title(activeDatum)}: ${rows(activeDatum)
-					.map((r) => `${r.label} ${r.value === null ? "" : format.number(r.value)}`)
-					.join(", ")}`
-			: "";
+				? `${title(activeDatum)}: ${rows(activeDatum)
+						.map((r) => `${r.label} ${r.value === null ? "" : format.number(r.value)}`)
+						.join(", ")}`
+				: "";
 
 	return (
 		<ChartFrame

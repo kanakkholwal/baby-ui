@@ -107,7 +107,7 @@ export const choroplethChart = defineComponent({
 			"The data table lists every region with a value; the summary names the highest and lowest.",
 		],
 	},
-	
+
 	impl: {
 		react: {
 			entry: "ChoroplethChart",

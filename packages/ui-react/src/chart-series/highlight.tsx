@@ -30,7 +30,7 @@ export interface HighlightBandProps {
 
 /** Brightens the stroke one datum either side of the active point; the band rides a 180/28 spring. */
 export function HighlightBand({ d, stroke, strokeWidth, className }: HighlightBandProps) {
-	const { data, x, innerHeight, phase } = usePlot();
+	const { data, x, innerHeight, phase, selectionX } = usePlot();
 	const { active, instant } = useActivePoint();
 	const id = `${useId().replace(/:/g, "")}-highlight`;
 	const rectRef = useRef<SVGRectElement>(null);
@@ -40,8 +40,15 @@ export function HighlightBand({ d, stroke, strokeWidth, className }: HighlightBa
 	const width = useDomSpring(CHART_SPRING.highlight, (v) =>
 		rectRef.current?.setAttribute("width", String(Math.max(0, v))),
 	);
+	// A selected range takes over the band, as bklit does while dragging.
 	const bounds =
-		active && phase === "ready" ? highlightBounds(data, active.index, x) : null;
+		phase !== "ready"
+			? null
+			: selectionX
+				? { x: selectionX[0], width: selectionX[1] - selectionX[0] }
+				: active
+					? highlightBounds(data, active.index, x)
+					: null;
 	const shown = useRef(false);
 	const bx = bounds?.x ?? null;
 	const bw = bounds?.width ?? 0;

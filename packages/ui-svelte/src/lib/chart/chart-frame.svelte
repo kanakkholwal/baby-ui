@@ -15,6 +15,7 @@ let {
 	interactive,
 	announcement,
 	phase,
+	onKey,
 	class: className,
 	children,
 }: {
@@ -30,6 +31,8 @@ let {
 	/** Read out after keyboard moves only; pointer moves stay quiet. */
 	announcement: string;
 	phase?: ChartPhase;
+	/** Runs before the default keys; return true when it handled the event. */
+	onKey?: (event: KeyboardEvent) => boolean;
 	class?: string;
 	children: Snippet<[{ width: number; height: number; el: HTMLDivElement | null }]>;
 } = $props();
@@ -57,6 +60,11 @@ $effect(() => {
 
 function onkeydown(event: KeyboardEvent) {
 	if (!interactive || count === 0) return;
+	if (onKey?.(event)) {
+		event.preventDefault();
+		fromKeyboard = true;
+		return;
+	}
 	const last = count - 1;
 	const step = Math.max(1, Math.ceil(count / 10));
 	const current = activeIndex;

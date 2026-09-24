@@ -24,12 +24,18 @@ let {
 } = $props();
 
 const chart = useBarChart();
+const vertical = $derived(chart.orientation === "vertical");
+const axis = $derived({
+	orientation: chart.orientation,
+	negative: d.target.value < 0,
+	base,
+});
 const faces = $derived(
 	depthFaces(d.rect, {
-		centerX: chart.innerWidth / 2,
+		...axis,
+		center: (vertical ? chart.innerWidth : chart.innerHeight) / 2,
 		step: chart.band.step(),
 		bandwidth: chart.band.bandwidth(),
-		base,
 	}),
 );
 const front = $derived(faces?.front ?? d.rect);
@@ -55,6 +61,6 @@ const front = $derived(faces?.front ?? d.rect);
 {#if faces}
 	<path d={faces.lid} fill={color} class={lid} />
 {/if}
-{#if pulse && front.height > 0}
-	<BarPulse rect={front} />
+{#if pulse && front.height > 0 && front.width > 0}
+	<BarPulse rect={front} {axis} />
 {/if}

@@ -90,7 +90,7 @@ export const sunburstChart = defineComponent({
 			"Keyboard moves announce the full path, value and share of the focus; the hidden table lists every node by path.",
 		],
 	},
-	
+
 	impl: {
 		react: {
 			entry: "SunburstChart",

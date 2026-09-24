@@ -11,6 +11,7 @@ import {
 	EASE_IN_OUT,
 	ENTER_MS,
 	PULSE_MS,
+	pulseRect,
 	type Rect,
 	squareColumn,
 	squareDelay,
@@ -93,7 +94,7 @@ export function Bar({
 					<g key={d.target.key} className={cn(styles.bar(), className)} style={style}>
 						{chart.variant === "squares" ? (
 							<Squares d={d} vertical={vertical} color={color} />
-						) : chart.variant === "depth" && vertical && d.target.value >= 0 ? (
+						) : chart.variant === "depth" ? (
 							<Depth
 								d={d}
 								color={color}
@@ -210,11 +211,13 @@ function Depth({
 	lid: string;
 }) {
 	const chart = useBarChart();
+	const vertical = chart.orientation === "vertical";
+	const axis = { orientation: chart.orientation, negative: d.target.value < 0, base };
 	const faces = depthFaces(d.rect, {
-		centerX: chart.innerWidth / 2,
+		...axis,
+		center: (vertical ? chart.innerWidth : chart.innerHeight) / 2,
 		step: chart.band.step(),
 		bandwidth: chart.band.bandwidth(),
-		base,
 	});
 	const front = faces?.front ?? d.rect;
 	return (
@@ -235,18 +238,27 @@ function Depth({
 				fill={glass}
 			/>
 			{faces ? <path d={faces.lid} fill={color} className={lid} /> : null}
-			{pulse && front.height > 0 ? <PulseWave rect={front} /> : null}
+			{pulse && front.height > 0 && front.width > 0 ? (
+				<PulseWave rect={front} axis={axis} />
+			) : null}
 		</>
 	);
 }
 
-/** bklit BarPulse: a white band sweeps bottom to top every 2.4s, ease-in-out, clipped to the bar. */
-function PulseWave({ rect }: { rect: Rect }) {
+/** bklit BarPulse: a white band sweeps base to tip every 2.4s, ease-in-out, clipped to the bar. */
+function PulseWave({
+	rect,
+	axis,
+}: {
+	rect: Rect;
+	axis: Parameters<typeof pulseRect>[1];
+}) {
 	const uid = useId().replace(/:/g, "");
 	const waveRef = useRef<SVGRectElement>(null);
-	const height = Math.max(rect.height * 0.55, 36);
-	const rectRef = useRef(rect);
-	rectRef.current = rect;
+	const latest = useRef({ rect, axis });
+	latest.current = { rect, axis };
+	const start = pulseRect(rect, axis, 0);
+	const vertical = axis.orientation === "vertical";
 	useLayoutEffect(() => {
 		if (prefersReducedMotion()) return;
 		let playback: Playback | null = null;
@@ -255,24 +267,29 @@ function PulseWave({ rect }: { rect: Rect }) {
 				duration: PULSE_MS,
 				ease: EASE_IN_OUT,
 				onUpdate: (p) => {
-					const r = rectRef.current;
-					const start = r.y + r.height;
-					const end = r.y - height;
-					waveRef.current?.setAttribute("y", String(start + (end - start) * p));
+					const wave = pulseRect(latest.current.rect, latest.current.axis, p);
+					waveRef.current?.setAttribute("x", String(wave.x));
+					waveRef.current?.setAttribute("y", String(wave.y));
 				},
 				onComplete: cycle,
 			});
 		};
 		cycle();
 		return () => playback?.stop();
-	}, [height]);
+	}, []);
 	return (
 		<g data-slot="bar-pulse">
 			<defs>
 				<clipPath id={`${uid}-clip`}>
 					<rect x={rect.x} y={rect.y} width={rect.width} height={rect.height} />
 				</clipPath>
-				<linearGradient id={`${uid}-wave`} x1="0" x2="0" y1="0" y2="1">
+				<linearGradient
+					id={`${uid}-wave`}
+					x1="0"
+					y1="0"
+					x2={vertical ? "0" : "1"}
+					y2={vertical ? "1" : "0"}
+				>
 					<stop offset="0%" stopColor="white" stopOpacity={0} />
 					<stop offset="50%" stopColor="white" stopOpacity={0.85} />
 					<stop offset="100%" stopColor="white" stopOpacity={0} />
@@ -281,10 +298,10 @@ function PulseWave({ rect }: { rect: Rect }) {
 			<rect
 				ref={waveRef}
 				clipPath={`url(#${uid}-clip)`}
-				x={rect.x}
-				y={rect.y + rect.height}
-				width={rect.width}
-				height={height}
+				x={start.x}
+				y={start.y}
+				width={start.width}
+				height={start.height}
 				fill={`url(#${uid}-wave)`}
 			/>
 		</g>

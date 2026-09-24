@@ -20,10 +20,12 @@ import { type Snippet, untrack } from "svelte";
 import ChartFrame from "./chart-frame.svelte";
 import { useChart } from "./context";
 import {
+	type ChartSelection,
 	type ChartStatus,
 	type Datum,
 	type Margin,
 	resolveDomain,
+	selectionBetween,
 	summarize,
 	toDate,
 } from "./core";
@@ -44,6 +46,8 @@ let {
 	animate = true,
 	activeIndex = $bindable(null),
 	onActiveIndexChange,
+	selection = $bindable(null),
+	onSelectionChange,
 	roleDescription,
 	class: className,
 	children: content,
@@ -58,6 +62,9 @@ let {
 	margin?: Partial<Margin>;
 	status?: ChartStatus;
 	animate?: boolean;
+	/** Range picked by dragging across the plot or Shift+Arrow. */
+	selection?: ChartSelection | null;
+	onSelectionChange?: (selection: ChartSelection | null) => void;
 	activeIndex?: number | null;
 	onActiveIndexChange?: (index: number | null) => void;
 	roleDescription: string;
@@ -123,6 +130,31 @@ function setActive(index: number | null, fromKeyboard: boolean) {
 	onActiveIndexChange?.(index);
 }
 
+let selectionSpoken = $state(false);
+function setSelection(next: ChartSelection | null, fromKeyboard: boolean) {
+	selectionSpoken = fromKeyboard;
+	selection = next;
+	onSelectionChange?.(next);
+}
+// The fixed end of a keyboard selection; the active index is the moving end.
+let anchor: number | null = null;
+function onKey(event: KeyboardEvent) {
+	if (event.key === "Escape" && selection) {
+		anchor = null;
+		setSelection(null, true);
+		return true;
+	}
+	if (!event.shiftKey || (event.key !== "ArrowLeft" && event.key !== "ArrowRight"))
+		return false;
+	const from = activeIndex ?? 0;
+	if (anchor === null || !selection) anchor = from;
+	const step = event.key === "ArrowRight" ? 1 : -1;
+	const moving = Math.min(data.length - 1, Math.max(0, from + step));
+	setActive(moving, true);
+	setSelection(moving === anchor ? null : selectionBetween(anchor, moving), true);
+	return true;
+}
+
 function seriesLabel(key: string) {
 	const label = chart.config[key]?.label;
 	return typeof label === "string" ? label : key;
@@ -141,8 +173,16 @@ const rows = (datum: Datum) =>
 const activeDatum = $derived(
 	activeIndex !== null && interactive ? data[activeIndex] : undefined,
 );
+const range = $derived(selection ? [data[selection.start], data[selection.end]] : null);
 const announcement = $derived(
-	activeDatum && instant
+	selectionSpoken && range?.[0] && range[1]
+		? `${title(range[0])} to ${title(range[1])}: ${rows(range[0])
+				.map((r, i) => {
+					const to = rows(range[1] as Datum)[i]?.value;
+					return `${r.label} ${r.value === null ? "" : chart.format.number(r.value)} to ${to == null ? "" : chart.format.number(to)}`;
+				})
+				.join(", ")}`
+		: activeDatum && instant
 		? `${title(activeDatum)}: ${rows(activeDatum)
 				.map((r) => `${r.label} ${r.value === null ? "" : chart.format.number(r.value)}`)
 				.join(", ")}`
@@ -179,6 +219,7 @@ const table = $derived({
 	{interactive}
 	{announcement}
 	phase={lifecycle.phase}
+	{onKey}
 	class={className}
 >
 	{#snippet children(frame)}
@@ -202,6 +243,8 @@ const table = $derived({
 			{instant}
 			{interactive}
 			{setActive}
+			{selection}
+			{setSelection}
 			{title}
 			{rows}
 		>

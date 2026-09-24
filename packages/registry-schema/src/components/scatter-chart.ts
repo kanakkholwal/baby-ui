@@ -71,7 +71,7 @@ export const scatterChart = defineComponent({
 			"Every series has its own marker shape, so series never differ by colour alone.",
 		],
 	},
-	
+
 	impl: {
 		react: {
 			entry: "ScatterChart",

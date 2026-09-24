@@ -17,9 +17,11 @@ import {
 	stageColor,
 } from "./geometry";
 import {
+	FUNNEL_PATTERN_TILE,
 	type FunnelEdges,
 	type FunnelLabelLayout,
 	type FunnelOrientation,
+	type FunnelPattern,
 	funnelChart,
 	funnelEdges,
 } from "./variants";
@@ -30,6 +32,7 @@ let {
 	orientation,
 	edges,
 	labelLayout,
+	pattern,
 	layers,
 	gap,
 	grid,
@@ -46,6 +49,7 @@ let {
 	orientation: FunnelOrientation;
 	edges: FunnelEdges;
 	labelLayout: FunnelLabelLayout;
+	pattern: FunnelPattern;
 	layers: number;
 	gap: number;
 	grid: boolean;
@@ -71,7 +75,8 @@ const cells = $derived(
 		vertical,
 	),
 );
-const styles = $derived(funnelChart({ orientation, labelLayout }));
+const styles = $derived(funnelChart({ orientation, labelLayout, pattern }));
+const uid = $props.id();
 const ringClass = $derived(cn(styles.ring(), funnelEdges({ edges })));
 const n = $derived(data.length);
 const signature = $derived(data.map((s) => `${s.label}:${s.value}`).join("|"));
@@ -184,10 +189,25 @@ setActivePoint({
 					: undefined}
 				style:transform-origin={vertical ? `${frame.width / 2}px 0` : `0 ${frame.height / 2}px`}
 			>
+				{#if pattern !== "none"}
+					<defs>
+						<pattern
+							id="{uid}-pattern-{cell.index}"
+							width={8}
+							height={8}
+							patternUnits="userSpaceOnUse"
+						>
+							<rect width={8} height={8} fill={stageColor(cell.index, n, cell.stage)} />
+							<path d={FUNNEL_PATTERN_TILE[pattern]} class={styles.mark()} />
+						</pattern>
+					</defs>
+				{/if}
 				{#each cell.rings as ring, i (i)}
 					<FunnelRingShape
 						{ring}
-						color={stageColor(cell.index, n, cell.stage)}
+						color={pattern !== "none" && i === cell.rings.length - 1
+							? `url(#${uid}-pattern-${cell.index})`
+							: stageColor(cell.index, n, cell.stage)}
 						active={activeIndex === cell.index}
 						{instant}
 						{vertical}

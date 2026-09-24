@@ -1,7 +1,5 @@
 import { defineComponent } from "../index";
 
-
-
 export const chart = defineComponent({
 	slug: "chart",
 	name: "Chart",
@@ -113,6 +111,21 @@ export const chart = defineComponent({
 			control: { kind: "none" },
 		},
 		{
+			name: "selection",
+			type: "{ start: number; end: number } | null",
+			description:
+				"On the chart root: index range dragged with a mouse or pen, or grown with Shift+Arrow. Controlled with onSelectionChange; bindable in Svelte.",
+			control: { kind: "none" },
+		},
+		{
+			name: "edge",
+			type: '"dashed" | "solid" | "none"',
+			description:
+				"SelectionArea: rules at the range edges. Drag across the plot to see it.",
+			default: "dashed",
+			control: { kind: "select", options: ["dashed", "solid", "none"] },
+		},
+		{
 			name: "xDomain",
 			type: "[Date, Date]",
 			description:
@@ -130,6 +143,7 @@ export const chart = defineComponent({
 			"Crosshair and dots follow on a 300/30 spring, the panel on 100/20, and the panel enters at scale 0.85 with a 20px slide on a 300/25 spring.",
 			"The date pill rolls its month and day stacks on a 400/35 spring.",
 			"Keyboard moves jump instead of springing.",
+			"A selected range fades in and out over 150ms and dims the series; the highlight band takes its width.",
 		],
 	},
 	a11y: {
@@ -139,7 +153,8 @@ export const chart = defineComponent({
 			"Arrow Left and Right move between data points",
 			"Page Up and Page Down move a tenth of the data",
 			"Home and End jump to the first and last point",
-			"Escape clears the active point",
+			"Shift with Arrow Left or Right grows a selected range from the active point",
+			"Escape clears the selected range, then the active point",
 		],
 		notes: [
 			"The plot is a focusable group with aria-roledescription, named by title and described by a generated summary.",
@@ -183,6 +198,7 @@ export const chart = defineComponent({
 				{ path: "chart/time-series-chart.svelte", type: "registry:ui" },
 				{ path: "chart/time-series-plot.svelte", type: "registry:ui" },
 				{ path: "chart/reference-area.svelte", type: "registry:ui" },
+				{ path: "chart/selection-area.svelte", type: "registry:ui" },
 				{ path: "chart/background.svelte", type: "registry:ui" },
 				{ path: "chart/cartesian-grid.svelte", type: "registry:ui" },
 				{ path: "chart/x-axis.svelte", type: "registry:ui" },

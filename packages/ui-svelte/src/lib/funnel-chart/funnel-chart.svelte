@@ -3,13 +3,19 @@ import ChartFrame from "../chart/chart-frame.svelte";
 import { useChart } from "../chart/context";
 import FunnelPlot from "./funnel-plot.svelte";
 import type { FunnelStage } from "./geometry";
-import type { FunnelEdges, FunnelLabelLayout, FunnelOrientation } from "./variants";
+import type {
+	FunnelEdges,
+	FunnelLabelLayout,
+	FunnelOrientation,
+	FunnelPattern,
+} from "./variants";
 
 let {
 	data,
 	orientation = "horizontal",
 	edges = "curved",
 	labelLayout = "spread",
+	pattern = "none",
 	layers = 3,
 	gap = 4,
 	grid = false,
@@ -27,6 +33,8 @@ let {
 	orientation?: FunnelOrientation;
 	edges?: FunnelEdges;
 	labelLayout?: FunnelLabelLayout;
+	/** Texture over each stage's innermost ring, a non-colour cue. */
+	pattern?: FunnelPattern;
 	/** Halo rings per stage; the innermost is the stage's solid colour. */
 	layers?: number;
 	/** Pixels between stages. */
@@ -100,6 +108,7 @@ const announcement = $derived(
 			{orientation}
 			{edges}
 			{labelLayout}
+			{pattern}
 			{layers}
 			{gap}
 			{grid}

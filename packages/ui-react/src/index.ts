@@ -89,6 +89,8 @@ export {
 	type BackgroundProps,
 	ReferenceArea,
 	type ReferenceAreaProps,
+	SelectionArea,
+	type SelectionAreaProps,
 } from "./chart/annotations";
 export {
 	CartesianGrid,
@@ -111,6 +113,7 @@ export {
 export type {
 	ActivePoint,
 	ChartPhase,
+	ChartSelection,
 	ChartStatus,
 	Datum,
 	Domain,
@@ -159,6 +162,7 @@ export type {
 	ChartGridVariant,
 	ChartLegendAlign,
 	ChartReferenceTone,
+	ChartSelectionEdge,
 	ChartTooltipIndicator,
 } from "./chart/variants";
 export { ChartBrush, type ChartBrushProps } from "./chart-brush/chart-brush";
@@ -378,6 +382,7 @@ export type {
 	FunnelEdges,
 	FunnelLabelLayout,
 	FunnelOrientation,
+	FunnelPattern,
 } from "./funnel-chart/variants";
 export { Gauge, type GaugeProps } from "./gauge/gauge";
 export type { GaugeTone } from "./gauge/variants";

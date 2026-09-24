@@ -16,5 +16,6 @@ categories shows category labels, the other shows value ticks.
 Render `BarTooltip` before the bars so its hover band sits behind them.
 
 `variant="squares"` quantises each bar into square cells; `variant="depth"` adds side and
-lid faces toward the chart centre and pulses the active bar. Set `texture` on a `Bar` when
-colour alone must not carry the series.
+lid faces toward the chart centre, in either orientation and below zero, and pulses the
+active bar from base to tip. Set `texture` on a `Bar` when colour alone must not carry the
+series.

@@ -147,7 +147,7 @@ export const liveLineChart = defineComponent({
 			"Momentum is shown by colour and by an up, down or flat arrow in the badge.",
 		],
 	},
-	
+
 	impl: {
 		react: {
 			entry: "LiveLineChart",

@@ -114,7 +114,7 @@ export const heatmapChart = defineComponent({
 			"Every day is in the hidden data table; patterns add a non-colour cue for the levels.",
 		],
 	},
-	
+
 	impl: {
 		react: {
 			entry: "HeatmapChart",

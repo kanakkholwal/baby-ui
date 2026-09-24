@@ -13,6 +13,7 @@ import {
 	type ChartLegendAlign,
 	ChartLegendContent,
 	type ChartReferenceTone,
+	type ChartSelectionEdge,
 	type ChartStatus,
 	ChartTooltip,
 	ChartTooltipContent,
@@ -24,6 +25,7 @@ import {
 	type ProfitLossEncoding,
 	ProfitLossLine,
 	ReferenceArea,
+	SelectionArea,
 	type SeriesLoadingStyle,
 	XAxis,
 	YAxis,
@@ -69,6 +71,7 @@ export function ChartDemo({ props }: { props: Props }) {
 					) : null}
 					<YAxis />
 					<XAxis />
+					<SelectionArea edge={(props.edge as ChartSelectionEdge) ?? "dashed"} />
 					<Line dataKey="desktop" />
 					<Line dataKey="mobile" />
 					<ChartTooltip

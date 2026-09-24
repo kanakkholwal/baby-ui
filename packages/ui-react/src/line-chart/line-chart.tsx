@@ -121,7 +121,7 @@ export function Line({
 	loading = true,
 	className,
 }: LineProps) {
-	const { register, data, x, series, innerWidth, phase, clipId } = usePlot();
+	const { register, data, x, series, innerWidth, phase, clipId, selection } = usePlot();
 	const { active } = useActivePoint();
 	const { hidden, highlighted } = useChart();
 	const gradientId = `${useId().replace(/:/g, "")}-line`;
@@ -133,7 +133,10 @@ export function Line({
 	const curveFactory = LINE_CURVES[curve];
 	const d = linePath(points, curveFactory);
 	const isHidden = hidden.has(dataKey);
-	const dimmed = active !== null || (highlighted !== null && highlighted !== dataKey);
+	const dimmed =
+		active !== null ||
+		Boolean(selection) ||
+		(highlighted !== null && highlighted !== dataKey);
 	const drawn = seriesVisibleInPhase(phase);
 	const fade = fadeEdges !== false;
 	const paint = drawn ? (fade ? `url(#${gradientId})` : color) : "transparent";

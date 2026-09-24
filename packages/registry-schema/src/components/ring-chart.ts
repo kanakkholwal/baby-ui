@@ -79,7 +79,7 @@ export const ringChart = defineComponent({
 			"A visually hidden table lists every ring's value, maximum and progress.",
 		],
 	},
-	
+
 	impl: {
 		react: {
 			entry: "RingChart",

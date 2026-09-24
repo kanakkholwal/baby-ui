@@ -29,10 +29,15 @@ const left = new Spring(0, CHART_SPRING.highlight, (v) =>
 const width = new Spring(0, CHART_SPRING.highlight, (v) =>
 	rect?.setAttribute("width", String(Math.max(0, v))),
 );
+// A selected range takes over the band, as bklit does while dragging.
 const bounds = $derived(
-	pointer.active && plot.phase === "ready"
-		? highlightBounds(plot.data, pointer.active.index, plot.x)
-		: null,
+	plot.phase !== "ready"
+		? null
+		: plot.selectionX
+			? { x: plot.selectionX[0], width: plot.selectionX[1] - plot.selectionX[0] }
+			: pointer.active
+				? highlightBounds(plot.data, pointer.active.index, plot.x)
+				: null,
 );
 let shown = false;
 $effect(() => {

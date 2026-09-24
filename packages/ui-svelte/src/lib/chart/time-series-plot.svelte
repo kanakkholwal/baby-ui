@@ -6,12 +6,14 @@ import { setActivePoint, setPlot, type TickScale, useChart } from "./context";
 import {
 	type ActivePoint,
 	type ChartPhase,
+	type ChartSelection,
 	type Datum,
 	DEFAULT_MARGIN,
 	type Domain,
 	type Margin,
 	nearestIndex,
 	type SeriesConfig,
+	selectionBetween,
 	type TooltipRow,
 	toDate,
 } from "./core";
@@ -35,6 +37,8 @@ let {
 	instant,
 	interactive,
 	setActive,
+	selection,
+	setSelection,
 	title,
 	rows,
 	children,
@@ -56,6 +60,8 @@ let {
 	instant: boolean;
 	interactive: boolean;
 	setActive: (index: number | null, fromKeyboard: boolean) => void;
+	selection: ChartSelection | null;
+	setSelection: (selection: ChartSelection | null, fromKeyboard: boolean) => void;
 	title: (datum: Datum) => string;
 	rows: (datum: Datum) => TooltipRow[];
 	children?: Snippet;
@@ -84,11 +90,32 @@ const x = $derived((d: Datum) => xScale(toDate(d[xKey])));
 const labels = $derived(data.map((d) => chart.format.tick(toDate(d[xKey]))));
 
 let pending: { index: number; frame: number } | null = null;
-function onpointermove(event: PointerEvent & { currentTarget: SVGSVGElement }) {
-	if (!interactive) return;
+type PlotPointer = PointerEvent & { currentTarget: SVGSVGElement };
+let drag: number | null = null;
+function indexAt(event: PlotPointer) {
 	const bounds = event.currentTarget.getBoundingClientRect();
 	const time = xScale.invert(event.clientX - bounds.left - margin.left).getTime();
-	const index = nearestIndex(data, xKey, time);
+	return nearestIndex(data, xKey, time);
+}
+// Touch keeps scrubbing; mouse and pen drag out a range.
+function onpointerdown(event: PlotPointer) {
+	if (!interactive || event.pointerType === "touch" || event.button !== 0) return;
+	drag = indexAt(event);
+	event.currentTarget.setPointerCapture(event.pointerId);
+}
+function onpointerup(event: PlotPointer) {
+	if (drag === null) return;
+	if (indexAt(event) === drag) setSelection(null, false);
+	drag = null;
+}
+function onpointermove(event: PlotPointer) {
+	if (!interactive) return;
+	const index = indexAt(event);
+	if (drag !== null && index !== drag) {
+		setSelection(selectionBetween(drag, index), false);
+		if (activeIndex !== null) setActive(null, false);
+		return;
+	}
 	if (pending) {
 		pending.index = index;
 		return;
@@ -101,6 +128,7 @@ function onpointermove(event: PointerEvent & { currentTarget: SVGSVGElement }) {
 	pending = { index, frame: raf };
 }
 function onpointerleave() {
+	if (drag !== null) return;
 	if (pending) cancelAnimationFrame(pending.frame);
 	pending = null;
 	if (activeIndex !== null) setActive(null, false);
@@ -116,6 +144,12 @@ const active = $derived.by<ActivePoint | null>(() => {
 		if (typeof value === "number") y[s.key] = yScale(value);
 	}
 	return { index: activeIndex, datum, x: x(datum), y };
+});
+
+const selectionX = $derived.by<[number, number] | null>(() => {
+	const a = selection ? data[selection.start] : undefined;
+	const b = selection ? data[selection.end] : undefined;
+	return a && b ? [x(a), x(b)] : null;
 });
 
 setPlot({
@@ -174,6 +208,12 @@ setPlot({
 		return series;
 	},
 	register: (s: SeriesConfig) => register(s),
+	get selection() {
+		return selection;
+	},
+	get selectionX() {
+		return selectionX;
+	},
 });
 setActivePoint({
 	get active() {
@@ -197,6 +237,8 @@ setActivePoint({
 	height={frame.height}
 	class="absolute inset-0 block overflow-visible"
 	style:cursor={interactive ? "crosshair" : undefined}
+	{onpointerdown}
+	{onpointerup}
 	{onpointermove}
 	{onpointerleave}
 >

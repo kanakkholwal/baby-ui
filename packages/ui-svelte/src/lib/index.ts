@@ -96,6 +96,7 @@ export {
 export type {
 	ActivePoint,
 	ChartPhase,
+	ChartSelection,
 	ChartStatus,
 	Datum,
 	Domain,
@@ -111,6 +112,7 @@ export {
 	createSeriesRegistry,
 } from "./chart/lifecycle.svelte";
 export { default as ReferenceArea } from "./chart/reference-area.svelte";
+export { default as SelectionArea } from "./chart/selection-area.svelte";
 export {
 	type ChartExtent,
 	default as TimeSeriesChart,
@@ -122,6 +124,7 @@ export type {
 	ChartGridVariant,
 	ChartLegendAlign,
 	ChartReferenceTone,
+	ChartSelectionEdge,
 	ChartTooltipIndicator,
 } from "./chart/variants";
 export { default as XAxis } from "./chart/x-axis.svelte";
@@ -283,6 +286,7 @@ export type {
 	FunnelEdges,
 	FunnelLabelLayout,
 	FunnelOrientation,
+	FunnelPattern,
 } from "./funnel-chart/variants";
 export { default as Gauge } from "./gauge/gauge.svelte";
 export type { GaugeTone } from "./gauge/variants";

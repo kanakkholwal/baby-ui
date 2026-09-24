@@ -1,6 +1,20 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
+import { registerHooks } from "node:module";
 import { test } from "node:test";
+
+// Package sources import siblings without extensions; resolve them to `.ts` here.
+registerHooks({
+	resolve(specifier, context, next) {
+		try {
+			return next(specifier, context);
+		} catch (error) {
+			if (!specifier.startsWith(".")) throw error;
+			return next(`${specifier}.ts`, context);
+		}
+	},
+});
+
 import {
 	chartStyleCss,
 	evenTickIndices,
@@ -304,4 +318,63 @@ test("heatmap calendar and sankey layout are shared verbatim and lay out correct
 	assert.ok(v.nodes[2].y0 > v.nodes[0].y1, "vertical flow runs top to bottom");
 	assert.equal(Math.round(sk.SANKEY_TIMING.link(0, 10)), 220);
 	assert.equal(Math.round(sk.SANKEY_TIMING.node(5, 10)), 132);
+});
+
+test("bar depth faces and pulse mirror across orientation and sign", async () => {
+	const bar = await import("../packages/ui-react/src/bar-chart/bar-core.ts");
+	const opts = { center: 100, step: 40, bandwidth: 30, base: 200 };
+	const up = bar.depthFaces(
+		{ x: 10, y: 80, width: 30, height: 120 },
+		{
+			...opts,
+			orientation: "vertical",
+			negative: false,
+		},
+	);
+	const down = bar.depthFaces(
+		{ x: 10, y: 200, width: 30, height: 120 },
+		{
+			...opts,
+			orientation: "vertical",
+			negative: true,
+		},
+	);
+	const right = bar.depthFaces(
+		{ x: 200, y: 10, width: 120, height: 30 },
+		{
+			...opts,
+			orientation: "horizontal",
+			negative: false,
+		},
+	);
+	const round = (n) => Math.round(n * 1e6) / 1e6;
+	const nums = (d) => d.match(/-?[\d.]+/g).map((n) => round(Number(n)));
+	const flipY = (d) => nums(d).map((n, i) => round(i % 2 ? 400 - n : n));
+	const swap = (d) =>
+		nums(d).flatMap((n, i, a) => (i % 2 ? [] : [a[i + 1], round(400 - n)]));
+	assert.ok(up && down && right);
+	assert.deepEqual(
+		flipY(down.lid),
+		nums(up.lid),
+		"negative lid mirrors about the baseline",
+	);
+	assert.equal(down.front.y, 200, "negative front starts at the baseline");
+	assert.deepEqual(
+		swap(right.side),
+		nums(up.side),
+		"horizontal side is the vertical one transposed",
+	);
+	assert.equal(right.front.x, 200);
+	const wave = (p) =>
+		bar.pulseRect(
+			{ x: 200, y: 10, width: 120, height: 30 },
+			{
+				orientation: "horizontal",
+				negative: false,
+				base: 200,
+			},
+			p,
+		);
+	assert.ok(wave(1).x > wave(0).x, "horizontal pulse sweeps toward the tip");
+	assert.equal(wave(0).height, 30);
 });

@@ -82,7 +82,7 @@ export const composedChart = defineComponent({
 			"Every SeriesBar, Line and Area registers, so tooltip rows, summary and table list them all.",
 		],
 	},
-	
+
 	impl: {
 		react: {
 			entry: "ComposedChart",

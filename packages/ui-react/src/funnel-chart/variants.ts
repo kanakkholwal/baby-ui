@@ -11,6 +11,7 @@ export const funnelChart = tv({
 		percent:
 			"rounded-full bg-foreground px-2.5 py-0.5 font-bold text-[11px] text-background tabular-nums shadow-sm",
 		name: "whitespace-nowrap font-medium text-muted-foreground text-xs",
+		mark: "",
 	},
 	variants: {
 		orientation: {
@@ -21,8 +22,14 @@ export const funnelChart = tv({
 			spread: {},
 			grouped: { labels: "justify-center gap-1.5" },
 		},
+		pattern: {
+			none: { mark: "hidden" },
+			lines: { mark: "fill-none stroke-background/40 [stroke-width:2]" },
+			dots: { mark: "fill-background/40" },
+			grid: { mark: "fill-none stroke-background/40" },
+		},
 	},
-	defaultVariants: { orientation: "horizontal", labelLayout: "spread" },
+	defaultVariants: { orientation: "horizontal", labelLayout: "spread", pattern: "none" },
 });
 
 export type FunnelOrientation = NonNullable<
@@ -31,6 +38,16 @@ export type FunnelOrientation = NonNullable<
 export type FunnelLabelLayout = NonNullable<
 	VariantProps<typeof funnelChart>["labelLayout"]
 >;
+
+export type FunnelPattern = NonNullable<VariantProps<typeof funnelChart>["pattern"]>;
+
+/** One 8px tile per pattern, drawn over the stage colour on the innermost ring. */
+export const FUNNEL_PATTERN_TILE: Record<FunnelPattern, string> = {
+	none: "",
+	lines: "M0,8L8,0M-2,2L2,-2M6,10L10,6",
+	dots: "M2.5,4a1.5,1.5 0 1,0 3,0a1.5,1.5 0 1,0 -3,0",
+	grid: "M0,0.5H8M0.5,0V8",
+};
 
 export const funnelEdges = tv({
 	base: "",

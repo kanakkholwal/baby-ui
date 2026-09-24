@@ -97,7 +97,7 @@ export const pieChart = defineComponent({
 			"A visually hidden table lists every slice with its value and share; slice labels print the share, so colour is never the only cue.",
 		],
 	},
-	
+
 	impl: {
 		react: {
 			entry: "PieChart",

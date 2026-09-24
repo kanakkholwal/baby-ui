@@ -189,7 +189,10 @@ export function Area({
 	const topPath = linePath(band.top, curveFactory);
 
 	const isHidden = hidden.has(dataKey);
-	const dimmed = active !== null || (highlighted !== null && highlighted !== dataKey);
+	const dimmed =
+		active !== null ||
+		Boolean(plot.selection) ||
+		(highlighted !== null && highlighted !== dataKey);
 	const drawn = seriesVisibleInPhase(phase);
 	const styles = area({ variant });
 	const fade = fadeEdges !== false;

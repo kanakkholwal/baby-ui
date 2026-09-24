@@ -181,29 +181,96 @@ export interface DepthFaces {
 	lid: string;
 }
 
-/** bklit bar-depth: side face toward the chart centre, lid lifted by 45% of the depth. */
+type Point = [number, number];
+
+/** Maps points into an upright frame (category along x, bar rising from `base` toward y=0) and back. */
+function uprightMap(orientation: BarOrientationVariant, negative: boolean, base: number) {
+	const vertical = orientation === "vertical";
+	const flip = (v: number) => ((vertical ? negative : !negative) ? 2 * base - v : v);
+	return {
+		to: ([x, y]: Point): Point => (vertical ? [x, flip(y)] : [y, flip(x)]),
+		from: ([u, v]: Point): Point => (vertical ? [u, flip(v)] : [flip(v), u]),
+	};
+}
+
+function mapRect(rect: Rect, map: (p: Point) => Point): Rect {
+	const [x1, y1] = map([rect.x, rect.y]);
+	const [x2, y2] = map([rect.x + rect.width, rect.y + rect.height]);
+	return {
+		x: Math.min(x1, x2),
+		y: Math.min(y1, y2),
+		width: Math.abs(x2 - x1),
+		height: Math.abs(y2 - y1),
+	};
+}
+
+const pathOf = (points: Point[], map: (p: Point) => Point) =>
+	`M${points.map((p) => map(p).join(",")).join("L")}Z`;
+
+/** bklit bar-depth: side face toward the chart centre, lid lifted by 45% of the depth, any direction. */
 export function depthFaces(
 	rect: Rect,
-	options: { centerX: number; step: number; bandwidth: number; base: number },
+	options: {
+		orientation: BarOrientationVariant;
+		negative: boolean;
+		/** Middle of the category axis. */
+		center: number;
+		step: number;
+		bandwidth: number;
+		base: number;
+	},
 ): DepthFaces | null {
-	if (rect.height <= 0) return null;
+	const { base, center } = options;
+	const map = uprightMap(options.orientation, options.negative, base);
+	const r = mapRect(rect, map.to);
+	if (r.height <= 0) return null;
 	const gap = Math.max(0, options.step - options.bandwidth);
 	const maxDepth = Math.min(options.bandwidth * 0.22, Math.max(0, gap - 1), 7);
-	const cx = rect.x + rect.width / 2;
-	const offset =
-		options.centerX > 0
-			? Math.min(1, Math.abs((cx - options.centerX) / options.centerX))
-			: 0;
-	const depth = offset * Math.min(maxDepth, rect.height);
+	const cx = r.x + r.width / 2;
+	const offset = center > 0 ? Math.min(1, Math.abs((cx - center) / center)) : 0;
+	const depth = offset * Math.min(maxDepth, r.height);
 	if (depth < 0.5) return null;
 	const rise = depth * 0.45;
-	const dx = cx < options.centerX ? depth : -depth;
-	const top = rect.y + rise;
-	const edge = dx > 0 ? rect.x + rect.width : rect.x;
-	const front = { ...rect, y: top, height: Math.max(0, rect.height - rise) };
-	const side = `M${edge},${top}L${edge + dx},${rect.y}L${edge + dx},${options.base - rise}L${edge},${options.base}Z`;
-	const lid = `M${rect.x},${top}L${rect.x + rect.width},${top}L${rect.x + rect.width + dx},${rect.y}L${rect.x + dx},${rect.y}Z`;
+	const dx = cx < center ? depth : -depth;
+	const top = r.y + rise;
+	const edge = dx > 0 ? r.x + r.width : r.x;
+	const front = mapRect({ ...r, y: top, height: Math.max(0, r.height - rise) }, map.from);
+	const side = pathOf(
+		[
+			[edge, top],
+			[edge + dx, r.y],
+			[edge + dx, base - rise],
+			[edge, base],
+		],
+		map.from,
+	);
+	const lid = pathOf(
+		[
+			[r.x, top],
+			[r.x + r.width, top],
+			[r.x + r.width + dx, r.y],
+			[r.x + dx, r.y],
+		],
+		map.from,
+	);
 	return { front, side, lid };
+}
+
+/** Pulse band at progress `p`, swept from the baseline past the bar's far end. */
+export function pulseRect(
+	rect: Rect,
+	options: { orientation: BarOrientationVariant; negative: boolean; base: number },
+	p: number,
+): Rect {
+	const map = uprightMap(options.orientation, options.negative, options.base);
+	const r = mapRect(rect, map.to);
+	const band = Math.max(r.height * 0.55, 36);
+	const start = r.y + r.height;
+	const end = r.y - band;
+	return mapRect(
+		{ x: r.x, y: start + (end - start) * p, width: r.width, height: band },
+		map.from,
+	);
 }
 
 const fract = (v: number) => v - Math.floor(v);

@@ -86,7 +86,7 @@ export const sankeyChart = defineComponent({
 			"The hidden data table lists every flow with its share, so the diagram never relies on colour.",
 		],
 	},
-	
+
 	impl: {
 		react: {
 			entry: "SankeyChart",

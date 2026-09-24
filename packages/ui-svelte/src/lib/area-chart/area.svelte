@@ -157,6 +157,7 @@ const topPath = $derived(linePath(band.top, curveFactory));
 const isHidden = $derived(chart.hidden.has(dataKey));
 const dimmed = $derived(
 	pointer.active !== null ||
+		Boolean(plot.selection) ||
 		(chart.highlighted !== null && chart.highlighted !== dataKey),
 );
 const drawn = $derived(seriesVisibleInPhase(plot.phase));

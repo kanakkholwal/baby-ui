@@ -5,6 +5,7 @@ import {
 	type FunnelEdges,
 	type FunnelLabelLayout,
 	type FunnelOrientation,
+	type FunnelPattern,
 } from "@baby-ui/svelte";
 import { SIGNUP_FUNNEL } from "../data/revenue-tree";
 
@@ -24,6 +25,7 @@ const orientation = $derived((props.orientation as FunnelOrientation) ?? "horizo
 			{orientation}
 			edges={(props.edges as FunnelEdges) ?? "curved"}
 			labelLayout={(props.labelLayout as FunnelLabelLayout) ?? "spread"}
+			pattern={(props.pattern as FunnelPattern) ?? "none"}
 			layers={Number(props.layers ?? 3)}
 			gap={Number(props.gap ?? 4)}
 			grid={props.grid === true}
