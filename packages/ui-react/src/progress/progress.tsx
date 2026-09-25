@@ -21,7 +21,7 @@ export interface ProgressProps {
 	size?: ProgressSize;
 	tone?: ProgressTone;
 	variant?: ProgressVariant;
-	/** Accessible name; also the header title when `showValue` or `helper` is set. */
+	/** Accessible name; shown under a ring, and as a bar's title with `showValue` or `helper`. */
 	label?: string;
 	helper?: string;
 	/** Header value on a bar, centre value on a ring. */
@@ -52,23 +52,29 @@ export function Progress({
 	const percent = progressPercent(clamped, min, max);
 	const styles = progress({ size, tone, variant });
 	const display = indeterminate ? indeterminateLabel : formatValue(clamped, percent);
-	const header = variant === "linear" && (showValue || helper);
+	const header = variant === "linear" && (showValue || !!helper);
+	const caption = variant === "circular" && (!!label || !!helper);
+	const labelled = (header || caption) && !!label;
 	const { radius, stroke, gap } = PROGRESS_RING;
 	const circumference = 2 * Math.PI * radius;
 	const arc = (share: number) =>
 		`${(Math.max(0, share) / 100) * circumference} ${circumference}`;
+	// A zero-length dash still paints its round caps as a dot.
+	const cap = (share: number) => (share > 0 ? "round" : "butt");
+	const trackShare = 100 - percent - 2 * gap;
+	const fillShare = indeterminate ? 28 : percent;
 
 	return (
 		<ProgressPrimitive.Root
 			value={indeterminate ? null : clamped}
 			min={min}
 			max={max}
-			aria-label={header ? undefined : label}
-			aria-labelledby={header && label ? `${id}-label` : undefined}
+			aria-label={labelled ? undefined : label}
+			aria-labelledby={labelled ? `${id}-label` : undefined}
 			aria-valuetext={display}
 			data-slot="progress"
 			data-variant={variant}
-			className={cn(styles.root(), variant === "circular" && "w-auto", className)}
+			className={cn(styles.root(), className)}
 		>
 			{header ? (
 				<div className={styles.header()}>
@@ -84,47 +90,59 @@ export function Progress({
 				</div>
 			) : null}
 			{variant === "circular" ? (
-				<div className={styles.ring()}>
-					<svg
-						viewBox="0 0 100 100"
-						aria-hidden="true"
-						className={cn(styles.ringSvg(), indeterminate && "progress-spin")}
-					>
-						{indeterminate ? (
+				<>
+					<div className={styles.ring()}>
+						<svg
+							viewBox="0 0 100 100"
+							aria-hidden="true"
+							className={cn(styles.ringSvg(), indeterminate && "progress-spin")}
+						>
+							{indeterminate ? (
+								<circle
+									cx="50"
+									cy="50"
+									r={radius}
+									strokeWidth={stroke}
+									className={styles.ringTrack()}
+								/>
+							) : (
+								<circle
+									cx="50"
+									cy="50"
+									r={radius}
+									strokeWidth={stroke}
+									strokeLinecap={cap(trackShare)}
+									strokeDasharray={arc(trackShare)}
+									className={cn(styles.ringTrack(), "progress-ring")}
+									style={{
+										transform: `rotate(${(percent + gap) * 3.6}deg)`,
+										transformOrigin: "50px 50px",
+									}}
+								/>
+							)}
 							<circle
 								cx="50"
 								cy="50"
 								r={radius}
 								strokeWidth={stroke}
-								className={styles.ringTrack()}
+								strokeLinecap={cap(fillShare)}
+								strokeDasharray={arc(fillShare)}
+								className={styles.ringFill()}
 							/>
-						) : (
-							<circle
-								cx="50"
-								cy="50"
-								r={radius}
-								strokeWidth={stroke}
-								strokeLinecap="round"
-								strokeDasharray={arc(100 - percent - 2 * gap)}
-								className={cn(styles.ringTrack(), "progress-ring")}
-								style={{
-									transform: `rotate(${(percent + gap) * 3.6}deg)`,
-									transformOrigin: "50px 50px",
-								}}
-							/>
-						)}
-						<circle
-							cx="50"
-							cy="50"
-							r={radius}
-							strokeWidth={stroke}
-							strokeLinecap="round"
-							strokeDasharray={arc(indeterminate ? 28 : percent)}
-							className={styles.ringFill()}
-						/>
-					</svg>
-					{showValue ? <span className={styles.ringLabel()}>{display}</span> : null}
-				</div>
+						</svg>
+						{showValue ? <span className={styles.ringLabel()}>{display}</span> : null}
+					</div>
+					{caption ? (
+						<div className={styles.caption()}>
+							{label ? (
+								<span id={`${id}-label`} className={styles.title()}>
+									{label}
+								</span>
+							) : null}
+							{helper ? <p className={styles.helper()}>{helper}</p> : null}
+						</div>
+					) : null}
+				</>
 			) : (
 				<ProgressPrimitive.Track className={styles.track()}>
 					{indeterminate ? (

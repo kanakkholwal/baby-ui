@@ -66,13 +66,13 @@ export const progress = defineComponent({
 			name: "label",
 			type: "string",
 			description:
-				"Accessible name; also the header title when showValue or helper is set.",
+				"Accessible name. Shown under a ring, and as a bar's header title when showValue or helper is set.",
 			control: { kind: "text" },
 		},
 		{
 			name: "helper",
 			type: "string",
-			description: "Secondary line under the label.",
+			description: "Secondary line under the label, on bars and rings.",
 			control: { kind: "text" },
 		},
 		{

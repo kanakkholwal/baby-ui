@@ -17,6 +17,7 @@ export const progress = tv({
 		ringFill: "progress-ring fill-none stroke-current",
 		ringLabel:
 			"pointer-events-none absolute inset-0 m-auto flex size-fit max-w-[78%] items-center justify-center truncate font-semibold text-foreground tabular-nums",
+		caption: "flex max-w-48 flex-col items-center gap-0.5 text-center",
 	},
 	variants: {
 		size: {
@@ -33,7 +34,7 @@ export const progress = tv({
 		},
 		variant: {
 			linear: {},
-			circular: {},
+			circular: { root: "inline-flex w-auto flex-col items-center gap-3" },
 		},
 	},
 	defaultVariants: { size: "md", tone: "default", variant: "linear" },

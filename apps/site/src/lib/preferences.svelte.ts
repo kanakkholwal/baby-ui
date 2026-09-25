@@ -108,8 +108,7 @@ const DEFAULT_STORED: Stored = {
 
 class Preferences {
 	#stored = persisted<Stored>(KEY, DEFAULT_STORED);
-	// The theme is a try-it-out control, so it lasts the tab and not longer.
-	#theme = persisted<ThemeId>(THEME_KEY, "default", { storage: "session" });
+	#theme = persisted<ThemeId>(THEME_KEY, "default");
 	open = $state(false);
 
 	get framework() {

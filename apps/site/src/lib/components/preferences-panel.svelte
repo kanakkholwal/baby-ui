@@ -1,16 +1,14 @@
 <script lang="ts">
 import type { Framework } from "@baby-ui/registry-schema";
 import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
+	Button,
 	Sheet,
 	SheetClose,
 	SheetContent,
 	SheetHeader,
 	SheetTitle,
+	ThemeToggle,
+	type ThemeToggleValue,
 } from "@baby-ui/svelte";
 import type { Icon } from "@tabler/icons-svelte";
 import IconBrandJavascript from "@tabler/icons-svelte/icons/brand-javascript";
@@ -18,17 +16,9 @@ import IconBrandReact from "@tabler/icons-svelte/icons/brand-react";
 import IconBrandSvelte from "@tabler/icons-svelte/icons/brand-svelte";
 import IconBrandTypescript from "@tabler/icons-svelte/icons/brand-typescript";
 import IconCheck from "@tabler/icons-svelte/icons/check";
-import { setMode, userPrefersMode } from "mode-watcher";
+import { mode, setMode, userPrefersMode } from "mode-watcher";
 import { type Dialect, prefs, THEMES } from "$lib/preferences.svelte";
 import SegmentControl from "./segment-control.svelte";
-
-type Mode = Parameters<typeof setMode>[0];
-
-const APPEARANCE: { value: Mode; label: string }[] = [
-	{ value: "light", label: "Light" },
-	{ value: "dark", label: "Dark" },
-	{ value: "system", label: "System" },
-];
 
 const FRAMEWORKS: { id: Framework; label: string; icon: Icon }[] = [
 	{ id: "react", label: "React", icon: IconBrandReact },
@@ -40,11 +30,11 @@ const DIALECTS: { id: Dialect; label: string; icon: Icon }[] = [
 	{ id: "js", label: "JS", icon: IconBrandJavascript },
 ];
 
-let appearance = $state<string>(userPrefersMode.current);
-
-$effect(() => {
-	if (appearance !== userPrefersMode.current) setMode(appearance as Mode);
-});
+// Set the class in the same tick as mode-watcher: the reveal snapshots the DOM when this returns.
+function pickMode(next: ThemeToggleValue) {
+	document.documentElement.classList.toggle("dark", next === "dark");
+	setMode(next);
+}
 </script>
 
 <Sheet bind:open={prefs.open}>
@@ -57,16 +47,24 @@ $effect(() => {
 		<div class="flex flex-col divide-y divide-border">
 			<div class="flex items-center justify-between gap-3 px-4 py-2.5">
 				<span class="text-foreground text-xs">Appearance</span>
-				<Select bind:value={appearance} items={APPEARANCE.map((o) => ({ value: o.value, label: o.label }))}>
-					<SelectTrigger aria-label="Appearance" class="h-8 w-32 rounded-lg text-xs">
-						<SelectValue />
-					</SelectTrigger>
-					<SelectContent>
-						{#each APPEARANCE as option (option.value)}
-							<SelectItem value={option.value}>{option.label}</SelectItem>
-						{/each}
-					</SelectContent>
-				</Select>
+				<div class="flex items-center gap-1.5">
+					<Button
+						size="xs"
+						variant={userPrefersMode.current === "system" ? "secondary" : "ghost"}
+						aria-pressed={userPrefersMode.current === "system"}
+						onclick={() => setMode("system")}
+					>
+						System
+					</Button>
+					<ThemeToggle
+						theme={mode.current === "dark" ? "dark" : "light"}
+						onThemeChange={pickMode}
+						variant="circle"
+						start="top-right"
+						class="size-8 rounded-lg border border-border bg-background"
+						iconClass="size-4"
+					/>
+				</div>
 			</div>
 
 			<div class="flex flex-col gap-2 px-4 py-3">
@@ -110,7 +108,7 @@ $effect(() => {
 		</div>
 
 		<p class="mt-auto border-border border-t px-4 py-3 text-[11px] text-muted-foreground">
-			Theme lasts this tab. Framework and language are remembered.
+			Saved in this browser and synced across open tabs.
 		</p>
 	</SheetContent>
 </Sheet>

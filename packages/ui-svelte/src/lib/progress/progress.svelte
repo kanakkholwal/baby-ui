@@ -33,7 +33,7 @@ let {
 	size?: ProgressSize;
 	tone?: ProgressTone;
 	variant?: ProgressVariant;
-	/** Accessible name; also the header title when `showValue` or `helper` is set. */
+	/** Accessible name; shown under a ring, and as a bar's title with `showValue` or `helper`. */
 	label?: string;
 	helper?: string;
 	/** Header value on a bar, centre value on a ring. */
@@ -52,22 +52,28 @@ const display = $derived(
 	indeterminate ? indeterminateLabel : formatValue(clamped, percent),
 );
 const header = $derived(variant === "linear" && (showValue || !!helper));
+const caption = $derived(variant === "circular" && (!!label || !!helper));
+const labelled = $derived((header || caption) && !!label);
 const { radius, stroke, gap } = PROGRESS_RING;
 const circumference = 2 * Math.PI * radius;
 const arc = (share: number) =>
 	`${(Math.max(0, share) / 100) * circumference} ${circumference}`;
+// A zero-length dash still paints its round caps as a dot.
+const cap = (share: number) => (share > 0 ? "round" : "butt");
+const trackShare = $derived(100 - percent - 2 * gap);
+const fillShare = $derived(indeterminate ? 28 : percent);
 </script>
 
 <ProgressPrimitive.Root
 	value={indeterminate ? null : clamped}
 	{min}
 	{max}
-	aria-label={header ? undefined : label}
-	aria-labelledby={header && label ? `${id}-label` : undefined}
+	aria-label={labelled ? undefined : label}
+	aria-labelledby={labelled ? `${id}-label` : undefined}
 	aria-valuetext={display}
 	data-slot="progress"
 	data-variant={variant}
-	class={cn(styles.root(), variant === "circular" && "w-auto", classProp)}
+	class={cn(styles.root(), classProp)}
 >
 	{#if header}
 		<div class={styles.header()}>
@@ -99,8 +105,8 @@ const arc = (share: number) =>
 						cy="50"
 						r={radius}
 						stroke-width={stroke}
-						stroke-linecap="round"
-						stroke-dasharray={arc(100 - percent - 2 * gap)}
+						stroke-linecap={cap(trackShare)}
+						stroke-dasharray={arc(trackShare)}
 						class={cn(styles.ringTrack(), "progress-ring")}
 						style:transform="rotate({(percent + gap) * 3.6}deg)"
 						style:transform-origin="50px 50px"
@@ -111,8 +117,8 @@ const arc = (share: number) =>
 					cy="50"
 					r={radius}
 					stroke-width={stroke}
-					stroke-linecap="round"
-					stroke-dasharray={arc(indeterminate ? 28 : percent)}
+					stroke-linecap={cap(fillShare)}
+					stroke-dasharray={arc(fillShare)}
 					class={styles.ringFill()}
 				/>
 			</svg>
@@ -120,6 +126,16 @@ const arc = (share: number) =>
 				<span class={styles.ringLabel()}>{display}</span>
 			{/if}
 		</div>
+		{#if caption}
+			<div class={styles.caption()}>
+				{#if label}
+					<span id="{id}-label" class={styles.title()}>{label}</span>
+				{/if}
+				{#if helper}
+					<p class={styles.helper()}>{helper}</p>
+				{/if}
+			</div>
+		{/if}
 	{:else}
 		<div class={styles.track()}>
 			{#if indeterminate}
