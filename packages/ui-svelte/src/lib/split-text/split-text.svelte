@@ -32,8 +32,7 @@ const HALF_CLASS =
 </script>
 
 <div data-slot="split-text" class={cn(splitText({ size }), classProp)}>
-	<div class="invisible leading-none">{text}</div>
-	<div class="absolute top-0 flex h-full">
+	<div class="flex h-[1em]">
 		{#each text.split("") as letter, index (`${letter}-${index}`)}
 			{@const shift = offset(index)}
 			<div

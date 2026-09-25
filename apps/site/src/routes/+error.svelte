@@ -1,6 +1,12 @@
 <script lang="ts">
 import { specs } from "@baby-ui/registry-schema/components";
-import { Badge, Button, GibberishText, ShowcaseGrid, ShowcasePanel } from "@baby-ui/svelte";
+import {
+	Badge,
+	Button,
+	GibberishText,
+	ShowcaseGrid,
+	ShowcasePanel,
+} from "@baby-ui/svelte";
 import IconArrowRight from "@tabler/icons-svelte/icons/arrow-right";
 import IconRefresh from "@tabler/icons-svelte/icons/refresh";
 import { page } from "$app/state";
@@ -30,7 +36,8 @@ const title = $derived(notFound ? "Page not found" : "Something broke");
 const message = $derived(
 	notFound
 		? "Nothing lives at this address. It may have been renamed, or never existed."
-		: (page.error?.message ?? "This page failed to render. Try again, or head back home."),
+		: (page.error?.message ??
+				"This page failed to render. Try again, or head back home."),
 );
 </script>
 

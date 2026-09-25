@@ -28,7 +28,7 @@ export const splitText = defineComponent({
 		{
 			name: "size",
 			type: SIZES.map((v) => `"${v}"`).join(" | "),
-			description: "Type scale.",
+			description: "Type scale; `lg` is fluid, 36px up to 128px with the viewport.",
 			default: "lg",
 			control: { kind: "select", options: SIZES },
 		},

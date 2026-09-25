@@ -32,7 +32,7 @@ const size = $derived(`${radius * 2 + 40}px`);
 	{#each characters as char, index (`${index}-${char}`)}
 		{@const angle = (360 / characters.length) * index}
 		<span
-			class="absolute inset-0 inline-block font-medium"
+			class="absolute inset-0 flex items-center justify-center font-medium"
 			style="transform: rotate({angle}deg) translateY(-{radius}px)"
 		>
 			{char}

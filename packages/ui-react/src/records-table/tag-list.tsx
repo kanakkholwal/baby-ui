@@ -61,10 +61,14 @@ export function TagList({ tags }: { tags: string[] }) {
 	return (
 		<div
 			ref={containerRef}
-			className="flex min-w-0 items-center gap-1 overflow-hidden"
+			className="relative flex min-w-0 items-center gap-1 overflow-hidden"
 			title={tags.join(", ")}
 		>
-			<div ref={measureRef} aria-hidden className="absolute flex gap-1 opacity-0">
+			<div
+				ref={measureRef}
+				aria-hidden
+				className="pointer-events-none absolute flex gap-1 opacity-0"
+			>
 				{tags.map((tag) => (
 					<span key={tag} data-tag-measure>
 						<Tag name={tag} />

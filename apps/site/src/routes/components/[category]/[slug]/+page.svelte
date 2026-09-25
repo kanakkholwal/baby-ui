@@ -261,7 +261,7 @@ const breadcrumbJsonLd = $derived(
 				as a person. Not a description of either one's code.
 			</p>
 			<div class="mt-3 max-w-2xl rounded-xl border border-border p-4">
-				<ul class="flex list-disc flex-col gap-1.5 pl-5 text-muted-foreground text-sm">
+				<ul class="flex list-disc flex-col gap-1.5 pl-5 text-muted-foreground text-sm [overflow-wrap:anywhere]">
 					{#each data.spec.motion.behaviour as rule (rule)}
 						<li>{rule}</li>
 					{/each}
@@ -280,7 +280,7 @@ const breadcrumbJsonLd = $derived(
 			<div class="mt-3 flex max-w-2xl flex-col gap-4 rounded-xl border border-border p-4">
 				{#if data.spec.a11y.keyboard.length}
 					<p class="-mb-2 font-medium text-foreground text-xs">Keyboard</p>
-					<ul class="flex list-disc flex-col gap-1.5 pl-5 text-muted-foreground text-sm">
+					<ul class="flex list-disc flex-col gap-1.5 pl-5 text-muted-foreground text-sm [overflow-wrap:anywhere]">
 						{#each data.spec.a11y.keyboard as key (key)}
 							<li>{key}</li>
 						{/each}
@@ -288,7 +288,7 @@ const breadcrumbJsonLd = $derived(
 				{/if}
 				{#if data.spec.a11y.notes.length}
 					<p class="-mb-2 font-medium text-foreground text-xs">Notes</p>
-					<ul class="flex list-disc flex-col gap-1.5 pl-5 text-muted-foreground text-sm">
+					<ul class="flex list-disc flex-col gap-1.5 pl-5 text-muted-foreground text-sm [overflow-wrap:anywhere]">
 						{#each data.spec.a11y.notes as note (note)}
 							<li>{note}</li>
 						{/each}
@@ -311,7 +311,7 @@ const breadcrumbJsonLd = $derived(
 			<p class="mt-1 text-muted-foreground text-sm">
 				More from {CATEGORY_LABEL[data.spec.category]}.
 			</p>
-			<div class="mt-4 grid grid-cols-1 gap-4 [grid-auto-rows:19rem] sm:grid-cols-2 lg:grid-cols-3">
+			<div class="mt-4 grid grid-cols-[minmax(0,1fr)] gap-4 [grid-auto-rows:19rem] sm:grid-cols-2 lg:grid-cols-3">
 				{#each related as item (item.slug)}
 					<ComponentCard spec={item} />
 				{/each}

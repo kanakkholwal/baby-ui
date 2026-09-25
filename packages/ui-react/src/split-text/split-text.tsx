@@ -38,8 +38,7 @@ export function SplitText({
 
 	return (
 		<div data-slot="split-text" className={cn(splitText({ size }), className)}>
-			<div className="invisible leading-none">{text}</div>
-			<div className="absolute top-0 flex h-full">
+			<div className="flex h-[1em]">
 				{text.split("").map((letter, index) => {
 					const shift = offset(index, activeIndex);
 					return (

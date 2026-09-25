@@ -54,8 +54,8 @@ const hiddenCount = $derived(tags.length - visibleCount);
 	</span>
 {/snippet}
 
-<div bind:this={containerEl} class="flex min-w-0 items-center gap-1 overflow-hidden" title={tags.join(", ")}>
-	<div bind:this={measureEl} aria-hidden="true" class="absolute flex gap-1 opacity-0">
+<div bind:this={containerEl} class="relative flex min-w-0 items-center gap-1 overflow-hidden" title={tags.join(", ")}>
+	<div bind:this={measureEl} aria-hidden="true" class="pointer-events-none absolute flex gap-1 opacity-0">
 		{#each tags as name (name)}
 			<span data-tag-measure>{@render tag(name)}</span>
 		{/each}

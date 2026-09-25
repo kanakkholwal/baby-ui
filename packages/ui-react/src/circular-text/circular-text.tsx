@@ -41,7 +41,7 @@ export function CircularText({
 			return (
 				<span
 					key={`${index}-${char}`}
-					className="absolute inset-0 inline-block font-medium"
+					className="absolute inset-0 flex items-center justify-center font-medium"
 					style={{ transform: `rotate(${angle}deg) translateY(-${radius}px)` }}
 				>
 					{char}
