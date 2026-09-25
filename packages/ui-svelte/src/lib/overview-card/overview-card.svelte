@@ -32,7 +32,7 @@ let {
 	size = "md",
 	color = "var(--chart-1)",
 	periods,
-	period,
+	period = $bindable(periods?.[0]?.value),
 	onPeriodChange,
 	locale,
 	formatValue,
@@ -102,8 +102,9 @@ function setActive(index: number | null) {
 	onActiveIndexChange?.(index);
 }
 
-function setPeriod(next: string | string[]) {
-	if (typeof next === "string") onPeriodChange?.(next);
+function setPeriod(next: string) {
+	period = next;
+	onPeriodChange?.(next);
 }
 </script>
 
@@ -120,7 +121,7 @@ function setPeriod(next: string | string[]) {
 				<ToggleGroup
 					type="single"
 					size="sm"
-					bind:value={() => period ?? "", setPeriod}
+					bind:value={() => period ?? "", (v) => setPeriod(v as string)}
 					label="{title} period"
 				>
 					{#each periods as p (p.value)}

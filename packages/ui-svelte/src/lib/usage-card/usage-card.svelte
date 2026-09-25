@@ -65,18 +65,17 @@ function setActive(index: number | null) {
 		{/if}
 	</CardHeader>
 	<CardContent class={styles.body()}>
-		<ChartContainer {config} {title} aspect="square" {locale}>
-			<div class={styles.ring()}>
-				<RingChart
-					{data}
-					{dataKey}
-					{maxKey}
-					{nameKey}
-					{cap}
-					{centerLabel}
-					bind:activeIndex={() => activeIndex, setActive}
-				/>
-			</div>
+		<ChartContainer {config} {title} aspect="auto" {locale} class={styles.chart()}>
+			<RingChart
+				{data}
+				{dataKey}
+				{maxKey}
+				{nameKey}
+				{cap}
+				{centerLabel}
+				bind:activeIndex={() => activeIndex, setActive}
+				class={styles.plot()}
+			/>
 			<ChartLegendContent align="start" class={styles.legend()} />
 		</ChartContainer>
 	</CardContent>

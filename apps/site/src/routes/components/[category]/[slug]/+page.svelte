@@ -195,8 +195,8 @@ const breadcrumbJsonLd = $derived(
 	</div>
 
 	<section id="preview" class="mt-8 scroll-mt-24">
-		<div class="flex items-center justify-between gap-3">
-			<Tabs {tabs} bind:active={tab} variant="underline" class="flex-1" />
+		<div class="flex flex-wrap items-center justify-between gap-3">
+			<Tabs {tabs} bind:active={tab} variant="underline" class="min-w-0 flex-1" />
 			{#if tab === "preview"}
 				<PreviewToolbar bind:viewport bind:fullscreen onReload={() => reloadKey++} />
 			{/if}
@@ -234,14 +234,17 @@ const breadcrumbJsonLd = $derived(
 		<section id="behaviour" class="mt-12 scroll-mt-24 border-border border-t pt-8">
 			<h2 class="font-semibold text-foreground text-sm">Behaviour contract</h2>
 			<p class="mt-1 max-w-2xl text-muted-foreground text-sm">
-				What both implementations must observably do. Not a description of either one's code.
+				What both implementations must observably do, for an agent reading this page as well
+				as a person. Not a description of either one's code.
 			</p>
-			<ul class="mt-3 flex max-w-2xl list-disc flex-col gap-1.5 pl-5 text-muted-foreground text-sm">
-				{#each data.spec.motion.behaviour as rule (rule)}
-					<li>{rule}</li>
-				{/each}
-				<li>{data.spec.motion.reducedMotion}</li>
-			</ul>
+			<div class="mt-3 max-w-2xl rounded-xl border border-border p-4">
+				<ul class="flex list-disc flex-col gap-1.5 pl-5 text-muted-foreground text-sm">
+					{#each data.spec.motion.behaviour as rule (rule)}
+						<li>{rule}</li>
+					{/each}
+					<li>{data.spec.motion.reducedMotion}</li>
+				</ul>
+			</div>
 		</section>
 	{/if}
 

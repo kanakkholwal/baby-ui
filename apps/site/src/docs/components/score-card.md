@@ -2,7 +2,7 @@
 title: Score Card
 description: "A single headline metric on a dial: health scores, grades, NPS, uptime."
 component: score-card
-category: charts
+category: blocks
 tags: [score, gauge, health score, nps, uptime, card]
 ---
 

@@ -2,7 +2,7 @@
 title: Stat Card
 description: "A KPI card whose headline, caption and trend follow the point under the chart."
 component: stat-card
-category: charts
+category: blocks
 tags: [stat, kpi, metric, card, dashboard]
 ---
 

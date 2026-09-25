@@ -2,7 +2,7 @@
 title: Overview Card
 description: "A dashboard hero metric: headline, trend, an optional period switcher and a full-width chart."
 component: overview-card
-category: charts
+category: blocks
 tags: [overview, dashboard, hero metric, chart, card]
 ---
 

@@ -66,19 +66,24 @@ export function UsageCard({
 				) : null}
 			</CardHeader>
 			<CardContent className={styles.body()}>
-				<ChartContainer config={config} title={title} aspect="square" locale={locale}>
-					<div className={styles.ring()}>
-						<RingChart
-							data={data}
-							dataKey={dataKey}
-							maxKey={maxKey}
-							nameKey={nameKey}
-							cap={cap}
-							centerLabel={centerLabel}
-							activeIndex={activeIndex}
-							onActiveIndexChange={onActiveIndexChange}
-						/>
-					</div>
+				<ChartContainer
+					config={config}
+					title={title}
+					aspect="auto"
+					locale={locale}
+					className={styles.chart()}
+				>
+					<RingChart
+						data={data}
+						dataKey={dataKey}
+						maxKey={maxKey}
+						nameKey={nameKey}
+						cap={cap}
+						centerLabel={centerLabel}
+						activeIndex={activeIndex}
+						onActiveIndexChange={onActiveIndexChange}
+						className={styles.plot()}
+					/>
 					<ChartLegend
 						content={<ChartLegendContent align="start" className={styles.legend()} />}
 					/>

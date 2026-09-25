@@ -1,6 +1,6 @@
 "use client";
 
-import { UsageCard, type UsageCardLayout } from "@baby-ui/react";
+import { type RingCap, UsageCard, type UsageCardLayout } from "@baby-ui/react";
 import { GOALS, GOALS_CONFIG } from "../data/channels";
 
 type Props = Record<string, unknown>;
@@ -14,6 +14,8 @@ export function UsageCardDemo({ props }: { props: Props }) {
 				data={GOALS}
 				config={GOALS_CONFIG}
 				layout={(props.layout as UsageCardLayout) ?? "side"}
+				cap={(props.cap as RingCap) ?? "round"}
+				centerLabel={(props.centerLabel as string) ?? "Total"}
 			/>
 		</div>
 	);

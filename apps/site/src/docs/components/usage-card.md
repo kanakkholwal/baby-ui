@@ -2,7 +2,7 @@
 title: Usage Card
 description: "A settings-page usage panel: one ring per metric, with a legend breakdown."
 component: usage-card
-category: charts
+category: blocks
 tags: [usage, quota, storage, ring, settings, card]
 ---
 

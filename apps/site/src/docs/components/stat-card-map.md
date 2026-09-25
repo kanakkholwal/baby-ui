@@ -2,7 +2,7 @@
 title: Stat Card Map
 description: "A KPI card over a choropleth; the headline follows the region under the pointer."
 component: stat-card-map
-category: charts
+category: blocks
 tags: [stat, kpi, map, choropleth, card]
 ---
 

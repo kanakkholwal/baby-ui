@@ -10,7 +10,7 @@ const demoPromise = $derived(demos[spec.slug]?.());
 const demoProps = $derived(defaultProps(spec));
 </script>
 
-<article class="group/card relative h-full">
+<article class="group/card relative h-full min-w-0">
 	<a
 		href={specHref(spec)}
 		aria-label="View {spec.name}"

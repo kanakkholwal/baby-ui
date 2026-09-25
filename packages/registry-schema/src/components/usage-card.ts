@@ -5,7 +5,7 @@ export const usageCard = defineComponent({
 	name: "Usage Card",
 	description:
 		"A settings-page usage panel: one ring per metric, with a legend breakdown.",
-	category: "charts",
+	category: "blocks",
 	status: "alpha",
 	props: [
 		{

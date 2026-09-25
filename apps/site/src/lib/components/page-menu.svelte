@@ -89,7 +89,7 @@ const row =
 		<div
 			data-state={open ? "open" : "closed"}
 			inert={!open}
-			class="absolute top-full right-0 z-50 mt-1.5 w-52 origin-top-right rounded-xl border border-border bg-popover p-1 shadow-2xl transition-[opacity,scale] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] starting:scale-[var(--enter-scale)] starting:opacity-0 data-[state=closed]:scale-[var(--enter-scale)] data-[state=closed]:opacity-0 data-[state=closed]:duration-[var(--duration-exit)] motion-reduce:transition-none"
+			class="absolute top-full left-0 z-50 mt-1.5 w-52 origin-top-left rounded-xl border border-border bg-popover p-1 shadow-2xl transition-[opacity,scale] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] starting:scale-[var(--enter-scale)] starting:opacity-0 data-[state=closed]:scale-[var(--enter-scale)] data-[state=closed]:opacity-0 data-[state=closed]:duration-[var(--duration-exit)] motion-reduce:transition-none sm:right-0 sm:left-auto sm:origin-top-right"
 		>
 			<a href={markdownUrl} class={row}>
 				<IconMarkdown size={14} stroke={1.5} class="shrink-0" />

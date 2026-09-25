@@ -1,5 +1,5 @@
 <script lang="ts">
-import { UsageCard, type UsageCardLayout } from "@baby-ui/svelte";
+import { type RingCap, UsageCard, type UsageCardLayout } from "@baby-ui/svelte";
 import { GOALS, GOALS_CONFIG } from "../data/channels";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
@@ -12,5 +12,7 @@ let { props = {} }: { props?: Record<string, unknown> } = $props();
 		data={GOALS}
 		config={GOALS_CONFIG}
 		layout={(props.layout as UsageCardLayout) ?? "side"}
+		cap={(props.cap as RingCap) ?? "round"}
+		centerLabel={(props.centerLabel as string) ?? "Total"}
 	/>
 </div>

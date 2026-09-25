@@ -45,6 +45,7 @@ export interface OverviewCardProps {
 	/** Period switcher options; omit to hide the toggle entirely. */
 	periods?: OverviewCardPeriod[];
 	period?: string;
+	defaultPeriod?: string;
 	onPeriodChange?: (period: string) => void;
 	locale?: string;
 	formatValue?: (value: number) => string;
@@ -71,7 +72,8 @@ export function OverviewCard({
 	size = "md",
 	color = "var(--chart-1)",
 	periods,
-	period,
+	period: periodProp,
+	defaultPeriod,
 	onPeriodChange,
 	locale,
 	formatValue,
@@ -87,6 +89,14 @@ export function OverviewCard({
 	const setActive = (index: number | null) => {
 		if (activeIndexProp === undefined) setInternal(index);
 		onActiveIndexChange?.(index);
+	};
+	const [internalPeriod, setInternalPeriod] = useState(
+		defaultPeriod ?? periods?.[0]?.value,
+	);
+	const period = periodProp !== undefined ? periodProp : internalPeriod;
+	const setPeriod = (next: string) => {
+		if (periodProp === undefined) setInternalPeriod(next);
+		onPeriodChange?.(next);
 	};
 	const number = useMemo(
 		() =>
@@ -135,7 +145,7 @@ export function OverviewCard({
 							type="single"
 							size="sm"
 							value={period ?? ""}
-							onValueChange={(next) => onPeriodChange?.(next as string)}
+							onValueChange={(next) => setPeriod(next as string)}
 							label={`${title} period`}
 						>
 							{periods.map((p) => (

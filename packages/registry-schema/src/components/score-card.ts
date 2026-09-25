@@ -4,7 +4,7 @@ export const scoreCard = defineComponent({
 	slug: "score-card",
 	name: "Score Card",
 	description: "A single headline metric on a dial: health scores, grades, NPS, uptime.",
-	category: "charts",
+	category: "blocks",
 	status: "alpha",
 	props: [
 		{
@@ -18,14 +18,14 @@ export const scoreCard = defineComponent({
 			name: "min",
 			type: "number",
 			description: "Scale minimum.",
-			default: "0",
+			default: 0,
 			control: { kind: "number" },
 		},
 		{
 			name: "max",
 			type: "number",
 			description: "Scale maximum.",
-			default: "100",
+			default: 100,
 			control: { kind: "number" },
 		},
 		{

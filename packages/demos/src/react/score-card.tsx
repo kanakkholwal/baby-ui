@@ -1,6 +1,11 @@
 "use client";
 
-import { type GaugeChartLayout, type GaugeChartTone, ScoreCard } from "@baby-ui/react";
+import {
+	type GaugeChartLayout,
+	type GaugeChartTone,
+	ScoreCard,
+	type ScoreCardSize,
+} from "@baby-ui/react";
 
 type Props = Record<string, unknown>;
 
@@ -11,9 +16,12 @@ export function ScoreCardDemo({ props }: { props: Props }) {
 				title="Performance"
 				description="Lighthouse, last deploy"
 				value={87}
-				trend={4}
+				min={Number(props.min ?? 0)}
+				max={Number(props.max ?? 100)}
+				trend={Number(props.trend ?? 4)}
 				tone={(props.tone as GaugeChartTone) ?? "primary"}
 				layout={(props.layout as GaugeChartLayout) ?? "arc"}
+				size={(props.size as ScoreCardSize) ?? "md"}
 			/>
 		</div>
 	);

@@ -5,7 +5,7 @@ export const overviewCard = defineComponent({
 	name: "Overview Card",
 	description:
 		"A dashboard hero metric: headline, trend, an optional period switcher and a full-width chart.",
-	category: "charts",
+	category: "blocks",
 	status: "alpha",
 	props: [
 		{
@@ -38,7 +38,8 @@ export const overviewCard = defineComponent({
 		{
 			name: "period",
 			type: "string",
-			description: "Selected period. Controlled with onPeriodChange.",
+			description:
+				"Selected period. Controlled with onPeriodChange; bindable in Svelte. Uncontrolled default is defaultPeriod or the first option.",
 			control: { kind: "none" },
 		},
 		{
