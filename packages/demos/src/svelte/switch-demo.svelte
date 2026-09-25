@@ -16,7 +16,7 @@ const size = $derived((props.size as "sm" | "md" | "lg" | "xl") ?? "md");
 const ROW = "flex w-full flex-row-reverse items-center justify-between gap-6";
 </script>
 
-<div class="flex w-72 flex-col divide-y divide-border rounded-xl border border-border">
+<div class="flex w-full max-w-72 flex-col divide-y divide-border rounded-xl border border-border">
 	<div class="px-4 py-3">
 		<Switch
 			bind:checked

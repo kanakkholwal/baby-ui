@@ -20,7 +20,7 @@ const variant = $derived((props.variant as MessageBubbleVariant) ?? "default");
 const animated = $derived(props.animated !== false);
 </script>
 
-<MessageGroup class="w-96">
+<MessageGroup class="w-full max-w-96">
 	<Message align="end" animated={false}>
 		<MessageContent>
 			<MessageBubble variant="primary">

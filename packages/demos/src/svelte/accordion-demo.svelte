@@ -37,7 +37,7 @@ $effect(() => {
 });
 </script>
 
-<div class="w-96">
+<div class="w-full max-w-96">
 	<Accordion {type} collapsible={props.collapsible !== false} bind:value>
 		{#each FAQ as item (item.id)}
 			<AccordionItem value={item.id}>

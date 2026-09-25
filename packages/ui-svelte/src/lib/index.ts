@@ -560,6 +560,13 @@ export { default as StatCard } from "./stat-card/stat-card.svelte";
 export type { StatCardChartKind, StatCardSize } from "./stat-card/variants";
 export { default as StatCardMap } from "./stat-card-map/stat-card-map.svelte";
 export type { StatCardMapSize } from "./stat-card-map/variants";
+export { default as StatusMonitor } from "./status-monitor/status-monitor.svelte";
+export type {
+	StatusMonitorItem,
+	StatusMonitorLabels,
+	StatusMonitorUnit,
+} from "./status-monitor/timeline";
+export type { StatusMonitorSize, StatusMonitorStatus } from "./status-monitor/variants";
 export { default as StreamingText } from "./streaming-text/streaming-text.svelte";
 export type { StreamingSource, StreamingToken } from "./streaming-text/types";
 export type { StreamingTextLayout } from "./streaming-text/variants";

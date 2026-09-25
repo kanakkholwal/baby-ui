@@ -22,4 +22,4 @@ const SAMPLE = [
 const content = $derived((props.content as string) || SAMPLE);
 </script>
 
-<div class="w-96"><Markdown {content} size={(props.size as MarkdownSize) ?? "md"} /></div>
+<div class="w-full max-w-96"><Markdown {content} size={(props.size as MarkdownSize) ?? "md"} /></div>

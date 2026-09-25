@@ -1,87 +1,107 @@
 <script lang="ts">
 import { specs } from "@baby-ui/registry-schema/components";
+import { Badge, Button, GibberishText, ShowcaseGrid, ShowcasePanel } from "@baby-ui/svelte";
+import IconArrowRight from "@tabler/icons-svelte/icons/arrow-right";
+import IconRefresh from "@tabler/icons-svelte/icons/refresh";
 import { page } from "$app/state";
+import { specHref } from "$lib/registry";
 
 const status = $derived(page.status);
 const notFound = $derived(status === 404);
+const path = $derived(page.url.pathname);
 
-// A wrong slug is the likeliest 404 here, so offer the nearest real components.
+// A mistyped slug is the likeliest 404, so rank real components by shared prefix and letters.
 const suggestions = $derived.by(() => {
 	if (!notFound) return [];
-	const wanted = page.url.pathname.split("/").filter(Boolean).pop() ?? "";
-	const scored = specs
+	const wanted = path.split("/").filter(Boolean).pop()?.toLowerCase() ?? "";
+	if (!wanted) return specs.slice(0, 4);
+	return specs
 		.map((spec) => {
-			const a = spec.slug;
-			const shared = [...wanted].filter((ch) => a.includes(ch)).length;
-			return { spec, score: a.startsWith(wanted.slice(0, 3)) ? shared + 10 : shared };
+			const shared = [...new Set(wanted)].filter((ch) => spec.slug.includes(ch)).length;
+			const prefix = spec.slug.startsWith(wanted.slice(0, 3)) ? 10 : 0;
+			return { spec, score: shared + prefix };
 		})
-		.sort((x, y) => y.score - x.score);
-	return scored.slice(0, 4).map((s) => s.spec);
+		.sort((a, b) => b.score - a.score)
+		.slice(0, 4)
+		.map((s) => s.spec);
 });
 
+const title = $derived(notFound ? "Page not found" : "Something broke");
 const message = $derived(
 	notFound
-		? "That page does not exist. It may have been renamed, or the component may not be ported yet."
-		: (page.error?.message ?? "Something went wrong while rendering this page."),
+		? "Nothing lives at this address. It may have been renamed, or never existed."
+		: (page.error?.message ?? "This page failed to render. Try again, or head back home."),
 );
 </script>
 
-<svelte:head><title>{status} · Baby UI</title></svelte:head>
+<svelte:head>
+	<title>{status} · Baby UI</title>
+	<meta name="robots" content="noindex" />
+</svelte:head>
 
-<main class="mx-auto flex min-h-[70vh] max-w-2xl flex-col justify-center px-6 py-20">
-	<p
-		class="font-mono text-[11px] text-muted-foreground uppercase tracking-[0.22em]"
-		aria-hidden="true"
-	>
-		Error {status}
-	</p>
+<main class="mx-auto flex min-h-[calc(100dvh-3.5rem)] max-w-5xl flex-col justify-center px-4 py-16 md:px-10">
+	<ShowcaseGrid>
+		<ShowcasePanel span={notFound ? 7 : 12} class="min-h-64 md:min-h-80">
+			<div class="flex w-full flex-col items-start gap-5 self-stretch md:justify-center">
+				<Badge variant="outline">Error {status}</Badge>
+				<p
+					aria-hidden="true"
+					class="font-mono font-semibold text-7xl text-foreground tracking-tighter tabular-nums sm:text-8xl"
+				>
+					<GibberishText text={String(status)} speedMs={40} class="text-inherit" />
+				</p>
+				<div>
+					<h1 class="font-semibold text-2xl text-foreground tracking-tight">{title}</h1>
+					<p class="mt-2 max-w-md text-muted-foreground text-sm leading-relaxed">{message}</p>
+					{#if notFound}
+						<p class="mt-3 truncate font-mono text-muted-foreground text-xs">{path}</p>
+					{/if}
+				</div>
+			</div>
+		</ShowcasePanel>
 
-	<h1 class="mt-4 font-heading font-semibold text-5xl tracking-tight sm:text-6xl">
-		{notFound ? "Not found" : "Something broke"}
-	</h1>
+		{#if notFound}
+			<ShowcasePanel span={5} class="min-h-64 md:min-h-80">
+				<nav aria-label="Suggested components" class="flex w-full flex-col gap-3 self-stretch">
+					<p class="font-medium text-[11px] text-muted-foreground uppercase tracking-wider">
+						Were you looking for
+					</p>
+					<ul class="flex flex-col gap-1">
+						{#each suggestions as spec (spec.slug)}
+							<li>
+								<a
+									href={specHref(spec)}
+									class="group flex items-center justify-between gap-3 rounded-lg px-3 py-2.5 outline-none transition-colors hover:bg-foreground/[0.06] focus-visible:ring-2 focus-visible:ring-ring"
+								>
+									<span class="min-w-0">
+										<span class="block font-medium text-foreground text-sm">{spec.name}</span>
+										<span class="block truncate text-muted-foreground text-xs">{spec.description}</span>
+									</span>
+									<IconArrowRight
+										size={14}
+										stroke={1.6}
+										class="shrink-0 text-muted-foreground transition-transform duration-150 group-hover:translate-x-0.5 motion-reduce:transition-none"
+									/>
+								</a>
+							</li>
+						{/each}
+					</ul>
+				</nav>
+			</ShowcasePanel>
+		{/if}
 
-	<p class="mt-4 max-w-md text-muted-foreground leading-relaxed">{message}</p>
-
-	{#if notFound && suggestions.length}
-		<section class="mt-10">
-			<p class="font-medium text-[11px] text-muted-foreground uppercase tracking-wider">
-				Were you looking for
-			</p>
-			<ul class="mt-3 flex flex-col divide-y divide-border overflow-hidden rounded-xl border border-border">
-				{#each suggestions as spec (spec.slug)}
-					<li>
-						<a
-							href="/components/{spec.category}/{spec.slug}"
-							class="flex items-center justify-between gap-4 px-4 py-3 transition-colors hover:bg-foreground/[0.03]"
-						>
-							<span class="min-w-0">
-								<span class="block font-medium text-foreground text-sm">{spec.name}</span>
-								<span class="mt-0.5 block truncate text-muted-foreground text-xs">
-									{spec.description}
-								</span>
-							</span>
-							<span class="shrink-0 font-mono text-[10px] text-muted-foreground uppercase">
-								{spec.category}
-							</span>
-						</a>
-					</li>
-				{/each}
-			</ul>
-		</section>
-	{/if}
-
-	<div class="mt-10 flex flex-wrap gap-3 text-sm">
-		<a
-			href="/"
-			class="inline-flex min-h-10 items-center rounded-full bg-primary px-4 font-medium text-primary-foreground transition-[transform,scale,translate] duration-[var(--duration-press)] ease-[var(--ease-out)] active:scale-[var(--press-scale)]"
-		>
-			Back home
-		</a>
-		<a
-			href="/components"
-			class="inline-flex min-h-10 items-center rounded-full border border-border px-4 font-medium transition-colors hover:bg-card"
-		>
-			Browse components
-		</a>
-	</div>
+		<ShowcasePanel span={12} class="min-h-0 md:min-h-24">
+			<div class="flex w-full flex-wrap items-center justify-center gap-3">
+				{#if !notFound}
+					<Button onclick={() => location.reload()}>
+						<IconRefresh stroke={1.7} />
+						Try again
+					</Button>
+				{/if}
+				<Button href="/" variant={notFound ? "default" : "outline"}>Back home</Button>
+				<Button href="/components" variant="outline">Browse components</Button>
+				<Button href="/docs" variant="ghost">Read the docs</Button>
+			</div>
+		</ShowcasePanel>
+	</ShowcaseGrid>
 </main>

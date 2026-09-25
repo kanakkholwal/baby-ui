@@ -22,7 +22,7 @@ function note(action: string) {
 }
 </script>
 
-<div class="flex w-80 flex-col gap-3 text-sm">
+<div class="flex w-full max-w-80 flex-col gap-3 text-sm">
 	<div class="flex items-center gap-2">
 		<Button variant="outline" size="sm" onclick={() => note("New file")}>
 			New file

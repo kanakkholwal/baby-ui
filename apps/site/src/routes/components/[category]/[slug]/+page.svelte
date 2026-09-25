@@ -348,10 +348,8 @@ const breadcrumbJsonLd = $derived(
 {#snippet previewStage(fill = false)}
 	<div
 		class={[
-			"mx-auto transition-[max-width] duration-300",
-			// "Desktop" needs a real floor, not just "no cap": the layout's sidebars can
-			// leave under 768px for the card, under a @3xl component's own breakpoint.
-			viewport === "mobile" ? "max-w-sm" : "min-w-3xl max-w-full",
+			"mx-auto w-full transition-[max-width] duration-300",
+			viewport === "mobile" ? "max-w-sm" : "max-w-full",
 			fill && "flex h-full flex-col",
 		]}
 	>

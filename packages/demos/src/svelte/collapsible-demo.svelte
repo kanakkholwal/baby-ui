@@ -10,7 +10,7 @@ $effect(() => {
 });
 </script>
 
-<div class="w-80">
+<div class="w-full max-w-80">
 	<Collapsible bind:open>
 		<CollapsibleTrigger>Advanced options</CollapsibleTrigger>
 		<CollapsibleContent>

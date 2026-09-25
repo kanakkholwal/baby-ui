@@ -56,7 +56,7 @@ const layout = $derived((props.layout as "inline" | "card") ?? "inline");
 </script>
 
 {#key layout}
-	<div class="w-96">
+	<div class="w-full max-w-96">
 		<StreamingText
 			{layout}
 			content={CONTENT}

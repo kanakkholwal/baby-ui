@@ -7,7 +7,7 @@ const text = $derived((props.text as string) || "npx shadcn@latest add button");
 </script>
 
 <div
-	class="flex w-[22rem] items-center justify-between gap-3 rounded-xl border border-border bg-card px-3 py-2"
+	class="flex w-full max-w-[22rem] items-center justify-between gap-3 rounded-xl border border-border bg-card px-3 py-2"
 >
 	<code class="truncate font-mono text-foreground text-xs">{text}</code>
 	<CopyButton

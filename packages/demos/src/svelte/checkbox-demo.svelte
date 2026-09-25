@@ -15,7 +15,7 @@ $effect(() => {
 const granted = $derived(scopes.filter(Boolean).length);
 </script>
 
-<div class="flex w-72 flex-col gap-3">
+<div class="flex w-full max-w-72 flex-col gap-3">
 	<Checkbox
 		bind:checked={
 			() => granted === SCOPES.length, (next) => (scopes = SCOPES.map(() => next))

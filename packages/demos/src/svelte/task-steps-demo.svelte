@@ -11,7 +11,7 @@ const steps = [
 ];
 </script>
 
-<div class="w-80">
+<div class="w-full max-w-80">
 	<TaskSteps
 		{steps}
 		showConnector={props.showConnector !== false}

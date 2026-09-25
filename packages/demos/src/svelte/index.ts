@@ -106,6 +106,7 @@ export const demos: Record<string, DemoLoader> = {
 	"loading-state": () => import("./loading-state-demo.svelte"),
 	"hero-stage": () => import("./hero-stage-demo.svelte"),
 	"showcase-grid": () => import("./showcase-grid-demo.svelte"),
+	"status-monitor": () => import("./status-monitor-demo.svelte"),
 	"logo-carousel": () => import("./logo-carousel-demo.svelte"),
 	"recommendation-card": () => import("./recommendation-card-demo.svelte"),
 	"chat-composer": () => import("./chat-composer-demo.svelte"),

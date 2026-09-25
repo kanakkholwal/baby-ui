@@ -51,7 +51,7 @@ const FOLLOW_UPS = [
 
 export function StreamingTextDemo({ props }: { props: Props }) {
 	return (
-		<div className="w-96">
+		<div className="w-full max-w-96">
 			<StreamingText
 				key={String(props.layout)}
 				layout={(props.layout as "inline" | "card") ?? "inline"}

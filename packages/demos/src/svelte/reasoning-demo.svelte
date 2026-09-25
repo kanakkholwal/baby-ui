@@ -41,7 +41,7 @@ function stepStatus(index: number): ReasoningStepStatus {
 }
 </script>
 
-<div class="w-96">
+<div class="w-full max-w-96">
 	<Reasoning
 		{thinking}
 		duration={thinking ? Math.round(step * 1.4) : Number(props.duration ?? 4)}

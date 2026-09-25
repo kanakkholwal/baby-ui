@@ -12,7 +12,7 @@ let { props = {} }: { props?: Record<string, unknown> } = $props();
 let value = $state("overview");
 </script>
 
-<div class="w-96">
+<div class="w-full max-w-96">
 	<Tabs
 		bind:value
 		variant={(props.variant as TabsVariant) ?? "pill"}

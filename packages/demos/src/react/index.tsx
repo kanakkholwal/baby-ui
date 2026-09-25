@@ -128,6 +128,7 @@ import { ScrollProgressDemo } from "./scroll-progress";
 import { ShowcaseGridDemo } from "./showcase-grid";
 import { SidebarNavDemo } from "./sidebar-nav";
 import { StatCardDemo, StatCardMapDemo } from "./stat-card";
+import { StatusMonitorDemo } from "./status-monitor";
 import { StreamingTextDemo } from "./streaming-text";
 import { SunburstChartDemo } from "./sunburst-chart";
 import { TableDemo } from "./table";
@@ -417,6 +418,7 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"loading-state": LoadingStateDemo,
 	"hero-stage": HeroStageDemo,
 	"showcase-grid": ShowcaseGridDemo,
+	"status-monitor": StatusMonitorDemo,
 	"logo-carousel": LogoCarouselDemo,
 	"recommendation-card": RecommendationCardDemo,
 	"chat-composer": ChatComposerDemo,

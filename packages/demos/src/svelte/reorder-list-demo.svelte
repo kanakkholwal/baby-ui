@@ -11,7 +11,7 @@ let items = $state([
 ]);
 </script>
 
-<div class="w-80">
+<div class="w-full max-w-80">
 	<ReorderList
 		bind:items
 		disabled={Boolean(props.disabled)}

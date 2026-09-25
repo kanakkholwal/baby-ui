@@ -152,7 +152,7 @@ const TAB_COPY: Record<string, string> = {
 export function TabsDemo({ props }: { props: Props }) {
 	const [value, setValue] = useState("overview");
 	return (
-		<div className="w-96">
+		<div className="w-full max-w-96">
 			<Tabs
 				value={value}
 				onValueChange={setValue}
@@ -182,7 +182,7 @@ export function MessageDemo({ props }: { props: Props }) {
 	const variant = (props.variant as MessageBubbleVariant) ?? "default";
 	const animated = props.animated !== false;
 	return (
-		<MessageGroup className="w-96">
+		<MessageGroup className="w-full max-w-96">
 			<Message align="end" animated={false}>
 				<MessageContent>
 					<MessageBubble variant="primary">
@@ -215,7 +215,7 @@ export function ResponseStreamDemo({ props }: { props: Props }) {
 		(props.text as string) ||
 		"Streaming reveals text at a steady rate so the reader is never chasing it.";
 	return (
-		<div className="w-96 rounded-xl border border-border bg-card p-4">
+		<div className="w-full max-w-96 rounded-xl border border-border bg-card p-4">
 			<ResponseStream
 				key={`${text}-${String(props.speed)}`}
 				text={text}
@@ -255,7 +255,7 @@ export function ReasoningDemo({ props }: { props: Props }) {
 	const step = scripted ? progress : REASONING_STEPS.length;
 	const thinking = step < REASONING_STEPS.length;
 	return (
-		<div className="w-96">
+		<div className="w-full max-w-96">
 			<Reasoning
 				thinking={thinking}
 				duration={thinking ? Math.round(step * 1.4) : Number(props.duration ?? 4)}
@@ -302,7 +302,7 @@ const STEPS = [
 
 export function TaskStepsDemo({ props }: { props: Props }) {
 	return (
-		<div className="w-80">
+		<div className="w-full max-w-80">
 			<TaskSteps
 				steps={STEPS}
 				showConnector={props.showConnector !== false}

@@ -3,21 +3,13 @@ title: Introduction
 description: Copy-paste components for React and Svelte, built from one spec.
 ---
 
-Baby UI is a shadcn registry, not a package. The CLI copies a component's source into your
-project; you own the files.
+Baby UI is a shadcn registry, not a package. The CLI copies source into your project and you
+own it.
 
-## What you get
+- One spec, two hand-written ports: React and Svelte look and behave the same.
+- Base components use shadcn's part names and `data-slot`s, so they drop in over shadcn/ui.
+- Components read your theme's variables; nothing names a colour.
+- TypeScript and JavaScript routes for every item.
 
-- The same component in React and Svelte, each written by hand against one spec.
-- shadcn part names and `data-slot`s on base components, so they replace shadcn/ui files
-  without touching call sites.
-- One token layer, so both ports look identical and follow your existing theme.
-- A JavaScript route for every component.
-- A [registry namespace](/docs/installation#optional-registry-namespace) for the `shadcn`
-  CLI, so `add` commands shorten to `@baby-ui/button` (React only, for now).
-
-## Start here
-
-1. [Installation](/docs/installation)
-2. [Theming](/docs/theming)
-3. Pick a framework and language in the header, then copy any component's install command.
+Start with [Installation](/docs/installation), then [Theming](/docs/theming). The header's
+framework and language pickers switch every command on the site.

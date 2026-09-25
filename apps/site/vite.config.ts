@@ -24,6 +24,42 @@ export default defineConfig({
 	// The package ships a raw .svelte file in dist; dev SSR externalises it and Node
 	// then refuses the extension. Harmless in the bundled prod build, fatal in dev.
 	ssr: { noExternal: ["@docvia/renderer-svelte"] },
+	// The scanner can't see lazy demos or docvia's virtual modules; finding these mid-session
+	// re-bundles deps and pages hydrate against a second Svelte runtime. Icons ship raw .svelte.
+	optimizeDeps: {
+		include: [
+			"@docvia/renderer-svelte",
+			"@docvia/source/internal",
+			"@shikijs/langs/bash",
+			"@shikijs/langs/css",
+			"@shikijs/langs/javascript",
+			"@shikijs/langs/json",
+			"@shikijs/langs/jsx",
+			"@shikijs/langs/svelte",
+			"@shikijs/langs/tsx",
+			"@shikijs/langs/typescript",
+			"@shikijs/themes/github-dark-default",
+			"@shikijs/themes/github-light-default",
+			"@baby-ui/svelte > bits-ui",
+			"clsx",
+			"@baby-ui/svelte > d3-array",
+			"@baby-ui/svelte > d3-geo",
+			"@baby-ui/svelte > d3-sankey",
+			"@baby-ui/svelte > d3-scale",
+			"@baby-ui/svelte > d3-shape",
+			"mode-watcher",
+			"posthog-js/dist/module.slim.no-external",
+			"shiki/core",
+			"shiki/engine/javascript",
+			"@baby-ui/svelte > svelte-sonner",
+			"tailwind-merge",
+			"@baby-ui/svelte > tailwind-variants",
+			"@baby-ui/demos > topojson-client",
+			"@baby-ui/svelte > vaul-svelte",
+			"@baby-ui/registry-schema > zod",
+		],
+		exclude: ["@tabler/icons-svelte"],
+	},
 	environments: {
 		ssr: { resolve: { noExternal: ["@docvia/renderer-svelte"] } },
 	},

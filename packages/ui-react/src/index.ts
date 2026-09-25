@@ -762,6 +762,15 @@ export {
 	type StatCardMapSize,
 } from "./stat-card-map/stat-card-map";
 export {
+	StatusMonitor,
+	type StatusMonitorItem,
+	type StatusMonitorLabels,
+	type StatusMonitorProps,
+	type StatusMonitorSize,
+	type StatusMonitorStatus,
+	type StatusMonitorUnit,
+} from "./status-monitor/status-monitor";
+export {
 	type StreamingSource,
 	StreamingText,
 	type StreamingTextProps,

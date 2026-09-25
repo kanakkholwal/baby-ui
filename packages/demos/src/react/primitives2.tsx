@@ -129,7 +129,7 @@ export function ToggleGroupDemo({ props }: { props: Props }) {
 
 export function CollapsibleDemo({ props }: { props: Props }) {
 	return (
-		<div className="w-80">
+		<div className="w-full max-w-80">
 			<Collapsible defaultOpen={Boolean(props.open)}>
 				<CollapsibleTrigger>Advanced options</CollapsibleTrigger>
 				<CollapsibleContent>
@@ -143,7 +143,7 @@ export function CollapsibleDemo({ props }: { props: Props }) {
 
 export function ShowMoreDemo({ props }: { props: Props }) {
 	return (
-		<div className="w-80">
+		<div className="w-full max-w-80">
 			<ShowMore
 				lines={Number(props.lines ?? 3)}
 				maxHeight={Number(props.maxHeight ?? 320)}
@@ -169,7 +169,7 @@ export function ShortcutDemo({ props }: { props: Props }) {
 	const [log, setLog] = useState<string[]>([]);
 	const note = (action: string) => setLog((prev) => [action, ...prev].slice(0, 3));
 	return (
-		<div className="flex w-80 flex-col gap-3 text-sm">
+		<div className="flex w-full max-w-80 flex-col gap-3 text-sm">
 			<div className="flex items-center gap-2">
 				<Button variant="outline" size="sm" onClick={() => note("New file")}>
 					New file
@@ -207,7 +207,7 @@ export function ShortcutDemo({ props }: { props: Props }) {
 
 export function TypographyDemo({ props }: { props: Props }) {
 	return (
-		<div className="flex w-80 flex-col gap-3">
+		<div className="flex w-full max-w-80 flex-col gap-3">
 			<Typography variant="h2">Release 0.4</Typography>
 			<Typography variant="muted">Shipped 20 September 2026</Typography>
 			<Typography variant={(props.variant as TypographyVariant) ?? "body"}>

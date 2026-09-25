@@ -3,9 +3,8 @@ title: Theming
 description: CSS variables on :root, redefined under .dark. Components never name a colour.
 ---
 
-Components read shadcn's variable names, so they follow your theme. Add the `theme`
-registry item, or paste the base layer from [Installation](/docs/installation), to use
-this site's look instead.
+Components read shadcn's variable names, so they follow your theme. To use this site's look,
+see [Installation](/docs/installation#use-this-sites-look).
 
 ## Primary colour
 
@@ -16,17 +15,18 @@ this site's look instead.
 }
 ```
 
-`--ring` derives from `--primary`, so focus follows the brand colour. The header's
-palette control writes exactly this pair.
+`--ring` derives from `--primary`, so focus rings follow it. The header's palette control
+writes this pair.
 
-## Extra names
+## Extra variables
 
-Beyond shadcn's set, components use `--success`, `--warning`, `--info`, `--border-strong`,
-`--neon` and `--violet`. `tokens` defines them; override them the same way.
+Beyond shadcn's set: `--success`, `--warning`, `--info`, `--border-strong`, `--neon` and
+`--violet`. `tokens` defines them; override them the same way.
 
 ## Dark mode
 
-Add `dark` to `<html>` and set `color-scheme`:
+The `dark` class on `<html>`, as in shadcn, so `next-themes` and `mode-watcher` work
+unchanged. Set `color-scheme` too, or native form controls stay light.
 
 ```js
 document.documentElement.classList.toggle("dark", dark);
@@ -35,8 +35,8 @@ document.documentElement.style.colorScheme = dark ? "dark" : "light";
 
 ## Motion
 
-Durations and easings are variables too. Reduced motion shortens them and removes travel;
-fades stay.
+Durations and easings are variables. Reduced motion shortens them and removes travel; fades
+stay.
 
 ```css
 --duration-press: 140ms;
@@ -48,4 +48,5 @@ fades stay.
 
 ## Hover surfaces
 
-`--accent` is a brand colour here, not a neutral. Hover states use `bg-foreground/[0.06]`.
+`--accent` is a brand colour here, not a neutral, so hover states use
+`bg-foreground/[0.06]`.

@@ -116,6 +116,7 @@ import { spinner } from "./spinner";
 import { splitText } from "./split-text";
 import { staggeredLetter } from "./staggered-letter";
 import { statCard, statCardMap } from "./stat-card";
+import { statusMonitor } from "./status-monitor";
 import { streamingText } from "./streaming-text";
 import { sunburstChart } from "./sunburst-chart";
 import { swapText } from "./swap-text";
@@ -232,6 +233,7 @@ export const specs: ComponentSpec[] = [
 	loadingState,
 	heroStage,
 	showcaseGrid,
+	statusMonitor,
 	recommendationCard,
 	chatComposer,
 	thinkingState,

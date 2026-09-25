@@ -12,7 +12,7 @@ const value = $derived(Number(props.value ?? 68));
 const indeterminate = $derived(Boolean(props.indeterminate));
 </script>
 
-<div class="flex w-72 flex-col items-center gap-2">
+<div class="flex w-full max-w-72 flex-col items-center gap-2">
 	<Progress
 		{value}
 		{indeterminate}

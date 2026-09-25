@@ -49,7 +49,7 @@ const SERVICES = [
 export function BadgeDemo({ props }: { props: Props }) {
 	const size = (props.size as BadgeSize) ?? "md";
 	return (
-		<div className="flex w-72 flex-col gap-3 text-sm">
+		<div className="flex w-full max-w-72 flex-col gap-3 text-sm">
 			<div className="flex items-center justify-between gap-4">
 				<span className="text-muted-foreground">api-gateway</span>
 				<Badge
@@ -161,7 +161,7 @@ export function InputDemo({ props }: { props: Props }) {
 	const id = useId();
 	const [value, setValue] = useState("");
 	return (
-		<div className="flex w-72 flex-col gap-1.5">
+		<div className="flex w-full max-w-72 flex-col gap-1.5">
 			<Label htmlFor={id} required>
 				Workspace name
 			</Label>
@@ -184,7 +184,7 @@ export function InputDemo({ props }: { props: Props }) {
 export function LabelDemo({ props }: { props: Props }) {
 	const id = useId();
 	return (
-		<div className="flex w-72 flex-col gap-1.5">
+		<div className="flex w-full max-w-72 flex-col gap-1.5">
 			<Label
 				htmlFor={id}
 				required={Boolean(props.required)}
@@ -230,7 +230,7 @@ export function CheckboxDemo({ props }: { props: Props }) {
 	const granted = scopes.filter(Boolean).length;
 
 	return (
-		<div className="flex w-72 flex-col gap-3">
+		<div className="flex w-full max-w-72 flex-col gap-3">
 			<Checkbox
 				checked={granted === SCOPES.length}
 				indeterminate={granted > 0 && granted < SCOPES.length}
@@ -274,7 +274,7 @@ export function SwitchDemo({ props }: { props: Props }) {
 	const size = (props.size as "sm" | "md" | "lg" | "xl") ?? "md";
 
 	return (
-		<div className="flex w-72 flex-col divide-y divide-border rounded-xl border border-border">
+		<div className="flex w-full max-w-72 flex-col divide-y divide-border rounded-xl border border-border">
 			<div className="px-4 py-3">
 				<Switch
 					checked={checked}
@@ -304,7 +304,7 @@ export function ProgressDemo({ props }: { props: Props }) {
 	const value = Number(props.value ?? 68);
 	const indeterminate = Boolean(props.indeterminate);
 	return (
-		<div className="flex w-72 flex-col items-center gap-2">
+		<div className="flex w-full max-w-72 flex-col items-center gap-2">
 			<Progress
 				value={value}
 				indeterminate={indeterminate}
@@ -323,7 +323,7 @@ export function ProgressDemo({ props }: { props: Props }) {
 export function SkeletonDemo({ props }: { props: Props }) {
 	const shape = (props.shape as "line" | "circle" | "block") ?? "line";
 	return (
-		<div className="flex w-72 items-center gap-3">
+		<div className="flex w-full max-w-72 items-center gap-3">
 			<Skeleton width="2.5rem" height="2.5rem" shape="circle" />
 			<div className="flex flex-1 flex-col gap-2">
 				<Skeleton

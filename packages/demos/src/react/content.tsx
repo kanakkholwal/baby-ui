@@ -38,7 +38,7 @@ const SAMPLE_MD =
 export function CopyButtonDemo({ props }: { props: Props }) {
 	const text = (props.text as string) || "npx shadcn@latest add button";
 	return (
-		<div className="flex w-[22rem] items-center justify-between gap-3 rounded-xl border border-border bg-card px-3 py-2">
+		<div className="flex w-full max-w-[22rem] items-center justify-between gap-3 rounded-xl border border-border bg-card px-3 py-2">
 			<code className="truncate font-mono text-foreground text-xs">{text}</code>
 			<CopyButton
 				text={text}
@@ -66,7 +66,7 @@ export function CodeBlockDemo({ props }: { props: Props }) {
 
 export function MarkdownDemo({ props }: { props: Props }) {
 	return (
-		<div className="w-96">
+		<div className="w-full max-w-96">
 			<Markdown
 				content={(props.content as string) || SAMPLE_MD}
 				size={(props.size as MarkdownSize) ?? "md"}
@@ -101,7 +101,7 @@ export function FileDiffDemo({ props }: { props: Props }) {
 export function TagInputDemo({ props }: { props: Props }) {
 	const [tags, setTags] = useState(["svelte", "react"]);
 	return (
-		<div className="w-80">
+		<div className="w-full max-w-80">
 			<TagInput
 				tags={tags}
 				onTagsChange={setTags}
@@ -145,7 +145,7 @@ const STEPS: ReorderItem[] = [
 export function ReorderListDemo({ props }: { props: Props }) {
 	const [items, setItems] = useState(STEPS);
 	return (
-		<div className="w-80">
+		<div className="w-full max-w-80">
 			<ReorderList
 				items={items}
 				onItemsChange={setItems}
@@ -159,7 +159,7 @@ export function ReorderListDemo({ props }: { props: Props }) {
 
 export function AttachmentDemo({ props }: { props: Props }) {
 	return (
-		<div className="flex w-80 flex-col gap-2">
+		<div className="flex w-full max-w-80 flex-col gap-2">
 			<Attachment
 				name={(props.name as string) || "spec-draft.md"}
 				size={(props.size as string) || "18 KB"}
@@ -283,7 +283,7 @@ const USER_BUBBLE = "rounded-xl bg-input text-foreground px-4 py-2.5";
 export function ConversationDemo({ props }: { props: Props }) {
 	return (
 		<div
-			className="w-96 rounded-xl border border-border bg-card/40 p-2"
+			className="w-full max-w-96 rounded-xl border border-border bg-card/40 p-2"
 			style={{ height: (props.maxHeight as string) || "22rem" }}
 		>
 			<Conversation className="h-full">

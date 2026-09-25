@@ -4,7 +4,7 @@ import { ShowMore } from "@baby-ui/svelte";
 let { props = {} }: { props?: Record<string, unknown> } = $props();
 </script>
 
-<div class="w-80">
+<div class="w-full max-w-80">
 	<ShowMore
 		lines={Number(props.lines ?? 3)}
 		maxHeight={Number(props.maxHeight ?? 320)}

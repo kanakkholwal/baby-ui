@@ -12,7 +12,7 @@ const text = $derived(
 );
 </script>
 
-<div class="w-96 rounded-xl border border-border bg-card p-4">
+<div class="w-full max-w-96 rounded-xl border border-border bg-card p-4">
 	{#key [text, props.speed]}
 		<ResponseStream
 			{text}

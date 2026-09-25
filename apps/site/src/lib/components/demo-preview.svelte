@@ -29,7 +29,7 @@ const iframeSrc = $derived(
 <!-- Sivir's inset frame: a tinted outer card, canvas sunk one level on bg-background. -->
 <div class={["rounded-xl border border-border bg-card p-1", classProp]}>
 	<div
-		class="relative grid h-full min-h-88 grid-cols-[minmax(0,1fr)] place-items-center overflow-x-auto overflow-y-hidden rounded-[7px] bg-background bg-[radial-gradient(var(--border)_1px,transparent_1px)] [background-size:16px_16px] p-8"
+		class="relative grid h-full min-h-88 grid-cols-[minmax(0,1fr)] place-items-center overflow-x-auto overflow-y-hidden rounded-[7px] bg-background bg-[radial-gradient(var(--border)_1px,transparent_1px)] [background-size:16px_16px] p-4 sm:p-8"
 	>
 		{#if demoPromise}
 			{#await demoPromise}
@@ -54,11 +54,6 @@ const iframeSrc = $derived(
 					class="h-full min-h-[18rem] w-full border-0 bg-transparent"
 					sandbox="allow-scripts"
 				></iframe>
-			{:else}
-				<!-- Same tokens, same spec: the Svelte render stands in until the React runner ships. -->
-				<p class="absolute right-3 bottom-2 text-[10px] text-muted-foreground">
-					Rendered by the Svelte port
-				</p>
 			{/if}
 		{/if}
 	</div>

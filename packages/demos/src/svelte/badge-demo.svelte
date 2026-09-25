@@ -7,7 +7,7 @@ let { props = {} }: { props?: Record<string, unknown> } = $props();
 const size = $derived((props.size as BadgeSize) ?? "md");
 </script>
 
-<div class="flex w-72 flex-col gap-3 text-sm">
+<div class="flex w-full max-w-72 flex-col gap-3 text-sm">
 	<div class="flex items-center justify-between gap-4">
 		<span class="text-muted-foreground">api-gateway</span>
 		<Badge

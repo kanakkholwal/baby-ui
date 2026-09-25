@@ -4,7 +4,7 @@ import { Attachment } from "@baby-ui/svelte";
 let { props = {} }: { props?: Record<string, unknown> } = $props();
 </script>
 
-<div class="flex w-80 flex-col gap-2">
+<div class="flex w-full max-w-80 flex-col gap-2">
 	<Attachment
 		name={(props.name as string) || "spec-draft.md"}
 		size={(props.size as string) || "18 KB"}

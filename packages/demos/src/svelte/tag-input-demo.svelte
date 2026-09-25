@@ -6,7 +6,7 @@ let { props = {} }: { props?: Record<string, unknown> } = $props();
 let tags = $state(["svelte", "react"]);
 </script>
 
-<div class="w-80">
+<div class="w-full max-w-80">
 	<TagInput
 		bind:tags
 		placeholder={(props.placeholder as string) || "Add a tag…"}
