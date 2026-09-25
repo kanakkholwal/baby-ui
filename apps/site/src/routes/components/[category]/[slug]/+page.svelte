@@ -8,6 +8,7 @@ import IconArrowRight from "@tabler/icons-svelte/icons/arrow-right";
 import IconChevronRight from "@tabler/icons-svelte/icons/chevron-right";
 import IconList from "@tabler/icons-svelte/icons/list";
 import { page } from "$app/state";
+import { track } from "$lib/analytics";
 import CodeBlock from "$lib/components/code-block.svelte";
 import ComponentCard from "$lib/components/component-card.svelte";
 import ControlsPanel from "$lib/components/controls-panel.svelte";
@@ -196,7 +197,18 @@ const breadcrumbJsonLd = $derived(
 
 	<section id="preview" class="mt-8 scroll-mt-24">
 		<div class="flex flex-wrap items-center justify-between gap-3">
-			<Tabs {tabs} bind:active={tab} variant="underline" class="min-w-0 flex-1" />
+			<Tabs
+				{tabs}
+				bind:active={
+					() => tab,
+					(next) => {
+						tab = next;
+						track("component_tab_selected", { tab: next });
+					}
+				}
+				variant="underline"
+				class="min-w-0 flex-1"
+			/>
 			{#if tab === "preview"}
 				<PreviewToolbar bind:viewport bind:fullscreen onReload={() => reloadKey++} />
 			{/if}
@@ -211,7 +223,13 @@ const breadcrumbJsonLd = $derived(
 				{/if}
 			{:else if tab === "usage"}
 				{#if usage}
-					<CodeBlock code={usage.code} html={usage.html} lang={usage.lang} maxHeight="none" />
+					<CodeBlock
+						code={usage.code}
+						html={usage.html}
+						lang={usage.lang}
+						maxHeight="none"
+						analytics={{ event: "usage_copied" }}
+					/>
 				{/if}
 			{:else if port}
 				<InstallBlock

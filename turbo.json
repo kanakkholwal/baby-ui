@@ -4,6 +4,7 @@
 	"tasks": {
 		"build": {
 			"dependsOn": ["^build", "^registry"],
+			"env": ["VITE_POSTHOG_KEY"],
 			"outputs": ["dist/**", ".svelte-kit/**", "build/**", ".docvia/**"]
 		},
 		"registry": {

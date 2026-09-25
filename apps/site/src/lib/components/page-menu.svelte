@@ -3,6 +3,7 @@ import IconArrowUpRight from "@tabler/icons-svelte/icons/arrow-up-right";
 import IconChevronDown from "@tabler/icons-svelte/icons/chevron-down";
 import IconCopy from "@tabler/icons-svelte/icons/copy";
 import IconMarkdown from "@tabler/icons-svelte/icons/markdown";
+import { track } from "$lib/analytics";
 
 let { markdownUrl, copyText }: { markdownUrl: string; copyText: string } = $props();
 
@@ -50,6 +51,7 @@ $effect(() => {
 
 async function copyPage() {
 	await navigator.clipboard.writeText(copyText);
+	track("page_copied");
 	copied = true;
 	clearTimeout(timer);
 	timer = setTimeout(() => (copied = false), 1600);

@@ -14,4 +14,9 @@ const url = $derived(
 );
 </script>
 
-<PmCommand kind="dlx" args="{CLI[prefs.framework]} add {url}" highlight="{slug}.json" />
+<PmCommand
+	kind="dlx"
+	args="{CLI[prefs.framework]} add {url}"
+	highlight="{slug}.json"
+	analytics={{ event: "install_copied", props: { item: slug, method: "cli" } }}
+/>

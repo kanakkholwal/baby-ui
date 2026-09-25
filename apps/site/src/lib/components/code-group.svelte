@@ -43,7 +43,11 @@ const BODY =
 		{/if}
 		<div class="ml-auto flex shrink-0 items-center gap-2">
 			{#if current.pm}<PmTabs />{/if}
-			<CopyButton text={copyText} iconOnly />
+			<CopyButton
+				text={copyText}
+				analytics={current.pm && { event: "command_copied", props: { kind: current.pm.kind } }}
+				iconOnly
+			/>
 		</div>
 	</div>
 	<div class="relative overflow-hidden rounded-[calc(var(--radius-xl)-1px-0.25rem)] bg-background">

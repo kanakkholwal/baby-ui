@@ -1,5 +1,6 @@
 <script lang="ts">
 import { Skeleton } from "@baby-ui/svelte";
+import { track } from "$lib/analytics";
 import type { InstallSource } from "$lib/source";
 import CodeBlock from "./code-block.svelte";
 import InstallCommand from "./install-command.svelte";
@@ -39,9 +40,24 @@ const tabs = [
 	{ id: "cli", label: "CLI" },
 	{ id: "manual", label: "Manual" },
 ];
+const manual = (step: string) => ({
+	event: "install_copied",
+	props: { item: slug, method: "manual", step },
+});
 </script>
 
-<Tabs {tabs} bind:active={mode} variant="segment" class="self-start" />
+<Tabs
+	{tabs}
+	bind:active={
+		() => mode,
+		(next) => {
+			mode = next;
+			track("install_method_selected", { method: next });
+		}
+	}
+	variant="segment"
+	class="self-start"
+/>
 
 <div class="mt-4">
 	{#if mode === "cli"}
@@ -51,7 +67,11 @@ const tabs = [
 			{#if dependencies.length}
 				<li>
 					<p class="mb-2 text-foreground text-sm">Install the dependencies.</p>
-					<PmCommand kind="add" args={dependencies.join(" ")} />
+					<PmCommand
+						kind="add"
+						args={dependencies.join(" ")}
+						analytics={manual("dependencies")}
+					/>
 				</li>
 			{/if}
 			{#await load(source)}
@@ -73,12 +93,17 @@ const tabs = [
 			{:then { files, css }}
 				<li>
 					<p class="mb-2 text-foreground text-sm">Copy each file to the path shown.</p>
-					<SourceFiles {files} {dialect} />
+					<SourceFiles {files} {dialect} analytics={manual("source")} />
 				</li>
 				{#if css}
 					<li>
 						<p class="mb-2 text-foreground text-sm">Add this to your global stylesheet.</p>
-						<CodeBlock code={css.code} html={css.html} lang="css" />
+						<CodeBlock
+							code={css.code}
+							html={css.html}
+							lang="css"
+							analytics={manual("css")}
+						/>
 					</li>
 				{/if}
 			{:catch}

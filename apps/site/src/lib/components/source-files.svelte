@@ -1,10 +1,15 @@
 <script lang="ts">
+import type { TrackEvent } from "$lib/analytics";
 import CodeBlock from "./code-block.svelte";
 
 type Variant = { code: string; lang: string; html: string };
 type File = { path: string; jsPath: string | null; ts: Variant; js: Variant | null };
 
-let { files, dialect = "ts" }: { files: File[]; dialect?: string } = $props();
+let {
+	files,
+	dialect = "ts",
+	analytics,
+}: { files: File[]; dialect?: string; analytics?: TrackEvent } = $props();
 
 const panels = $derived(
 	files.map((file) => {
@@ -15,4 +20,4 @@ const panels = $derived(
 );
 </script>
 
-<CodeBlock {panels} />
+<CodeBlock {panels} {analytics} />

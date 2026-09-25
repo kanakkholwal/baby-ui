@@ -1,5 +1,6 @@
 <script lang="ts">
 import type { Snippet } from "svelte";
+import type { TrackEvent } from "$lib/analytics";
 import CopyButton from "./copy-button.svelte";
 import Tabs from "./tabs.svelte";
 
@@ -10,6 +11,7 @@ let {
 	active = $bindable(""),
 	title,
 	copyText,
+	analytics,
 	children,
 	class: classProp,
 }: {
@@ -17,6 +19,7 @@ let {
 	active?: string;
 	title?: Snippet;
 	copyText: string;
+	analytics?: TrackEvent;
 	children: Snippet;
 	class?: string;
 } = $props();
@@ -34,7 +37,7 @@ let {
 		{:else if title}
 			{@render title()}
 		{/if}
-		<div class="ml-auto shrink-0"><CopyButton text={copyText} iconOnly /></div>
+		<div class="ml-auto shrink-0"><CopyButton text={copyText} {analytics} iconOnly /></div>
 	</div>
 	<div class="relative overflow-hidden rounded-[calc(var(--radius-xl)-1px-0.25rem)] bg-background">
 		{@render children()}

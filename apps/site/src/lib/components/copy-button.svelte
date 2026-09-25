@@ -1,18 +1,28 @@
 <script lang="ts">
 import IconCheck from "@tabler/icons-svelte/icons/check";
 import IconCopy from "@tabler/icons-svelte/icons/copy";
+import { type TrackEvent, track } from "$lib/analytics";
 
 let {
 	text,
 	iconOnly = false,
+	analytics = { event: "code_copied" },
 	class: classProp,
-}: { text: string; iconOnly?: boolean; class?: string } = $props();
+}: {
+	text: string;
+	iconOnly?: boolean;
+	analytics?: TrackEvent;
+	class?: string;
+} = $props();
 
 let copied = $state(false);
 let timer: ReturnType<typeof setTimeout>;
 
 async function copy() {
 	await navigator.clipboard.writeText(text);
+	// The first line names the command or the import, enough to tell copies apart.
+	const snippet = text.split("\n", 1)[0].slice(0, 120);
+	track(analytics.event, { snippet, ...analytics.props });
 	copied = true;
 	clearTimeout(timer);
 	timer = setTimeout(() => (copied = false), 1600);

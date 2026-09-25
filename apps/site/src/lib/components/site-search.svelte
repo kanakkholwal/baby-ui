@@ -11,6 +11,7 @@ import {
 } from "@baby-ui/svelte";
 import IconSearch from "@tabler/icons-svelte/icons/search";
 import { goto } from "$app/navigation";
+import { track } from "$lib/analytics";
 import { searchItems } from "$lib/registry";
 
 let open = $state(false);
@@ -44,6 +45,7 @@ $effect(() => {
 
 function go(href: string) {
 	open = false;
+	track("search_selected", { href });
 	void goto(href);
 }
 </script>

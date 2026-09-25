@@ -1,5 +1,6 @@
 import type { Framework } from "@baby-ui/registry-schema";
 import { mode } from "mode-watcher";
+import { track } from "./analytics";
 import { persisted } from "./persisted-state.svelte";
 
 export type Dialect = "ts" | "js";
@@ -148,6 +149,7 @@ class Preferences {
 		key: K,
 		value: K extends keyof Stored ? Stored[K] : ThemeId,
 	) {
+		track("preference_changed", { key, value });
 		if (key === "theme") {
 			this.#theme.current = value as ThemeId;
 		} else {

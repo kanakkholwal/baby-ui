@@ -1,4 +1,5 @@
 <script lang="ts">
+import type { TrackEvent } from "$lib/analytics";
 import type { PmKind } from "$lib/pm";
 import { pmCommand } from "$lib/pm";
 import { prefs } from "$lib/preferences.svelte";
@@ -10,12 +11,13 @@ let {
 	kind,
 	args,
 	highlight = "",
-}: { kind: PmKind; args: string; highlight?: string } = $props();
+	analytics = { event: "command_copied", props: { kind } },
+}: { kind: PmKind; args: string; highlight?: string; analytics?: TrackEvent } = $props();
 
 const command = $derived(pmCommand(kind, args, prefs.pm));
 </script>
 
-<CodeFrame copyText={command}>
+<CodeFrame copyText={command} {analytics}>
 	{#snippet title()}<PmTabs />{/snippet}
 	<PmTerminal {kind} {args} {highlight} />
 </CodeFrame>

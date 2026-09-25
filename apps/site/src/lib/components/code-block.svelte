@@ -1,5 +1,6 @@
 <script lang="ts">
 import IconFileCode from "@tabler/icons-svelte/icons/file-code";
+import type { TrackEvent } from "$lib/analytics";
 import { LANG_LABEL } from "$lib/highlight";
 import CodeFrame from "./code-frame.svelte";
 
@@ -13,6 +14,7 @@ let {
 	panels,
 	maxHeight = "32rem",
 	collapsible = false,
+	analytics,
 }: {
 	code?: string;
 	html?: string;
@@ -23,6 +25,7 @@ let {
 	maxHeight?: string;
 	/** Start folded to a preview height with an expand control, for long reference blocks. */
 	collapsible?: boolean;
+	analytics?: TrackEvent;
 } = $props();
 
 let expanded = $state(false);
@@ -42,6 +45,11 @@ const activeIndex = $derived(all.findIndex((p) => p.id === active));
 const tabs = $derived(
 	panels ? panels.map((p) => ({ id: p.id, label: p.label })) : undefined,
 );
+const copyEvent = $derived(
+	analytics && panels
+		? { ...analytics, props: { ...analytics.props, file: current.label } }
+		: analytics,
+);
 
 const dir = $derived(filename ? filename.split("/").slice(0, -1).join("/") : null);
 const name = $derived(filename ? filename.split("/").pop() : null);
@@ -51,7 +59,7 @@ const BODY =
 	"scroll-area overflow-auto py-4 font-mono text-[13px] leading-[1.7] [&_.line]:px-5 [&_.shiki]:bg-transparent [&_pre]:!bg-transparent [&_pre]:!p-0";
 </script>
 
-<CodeFrame {tabs} bind:active copyText={current.code}>
+<CodeFrame {tabs} bind:active copyText={current.code} analytics={copyEvent}>
 	{#snippet title()}
 		<div class="flex min-w-0 items-center gap-2 px-1 text-xs">
 			<span

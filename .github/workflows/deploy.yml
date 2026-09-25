@@ -46,6 +46,8 @@ jobs:
 
       - name: Build site and registry
         run: pnpm build
+        env:
+          VITE_POSTHOG_KEY: ${{ vars.POSTHOG_KEY }}
 
       - name: Worker bundle budget
         run: pnpm size

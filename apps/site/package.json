@@ -47,8 +47,9 @@
 		"clsx": "catalog:",
 		"detype": "^2.0.8",
 		"mode-watcher": "^1.1.0",
+		"posthog-js": "^1.434.12",
 		"shiki": "catalog:",
-		"takumi-js": "^2.14.0",
-		"tailwind-merge": "catalog:"
+		"tailwind-merge": "catalog:",
+		"takumi-js": "^2.14.0"
 	}
 }

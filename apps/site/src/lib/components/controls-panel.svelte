@@ -3,6 +3,8 @@ import SpecDials from "@baby-ui/demos/controls";
 import type { ComponentSpec } from "@baby-ui/registry-schema";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@baby-ui/svelte";
 import IconAdjustmentsHorizontal from "@tabler/icons-svelte/icons/adjustments-horizontal";
+import { track } from "$lib/analytics";
+import { defaultProps } from "$lib/registry";
 
 let {
 	spec,
@@ -10,6 +12,17 @@ let {
 }: { spec: ComponentSpec; values: Record<string, unknown> } = $props();
 
 let open = $state(true);
+
+// Debounced so a dragged slider reports once, when the reader settles on a value.
+$effect(() => {
+	const base = defaultProps(spec);
+	const changed = Object.keys(values).filter(
+		(key) => JSON.stringify(values[key]) !== JSON.stringify(base[key]),
+	);
+	if (!changed.length) return;
+	const timer = setTimeout(() => track("props_changed", { props: changed }), 1500);
+	return () => clearTimeout(timer);
+});
 </script>
 
 <!-- Sivir's inset frame, same treatment as Card's `framed` variant and CodeBlock: a rim in
