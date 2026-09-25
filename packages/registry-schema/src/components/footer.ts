@@ -6,7 +6,7 @@ export const footer = defineComponent({
 	description:
 		"Marketing site footer: brand and socials, link columns, an optional giant wordmark.",
 	category: "blocks",
-	status: "alpha",
+	status: "stable",
 	props: [
 		{
 			name: "columns",
@@ -46,6 +46,13 @@ export const footer = defineComponent({
 			description: "Giant animated background text. Omit to skip that section entirely.",
 			control: { kind: "text" },
 		},
+		{
+			name: "layout",
+			type: '"split" | "centered"',
+			description: "Brand block beside the link columns, or centred above them.",
+			default: "split",
+			control: { kind: "select", options: ["split", "centered"] },
+		},
 	],
 	motion: {
 		springs: [],
@@ -63,18 +70,20 @@ export const footer = defineComponent({
 			entry: "Footer",
 			files: [
 				{ path: "footer/footer.tsx", type: "registry:ui" },
+				{ path: "footer/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 		svelte: {
 			entry: "Footer",
 			files: [
 				{ path: "footer/footer.svelte", type: "registry:ui" },
 				{ path: "footer/types.ts", type: "registry:ui" },
+				{ path: "footer/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 	},
 	keywords: ["footer", "site footer", "links", "marketing", "wordmark"],

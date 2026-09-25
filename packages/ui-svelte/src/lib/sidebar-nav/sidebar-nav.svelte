@@ -213,7 +213,12 @@ function onGlideOver(group: string, event: MouseEvent) {
 					tabindex={collapsed ? -1 : 0}
 					class="absolute top-1 right-12 left-2 flex h-8 items-center rounded-lg px-2 text-left transition-[background-color,transform] duration-100 hover:bg-foreground/[0.06] active:scale-[0.99]"
 				>
-					<span class="flex size-5 shrink-0 items-center justify-center text-foreground">
+					<span
+						class={cn(
+							"flex size-5 shrink-0 items-center justify-center text-foreground transition-opacity duration-150",
+							collapsed && "opacity-0",
+						)}
+					>
 						{#if logo}{@render logo()}{/if}
 					</span>
 					<span
@@ -282,7 +287,10 @@ function onGlideOver(group: string, event: MouseEvent) {
 				aria-hidden={collapsed}
 				tabindex={collapsed ? -1 : 0}
 				onclick={() => setCollapsed(true)}
-				class="absolute top-1 right-2 flex size-8 items-center justify-center rounded-lg text-muted-foreground transition-[opacity,background-color,color] duration-150 hover:bg-foreground/[0.06] hover:text-foreground"
+				class={cn(
+					"absolute top-1 right-2 flex size-8 items-center justify-center rounded-lg text-muted-foreground transition-[opacity,background-color,color] duration-150 hover:bg-foreground/[0.06] hover:text-foreground",
+					collapsed && "pointer-events-none opacity-0",
+				)}
 			>
 				{@render collapseIcon()}
 			</button>
@@ -292,7 +300,10 @@ function onGlideOver(group: string, event: MouseEvent) {
 				aria-hidden={!collapsed}
 				tabindex={collapsed ? 0 : -1}
 				onclick={() => setCollapsed(false)}
-				class="absolute top-0.5 left-2 flex size-9 items-center justify-center rounded-lg text-muted-foreground transition-[opacity,background-color,color] duration-150 hover:bg-foreground/[0.06] hover:text-foreground"
+				class={cn(
+					"absolute top-0.5 left-2 flex size-9 items-center justify-center rounded-lg text-muted-foreground transition-[opacity,background-color,color] duration-150 hover:bg-foreground/[0.06] hover:text-foreground",
+					!collapsed && "pointer-events-none opacity-0",
+				)}
 			>
 				{@render collapseIcon()}
 			</button>

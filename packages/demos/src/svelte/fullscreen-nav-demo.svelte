@@ -1,5 +1,5 @@
 <script lang="ts">
-import { FullscreenNav } from "@baby-ui/svelte";
+import { FullscreenNav, type FullscreenNavVariant } from "@baby-ui/svelte";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
 
@@ -15,4 +15,9 @@ const links = [
 
 <button type="button" class="inline-flex h-9 items-center rounded-lg border border-border bg-card px-3 font-medium text-foreground text-sm" onclick={() => (open = true)}>Open navigation</button>
 
-<FullscreenNav {links} bind:open title={(props.title as string) || "Menu"} />
+<FullscreenNav
+	{links}
+	bind:open
+	title={(props.title as string) || "Menu"}
+	variant={(props.variant as FullscreenNavVariant) ?? "fade"}
+/>

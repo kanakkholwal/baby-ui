@@ -44,6 +44,9 @@ jobs:
       - name: Comment and import gates, type-check
         run: pnpm check
 
+      - name: Chart core tests
+        run: pnpm test:chart
+
       - name: Build site and registry
         run: pnpm build
         env:

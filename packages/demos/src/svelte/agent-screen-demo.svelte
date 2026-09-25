@@ -1,5 +1,5 @@
 <script lang="ts">
-import { AgentScreen } from "@baby-ui/svelte";
+import { AgentScreen, type AgentScreenSize } from "@baby-ui/svelte";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
 
@@ -9,6 +9,7 @@ const PLACEHOLDER =
 
 <AgentScreen
 	agentName={(props.agentName as string) || "Agent"}
-	streamSrc={PLACEHOLDER}
+	streamSrc={(props.streamSrc as string) || PLACEHOLDER}
 	loading={Boolean(props.loading)}
+	size={(props.size as AgentScreenSize) ?? "md"}
 />

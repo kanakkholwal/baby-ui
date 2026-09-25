@@ -6,6 +6,7 @@ import { error } from "@sveltejs/kit";
 import { prepare } from "$lib/docs-nodes";
 import { highlight, langFor } from "$lib/highlight";
 import { findSpec } from "$lib/registry";
+import { componentCss, cssNames } from "$lib/registry-items";
 import { usageSnippet } from "$lib/usage";
 import type { EntryGenerator, PageServerLoad } from "./$types";
 
@@ -46,10 +47,12 @@ export const load: PageServerLoad = async ({ params }) => {
 					}
 				: null;
 			const dependencies = spec.impl[framework]?.dependencies ?? [];
+			const css = await componentCss(spec.slug, framework);
 			return {
 				framework,
 				usage,
 				dependencies,
+				css: css ? cssNames(css) : [],
 			};
 		}),
 	);

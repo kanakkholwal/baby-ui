@@ -1,5 +1,8 @@
 <script lang="ts">
 import { ResponseStream } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+
+type ResponseStreamSize = NonNullable<ComponentProps<typeof ResponseStream>["size"]>;
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
 
@@ -15,6 +18,7 @@ const text = $derived(
 			{text}
 			speed={Number(props.speed ?? 60)}
 			streaming={props.streaming !== false}
+			size={(props.size as ResponseStreamSize) ?? "md"}
 		/>
 	{/key}
 </div>

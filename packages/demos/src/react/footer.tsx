@@ -1,6 +1,11 @@
 "use client";
 
-import { Footer, type FooterColumn, type FooterSocialLink } from "@baby-ui/react";
+import {
+	Footer,
+	type FooterColumn,
+	type FooterLayout,
+	type FooterSocialLink,
+} from "@baby-ui/react";
 
 type Props = Record<string, unknown>;
 
@@ -121,6 +126,7 @@ export function FooterDemo({ props }: { props: Props }) {
 	return (
 		<Footer
 			wordmark={(props.wordmark as string) ?? "Recast"}
+			layout={(props.layout as FooterLayout) ?? "split"}
 			brand={
 				<>
 					<span className="grid size-8 place-items-center rounded-lg bg-foreground p-1">

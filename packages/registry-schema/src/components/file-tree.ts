@@ -6,7 +6,7 @@ export const fileTree = defineComponent({
 	description:
 		"Keyboard-navigable file explorer with animated expand and collapse, indent guides, and single selection.",
 	category: "advanced",
-	status: "beta",
+	status: "stable",
 
 	props: [
 		{
@@ -22,6 +22,13 @@ export const fileTree = defineComponent({
 			description: "Draw a vertical rule connecting the children of an open folder.",
 			default: true,
 			control: { kind: "boolean" },
+		},
+		{
+			name: "size",
+			type: '"sm" | "md"',
+			description: "Row height, text size and chevron scale.",
+			default: "md",
+			control: { kind: "select", options: ["sm", "md"] },
 		},
 		{
 			name: "defaultExpanded",
@@ -115,18 +122,20 @@ export const fileTree = defineComponent({
 			files: [
 				{ path: "file-tree/file-tree.tsx", type: "registry:ui" },
 				{ path: "file-tree/types.ts", type: "registry:ui" },
+				{ path: "file-tree/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 		svelte: {
 			entry: "FileTree",
 			files: [
 				{ path: "file-tree/file-tree.svelte", type: "registry:ui" },
 				{ path: "file-tree/types.ts", type: "registry:ui" },
+				{ path: "file-tree/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 	},
 

@@ -90,10 +90,12 @@
 		border-collapse: collapse;
 		font-size: 0.875rem;
 	}
+	/* anywhere, not break-word: only anywhere lowers min-content, so long paths shrink the column. */
 	.prose-baby :where(th, td) {
 		border-bottom: 1px solid var(--border);
 		padding: 0.5rem 0.75rem;
 		text-align: left;
+		overflow-wrap: anywhere;
 	}
 	.prose-baby :where(th) {
 		font-weight: 500;

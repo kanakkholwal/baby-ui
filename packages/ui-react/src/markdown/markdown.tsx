@@ -1,5 +1,8 @@
 import { useMemo } from "react";
 import { cn } from "../lib/cn";
+import { type MarkdownSize, markdown } from "./variants";
+
+export type { MarkdownSize };
 
 type Block =
 	| { kind: "heading"; level: 2 | 3; text: string }
@@ -61,41 +64,34 @@ function parse(content: string): Block[] {
 
 export interface MarkdownProps {
 	content: string;
+	size?: MarkdownSize;
 	className?: string;
 }
 
-export function Markdown({ content, className }: MarkdownProps) {
+export function Markdown({ content, size = "md", className }: MarkdownProps) {
 	const blocks = useMemo(() => parse(content), [content]);
+	const styles = markdown({ size });
 	return (
-		<div className={cn("flex flex-col gap-3 text-sm leading-relaxed", className)}>
+		<div data-slot="markdown" className={cn(styles.root(), className)}>
 			{blocks.map((block, i) => {
 				const key = i;
 				if (block.kind === "heading" && block.level === 2) {
 					return (
-						<h2
-							key={key}
-							className="font-heading font-semibold text-foreground text-lg tracking-tight"
-						>
+						<h2 key={key} className={styles.h2()}>
 							{block.text}
 						</h2>
 					);
 				}
 				if (block.kind === "heading") {
 					return (
-						<h3
-							key={key}
-							className="font-heading font-semibold text-base text-foreground"
-						>
+						<h3 key={key} className={styles.h3()}>
 							{block.text}
 						</h3>
 					);
 				}
 				if (block.kind === "list") {
 					return (
-						<ul
-							key={key}
-							className="flex list-disc flex-col gap-1 pl-5 text-muted-foreground"
-						>
+						<ul key={key} className={styles.list()}>
 							{block.items.map((item) => (
 								<li key={item}>{item}</li>
 							))}
@@ -104,16 +100,13 @@ export function Markdown({ content, className }: MarkdownProps) {
 				}
 				if (block.kind === "code") {
 					return (
-						<pre
-							key={key}
-							className="overflow-x-auto rounded-lg border border-border bg-card p-3 font-mono text-[13px] text-foreground"
-						>
+						<pre key={key} className={styles.code()}>
 							<code>{block.text}</code>
 						</pre>
 					);
 				}
 				return (
-					<p key={key} className="text-muted-foreground">
+					<p key={key} className={styles.para()}>
 						{block.text}
 					</p>
 				);

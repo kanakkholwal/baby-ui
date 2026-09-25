@@ -1,7 +1,14 @@
 <script lang="ts">
-import { Button, type MegaMenuGroup, MegaNavbar } from "@baby-ui/svelte";
+import {
+	Button,
+	type MegaMenuGroup,
+	MegaNavbar,
+	type MegaNavbarVariant,
+} from "@baby-ui/svelte";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+
+const variant = $derived((props.variant as MegaNavbarVariant) ?? "solid");
 
 const GROUPS: MegaMenuGroup[] = [
 	{
@@ -86,7 +93,8 @@ const links = [
 		active={(props.active as string) || undefined}
 		sticky={false}
 		blur={props.blur !== false}
-		class="border-border border-b bg-card"
+		{variant}
+		class={variant === "solid" ? "border-border border-b bg-card" : undefined}
 		groups={GROUPS}
 		{links}
 	>

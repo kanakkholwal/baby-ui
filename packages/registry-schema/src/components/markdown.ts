@@ -5,13 +5,20 @@ export const markdown = defineComponent({
 	name: "Markdown",
 	description: "Minimal block renderer for headings, paragraphs, lists and fenced code.",
 	category: "base",
-	status: "alpha",
+	status: "stable",
 	props: [
 		{
 			name: "content",
 			type: "string",
 			description: "Markdown source. Block-level constructs only.",
 			control: { kind: "none" },
+		},
+		{
+			name: "size",
+			type: '"sm" | "md" | "lg"',
+			description: "Prose scale: body text, heading sizes and block spacing.",
+			default: "md",
+			control: { kind: "select", options: ["sm", "md", "lg"] },
 		},
 	],
 	a11y: {
@@ -33,17 +40,19 @@ export const markdown = defineComponent({
 			entry: "Markdown",
 			files: [
 				{ path: "markdown/markdown.tsx", type: "registry:ui" },
+				{ path: "markdown/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 		svelte: {
 			entry: "Markdown",
 			files: [
 				{ path: "markdown/markdown.svelte", type: "registry:ui" },
+				{ path: "markdown/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 	},
 	keywords: ["markdown"],

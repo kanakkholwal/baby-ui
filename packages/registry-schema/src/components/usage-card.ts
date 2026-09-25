@@ -6,7 +6,7 @@ export const usageCard = defineComponent({
 	description:
 		"A settings-page usage panel: one ring per metric, with a legend breakdown.",
 	category: "blocks",
-	status: "alpha",
+	status: "stable",
 	props: [
 		{
 			name: "data",
@@ -40,6 +40,7 @@ export const usageCard = defineComponent({
 			name: "centerLabel",
 			type: "string",
 			description: "Caption under the centre value when no ring is active.",
+			default: "Total",
 			control: { kind: "text" },
 		},
 		{

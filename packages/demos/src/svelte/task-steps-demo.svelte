@@ -1,5 +1,5 @@
 <script lang="ts">
-import { TaskSteps } from "@baby-ui/svelte";
+import { TaskSteps, type TaskStepsSize } from "@baby-ui/svelte";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
 
@@ -16,5 +16,6 @@ const steps = [
 		{steps}
 		showConnector={props.showConnector !== false}
 		compact={Boolean(props.compact)}
+		size={(props.size as TaskStepsSize) ?? "md"}
 	/>
 </div>

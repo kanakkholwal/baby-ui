@@ -179,6 +179,55 @@ export function labelPlacement(
 	return { x, y, anchor: "middle", dx: 0, dy: start - y };
 }
 
+/** Approximate glyph advance and line box for the 11-12px node labels. */
+const LABEL_CHAR = 7.4;
+const LABEL_LINE = 13;
+
+/**
+ * Which label lines fit without colliding: biggest nodes claim space first, and a line whose
+ * box would hit an accepted label (or leave the plot) is dropped. Returns [name, value] per node.
+ */
+export function visibleLabels(
+	nodes: LaidNode[],
+	flow: SankeyFlow,
+	texts: (node: LaidNode) => [string, string],
+	/** Drawable area in plot coordinates, margins included. */
+	bounds: { x0: number; x1: number; y0: number; y1: number },
+): Map<number, [boolean, boolean]> {
+	const placed: { x0: number; x1: number; y0: number; y1: number }[] = [];
+	const out = new Map<number, [boolean, boolean]>();
+	const order = [...nodes].sort((a, b) => b.value - a.value);
+	for (const node of order) {
+		const shown: [boolean, boolean] = [false, false];
+		for (const line of [0, 1] as const) {
+			if (line === 1 && !shown[0]) break;
+			const at = labelPlacement(node, flow, line);
+			const w = texts(node)[line].length * LABEL_CHAR;
+			const x0 =
+				at.anchor === "end" ? at.x - w : at.anchor === "middle" ? at.x - w / 2 : at.x;
+			const box = {
+				x0,
+				x1: x0 + w,
+				y0: at.y - LABEL_LINE / 2,
+				y1: at.y + LABEL_LINE / 2,
+			};
+			const outside =
+				box.x0 < bounds.x0 ||
+				box.x1 > bounds.x1 ||
+				box.y0 < bounds.y0 ||
+				box.y1 > bounds.y1;
+			const hit = placed.some(
+				(p) => box.x0 < p.x1 && box.x1 > p.x0 && box.y0 < p.y1 && box.y1 > p.y0,
+			);
+			if (outside || hit) break;
+			placed.push(box);
+			shown[line] = true;
+		}
+		out.set(node.index, shown);
+	}
+	return out;
+}
+
 /** Overridable copy: tooltip rows and the screen-reader table. */
 export interface SankeyText {
 	total: string;

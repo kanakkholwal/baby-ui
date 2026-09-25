@@ -1,7 +1,9 @@
 <script lang="ts">
-import { Navbar } from "@baby-ui/svelte";
+import { Navbar, type NavbarVariant } from "@baby-ui/svelte";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+
+const variant = $derived((props.variant as NavbarVariant) ?? "solid");
 
 const links = [
 	{ href: "#product", label: "Product" },
@@ -16,7 +18,8 @@ const links = [
 		active="#product"
 		sticky={false}
 		blur={props.blur !== false}
-		class="border-border border-b bg-card"
+		{variant}
+		class={variant === "solid" ? "border-border border-b bg-card" : undefined}
 	>
 		{#snippet brand()}
 			<span class="font-semibold text-sm tracking-tight">Acme</span>

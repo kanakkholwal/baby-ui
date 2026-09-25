@@ -8,6 +8,8 @@ import {
 	CardHeader,
 	CardTitle,
 	Gauge,
+	HeroStage,
+	HeroStageSlot,
 	RollingDigits,
 	StatCard,
 	TextLoop,
@@ -46,29 +48,28 @@ $effect(() => {
 });
 </script>
 
-<!-- Each tile sits over a dashed slot: it starts scattered, then scroll settles it into place. -->
-<div class="hero-stage relative">
+<div class="relative">
 	<div class="absolute -top-3 -right-3 z-20">
 		<Button size="icon-sm" variant="outline" aria-label="Replay hero animation" onclick={() => run++}>
 			<IconRefresh stroke={1.7} />
 		</Button>
 	</div>
 	{#key run}
-		<div class="hero-frame" aria-hidden="true">
-			<Card variant="framed">
-				<CardHeader class="grid-cols-[1fr_auto]">
-					<div>
-						<CardTitle class="text-lg">Release pulse</CardTitle>
-						<CardDescription>Every component, both frameworks</CardDescription>
-					</div>
-					<div class="flex items-center gap-2 self-center">
-						<Badge variant="outline" dot>Live</Badge>
-					</div>
-				</CardHeader>
-				<CardContent>
-					<div class="grid grid-cols-12 gap-3">
-						<div class="hero-slot col-span-7 row-span-2" style="--i:0">
-							<div class="hero-card h-full" style="--sx:-60px;--sy:40px;--sr:-7deg">
+		<div aria-hidden="true">
+			<HeroStage>
+				<Card variant="framed">
+					<CardHeader class="grid-cols-[1fr_auto]">
+						<div>
+							<CardTitle class="text-lg">Release pulse</CardTitle>
+							<CardDescription>Every component, both frameworks</CardDescription>
+						</div>
+						<div class="flex items-center gap-2 self-center">
+							<Badge variant="outline" dot>Live</Badge>
+						</div>
+					</CardHeader>
+					<CardContent>
+						<div class="grid grid-cols-12 gap-3">
+							<HeroStageSlot class="col-span-7 row-span-2" index={0} x={-60} y={40} rotate={-7}>
 								<StatCard
 									title="Weekly installs"
 									data={installs}
@@ -80,126 +81,47 @@ $effect(() => {
 									color="var(--primary)"
 									class="h-full"
 								/>
-							</div>
-						</div>
-						<div class="hero-slot col-span-5" style="--i:1">
-							<Card class="hero-card {TILE}" style="--sx:80px;--sy:-70px;--sr:9deg">
-								<CardHeader class={TILE_PAD}>
-									<CardDescription>Downloads today</CardDescription>
-								</CardHeader>
-								<CardContent class="{TILE_PAD} flex items-end justify-between gap-2">
-									<span class="font-medium text-3xl text-foreground tracking-tight">
-										<RollingDigits value={TICKS[tick] ?? 0} locale="en-US" startOnView={false} />
-									</span>
-									<Badge variant="outline" size="sm">+4.2%</Badge>
-								</CardContent>
-							</Card>
-						</div>
-						<div class="hero-slot col-span-5" style="--i:2">
-							<Card class="hero-card {TILE} items-center" style="--sx:110px;--sy:30px;--sr:-10deg">
-								<Gauge value={98} label="A11y score" />
-							</Card>
-						</div>
-						<div class="hero-slot col-span-12" style="--i:3">
-							<Card class="hero-card {TILE}" style="--sx:-30px;--sy:90px;--sr:4deg">
-								<CardHeader class={TILE_PAD}>
-									<CardDescription>Add one to your project</CardDescription>
-								</CardHeader>
-								<CardContent class={TILE_PAD}>
-									<p
-										class="flex items-center gap-2 overflow-hidden whitespace-nowrap rounded-lg border border-border bg-background px-3 py-2.5 font-mono text-[13px]"
-									>
-										<span class="text-muted-foreground">$</span>
-										<span class="text-foreground/70">npx {CLI[prefs.framework]} add …/</span>
-										<span class="font-medium text-foreground">
-											<TextLoop items={SLUGS} intervalMs={1800} />
+							</HeroStageSlot>
+							<HeroStageSlot class="col-span-5" index={1} x={80} y={-70} rotate={9}>
+								<Card class={TILE}>
+									<CardHeader class={TILE_PAD}>
+										<CardDescription>Downloads today</CardDescription>
+									</CardHeader>
+									<CardContent class="{TILE_PAD} flex items-end justify-between gap-2">
+										<span class="font-medium text-3xl text-foreground tracking-tight">
+											<RollingDigits value={TICKS[tick] ?? 0} locale="en-US" startOnView={false} />
 										</span>
-									</p>
-								</CardContent>
-							</Card>
+										<Badge variant="outline" size="sm">+4.2%</Badge>
+									</CardContent>
+								</Card>
+							</HeroStageSlot>
+							<HeroStageSlot class="col-span-5" index={2} x={110} y={30} rotate={-10}>
+								<Card class="{TILE} items-center">
+									<Gauge value={98} label="A11y score" />
+								</Card>
+							</HeroStageSlot>
+							<HeroStageSlot class="col-span-12" index={3} x={-30} y={90} rotate={4}>
+								<Card class={TILE}>
+									<CardHeader class={TILE_PAD}>
+										<CardDescription>Add one to your project</CardDescription>
+									</CardHeader>
+									<CardContent class={TILE_PAD}>
+										<p
+											class="flex items-center gap-2 overflow-hidden whitespace-nowrap rounded-lg border border-border bg-background px-3 py-2.5 font-mono text-[13px]"
+										>
+											<span class="text-muted-foreground">$</span>
+											<span class="text-foreground/70">npx {CLI[prefs.framework]} add …/</span>
+											<span class="font-medium text-foreground">
+												<TextLoop items={SLUGS} intervalMs={1800} />
+											</span>
+										</p>
+									</CardContent>
+								</Card>
+							</HeroStageSlot>
 						</div>
-					</div>
-				</CardContent>
-			</Card>
+					</CardContent>
+				</Card>
+			</HeroStage>
 		</div>
 	{/key}
 </div>
-
-<style>
-	.hero-stage {
-		perspective: 1800px;
-	}
-
-	.hero-frame {
-		transform-origin: 50% 0;
-		animation: hero-frame-in 900ms var(--ease-out) both;
-	}
-
-	.hero-slot {
-		position: relative;
-		border-radius: 1rem;
-		outline: 1px dashed var(--border);
-		outline-offset: 3px;
-		animation: hero-card-in 700ms var(--ease-out) both;
-		animation-delay: calc(250ms + var(--i) * 110ms);
-	}
-
-	@keyframes hero-frame-in {
-		from {
-			opacity: 0;
-			transform: translateY(40px) rotateX(18deg);
-		}
-	}
-
-	@keyframes hero-card-in {
-		from {
-			opacity: 0;
-			transform: translateY(24px) scale(0.96);
-		}
-	}
-
-	/* Scroll-driven assembly; browsers without it show the settled layout. */
-	@supports (animation-timeline: scroll()) {
-		.hero-frame {
-			animation:
-				hero-frame-in 900ms var(--ease-out) both,
-				hero-tilt linear both;
-			animation-timeline: auto, scroll(root);
-			animation-range: normal, 0 55vh;
-			animation-composition: replace, add;
-		}
-
-		:global(.hero-card) {
-			animation: hero-settle linear both;
-			animation-timeline: scroll(root);
-			animation-range: 0 45vh;
-		}
-
-		@keyframes hero-tilt {
-			from {
-				transform: rotateX(12deg) rotateY(-14deg) rotateZ(5deg);
-			}
-			to {
-				transform: none;
-			}
-		}
-
-		@keyframes -global-hero-settle {
-			from {
-				transform: translate(var(--sx), var(--sy)) rotate(var(--sr));
-				box-shadow: 0 18px 40px -16px color-mix(in oklch, var(--foreground) 18%, transparent);
-			}
-			to {
-				transform: none;
-			}
-		}
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		.hero-frame,
-		.hero-slot,
-		:global(.hero-card) {
-			animation: none;
-		}
-	}
-</style>

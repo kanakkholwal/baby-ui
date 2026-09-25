@@ -23,7 +23,7 @@ function active(match: string) {
 		<div
 			class="scrollbar-hide fixed top-14 bottom-0 w-(--left-sidebar-width) overflow-y-auto py-6 pr-4"
 		>
-			<SiteSidebar {groups} />
+			<SiteSidebar {groups} connector="curve" />
 		</div>
 	</div>
 	{@render children()}
@@ -51,7 +51,7 @@ function active(match: string) {
 					</a>
 				{/each}
 			</nav>
-			<SiteSidebar {groups} onNavigate={() => (mobileNav.open = false)} />
+			<SiteSidebar {groups} connector="curve" onNavigate={() => (mobileNav.open = false)} />
 		</div>
 	</DrawerContent>
 </Drawer>

@@ -1,7 +1,6 @@
 <script lang="ts">
-import { untrack } from "svelte";
 import { cn } from "../lib/cn";
-import { type ToolState, tool } from "./variants";
+import { TOOL_LABELS, type ToolLabels, type ToolState, tool } from "./variants";
 
 let {
 	name,
@@ -9,6 +8,9 @@ let {
 	input,
 	output,
 	defaultOpen = false,
+	open = $bindable(defaultOpen),
+	onOpenChange,
+	labels,
 	class: classProp,
 }: {
 	name: string;
@@ -16,31 +18,33 @@ let {
 	input?: string;
 	output?: string;
 	defaultOpen?: boolean;
+	/** Whether the input/output panel is expanded; bindable. */
+	open?: boolean;
+	onOpenChange?: (open: boolean) => void;
+	/** Overrides for the status and section labels. */
+	labels?: Partial<ToolLabels>;
 	class?: string;
 } = $props();
 
 const id = $props.id();
-let open = $state(untrack(() => defaultOpen));
+const text = $derived({ ...TOOL_LABELS, ...labels });
+const styles = $derived(tool({ status, open }));
 
-const LABEL: Record<ToolState, string> = {
-	pending: "Queued",
-	running: "Running",
-	done: "Completed",
-	error: "Failed",
-};
-
-const classes = $derived(tool({ status }));
+function toggle() {
+	open = !open;
+	onOpenChange?.(open);
+}
 </script>
 
-<div data-slot="tool" class={cn(classes.root(), classProp)}>
+<div data-slot="tool" data-status={status} class={cn(styles.root(), classProp)}>
 	<button
 		type="button"
 		aria-expanded={open}
 		aria-controls={id}
-		onclick={() => (open = !open)}
-		class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm transition-colors hover:bg-foreground/[0.03]"
+		onclick={toggle}
+		class={styles.trigger()}
 	>
-		<span aria-hidden="true" class={classes.icon()}>
+		<span aria-hidden="true" class={styles.icon()}>
 			{#if status === "running"}
 				<svg viewBox="0 0 12 12" fill="none" class="spinner size-3">
 					<circle cx="6" cy="6" r="4.4" stroke="currentColor" stroke-width="1.5" opacity="0.25" />
@@ -59,40 +63,26 @@ const classes = $derived(tool({ status }));
 			{/if}
 		</span>
 
-		<span class="flex-1 font-mono text-foreground text-xs">{name}</span>
-		<span class={classes.label()}>{LABEL[status]}</span>
-		<svg
-			viewBox="0 0 16 16"
-			fill="none"
-			aria-hidden="true"
-			style:transform={open ? "rotate(180deg)" : "none"}
-			class="size-3.5 shrink-0 text-muted-foreground transition-[transform,scale,translate] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none"
-		>
+		<span class={styles.name()}>{name}</span>
+		<span class={styles.label()}>{text[status]}</span>
+		<svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class={styles.chevron()}>
 			<path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
 		</svg>
 	</button>
 
-	<div
-		{id}
-		style:grid-template-rows={open ? "1fr" : "0fr"}
-		class="grid transition-[grid-template-rows] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none"
-	>
+	<div {id} inert={!open} class={styles.panel()}>
 		<div class="overflow-hidden">
-			<div class="flex flex-col gap-2 border-border/60 border-t p-3">
+			<div class={styles.body()}>
 				{#if input}
 					<div>
-						<p class="mb-1 font-medium text-[10px] text-muted-foreground uppercase tracking-wider">
-							Input
-						</p>
-						<pre class="overflow-x-auto rounded-lg bg-background p-2 font-mono text-[11px] text-muted-foreground"><code>{input}</code></pre>
+						<p class={styles.heading()}>{text.input}</p>
+						<pre class={cn(styles.code(), "text-muted-foreground")}><code>{input}</code></pre>
 					</div>
 				{/if}
 				{#if output}
 					<div>
-						<p class="mb-1 font-medium text-[10px] text-muted-foreground uppercase tracking-wider">
-							Output
-						</p>
-						<pre class="overflow-x-auto rounded-lg bg-background p-2 font-mono text-[11px] text-foreground"><code>{output}</code></pre>
+						<p class={styles.heading()}>{text.output}</p>
+						<pre class={cn(styles.code(), "text-foreground")}><code>{output}</code></pre>
 					</div>
 				{/if}
 			</div>

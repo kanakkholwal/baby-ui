@@ -6,7 +6,7 @@ export const collabCard = defineComponent({
 	description:
 		"A Figma-style multiplayer canvas: wandering cursors, click bursts, live presence.",
 	category: "blocks",
-	status: "alpha",
+	status: "stable",
 	props: [
 		{
 			name: "collaborators",
@@ -74,8 +74,16 @@ export const collabCard = defineComponent({
 		{
 			name: "backgroundUrl",
 			type: "string",
-			description: "Background image URL. Falls back to a dark canvas gradient.",
+			description: "Background image URL. Falls back to the tone's canvas gradient.",
 			control: { kind: "text" },
+		},
+		{
+			name: "tone",
+			type: '"inverted" | "surface"',
+			description:
+				"Inverted is a design-tool canvas that contrasts the page; surface follows the card colours.",
+			default: "inverted",
+			control: { kind: "select", options: ["inverted", "surface"] },
 		},
 	],
 	motion: {
@@ -91,7 +99,7 @@ export const collabCard = defineComponent({
 		keyboard: [],
 		notes: [
 			"Purely decorative: cursors, the live-ping dot and the presence stack are all `aria-hidden`.",
-			"The Figma-brand colors (`#0D99FF`, `#A259FF`, `#FF7262`, `#1ABCFE`, `#0ACF83`) are fixed, not theme tokens: this card depicts a specific external tool's canvas and stays dark regardless of the site's light/dark mode, the same way a browser-chrome mockup wouldn't reskin either.",
+			"Every colour is a theme token (selection chrome is `primary`, the glow uses chart slots), so both tones keep readable contrast in light and dark mode.",
 		],
 	},
 	licenseOrigin: {
@@ -105,18 +113,20 @@ export const collabCard = defineComponent({
 			entry: "CollabCard",
 			files: [
 				{ path: "collab-card/collab-card.tsx", type: "registry:ui" },
+				{ path: "collab-card/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 		svelte: {
 			entry: "CollabCard",
 			files: [
 				{ path: "collab-card/collab-card.svelte", type: "registry:ui" },
 				{ path: "collab-card/types.ts", type: "registry:ui" },
+				{ path: "collab-card/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 	},
 	keywords: ["collaboration", "multiplayer", "cursors", "presence", "figma", "bento"],

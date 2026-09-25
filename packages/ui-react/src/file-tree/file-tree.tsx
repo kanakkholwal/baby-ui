@@ -2,8 +2,10 @@
 
 import type { KeyboardEvent } from "react";
 import { useMemo, useRef, useState } from "react";
-import { cn } from "../lib/cn";
 import { type FileTreeNode, flatten } from "./types";
+import { type FileTreeSize, fileTree, ROW_INSET } from "./variants";
+
+export type { FileTreeSize };
 
 export interface FileTreeProps {
 	tree: FileTreeNode[];
@@ -20,9 +22,11 @@ export interface FileTreeProps {
 	className?: string;
 	indent?: number;
 	showGuides?: boolean;
+	size?: FileTreeSize;
 }
 
 type Shared = {
+	size: FileTreeSize;
 	expandedIds: Record<string, boolean>;
 	defaultExpanded: boolean;
 	selected: string | null;
@@ -50,6 +54,11 @@ function TreeRow({
 	const id = parent ? `${parent}/${node.name}` : node.name;
 	const isFolder = Array.isArray(node.children);
 	const expanded = isFolder ? (shared.expandedIds[id] ?? shared.defaultExpanded) : false;
+	const styles = fileTree({
+		size: shared.size,
+		selected: shared.selected === id,
+		guide: shared.showGuides && depth > 0,
+	});
 
 	return (
 		<>
@@ -63,22 +72,15 @@ function TreeRow({
 				onKeyDown={(e) => shared.onKeyDown(e, id)}
 				onClick={() => shared.select(id, isFolder, expanded)}
 				onFocus={() => shared.setFocused(id)}
-				style={{ paddingLeft: depth * shared.indent + 8 }}
-				className={cn(
-					"tree-row flex cursor-pointer items-center gap-1.5 rounded-md py-1 pr-2 outline-none transition-colors",
-					"hover:bg-foreground/[0.06] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
-					shared.selected === id
-						? "bg-foreground/[0.06] text-foreground"
-						: "text-muted-foreground",
-					shared.showGuides && depth > 0 && "border-border/60 border-l",
-				)}
+				style={{ paddingLeft: depth * shared.indent + ROW_INSET[shared.size] }}
+				className={styles.row()}
 			>
 				{isFolder ? (
 					<svg
 						viewBox="0 0 16 16"
 						fill="none"
 						aria-hidden
-						className="size-3.5 shrink-0 transition-[transform,scale,translate] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none"
+						className={styles.chevron()}
 						style={{ transform: expanded ? "rotate(90deg)" : undefined }}
 					>
 						<path
@@ -90,9 +92,9 @@ function TreeRow({
 						/>
 					</svg>
 				) : (
-					<span className="size-3.5 shrink-0" />
+					<span className={styles.spacer()} />
 				)}
-				<span className="truncate">{node.name}</span>
+				<span className={styles.name()}>{node.name}</span>
 			</div>
 			{isFolder && node.children ? (
 				// biome-ignore lint/a11y/useSemanticElements: role="group" nests a treeitem's children per the WAI-ARIA tree pattern, not a form fieldset
@@ -100,9 +102,9 @@ function TreeRow({
 					role="group"
 					inert={!expanded}
 					{...(expanded ? { "data-open": "" } : {})}
-					className="grid grid-rows-[0fr] transition-[grid-template-rows] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] data-[open]:grid-rows-[1fr] motion-reduce:transition-none"
+					className={styles.group()}
 				>
-					<div className="overflow-hidden">
+					<div className={styles.groupInner()}>
 						{node.children.map((child) => (
 							<TreeRow
 								key={child.name}
@@ -131,6 +133,7 @@ export function FileTree({
 	className,
 	indent = 14,
 	showGuides = true,
+	size = "md",
 }: FileTreeProps) {
 	const [internalExpandedIds, setInternalExpandedIds] = useState(defaultExpandedIds);
 	const expandedIds = expandedIdsProp ?? internalExpandedIds;
@@ -223,6 +226,7 @@ export function FileTree({
 	}
 
 	const shared: Shared = {
+		size,
 		expandedIds,
 		defaultExpanded,
 		selected,
@@ -239,7 +243,7 @@ export function FileTree({
 			ref={root}
 			role="tree"
 			aria-label="Files"
-			className={cn("select-none font-mono text-[13px]", className)}
+			className={fileTree({ size }).root({ className })}
 		>
 			{tree.map((node) => (
 				<TreeRow key={node.name} node={node} parent="" depth={0} shared={shared} />

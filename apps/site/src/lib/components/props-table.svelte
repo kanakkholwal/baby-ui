@@ -11,8 +11,8 @@ const duration = $derived(prefersReducedMotion.current ? 0 : 200);
 </script>
 
 {#if specs.length}
-	<div class="overflow-hidden rounded-xl border border-border">
-		<table class="w-full border-collapse text-left">
+	<div class="relative overflow-hidden rounded-xl border border-border">
+		<table class="w-full table-fixed border-collapse text-left">
 			<thead>
 				<tr class="border-border border-b">
 					<th
@@ -36,12 +36,12 @@ const duration = $derived(prefersReducedMotion.current ? 0 : 200);
 								type="button"
 								aria-expanded={expanded}
 								onclick={() => (open[prop.name] = !expanded)}
-								class="grid w-full grid-cols-[42%_1fr_2.5rem] items-center text-left transition-colors hover:bg-foreground/[0.03] sm:grid-cols-[30%_1fr_2.5rem]"
+								class="grid w-full grid-cols-[42%_minmax(0,1fr)_2.5rem] items-center text-left transition-colors hover:bg-foreground/[0.03] sm:grid-cols-[30%_minmax(0,1fr)_2.5rem]"
 							>
-								<span class="px-4 py-3 font-mono text-[13px] text-sky-400">
+								<span class="min-w-0 px-4 py-3 font-mono text-[13px] text-sky-400 wrap-anywhere">
 									{prop.name}{prop.required ? "" : "?"}
 								</span>
-								<span class="px-4 py-3 font-mono text-[13px] text-foreground">
+								<span class="min-w-0 px-4 py-3 font-mono text-[13px] text-foreground wrap-anywhere">
 									{prop.type}
 								</span>
 								<span class="flex justify-center px-2 text-muted-foreground">
@@ -58,10 +58,10 @@ const duration = $derived(prefersReducedMotion.current ? 0 : 200);
 								<div transition:slide={{ duration }} class="overflow-hidden">
 									<div class="border-border/60 border-t px-4 py-3">
 										<p class="text-foreground text-sm">{prop.description}</p>
-										<dl class="mt-3 grid grid-cols-[6rem_1fr] items-baseline gap-y-1">
+										<dl class="mt-3 grid grid-cols-[6rem_minmax(0,1fr)] items-baseline gap-y-1">
 											<dt class="text-muted-foreground text-sm">Default</dt>
-											<dd class="font-mono text-[13px] text-foreground">
-												{prop.default === undefined ? "—" : String(prop.default)}
+											<dd class="font-mono text-[13px] text-foreground wrap-anywhere">
+												{prop.default === undefined ? "none" : String(prop.default)}
 											</dd>
 										</dl>
 									</div>

@@ -1,25 +1,34 @@
 "use client";
 
-import { CollabCard, type CollabCardCollaborator } from "@baby-ui/react";
+import {
+	CollabCard,
+	type CollabCardCollaborator,
+	type CollabCardTone,
+} from "@baby-ui/react";
 
 type Props = Record<string, unknown>;
 
 const COLLABORATORS: [CollabCardCollaborator, CollabCardCollaborator] = [
 	{
 		name: "Dylan",
-		pill: "bg-[#A259FF]",
-		pillText: "text-white",
-		cursor: "text-[#A259FF]",
+		pill: "bg-chart-4",
+		pillText: "text-background",
+		cursor: "text-chart-4",
 	},
 	{
 		name: "Evan",
-		pill: "bg-[#FF7262]",
-		pillText: "text-white",
-		cursor: "text-[#FF7262]",
+		pill: "bg-chart-2",
+		pillText: "text-background",
+		cursor: "text-chart-2",
 	},
 ];
 
-const PRESENCE_COLORS = ["#A259FF", "#FF7262", "#1ABCFE", "#0ACF83"];
+const PRESENCE_COLORS = [
+	"var(--chart-4)",
+	"var(--chart-2)",
+	"var(--chart-1)",
+	"var(--chart-3)",
+];
 
 export function CollabCardDemo({ props }: { props: Props }) {
 	return (
@@ -31,6 +40,7 @@ export function CollabCardDemo({ props }: { props: Props }) {
 				conjunction={(props.conjunction as string) || undefined}
 				trailing={(props.trailing as string) || undefined}
 				backgroundUrl={(props.backgroundUrl as string) || undefined}
+				tone={(props.tone as CollabCardTone) ?? "inverted"}
 				collaborators={COLLABORATORS}
 				presenceColors={PRESENCE_COLORS}
 				extraCount={Number(props.extraCount ?? 2)}

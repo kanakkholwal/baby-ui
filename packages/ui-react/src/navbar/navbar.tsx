@@ -3,16 +3,9 @@
 import type { ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "../lib/cn";
+import { type NavbarVariant, navbar } from "./variants";
 
-/** Mobile sheet, both ways: only the closed state translates, so nothing competes. */
-const SHEET_MOTION =
-	"transition-transform duration-[var(--duration-drawer)] ease-[var(--ease-drawer)] starting:translate-y-full data-[state=closed]:translate-y-full data-[state=closed]:duration-[var(--duration-overlay)] motion-reduce:transition-none";
-
-const VEIL_MOTION =
-	"transition-opacity duration-[var(--duration-overlay)] ease-[var(--ease-out)] starting:opacity-0 data-[state=closed]:opacity-0 data-[state=closed]:duration-[var(--duration-exit)] motion-reduce:transition-none";
-
-const LAYER_MOTION =
-	"transition-[visibility] duration-0 data-[state=closed]:invisible data-[state=closed]:delay-[var(--duration-overlay)]";
+export type { NavbarVariant };
 
 export type NavbarLink = { href: string; label: string };
 
@@ -24,6 +17,7 @@ export interface NavbarProps {
 	className?: string;
 	sticky?: boolean;
 	blur?: boolean;
+	variant?: NavbarVariant;
 }
 
 export function Navbar({
@@ -34,6 +28,7 @@ export function Navbar({
 	className,
 	sticky = true,
 	blur = true,
+	variant = "solid",
 }: NavbarProps) {
 	const [scrolled, setScrolled] = useState(false);
 	const [sheetOpen, setSheetOpen] = useState(false);
@@ -78,30 +73,26 @@ export function Navbar({
 		// sheetMounted is a dependency: the panel only exists on the render after it flips.
 	}, [sheetOpen, sheetMounted]);
 
+	const styles = navbar({
+		variant,
+		sticky,
+		surface: scrolled ? (blur ? "blurred" : "opaque") : "clear",
+	});
+
 	return (
 		<>
 			<header
-				className={cn(
-					"inset-x-0 top-0 z-40 transition-[background,border-color,backdrop-filter] duration-300",
-					sticky && "sticky",
-					scrolled
-						? blur
-							? "border-border border-b bg-background/70 backdrop-blur-xl backdrop-saturate-150"
-							: "border-border border-b bg-background"
-						: "border-transparent border-b bg-transparent",
-					className,
-				)}
+				data-slot="navbar"
+				data-variant={variant}
+				className={cn(styles.header(), className)}
 			>
-				<nav
-					aria-label="Main"
-					className="mx-auto flex h-14 w-full max-w-7xl items-center justify-between gap-4 px-4 md:px-6"
-				>
+				<nav aria-label="Main" className={styles.nav()}>
 					<div className="flex items-center gap-4">
 						{brand}
-						<div ref={list} className="relative hidden items-center gap-0.5 md:flex">
+						<div ref={list} className={styles.links()}>
 							<span
 								aria-hidden
-								className="pointer-events-none absolute inset-y-1 left-0 rounded-md bg-foreground/[0.06] transition-[transform,scale,translate,width,opacity] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none"
+								className={styles.pill()}
 								style={{
 									transform: `translateX(${pill.left}px)`,
 									width: pill.width,
@@ -113,7 +104,7 @@ export function Navbar({
 									key={link.href}
 									href={link.href}
 									aria-current={active === link.href ? "page" : undefined}
-									className="relative z-10 rounded-md px-3 py-1.5 text-muted-foreground text-sm transition-colors hover:text-foreground aria-[current=page]:text-foreground"
+									className={styles.link()}
 								>
 									{link.label}
 								</a>
@@ -128,7 +119,7 @@ export function Navbar({
 							aria-label="Open menu"
 							aria-expanded={sheetOpen}
 							onClick={() => setSheetOpen(true)}
-							className="grid size-9 place-items-center rounded-md border border-border text-muted-foreground transition-colors hover:text-foreground md:hidden"
+							className={styles.menuButton()}
 						>
 							<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-4">
 								<path
@@ -145,7 +136,7 @@ export function Navbar({
 
 			{sheetMounted ? (
 				<div
-					className={cn(LAYER_MOTION, "fixed inset-0 z-50 md:hidden")}
+					className={styles.layer()}
 					data-state={sheetOpen ? "open" : "closed"}
 					inert={!sheetOpen}
 				>
@@ -154,7 +145,7 @@ export function Navbar({
 						aria-label="Close menu"
 						data-state={sheetOpen ? "open" : "closed"}
 						onClick={() => setSheetOpen(false)}
-						className={cn(VEIL_MOTION, "absolute inset-0 bg-black/40")}
+						className={styles.veil()}
 					/>
 					<div
 						ref={sheet}
@@ -162,10 +153,7 @@ export function Navbar({
 						aria-modal="true"
 						aria-label="Menu"
 						data-state={sheetOpen ? "open" : "closed"}
-						className={cn(
-							SHEET_MOTION,
-							"absolute inset-x-0 bottom-0 rounded-t-2xl border-border border-t bg-card p-4",
-						)}
+						className={styles.sheet()}
 					>
 						<div className="mx-auto mb-3 h-1 w-10 rounded-full bg-border" />
 						{links.map((link) => (
@@ -174,7 +162,7 @@ export function Navbar({
 								href={link.href}
 								aria-current={active === link.href ? "page" : undefined}
 								onClick={() => setSheetOpen(false)}
-								className="block rounded-lg px-3 py-2.5 text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground aria-[current=page]:bg-foreground/[0.06] aria-[current=page]:text-foreground"
+								className={styles.sheetLink()}
 							>
 								{link.label}
 							</a>

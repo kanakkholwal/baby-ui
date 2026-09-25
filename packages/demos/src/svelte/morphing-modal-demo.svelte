@@ -1,5 +1,8 @@
 <script lang="ts">
 import { MorphingModal, type MorphSpring } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+
+type MorphingModalSize = NonNullable<ComponentProps<typeof MorphingModal>["size"]>;
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
 </script>
@@ -7,6 +10,7 @@ let { props = {} }: { props?: Record<string, unknown> } = $props();
 <MorphingModal
 	title="Deploy to production"
 	spring={(props.spring as MorphSpring) ?? "gentle"}
+	size={(props.size as MorphingModalSize) ?? "md"}
 	dismissOnBackdrop={props.dismissOnBackdrop !== false}
 	backdropBlur={Number(props.backdropBlur ?? 8)}
 >

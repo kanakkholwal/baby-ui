@@ -5,7 +5,7 @@ export const reorderList = defineComponent({
 	name: "Reorder List",
 	description: "Draggable list where the keyboard path is the primary one.",
 	category: "base",
-	status: "alpha",
+	status: "stable",
 	props: [
 		{
 			name: "items",
@@ -26,6 +26,13 @@ export const reorderList = defineComponent({
 			description: "Freeze the order and block both gestures.",
 			default: false,
 			control: { kind: "boolean" },
+		},
+		{
+			name: "variant",
+			type: '"card" | "plain"',
+			description: "Bordered card rows, or borderless rows that only highlight on hover.",
+			default: "card",
+			control: { kind: "select", options: ["card", "plain"] },
 		},
 	],
 	motion: {
@@ -59,19 +66,21 @@ export const reorderList = defineComponent({
 			entry: "ReorderList",
 			files: [
 				{ path: "reorder-list/reorder-list.tsx", type: "registry:ui" },
+				{ path: "reorder-list/variants.ts", type: "registry:ui" },
 				{ path: "lib/flip.ts", type: "registry:lib" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 		svelte: {
 			entry: "ReorderList",
 			files: [
 				{ path: "reorder-list/reorder-list.svelte", type: "registry:ui" },
+				{ path: "reorder-list/variants.ts", type: "registry:ui" },
 				{ path: "lib/flip.ts", type: "registry:lib" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 	},
 	keywords: ["reorder", "list"],

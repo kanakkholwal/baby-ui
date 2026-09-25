@@ -31,6 +31,7 @@ import {
 	SANKEY_TIMING,
 	type SankeyData,
 	type SankeyText,
+	visibleLabels,
 } from "./layout";
 import { type SankeyLinkColor, type SankeyOrientation, sankeyChart } from "./variants";
 
@@ -189,6 +190,16 @@ function SankeyPlot({
 				flow: orientation,
 			}),
 		[data, innerWidth, innerHeight, nodeWidth, nodePadding, orientation],
+	);
+	const shownLabels = useMemo(
+		() =>
+			visibleLabels(nodes, orientation, (n) => [n.name, format.number(n.value)], {
+				x0: -margin.left,
+				x1: innerWidth + margin.right,
+				y0: -margin.top,
+				y1: innerHeight + margin.bottom,
+			}),
+		[nodes, orientation, format, margin, innerWidth, innerHeight],
 	);
 	const [hoveredNode, setHoveredNode] = useState<number | null>(null);
 
@@ -420,6 +431,7 @@ function SankeyPlot({
 									/>
 									{labels
 										? ([0, 1] as const).map((line) => {
+												if (!shownLabels.get(n.index)?.[line]) return null;
 												const at = labelPlacement(n, orientation, line);
 												const target = line === 0 ? 1 : 0.6;
 												const delay =

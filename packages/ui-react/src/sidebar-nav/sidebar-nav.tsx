@@ -312,7 +312,12 @@ export function SidebarNav({
 							tabIndex={isCollapsed ? -1 : 0}
 							className="absolute top-1 right-12 left-2 flex h-8 items-center rounded-lg px-2 text-left transition-[background-color,transform] duration-100 hover:bg-foreground/[0.06] active:scale-[0.99]"
 						>
-							<span className="flex size-5 shrink-0 items-center justify-center text-foreground">
+							<span
+								className={cn(
+									"flex size-5 shrink-0 items-center justify-center text-foreground transition-opacity duration-150",
+									isCollapsed && "opacity-0",
+								)}
+							>
 								{logo}
 							</span>
 							<span
@@ -395,7 +400,10 @@ export function SidebarNav({
 						aria-hidden={isCollapsed}
 						tabIndex={isCollapsed ? -1 : 0}
 						onClick={() => setCollapsed(true)}
-						className="absolute top-1 right-2 flex size-8 items-center justify-center rounded-lg text-muted-foreground transition-[opacity,background-color,color] duration-150 hover:bg-foreground/[0.06] hover:text-foreground"
+						className={cn(
+							"absolute top-1 right-2 flex size-8 items-center justify-center rounded-lg text-muted-foreground transition-[opacity,background-color,color] duration-150 hover:bg-foreground/[0.06] hover:text-foreground",
+							isCollapsed && "pointer-events-none opacity-0",
+						)}
 					>
 						<CollapseIcon />
 					</button>
@@ -405,7 +413,10 @@ export function SidebarNav({
 						aria-hidden={!isCollapsed}
 						tabIndex={isCollapsed ? 0 : -1}
 						onClick={() => setCollapsed(false)}
-						className="absolute top-0.5 left-2 flex size-9 items-center justify-center rounded-lg text-muted-foreground transition-[opacity,background-color,color] duration-150 hover:bg-foreground/[0.06] hover:text-foreground"
+						className={cn(
+							"absolute top-0.5 left-2 flex size-9 items-center justify-center rounded-lg text-muted-foreground transition-[opacity,background-color,color] duration-150 hover:bg-foreground/[0.06] hover:text-foreground",
+							!isCollapsed && "pointer-events-none opacity-0",
+						)}
 					>
 						<CollapseIcon />
 					</button>

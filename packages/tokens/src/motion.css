@@ -2501,3 +2501,75 @@
 		animation: none;
 	}
 }
+
+/* HeroStage: the frame rises in and its slots stagger in by --i. */
+.hero-stage-frame {
+	transform-origin: 50% 0;
+	animation: hero-stage-in 900ms var(--ease-out) both;
+}
+
+.hero-stage-slot {
+	animation: hero-stage-slot-in 700ms var(--ease-out) both;
+	animation-delay: calc(250ms + var(--i, 0) * 110ms);
+}
+
+@keyframes hero-stage-in {
+	from {
+		opacity: 0;
+		transform: translateY(40px) rotateX(18deg);
+	}
+}
+
+@keyframes hero-stage-slot-in {
+	from {
+		opacity: 0;
+		transform: translateY(24px) scale(0.96);
+	}
+}
+
+@keyframes hero-stage-tilt {
+	from {
+		transform: rotateX(12deg) rotateY(-14deg) rotateZ(5deg);
+	}
+	to {
+		transform: none;
+	}
+}
+
+@keyframes hero-stage-settle {
+	from {
+		transform: translate(var(--sx, 0), var(--sy, 0)) rotate(var(--sr, 0deg));
+		box-shadow: 0 18px 40px -16px color-mix(in oklch, var(--foreground) 18%, transparent);
+	}
+	to {
+		transform: none;
+	}
+}
+
+/* Scrolling the page untilts the frame and settles each scattered card; without scroll
+   timelines the stage shows settled. */
+@supports (animation-timeline: scroll()) {
+	.hero-stage-tilt {
+		animation:
+			hero-stage-in 900ms var(--ease-out) both,
+			hero-stage-tilt linear both;
+		animation-timeline: auto, scroll(root);
+		animation-range: normal, 0 55vh;
+		animation-composition: replace, add;
+	}
+
+	.hero-stage-scatter {
+		animation: hero-stage-settle linear both;
+		animation-timeline: scroll(root);
+		animation-range: 0 45vh;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.hero-stage-frame,
+	.hero-stage-tilt,
+	.hero-stage-slot,
+	.hero-stage-scatter {
+		animation: none;
+	}
+}

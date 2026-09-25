@@ -6,7 +6,7 @@ export const overviewCard = defineComponent({
 	description:
 		"A dashboard hero metric: headline, trend, an optional period switcher and a full-width chart.",
 	category: "blocks",
-	status: "alpha",
+	status: "stable",
 	props: [
 		{
 			name: "data",

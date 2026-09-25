@@ -1,6 +1,6 @@
 "use client";
 
-import { AgentScreen } from "@baby-ui/react";
+import { AgentScreen, type AgentScreenSize } from "@baby-ui/react";
 
 type Props = Record<string, unknown>;
 
@@ -11,8 +11,9 @@ export function AgentScreenDemo({ props }: { props: Props }) {
 	return (
 		<AgentScreen
 			agentName={(props.agentName as string) || "Agent"}
-			streamSrc={PLACEHOLDER}
+			streamSrc={(props.streamSrc as string) || PLACEHOLDER}
 			loading={Boolean(props.loading)}
+			size={(props.size as AgentScreenSize) ?? "md"}
 		/>
 	);
 }

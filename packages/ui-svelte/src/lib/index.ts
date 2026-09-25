@@ -156,6 +156,7 @@ export type { CircularTextDirection } from "./circular-text/variants";
 export { default as CodeBlock } from "./code-block/code-block.svelte";
 export { default as CollabCard } from "./collab-card/collab-card.svelte";
 export type { CollabCardCollaborator } from "./collab-card/types";
+export type { CollabCardTone } from "./collab-card/variants";
 export { default as Collapsible } from "./collapsible/collapsible.svelte";
 export { default as CollapsibleContent } from "./collapsible/collapsible-content.svelte";
 export { default as CollapsibleTrigger } from "./collapsible/collapsible-trigger.svelte";
@@ -234,6 +235,9 @@ export { default as DialogTrigger } from "./dialog/dialog-trigger.svelte";
 export { default as DiffTable } from "./diff-table/diff-table.svelte";
 export type { DiffRow } from "./diff-table/types";
 export type { DiffRowChange } from "./diff-table/variants";
+export { default as DocsNav } from "./docs-nav/docs-nav.svelte";
+export type { DocsNavItem, DocsNavSection } from "./docs-nav/types";
+export type { DocsNavConnector } from "./docs-nav/variants";
 export { default as DoubleUnderline } from "./double-underline/double-underline.svelte";
 export type { DoubleUnderlineTrigger } from "./double-underline/variants";
 export type { DrawerDirection } from "./drawer/context";
@@ -259,6 +263,7 @@ export { default as DropdownMenuTrigger } from "./dropdown-menu/dropdown-menu-tr
 export { type DiffLine, default as FileDiff } from "./file-diff/file-diff.svelte";
 export { default as FileTree } from "./file-tree/file-tree.svelte";
 export type { FileTreeNode } from "./file-tree/types";
+export type { FileTreeSize } from "./file-tree/variants";
 export { default as FillButton } from "./fill-button/fill-button.svelte";
 export type { FillButtonSize, FillButtonTone } from "./fill-button/variants";
 export { default as FilterTable } from "./filter-table/filter-table.svelte";
@@ -284,10 +289,12 @@ export type {
 export type { FlowchartBackground } from "./flowchart/variants";
 export { default as Footer } from "./footer/footer.svelte";
 export type { FooterColumn, FooterLink, FooterSocialLink } from "./footer/types";
+export type { FooterLayout } from "./footer/variants";
 export {
 	default as FullscreenNav,
 	type NavLink,
 } from "./fullscreen-nav/fullscreen-nav.svelte";
+export type { FullscreenNavVariant } from "./fullscreen-nav/variants";
 export { default as FunnelChart } from "./funnel-chart/funnel-chart.svelte";
 export type { FunnelStage } from "./funnel-chart/geometry";
 export type {
@@ -312,6 +319,9 @@ export {
 export { default as HeatmapChart } from "./heatmap-chart/heatmap-chart.svelte";
 export { default as HeatmapLegend } from "./heatmap-chart/heatmap-legend.svelte";
 export type { HeatmapLegendAlign, HeatmapShape } from "./heatmap-chart/variants";
+export { default as HeroStage } from "./hero-stage/hero-stage.svelte";
+export { default as HeroStageSlot } from "./hero-stage/hero-stage-slot.svelte";
+export type { HeroStageMotion } from "./hero-stage/variants";
 export { default as HoverCard } from "./hover-card/hover-card.svelte";
 export { default as HoverCardContent } from "./hover-card/hover-card-content.svelte";
 export { default as HoverCardTrigger } from "./hover-card/hover-card-trigger.svelte";
@@ -343,12 +353,14 @@ export { default as LoadingState } from "./loading-state/loading-state.svelte";
 export type { LoadingStateVariant } from "./loading-state/types";
 export { default as LogoCarousel } from "./logo-carousel/logo-carousel.svelte";
 export { default as Markdown } from "./markdown/markdown.svelte";
+export type { MarkdownSize } from "./markdown/variants";
 export { default as Marker } from "./marker/marker.svelte";
 export type { MarkerTone, MarkerVariant } from "./marker/variants";
 export { default as MaskText } from "./mask-text/mask-text.svelte";
 export type { MaskTextSize } from "./mask-text/variants";
 export { default as MegaNavbar } from "./mega-navbar/mega-navbar.svelte";
 export type { MegaMenuGroup, MegaMenuItem, MegaNavLink } from "./mega-navbar/types";
+export type { MegaNavbarVariant } from "./mega-navbar/variants";
 export { default as Message } from "./message/message.svelte";
 export { default as MessageAvatar } from "./message/message-avatar.svelte";
 export { default as MessageBubble } from "./message/message-bubble.svelte";
@@ -370,7 +382,9 @@ export { default as MorphText } from "./morph-text/morph-text.svelte";
 export type { MorphTextSize } from "./morph-text/variants";
 export type { MorphSpring } from "./morphing-modal/morph";
 export { default as MorphingModal } from "./morphing-modal/morphing-modal.svelte";
+export type { MorphingModalSize } from "./morphing-modal/variants";
 export { default as Navbar } from "./navbar/navbar.svelte";
+export type { NavbarVariant } from "./navbar/variants";
 export { default as OverviewCard } from "./overview-card/overview-card.svelte";
 export type { OverviewCardChart, OverviewCardSize } from "./overview-card/variants";
 export { default as Pagination } from "./pagination/pagination.svelte";
@@ -451,7 +465,9 @@ export {
 	default as ReorderList,
 	type ReorderItem,
 } from "./reorder-list/reorder-list.svelte";
+export type { ReorderListVariant } from "./reorder-list/variants";
 export { default as ResponseStream } from "./response-stream/response-stream.svelte";
+export type { ResponseStreamSize } from "./response-stream/variants";
 export type { ResponsiveDialogVariant } from "./responsive-dialog/context";
 export { default as ResponsiveDialog } from "./responsive-dialog/responsive-dialog.svelte";
 export { default as ResponsiveDialogClose } from "./responsive-dialog/responsive-dialog-close.svelte";
@@ -519,6 +535,9 @@ export type { ShimmerTextSize } from "./shimmer-text/variants";
 export { default as Shortcut } from "./shortcut/shortcut.svelte";
 export type { ShortcutSize, ShortcutVariant } from "./shortcut/variants";
 export { default as ShowMore } from "./show-more/show-more.svelte";
+export { default as ShowcaseGrid } from "./showcase-grid/showcase-grid.svelte";
+export { default as ShowcasePanel } from "./showcase-grid/showcase-panel.svelte";
+export type { ShowcaseFrame, ShowcaseSpan } from "./showcase-grid/variants";
 export type { SidebarNavLabels } from "./sidebar-nav/labels";
 export { default as SidebarNav } from "./sidebar-nav/sidebar-nav.svelte";
 export type {
@@ -574,6 +593,7 @@ export type {
 } from "./task-rows/types";
 export type { TaskRowsVariant } from "./task-rows/variants";
 export { default as TaskSteps, type TaskStatus } from "./task-steps/task-steps.svelte";
+export type { TaskStepsSize } from "./task-steps/variants";
 export { default as TextBorderAnimation } from "./text-border-animation/text-border-animation.svelte";
 export type { TextBorderAnimationSize } from "./text-border-animation/variants";
 export { default as TextExplodeIMessage } from "./text-explode-imessage/text-explode-imessage.svelte";
@@ -610,7 +630,7 @@ export { default as Toggle } from "./toggle/toggle.svelte";
 export { default as ToggleGroup } from "./toggle-group/toggle-group.svelte";
 export { default as ToggleGroupItem } from "./toggle-group/toggle-group-item.svelte";
 export { default as Tool } from "./tool/tool.svelte";
-export type { ToolState } from "./tool/variants";
+export type { ToolLabels, ToolState } from "./tool/variants";
 export { default as ToolChips } from "./tool-chips/tool-chips.svelte";
 export type {
 	ToolChipsLabels,

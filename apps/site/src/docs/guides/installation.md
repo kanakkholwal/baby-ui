@@ -5,7 +5,7 @@ description: From an empty folder to a rendered component, in React or Svelte.
 
 Baby UI is a shadcn registry: the CLI copies source into your project, and you own it.
 New to shadcn? Follow every step. Already on shadcn/ui or shadcn-svelte? Skip to
-[Add a component](#add-a-component). Framework tabs follow the header; package manager
+[Add a component](#4-add-a-component). Framework tabs follow the header; package manager
 tabs remember your choice.
 
 ## 1. Create a project
@@ -96,7 +96,7 @@ the files for copying by hand.
 
 ### Optional: registry namespace
 
-The `shadcn` CLI (React only — `shadcn-svelte` doesn't support this yet) can resolve a
+The `shadcn` CLI (React only; `shadcn-svelte` doesn't support this yet) can resolve a
 short alias instead of a full URL. Add it once to `components.json`:
 
 ```json

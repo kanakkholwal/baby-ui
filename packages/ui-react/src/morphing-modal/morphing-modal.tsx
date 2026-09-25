@@ -4,6 +4,9 @@ import type { ReactNode } from "react";
 import { useEffect, useId, useRef, useState } from "react";
 import { cn } from "../lib/cn";
 import { invert, MORPH_EASE, MORPH_MS, type MorphSpring } from "./use-morph";
+import { type MorphingModalSize, morphingModal } from "./variants";
+
+export type { MorphingModalSize };
 
 export interface MorphingModalProps {
 	trigger: ReactNode;
@@ -11,6 +14,7 @@ export interface MorphingModalProps {
 	title: string;
 	className?: string;
 	spring?: MorphSpring;
+	size?: MorphingModalSize;
 	dismissOnBackdrop?: boolean;
 	backdropBlur?: number;
 	open?: boolean;
@@ -28,6 +32,7 @@ export function MorphingModal({
 	title,
 	className,
 	spring = "gentle",
+	size = "md",
 	dismissOnBackdrop = true,
 	backdropBlur = 8,
 	open: openProp,
@@ -42,6 +47,7 @@ export function MorphingModal({
 	const isOpen = openProp ?? internalOpen;
 	const wasOpen = useRef(false);
 	const titleId = useId();
+	const styles = morphingModal({ size });
 
 	async function animateMorph(reverse: boolean) {
 		const from = triggerRef.current?.getBoundingClientRect();
@@ -101,7 +107,7 @@ export function MorphingModal({
 				type="button"
 				onClick={() => setOpen(true)}
 				style={{ opacity: hidden ? 0 : 1 }}
-				className="cursor-pointer rounded-2xl text-left outline-none focus-visible:ring-2 focus-visible:ring-ring"
+				className={styles.trigger()}
 			>
 				{trigger}
 			</button>
@@ -118,24 +124,22 @@ export function MorphingModal({
 					if (dismissOnBackdrop && e.target === dialogRef.current) setOpen(false);
 				}}
 				style={{ ["--morph-blur" as string]: `${backdropBlur}px` }}
-				className="morph-dialog m-auto bg-transparent p-0 text-foreground backdrop:bg-black/40"
+				className={styles.dialog()}
 			>
 				<div
 					ref={panelRef}
-					className={cn(
-						"w-[min(32rem,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-border bg-card p-6 shadow-2xl",
-						className,
-					)}
+					data-slot="morphing-modal"
+					className={cn(styles.panel(), className)}
 				>
-					<div className="flex items-start justify-between gap-4">
-						<h2 id={titleId} className="font-medium text-foreground text-lg">
+					<div className={styles.header()}>
+						<h2 id={titleId} className={styles.title()}>
 							{title}
 						</h2>
 						<button
 							type="button"
 							onClick={() => setOpen(false)}
 							aria-label="Close"
-							className="rounded-md p-1 text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground"
+							className={styles.close()}
 						>
 							<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-4">
 								<path
@@ -147,7 +151,7 @@ export function MorphingModal({
 							</svg>
 						</button>
 					</div>
-					<div className="mt-3 text-muted-foreground text-sm">{children}</div>
+					<div className={styles.body()}>{children}</div>
 				</div>
 			</dialog>
 		</>

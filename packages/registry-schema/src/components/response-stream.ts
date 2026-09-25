@@ -5,7 +5,7 @@ export const responseStream = defineComponent({
 	name: "Response Stream",
 	description: "Streamed assistant text with a caret that tracks the last character.",
 	category: "agents",
-	status: "beta",
+	status: "stable",
 	props: [
 		{
 			name: "text",
@@ -28,6 +28,13 @@ export const responseStream = defineComponent({
 			description: "Whether more text is still coming. Controls the caret.",
 			default: true,
 			control: { kind: "boolean" },
+		},
+		{
+			name: "size",
+			type: '"sm" | "md" | "lg"',
+			description: "Text size and leading.",
+			default: "md",
+			control: { kind: "select", options: ["sm", "md", "lg"] },
 		},
 	],
 	motion: {
@@ -57,17 +64,19 @@ export const responseStream = defineComponent({
 			entry: "ResponseStream",
 			files: [
 				{ path: "response-stream/response-stream.tsx", type: "registry:ui" },
+				{ path: "response-stream/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 		svelte: {
 			entry: "ResponseStream",
 			files: [
 				{ path: "response-stream/response-stream.svelte", type: "registry:ui" },
+				{ path: "response-stream/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 	},
 	keywords: ["stream", "typewriter", "ai", "response"],

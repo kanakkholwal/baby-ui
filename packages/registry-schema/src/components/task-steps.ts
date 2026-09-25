@@ -6,7 +6,7 @@ export const taskSteps = defineComponent({
 	description:
 		"Ordered agent plan where each step shows pending, active, done or failed.",
 	category: "agents",
-	status: "beta",
+	status: "stable",
 	props: [
 		{
 			name: "steps",
@@ -27,6 +27,20 @@ export const taskSteps = defineComponent({
 			description: "Tighter rows for a sidebar.",
 			default: false,
 			control: { kind: "boolean" },
+		},
+		{
+			name: "size",
+			type: '"sm" | "md"',
+			description: "Marker, icon and label scale.",
+			default: "md",
+			control: { kind: "select", options: ["sm", "md"] },
+		},
+		{
+			name: "labels",
+			type: "Partial<Record<TaskStatus, string>>",
+			description:
+				"Overrides for the screen-reader status words (Pending, In progress, Done, Failed).",
+			control: { kind: "none" },
 		},
 	],
 	motion: {
@@ -57,17 +71,19 @@ export const taskSteps = defineComponent({
 			entry: "TaskSteps",
 			files: [
 				{ path: "task-steps/task-steps.tsx", type: "registry:ui" },
+				{ path: "task-steps/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 		svelte: {
 			entry: "TaskSteps",
 			files: [
 				{ path: "task-steps/task-steps.svelte", type: "registry:ui" },
+				{ path: "task-steps/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 	},
 	keywords: ["tasks", "steps", "agent", "plan", "progress"],

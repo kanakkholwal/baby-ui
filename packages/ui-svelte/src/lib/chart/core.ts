@@ -345,6 +345,16 @@ export function evenTickIndices(
 	return best;
 }
 
+/** Gaps an 11px tick label needs so neighbours never touch: stacked, and side by side. */
+export const Y_TICK_GAP = 22;
+export const X_TICK_GAP = 44;
+
+/** Caps a tick-count hint to what `span` px can hold at `minGap` apart; never below 2. */
+export function fitTickCount(requested: number, span: number, minGap: number): number {
+	const room = Math.floor(span / minGap) + 1;
+	return Math.max(2, Math.min(10, requested, room));
+}
+
 /** Plain-language description read before the data table; `describe` overrides it. */
 export function summarize(options: {
 	data: Datum[];

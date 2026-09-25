@@ -20,6 +20,7 @@ import {
 	SANKEY_TIMING,
 	type SankeyData,
 	type SankeyText,
+	visibleLabels,
 } from "./layout";
 import { type SankeyLinkColor, type SankeyOrientation, sankeyChart } from "./variants";
 
@@ -69,6 +70,14 @@ const layout = $derived(
 );
 const nodes = $derived(layout.nodes);
 const links = $derived(layout.links);
+const shownLabels = $derived(
+	visibleLabels(nodes, orientation, (n) => [n.name, chart.format.number(n.value)], {
+		x0: -margin.left,
+		x1: innerWidth + margin.right,
+		y0: -margin.top,
+		y1: innerHeight + margin.bottom,
+	}),
+);
 let hoveredNode = $state<number | null>(null);
 
 // Data or flow changes replay the draw; resizes only relayout.
@@ -293,6 +302,7 @@ const linkStroke = (l: LaidLink) =>
 					/>
 					{#if labels}
 						{#each [0, 1] as const as line (line)}
+							{#if shownLabels.get(n.index)?.[line]}
 							{@const at = labelPlacement(n, orientation, line)}
 							{@const target = line === 0 ? 1 : 0.6}
 							{@const delay =
@@ -317,6 +327,7 @@ const linkStroke = (l: LaidLink) =>
 							>
 								{line === 0 ? n.name : chart.format.number(n.value)}
 							</text>
+							{/if}
 						{/each}
 					{/if}
 				</g>

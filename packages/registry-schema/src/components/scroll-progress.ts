@@ -8,7 +8,7 @@ export const scrollProgress = defineComponent({
 	description:
 		"A ruler of ticks that fills as the page or a container scrolls, with a live percentage.",
 	category: "blocks",
-	status: "alpha",
+	status: "stable",
 	variants: { position: POSITIONS },
 	props: [
 		{

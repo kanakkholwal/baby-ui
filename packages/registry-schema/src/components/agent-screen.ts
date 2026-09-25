@@ -8,7 +8,7 @@ export const agentScreen = defineComponent({
 	description:
 		"A live viewer for an agent's screen: a resting capture that expands to a full-width viewer.",
 	category: "agents",
-	status: "beta",
+	status: "stable",
 	variants: { size: SIZES },
 	props: [
 		{

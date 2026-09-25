@@ -26,9 +26,9 @@ const frame = $derived(cardFrame({ variant }));
 {#if variant === "framed"}
 	<!-- Inset frame, same treatment as Dialog: a rim in bg-background around a bg-card body. -->
 	<div
-		{...rest}
 		data-slot="card"
 		data-variant="framed"
+		{...rest}
 		class={cn(frame.root(), interactive && LIFT, classProp)}
 	>
 		<div class={frame.body()}>
@@ -36,7 +36,7 @@ const frame = $derived(cardFrame({ variant }));
 		</div>
 	</div>
 {:else}
-	<div {...rest} data-slot="card" class={cn(frame.root(), frame.body(), interactive && LIFT, classProp)}>
+	<div data-slot="card" {...rest} class={cn(frame.root(), frame.body(), interactive && LIFT, classProp)}>
 		{@render children?.()}
 	</div>
 {/if}

@@ -1,13 +1,23 @@
 <script lang="ts">
 import { prefersReducedMotion } from "svelte/motion";
 import { cn } from "../lib/cn";
+import { type ResponseStreamSize, responseStream } from "./variants";
 
 let {
 	text,
 	speed = 60,
 	streaming = true,
+	size = "md",
 	class: classProp,
-}: { text: string; speed?: number; streaming?: boolean; class?: string } = $props();
+}: {
+	text: string;
+	speed?: number;
+	streaming?: boolean;
+	size?: ResponseStreamSize;
+	class?: string;
+} = $props();
+
+const styles = $derived(responseStream({ size }));
 
 let shown = $state(0);
 
@@ -32,8 +42,6 @@ const done = $derived(shown >= text.length);
 <p
 	aria-live="polite"
 	aria-busy={!done || undefined}
-	class={cn("text-foreground text-sm leading-relaxed", classProp)}
->{visible}{#if streaming && !done}<span
-			aria-hidden="true"
-			class="stream-caret ml-0.5 inline-block h-[1em] w-[2px] translate-y-[0.15em] bg-current"
-		></span>{/if}</p>
+	data-slot="response-stream"
+	class={cn(styles.root(), classProp)}
+>{visible}{#if streaming && !done}<span aria-hidden="true" class={styles.caret()}></span>{/if}</p>

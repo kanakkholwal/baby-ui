@@ -2,11 +2,15 @@
 
 import { useEffect, useState } from "react";
 import { cn } from "../lib/cn";
+import { type ResponseStreamSize, responseStream } from "./variants";
+
+export type { ResponseStreamSize };
 
 export interface ResponseStreamProps {
 	text: string;
 	speed?: number;
 	streaming?: boolean;
+	size?: ResponseStreamSize;
 	className?: string;
 }
 
@@ -18,8 +22,10 @@ export function ResponseStream({
 	text,
 	speed = 60,
 	streaming = true,
+	size = "md",
 	className,
 }: ResponseStreamProps) {
+	const styles = responseStream({ size });
 	const [shown, setShown] = useState(0);
 
 	useEffect(() => {
@@ -45,15 +51,11 @@ export function ResponseStream({
 		<p
 			aria-live="polite"
 			aria-busy={!done || undefined}
-			className={cn("text-foreground text-sm leading-relaxed", className)}
+			data-slot="response-stream"
+			className={cn(styles.root(), className)}
 		>
 			{text.slice(0, shown)}
-			{streaming && !done ? (
-				<span
-					aria-hidden
-					className="stream-caret ml-0.5 inline-block h-[1em] w-[2px] translate-y-[0.15em] bg-current"
-				/>
-			) : null}
+			{streaming && !done ? <span aria-hidden className={styles.caret()} /> : null}
 		</p>
 	);
 }

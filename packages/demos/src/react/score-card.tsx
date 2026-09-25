@@ -18,7 +18,7 @@ export function ScoreCardDemo({ props }: { props: Props }) {
 				value={87}
 				min={Number(props.min ?? 0)}
 				max={Number(props.max ?? 100)}
-				trend={Number(props.trend ?? 4)}
+				trend={4}
 				tone={(props.tone as GaugeChartTone) ?? "primary"}
 				layout={(props.layout as GaugeChartLayout) ?? "arc"}
 				size={(props.size as ScoreCardSize) ?? "md"}

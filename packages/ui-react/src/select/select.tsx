@@ -61,7 +61,7 @@ export function SelectTrigger({
 			{...props}
 		>
 			{children}
-			<SelectPrimitive.Icon className="[&>svg]:transition-[transform,scale,translate] [&>svg]:duration-200 [&>svg]:ease-[var(--ease-out)] data-[open]:[&>svg]:rotate-180">
+			<SelectPrimitive.Icon className="[&>svg]:transition-[transform,scale,translate,rotate] [&>svg]:duration-[var(--duration-exit)] [&>svg]:ease-[var(--ease-out)] data-[popup-open]:[&>svg]:rotate-180 data-[popup-open]:[&>svg]:duration-[var(--duration-dropdown)] motion-reduce:[&>svg]:transition-none">
 				<svg
 					viewBox="0 0 16 16"
 					fill="none"

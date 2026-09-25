@@ -9,7 +9,7 @@ export const fillButton = defineComponent({
 	description:
 		"A call to action whose icon tile expands into a full fill on hover, swapping the label as it goes.",
 	category: "advanced",
-	status: "beta",
+	status: "stable",
 	variants: { tone: TONES, size: SIZES },
 	props: [
 		{

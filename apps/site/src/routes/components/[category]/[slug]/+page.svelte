@@ -77,12 +77,16 @@ const tabs = [
 	{ id: "usage", label: "Usage" },
 	{ id: "install", label: "Installation" },
 ];
+const hasA11y = $derived(
+	data.spec.a11y.keyboard.length > 0 || data.spec.a11y.notes.length > 0,
+);
 const outline = $derived(
 	[
 		{ id: "overview", label: "Overview" },
 		{ id: "preview", label: "Preview" },
 		...data.proseHeadings,
 		data.spec.motion && { id: "behaviour", label: "Behaviour" },
+		hasA11y && { id: "accessibility", label: "Accessibility" },
 		data.spec.props.length > 0 && { id: "api-reference", label: "API reference" },
 		related.length > 0 && { id: "related", label: "Related components" },
 	].filter((h): h is { id: string; label: string } => Boolean(h)),
@@ -236,6 +240,7 @@ const breadcrumbJsonLd = $derived(
 					slug={data.spec.slug}
 					dependencies={port.dependencies}
 					source={installSourceUrl(data.spec.category, data.spec.slug, port.framework)}
+					css={port.css}
 					{dialect}
 				/>
 			{/if}
@@ -262,6 +267,33 @@ const breadcrumbJsonLd = $derived(
 					{/each}
 					<li>{data.spec.motion.reducedMotion}</li>
 				</ul>
+			</div>
+		</section>
+	{/if}
+
+	{#if hasA11y}
+		<section id="accessibility" class="mt-12 scroll-mt-24 border-border border-t pt-8">
+			<h2 class="font-semibold text-foreground text-sm">Accessibility</h2>
+			<p class="mt-1 max-w-2xl text-muted-foreground text-sm">
+				Keyboard support and assistive-technology guarantees both ports share.
+			</p>
+			<div class="mt-3 flex max-w-2xl flex-col gap-4 rounded-xl border border-border p-4">
+				{#if data.spec.a11y.keyboard.length}
+					<p class="-mb-2 font-medium text-foreground text-xs">Keyboard</p>
+					<ul class="flex list-disc flex-col gap-1.5 pl-5 text-muted-foreground text-sm">
+						{#each data.spec.a11y.keyboard as key (key)}
+							<li>{key}</li>
+						{/each}
+					</ul>
+				{/if}
+				{#if data.spec.a11y.notes.length}
+					<p class="-mb-2 font-medium text-foreground text-xs">Notes</p>
+					<ul class="flex list-disc flex-col gap-1.5 pl-5 text-muted-foreground text-sm">
+						{#each data.spec.a11y.notes as note (note)}
+							<li>{note}</li>
+						{/each}
+					</ul>
+				{/if}
 			</div>
 		</section>
 	{/if}

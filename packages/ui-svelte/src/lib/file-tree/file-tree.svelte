@@ -1,6 +1,6 @@
 <script lang="ts">
-import { cn } from "../lib/cn";
 import { type FileTreeNode, flatten } from "./types";
+import { type FileTreeSize, fileTree, ROW_INSET } from "./variants";
 
 type Props = {
 	tree: FileTreeNode[];
@@ -17,6 +17,7 @@ type Props = {
 	class?: string;
 	indent?: number;
 	showGuides?: boolean;
+	size?: FileTreeSize;
 };
 
 let {
@@ -31,6 +32,7 @@ let {
 	class: classProp,
 	indent = 14,
 	showGuides = true,
+	size = "md",
 }: Props = $props();
 
 // svelte-ignore state_referenced_locally -- intentional one-time seed, matching React's useState(initialValue)
@@ -131,6 +133,7 @@ function onkeydown(event: KeyboardEvent, id: string) {
 	{@const id = parent ? `${parent}/${node.name}` : node.name}
 	{@const isFolder = Array.isArray(node.children)}
 	{@const expanded = isFolder ? (expandedIds[id] ?? defaultExpanded) : false}
+	{@const styles = fileTree({ size, selected: selected === id, guide: showGuides && depth > 0 })}
 	<div
 		role="treeitem"
 		aria-level={depth + 1}
@@ -141,37 +144,32 @@ function onkeydown(event: KeyboardEvent, id: string) {
 		onkeydown={(e) => onkeydown(e, id)}
 		onclick={() => select(id, isFolder, expanded)}
 		onfocus={() => (focused = id)}
-		style:padding-left="{depth * indent + 8}px"
-		class={cn(
-			"tree-row flex cursor-pointer items-center gap-1.5 rounded-md py-1 pr-2 outline-none transition-colors",
-			"hover:bg-foreground/[0.06] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
-			selected === id ? "bg-foreground/[0.06] text-foreground" : "text-muted-foreground",
-			showGuides && depth > 0 && "border-border/60 border-l",
-		)}
+		style:padding-left="{depth * indent + ROW_INSET[size]}px"
+		class={styles.row()}
 	>
 		{#if isFolder}
 			<svg
 				viewBox="0 0 16 16"
 				fill="none"
 				aria-hidden="true"
-				class="size-3.5 shrink-0 transition-[transform,scale,translate] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none"
+				class={styles.chevron()}
 				style:transform={expanded ? "rotate(90deg)" : "none"}
 			>
 				<path d="m6 4 4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
 			</svg>
 		{:else}
-			<span class="size-3.5 shrink-0"></span>
+			<span class={styles.spacer()}></span>
 		{/if}
-		<span class="truncate">{node.name}</span>
+		<span class={styles.name()}>{node.name}</span>
 	</div>
 	{#if isFolder && node.children}
 		<div
 			role="group"
 			inert={!expanded}
 			data-open={expanded ? "" : undefined}
-			class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] data-[open]:grid-rows-[1fr] motion-reduce:transition-none"
+			class={styles.group()}
 		>
-			<div class="overflow-hidden">
+			<div class={styles.groupInner()}>
 				{#each node.children as child (child.name)}
 					{@render treeRow(child, id, depth + 1)}
 				{/each}
@@ -184,7 +182,7 @@ function onkeydown(event: KeyboardEvent, id: string) {
 	bind:this={root}
 	role="tree"
 	aria-label="Files"
-	class={cn("select-none font-mono text-[13px]", classProp)}
+	class={fileTree({ size }).root({ class: classProp })}
 >
 	{#each tree as node (node.name)}
 		{@render treeRow(node, "", 0)}

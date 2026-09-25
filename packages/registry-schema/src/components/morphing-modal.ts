@@ -6,7 +6,7 @@ export const morphingModal = defineComponent({
 	description:
 		"Card that expands into a dialog from its own position, measured with FLIP so the two frameworks travel identically.",
 	category: "advanced",
-	status: "experimental",
+	status: "stable",
 
 	props: [
 		{
@@ -28,6 +28,13 @@ export const morphingModal = defineComponent({
 			description: "Named spring that drives the morph in both directions.",
 			default: "gentle",
 			control: { kind: "select", options: ["snappy", "gentle", "bouncy"] },
+		},
+		{
+			name: "size",
+			type: '"sm" | "md" | "lg"',
+			description: "Width of the expanded panel.",
+			default: "md",
+			control: { kind: "select", options: ["sm", "md", "lg"] },
 		},
 		{
 			name: "dismissOnBackdrop",
@@ -78,18 +85,20 @@ export const morphingModal = defineComponent({
 			files: [
 				{ path: "morphing-modal/morphing-modal.tsx", type: "registry:ui" },
 				{ path: "morphing-modal/use-morph.ts", type: "registry:hook" },
+				{ path: "morphing-modal/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 		svelte: {
 			entry: "MorphingModal",
 			files: [
 				{ path: "morphing-modal/morphing-modal.svelte", type: "registry:ui" },
 				{ path: "morphing-modal/morph.ts", type: "registry:ui" },
+				{ path: "morphing-modal/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 	},
 

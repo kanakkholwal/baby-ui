@@ -5,7 +5,7 @@ export const scoreCard = defineComponent({
 	name: "Score Card",
 	description: "A single headline metric on a dial: health scores, grades, NPS, uptime.",
 	category: "blocks",
-	status: "alpha",
+	status: "stable",
 	props: [
 		{
 			name: "value",
@@ -19,20 +19,20 @@ export const scoreCard = defineComponent({
 			type: "number",
 			description: "Scale minimum.",
 			default: 0,
-			control: { kind: "number" },
+			control: { kind: "number", min: 0, max: 80, step: 1 },
 		},
 		{
 			name: "max",
 			type: "number",
 			description: "Scale maximum.",
 			default: 100,
-			control: { kind: "number" },
+			control: { kind: "number", min: 90, max: 200, step: 1 },
 		},
 		{
 			name: "trend",
 			type: "number",
 			description: "Change since the last reading, in points. Omit to hide the badge.",
-			control: { kind: "number" },
+			control: { kind: "none" },
 		},
 		{
 			name: "tone",

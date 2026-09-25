@@ -1,16 +1,7 @@
 <script lang="ts">
 import type { Snippet } from "svelte";
 import { cn } from "../lib/cn";
-
-/** Mobile sheet, both ways: only the closed state translates, so nothing competes. */
-const SHEET_MOTION =
-	"transition-transform duration-[var(--duration-drawer)] ease-[var(--ease-drawer)] starting:translate-y-full data-[state=closed]:translate-y-full data-[state=closed]:duration-[var(--duration-overlay)] motion-reduce:transition-none";
-
-const VEIL_MOTION =
-	"transition-opacity duration-[var(--duration-overlay)] ease-[var(--ease-out)] starting:opacity-0 data-[state=closed]:opacity-0 data-[state=closed]:duration-[var(--duration-exit)] motion-reduce:transition-none";
-
-const LAYER_MOTION =
-	"transition-[visibility] duration-0 data-[state=closed]:invisible data-[state=closed]:delay-[var(--duration-overlay)]";
+import { type NavbarVariant, navbar } from "./variants";
 
 type Link = { href: string; label: string };
 
@@ -22,6 +13,7 @@ type Props = {
 	class?: string;
 	sticky?: boolean;
 	blur?: boolean;
+	variant?: NavbarVariant;
 };
 
 let {
@@ -32,6 +24,7 @@ let {
 	class: classProp,
 	sticky = true,
 	blur = true,
+	variant = "solid",
 }: Props = $props();
 
 let scrolled = $state(false);
@@ -41,6 +34,13 @@ let sheet = $state<HTMLDivElement>();
 // Kept mounted after the first open so the sheet can slide out as well as in.
 let sheetMounted = $state(false);
 let pill = $state({ left: 0, width: 0 });
+const styles = $derived(
+	navbar({
+		variant,
+		sticky,
+		surface: scrolled ? (blur ? "blurred" : "opaque") : "clear",
+	}),
+);
 
 $effect(() => {
 	if (!sticky) return;
@@ -81,29 +81,15 @@ $effect(() => {
 });
 </script>
 
-<header
-	class={cn(
-		"inset-x-0 top-0 z-40 transition-[background,border-color,backdrop-filter] duration-300",
-		sticky && "sticky",
-		scrolled
-			? blur
-				? "border-border border-b bg-background/70 backdrop-blur-xl backdrop-saturate-150"
-				: "border-border border-b bg-background"
-			: "border-transparent border-b bg-transparent",
-		classProp,
-	)}
->
-	<nav
-		aria-label="Main"
-		class="mx-auto flex h-14 w-full max-w-7xl items-center justify-between gap-4 px-4 md:px-6"
-	>
+<header data-slot="navbar" data-variant={variant} class={cn(styles.header(), classProp)}>
+	<nav aria-label="Main" class={styles.nav()}>
 		<div class="flex items-center gap-4">
 			{@render brand?.()}
 
-			<div bind:this={list} class="relative hidden items-center gap-0.5 md:flex">
+			<div bind:this={list} class={styles.links()}>
 				<span
 					aria-hidden="true"
-					class="pointer-events-none absolute inset-y-1 left-0 rounded-md bg-foreground/[0.06] transition-[transform,scale,translate,width,opacity] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none"
+					class={styles.pill()}
 					style:transform="translateX({pill.left}px)"
 					style:width="{pill.width}px"
 					style:opacity={pill.width ? 1 : 0}
@@ -112,7 +98,7 @@ $effect(() => {
 					<a
 						href={link.href}
 						aria-current={active === link.href ? "page" : undefined}
-						class="relative z-10 rounded-md px-3 py-1.5 text-muted-foreground text-sm transition-colors hover:text-foreground aria-[current=page]:text-foreground"
+						class={styles.link()}
 					>
 						{link.label}
 					</a>
@@ -127,7 +113,7 @@ $effect(() => {
 				aria-label="Open menu"
 				aria-expanded={sheetOpen}
 				onclick={() => (sheetOpen = true)}
-				class="grid size-9 place-items-center rounded-md border border-border text-muted-foreground transition-colors hover:text-foreground md:hidden"
+				class={styles.menuButton()}
 			>
 				<svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class="size-4">
 					<path d="M2.5 5h11M2.5 11h11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
@@ -139,7 +125,7 @@ $effect(() => {
 
 {#if sheetMounted}
 	<div
-		class={cn(LAYER_MOTION, "fixed inset-0 z-50 md:hidden")}
+		class={styles.layer()}
 		data-state={sheetOpen ? "open" : "closed"}
 		inert={!sheetOpen}
 	>
@@ -148,7 +134,7 @@ $effect(() => {
 			aria-label="Close menu"
 			data-state={sheetOpen ? "open" : "closed"}
 			onclick={() => (sheetOpen = false)}
-			class={cn(VEIL_MOTION, "absolute inset-0 bg-black/40")}
+			class={styles.veil()}
 		></button>
 		<div
 			bind:this={sheet}
@@ -156,10 +142,7 @@ $effect(() => {
 			aria-modal="true"
 			aria-label="Menu"
 			data-state={sheetOpen ? "open" : "closed"}
-			class={cn(
-				SHEET_MOTION,
-				"absolute inset-x-0 bottom-0 rounded-t-2xl border-border border-t bg-card p-4",
-			)}
+			class={styles.sheet()}
 		>
 			<div class="mx-auto mb-3 h-1 w-10 rounded-full bg-border"></div>
 			{#each links as link (link.href)}
@@ -167,7 +150,7 @@ $effect(() => {
 					href={link.href}
 					aria-current={active === link.href ? "page" : undefined}
 					onclick={() => (sheetOpen = false)}
-					class="block rounded-lg px-3 py-2.5 text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground aria-[current=page]:bg-foreground/[0.06] aria-[current=page]:text-foreground"
+					class={styles.sheetLink()}
 				>
 					{link.label}
 				</a>

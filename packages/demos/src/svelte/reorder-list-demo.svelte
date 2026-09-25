@@ -1,5 +1,5 @@
 <script lang="ts">
-import { ReorderList } from "@baby-ui/svelte";
+import { ReorderList, type ReorderListVariant } from "@baby-ui/svelte";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
 
@@ -16,5 +16,6 @@ let items = $state([
 		bind:items
 		disabled={Boolean(props.disabled)}
 		label={(props.label as string) || "Build steps"}
+		variant={(props.variant as ReorderListVariant) ?? "card"}
 	/>
 </div>

@@ -6,7 +6,7 @@ export const navbar = defineComponent({
 	description:
 		"Production site header with a scroll-aware surface, an active-link indicator that slides, and a mobile sheet.",
 	category: "blocks",
-	status: "alpha",
+	status: "stable",
 
 	props: [
 		{
@@ -36,6 +36,13 @@ export const navbar = defineComponent({
 				"Use a translucent blurred surface rather than a solid one when scrolled.",
 			default: true,
 			control: { kind: "none" },
+		},
+		{
+			name: "variant",
+			type: '"solid" | "floating"',
+			description: "Solid spans the page edge to edge; floating is an inset rounded bar.",
+			default: "solid",
+			control: { kind: "select", options: ["solid", "floating"] },
 		},
 	],
 
@@ -68,17 +75,19 @@ export const navbar = defineComponent({
 			entry: "Navbar",
 			files: [
 				{ path: "navbar/navbar.tsx", type: "registry:ui" },
+				{ path: "navbar/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 		svelte: {
 			entry: "Navbar",
 			files: [
 				{ path: "navbar/navbar.svelte", type: "registry:ui" },
+				{ path: "navbar/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 	},
 

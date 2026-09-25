@@ -40,6 +40,7 @@ import {
 	DrawerTrigger,
 	type DrawerVariant,
 	FullscreenNav,
+	type FullscreenNavVariant,
 	Input,
 	Label,
 	Select,
@@ -411,6 +412,7 @@ export function FullscreenNavDemo({ props }: { props: Props }) {
 				open={open}
 				onOpenChange={setOpen}
 				title={(props.title as string) || "Menu"}
+				variant={(props.variant as FullscreenNavVariant) ?? "fade"}
 			/>
 		</>
 	);

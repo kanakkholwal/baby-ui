@@ -3,7 +3,7 @@
 import { useEffect, useId, useMemo, useRef } from "react";
 import { cn } from "../lib/cn";
 import { useChart } from "./chart";
-import { evenTickIndices, toDate } from "./core";
+import { evenTickIndices, fitTickCount, toDate, Y_TICK_GAP } from "./core";
 import { useActivePoint, useCartesian } from "./frame";
 import {
 	CHART_DURATION,
@@ -67,7 +67,10 @@ export function CartesianGrid({
 		return () => playback?.stop();
 	}, [shimmering, innerWidth]);
 
-	const rowTicks = horizontal && rowScale ? rowScale.ticks(rows) : [];
+	const rowTicks =
+		horizontal && rowScale
+			? rowScale.ticks(fitTickCount(rows, innerHeight, Y_TICK_GAP))
+			: [];
 	const rowLines = (stroke?: string) =>
 		rowTicks.map((tick) => (
 			<line
@@ -164,10 +167,10 @@ export function YAxis({
 	className,
 }: YAxisProps) {
 	const { format } = useChart();
-	const { yScale, innerWidth } = usePlot();
+	const { yScale, innerWidth, innerHeight } = usePlot();
 	const styles = chartAxis({ tickLine });
 	const left = orientation === "left";
-	const ticks = yScale.ticks(Math.min(10, Math.max(2, tickCount)));
+	const ticks = yScale.ticks(fitTickCount(tickCount, innerHeight, Y_TICK_GAP));
 	return (
 		<g data-slot="chart-y-axis" className={className}>
 			{ticks.map((tick) => (

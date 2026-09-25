@@ -214,12 +214,6 @@ export const ${camel} = defineComponent({
 		keyboard: [],
 		notes: [],
 	},
-	licenseOrigin: {
-		source: "beUI",
-		url: "https://beui.dev",
-		license: "MIT",
-		copyright: "Copyright (c) 2026 beUI",
-	},
 	impl: {
 		react: {
 			entry: "${pascal}",
@@ -379,11 +373,12 @@ async function main() {
 	});
 
 	console.log(`
-Scaffolded "${slug}". This is a minimal starting point (a div with one "default" variant) —
+Scaffolded "${slug}". This is a minimal starting point (a div with one "default" variant);
 you still need to:
   - Design the real markup/primitive (Base UI for React, bits-ui for Svelte, per the base-
     components hard rule) and variant set in both variants.ts files.
   - Write real props/a11y/motion notes in registry-schema/src/components/${slug}.ts.
+  - Add licenseOrigin only if the code is ported, naming the real source and copyright.
   - Build a real demo (both ports) and usage snippet (both ports).
   - Write the docs prose in apps/site/src/docs/components/${slug}.md.
   - Reposition the new specs/demos entries into the right category grouping if it matters

@@ -23,14 +23,12 @@ function CursorIcon({ className, style }: { className?: string; style?: CSSPrope
 	return (
 		<svg
 			viewBox="0 0 24 24"
-			fill="#111318"
-			stroke="#fff"
 			strokeWidth="1.4"
 			strokeLinejoin="round"
 			aria-hidden
 			width="26"
 			height="26"
-			className={className}
+			className={cn("fill-foreground stroke-background", className)}
 			style={style}
 		>
 			<path d="M4.037 4.688a.495.495 0 0 1 .651-.651l16 6.5a.5.5 0 0 1-.063.947l-6.124 1.58a2 2 0 0 0-1.438 1.435l-1.579 6.126a.5.5 0 0 1-.947.063z" />

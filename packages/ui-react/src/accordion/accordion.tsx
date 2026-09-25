@@ -75,7 +75,7 @@ export function AccordionTrigger({
 				data-slot="accordion-trigger"
 				className={cn(
 					"flex flex-1 items-center justify-between gap-4 px-4 py-3 text-left font-medium text-foreground text-sm outline-none transition-colors hover:bg-foreground/[0.03] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset disabled:pointer-events-none disabled:opacity-50",
-					"[&>svg]:transition-[transform,scale,translate] [&>svg]:duration-[var(--duration-dropdown)] [&>svg]:ease-[var(--ease-out)] [&[data-open]>svg]:rotate-180 motion-reduce:[&>svg]:transition-none",
+					"[&>svg]:transition-[transform,scale,translate,rotate] [&>svg]:duration-[var(--duration-exit)] [&>svg]:ease-[var(--ease-out)] [&[data-panel-open]>svg]:rotate-180 [&[data-panel-open]>svg]:duration-[var(--duration-dropdown)] motion-reduce:[&>svg]:transition-none",
 					className,
 				)}
 				{...props}
@@ -108,7 +108,8 @@ export function AccordionContent({
 	return (
 		<AccordionPrimitive.Panel
 			data-slot="accordion-content"
-			className="grid grid-rows-[0fr] transition-[grid-template-rows] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] data-[open]:grid-rows-[1fr] motion-reduce:transition-none"
+			className="grid grid-rows-[0fr] transition-[grid-template-rows] duration-[var(--duration-exit)] ease-[var(--ease-out)] data-[open]:grid-rows-[1fr] data-[open]:duration-[var(--duration-dropdown)] motion-reduce:transition-none"
+			render={(renderProps, state) => <div {...renderProps} inert={!state.open} />}
 			{...props}
 		>
 			<div className="overflow-hidden">

@@ -2,6 +2,7 @@
 
 <script lang="ts">
 import { useActivePoint, usePlot } from "../chart/context";
+import { fitTickCount } from "../chart/core";
 import { cn } from "../lib/cn";
 import { useLive } from "./context";
 import { crosshairFade } from "./live";
@@ -28,7 +29,9 @@ const pointer = useActivePoint();
 const styles = liveAxis();
 const fmt = $derived(formatTime ?? live.formatTime);
 const range = $derived(plot.xScale.domain().map((d) => d.getTime()) as [number, number]);
-const count = $derived(Math.max(2, numTicks));
+/** Room for one "11:22:49 pm" time label plus breathing space. */
+const TIME_LABEL_GAP = 72;
+const count = $derived(fitTickCount(numTicks, plot.innerWidth, TIME_LABEL_GAP));
 </script>
 
 <g data-slot="chart-live-x-axis" class={className}>

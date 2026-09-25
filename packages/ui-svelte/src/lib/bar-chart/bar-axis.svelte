@@ -2,6 +2,7 @@
 
 <script lang="ts">
 import { useChart } from "../chart/context";
+import { fitTickCount, X_TICK_GAP, Y_TICK_GAP } from "../chart/core";
 import { CHART_DURATION, CHART_EASE_CSS } from "../chart/motion";
 import { cn } from "../lib/cn";
 import { useBarChart } from "./context";
@@ -31,7 +32,11 @@ const styles = $derived(barChart({ orientation: chart.orientation }));
 const categoryAxis = $derived((chart.orientation === "vertical") === (side === "x"));
 const half = $derived(chart.band.bandwidth() / 2);
 const step = $derived(Math.ceil(chart.categories.length / maxLabels));
-const ticks = $derived(chart.value.ticks(Math.min(10, Math.max(2, tickCount))));
+const ticks = $derived.by(() => {
+	const [r0 = 0, r1 = 0] = chart.value.range();
+	const gap = side === "y" ? Y_TICK_GAP : X_TICK_GAP;
+	return chart.value.ticks(fitTickCount(tickCount, Math.abs(r1 - r0), gap));
+});
 
 function center(category: string) {
 	return (chart.band(category) ?? 0) + half;

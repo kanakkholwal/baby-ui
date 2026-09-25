@@ -1,5 +1,8 @@
 import type { ReactNode } from "react";
 import { cn } from "../lib/cn";
+import { type FooterLayout, footer } from "./variants";
+
+export type { FooterLayout };
 
 export type FooterLink = { label: string; href: string; external?: boolean };
 export type FooterColumn = { title: string; links: FooterLink[] };
@@ -13,6 +16,8 @@ export interface FooterProps {
 	copyright?: ReactNode;
 	/** Giant background wordmark text; omit to skip that section entirely. */
 	wordmark?: string;
+	/** Brand beside the link columns, or centred above them. */
+	layout?: FooterLayout;
 	className?: string;
 }
 
@@ -23,29 +28,25 @@ export function Footer({
 	socials = [],
 	copyright,
 	wordmark,
+	layout = "split",
 	className,
 }: FooterProps) {
+	const styles = footer({ layout });
 	return (
 		<footer
 			data-slot="footer"
-			className={cn(
-				"@container w-full relative border-border border-t bg-card",
-				className,
-			)}
+			data-layout={layout}
+			className={cn(styles.root(), className)}
 		>
-			<div className="mx-auto max-w-6xl px-6 pt-20 pb-10 @3xl:pt-24 @3xl:pb-12">
-				<div className="grid gap-14 @3xl:grid-cols-12">
-					<div className="@3xl:col-span-5">
+			<div className={styles.inner()}>
+				<div className={styles.grid()}>
+					<div className={styles.brandBlock()}>
 						{brand ? (
 							<span className="inline-flex items-center gap-2.5">{brand}</span>
 						) : null}
-						{description ? (
-							<p className="mt-6 max-w-sm text-pretty text-muted-foreground text-sm">
-								{description}
-							</p>
-						) : null}
+						{description ? <p className={styles.description()}>{description}</p> : null}
 						{socials.length ? (
-							<div className="mt-7 flex items-center gap-2">
+							<div className={styles.socials()}>
 								{socials.map(({ icon, href, label }) => (
 									<a
 										key={href}
@@ -53,30 +54,28 @@ export function Footer({
 										aria-label={label}
 										target={href.startsWith("http") ? "_blank" : undefined}
 										rel={href.startsWith("http") ? "noreferrer" : undefined}
-										className="grid size-9 place-items-center rounded-lg border border-border bg-background text-muted-foreground transition-colors hover:text-foreground motion-reduce:transition-none [&_svg]:size-4"
+										className={styles.social()}
 									>
 										{icon}
 									</a>
 								))}
 							</div>
 						) : null}
-						{copyright ? (
-							<p className="mt-7 text-muted-foreground text-xs">{copyright}</p>
-						) : null}
+						{copyright ? <p className={styles.copyright()}>{copyright}</p> : null}
 					</div>
 
-					<div className="grid gap-10 @xl:grid-cols-3 @3xl:col-span-7">
+					<div className={styles.columns()}>
 						{columns.map((column) => (
 							<div key={column.title}>
-								<h4 className="font-semibold text-foreground text-sm">{column.title}</h4>
-								<ul className="mt-4 space-y-3">
+								<h4 className={styles.columnTitle()}>{column.title}</h4>
+								<ul className={styles.links()}>
 									{column.links.map((link) => (
 										<li key={link.href}>
 											<a
 												href={link.href}
 												target={link.external ? "_blank" : undefined}
 												rel={link.external ? "noreferrer" : undefined}
-												className="text-muted-foreground text-sm transition-colors hover:text-foreground motion-reduce:transition-none"
+												className={styles.link()}
 											>
 												{link.label}
 											</a>
@@ -90,10 +89,8 @@ export function Footer({
 			</div>
 
 			{wordmark ? (
-				<div className="relative overflow-hidden px-4 pb-8 @3xl:pb-10">
-					<span className="footer-wordmark block select-none text-center font-semibold text-[22cqw] leading-[0.82] tracking-tight">
-						{wordmark}
-					</span>
+				<div className={styles.wordmarkWrap()}>
+					<span className={styles.wordmark()}>{wordmark}</span>
 				</div>
 			) : null}
 		</footer>

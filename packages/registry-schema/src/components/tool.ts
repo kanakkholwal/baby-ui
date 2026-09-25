@@ -37,10 +37,30 @@ export const tool = defineComponent({
 			control: { kind: "none" },
 		},
 		{
+			name: "open",
+			type: "boolean",
+			description:
+				"Whether the input/output panel is expanded. Controlled with onOpenChange; bindable in Svelte.",
+			control: { kind: "none" },
+		},
+		{
 			name: "defaultOpen",
 			type: "boolean",
-			description: "Start expanded.",
+			description: "Uncontrolled starting state.",
 			default: false,
+			control: { kind: "none" },
+		},
+		{
+			name: "onOpenChange",
+			type: "(open: boolean) => void",
+			description: "Fires when the header toggles the panel.",
+			control: { kind: "none" },
+		},
+		{
+			name: "labels",
+			type: 'Partial<Record<Status | "input" | "output", string>>',
+			description:
+				"Overrides for the status words and section headings (Queued, Running, Completed, Failed, Input, Output).",
 			control: { kind: "none" },
 		},
 	],
@@ -49,13 +69,14 @@ export const tool = defineComponent({
 		reducedMotion: "The spinner stops and the panel opens instantly.",
 		behaviour: [
 			"Only the running state animates. Everything else is a static icon, so a finished list is still.",
-			"The panel opens with grid-template-rows, so no JavaScript measures the payload.",
+			"The panel opens over 200ms with grid-template-rows and closes over 120ms; the chevron turns on the same timing.",
 		],
 	},
 	a11y: {
 		keyboard: ["Enter and Space toggle the panel"],
 		notes: [
 			"State is written out as a word beside the icon, so it does not depend on colour.",
+			"The collapsed panel is inert, so its payload leaves the tab order and the accessibility tree.",
 			"Collapsed by default: a transcript full of expanded tool payloads buries the answer.",
 		],
 	},

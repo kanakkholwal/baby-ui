@@ -5,6 +5,9 @@ import { useEffect, useRef, useState } from "react";
 import { Collapsible, CollapsibleContent } from "../collapsible/collapsible";
 import { cn } from "../lib/cn";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "../sheet/sheet";
+import { type MegaNavbarVariant, megaNavbar } from "./variants";
+
+export type { MegaNavbarVariant };
 
 export type MegaNavLink = { label: string; href: string; external?: boolean };
 
@@ -93,6 +96,7 @@ function DesktopMegaMenu({
 	active?: string;
 }) {
 	const [open, setOpen] = useState(-1);
+	const styles = megaNavbar();
 	const [box, setBox] = useState({ width: 0, height: 0, left: 0 });
 	const row = useRef<HTMLDivElement>(null);
 	const panels = useRef<(HTMLDivElement | null)[]>([]);
@@ -162,20 +166,12 @@ function DesktopMegaMenu({
 								triggers.current[index]?.focus();
 							}
 						}}
-						className={cn(
-							"inline-flex items-center gap-1 whitespace-nowrap rounded-full px-3.5 py-2 font-medium text-sm outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none",
-							isOpen || isCurrent(group.href, active)
-								? "text-foreground"
-								: "text-muted-foreground hover:text-foreground",
-						)}
+						className={styles.trigger({
+							current: isOpen || isCurrent(group.href, active),
+						})}
 					>
 						{group.label}
-						<ChevronDown
-							className={cn(
-								"size-3.5 transition-transform duration-[var(--duration-dropdown)] motion-reduce:transition-none",
-								isOpen && "rotate-180",
-							)}
-						/>
+						<ChevronDown className={styles.chevron({ open: isOpen })} />
 					</button>
 				);
 			})}
@@ -185,11 +181,7 @@ function DesktopMegaMenu({
 				aria-hidden={open < 0}
 				onMouseEnter={cancelClose}
 				onMouseLeave={scheduleClose}
-				className={cn(
-					"absolute top-full z-50 origin-top overflow-hidden rounded-xl border border-border bg-card shadow-2xl",
-					"transition-[width,height,transform,opacity] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none",
-					open >= 0 ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0",
-				)}
+				className={styles.panel({ open: open >= 0 })}
 				style={{
 					width: box.width,
 					height: box.height,
@@ -205,10 +197,7 @@ function DesktopMegaMenu({
 								panels.current[index] = el;
 							}}
 							inert={!isOpen}
-							className={cn(
-								"absolute inset-x-0 top-0 w-max transition-opacity duration-[var(--duration-dropdown)] motion-reduce:transition-none",
-								isOpen ? "opacity-100" : "pointer-events-none opacity-0",
-							)}
+							className={styles.pane({ open: isOpen })}
 						>
 							<ul className="grid w-[34rem] grid-cols-2 gap-1 p-2">
 								{group.items.map((item) => (
@@ -284,6 +273,7 @@ function MobileNav({
 	active?: string;
 }) {
 	const [openGroup, setOpenGroup] = useState(0);
+	const styles = megaNavbar();
 
 	return (
 		<Sheet open={open} onOpenChange={onOpenChange}>
@@ -309,12 +299,7 @@ function MobileNav({
 									className="flex min-h-12 w-full items-center justify-between gap-4 px-2 text-left font-medium text-foreground"
 								>
 									{group.label}
-									<ChevronDown
-										className={cn(
-											"size-4 shrink-0 text-muted-foreground transition-transform duration-[var(--duration-dropdown)] motion-reduce:transition-none",
-											isOpen && "rotate-180",
-										)}
-									/>
+									<ChevronDown className={styles.mobileChevron({ open: isOpen })} />
 								</button>
 								<CollapsibleContent className="px-0 pb-2">
 									<ul>
@@ -326,12 +311,9 @@ function MobileNav({
 													rel={item.external ? "noreferrer" : undefined}
 													onClick={() => onOpenChange(false)}
 													aria-current={isCurrent(item.href, active) ? "page" : undefined}
-													className={cn(
-														"flex min-h-12 items-center gap-3 rounded-lg px-2 py-2 transition-colors motion-reduce:transition-none",
-														isCurrent(item.href, active)
-															? "bg-foreground/[0.06]"
-															: "hover:bg-foreground/[0.06]",
-													)}
+													className={styles.mobileItem({
+														current: isCurrent(item.href, active),
+													})}
 												>
 													{item.icon ? (
 														<span className="shrink-0 text-muted-foreground [&_svg]:size-4">
@@ -368,12 +350,7 @@ function MobileNav({
 									rel={link.external ? "noreferrer" : undefined}
 									onClick={() => onOpenChange(false)}
 									aria-current={isCurrent(link.href, active) ? "page" : undefined}
-									className={cn(
-										"flex min-h-12 items-center rounded-lg px-2 font-medium text-foreground transition-colors motion-reduce:transition-none",
-										isCurrent(link.href, active)
-											? "bg-foreground/[0.06]"
-											: "hover:bg-foreground/[0.06]",
-									)}
+									className={styles.mobileLink({ current: isCurrent(link.href, active) })}
 								>
 									{link.label}
 								</a>
@@ -400,6 +377,7 @@ export interface MegaNavbarProps {
 	active?: string;
 	sticky?: boolean;
 	blur?: boolean;
+	variant?: MegaNavbarVariant;
 	className?: string;
 }
 
@@ -412,6 +390,7 @@ export function MegaNavbar({
 	active,
 	sticky = true,
 	blur = true,
+	variant = "solid",
 	className,
 }: MegaNavbarProps) {
 	const [scrolled, setScrolled] = useState(false);
@@ -430,23 +409,19 @@ export function MegaNavbar({
 		setMobileOpen(false);
 	}, [active]);
 
+	const styles = megaNavbar({
+		variant,
+		sticky,
+		surface: scrolled ? (blur ? "blurred" : "opaque") : "clear",
+	});
+
 	return (
 		<div
 			data-slot="mega-navbar"
-			className={cn(
-				"@container w-full",
-				sticky ? "sticky inset-x-0 top-0 z-50" : "relative",
-				"border-b transition-colors duration-[var(--duration-dropdown)] motion-reduce:transition-none",
-				scrolled
-					? cn("border-border bg-background/85", blur && "backdrop-blur")
-					: "border-transparent",
-				className,
-			)}
+			data-variant={variant}
+			className={cn(styles.root(), className)}
 		>
-			<nav
-				aria-label="Primary"
-				className="mx-auto flex h-16 w-full max-w-6xl items-center gap-2 px-6"
-			>
+			<nav aria-label="Primary" className={styles.nav()}>
 				{brand ? (
 					<span className="flex shrink-0 items-center gap-2.5 py-1 pr-2">{brand}</span>
 				) : null}
@@ -460,12 +435,7 @@ export function MegaNavbar({
 									target={link.external ? "_blank" : undefined}
 									rel={link.external ? "noreferrer" : undefined}
 									aria-current={isCurrent(link.href, active) ? "page" : undefined}
-									className={cn(
-										"inline-flex items-center whitespace-nowrap rounded-full px-3.5 py-2 font-medium text-sm transition-colors hover:text-foreground motion-reduce:transition-none",
-										isCurrent(link.href, active)
-											? "text-foreground"
-											: "text-muted-foreground",
-									)}
+									className={styles.link({ current: isCurrent(link.href, active) })}
 								>
 									{link.label}
 								</a>

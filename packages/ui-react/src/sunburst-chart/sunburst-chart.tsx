@@ -471,7 +471,7 @@ function SunburstPlot({
 					{labels
 						? drawOrder.map((arc) => {
 								const g = geometry(arc);
-								if (!g || !labelFits(g) || !related(arc)) return null;
+								if (!g || !labelFits(g, arc.name) || !related(arc)) return null;
 								const at = centroid(g);
 								return (
 									<text

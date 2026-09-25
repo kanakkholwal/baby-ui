@@ -37,10 +37,12 @@ import {
 	TabsTrigger,
 	type TabsVariant,
 	TaskSteps,
+	type TaskStepsSize,
 } from "@baby-ui/react";
-import { useEffect, useState } from "react";
+import { type ComponentProps, useEffect, useState } from "react";
 
 type Props = Record<string, unknown>;
+type ResponseStreamSize = NonNullable<ComponentProps<typeof ResponseStream>["size"]>;
 
 export function BreadcrumbDemo({ props }: { props: Props }) {
 	const collapsed = props.collapsed !== false;
@@ -219,6 +221,7 @@ export function ResponseStreamDemo({ props }: { props: Props }) {
 				text={text}
 				speed={Number(props.speed ?? 60)}
 				streaming={props.streaming !== false}
+				size={(props.size as ResponseStreamSize) ?? "md"}
 			/>
 		</div>
 	);
@@ -304,6 +307,7 @@ export function TaskStepsDemo({ props }: { props: Props }) {
 				steps={STEPS}
 				showConnector={props.showConnector !== false}
 				compact={Boolean(props.compact)}
+				size={(props.size as TaskStepsSize) ?? "md"}
 			/>
 		</div>
 	);

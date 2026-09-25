@@ -58,14 +58,12 @@ function endRecording() {
 {#snippet cursorIcon(style: string, klass = "")}
 	<svg
 		viewBox="0 0 24 24"
-		fill="#111318"
-		stroke="#fff"
 		stroke-width="1.4"
 		stroke-linejoin="round"
 		aria-hidden="true"
 		width="26"
 		height="26"
-		class={klass}
+		class={cn("fill-foreground stroke-background", klass)}
 		{style}
 	>
 		<path

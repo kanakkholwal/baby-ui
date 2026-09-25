@@ -15,7 +15,7 @@ let {
 	data-slot="collapsible-trigger"
 	class={cn(
 		"flex w-full items-center gap-2 rounded-lg px-1 py-1.5 text-left font-medium text-foreground text-sm transition-colors hover:text-muted-foreground",
-		"[&>svg]:transition-[transform,scale,translate] [&>svg]:duration-[var(--duration-dropdown)] [&>svg]:ease-[var(--ease-out)] [&[data-state=open]>svg]:rotate-90 motion-reduce:[&>svg]:transition-none",
+		"[&>svg]:transition-[transform,scale,translate,rotate] [&>svg]:duration-[var(--duration-exit)] [&>svg]:ease-[var(--ease-out)] [&[data-state=open]>svg]:rotate-90 [&[data-state=open]>svg]:duration-[var(--duration-dropdown)] motion-reduce:[&>svg]:transition-none",
 		classProp,
 	)}
 >

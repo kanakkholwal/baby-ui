@@ -62,8 +62,20 @@ export async function componentMarkdown(spec: ComponentSpec): Promise<string> {
 		}
 		out.push("");
 	}
+	if (spec.motion) {
+		out.push(
+			"## Behaviour contract",
+			"",
+			...spec.motion.behaviour.map((b) => `- ${b}`),
+			`- Reduced motion: ${spec.motion.reducedMotion}`,
+			"",
+		);
+	}
 	if (spec.a11y.keyboard.length) {
 		out.push("## Keyboard", "", ...spec.a11y.keyboard.map((k) => `- ${k}`), "");
+	}
+	if (spec.a11y.notes.length) {
+		out.push("## Accessibility", "", ...spec.a11y.notes.map((n) => `- ${n}`), "");
 	}
 	out.push(body(`/src/docs/components/${spec.slug}.md`));
 	return out.join("\n").trim();

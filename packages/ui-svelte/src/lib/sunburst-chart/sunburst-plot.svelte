@@ -298,7 +298,7 @@ const shown = $derived(active ?? focus);
 		{/if}
 		{#if labels}
 			{#each shapes as { arc, g } (arc.id)}
-				{#if g && labelFits(g) && related(arc)}
+				{#if g && labelFits(g, arc.name) && related(arc)}
 					{@const at = centroid(g)}
 					<text
 						x={at.x}

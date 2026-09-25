@@ -12,12 +12,15 @@ let {
 	slug,
 	dependencies,
 	source,
+	css = [],
 	dialect = "ts",
 }: {
 	slug: string;
 	dependencies: string[];
 	/** JSON with the highlighted files and CSS, fetched the first time Manual opens. */
 	source: string;
+	/** Class and keyframe names the item adds to the global stylesheet. */
+	css?: string[];
 	dialect?: string;
 } = $props();
 
@@ -34,6 +37,9 @@ function load(url: string) {
 	}
 	return pending;
 }
+
+const classes = $derived(css.filter((name) => name.startsWith(".")));
+const keyframes = $derived(css.length - classes.length);
 
 let mode = $state("cli");
 const tabs = [
@@ -62,6 +68,18 @@ const manual = (step: string) => ({
 <div class="mt-4">
 	{#if mode === "cli"}
 		<InstallCommand {slug} />
+		<p class="mt-2 text-muted-foreground text-xs leading-relaxed">
+			{#if css.length}
+				Also writes
+				{#each classes as name, i (name)}
+					<code class="rounded bg-muted px-1 text-foreground">{name}</code>{i < classes.length - 1 ? ", " : ""}
+				{/each}
+				{#if keyframes}{classes.length ? " and " : ""}{keyframes} keyframe{keyframes === 1 ? "" : "s"}{/if}
+				to your global stylesheet.
+			{:else}
+				Writes no CSS of its own: Tailwind utilities and the shared motion tokens.
+			{/if}
+		</p>
 	{:else}
 		<ol class="flex flex-col gap-6">
 			{#if dependencies.length}

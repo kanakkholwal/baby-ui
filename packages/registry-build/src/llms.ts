@@ -33,7 +33,7 @@ export function buildLlmsTxt(specs: ComponentSpec[]): string {
 		for (const spec of specs.filter((s) => s.category === category)) {
 			const frameworks = Object.keys(spec.impl).sort().join(", ");
 			lines.push(
-				`- **${spec.slug}** (${frameworks}) — ${spec.description} [${SITE_URL}${docsPath(spec)}]`,
+				`- **${spec.slug}** (${frameworks}): ${spec.description} [${SITE_URL}${docsPath(spec)}]`,
 			);
 		}
 		lines.push("");

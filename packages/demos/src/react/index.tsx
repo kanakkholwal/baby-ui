@@ -2,7 +2,10 @@ import type {
 	ButtonSize,
 	ButtonVariant,
 	FileTreeNode,
+	FileTreeSize,
+	MorphingModalSize,
 	MorphSpring,
+	NavbarVariant,
 } from "@baby-ui/react";
 import {
 	BentoCell,
@@ -59,6 +62,7 @@ import {
 	ToastDemo,
 } from "./dialogs";
 import { DiffTableDemo } from "./diff-table";
+import { DocsNavDemo } from "./docs-nav";
 import { FillButtonDemo } from "./fill-button";
 import { FilterTableDemo } from "./filter-table";
 import { FineTuneCardDemo } from "./fine-tune-card";
@@ -67,6 +71,7 @@ import { FooterDemo } from "./footer";
 import { FunnelChartDemo } from "./funnel-chart";
 import { GaugeChartDemo } from "./gauge-chart";
 import { HeatmapChartDemo } from "./heatmap-chart";
+import { HeroStageDemo } from "./hero-stage";
 import { LiveLineChartDemo } from "./live-line-chart";
 import { LoadingStateDemo } from "./loading-state";
 import { LogoCarouselDemo } from "./logo-carousel";
@@ -120,6 +125,7 @@ import { SankeyChartDemo } from "./sankey-chart";
 import { ScatterChartDemo } from "./scatter-chart";
 import { ScoreCardDemo } from "./score-card";
 import { ScrollProgressDemo } from "./scroll-progress";
+import { ShowcaseGridDemo } from "./showcase-grid";
 import { SidebarNavDemo } from "./sidebar-nav";
 import { StatCardDemo, StatCardMapDemo } from "./stat-card";
 import { StreamingTextDemo } from "./streaming-text";
@@ -260,12 +266,14 @@ function FileTreeDemo({ props }: { props: Props }) {
 			indent={Number(props.indent ?? 14)}
 			showGuides={props.showGuides !== false}
 			defaultExpanded={props.defaultExpanded !== false}
+			size={(props.size as FileTreeSize) ?? "md"}
 			className="w-64"
 		/>
 	);
 }
 
 function NavbarDemo({ props }: { props: Props }) {
+	const variant = (props.variant as NavbarVariant) ?? "solid";
 	return (
 		<div className="w-full max-w-3xl overflow-hidden rounded-xl border border-border">
 			<Navbar
@@ -273,7 +281,8 @@ function NavbarDemo({ props }: { props: Props }) {
 				active="#product"
 				sticky={false}
 				blur={props.blur !== false}
-				className="border-border border-b bg-card"
+				variant={variant}
+				className={variant === "solid" ? "border-border border-b bg-card" : undefined}
 				brand={<span className="font-semibold text-sm tracking-tight">Acme</span>}
 				actions={
 					<span className="hidden rounded-full bg-primary px-3 py-1.5 font-medium text-primary-foreground text-xs sm:inline-flex">
@@ -291,6 +300,7 @@ function MorphingModalDemo({ props }: { props: Props }) {
 		<MorphingModal
 			title="Deploy to production"
 			spring={(props.spring as MorphSpring) ?? "gentle"}
+			size={(props.size as MorphingModalSize) ?? "md"}
 			dismissOnBackdrop={props.dismissOnBackdrop !== false}
 			backdropBlur={Number(props.backdropBlur ?? 8)}
 			trigger={
@@ -400,10 +410,13 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"funnel-chart": FunnelChartDemo,
 	"filter-table": FilterTableDemo,
 	"diff-table": DiffTableDemo,
+	"docs-nav": DocsNavDemo,
 	"records-table": RecordsTableDemo,
 	"fine-tune-card": FineTuneCardDemo,
 	flowchart: FlowchartDemo,
 	"loading-state": LoadingStateDemo,
+	"hero-stage": HeroStageDemo,
+	"showcase-grid": ShowcaseGridDemo,
 	"logo-carousel": LogoCarouselDemo,
 	"recommendation-card": RecommendationCardDemo,
 	"chat-composer": ChatComposerDemo,

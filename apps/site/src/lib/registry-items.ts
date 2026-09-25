@@ -37,6 +37,18 @@ export async function componentCss(
 	return mod.default[framework] ?? null;
 }
 
+/** Class and keyframe names a stylesheet defines, e.g. [".pop-in", "@keyframes pop-in"]. */
+export function cssNames(css: string): string[] {
+	const names = new Set<string>();
+	for (const line of css.split("\n")) {
+		if (!line.endsWith("{")) continue;
+		const keyframes = line.match(/^@keyframes\s+([\w-]+)/);
+		if (keyframes) names.add(`@keyframes ${keyframes[1]}`);
+		else for (const m of line.matchAll(/\.([a-zA-Z][\w-]*)/g)) names.add(`.${m[1]}`);
+	}
+	return [...names];
+}
+
 /** Namespaced form, matching what the install command shows. */
 export function installCommand(slug: string, framework: Framework, site: string): string {
 	return framework === "react"

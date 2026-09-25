@@ -211,6 +211,7 @@ export {
 	CollabCard,
 	type CollabCardCollaborator,
 	type CollabCardProps,
+	type CollabCardTone,
 } from "./collab-card/collab-card";
 export {
 	Collapsible,
@@ -309,6 +310,13 @@ export {
 export { type DiffRow, DiffTable, type DiffTableProps } from "./diff-table/diff-table";
 export type { DiffRowChange } from "./diff-table/variants";
 export {
+	DocsNav,
+	type DocsNavConnector,
+	type DocsNavItem,
+	type DocsNavProps,
+	type DocsNavSection,
+} from "./docs-nav/docs-nav";
+export {
 	DoubleUnderline,
 	type DoubleUnderlineProps,
 } from "./double-underline/double-underline";
@@ -343,6 +351,7 @@ export {
 export { type DiffLine, FileDiff, type FileDiffProps } from "./file-diff/file-diff";
 export { FileTree, type FileTreeProps } from "./file-tree/file-tree";
 export type { FileTreeNode } from "./file-tree/types";
+export type { FileTreeSize } from "./file-tree/variants";
 export {
 	FillButton,
 	type FillButtonProps,
@@ -376,6 +385,7 @@ export type { FlowchartBackground } from "./flowchart/variants";
 export {
 	Footer,
 	type FooterColumn,
+	type FooterLayout,
 	type FooterLink,
 	type FooterProps,
 	type FooterSocialLink,
@@ -385,6 +395,7 @@ export {
 	type FullscreenNavProps,
 	type NavLink,
 } from "./fullscreen-nav/fullscreen-nav";
+export type { FullscreenNavVariant } from "./fullscreen-nav/variants";
 export {
 	FunnelChart,
 	type FunnelChartProps,
@@ -413,6 +424,13 @@ export {
 	heatmapLevelKey,
 } from "./heatmap-chart/heatmap-chart";
 export type { HeatmapLegendAlign, HeatmapShape } from "./heatmap-chart/variants";
+export {
+	HeroStage,
+	type HeroStageMotion,
+	type HeroStageProps,
+	HeroStageSlot,
+	type HeroStageSlotProps,
+} from "./hero-stage/hero-stage";
 export { HoverCard, HoverCardContent, HoverCardTrigger } from "./hover-card/hover-card";
 export { Input, type InputProps } from "./input/input";
 export type { InputSize } from "./input/variants";
@@ -458,6 +476,7 @@ export {
 } from "./loading-state/loading-state";
 export { LogoCarousel, type LogoCarouselProps } from "./logo-carousel/logo-carousel";
 export { Markdown, type MarkdownProps } from "./markdown/markdown";
+export type { MarkdownSize } from "./markdown/variants";
 export { Marker, type MarkerProps } from "./marker/marker";
 export type { MarkerTone, MarkerVariant } from "./marker/variants";
 export { MaskText, type MaskTextProps } from "./mask-text/mask-text";
@@ -469,6 +488,7 @@ export {
 	type MegaNavbarProps,
 	type MegaNavLink,
 } from "./mega-navbar/mega-navbar";
+export type { MegaNavbarVariant } from "./mega-navbar/variants";
 export {
 	Message,
 	MessageAvatar,
@@ -498,7 +518,9 @@ export {
 	type MorphingModalProps,
 } from "./morphing-modal/morphing-modal";
 export type { MorphSpring } from "./morphing-modal/use-morph";
+export type { MorphingModalSize } from "./morphing-modal/variants";
 export { Navbar, type NavbarLink, type NavbarProps } from "./navbar/navbar";
+export type { NavbarVariant } from "./navbar/variants";
 export {
 	OverviewCard,
 	type OverviewCardChart,
@@ -608,10 +630,12 @@ export {
 	ReorderList,
 	type ReorderListProps,
 } from "./reorder-list/reorder-list";
+export type { ReorderListVariant } from "./reorder-list/variants";
 export {
 	ResponseStream,
 	type ResponseStreamProps,
 } from "./response-stream/response-stream";
+export type { ResponseStreamSize } from "./response-stream/variants";
 export {
 	ResponsiveDialog,
 	ResponsiveDialogClose,
@@ -696,6 +720,14 @@ export type { ShimmerTextSize } from "./shimmer-text/variants";
 export { Shortcut, type ShortcutProps } from "./shortcut/shortcut";
 export type { ShortcutSize, ShortcutVariant } from "./shortcut/variants";
 export { ShowMore, type ShowMoreProps } from "./show-more/show-more";
+export {
+	type ShowcaseFrame,
+	ShowcaseGrid,
+	type ShowcaseGridProps,
+	ShowcasePanel,
+	type ShowcasePanelProps,
+	type ShowcaseSpan,
+} from "./showcase-grid/showcase-grid";
 export type { SidebarNavLabels } from "./sidebar-nav/labels";
 export {
 	SidebarNav,
@@ -781,6 +813,7 @@ export {
 	TaskSteps,
 	type TaskStepsProps,
 } from "./task-steps/task-steps";
+export type { TaskStepsSize } from "./task-steps/variants";
 export {
 	TextBorderAnimation,
 	type TextBorderAnimationProps,
@@ -828,7 +861,7 @@ export { Toaster, type ToasterProps, toast } from "./toast/toaster";
 export { Toggle, type ToggleProps } from "./toggle/toggle";
 export { ToggleGroup, ToggleGroupItem } from "./toggle-group/toggle-group";
 export { Tool, type ToolProps } from "./tool/tool";
-export type { ToolState } from "./tool/variants";
+export type { ToolLabels, ToolState } from "./tool/variants";
 export {
 	ToolChips,
 	type ToolChipsLabels,

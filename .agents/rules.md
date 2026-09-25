@@ -120,8 +120,9 @@ Any agent (Claude Code, Codex, Cursor, Copilot) should read this file first.
   removing collapsed rows immediately and was fixed to match. Enforce on every new component
   with this shape from the start, same standing as the controlled-component and variant-axis
   HARD RULEs above.
-- `transition-[...]` arbitrary lists must name `scale` and `translate` when they animate
-  them; `transition-transform` already covers them.
+- `transition-[...]` arbitrary lists must name `scale`, `translate` and `rotate` when they
+  animate them (`rotate-90` sets the standalone `rotate` property); `transition-transform`
+  already covers all three.
 - Dialogs are `<dialog>` with `DIALOG_SURFACE` (`overflow-visible`, so the lift never
   shows a scrollbar).
 - Every registry item ships the CSS its own files reference (`component-css.ts`); the

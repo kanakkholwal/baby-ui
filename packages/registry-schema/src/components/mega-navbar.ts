@@ -6,7 +6,7 @@ export const megaNavbar = defineComponent({
 	description:
 		"Marketing site header with a morphing mega menu on desktop and an accordion sheet on mobile.",
 	category: "blocks",
-	status: "alpha",
+	status: "stable",
 	props: [
 		{
 			name: "groups",
@@ -62,6 +62,13 @@ export const megaNavbar = defineComponent({
 			default: true,
 			control: { kind: "boolean" },
 		},
+		{
+			name: "variant",
+			type: '"solid" | "floating"',
+			description: "Solid spans the page edge to edge; floating is an inset rounded bar.",
+			default: "solid",
+			control: { kind: "select", options: ["solid", "floating"] },
+		},
 	],
 	motion: {
 		springs: [],
@@ -89,19 +96,21 @@ export const megaNavbar = defineComponent({
 			entry: "MegaNavbar",
 			files: [
 				{ path: "mega-navbar/mega-navbar.tsx", type: "registry:ui" },
+				{ path: "mega-navbar/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge", "@base-ui/react"],
+			dependencies: ["clsx", "tailwind-merge", "@base-ui/react", "tailwind-variants"],
 			registryDependencies: ["collapsible", "sheet"],
 		},
 		svelte: {
 			entry: "MegaNavbar",
 			files: [
 				{ path: "mega-navbar/mega-navbar.svelte", type: "registry:ui" },
+				{ path: "mega-navbar/variants.ts", type: "registry:ui" },
 				{ path: "mega-navbar/types.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge", "bits-ui"],
+			dependencies: ["clsx", "tailwind-merge", "bits-ui", "tailwind-variants"],
 			registryDependencies: ["collapsible", "sheet"],
 		},
 	},

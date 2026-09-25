@@ -20,13 +20,15 @@ import {
 	Reasoning,
 	type ReorderItem,
 	ReorderList,
+	type ReorderListVariant,
 	TagInput,
 	Tool,
 	type ToolState,
 } from "@baby-ui/react";
-import { useEffect, useState } from "react";
+import { type ComponentProps, useEffect, useState } from "react";
 
 type Props = Record<string, unknown>;
+type MarkdownSize = NonNullable<ComponentProps<typeof Markdown>["size"]>;
 
 const SAMPLE_CODE =
 	"export function cn(...inputs: ClassValue[]) {\n\treturn twMerge(clsx(inputs));\n}";
@@ -65,7 +67,10 @@ export function CodeBlockDemo({ props }: { props: Props }) {
 export function MarkdownDemo({ props }: { props: Props }) {
 	return (
 		<div className="w-96">
-			<Markdown content={(props.content as string) || SAMPLE_MD} />
+			<Markdown
+				content={(props.content as string) || SAMPLE_MD}
+				size={(props.size as MarkdownSize) ?? "md"}
+			/>
 		</div>
 	);
 }
@@ -146,6 +151,7 @@ export function ReorderListDemo({ props }: { props: Props }) {
 				onItemsChange={setItems}
 				disabled={Boolean(props.disabled)}
 				label={(props.label as string) || "Build steps"}
+				variant={(props.variant as ReorderListVariant) ?? "card"}
 			/>
 		</div>
 	);

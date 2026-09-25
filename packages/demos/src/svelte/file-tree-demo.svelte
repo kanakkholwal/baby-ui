@@ -1,5 +1,5 @@
 <script lang="ts">
-import { FileTree } from "@baby-ui/svelte";
+import { FileTree, type FileTreeSize } from "@baby-ui/svelte";
 import { SAMPLE_TREE } from "./sample-tree";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
@@ -10,5 +10,6 @@ let { props = {} }: { props?: Record<string, unknown> } = $props();
 	indent={Number(props.indent ?? 14)}
 	showGuides={props.showGuides !== false}
 	defaultExpanded={props.defaultExpanded !== false}
+	size={(props.size as FileTreeSize) ?? "md"}
 	class="w-64"
 />

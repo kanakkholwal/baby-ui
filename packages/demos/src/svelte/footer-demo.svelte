@@ -1,5 +1,10 @@
 <script lang="ts">
-import { Footer, type FooterColumn, type FooterSocialLink } from "@baby-ui/svelte";
+import {
+	Footer,
+	type FooterColumn,
+	type FooterLayout,
+	type FooterSocialLink,
+} from "@baby-ui/svelte";
 import type { Snippet } from "svelte";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
@@ -61,6 +66,7 @@ const COLUMNS: FooterColumn[] = [
 
 <Footer
 	wordmark={(props.wordmark as string) ?? "Recast"}
+	layout={(props.layout as FooterLayout) ?? "split"}
 	description={(props.description as string) || "Turns a raw screen capture into a polished, shareable demo while you record."}
 	columns={COLUMNS}
 	socials={[

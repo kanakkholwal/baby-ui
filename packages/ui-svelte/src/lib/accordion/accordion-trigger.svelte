@@ -16,7 +16,7 @@ let {
 		data-slot="accordion-trigger"
 		class={cn(
 			"flex flex-1 items-center justify-between gap-4 px-4 py-3 text-left font-medium text-foreground text-sm outline-none transition-colors hover:bg-foreground/[0.03] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset disabled:pointer-events-none disabled:opacity-50",
-			"[&>svg]:transition-[transform,scale,translate] [&>svg]:duration-[var(--duration-dropdown)] [&>svg]:ease-[var(--ease-out)] [&[data-state=open]>svg]:rotate-180 motion-reduce:[&>svg]:transition-none",
+			"[&>svg]:transition-[transform,scale,translate,rotate] [&>svg]:duration-[var(--duration-exit)] [&>svg]:ease-[var(--ease-out)] [&[data-state=open]>svg]:rotate-180 [&[data-state=open]>svg]:duration-[var(--duration-dropdown)] motion-reduce:[&>svg]:transition-none",
 			classProp,
 		)}
 	>

@@ -1,7 +1,14 @@
 <script lang="ts">
 import { cn } from "../lib/cn";
+import { type MarkdownSize, markdown } from "./variants";
 
-let { content, class: classProp }: { content: string; class?: string } = $props();
+let {
+	content,
+	size = "md",
+	class: classProp,
+}: { content: string; size?: MarkdownSize; class?: string } = $props();
+
+const styles = $derived(markdown({ size }));
 
 type Block =
 	| { kind: "heading"; level: 2 | 3; text: string }
@@ -62,24 +69,22 @@ const blocks = $derived.by(() => {
 });
 </script>
 
-<div class={cn("flex flex-col gap-3 text-sm leading-relaxed", classProp)}>
+<div data-slot="markdown" class={cn(styles.root(), classProp)}>
 	{#each blocks as block, i (i)}
 		{#if block.kind === "heading" && block.level === 2}
-			<h2 class="font-heading font-semibold text-foreground text-lg tracking-tight">
-				{block.text}
-			</h2>
+			<h2 class={styles.h2()}>{block.text}</h2>
 		{:else if block.kind === "heading"}
-			<h3 class="font-heading font-semibold text-base text-foreground">{block.text}</h3>
+			<h3 class={styles.h3()}>{block.text}</h3>
 		{:else if block.kind === "list"}
-			<ul class="flex list-disc flex-col gap-1 pl-5 text-muted-foreground">
+			<ul class={styles.list()}>
 				{#each block.items as item, j (j)}
 					<li>{item}</li>
 				{/each}
 			</ul>
 		{:else if block.kind === "code"}
-			<pre class="overflow-x-auto rounded-lg border border-border bg-card p-3 font-mono text-[13px] text-foreground"><code>{block.text}</code></pre>
+			<pre class={styles.code()}><code>{block.text}</code></pre>
 		{:else}
-			<p class="text-muted-foreground">{block.text}</p>
+			<p class={styles.para()}>{block.text}</p>
 		{/if}
 	{/each}
 </div>

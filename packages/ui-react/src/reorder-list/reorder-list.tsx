@@ -2,15 +2,17 @@
 
 import type { KeyboardEvent, PointerEvent as ReactPointerEvent } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { cn } from "../lib/cn";
 import { captureRows } from "../lib/flip";
+import { type ReorderListVariant, reorderList } from "./variants";
 
+export type { ReorderListVariant };
 export type ReorderItem = { id: string; label: string };
 
 export interface ReorderListProps {
 	items: ReorderItem[];
 	label?: string;
 	disabled?: boolean;
+	variant?: ReorderListVariant;
 	className?: string;
 	onItemsChange: (items: ReorderItem[]) => void;
 }
@@ -30,6 +32,7 @@ export function ReorderList({
 	items,
 	label = "Reorderable list",
 	disabled = false,
+	variant = "card",
 	className,
 	onItemsChange,
 }: ReorderListProps) {
@@ -217,15 +220,13 @@ export function ReorderList({
 		};
 	}, [cancel, dragging, items, onItemsChange, release]);
 
+	const styles = reorderList({ variant });
 	return (
-		<div className={cn("w-full", className)}>
-			<ol
-				ref={listEl}
-				aria-label={label}
-				className="m-0 flex list-none flex-col gap-1.5 p-0"
-			>
+		<div className={styles.root({ className })}>
+			<ol ref={listEl} aria-label={label} className={styles.list()}>
 				{items.map((item, i) => {
 					const lifted = grabbed === item.id || dragging === item.id;
+					const row = reorderList({ variant, lifted });
 					return (
 						<li key={item.id} data-flip-key={item.id}>
 							<button
@@ -237,20 +238,9 @@ export function ReorderList({
 								onKeyDown={(e) => onKeyDown(e, item.id)}
 								onPointerDown={(e) => onPointerDown(e, item.id)}
 								onDragStart={(e) => e.preventDefault()}
-								className={cn(
-									"relative flex w-full touch-pinch-zoom select-none items-center gap-3 rounded-lg border px-3 py-2.5 text-left text-foreground text-sm outline-none",
-									"transition-[background-color,border-color,box-shadow] duration-[var(--duration-press)] ease-[var(--ease-out)] motion-reduce:transition-none",
-									"focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
-									lifted
-										? "z-10 cursor-grabbing border-primary bg-card shadow-lg"
-										: "cursor-grab border-border bg-card hover:border-border-strong enabled:active:cursor-grabbing",
-								)}
+								className={row.row()}
 							>
-								<svg
-									viewBox="0 0 10 14"
-									aria-hidden
-									className="h-3.5 w-2.5 shrink-0 fill-current text-muted-foreground"
-								>
+								<svg viewBox="0 0 10 14" aria-hidden className={styles.grip()}>
 									<circle cx="2.5" cy="2.5" r="1.2" />
 									<circle cx="7.5" cy="2.5" r="1.2" />
 									<circle cx="2.5" cy="7" r="1.2" />
@@ -258,10 +248,8 @@ export function ReorderList({
 									<circle cx="2.5" cy="11.5" r="1.2" />
 									<circle cx="7.5" cy="11.5" r="1.2" />
 								</svg>
-								<span className="min-w-0 flex-1 truncate">{item.label}</span>
-								<span className="font-mono text-[11px] text-muted-foreground tabular-nums">
-									{i + 1}
-								</span>
+								<span className={styles.label()}>{item.label}</span>
+								<span className={styles.index()}>{i + 1}</span>
 							</button>
 						</li>
 					);

@@ -378,3 +378,64 @@ test("bar depth faces and pulse mirror across orientation and sign", async () =>
 	assert.ok(wave(1).x > wave(0).x, "horizontal pulse sweeps toward the tip");
 	assert.equal(wave(0).height, 30);
 });
+
+test("small plots get fewer ticks, labels that would collide are dropped", async () => {
+	const core = await import("../packages/ui-react/src/chart/core.ts");
+	assert.equal(
+		core.fitTickCount(8, 400, core.Y_TICK_GAP),
+		8,
+		"room to spare keeps the hint",
+	);
+	assert.equal(
+		core.fitTickCount(8, 88, core.Y_TICK_GAP),
+		5,
+		"88px holds five 22px gaps' worth",
+	);
+	assert.equal(core.fitTickCount(5, 10, core.Y_TICK_GAP), 2, "never fewer than two");
+	assert.equal(core.fitTickCount(40, 9999, 1), 10, "never more than ten");
+
+	const sb = await import("../packages/ui-react/src/sunburst-chart/geometry.ts");
+	const ring = { a0: 0, a1: 1, innerR: 40, outerR: 110 };
+	assert.ok(sb.labelFits(ring, "Team"), "short name fits a 70px ring");
+	assert.ok(!sb.labelFits(ring, "United States of America"), "long name does not");
+	assert.ok(
+		!sb.labelFits({ ...ring, a1: 0.1 }, "Team"),
+		"a sliver has no room for the line",
+	);
+
+	const sk = await import("../packages/ui-react/src/sankey-chart/layout.ts");
+	const node = (index, value, y0, y1) => ({
+		index,
+		name: `n${index}`,
+		color: "",
+		value,
+		x0: 100,
+		x1: 110,
+		y0,
+		y1,
+		leading: false,
+	});
+	const bounds = { x0: -80, x1: 300, y0: 0, y1: 200 };
+	const texts = (n) => [n.name, String(n.value)];
+	const apart = sk.visibleLabels(
+		[node(0, 9, 0, 40), node(1, 5, 100, 140)],
+		"horizontal",
+		texts,
+		bounds,
+	);
+	assert.deepEqual(
+		[...apart.values()],
+		[
+			[true, true],
+			[true, true],
+		],
+	);
+	const tight = sk.visibleLabels(
+		[node(0, 9, 0, 20), node(1, 5, 22, 30)],
+		"horizontal",
+		texts,
+		bounds,
+	);
+	assert.deepEqual(tight.get(0), [true, true], "the bigger node keeps both lines");
+	assert.deepEqual(tight.get(1), [false, false], "the smaller one yields");
+});

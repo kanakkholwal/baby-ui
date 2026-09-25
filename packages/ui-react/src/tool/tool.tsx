@@ -2,21 +2,21 @@
 
 import { useId, useState } from "react";
 import { cn } from "../lib/cn";
-import { type ToolState, tool } from "./variants";
+import { TOOL_LABELS, type ToolLabels, type ToolState, tool } from "./variants";
 
-const LABEL: Record<ToolState, string> = {
-	pending: "Queued",
-	running: "Running",
-	done: "Completed",
-	error: "Failed",
-};
+export type { ToolLabels, ToolState };
 
 export interface ToolProps {
 	name: string;
 	status?: ToolState;
 	input?: string;
 	output?: string;
+	/** Whether the input/output panel is expanded. Controlled with onOpenChange. */
+	open?: boolean;
 	defaultOpen?: boolean;
+	onOpenChange?: (open: boolean) => void;
+	/** Overrides for the status and section labels. */
+	labels?: Partial<ToolLabels>;
 	className?: string;
 }
 
@@ -25,23 +25,33 @@ export function Tool({
 	status = "running",
 	input,
 	output,
+	open: openProp,
 	defaultOpen = false,
+	onOpenChange,
+	labels,
 	className,
 }: ToolProps) {
 	const id = useId();
-	const [open, setOpen] = useState(defaultOpen);
-	const { root, icon, label } = tool({ status });
+	const [internalOpen, setInternalOpen] = useState(defaultOpen);
+	const open = openProp ?? internalOpen;
+	const text = { ...TOOL_LABELS, ...labels };
+	const styles = tool({ status, open });
+
+	const toggle = () => {
+		if (openProp === undefined) setInternalOpen(!open);
+		onOpenChange?.(!open);
+	};
 
 	return (
-		<div data-slot="tool" className={cn(root(), className)}>
+		<div data-slot="tool" data-status={status} className={cn(styles.root(), className)}>
 			<button
 				type="button"
 				aria-expanded={open}
 				aria-controls={id}
-				onClick={() => setOpen((v) => !v)}
-				className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm transition-colors hover:bg-foreground/[0.03]"
+				onClick={toggle}
+				className={styles.trigger()}
 			>
-				<span aria-hidden className={icon()}>
+				<span aria-hidden className={styles.icon()}>
 					{status === "running" ? (
 						<svg viewBox="0 0 12 12" fill="none" aria-hidden className="spinner size-3">
 							<circle
@@ -83,15 +93,9 @@ export function Tool({
 					)}
 				</span>
 
-				<span className="flex-1 font-mono text-foreground text-xs">{name}</span>
-				<span className={label()}>{LABEL[status]}</span>
-				<svg
-					viewBox="0 0 16 16"
-					fill="none"
-					aria-hidden
-					style={{ transform: open ? "rotate(180deg)" : undefined }}
-					className="size-3.5 shrink-0 text-muted-foreground transition-[transform,scale,translate] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none"
-				>
+				<span className={styles.name()}>{name}</span>
+				<span className={styles.label()}>{text[status]}</span>
+				<svg viewBox="0 0 16 16" fill="none" aria-hidden className={styles.chevron()}>
 					<path
 						d="m4 6 4 4 4-4"
 						stroke="currentColor"
@@ -102,29 +106,21 @@ export function Tool({
 				</svg>
 			</button>
 
-			<div
-				id={id}
-				style={{ gridTemplateRows: open ? "1fr" : "0fr" }}
-				className="grid transition-[grid-template-rows] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none"
-			>
+			<div id={id} inert={!open} className={styles.panel()}>
 				<div className="overflow-hidden">
-					<div className="flex flex-col gap-2 border-border/60 border-t p-3">
+					<div className={styles.body()}>
 						{input ? (
 							<div>
-								<p className="mb-1 font-medium text-[10px] text-muted-foreground uppercase tracking-wider">
-									Input
-								</p>
-								<pre className="overflow-x-auto rounded-lg bg-background p-2 font-mono text-[11px] text-muted-foreground">
+								<p className={styles.heading()}>{text.input}</p>
+								<pre className={cn(styles.code(), "text-muted-foreground")}>
 									<code>{input}</code>
 								</pre>
 							</div>
 						) : null}
 						{output ? (
 							<div>
-								<p className="mb-1 font-medium text-[10px] text-muted-foreground uppercase tracking-wider">
-									Output
-								</p>
-								<pre className="overflow-x-auto rounded-lg bg-background p-2 font-mono text-[11px] text-foreground">
+								<p className={styles.heading()}>{text.output}</p>
+								<pre className={cn(styles.code(), "text-foreground")}>
 									<code>{output}</code>
 								</pre>
 							</div>

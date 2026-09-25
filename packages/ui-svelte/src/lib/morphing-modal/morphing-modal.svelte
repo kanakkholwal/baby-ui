@@ -3,6 +3,7 @@ import type { Snippet } from "svelte";
 import { prefersReducedMotion } from "svelte/motion";
 import { cn } from "../lib/cn";
 import { invert, MORPH_EASE, MORPH_MS, type MorphSpring } from "./morph";
+import { type MorphingModalSize, morphingModal } from "./variants";
 
 type Props = {
 	trigger: Snippet;
@@ -10,6 +11,7 @@ type Props = {
 	title: string;
 	class?: string;
 	spring?: MorphSpring;
+	size?: MorphingModalSize;
 	dismissOnBackdrop?: boolean;
 	backdropBlur?: number;
 	open?: boolean;
@@ -22,6 +24,7 @@ let {
 	title,
 	class: classProp,
 	spring = "gentle",
+	size = "md",
 	dismissOnBackdrop = true,
 	backdropBlur = 8,
 	open = $bindable(false),
@@ -35,6 +38,7 @@ let hidden = $state(false);
 let wasOpen = false;
 
 const titleId = $props.id();
+const styles = $derived(morphingModal({ size }));
 
 function animateMorph(reverse: boolean): Promise<void> {
 	const from = triggerEl?.getBoundingClientRect();
@@ -96,7 +100,7 @@ function setOpen(next: boolean) {
 	type="button"
 	onclick={() => setOpen(true)}
 	style:opacity={hidden ? 0 : 1}
-	class="cursor-pointer rounded-2xl text-left outline-none focus-visible:ring-2 focus-visible:ring-ring"
+	class={styles.trigger()}
 >
 	{@render trigger()}
 </button>
@@ -112,28 +116,26 @@ function setOpen(next: boolean) {
 		if (dismissOnBackdrop && e.target === dialog) setOpen(false);
 	}}
 	style:--morph-blur="{backdropBlur}px"
-	class="morph-dialog m-auto bg-transparent p-0 text-foreground backdrop:bg-black/40"
+	class={styles.dialog()}
 >
 	<div
 		bind:this={panel}
-		class={cn(
-			"w-[min(32rem,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-border bg-card p-6 shadow-2xl",
-			classProp,
-		)}
+		data-slot="morphing-modal"
+		class={cn(styles.panel(), classProp)}
 	>
-		<div class="flex items-start justify-between gap-4">
-			<h2 id={titleId} class="font-medium text-foreground text-lg">{title}</h2>
+		<div class={styles.header()}>
+			<h2 id={titleId} class={styles.title()}>{title}</h2>
 			<button
 				type="button"
 				onclick={() => setOpen(false)}
 				aria-label="Close"
-				class="rounded-md p-1 text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground"
+				class={styles.close()}
 			>
 				<svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class="size-4">
 					<path d="m4 4 8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
 				</svg>
 			</button>
 		</div>
-		<div class="mt-3 text-muted-foreground text-sm">{@render children()}</div>
+		<div class={styles.body()}>{@render children()}</div>
 	</div>
 </dialog>

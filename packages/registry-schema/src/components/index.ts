@@ -40,6 +40,7 @@ import { cycleText } from "./cycle-text";
 import { diaText } from "./dia-text";
 import { dialog } from "./dialog";
 import { diffTable } from "./diff-table";
+import { docsNav } from "./docs-nav";
 import { doubleUnderline } from "./double-underline";
 import { drawer } from "./drawer";
 import { dropdownMenu } from "./dropdown-menu";
@@ -57,6 +58,7 @@ import { gaugeChart } from "./gauge-chart";
 import { gibberishText } from "./gibberish-text";
 import { glitchText } from "./glitch-text";
 import { heatmapChart } from "./heatmap-chart";
+import { heroStage } from "./hero-stage";
 import { hoverCard } from "./hover-card";
 import { input } from "./input";
 import { jitterText } from "./jitter-text";
@@ -106,6 +108,7 @@ import { sheet } from "./sheet";
 import { shimmerText } from "./shimmer-text";
 import { shortcut } from "./shortcut";
 import { showMore } from "./show-more";
+import { showcaseGrid } from "./showcase-grid";
 import { sidebarNav } from "./sidebar-nav";
 import { skeleton } from "./skeleton";
 import { slider } from "./slider";
@@ -221,11 +224,14 @@ export const specs: ComponentSpec[] = [
 	contextCards,
 	filterTable,
 	diffTable,
+	docsNav,
 	recordsTable,
 	fineTuneCard,
 	flowchart,
 	sidebarNav,
 	loadingState,
+	heroStage,
+	showcaseGrid,
 	recommendationCard,
 	chatComposer,
 	thinkingState,

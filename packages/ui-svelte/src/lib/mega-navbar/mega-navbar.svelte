@@ -8,6 +8,7 @@ import SheetContent from "../sheet/sheet-content.svelte";
 import SheetHeader from "../sheet/sheet-header.svelte";
 import SheetTitle from "../sheet/sheet-title.svelte";
 import type { MegaMenuGroup, MegaNavLink } from "./types";
+import { type MegaNavbarVariant, megaNavbar } from "./variants";
 
 let {
 	brand,
@@ -18,6 +19,7 @@ let {
 	active,
 	sticky = true,
 	blur = true,
+	variant = "solid",
 	class: className,
 }: {
 	brand?: Snippet;
@@ -28,6 +30,7 @@ let {
 	active?: string;
 	sticky?: boolean;
 	blur?: boolean;
+	variant?: MegaNavbarVariant;
 	class?: string;
 } = $props();
 
@@ -37,6 +40,13 @@ function isCurrent(href: string) {
 }
 
 let scrolled = $state(false);
+const styles = $derived(
+	megaNavbar({
+		variant,
+		sticky,
+		surface: scrolled ? (blur ? "blurred" : "opaque") : "clear",
+	}),
+);
 let mobileOpen = $state(false);
 let openDesktopGroup = $state(-1);
 let openMobileGroup = $state(0);
@@ -107,17 +117,8 @@ const footerActions = $derived(mobileActions ?? actions);
 	</svg>
 {/snippet}
 
-<div
-	data-slot="mega-navbar"
-	class={cn(
-		"@container w-full",
-		sticky ? "sticky inset-x-0 top-0 z-50" : "relative",
-		"border-b transition-colors duration-[var(--duration-dropdown)] motion-reduce:transition-none",
-		scrolled ? cn("border-border bg-background/85", blur && "backdrop-blur") : "border-transparent",
-		className,
-	)}
->
-	<nav aria-label="Primary" class="mx-auto flex h-16 w-full max-w-6xl items-center gap-2 px-6">
+<div data-slot="mega-navbar" data-variant={variant} class={cn(styles.root(), className)}>
+	<nav aria-label="Primary" class={styles.nav()}>
 		{#if brand}
 			<span class="flex shrink-0 items-center gap-2.5 py-1 pr-2">{@render brand()}</span>
 		{/if}
@@ -152,15 +153,10 @@ const footerActions = $derived(mobileActions ?? actions);
 								triggers[i]?.focus();
 							}
 						}}
-						class={cn(
-							"inline-flex items-center gap-1 whitespace-nowrap rounded-full px-3.5 py-2 font-medium text-sm outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none",
-							isOpen || isCurrent(group.href)
-								? "text-foreground"
-								: "text-muted-foreground hover:text-foreground",
-						)}
+						class={styles.trigger({ current: isOpen || isCurrent(group.href) })}
 					>
 						{group.label}
-						{@render chevronDown(cn("size-3.5 transition-transform duration-[var(--duration-dropdown)] motion-reduce:transition-none", isOpen && "rotate-180"))}
+						{@render chevronDown(styles.chevron({ open: isOpen }))}
 					</button>
 				{/each}
 
@@ -170,11 +166,7 @@ const footerActions = $derived(mobileActions ?? actions);
 					onmouseenter={cancelClose}
 					onmouseleave={scheduleClose}
 					role="presentation"
-					class={cn(
-						"absolute top-full z-50 origin-top overflow-hidden rounded-xl border border-border bg-card shadow-2xl",
-						"transition-[width,height,transform,opacity] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none",
-						openDesktopGroup >= 0 ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0",
-					)}
+					class={styles.panel({ open: openDesktopGroup >= 0 })}
 					style="width:{box.width}px;height:{box.height}px;transform:translate3d({box.left}px, {openDesktopGroup >= 0 ? 8 : 2}px, 0) scale({openDesktopGroup >= 0 ? 1 : 0.98});"
 				>
 					{#each groups as group, i (group.label)}
@@ -182,10 +174,7 @@ const footerActions = $derived(mobileActions ?? actions);
 						<div
 							bind:this={panels[i]}
 							inert={!isOpen}
-							class={cn(
-								"absolute inset-x-0 top-0 w-max transition-opacity duration-[var(--duration-dropdown)] motion-reduce:transition-none",
-								isOpen ? "opacity-100" : "pointer-events-none opacity-0",
-							)}
+							class={styles.pane({ open: isOpen })}
 						>
 							<ul class="grid w-[34rem] grid-cols-2 gap-1 p-2">
 								{#each group.items as item (item.href)}
@@ -244,10 +233,7 @@ const footerActions = $derived(mobileActions ?? actions);
 							target={link.external ? "_blank" : undefined}
 							rel={link.external ? "noreferrer" : undefined}
 							aria-current={isCurrent(link.href) ? "page" : undefined}
-							class={cn(
-								"inline-flex items-center whitespace-nowrap rounded-full px-3.5 py-2 font-medium text-sm transition-colors hover:text-foreground motion-reduce:transition-none",
-								isCurrent(link.href) ? "text-foreground" : "text-muted-foreground",
-							)}
+							class={styles.link({ current: isCurrent(link.href) })}
 						>
 							{link.label}
 						</a>
@@ -296,7 +282,7 @@ const footerActions = $derived(mobileActions ?? actions);
 						class="flex min-h-12 w-full items-center justify-between gap-4 px-2 text-left font-medium text-foreground"
 					>
 						{group.label}
-						{@render chevronDown(cn("size-4 shrink-0 text-muted-foreground transition-transform duration-[var(--duration-dropdown)] motion-reduce:transition-none", isOpen && "rotate-180"))}
+						{@render chevronDown(styles.mobileChevron({ open: isOpen }))}
 					</button>
 					<CollapsibleContent class="px-0 pb-2">
 						<ul>
@@ -308,10 +294,7 @@ const footerActions = $derived(mobileActions ?? actions);
 										rel={item.external ? "noreferrer" : undefined}
 										onclick={() => (mobileOpen = false)}
 										aria-current={isCurrent(item.href) ? "page" : undefined}
-										class={cn(
-											"flex min-h-12 items-center gap-3 rounded-lg px-2 py-2 transition-colors motion-reduce:transition-none",
-											isCurrent(item.href) ? "bg-foreground/[0.06]" : "hover:bg-foreground/[0.06]",
-										)}
+										class={styles.mobileItem({ current: isCurrent(item.href) })}
 									>
 										{#if item.icon}
 											<span class="shrink-0 text-muted-foreground [&_svg]:size-4">
@@ -345,10 +328,7 @@ const footerActions = $derived(mobileActions ?? actions);
 							rel={link.external ? "noreferrer" : undefined}
 							onclick={() => (mobileOpen = false)}
 							aria-current={isCurrent(link.href) ? "page" : undefined}
-							class={cn(
-								"flex min-h-12 items-center rounded-lg px-2 font-medium text-foreground transition-colors motion-reduce:transition-none",
-								isCurrent(link.href) ? "bg-foreground/[0.06]" : "hover:bg-foreground/[0.06]",
-							)}
+							class={styles.mobileLink({ current: isCurrent(link.href) })}
 						>
 							{link.label}
 						</a>

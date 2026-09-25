@@ -1,7 +1,7 @@
 <script lang="ts">
 import { tick } from "svelte";
-import { cn } from "../lib/cn";
 import { captureRows } from "../lib/flip";
+import { type ReorderListVariant, reorderList } from "./variants";
 
 export type ReorderItem = { id: string; label: string };
 
@@ -9,18 +9,21 @@ let {
 	items = $bindable<ReorderItem[]>([]),
 	label = "Reorderable list",
 	disabled = false,
+	variant = "card",
 	class: classProp,
 	onreorder,
 }: {
 	items?: ReorderItem[];
 	label?: string;
 	disabled?: boolean;
+	variant?: ReorderListVariant;
 	class?: string;
 	onreorder?: (items: ReorderItem[]) => void;
 } = $props();
 
 const uid = $props.id();
 const THRESHOLD = 5;
+const styles = $derived(reorderList({ variant }));
 
 let listEl = $state<HTMLOListElement>();
 let grabbed = $state<string | null>(null);
@@ -190,8 +193,8 @@ function onpointerup(event: PointerEvent) {
 	onblur={() => (session || grabbed ? cancel() : undefined)}
 />
 
-<div class={cn("w-full", classProp)}>
-	<ol bind:this={listEl} aria-label={label} class="m-0 flex list-none flex-col gap-1.5 p-0">
+<div class={styles.root({ class: classProp })}>
+	<ol bind:this={listEl} aria-label={label} class={styles.list()}>
 		{#each items as item, i (item.id)}
 			{@const lifted = grabbed === item.id || dragging === item.id}
 			<li data-flip-key={item.id}>
@@ -204,16 +207,9 @@ function onpointerup(event: PointerEvent) {
 					onkeydown={(e) => onkeydown(e, item.id)}
 					onpointerdown={(e) => onpointerdown(e, item.id)}
 					ondragstart={(e) => e.preventDefault()}
-					class={cn(
-						"relative flex w-full touch-pinch-zoom select-none items-center gap-3 rounded-lg border px-3 py-2.5 text-left text-foreground text-sm outline-none",
-						"transition-[background-color,border-color,box-shadow] duration-[var(--duration-press)] ease-[var(--ease-out)] motion-reduce:transition-none",
-						"focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
-						lifted
-							? "z-10 cursor-grabbing border-primary bg-card shadow-lg"
-							: "cursor-grab border-border bg-card hover:border-border-strong enabled:active:cursor-grabbing",
-					)}
+					class={reorderList({ variant, lifted }).row()}
 				>
-					<svg viewBox="0 0 10 14" aria-hidden="true" class="h-3.5 w-2.5 shrink-0 fill-current text-muted-foreground">
+					<svg viewBox="0 0 10 14" aria-hidden="true" class={styles.grip()}>
 						<circle cx="2.5" cy="2.5" r="1.2" />
 						<circle cx="7.5" cy="2.5" r="1.2" />
 						<circle cx="2.5" cy="7" r="1.2" />
@@ -221,8 +217,8 @@ function onpointerup(event: PointerEvent) {
 						<circle cx="2.5" cy="11.5" r="1.2" />
 						<circle cx="7.5" cy="11.5" r="1.2" />
 					</svg>
-					<span class="min-w-0 flex-1 truncate">{item.label}</span>
-					<span class="font-mono text-[11px] text-muted-foreground tabular-nums">{i + 1}</span>
+					<span class={styles.label()}>{item.label}</span>
+					<span class={styles.index()}>{i + 1}</span>
 				</button>
 			</li>
 		{/each}

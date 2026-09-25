@@ -6,7 +6,7 @@ export const fullscreenNav = defineComponent({
 	description:
 		"Full-viewport navigation overlay with staggered links and scroll locking.",
 	category: "blocks",
-	status: "alpha",
+	status: "stable",
 	props: [
 		{
 			name: "open",
@@ -27,6 +27,14 @@ export const fullscreenNav = defineComponent({
 			description: "Accessible name for the overlay.",
 			default: "Menu",
 			control: { kind: "text" },
+		},
+		{
+			name: "variant",
+			type: '"fade" | "slide"',
+			description:
+				"Fade dissolves the panel in place; slide drops it from the top edge and lifts it back.",
+			default: "fade",
+			control: { kind: "select", options: ["fade", "slide"] },
 		},
 	],
 	motion: {
@@ -56,17 +64,19 @@ export const fullscreenNav = defineComponent({
 			entry: "FullscreenNav",
 			files: [
 				{ path: "fullscreen-nav/fullscreen-nav.tsx", type: "registry:ui" },
+				{ path: "fullscreen-nav/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["@base-ui/react", "clsx", "tailwind-merge"],
+			dependencies: ["@base-ui/react", "clsx", "tailwind-merge", "tailwind-variants"],
 		},
 		svelte: {
 			entry: "FullscreenNav",
 			files: [
 				{ path: "fullscreen-nav/fullscreen-nav.svelte", type: "registry:ui" },
+				{ path: "fullscreen-nav/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["bits-ui", "clsx", "tailwind-merge"],
+			dependencies: ["bits-ui", "clsx", "tailwind-merge", "tailwind-variants"],
 		},
 	},
 	keywords: ["fullscreen", "nav"],

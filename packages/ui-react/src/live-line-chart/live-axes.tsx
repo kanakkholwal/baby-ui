@@ -3,6 +3,7 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useChart } from "../chart/chart";
+import { fitTickCount } from "../chart/core";
 import { useActivePoint } from "../chart/frame";
 import { CHART_SPRING, Spring, type SpringConfig } from "../chart/motion";
 import { usePlot } from "../chart/time-series";
@@ -15,6 +16,8 @@ import { type LiveAxisPosition, liveAxis } from "./variants";
 /** bklit's y-tick spring, for both position and the enter/exit fade. */
 const TICK_SPRING: SpringConfig = { stiffness: 180, damping: 24 };
 const TICK_EXIT_MS = 450;
+/** Room for one "11:22:49 pm" time label plus breathing space. */
+const TIME_LABEL_GAP = 72;
 
 function useSpringValue(config: SpringConfig, apply: (value: number) => void) {
 	const applyRef = useRef(apply);
@@ -46,7 +49,7 @@ export function LiveXAxis({
 	const styles = liveAxis();
 	const fmt = formatTime ?? live.formatTime;
 	const [start, end] = xScale.domain().map((d) => d.getTime()) as [number, number];
-	const count = Math.max(2, numTicks);
+	const count = fitTickCount(numTicks, innerWidth, TIME_LABEL_GAP);
 	const pillRef = useRef<HTMLDivElement>(null);
 	const pillX = useSpringValue(CHART_SPRING.tooltip, (v) => {
 		if (pillRef.current) pillRef.current.style.left = `${v}px`;

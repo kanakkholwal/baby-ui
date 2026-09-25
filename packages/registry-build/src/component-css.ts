@@ -63,7 +63,7 @@ export async function cssFor(sources: string[]): Promise<Css | undefined> {
 			noteAnimations(node);
 			return;
 		}
-		if (node.type === "atrule" && node.name === "media") {
+		if (node.type === "atrule" && (node.name === "media" || node.name === "supports")) {
 			const inner: Css = {};
 			node.each((child) => {
 				if (child.type !== "rule" || child.selector === ":root" || !used(child.selector))
@@ -71,7 +71,7 @@ export async function cssFor(sources: string[]): Promise<Css | undefined> {
 				inner[child.selector.replace(/\s+/g, " ")] = decls(child);
 				noteAnimations(child);
 			});
-			if (Object.keys(inner).length) out[`@media ${node.params}`] = inner;
+			if (Object.keys(inner).length) out[`@${node.name} ${node.params}`] = inner;
 		}
 	});
 
