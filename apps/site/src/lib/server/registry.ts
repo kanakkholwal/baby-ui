@@ -36,6 +36,7 @@ export function catalog(): CatalogItem[] {
 		slug: s.slug,
 		name: s.name,
 		category: s.category,
+		tier: s.tier,
 		description: s.description,
 		keywords: s.keywords,
 		href: specHref(s),
@@ -48,6 +49,7 @@ export function cardItem(spec: ComponentSpec): CardItem {
 		name: spec.name,
 		description: spec.description,
 		href: specHref(spec),
+		tier: spec.tier,
 		defaults: defaultProps(spec),
 	};
 }

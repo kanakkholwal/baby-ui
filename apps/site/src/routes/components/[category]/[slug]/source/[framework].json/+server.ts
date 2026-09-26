@@ -7,19 +7,22 @@ import type { EntryGenerator, RequestHandler } from "./$types";
 
 export const prerender = true;
 
-// Every port of every component, charts included: the page fetches these, nothing links them.
+// Every port of every free component, charts included: the page fetches these, nothing links them.
+// Pro source is never generated into the public site; it ships from the private registry.
 export const entries: EntryGenerator = () =>
-	specs.flatMap((spec) =>
-		FRAMEWORKS.filter((f) => spec.impl[f]).map((framework) => ({
-			category: spec.category,
-			slug: spec.slug,
-			framework,
-		})),
-	);
+	specs
+		.filter((spec) => spec.tier !== "pro")
+		.flatMap((spec) =>
+			FRAMEWORKS.filter((f) => spec.impl[f]).map((framework) => ({
+				category: spec.category,
+				slug: spec.slug,
+				framework,
+			})),
+		);
 
 export const GET: RequestHandler = async ({ params }) => {
 	const spec = findSpec(params.category, params.slug);
 	const framework = params.framework as Framework;
-	if (!spec?.impl[framework]) throw error(404);
+	if (!spec?.impl[framework] || spec.tier === "pro") throw error(404);
 	return json(await installSource(spec.slug, framework));
 };

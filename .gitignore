@@ -11,6 +11,9 @@ build/
 .env.*
 !.env.example
 TODO.md
+# private Pro components: a separate, self-hosted git repo cloned into this folder
+pro/
+
 # local-only agent workspaces
 .scratchpad/
 .notes/

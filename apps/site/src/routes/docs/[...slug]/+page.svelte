@@ -1,7 +1,7 @@
 <script lang="ts">
-import { registry } from "virtual:docvia/source";
 import { Renderer } from "@docvia/renderer-svelte";
 import IconList from "@tabler/icons-svelte/icons/list";
+import { registry } from "$docvia/registry";
 import MobileNavDrawer from "$lib/components/mobile-nav-drawer.svelte";
 import OutlineToggle from "$lib/components/outline-toggle.svelte";
 import PageMenu from "$lib/components/page-menu.svelte";

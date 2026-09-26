@@ -52,6 +52,8 @@ async function main() {
 	}
 
 	const written: string[] = [];
+	// Pro source ships only from the private registry, so it never lands in public output.
+	const publicSpecs = specs.filter((spec) => spec.tier !== "pro");
 
 	for (const framework of FRAMEWORKS as readonly Framework[]) {
 		const { routePrefix } = FRAMEWORK[framework];
@@ -67,7 +69,7 @@ async function main() {
 			jsIndex.push(summary);
 		}
 
-		for (const spec of specs) {
+		for (const spec of publicSpecs) {
 			const item = await buildItem(spec, framework);
 			if (!item) continue;
 			written.push(await writeJson(`${routePrefix}/${spec.slug}.json`, item));
@@ -108,7 +110,7 @@ async function main() {
 
 	// TS and its JS counterpart per file, generated here so prettier and babel never
 	// reach the Worker. The site imports this instead of re-reading the registry JSON.
-	for (const spec of specs) {
+	for (const spec of publicSpecs) {
 		const perFramework: Record<string, unknown[]> = {};
 		const perFrameworkCss: Record<string, string> = {};
 		for (const framework of FRAMEWORKS as readonly Framework[]) {

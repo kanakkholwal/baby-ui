@@ -25,8 +25,13 @@ export function guideMarkdown(slug: string, title: string, description: string):
 export async function componentMarkdown(spec: ComponentSpec): Promise<string> {
 	const out = [`# ${spec.name}`, "", spec.description, ""];
 	out.push("## Install", "");
+	if (spec.tier === "pro")
+		out.push(
+			"Pro component: the install command is available after signing in on the site.",
+			"",
+		);
 	for (const framework of FRAMEWORKS) {
-		if (!spec.impl[framework]) continue;
+		if (!spec.impl[framework] || spec.tier === "pro") continue;
 		out.push(
 			"```bash",
 			installCommand(spec.slug, framework, origins.registry),

@@ -1,5 +1,4 @@
 <script lang="ts">
-import { registry } from "virtual:docvia/source";
 import { demos } from "@baby-ui/demos/svelte";
 import { Renderer } from "@docvia/renderer-svelte";
 import IconArrowLeft from "@tabler/icons-svelte/icons/arrow-left";
@@ -7,6 +6,7 @@ import IconArrowRight from "@tabler/icons-svelte/icons/arrow-right";
 import IconChevronRight from "@tabler/icons-svelte/icons/chevron-right";
 import IconList from "@tabler/icons-svelte/icons/list";
 import { page } from "$app/state";
+import { registry } from "$docvia/registry";
 import { track } from "$lib/analytics";
 import CodeBlock from "$lib/components/code-block.svelte";
 import ComponentCard from "$lib/components/component-card.svelte";
@@ -17,6 +17,7 @@ import MobileNavDrawer from "$lib/components/mobile-nav-drawer.svelte";
 import OutlineToggle from "$lib/components/outline-toggle.svelte";
 import PageMenu from "$lib/components/page-menu.svelte";
 import PreviewToolbar from "$lib/components/preview-toolbar.svelte";
+import ProInstallGate from "$lib/components/pro-install-gate.svelte";
 import PropsRail from "$lib/components/props-rail.svelte";
 import PropsTable from "$lib/components/props-table.svelte";
 import Seo from "$lib/components/seo.svelte";
@@ -155,6 +156,11 @@ const categoryTrail = $derived(
 		<div class="mt-4 flex flex-col gap-4 @xl:flex-row @xl:items-start @xl:justify-between">
 			<div class="flex items-center gap-3">
 				<h1 class="font-semibold text-3xl text-foreground tracking-tight">{data.spec.name}</h1>
+				{#if data.spec.tier === "pro"}
+					<span class="mt-1 rounded-full bg-foreground px-2 py-0.5 font-medium text-[11px] text-background">
+						Pro
+					</span>
+				{/if}
 				{#if data.spec.status !== "stable"}
 					<span class="mt-1 rounded-full border border-border px-2 py-0.5 text-[11px] text-muted-foreground">
 						{data.spec.status}
@@ -250,6 +256,8 @@ const categoryTrail = $derived(
 						analytics={{ event: "usage_copied" }}
 					/>
 				{/if}
+			{:else if data.spec.tier === "pro"}
+				<ProInstallGate name={data.spec.name} />
 			{:else if port}
 				<InstallBlock
 					slug={data.spec.slug}

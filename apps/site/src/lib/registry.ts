@@ -55,6 +55,7 @@ export type CardItem = {
 	name: string;
 	description: string;
 	href: string;
+	tier: ComponentSpec["tier"];
 	defaults: Record<string, unknown>;
 };
 
@@ -63,6 +64,7 @@ export type CatalogItem = {
 	slug: string;
 	name: string;
 	category: Category;
+	tier: ComponentSpec["tier"];
 	description: string;
 	keywords: string[];
 	href: string;

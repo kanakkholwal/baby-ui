@@ -36,7 +36,14 @@ const demoProps = $derived(item.defaults);
 		class="relative flex h-full flex-col rounded-xl border border-border bg-card p-1 transition-[border-color,scale] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] group-hover/card:border-border-strong group-active/card:scale-[0.99] motion-reduce:transition-none"
 	>
 		<div class="px-3 pt-2.5 pb-3">
-			<h3 class="font-semibold text-foreground text-sm">{item.name}</h3>
+			<h3 class="flex items-center gap-2 font-semibold text-foreground text-sm">
+				{item.name}
+				{#if item.tier === "pro"}
+					<span class="rounded-full bg-foreground px-1.5 py-px font-medium text-[10px] text-background">
+						Pro
+					</span>
+				{/if}
+			</h3>
 			<p class="mt-1 line-clamp-2 text-muted-foreground text-xs leading-relaxed">
 				{item.description}
 			</p>

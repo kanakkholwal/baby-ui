@@ -73,6 +73,9 @@ export default defineConfig({
 			// Per-component sheets inline (each link is a blocking round trip); the 370KB Tailwind
 			// sheet stays linked so it caches across pages instead of riding in every HTML file.
 			inlineStyleThreshold: 16 * 1024,
+			// docvia's generated output. Pages import `$docvia/registry` alone: the virtual source
+			// module also builds every collection, which ships the whole docs corpus to the client.
+			alias: { $docvia: ".docvia", "$docvia/*": ".docvia/*" },
 			compilerOptions: {
 				// Force runes mode for the project, except for libraries. Can be removed in svelte 6.
 				runes: ({ filename }) =>

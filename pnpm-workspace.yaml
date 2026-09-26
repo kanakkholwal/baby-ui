@@ -2,6 +2,8 @@ packages:
   - "apps/*"
   - "apps/playground/*"
   - "packages/*"
+  # Present only where the private Pro repo is cloned into pro/; pnpm skips it otherwise.
+  - "pro/packages/*"
 
 # pnpm writes these as a placeholder and then refuses the install until they are
 # booleans. esbuild links its platform binary here; workerd is what wrangler runs.
