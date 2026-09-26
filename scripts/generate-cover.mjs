@@ -19,8 +19,12 @@ const logo = (await readFile(resolve(root, "apps/site/static/logo.svg"), "utf8")
 );
 const logoSrc = `data:image/svg+xml;base64,${Buffer.from(logo).toString("base64")}`;
 
+// Brand marks in ink, from the same CDN the site hero uses.
+const brand = async (slug) =>
+	`data:image/svg+xml;base64,${Buffer.from(await (await fetch(`https://cdn.simpleicons.org/${slug}/0a0a0a`)).text()).toString("base64")}`;
+const [reactMark, svelteMark] = await Promise.all([brand("react"), brand("svelte")]);
+
 const INK = "#0a0a0a";
-const GREEN = "#16a34a";
 const BARS = [38, 52, 44, 66, 58, 74, 62, 86, 70, 92, 80, 100];
 
 // The site's --ease-out, cubic-bezier(0.16, 1, 0.3, 1), with dots at equal time steps.
@@ -33,8 +37,7 @@ function easingCurve(w, h) {
 	const dots = Array.from({ length: 13 }, (_, i) => i / 12)
 		.map((t, i) => {
 			const r = i === 12 ? 6 : 3.5;
-			const fill = i === 12 ? GREEN : INK;
-			return `<circle cx="${px(at(t, x1, x2))}" cy="${py(at(t, y1, y2))}" r="${r}" fill="${fill}" fill-opacity="${0.25 + (i / 12) * 0.75}"/>`;
+			return `<circle cx="${px(at(t, x1, x2))}" cy="${py(at(t, y1, y2))}" r="${r}" fill="${INK}" fill-opacity="${0.25 + (i / 12) * 0.75}"/>`;
 		})
 		.join("");
 	return svg(
@@ -54,96 +57,65 @@ function pixelField(w, h) {
 		for (let x = 0; x * (size + gap) < w; x++) {
 			const d = Math.hypot(x, y * 1.3);
 			const o = Math.max(0.05, 1 - d / 12 + Math.sin(d * 1.4) * 0.12);
-			const accent = (x + y * 3) % 17 === 0 && d < 9;
 			cells.push(
-				`<rect x="${x * (size + gap)}" y="${y * (size + gap)}" width="${size}" height="${size}" rx="4" fill="${accent ? GREEN : INK}" fill-opacity="${o.toFixed(2)}"/>`,
+				`<rect x="${x * (size + gap)}" y="${y * (size + gap)}" width="${size}" height="${size}" rx="4" fill="${INK}" fill-opacity="${o.toFixed(2)}"/>`,
 			);
 		}
 	}
 	return svg(w, h, cells.join(""));
 }
 
-// Two overlapping rings for the paired ports, with orbit lines around them.
+// Two overlapping rings for the paired ports.
 function rings(w, h) {
 	const cy = h / 2;
 	const r = 46;
 	const a = w / 2 - 26;
 	const b = w / 2 + 26;
-	const orbits = [72, 90, 108]
-		.map(
-			(o, i) =>
-				`<circle cx="${w / 2}" cy="${cy}" r="${o}" fill="none" stroke="${INK}" stroke-opacity="${0.1 - i * 0.025}" stroke-dasharray="${i === 1 ? "3 6" : "none"}"/>`,
-		)
-		.join("");
 	return svg(
 		w,
 		h,
-		`${orbits}
-		<clipPath id="lens"><circle cx="${a}" cy="${cy}" r="${r}"/></clipPath>
+		`		<clipPath id="lens"><circle cx="${a}" cy="${cy}" r="${r}"/></clipPath>
 		<circle cx="${a}" cy="${cy}" r="${r}" fill="none" stroke="${INK}" stroke-width="2.5"/>
 		<circle cx="${b}" cy="${cy}" r="${r}" fill="none" stroke="${INK}" stroke-width="2.5"/>
-		<circle cx="${b}" cy="${cy}" r="${r}" fill="${GREEN}" fill-opacity="0.85" clip-path="url(#lens)"/>
-		<circle cx="${w / 2 + 90 * Math.cos(-0.7)}" cy="${cy + 90 * Math.sin(-0.7)}" r="5" fill="${INK}"/>`,
+		<circle cx="${b}" cy="${cy}" r="${r}" fill="${INK}" fill-opacity="0.9" clip-path="url(#lens)"/>`,
 	);
-}
-
-// A stagger timeline: each lane starts one step later than the one above.
-function stagger(w, h) {
-	const lanes = 3;
-	const laneH = 10;
-	const step = 34;
-	const gapY = (h - lanes * laneH) / (lanes + 1);
-	const out = [];
-	for (let l = 0; l < lanes; l++) {
-		const y = gapY + l * (laneH + gapY);
-		for (let i = 0; i < 16; i++) {
-			const x = 18 + l * step + i * step;
-			if (x + 26 > w - 14) break;
-			const o = Math.max(0.08, 1 - i * 0.075);
-			const fill = i === 0 && l === lanes - 1 ? GREEN : INK;
-			out.push(
-				`<rect x="${x}" y="${y}" width="26" height="${laneH}" rx="5" fill="${fill}" fill-opacity="${o.toFixed(2)}"/>`,
-			);
-		}
-	}
-	return svg(w, h, out.join(""));
 }
 
 const css = `
 	* { box-sizing: border-box; margin: 0; padding: 0; }
 	.root {
 		position: relative; display: flex; width: 1280px; height: 640px; overflow: hidden;
-		background-color: #fafafa; font-family: Inter; color: #0a0a0a;
-		background-image: radial-gradient(circle, rgba(10,10,10,0.09) 1px, transparent 1px);
-		background-size: 22px 22px;
-	}
-	.fade {
-		position: absolute; top: 0; left: 0; width: 664px; height: 640px;
-		background-image: linear-gradient(90deg, #fafafa 70%, rgba(250,250,250,0));
+		background-color: #f4f4f4; font-family: Inter; color: #0a0a0a;
 	}
 	.copy { position: absolute; top: 72px; left: 80px; width: 560px; display: flex; flex-direction: column; }
 	.brand { display: flex; align-items: center; gap: 12px; font-size: 26px; font-weight: 700; letter-spacing: -0.02em; }
 	.brand img { width: 36px; height: 36px; }
 	.headline { margin-top: 44px; font-size: 54px; font-weight: 700; line-height: 1.08; letter-spacing: -0.035em; }
 	.caption { margin-top: 20px; font-size: 22px; line-height: 1.45; color: rgba(10,10,10,0.55); }
-	.chips { margin-top: 36px; display: flex; gap: 10px; }
-	.chip {
-		display: flex; align-items: center; height: 38px; padding: 0 16px; border-radius: 999px;
-		border: 1px solid rgba(10,10,10,0.12); background-color: #ffffff; font-size: 16px; font-weight: 500;
+	.stats {
+		margin-top: 40px; display: flex; align-items: stretch; align-self: flex-start; gap: 40px;
 	}
-	.chip b { font-weight: 700; margin-right: 6px; }
+	.stat { display: flex; flex-direction: column; justify-content: center; gap: 4px; padding: 0; }
+	.value { display: flex; align-items: center; height: 30px; font-size: 26px; font-weight: 700; letter-spacing: -0.03em; }
+	.name { font-size: 13px; font-weight: 500; color: rgba(10,10,10,0.5); }
+	.marks { display: flex; align-items: center; }
+	.mark {
+		display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 999px;
+		background-color: #ffffff;
+	}
+	.overlap { margin-left: -8px; }
+	.mark img { width: 17px; height: 17px; }
 
-	.stage { position: absolute; top: 64px; left: 664px; width: 576px; display: flex; flex-direction: column; gap: 16px; }
+	.stage { position: absolute; top: 98px; left: 664px; width: 576px; display: flex; flex-direction: column; gap: 16px; }
 	.row { display: flex; gap: 16px; }
 	.card {
 		display: flex; flex-direction: column; padding: 20px; border-radius: 18px; background-color: #ffffff;
-		border: 1px solid rgba(10,10,10,0.1); box-shadow: 0 12px 32px -12px rgba(10,10,10,0.18);
 	}
 	.tile { display: flex; align-items: center; justify-content: center; padding: 0; overflow: hidden; }
 	.label { font-size: 13px; font-weight: 500; color: rgba(10,10,10,0.5); }
 	.big { margin-top: 6px; font-size: 32px; font-weight: 700; letter-spacing: -0.03em; }
 	.bars { display: flex; align-items: flex-end; gap: 7px; height: 96px; margin-top: 16px; }
-	.bar { width: 15px; border-radius: 5px 5px 2px 2px; background-image: linear-gradient(180deg, #0a0a0a, rgba(10,10,10,0.55)); }
+	.bar { width: 15px; border-radius: 5px 5px 2px 2px; background-color: #0a0a0a; }
 `;
 
 const html = `
@@ -161,17 +133,18 @@ const html = `
 				</div>
 				<div class="card tile" style="width: 250px; height: 214px;"><img src="${rings(250, 214)}" /></div>
 			</div>
-			<div class="card tile" style="width: 576px; height: 64px;"><img src="${stagger(576, 64)}" /></div>
 		</div>
-		<div class="fade"></div>
 		<div class="copy">
 			<div class="brand"><img src="${logoSrc}" />Baby UI</div>
 			<div class="headline">Animated, accessible components for React and Svelte.</div>
 			<div class="caption">Copy-paste through the shadcn CLI. One token layer, every component in both frameworks.</div>
-			<div class="chips">
-				<span class="chip"><b>${specs.length}</b>components</span>
-				<span class="chip">React + Svelte</span>
-				<span class="chip">Apache-2.0</span>
+			<div class="stats">
+				<div class="stat"><span class="value">${Math.floor(specs.length / 10) * 10}+</span><span class="name">Components</span></div>
+				<div class="stat">
+					<span class="value marks"><span class="mark"><img src="${reactMark}" /></span><span class="mark overlap"><img src="${svelteMark}" /></span></span>
+					<span class="name">Two ports, one spec</span>
+				</div>
+				<div class="stat"><span class="value">Apache-2.0</span><span class="name">Open source</span></div>
 			</div>
 		</div>
 	</div>

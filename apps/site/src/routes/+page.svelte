@@ -14,6 +14,7 @@ import SegmentControl from "$lib/components/segment-control.svelte";
 import Seo from "$lib/components/seo.svelte";
 import SiteFooter from "$lib/components/site-footer.svelte";
 import { type Dialect, prefs } from "$lib/preferences.svelte";
+import { componentCountLabel } from "$lib/registry";
 import { SITE_URL } from "$lib/seo";
 
 const websiteJsonLd = JSON.stringify({
@@ -52,6 +53,7 @@ $effect(() => {
 <Seo
 	title="Baby UI"
 	description="Animated, accessible components for React and Svelte. Copy-paste, one token layer, zero runtime dependency."
+	tag="{componentCountLabel()} components"
 />
 <svelte:head>
 	{@html `<script type="application/ld+json">${websiteJsonLd}</script>`}

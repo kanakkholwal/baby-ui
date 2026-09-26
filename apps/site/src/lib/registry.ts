@@ -2,6 +2,10 @@ import type { Category, ComponentSpec } from "@baby-ui/registry-schema";
 import { CATEGORIES, docsPath } from "@baby-ui/registry-schema";
 import { specs } from "@baby-ui/registry-schema/components";
 
+/** Marketing count, floored to the ten below with a plus (182 reads "180+"). */
+export const componentCountLabel = (count = specs.length) =>
+	`${Math.floor(count / 10) * 10}+`;
+
 export const CATEGORY_LABEL: Record<Category, string> = {
 	base: "Base",
 	blocks: "Blocks",
