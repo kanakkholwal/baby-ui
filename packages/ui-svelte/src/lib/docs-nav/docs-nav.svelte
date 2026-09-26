@@ -14,6 +14,7 @@ let {
 	open = $bindable(),
 	onOpenChange,
 	connector = "tick",
+	rungs = false,
 	onNavigate,
 	label = "Documentation",
 	class: className,
@@ -25,6 +26,8 @@ let {
 	open?: string[];
 	onOpenChange?: (open: string[]) => void;
 	connector?: DocsNavConnector;
+	/** Adds a continuous hairline ladder beside the links; works with either connector. */
+	rungs?: boolean;
 	/** Fires on link click, e.g. to close a mobile drawer or route client-side. */
 	onNavigate?: (href: string, event: MouseEvent) => void;
 	/** Accessible name of the navigation landmark. */
@@ -53,6 +56,7 @@ $effect(() => {
 <nav bind:this={root} aria-label={label} data-slot="docs-nav" class={cn(styles.root(), className)}>
 	{#each sections as section (section.id)}
 		<Collapsible
+			class={styles.section()}
 			bind:open={() => expanded.includes(section.id), (next) => setSection(section.id, next)}
 		>
 			<CollapsibleTrigger class={styles.trigger()}>
@@ -62,7 +66,7 @@ $effect(() => {
 				{/if}
 			</CollapsibleTrigger>
 			<CollapsibleContent class={styles.content()}>
-				<DocsNavList items={section.items} {current} {connector} {onNavigate} />
+				<DocsNavList items={section.items} {current} {connector} {rungs} {onNavigate} />
 			</CollapsibleContent>
 		</Collapsible>
 	{/each}

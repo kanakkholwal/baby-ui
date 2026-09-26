@@ -32,6 +32,14 @@ export const docsNav = defineComponent({
 			control: { kind: "select", options: ["tick", "curve"] },
 		},
 		{
+			name: "rungs",
+			type: "boolean",
+			description:
+				"Adds a continuous hairline ladder beside the links; the current link's label steps in. Works with either connector.",
+			default: false,
+			control: { kind: "boolean" },
+		},
+		{
 			name: "open",
 			type: "string[]",
 			description:

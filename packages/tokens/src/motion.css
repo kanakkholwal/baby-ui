@@ -2573,3 +2573,71 @@
 		animation: none;
 	}
 }
+
+/* CubeText: each glyph is a cube face that rolls down onto an identical face. */
+.cube-char {
+	position: relative;
+	display: inline-block;
+	height: 1.2em;
+	line-height: 1.2em;
+	vertical-align: middle;
+	-webkit-text-fill-color: transparent;
+	transform-style: preserve-3d;
+	animation: cube-roll var(--cube-duration, 2200ms) var(--cube-delay, 0ms)
+		var(--cube-iterations, infinite) ease;
+}
+
+.cube-char::before,
+.cube-char::after {
+	content: attr(data-char);
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	display: flex;
+	width: 100%;
+	height: 100%;
+	align-items: center;
+	justify-content: center;
+	-webkit-text-fill-color: currentColor;
+	backface-visibility: hidden;
+	animation: cube-face var(--cube-duration, 2200ms) var(--cube-delay, 0ms)
+		var(--cube-iterations, infinite) ease;
+}
+
+.cube-char::after {
+	transform: translate(-50%, -50%) translateZ(0.6em);
+}
+
+.cube-char::before {
+	--cube-face-end: 1;
+	opacity: 0;
+	transform: translate(-50%, -50%) rotateX(-90deg) translateZ(0.6em);
+}
+
+@keyframes cube-roll {
+	0% {
+		transform: rotateX(0deg);
+	}
+	25%,
+	100% {
+		transform: rotateX(90deg);
+	}
+}
+
+@keyframes cube-face {
+	0% {
+		opacity: 1;
+	}
+	30%,
+	100% {
+		opacity: var(--cube-face-end, 0);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.cube-char,
+	.cube-char::before,
+	.cube-char::after {
+		animation: none;
+	}
+}

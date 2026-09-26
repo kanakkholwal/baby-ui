@@ -1,16 +1,18 @@
 <script lang="ts">
 import type { DocsNavItem } from "./types";
-import { type DocsNavConnector, docsNav, MARKER_WIDTH, rowState } from "./variants";
+import { type DocsNavConnector, docsNav, markerWidth, rowState } from "./variants";
 
 let {
 	items,
 	current,
 	connector,
+	rungs,
 	onNavigate,
 }: {
 	items: DocsNavItem[];
 	current?: string;
 	connector: DocsNavConnector;
+	rungs: boolean;
 	onNavigate?: (href: string, event: MouseEvent) => void;
 } = $props();
 
@@ -44,12 +46,12 @@ function onEnter(event: PointerEvent, index: number) {
 	{#each items as item, index (item.href)}
 		{@const active = item.href === current}
 		{@const state = rowState(active, hovered === index, hovered !== null)}
-		{@const styles = docsNav({ connector, state })}
+		{@const styles = docsNav({ connector, rungs, state })}
 		<div class={styles.row()}>
 			<span
 				aria-hidden="true"
 				class={styles.marker()}
-				style:width="{MARKER_WIDTH[connector][state]}px"
+				style:width="{markerWidth(connector, rungs, state)}px"
 			></span>
 			{#if connector === "curve" && index < items.length - 1}
 				<span aria-hidden="true" class={styles.rail()}></span>

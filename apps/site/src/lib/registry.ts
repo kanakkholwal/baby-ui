@@ -77,13 +77,10 @@ export type SidebarGroup = {
 	items: { slug: string; name: string; href: string; status: ComponentSpec["status"] }[];
 };
 
-/** `scope` splits the charts sidebar from the components sidebar. */
-export function sidebarGroups(
-	scope: "components" | "charts" | "all" = "all",
-): SidebarGroup[] {
-	return CATEGORIES.filter((c) =>
-		scope === "all" ? true : scope === "charts" ? c === "charts" : c !== "charts",
-	)
+/** Every category, with `lead` (the route's own category) moved to the front. */
+export function sidebarGroups(lead?: Category): SidebarGroup[] {
+	return [...CATEGORIES]
+		.sort((a, b) => Number(b === lead) - Number(a === lead))
 		.map((category) => ({
 			category,
 			label: CATEGORY_LABEL[category],
@@ -112,8 +109,8 @@ export function adjacentComponents(
 	category: string,
 	slug: string,
 ): { prev: AdjacentComponent | null; next: AdjacentComponent | null } {
-	const flat = sidebarGroups(category === "charts" ? "charts" : "components").flatMap(
-		(group) => group.items.map((item) => ({ ...item, category: group.category })),
+	const flat = sidebarGroups(category as Category).flatMap((group) =>
+		group.items.map((item) => ({ ...item, category: group.category })),
 	);
 	const index = flat.findIndex(
 		(item) => item.category === category && item.slug === slug,

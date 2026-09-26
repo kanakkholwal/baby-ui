@@ -153,6 +153,8 @@ export type { GeoCollection, GeoFeature, ZoomState } from "./choropleth-chart/ge
 export type { ChoroplethProjection } from "./choropleth-chart/variants";
 export { default as CircularText } from "./circular-text/circular-text.svelte";
 export type { CircularTextDirection } from "./circular-text/variants";
+export { default as ClickSpark } from "./click-spark/click-spark.svelte";
+export type { ClickSparkScope, ClickSparkTone } from "./click-spark/variants";
 export { default as CodeBlock } from "./code-block/code-block.svelte";
 export { default as CollabCard } from "./collab-card/collab-card.svelte";
 export type { CollabCardCollaborator } from "./collab-card/types";
@@ -219,6 +221,8 @@ export { default as ConversationScrollButton } from "./conversation/conversation
 export { default as CopyButton } from "./copy-button/copy-button.svelte";
 export { default as Counter } from "./counter/counter.svelte";
 export type { CounterDirection, CounterSize } from "./counter/variants";
+export { default as CubeText } from "./cube-text/cube-text.svelte";
+export type { CubeTextSize, CubeTextStagger } from "./cube-text/variants";
 export { default as CycleText } from "./cycle-text/cycle-text.svelte";
 export type { CycleTextSize } from "./cycle-text/variants";
 export { default as DiaText } from "./dia-text/dia-text.svelte";
@@ -240,6 +244,11 @@ export type { DocsNavItem, DocsNavSection } from "./docs-nav/types";
 export type { DocsNavConnector } from "./docs-nav/variants";
 export { default as DoubleUnderline } from "./double-underline/double-underline.svelte";
 export type { DoubleUnderlineTrigger } from "./double-underline/variants";
+export { default as DraggableMarquee } from "./draggable-marquee/draggable-marquee.svelte";
+export type {
+	DraggableMarqueeDirection,
+	DraggableMarqueeGap,
+} from "./draggable-marquee/variants";
 export type { DrawerDirection } from "./drawer/context";
 export { default as Drawer } from "./drawer/drawer.svelte";
 export { default as DrawerClose } from "./drawer/drawer-close.svelte";
@@ -614,6 +623,8 @@ export { default as TextInertia } from "./text-inertia/text-inertia.svelte";
 export type { TextInertiaSize } from "./text-inertia/variants";
 export { default as TextLoop } from "./text-loop/text-loop.svelte";
 export type { TextLoopDirection, TextLoopSize } from "./text-loop/variants";
+export { default as TextReel } from "./text-reel/text-reel.svelte";
+export type { TextReelSize } from "./text-reel/variants";
 export type {
 	TextTransitionPreset,
 	TextTransitionTarget,

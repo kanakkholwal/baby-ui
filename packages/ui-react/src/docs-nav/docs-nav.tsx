@@ -8,7 +8,7 @@ import {
 } from "../collapsible/collapsible";
 import { cn } from "../lib/cn";
 import { revealCurrent } from "./scroll";
-import { type DocsNavConnector, docsNav, MARKER_WIDTH, rowState } from "./variants";
+import { type DocsNavConnector, docsNav, markerWidth, rowState } from "./variants";
 
 export type { DocsNavConnector };
 
@@ -37,6 +37,8 @@ export interface DocsNavProps {
 	defaultOpen?: string[];
 	onOpenChange?: (open: string[]) => void;
 	connector?: DocsNavConnector;
+	/** Adds a continuous hairline ladder beside the links; works with either connector. */
+	rungs?: boolean;
 	/** Fires on link click, e.g. to close a mobile drawer or route client-side. */
 	onNavigate?: (href: string, event: MouseEvent<HTMLAnchorElement>) => void;
 	/** Accessible name of the navigation landmark. */
@@ -44,7 +46,7 @@ export interface DocsNavProps {
 	className?: string;
 }
 
-/** Documentation sidebar: collapsible sections, a sliding hover pill and a tick or thread curve per link. */
+/** Documentation sidebar: collapsible sections, a sliding hover pill and a tick or thread curve per link, optionally over a rung ladder. */
 export function DocsNav({
 	sections,
 	current,
@@ -52,6 +54,7 @@ export function DocsNav({
 	defaultOpen,
 	onOpenChange,
 	connector = "tick",
+	rungs = false,
 	onNavigate,
 	label = "Documentation",
 	className,
@@ -85,6 +88,7 @@ export function DocsNav({
 			{sections.map((section) => (
 				<Collapsible
 					key={section.id}
+					className={styles.section()}
 					open={open.includes(section.id)}
 					onOpenChange={(next) => setSection(section.id, next)}
 				>
@@ -99,6 +103,7 @@ export function DocsNav({
 							items={section.items}
 							current={current}
 							connector={connector}
+							rungs={rungs}
 							onNavigate={onNavigate}
 						/>
 					</CollapsibleContent>
@@ -112,11 +117,13 @@ function DocsNavList({
 	items,
 	current,
 	connector,
+	rungs,
 	onNavigate,
 }: {
 	items: DocsNavItem[];
 	current?: string;
 	connector: DocsNavConnector;
+	rungs: boolean;
 	onNavigate?: DocsNavProps["onNavigate"];
 }) {
 	const list = useRef<HTMLDivElement>(null);
@@ -147,13 +154,13 @@ function DocsNavList({
 			{items.map((item, index) => {
 				const active = item.href === current;
 				const state = rowState(active, hovered === index, hovered !== null);
-				const styles = docsNav({ connector, state });
+				const styles = docsNav({ connector, rungs, state });
 				return (
 					<div key={item.href} className={styles.row()}>
 						<span
 							aria-hidden="true"
 							className={styles.marker()}
-							style={{ width: MARKER_WIDTH[connector][state] }}
+							style={{ width: markerWidth(connector, rungs, state) }}
 						/>
 						{connector === "curve" && index < items.length - 1 ? (
 							<span aria-hidden="true" className={styles.rail()} />

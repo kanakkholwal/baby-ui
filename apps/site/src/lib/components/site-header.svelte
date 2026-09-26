@@ -1,11 +1,15 @@
 <script lang="ts">
+import { ThemeToggle, type ThemeToggleValue } from "@baby-ui/svelte";
 import IconArrowUpRight from "@tabler/icons-svelte/icons/arrow-up-right";
 import IconBrandGithub from "@tabler/icons-svelte/icons/brand-github";
 import IconMenu2 from "@tabler/icons-svelte/icons/menu-2";
 import IconSettings from "@tabler/icons-svelte/icons/settings";
+import { mode, setMode } from "mode-watcher";
 import { page } from "$app/state";
 import Logo from "$lib/components/logo.svelte";
+import SidebarToggleIcon from "$lib/components/sidebar-toggle-icon.svelte";
 import SiteSearch from "$lib/components/site-search.svelte";
+import { docsSidebar } from "$lib/docs-sidebar.svelte";
 import { mobileNav } from "$lib/mobile-nav.svelte";
 import { prefs } from "$lib/preferences.svelte";
 import { siteNav } from "$lib/registry";
@@ -18,6 +22,12 @@ const hasSidebar = $derived(
 		page.url.pathname.startsWith("/charts") ||
 		page.url.pathname.startsWith("/docs"),
 );
+
+// Set the class in the same tick as mode-watcher: the reveal snapshots the DOM when this returns.
+function pickMode(next: ThemeToggleValue) {
+	document.documentElement.classList.toggle("dark", next === "dark");
+	setMode(next);
+}
 
 let scrolled = $state(false);
 
@@ -53,6 +63,16 @@ function active(match: string) {
 				>
 					<IconMenu2 size={17} stroke={1.6} />
 				</button>
+				<button
+					type="button"
+					onclick={() => (docsSidebar.current = !docsSidebar.current)}
+					aria-expanded={docsSidebar.current}
+					aria-controls="docs-sidebar"
+					aria-label={docsSidebar.current ? "Close navigation" : "Open navigation"}
+					class="hidden size-8 shrink-0 place-items-center rounded-md text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:grid"
+				>
+					<SidebarToggleIcon open={docsSidebar.current} class="size-[18px]" />
+				</button>
 			{/if}
 			<a
 				href="/"
@@ -82,6 +102,15 @@ function active(match: string) {
 
 		<nav class="flex items-center gap-2">
 			<SiteSearch />
+
+			<ThemeToggle
+				theme={mode.current === "dark" ? "dark" : "light"}
+				onThemeChange={pickMode}
+				variant="circle"
+				start="top-right"
+				class="size-9 rounded-2xl border border-border bg-card/20 text-muted-foreground transition-colors hover:border-border-strong hover:text-foreground"
+				iconClass="size-4"
+			/>
 
 			<button
 				type="button"

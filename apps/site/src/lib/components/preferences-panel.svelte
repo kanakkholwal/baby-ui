@@ -1,14 +1,12 @@
 <script lang="ts">
 import type { Framework } from "@baby-ui/registry-schema";
 import {
-	Button,
 	Sheet,
 	SheetClose,
 	SheetContent,
 	SheetHeader,
 	SheetTitle,
-	ThemeToggle,
-	type ThemeToggleValue,
+	Switch,
 } from "@baby-ui/svelte";
 import type { Icon } from "@tabler/icons-svelte";
 import IconBrandJavascript from "@tabler/icons-svelte/icons/brand-javascript";
@@ -16,7 +14,6 @@ import IconBrandReact from "@tabler/icons-svelte/icons/brand-react";
 import IconBrandSvelte from "@tabler/icons-svelte/icons/brand-svelte";
 import IconBrandTypescript from "@tabler/icons-svelte/icons/brand-typescript";
 import IconCheck from "@tabler/icons-svelte/icons/check";
-import { mode, setMode, userPrefersMode } from "mode-watcher";
 import { type Dialect, prefs, THEMES } from "$lib/preferences.svelte";
 import SegmentControl from "./segment-control.svelte";
 
@@ -29,12 +26,6 @@ const DIALECTS: { id: Dialect; label: string; icon: Icon }[] = [
 	{ id: "ts", label: "TS", icon: IconBrandTypescript },
 	{ id: "js", label: "JS", icon: IconBrandJavascript },
 ];
-
-// Set the class in the same tick as mode-watcher: the reveal snapshots the DOM when this returns.
-function pickMode(next: ThemeToggleValue) {
-	document.documentElement.classList.toggle("dark", next === "dark");
-	setMode(next);
-}
 </script>
 
 <Sheet bind:open={prefs.open}>
@@ -45,27 +36,6 @@ function pickMode(next: ThemeToggleValue) {
 		</SheetHeader>
 
 		<div class="flex flex-col divide-y divide-border">
-			<div class="flex items-center justify-between gap-3 px-4 py-2.5">
-				<span class="text-foreground text-xs">Appearance</span>
-				<div class="flex items-center gap-1.5">
-					<Button
-						size="xs"
-						variant={userPrefersMode.current === "system" ? "secondary" : "ghost"}
-						aria-pressed={userPrefersMode.current === "system"}
-						onclick={() => setMode("system")}
-					>
-						System
-					</Button>
-					<ThemeToggle
-						theme={mode.current === "dark" ? "dark" : "light"}
-						onThemeChange={pickMode}
-						variant="circle"
-						start="top-right"
-						class="size-8 rounded-lg border border-border bg-background"
-						iconClass="size-4"
-					/>
-				</div>
-			</div>
 
 			<div class="flex flex-col gap-2 px-4 py-3">
 				<span class="text-foreground text-xs">Theme</span>
@@ -86,6 +56,15 @@ function pickMode(next: ThemeToggleValue) {
 						</button>
 					{/each}
 				</div>
+			</div>
+
+			<div class="flex items-center justify-between gap-3 px-4 py-2.5">
+				<span class="text-foreground text-xs">Click sparks</span>
+				<Switch
+					size="sm"
+					aria-label="Click sparks"
+					bind:checked={() => prefs.clickSpark, (on) => prefs.set("clickSpark", on)}
+				/>
 			</div>
 
 			<div class="flex items-center justify-between gap-3 px-4 py-2.5">

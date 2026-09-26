@@ -78,6 +78,12 @@ import { LogoCarouselDemo } from "./logo-carousel";
 import { MarkerDemo } from "./marker";
 import { MegaNavbarDemo } from "./mega-navbar";
 import {
+	ClickSparkDemo,
+	CubeTextDemo,
+	DraggableMarqueeDemo,
+	TextReelDemo,
+} from "./obsidian";
+import {
 	ComboboxDemo,
 	ContextMenuDemo,
 	DropdownMenuDemo,
@@ -445,6 +451,10 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"typing-text": TypingTextDemo,
 	"text-transition": TextTransitionDemo,
 	"circular-text": CircularTextDemo,
+	"cube-text": CubeTextDemo,
+	"text-reel": TextReelDemo,
+	"draggable-marquee": DraggableMarqueeDemo,
+	"click-spark": ClickSparkDemo,
 	"jitter-text": JitterTextDemo,
 	"jumping-text": JumpingTextDemo,
 	"mask-text": MaskTextDemo,

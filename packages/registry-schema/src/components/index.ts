@@ -23,6 +23,7 @@ import { chatComposer } from "./chat-composer";
 import { checkbox } from "./checkbox";
 import { choroplethChart } from "./choropleth-chart";
 import { circularText } from "./circular-text";
+import { clickSpark } from "./click-spark";
 import { codeBlock } from "./code-block";
 import { collabCard } from "./collab-card";
 import { collapsible } from "./collapsible";
@@ -36,12 +37,14 @@ import { contextMenu } from "./context-menu";
 import { conversation } from "./conversation";
 import { copyButton } from "./copy-button";
 import { counter } from "./counter";
+import { cubeText } from "./cube-text";
 import { cycleText } from "./cycle-text";
 import { diaText } from "./dia-text";
 import { dialog } from "./dialog";
 import { diffTable } from "./diff-table";
 import { docsNav } from "./docs-nav";
 import { doubleUnderline } from "./double-underline";
+import { draggableMarquee } from "./draggable-marquee";
 import { drawer } from "./drawer";
 import { dropdownMenu } from "./dropdown-menu";
 import { fileDiff } from "./file-diff";
@@ -131,6 +134,7 @@ import { textExplodeIMessage } from "./text-explode-imessage";
 import { textFlip } from "./text-flip";
 import { textInertia } from "./text-inertia";
 import { textLoop } from "./text-loop";
+import { textReel } from "./text-reel";
 import { textTransition } from "./text-transition";
 import { textarea } from "./textarea";
 import { themeToggle } from "./theme-toggle";
@@ -234,6 +238,10 @@ export const specs: ComponentSpec[] = [
 	heroStage,
 	showcaseGrid,
 	statusMonitor,
+	cubeText,
+	textReel,
+	draggableMarquee,
+	clickSpark,
 	recommendationCard,
 	chatComposer,
 	thinkingState,

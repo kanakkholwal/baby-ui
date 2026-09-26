@@ -6,10 +6,12 @@ import type { SidebarGroup } from "$lib/registry";
 let {
 	groups,
 	connector = "tick",
+	rungs = false,
 	onNavigate,
 }: {
 	groups: SidebarGroup[];
 	connector?: DocsNavConnector;
+	rungs?: boolean;
 	onNavigate?: () => void;
 } = $props();
 
@@ -43,6 +45,7 @@ const sections = $derived<DocsNavSection[]>([
 	{sections}
 	current={page.url.pathname}
 	{connector}
+	{rungs}
 	label="Site navigation"
 	onNavigate={() => onNavigate?.()}
 />

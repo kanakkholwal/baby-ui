@@ -14,6 +14,7 @@ export function DocsNavDemo({ props }: { props: Props }) {
 				sections={DOCS_SECTIONS}
 				current={current}
 				connector={(props.connector as DocsNavConnector) ?? "tick"}
+				rungs={props.rungs === true}
 				onNavigate={(href, event) => {
 					event.preventDefault();
 					setCurrent(href);

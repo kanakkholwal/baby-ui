@@ -206,6 +206,12 @@ export type { GeoCollection, GeoFeature, ZoomState } from "./choropleth-chart/ge
 export type { ChoroplethProjection } from "./choropleth-chart/variants";
 export { CircularText, type CircularTextProps } from "./circular-text/circular-text";
 export type { CircularTextDirection } from "./circular-text/variants";
+export {
+	ClickSpark,
+	type ClickSparkProps,
+	type ClickSparkScope,
+	type ClickSparkTone,
+} from "./click-spark/click-spark";
 export { CodeBlock, type CodeBlockProps } from "./code-block/code-block";
 export {
 	CollabCard,
@@ -291,6 +297,12 @@ export {
 export { CopyButton, type CopyButtonProps } from "./copy-button/copy-button";
 export { Counter, type CounterProps } from "./counter/counter";
 export type { CounterDirection, CounterSize } from "./counter/variants";
+export {
+	CubeText,
+	type CubeTextProps,
+	type CubeTextSize,
+	type CubeTextStagger,
+} from "./cube-text/cube-text";
 export { CycleText, type CycleTextProps } from "./cycle-text/cycle-text";
 export type { CycleTextSize } from "./cycle-text/variants";
 export { DiaText, type DiaTextProps } from "./dia-text/dia-text";
@@ -321,6 +333,12 @@ export {
 	type DoubleUnderlineProps,
 } from "./double-underline/double-underline";
 export type { DoubleUnderlineTrigger } from "./double-underline/variants";
+export {
+	DraggableMarquee,
+	type DraggableMarqueeDirection,
+	type DraggableMarqueeGap,
+	type DraggableMarqueeProps,
+} from "./draggable-marquee/draggable-marquee";
 export {
 	Drawer,
 	DrawerClose,
@@ -842,6 +860,7 @@ export { TextInertia, type TextInertiaProps } from "./text-inertia/text-inertia"
 export type { TextInertiaSize } from "./text-inertia/variants";
 export { TextLoop, type TextLoopProps } from "./text-loop/text-loop";
 export type { TextLoopDirection, TextLoopSize } from "./text-loop/variants";
+export { TextReel, type TextReelProps, type TextReelSize } from "./text-reel/text-reel";
 export type {
 	TextTransitionPreset,
 	TextTransitionTarget,

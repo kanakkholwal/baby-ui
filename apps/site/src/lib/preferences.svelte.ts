@@ -98,12 +98,14 @@ type Stored = {
 	framework: Framework;
 	dialect: Dialect;
 	pm: PackageManager;
+	clickSpark: boolean;
 };
 
 const DEFAULT_STORED: Stored = {
 	framework: "svelte",
 	dialect: "ts",
 	pm: "bun",
+	clickSpark: true,
 };
 
 class Preferences {
@@ -119,6 +121,9 @@ class Preferences {
 	}
 	get pm() {
 		return this.#stored.current.pm;
+	}
+	get clickSpark() {
+		return this.#stored.current.clickSpark;
 	}
 	get theme() {
 		return this.#theme.current;
