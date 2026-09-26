@@ -79,6 +79,8 @@ export const chartLegend = tv({
 		swatch:
 			"size-2.5 shrink-0 rounded-[3px] border-2 border-(--swatch) bg-(--swatch) transition-colors",
 		item: "transition-opacity duration-150",
+		label:
+			"inline-flex h-7 items-center gap-1.5 px-2 font-medium text-muted-foreground text-xs",
 	},
 	variants: {
 		align: {

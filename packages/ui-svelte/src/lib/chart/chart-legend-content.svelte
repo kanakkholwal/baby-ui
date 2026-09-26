@@ -9,12 +9,35 @@ import { type ChartLegendAlign, chartLegend } from "./variants";
 let {
 	align = "center",
 	hideIcon = false,
+	interactive = true,
 	class: className,
-}: { align?: ChartLegendAlign; hideIcon?: boolean; class?: string } = $props();
+}: {
+	align?: ChartLegendAlign;
+	hideIcon?: boolean;
+	/** False renders a static key: for charts whose entries are not series that can hide. */
+	interactive?: boolean;
+	class?: string;
+} = $props();
 
 const chart = useChart();
 </script>
 
+{#if !interactive}
+	<ul data-slot="chart-legend" aria-label="Legend" class={cn(chartLegend({ align }).root(), className)}>
+		{#each Object.entries(chart.config) as [key, entry] (key)}
+			{@const styles = chartLegend()}
+			{@const Icon = entry.icon as Component | undefined}
+			<li class={styles.label()}>
+				{#if Icon && !hideIcon}
+					<Icon />
+				{:else}
+					<span aria-hidden="true" class={styles.swatch()} style="--swatch: {seriesColor(key)}"></span>
+				{/if}
+				{(entry.label as string | undefined) ?? key}
+			</li>
+		{/each}
+	</ul>
+{:else}
 <div data-slot="chart-legend" class={cn(chartLegend({ align }).root(), className)}>
 	{#each Object.entries(chart.config) as [key, entry] (key)}
 		{@const styles = chartLegend({ hidden: chart.hidden.has(key) })}
@@ -41,3 +64,4 @@ const chart = useChart();
 		</span>
 	{/each}
 </div>
+{/if}

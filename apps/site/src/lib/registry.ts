@@ -14,6 +14,7 @@ export const CATEGORY_LABEL: Record<Category, string> = {
 	text: "Text",
 	backgrounds: "Backgrounds",
 	charts: "Charts",
+	"og-images": "OG Images",
 };
 
 export const CATEGORY_BLURB: Record<Category, string> = {
@@ -27,17 +28,21 @@ export const CATEGORY_BLURB: Record<Category, string> = {
 		"Full-bleed animated surfaces and canvas effects that idle when nothing moves.",
 	charts:
 		"SVG charts on d3 with keyboard, screen-reader and reduced-motion support built in.",
+	"og-images":
+		"1200x630 social cards built from your theme tokens, rendered to PNG with takumi.",
 };
 
-/** Charts live under their own top-level route; every other category under /components. */
+/** Client copy of the schema's `TOP_LEVEL_CATEGORIES`: served at `/<category>`, not /components. */
+export const TOP_LEVEL: readonly Category[] = ["charts", "og-images"];
+
 export function categoryHref(category: Category): string {
-	return category === "charts" ? "/charts" : `/components/${category}`;
+	return TOP_LEVEL.includes(category) ? `/${category}` : `/components/${category}`;
 }
 
 /** Same as the schema's `docsPath`, kept here so the client never imports the schema runtime. */
 export function specHref(spec: Pick<ComponentSpec, "category" | "slug">): string {
-	return spec.category === "charts"
-		? `/charts/${spec.slug}`
+	return TOP_LEVEL.includes(spec.category)
+		? `/${spec.category}/${spec.slug}`
 		: `/components/${spec.category}/${spec.slug}`;
 }
 
@@ -77,7 +82,7 @@ export function siteNav(
 	return [
 		{ href: "/components", label: "Components", match: "/components" },
 		...categories
-			.filter((c) => c.category === "agents" || c.category === "charts")
+			.filter((c) => c.category === "agents" || TOP_LEVEL.includes(c.category))
 			.map((c) => ({ href: c.href, label: c.label, match: c.href })),
 		{ href: "/docs", label: "Docs", match: "/docs" },
 	];
@@ -126,7 +131,13 @@ export function loadCatalog(): Promise<CatalogItem[]> {
 export type SidebarGroup = {
 	category: Category;
 	label: string;
-	items: { slug: string; name: string; href: string; status: ComponentSpec["status"] }[];
+	items: {
+		slug: string;
+		name: string;
+		href: string;
+		status: ComponentSpec["status"];
+		tier: ComponentSpec["tier"];
+	}[];
 };
 
 export type AdjacentComponent = { name: string; href: string };

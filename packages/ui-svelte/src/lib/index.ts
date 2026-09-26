@@ -535,6 +535,32 @@ export type { MusicPlayerLabels } from "./music-player/types";
 export type { MusicPlayerLayout } from "./music-player/variants";
 export { default as Navbar } from "./navbar/navbar.svelte";
 export type { NavbarVariant } from "./navbar/variants";
+export { default as OgAuthorProfile } from "./og-author-profile/og-author-profile.svelte";
+export type {
+	OgAuthorProfileMode,
+	OgAuthorProfileTone,
+} from "./og-author-profile/variants";
+export { default as OgBlogPost } from "./og-blog-post/og-blog-post.svelte";
+export type { OgBlogPostMode, OgBlogPostTone } from "./og-blog-post/variants";
+export { default as OgChangelog } from "./og-changelog/og-changelog.svelte";
+export type {
+	OgChangelogKind,
+	OgChangelogMode,
+	OgChangelogTone,
+} from "./og-changelog/variants";
+export { default as OgDocsPage } from "./og-docs-page/og-docs-page.svelte";
+export type {
+	OgDocsPageMode,
+	OgDocsPageMotif,
+	OgDocsPageTone,
+} from "./og-docs-page/variants";
+export { default as OgGithubRepo } from "./og-github-repo/og-github-repo.svelte";
+export type { OgGithubRepoMode, OgGithubRepoTone } from "./og-github-repo/variants";
+export { default as OgNewsletterIssue } from "./og-newsletter-issue/og-newsletter-issue.svelte";
+export type {
+	OgNewsletterIssueMode,
+	OgNewsletterIssueTone,
+} from "./og-newsletter-issue/variants";
 export { default as OrbitCardStack } from "./orbit-card-stack/orbit-card-stack.svelte";
 export type {
 	OrbitCardStackLabels,
@@ -829,6 +855,9 @@ export { default as TableHead } from "./table/table-head.svelte";
 export { default as TableHeader } from "./table/table-header.svelte";
 export { default as TableRow } from "./table/table-row.svelte";
 export type { TableDensity } from "./table/variants";
+export { default as TableOfContents } from "./table-of-contents/table-of-contents.svelte";
+export type { TocDepth, TocItem } from "./table-of-contents/toc-core";
+export type { TableOfContentsVariant } from "./table-of-contents/variants";
 export type { TabsSize, TabsVariant } from "./tabs/context";
 export { default as Tabs } from "./tabs/tabs.svelte";
 export { default as TabsContent } from "./tabs/tabs-content.svelte";

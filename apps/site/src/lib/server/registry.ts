@@ -21,10 +21,13 @@ const pro = import.meta.glob<ComponentSpec[]>(
 	},
 );
 
-/** Public specs, plus Pro specs when the private submodule is checked out. */
+// Pro stays out of production builds until payments exist; VITE_SHOW_PRO=true opts in at build.
+const showPro = import.meta.env.DEV || import.meta.env.VITE_SHOW_PRO === "true";
+
+/** Public specs, plus Pro specs when the private submodule is checked out and Pro is shown. */
 export const specs: readonly ComponentSpec[] = [
 	...publicSpecs,
-	...Object.values(pro).flat(),
+	...(showPro ? Object.values(pro).flat() : []),
 ];
 
 /** Categories with at least one component, in schema order. */
@@ -90,6 +93,7 @@ export function sidebarGroups(lead?: Category): SidebarGroup[] {
 					name: s.name,
 					href: specHref(s),
 					status: s.status,
+					tier: s.tier,
 				}))
 				.sort((a, b) => a.name.localeCompare(b.name)),
 		}))

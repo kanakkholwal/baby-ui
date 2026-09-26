@@ -160,7 +160,7 @@ Or paste this over what `init` wrote, after `@import "tailwindcss"`:
 
 ## Routes
 
-| | TypeScript | JavaScript |
+| Framework | TypeScript | JavaScript |
 | --- | --- | --- |
 | React | `/r/{slug}.json` | `/r/js/{slug}.json` |
 | Svelte | `/svelte/r/{slug}.json` | `/svelte/r/js/{slug}.json` |

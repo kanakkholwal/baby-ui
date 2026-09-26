@@ -8,12 +8,12 @@ export const badge = tv({
 			secondary: "border-transparent bg-card text-foreground",
 			outline: "border-border bg-transparent text-foreground",
 			success:
-				"border-transparent bg-[color-mix(in_oklch,var(--success)_15%,transparent)] text-[var(--success)]",
+				"border-transparent bg-[color-mix(in_oklch,var(--success)_15%,transparent)] text-[color-mix(in_oklch,var(--success)_75%,var(--foreground))]",
 			warning:
-				"border-transparent bg-[color-mix(in_oklch,var(--warning)_15%,transparent)] text-[var(--warning)]",
+				"border-transparent bg-[color-mix(in_oklch,var(--warning)_15%,transparent)] text-[color-mix(in_oklch,var(--warning)_75%,var(--foreground))]",
 			destructive:
-				"border-transparent bg-[color-mix(in_oklch,var(--destructive)_15%,transparent)] text-[var(--destructive)]",
-			info: "border-transparent bg-[color-mix(in_oklch,var(--info)_15%,transparent)] text-[var(--info)]",
+				"border-transparent bg-[color-mix(in_oklch,var(--destructive)_15%,transparent)] text-[color-mix(in_oklch,var(--destructive)_75%,var(--foreground))]",
+			info: "border-transparent bg-[color-mix(in_oklch,var(--info)_15%,transparent)] text-[color-mix(in_oklch,var(--info)_75%,var(--foreground))]",
 		},
 		size: {
 			sm: "h-5 px-1.5 text-[11px]",

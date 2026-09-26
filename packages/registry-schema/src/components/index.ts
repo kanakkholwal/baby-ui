@@ -104,6 +104,12 @@ import { morphText } from "./morph-text";
 import { morphingModal } from "./morphing-modal";
 import { musicPlayer } from "./music-player";
 import { navbar } from "./navbar";
+import { ogAuthorProfile } from "./og-author-profile";
+import { ogBlogPost } from "./og-blog-post";
+import { ogChangelog } from "./og-changelog";
+import { ogDocsPage } from "./og-docs-page";
+import { ogGithubRepo } from "./og-github-repo";
+import { ogNewsletterIssue } from "./og-newsletter-issue";
 import { orbitCardStack } from "./orbit-card-stack";
 import { overviewCard } from "./overview-card";
 import { pagination } from "./pagination";
@@ -166,6 +172,7 @@ import { sunburstChart } from "./sunburst-chart";
 import { swapText } from "./swap-text";
 import { switchComponent } from "./switch";
 import { table } from "./table";
+import { tableOfContents } from "./table-of-contents";
 import { tabs } from "./tabs";
 import { tagInput } from "./tag-input";
 import { taskRows } from "./task-rows";
@@ -359,6 +366,12 @@ export const specs: ComponentSpec[] = [
 	loadingScreen,
 	textRepel,
 	particleText,
+	ogBlogPost,
+	ogDocsPage,
+	ogChangelog,
+	ogGithubRepo,
+	ogAuthorProfile,
+	ogNewsletterIssue,
 	scrollVelocity,
 	overviewCard,
 	usageCard,
@@ -401,6 +414,7 @@ export const specs: ComponentSpec[] = [
 	stickyScrollCards,
 	layeredStack,
 	orbitCardStack,
+	tableOfContents,
 ];
 
 export function getSpec(slug: string): ComponentSpec | undefined {

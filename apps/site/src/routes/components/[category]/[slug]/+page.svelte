@@ -4,6 +4,7 @@ import IconArrowLeft from "@tabler/icons-svelte/icons/arrow-left";
 import IconArrowRight from "@tabler/icons-svelte/icons/arrow-right";
 import IconChevronRight from "@tabler/icons-svelte/icons/chevron-right";
 import IconList from "@tabler/icons-svelte/icons/list";
+import type { Snippet } from "svelte";
 import { page } from "$app/state";
 import { registry } from "$docvia/registry";
 import { track } from "$lib/analytics";
@@ -22,9 +23,16 @@ import PropsTable from "$lib/components/props-table.svelte";
 import Seo from "$lib/components/seo.svelte";
 import Tabs from "$lib/components/tabs.svelte";
 import { demos } from "$lib/demos";
+import type { Heading } from "$lib/docs-nodes";
 import { OUTLINE_PANEL, outlineSidebar } from "$lib/docs-sidebar.svelte";
 import { prefs } from "$lib/preferences.svelte";
-import { CATEGORY_LABEL, categoryHref, defaultProps, specHref } from "$lib/registry";
+import {
+	CATEGORY_LABEL,
+	categoryHref,
+	defaultProps,
+	specHref,
+	TOP_LEVEL,
+} from "$lib/registry";
 import { breadcrumbLd, componentKeywords, componentLd, metaDescription } from "$lib/seo";
 import { installSourceUrl } from "$lib/source";
 import type { PageProps } from "./$types";
@@ -52,6 +60,36 @@ const split = $derived(prefs.layout === "split" && wide);
 const framework = $derived(prefs.framework);
 const dialect = $derived(prefs.dialect);
 let values = $state<Record<string, unknown>>({});
+
+const isOg = $derived(data.spec.category === "og-images");
+let ogView = $state<"live" | "png">("live");
+// PNG view: fetch once typing settles, keep the last image on screen until the next one decodes.
+let pngShown = $state("");
+let pngPending = $state(false);
+$effect(() => {
+	if (!isOg || ogView !== "png") return;
+	const url = `/api/og/${data.spec.slug}?props=${encodeURIComponent(JSON.stringify(values))}`;
+	if (url === pngShown) return;
+	let cancelled = false;
+	const timer = setTimeout(() => {
+		pngPending = true;
+		const next = new Image();
+		next.onload = next.onerror = () => {
+			if (cancelled) return;
+			pngPending = false;
+			if (next.naturalWidth) pngShown = url;
+		};
+		next.src = url;
+	}, 450);
+	return () => {
+		cancelled = true;
+		clearTimeout(timer);
+	};
+});
+// Viewport sizes are a fullscreen tool; leaving fullscreen restores the full-width frame.
+$effect(() => {
+	if (!fullscreen) viewport = "desktop";
+});
 
 $effect(() => {
 	if (!fullscreen) return;
@@ -90,19 +128,36 @@ const tabs = $derived(
 $effect(() => {
 	if (!tabs.some((t) => t.id === tab)) tab = tabs[0]?.id ?? "usage";
 });
+const PAGE_SECTIONS = new Set([
+	"overview",
+	"preview",
+	"behaviour",
+	"accessibility",
+	"api-reference",
+	"related",
+]);
 const hasA11y = $derived(
 	data.spec.a11y.keyboard.length > 0 || data.spec.a11y.notes.length > 0,
 );
 const outline = $derived(
 	[
-		{ id: "overview", label: "Overview" },
-		{ id: "preview", label: "Preview" },
-		...data.proseHeadings,
-		data.spec.motion && { id: "behaviour", label: "Behaviour" },
-		hasA11y && { id: "accessibility", label: "Accessibility" },
-		data.spec.props.length > 0 && { id: "api-reference", label: "API reference" },
-		related.length > 0 && { id: "related", label: "Related components" },
-	].filter((h): h is { id: string; label: string } => Boolean(h)),
+		{ id: "overview", label: "Overview", depth: 2 as const },
+		{ id: "preview", label: "Preview", depth: 2 as const },
+		// A prose heading that reuses a page section's id would key the outline twice and crash it.
+		...data.proseHeadings.filter((h) => !PAGE_SECTIONS.has(h.id)),
+		data.spec.motion && { id: "behaviour", label: "Behaviour", depth: 2 as const },
+		hasA11y && { id: "accessibility", label: "Accessibility", depth: 2 as const },
+		data.spec.props.length > 0 && {
+			id: "api-reference",
+			label: "API reference",
+			depth: 2 as const,
+		},
+		related.length > 0 && {
+			id: "related",
+			label: "Related components",
+			depth: 2 as const,
+		},
+	].filter((h): h is Heading => Boolean(h)),
 );
 const usage = $derived(
 	dialect === "js" && port?.usage?.js ? port.usage.js : (port?.usage?.ts ?? null),
@@ -114,7 +169,9 @@ const seoDescription = $derived(
 	),
 );
 const categoryTrail = $derived(
-	data.spec.category === "charts" ? [] : [{ name: "Components", path: "/components" }],
+	TOP_LEVEL.includes(data.spec.category)
+		? []
+		: [{ name: "Components", path: "/components" }],
 );
 </script>
 
@@ -212,7 +269,9 @@ const categoryTrail = $derived(
 			<MobileNavDrawer label="On this page" title="On this page">
 				{#snippet icon()}<IconList size={14} stroke={1.6} />{/snippet}
 				{#snippet children()}
-					<PropsRail slug={data.spec.slug} {outline} />
+					<div class="mx-auto w-full max-w-md">
+						<PropsRail slug={data.spec.slug} {outline} heading={false} />
+					</div>
 				{/snippet}
 			</MobileNavDrawer>
 		</div>
@@ -232,9 +291,6 @@ const categoryTrail = $derived(
 				variant="underline"
 				class="min-w-0 flex-1"
 			/>
-			{#if tab === "preview" && !split}
-				<PreviewToolbar bind:viewport bind:fullscreen onReload={() => reloadKey++} />
-			{/if}
 		</div>
 		<div id="panel-{tab}" role="tabpanel" aria-labelledby="tab-{tab}" class="mt-4">
 			{#if tab === "preview"}
@@ -382,23 +438,55 @@ const categoryTrail = $derived(
 			fill && "flex h-full flex-col",
 		]}
 	>
-		{#key reloadKey}
-			<DemoPreview
-				{framework}
-				slug={data.spec.slug}
-				demo={demos[data.spec.slug]}
-				props={values}
-				class={fill ? "h-full flex-1" : undefined}
-			/>
-		{/key}
+		<div class={["relative", fill && "flex min-h-0 flex-1 flex-col"]}>
+			{#key reloadKey}
+				<DemoPreview
+					{framework}
+					slug={data.spec.slug}
+					demo={demos[data.spec.slug]}
+					props={values}
+					content={isOg && ogView === "png" ? (pngView as Snippet) : undefined}
+					class={fill ? "h-full flex-1" : undefined}
+				/>
+			{/key}
+			<div class="pointer-events-none absolute inset-x-0 bottom-3 flex justify-center">
+				<PreviewToolbar
+					bind:viewport
+					bind:fullscreen
+					bind:ogView
+					og={isOg}
+					onReload={() => reloadKey++}
+				/>
+			</div>
+		</div>
 	</div>
+{/snippet}
+
+{#snippet pngView()}
+	<figure class="relative w-full max-w-3xl">
+		{#if pngShown}
+			<img
+				src={pngShown}
+				alt="Rendered 1200x630 PNG of {data.spec.name}"
+				width="1200"
+				height="630"
+				class={["h-auto w-full rounded-xl border border-border shadow-sm transition-opacity", pngPending && "opacity-60"]}
+			/>
+		{:else}
+			<div class="grid aspect-[1200/630] w-full place-items-center rounded-xl border border-border bg-card text-muted-foreground text-sm">
+				Rendering…
+			</div>
+		{/if}
+		<figcaption class="mt-2 text-center text-muted-foreground text-xs">
+			Rendered with takumi at 1200x630: exactly what social networks receive.
+		</figcaption>
+	</figure>
 {/snippet}
 
 {#if fullscreen}
 	<div class="fixed inset-0 z-50 flex flex-col gap-4 bg-background p-4 sm:p-6">
 		<div class="flex items-center justify-between gap-3">
 			<p class="font-medium text-foreground text-sm">{data.spec.name} · Preview</p>
-			<PreviewToolbar bind:viewport bind:fullscreen onReload={() => reloadKey++} />
 		</div>
 		<div class="min-h-0 flex-1 overflow-auto">
 			{@render previewStage(true)}
@@ -411,7 +499,6 @@ const categoryTrail = $derived(
 		<div class="sticky top-14 flex h-[calc(100dvh-3.5rem)] flex-col gap-3 py-8">
 			<div class="flex items-center justify-between gap-3">
 				<p class="font-medium text-foreground text-sm">Preview</p>
-				<PreviewToolbar bind:viewport bind:fullscreen onReload={() => reloadKey++} />
 			</div>
 			<div class="min-h-0 flex-1">
 				{@render previewStage(true)}

@@ -2,7 +2,7 @@
 import type { Snippet } from "svelte";
 import { cn } from "../lib/cn";
 import { useChart } from "./context";
-import type { ChartPhase } from "./core";
+import { type ChartPhase, isLoadingPhase } from "./core";
 import { chart } from "./variants";
 
 let {
@@ -108,6 +108,7 @@ function onkeydown(event: KeyboardEvent) {
 	bind:this={el}
 	data-slot="chart-plot"
 	data-phase={phase}
+	aria-busy={phase && isLoadingPhase(phase) ? "true" : undefined}
 	role="figure"
 	aria-roledescription={roleDescription}
 	aria-labelledby="{uid}-title"

@@ -117,6 +117,12 @@
 	color: var(--shiki-light);
 }
 
+/* GitHub Light's comment grey is 4.4:1 on our background; GitHub's own darker grey passes AA.
+   Declared before the dark rule so dark mode keeps its colour. */
+.shiki span[style*="--shiki-light:#6E7781"] {
+	color: #57606a;
+}
+
 .dark .shiki,
 .dark .shiki span {
 	color: var(--shiki-dark);

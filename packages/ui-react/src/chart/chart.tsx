@@ -131,6 +131,8 @@ export function ChartStyle({ id, config }: { id: string; config: ChartConfig }) 
 export interface ChartLegendContentProps {
 	align?: ChartLegendAlign;
 	hideIcon?: boolean;
+	/** False renders a static key: for charts whose entries are not series that can hide. */
+	interactive?: boolean;
 	className?: string;
 }
 
@@ -138,9 +140,38 @@ export interface ChartLegendContentProps {
 export function ChartLegendContent({
 	align = "center",
 	hideIcon = false,
+	interactive = true,
 	className,
 }: ChartLegendContentProps) {
 	const { config, hidden, toggleSeries, setHighlighted } = useChart();
+	if (!interactive) {
+		const styles = chartLegend();
+		return (
+			<ul
+				data-slot="chart-legend"
+				aria-label="Legend"
+				className={cn(chartLegend({ align }).root(), className)}
+			>
+				{Object.entries(config).map(([key, entry]) => {
+					const Icon = entry.icon;
+					return (
+						<li key={key} className={styles.label()}>
+							{Icon && !hideIcon ? (
+								<Icon />
+							) : (
+								<span
+									aria-hidden="true"
+									className={styles.swatch()}
+									style={{ "--swatch": seriesColor(key) } as CSSProperties}
+								/>
+							)}
+							{entry.label ?? key}
+						</li>
+					);
+				})}
+			</ul>
+		);
+	}
 	return (
 		<div
 			data-slot="chart-legend"
@@ -183,6 +214,13 @@ export function ChartLegendContent({
 	);
 }
 
-export function ChartLegend({ content }: { content?: ReactNode }) {
-	return <>{content ?? <ChartLegendContent />}</>;
+export function ChartLegend({
+	content,
+	interactive = true,
+}: {
+	content?: ReactNode;
+	/** False renders a static key instead of series toggles. */
+	interactive?: boolean;
+}) {
+	return <>{content ?? <ChartLegendContent interactive={interactive} />}</>;
 }

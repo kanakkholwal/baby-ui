@@ -16,7 +16,7 @@ Series read `var(--color-<key>)`, set per chart from `config`. Point `color` at
 `--chart-1` to `--chart-5`: that order passes colour-blind separation in both themes, so
 assign it in sequence and never reorder by rank.
 
-## Accessibility
+## Keyboard and screen readers
 
 The plot takes focus. Arrow keys walk the points, and each move is announced. A generated
 summary and a visually hidden data table ship with every chart; pass `description` to

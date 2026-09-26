@@ -1,6 +1,7 @@
 <script lang="ts">
 import type { Framework } from "@baby-ui/registry-schema";
 import { Spinner } from "@baby-ui/svelte";
+import type { Snippet } from "svelte";
 import type { DemoLoader } from "$lib/demos";
 import { REACT_RUNNER_URL } from "$lib/flags";
 
@@ -9,12 +10,15 @@ let {
 	slug,
 	demo,
 	props,
+	content,
 	class: classProp,
 }: {
 	framework: Framework;
 	slug: string;
 	demo: DemoLoader | undefined;
 	props: Record<string, unknown>;
+	/** Replaces the demo (the OG pages' rendered PNG); the frame stays the same. */
+	content?: Snippet;
 	class?: string;
 } = $props();
 
@@ -29,9 +33,11 @@ const iframeSrc = $derived(
 <!-- Sivir's inset frame: a tinted outer card, canvas sunk one level on bg-background. -->
 <div class={["rounded-xl border border-border bg-card p-1", classProp]}>
 	<div
-		class="relative grid h-full min-h-88 grid-cols-[minmax(0,1fr)] place-items-center-safe overflow-auto overscroll-contain rounded-[7px] bg-background bg-[radial-gradient(var(--border)_1px,transparent_1px)] [background-size:16px_16px] p-4 sm:p-8"
+		class="relative grid h-full min-h-88 grid-cols-[minmax(0,1fr)] place-items-center-safe overflow-auto rounded-[7px] bg-background bg-[radial-gradient(var(--border)_1px,transparent_1px)] [background-size:16px_16px] p-4 pb-16 sm:p-8 sm:pb-16"
 	>
-		{#if demoPromise}
+		{#if content}
+			{@render content()}
+		{:else if demoPromise}
 			{#await demoPromise}
 				<div class="flex flex-col items-center gap-2 text-muted-foreground text-sm">
 					<Spinner size="md" label="Loading preview" />
@@ -46,7 +52,7 @@ const iframeSrc = $derived(
 		{:else}
 			<p class="text-muted-foreground text-sm">No demo for this component yet.</p>
 		{/if}
-		{#if framework === "react" && demoPromise}
+		{#if framework === "react" && demoPromise && !content}
 			{#if iframeSrc}
 				<iframe
 					src={iframeSrc}

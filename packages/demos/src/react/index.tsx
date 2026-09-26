@@ -107,6 +107,12 @@ import {
 	DraggableMarqueeDemo,
 	TextReelDemo,
 } from "./obsidian";
+import { OgAuthorProfileDemo } from "./og-author-profile";
+import { OgBlogPostDemo } from "./og-blog-post";
+import { OgChangelogDemo } from "./og-changelog";
+import { OgDocsPageDemo } from "./og-docs-page";
+import { OgGithubRepoDemo } from "./og-github-repo";
+import { OgNewsletterIssueDemo } from "./og-newsletter-issue";
 import { OrbitCardStackDemo } from "./orbit-card-stack";
 import {
 	ComboboxDemo,
@@ -179,6 +185,7 @@ import { StickyScrollCardsDemo } from "./sticky-scroll-cards";
 import { StreamingTextDemo } from "./streaming-text";
 import { SunburstChartDemo } from "./sunburst-chart";
 import { TableDemo } from "./table";
+import { TableOfContentsDemo } from "./table-of-contents";
 import { TaskRowsDemo } from "./task-rows";
 import {
 	AnimatedGradientTextDemo,
@@ -417,6 +424,12 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"loading-screen": LoadingScreenDemo,
 	"text-repel": TextRepelDemo,
 	"particle-text": ParticleTextDemo,
+	"og-blog-post": OgBlogPostDemo,
+	"og-docs-page": OgDocsPageDemo,
+	"og-changelog": OgChangelogDemo,
+	"og-github-repo": OgGithubRepoDemo,
+	"og-author-profile": OgAuthorProfileDemo,
+	"og-newsletter-issue": OgNewsletterIssueDemo,
 	"image-trail": ImageTrailDemo,
 	"pixel-image-trail": PixelImageTrailDemo,
 	"animated-gradient": AnimatedGradientDemo,
@@ -592,4 +605,5 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"collection-surfer": CollectionSurferDemo,
 	"scroll-choreography": ScrollChoreographyDemo,
 	"scroll-split-card": ScrollSplitCardDemo,
+	"table-of-contents": TableOfContentsDemo,
 };

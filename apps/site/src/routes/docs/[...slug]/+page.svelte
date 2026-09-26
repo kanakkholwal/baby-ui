@@ -39,11 +39,12 @@ const path = $derived(data.slug === "index" ? "/docs" : `/docs/${data.slug}`);
 	]}
 />
 
-{#snippet railContent()}
-	<PropsRail slug={data.slug} outline={data.headings} />
+{#snippet railContent(heading = true)}
+	<PropsRail slug={data.slug} outline={data.headings} {heading} />
 {/snippet}
 
-<main class="min-w-0 py-8">
+<!-- Centred at a reading width, so the spare column width falls evenly on both sides. -->
+<main class="mx-auto w-full min-w-0 max-w-3xl py-8">
 	<div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
 		<div>
 			<h1 class="font-semibold text-3xl text-foreground tracking-tight">{data.page.data?.title}</h1>
@@ -64,12 +65,12 @@ const path = $derived(data.slug === "index" ? "/docs" : `/docs/${data.slug}`);
 			<MobileNavDrawer label="On this page" title="On this page">
 				{#snippet icon()}<IconList size={14} stroke={1.6} />{/snippet}
 				{#snippet children()}
-					{@render railContent()}
+					<div class="mx-auto w-full max-w-md">{@render railContent(false)}</div>
 				{/snippet}
 			</MobileNavDrawer>
 		</div>
 	{/if}
-	<article class="prose-baby mt-8 max-w-2xl"><Renderer nodes={data.page.content} {registry} /></article>
+	<article class="prose-baby mt-8"><Renderer nodes={data.page.content} {registry} /></article>
 	<p class="mt-10 text-muted-foreground text-xs">
 		<!-- A real link, not only the menu item: crawlers and agents follow it to the markdown twin. -->
 		<a href="/docs/{data.slug}.md" class="underline decoration-border underline-offset-4 transition-colors hover:text-foreground">

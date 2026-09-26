@@ -14,7 +14,7 @@ export type Node = {
 	hydrate?: boolean;
 };
 
-export type Heading = { id: string; label: string };
+export type Heading = { id: string; label: string; depth: 2 | 3 };
 
 export type Panel = {
 	id: string;
@@ -135,15 +135,15 @@ async function swap(node: Node): Promise<Node> {
 function collect(node: Node, out: Heading[]) {
 	if (
 		node.kind === "element" &&
-		node.tag === "h2" &&
+		(node.tag === "h2" || node.tag === "h3") &&
 		typeof node.props?.id === "string"
 	) {
-		out.push({ id: node.props.id, label: text(node) });
+		out.push({ id: node.props.id, label: text(node), depth: node.tag === "h2" ? 2 : 3 });
 	}
 	for (const child of node.children ?? []) collect(child, out);
 }
 
-/** Rewrites code fences to site components and lists the h2 headings for an outline. */
+/** Rewrites code fences to site components and lists the h2/h3 headings for an outline. */
 export async function prepare<T>(
 	content: T,
 ): Promise<{ content: T; headings: Heading[] }> {

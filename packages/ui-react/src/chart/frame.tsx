@@ -12,7 +12,14 @@ import {
 } from "react";
 import { cn } from "../lib/cn";
 import { useChart } from "./chart";
-import type { ActivePoint, ChartPhase, Datum, Margin, TooltipRow } from "./core";
+import {
+	type ActivePoint,
+	type ChartPhase,
+	type Datum,
+	isLoadingPhase,
+	type Margin,
+	type TooltipRow,
+} from "./core";
 import { chart } from "./variants";
 
 export type TickScale = ((value: unknown) => number) & {
@@ -178,6 +185,7 @@ export function ChartFrame({
 			ref={ref}
 			data-slot="chart-plot"
 			data-phase={phase}
+			aria-busy={phase && isLoadingPhase(phase) ? true : undefined}
 			role="figure"
 			aria-roledescription={roleDescription}
 			aria-labelledby={`${uid}-title`}

@@ -16,6 +16,7 @@ declare global {
 
 	interface ImportMetaEnv {
 		readonly VITE_POSTHOG_KEY?: string;
+		readonly VITE_SHOW_PRO?: string;
 	}
 }
 

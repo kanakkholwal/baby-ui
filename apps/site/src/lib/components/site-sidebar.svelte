@@ -34,7 +34,8 @@ const sections = $derived<DocsNavSection[]>([
 		items: group.items.map((item) => ({
 			href: item.href,
 			label: item.name,
-			badge: item.status !== "stable" ? item.status : undefined,
+			badge:
+				item.tier === "pro" ? "Pro" : item.status !== "stable" ? item.status : undefined,
 		})),
 	})),
 ]);

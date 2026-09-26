@@ -1,7 +1,7 @@
 <script lang="ts">
 import ComponentCard from "$lib/components/component-card.svelte";
 import Seo from "$lib/components/seo.svelte";
-import { CATEGORY_BLURB, CATEGORY_LABEL, categoryHref } from "$lib/registry";
+import { CATEGORY_BLURB, CATEGORY_LABEL, categoryHref, TOP_LEVEL } from "$lib/registry";
 import { breadcrumbLd, collectionLd, metaDescription } from "$lib/seo";
 import type { PageProps } from "./$types";
 
@@ -9,7 +9,8 @@ let { data }: PageProps = $props();
 
 const label = $derived(CATEGORY_LABEL[data.category]);
 const path = $derived(categoryHref(data.category));
-const heading = $derived(data.category === "charts" ? "Charts" : `${label} Components`);
+const topLevel = $derived(TOP_LEVEL.includes(data.category));
+const heading = $derived(topLevel ? label : `${label} Components`);
 const description = $derived(
 	metaDescription(
 		CATEGORY_BLURB[data.category],
@@ -31,7 +32,7 @@ const description = $derived(
 			items: data.items.map((i) => ({ name: i.name, path: i.href })),
 		}),
 		breadcrumbLd(
-			data.category === "charts"
+			topLevel
 				? [{ name: heading, path }]
 				: [
 						{ name: "Components", path: "/components" },
@@ -42,7 +43,7 @@ const description = $derived(
 />
 
 <div class="min-w-0 py-8 xl:col-span-2">
-	{#if data.category !== "charts"}
+	{#if !topLevel}
 	<nav aria-label="Breadcrumb" class="flex items-center gap-1.5 text-sm">
 		<a href="/components" class="text-muted-foreground transition-colors hover:text-foreground">
 			Components

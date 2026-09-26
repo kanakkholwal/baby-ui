@@ -1,6 +1,8 @@
+import { existsSync } from "node:fs";
 import { mkdir, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
-import { FRAMEWORKS, type Framework } from "@baby-ui/registry-schema";
+import { pathToFileURL } from "node:url";
+import { type ComponentSpec, FRAMEWORKS, type Framework } from "@baby-ui/registry-schema";
 import { specs } from "@baby-ui/registry-schema/components";
 import { buildItem, projectPath, toJsItem } from "./build";
 import { cssText } from "./component-css";
@@ -34,6 +36,15 @@ async function writeGenerated(relative: string, value: unknown) {
 	await mkdir(dirname(path), { recursive: true });
 	await writeFile(path, `${JSON.stringify(value, null, 2)}\n`, "utf8");
 	return `../src/lib/generated/${relative}`;
+}
+
+const PRO_SCHEMA = resolve(REPO_ROOT, "pro/packages/schema/src/index.ts");
+
+/** Pro specs when the private submodule is checked out; only their usage snippets go public. */
+async function loadProSpecs(): Promise<ComponentSpec[]> {
+	if (!existsSync(PRO_SCHEMA)) return [];
+	const mod: { proSpecs: ComponentSpec[] } = await import(pathToFileURL(PRO_SCHEMA).href);
+	return mod.proSpecs;
 }
 
 async function main() {
@@ -135,7 +146,7 @@ async function main() {
 		written.push(await writeGenerated(`css/${spec.slug}.json`, perFrameworkCss));
 	}
 
-	for (const spec of specs) {
+	for (const spec of [...specs, ...(await loadProSpecs())]) {
 		const perFramework: Record<string, unknown> = {};
 		for (const framework of FRAMEWORKS as readonly Framework[]) {
 			const snippet = await buildUsage(spec, framework);

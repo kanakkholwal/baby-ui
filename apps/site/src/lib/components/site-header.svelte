@@ -17,10 +17,9 @@ import { siteNav } from "$lib/registry";
 const NAV = $derived(siteNav(page.data.categories ?? []));
 
 // The header's own hamburger only opens something on routes that render a SiteSidebar.
+const SIDEBAR_ROUTES = ["/components", "/charts", "/og-images", "/docs"];
 const hasSidebar = $derived(
-	page.url.pathname.startsWith("/components") ||
-		page.url.pathname.startsWith("/charts") ||
-		page.url.pathname.startsWith("/docs"),
+	SIDEBAR_ROUTES.some((route) => page.url.pathname.startsWith(route)),
 );
 
 // Set the class in the same tick as mode-watcher: the reveal snapshots the DOM when this returns.

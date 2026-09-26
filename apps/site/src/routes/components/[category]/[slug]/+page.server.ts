@@ -1,6 +1,6 @@
 import { components, docviaSource } from "virtual:docvia/source";
 import type { Framework } from "@baby-ui/registry-schema";
-import { FRAMEWORKS } from "@baby-ui/registry-schema";
+import { FRAMEWORKS, TOP_LEVEL_CATEGORIES } from "@baby-ui/registry-schema";
 import { error } from "@sveltejs/kit";
 import { prepare } from "$lib/docs-nodes";
 import { highlight, langFor } from "$lib/highlight";
@@ -13,7 +13,7 @@ import type { EntryGenerator, PageServerLoad } from "./$types";
 // crawled from /charts, which the reroute hook serves at their public URL.
 export const entries: EntryGenerator = () =>
 	specs
-		.filter((spec) => spec.category !== "charts")
+		.filter((spec) => !TOP_LEVEL_CATEGORIES.includes(spec.category))
 		.map((spec) => ({ category: spec.category, slug: spec.slug }));
 
 export const load: PageServerLoad = async ({ params }) => {

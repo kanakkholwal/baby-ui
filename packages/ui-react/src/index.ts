@@ -724,6 +724,45 @@ export type { MusicPlayerLayout } from "./music-player/variants";
 export { Navbar, type NavbarLink, type NavbarProps } from "./navbar/navbar";
 export type { NavbarVariant } from "./navbar/variants";
 export {
+	OgAuthorProfile,
+	type OgAuthorProfileMode,
+	type OgAuthorProfileProps,
+	type OgAuthorProfileTone,
+} from "./og-author-profile/og-author-profile";
+export {
+	OgBlogPost,
+	type OgBlogPostMode,
+	type OgBlogPostProps,
+	type OgBlogPostTone,
+} from "./og-blog-post/og-blog-post";
+export {
+	OgChangelog,
+	type OgChangelogHighlight,
+	type OgChangelogKind,
+	type OgChangelogMode,
+	type OgChangelogProps,
+	type OgChangelogTone,
+} from "./og-changelog/og-changelog";
+export {
+	OgDocsPage,
+	type OgDocsPageMode,
+	type OgDocsPageMotif,
+	type OgDocsPageProps,
+	type OgDocsPageTone,
+} from "./og-docs-page/og-docs-page";
+export {
+	OgGithubRepo,
+	type OgGithubRepoMode,
+	type OgGithubRepoProps,
+	type OgGithubRepoTone,
+} from "./og-github-repo/og-github-repo";
+export {
+	OgNewsletterIssue,
+	type OgNewsletterIssueMode,
+	type OgNewsletterIssueProps,
+	type OgNewsletterIssueTone,
+} from "./og-newsletter-issue/og-newsletter-issue";
+export {
 	OrbitCardStack,
 	type OrbitCardStackLabels,
 	type OrbitCardStackLayout,
@@ -1122,6 +1161,12 @@ export {
 	TableRow,
 } from "./table/table";
 export type { TableDensity } from "./table/variants";
+export {
+	TableOfContents,
+	type TableOfContentsProps,
+	type TocItem,
+} from "./table-of-contents/table-of-contents";
+export type { TableOfContentsVariant } from "./table-of-contents/variants";
 export {
 	Tabs,
 	TabsContent,

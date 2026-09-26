@@ -1,7 +1,9 @@
 import type { Reroute } from "@sveltejs/kit";
 
-// `/charts/*` is served by the components routes so both share one page template.
+// Top-level categories (`/charts/*`, `/og-images/*`) share the components page templates.
+const TOP_LEVEL = ["/charts", "/og-images"];
+
 export const reroute: Reroute = ({ url }) => {
-	if (url.pathname === "/charts" || url.pathname.startsWith("/charts/"))
+	if (TOP_LEVEL.some((p) => url.pathname === p || url.pathname.startsWith(`${p}/`)))
 		return `/components${url.pathname}`;
 };

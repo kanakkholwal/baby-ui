@@ -10,6 +10,7 @@ export const CATEGORIES = [
 	"text",
 	"backgrounds",
 	"charts",
+	"og-images",
 ] as const;
 export const FRAMEWORKS = ["react", "svelte"] as const;
 
@@ -103,10 +104,13 @@ export const ComponentSpecSchema = z.object({
 export type ComponentSpec = z.infer<typeof ComponentSpecSchema>;
 export type ComponentSpecInput = z.input<typeof ComponentSpecSchema>;
 
-/** Site path of a component page. Charts live under their own top-level route. */
+/** Categories served from their own top-level route (`/charts`, `/og-images`), not /components. */
+export const TOP_LEVEL_CATEGORIES: readonly Category[] = ["charts", "og-images"];
+
+/** Site path of a component page. */
 export function docsPath(spec: Pick<ComponentSpec, "category" | "slug">): string {
-	return spec.category === "charts"
-		? `/charts/${spec.slug}`
+	return TOP_LEVEL_CATEGORIES.includes(spec.category)
+		? `/${spec.category}/${spec.slug}`
 		: `/components/${spec.category}/${spec.slug}`;
 }
 

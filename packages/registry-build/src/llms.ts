@@ -9,6 +9,7 @@ const CATEGORY_TITLE: Record<string, string> = {
 	base: "Base components",
 	blocks: "Blocks",
 	charts: "Charts",
+	"og-images": "OG image templates",
 	text: "Text effects",
 };
 
