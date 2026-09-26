@@ -1,0 +1,12 @@
+---
+title: Gradient Hero 01
+description: A centred hero with a pill, headline, copy and actions over a soft glow rising from the bottom edge.
+component: gradient-hero-01
+category: blocks
+tags: [hero, landing, gradient, headline]
+---
+
+The glow is four stacked gradients mixed from theme tokens, so it follows light and dark mode
+and any palette. `tone` picks the primary colour, chart colours 1 to 3, or a grey.
+
+The first action is the primary button, the rest are outlined. Composes `badge` and `button`.

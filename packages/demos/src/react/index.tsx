@@ -26,7 +26,10 @@ import {
 	TabsDemo,
 	TaskStepsDemo,
 } from "./agentic";
+import { AnimatedGradientDemo } from "./animated-gradient";
 import { AreaChartDemo } from "./area-chart";
+import { AsciiEffectDemo } from "./ascii-effect";
+import { AuroraFlowDemo } from "./aurora-flow";
 import { BarChartDemo } from "./bar-chart";
 import { CandlestickChartDemo } from "./candlestick-chart";
 import { ChartBrushDemo } from "./chart-brush";
@@ -35,6 +38,7 @@ import { ChartSeriesDemo } from "./chart-series";
 import { ChartDemo, LineChartDemo } from "./charts";
 import { ChatComposerDemo } from "./chat-composer";
 import { ChoroplethChartDemo } from "./choropleth-chart";
+import { ClosingPlasmaDemo } from "./closing-plasma";
 import { CollabCardDemo } from "./collab-card";
 import { ComposedChartDemo } from "./composed-chart";
 import {
@@ -62,6 +66,7 @@ import {
 	ToastDemo,
 } from "./dialogs";
 import { DiffTableDemo } from "./diff-table";
+import { DitherGradientDemo } from "./dither-gradient";
 import { DocsNavDemo } from "./docs-nav";
 import { FillButtonDemo } from "./fill-button";
 import { FilterTableDemo } from "./filter-table";
@@ -70,12 +75,19 @@ import { FlowchartDemo } from "./flowchart";
 import { FooterDemo } from "./footer";
 import { FunnelChartDemo } from "./funnel-chart";
 import { GaugeChartDemo } from "./gauge-chart";
+import { GithubCalendarDemo } from "./github-calendar";
+import { GradientHero01Demo } from "./gradient-hero-01";
+import { GrainGradientDemo } from "./grain-gradient";
 import { HeatmapChartDemo } from "./heatmap-chart";
 import { HeroStageDemo } from "./hero-stage";
+import { HoverTransitionDemo } from "./hover-transition";
+import { ImageTrailDemo } from "./image-trail";
+import { LiquidChromeDemo } from "./liquid-chrome";
 import { LiveLineChartDemo } from "./live-line-chart";
 import { LoadingScreenDemo } from "./loading-screen";
 import { LoadingStateDemo } from "./loading-state";
 import { LogoCarouselDemo } from "./logo-carousel";
+import { MacKeyboardDemo } from "./mac-keyboard";
 import { MarkerDemo } from "./marker";
 import { MegaNavbarDemo } from "./mega-navbar";
 import {
@@ -97,6 +109,10 @@ import {
 import { OverviewCardDemo } from "./overview-card";
 import { ParticleTextDemo } from "./particle-text";
 import { PieChartDemo } from "./pie-chart";
+import { PixelCanvasDemo } from "./pixel-canvas";
+import { PixelImageTrailDemo } from "./pixel-image-trail";
+import { Pricing01Demo } from "./pricing-01";
+import { Pricing02Demo } from "./pricing-02";
 import {
 	AccordionDemo,
 	AlertDemo,
@@ -137,6 +153,9 @@ import { ScrollProgressDemo } from "./scroll-progress";
 import { ScrollVelocityDemo } from "./scroll-velocity";
 import { ShowcaseGridDemo } from "./showcase-grid";
 import { SidebarNavDemo } from "./sidebar-nav";
+import { SilkAuroraDemo } from "./silk-aurora";
+import { SpectralRibbonDemo } from "./spectral-ribbon";
+import { SplitFlapDisplayDemo } from "./split-flap-display";
 import { StatCardDemo, StatCardMapDemo } from "./stat-card";
 import { StatusMonitorDemo } from "./status-monitor";
 import { StreamingTextDemo } from "./streaming-text";
@@ -186,6 +205,7 @@ import { ThemeToggleDemo } from "./theme-toggle";
 import { ThinkingStateDemo } from "./thinking-state";
 import { ToolChipsDemo } from "./tool-chips";
 import { UsageCardDemo } from "./usage-card";
+import { WebglLiquidDemo } from "./webgl-liquid";
 import { WeekCalendarDemo } from "./week-calendar";
 import { WheelCarouselDemo } from "./wheel-carousel";
 import { WheelPickerDemo } from "./wheel-picker";
@@ -379,6 +399,19 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"loading-screen": LoadingScreenDemo,
 	"text-repel": TextRepelDemo,
 	"particle-text": ParticleTextDemo,
+	"image-trail": ImageTrailDemo,
+	"pixel-image-trail": PixelImageTrailDemo,
+	"animated-gradient": AnimatedGradientDemo,
+	"ascii-effect": AsciiEffectDemo,
+	"dither-gradient": DitherGradientDemo,
+	"grain-gradient": GrainGradientDemo,
+	"pixel-canvas": PixelCanvasDemo,
+	"aurora-flow": AuroraFlowDemo,
+	"closing-plasma": ClosingPlasmaDemo,
+	"silk-aurora": SilkAuroraDemo,
+	"spectral-ribbon": SpectralRibbonDemo,
+	"webgl-liquid": WebglLiquidDemo,
+	"liquid-chrome": LiquidChromeDemo,
 	"scroll-velocity": ScrollVelocityDemo,
 	"code-block": CodeBlockDemo,
 	markdown: MarkdownDemo,
@@ -467,6 +500,10 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"agent-screen": AgentScreenDemo,
 	"tool-chips": ToolChipsDemo,
 	"sidebar-nav": SidebarNavDemo,
+	"github-calendar": GithubCalendarDemo,
+	"pricing-01": Pricing01Demo,
+	"pricing-02": Pricing02Demo,
+	"gradient-hero-01": GradientHero01Demo,
 	"animated-gradient-text": AnimatedGradientTextDemo,
 	"double-underline": DoubleUnderlineDemo,
 	"bold-copy": BoldCopyDemo,
@@ -511,6 +548,9 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"week-calendar": WeekCalendarDemo,
 	"rolling-digits": RollingDigitsDemo,
 	marker: MarkerDemo,
+	"split-flap-display": SplitFlapDisplayDemo,
+	"hover-transition": HoverTransitionDemo,
+	"mac-keyboard": MacKeyboardDemo,
 	"wheel-carousel": WheelCarouselDemo,
 	"wheel-picker": WheelPickerDemo,
 	"overview-card": OverviewCardDemo,

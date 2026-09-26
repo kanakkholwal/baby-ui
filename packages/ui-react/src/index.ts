@@ -21,6 +21,12 @@ export {
 	AlertDialogTrigger,
 } from "./alert-dialog/alert-dialog";
 export {
+	AnimatedGradient,
+	type AnimatedGradientPosition,
+	type AnimatedGradientProps,
+	type AnimatedGradientTone,
+} from "./animated-gradient/animated-gradient";
+export {
 	AnimatedGradientText,
 	type AnimatedGradientTextProps,
 } from "./animated-gradient-text/animated-gradient-text";
@@ -40,11 +46,26 @@ export {
 	type ArtGalleryProps,
 } from "./art-gallery/art-gallery";
 export {
+	AsciiEffect,
+	type AsciiEffectDither,
+	type AsciiEffectFit,
+	type AsciiEffectPosition,
+	type AsciiEffectProps,
+	type AsciiEffectTone,
+	type AsciiEffectVariant,
+} from "./ascii-effect/ascii-effect";
+export {
 	Attachment,
 	type AttachmentLabels,
 	type AttachmentProps,
 	type AttachmentStatus,
 } from "./attachment/attachment";
+export { AuroraFlow, type AuroraFlowProps } from "./aurora-flow/aurora-flow";
+export type {
+	AuroraFlowPosition,
+	AuroraFlowSpeed,
+	AuroraFlowTone,
+} from "./aurora-flow/variants";
 export { Avatar, AvatarFallback, AvatarImage } from "./avatar/avatar";
 export { Badge, type BadgeProps } from "./badge/badge";
 export type { BadgeSize, BadgeVariant } from "./badge/variants";
@@ -227,6 +248,12 @@ export {
 	type ClickSparkScope,
 	type ClickSparkTone,
 } from "./click-spark/click-spark";
+export { ClosingPlasma, type ClosingPlasmaProps } from "./closing-plasma/closing-plasma";
+export type {
+	ClosingPlasmaPosition,
+	ClosingPlasmaSpeed,
+	ClosingPlasmaTone,
+} from "./closing-plasma/variants";
 export { CodeBlock, type CodeBlockProps } from "./code-block/code-block";
 export {
 	CollabCard,
@@ -336,6 +363,13 @@ export {
 } from "./dialog/dialog";
 export { type DiffRow, DiffTable, type DiffTableProps } from "./diff-table/diff-table";
 export type { DiffRowChange } from "./diff-table/variants";
+export {
+	DitherGradient,
+	type DitherGradientMatrix,
+	type DitherGradientPosition,
+	type DitherGradientProps,
+	type DitherGradientTone,
+} from "./dither-gradient/dither-gradient";
 export {
 	DocsNav,
 	type DocsNavConnector,
@@ -450,8 +484,33 @@ export { GaugeChart, type GaugeChartProps } from "./gauge-chart/gauge-chart";
 export type { GaugeChartLayout, GaugeChartTone } from "./gauge-chart/variants";
 export { GibberishText, type GibberishTextProps } from "./gibberish-text/gibberish-text";
 export type { GibberishTextSize } from "./gibberish-text/variants";
+export {
+	GithubCalendar,
+	type GithubCalendarDay,
+	type GithubCalendarLabels,
+	type GithubCalendarLevel,
+	type GithubCalendarProps,
+	type GithubCalendarShape,
+	type GithubCalendarSize,
+	type GithubCalendarTone,
+	type GithubCalendarVariant,
+	type GithubCalendarWeekStart,
+} from "./github-calendar/github-calendar";
 export { GlitchText, type GlitchTextProps } from "./glitch-text/glitch-text";
 export type { GlitchTextBlendMode, GlitchTextSize } from "./glitch-text/variants";
+export {
+	GradientHero01,
+	type GradientHero01Action,
+	type GradientHero01Props,
+	type GradientHero01Size,
+	type GradientHero01Tone,
+} from "./gradient-hero-01/gradient-hero-01";
+export {
+	GrainGradient,
+	type GrainGradientPosition,
+	type GrainGradientProps,
+	type GrainGradientTone,
+} from "./grain-gradient/grain-gradient";
 export type { HeatmapLevel, HeatmapWeekStart } from "./heatmap-chart/calendar";
 export {
 	HeatmapChart,
@@ -469,6 +528,20 @@ export {
 	type HeroStageSlotProps,
 } from "./hero-stage/hero-stage";
 export { HoverCard, HoverCardContent, HoverCardTrigger } from "./hover-card/hover-card";
+export {
+	HoverTransition,
+	type HoverTransitionProps,
+} from "./hover-transition/hover-transition";
+export type {
+	HoverTransitionDirection,
+	HoverTransitionEffect,
+} from "./hover-transition/variants";
+export {
+	ImageTrail,
+	type ImageTrailProps,
+	type ImageTrailSize,
+	type ImageTrailVariant,
+} from "./image-trail/image-trail";
 export { Input, type InputProps } from "./input/input";
 export type { InputSize } from "./input/variants";
 export { JitterText, type JitterTextProps } from "./jitter-text/jitter-text";
@@ -486,6 +559,12 @@ export {
 	type ProfitLossLineProps,
 } from "./line-chart/line-chart";
 export type { LineCurve, LineVariant, ProfitLossEncoding } from "./line-chart/variants";
+export { LiquidChrome, type LiquidChromeProps } from "./liquid-chrome/liquid-chrome";
+export type {
+	LiquidChromePosition,
+	LiquidChromeSpeed,
+	LiquidChromeTone,
+} from "./liquid-chrome/variants";
 export type { LiveFrame, LivePoint, Momentum } from "./live-line-chart/live";
 export {
 	LiveXAxis,
@@ -519,6 +598,9 @@ export {
 	type LoadingStateVariant,
 } from "./loading-state/loading-state";
 export { LogoCarousel, type LogoCarouselProps } from "./logo-carousel/logo-carousel";
+export type { MacKeyboardLabels } from "./mac-keyboard/layout";
+export { MacKeyboard, type MacKeyboardProps } from "./mac-keyboard/mac-keyboard";
+export type { MacKeyboardSize, MacKeyboardVariant } from "./mac-keyboard/variants";
 export { Markdown, type MarkdownProps } from "./markdown/markdown";
 export type { MarkdownSize } from "./markdown/variants";
 export { Marker, type MarkerProps } from "./marker/marker";
@@ -589,7 +671,36 @@ export {
 } from "./particle-text/particle-text";
 export { PieChart, type PieChartProps } from "./pie-chart/pie-chart";
 export type { PieHover, PieVariant } from "./pie-chart/variants";
+export {
+	PixelCanvas,
+	type PixelCanvasPosition,
+	type PixelCanvasProps,
+	type PixelCanvasTone,
+	type PixelCanvasVariant,
+} from "./pixel-canvas/pixel-canvas";
+export {
+	PixelImageTrail,
+	type PixelImageTrailProps,
+	type PixelImageTrailSize,
+	type PixelImageTrailVariant,
+} from "./pixel-image-trail/pixel-image-trail";
 export { Popover, PopoverContent, PopoverTrigger } from "./popover/popover";
+export {
+	Pricing01,
+	type Pricing01Labels,
+	type Pricing01Period,
+	type Pricing01Plan,
+	type Pricing01Props,
+	type Pricing01Variant,
+} from "./pricing-01/pricing-01";
+export {
+	Pricing02,
+	type Pricing02Labels,
+	type Pricing02Period,
+	type Pricing02Plan,
+	type Pricing02Props,
+	type Pricing02Variant,
+} from "./pricing-02/pricing-02";
 export { Progress, type ProgressProps } from "./progress/progress";
 export type { ProgressSize, ProgressTone, ProgressVariant } from "./progress/variants";
 export {
@@ -797,11 +908,35 @@ export {
 	type SidebarWorkspaceAction,
 } from "./sidebar-nav/sidebar-nav";
 export type { SidebarNavSize } from "./sidebar-nav/variants";
+export { SilkAurora, type SilkAuroraProps } from "./silk-aurora/silk-aurora";
+export type {
+	SilkAuroraPosition,
+	SilkAuroraSpeed,
+	SilkAuroraTone,
+} from "./silk-aurora/variants";
 export { Skeleton, type SkeletonProps } from "./skeleton/skeleton";
 export type { SkeletonShape } from "./skeleton/variants";
 export { Slider, type SliderProps } from "./slider/slider";
 export type { SliderMark, SliderSize } from "./slider/variants";
+export {
+	SpectralRibbon,
+	type SpectralRibbonProps,
+} from "./spectral-ribbon/spectral-ribbon";
+export type {
+	SpectralRibbonPosition,
+	SpectralRibbonSpeed,
+	SpectralRibbonTone,
+} from "./spectral-ribbon/variants";
 export { Spinner, type SpinnerProps } from "./spinner/spinner";
+export {
+	SplitFlapDisplay,
+	type SplitFlapDisplayProps,
+} from "./split-flap-display/split-flap-display";
+export type {
+	SplitFlapIndicator,
+	SplitFlapSize,
+	SplitFlapVariant,
+} from "./split-flap-display/variants";
 export { SplitText, type SplitTextProps } from "./split-text/split-text";
 export type { SplitTextSize } from "./split-text/variants";
 export {
@@ -974,6 +1109,12 @@ export {
 } from "./usage-card/usage-card";
 export type { WaveRevealDirection, WaveRevealMode } from "./wave-reveal/variants";
 export { WaveReveal, type WaveRevealProps } from "./wave-reveal/wave-reveal";
+export type {
+	WebglLiquidPosition,
+	WebglLiquidSpeed,
+	WebglLiquidTone,
+} from "./webgl-liquid/variants";
+export { WebglLiquid, type WebglLiquidProps } from "./webgl-liquid/webgl-liquid";
 export type { WeekStartsOn } from "./week-calendar/dates";
 export type { WeekCalendarLabels, WeekCalendarVariant } from "./week-calendar/variants";
 export { WeekCalendar, type WeekCalendarProps } from "./week-calendar/week-calendar";

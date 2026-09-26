@@ -12,7 +12,7 @@ import {
 import IconSearch from "@tabler/icons-svelte/icons/search";
 import { goto } from "$app/navigation";
 import { track } from "$lib/analytics";
-import { type DocsHit, loadDocsSearch } from "$lib/docs-search";
+import { type DocsHit, searchDocs } from "$lib/docs-search";
 import { searchItems } from "$lib/registry";
 
 let open = $state(false);
@@ -60,11 +60,7 @@ $effect(() => {
 	return () => window.removeEventListener("keydown", onKey);
 });
 
-// Full-text hits from the docs, beside the command filter's matches on names and descriptions.
-$effect(() => {
-	if (open) void loadDocsSearch().catch(() => {});
-});
-
+// Full-text hits from docvia, beside the command filter's matches on names and descriptions.
 $effect(() => {
 	const q = query.trim();
 	if (q.length < 2) {
@@ -74,8 +70,7 @@ $effect(() => {
 	let stale = false;
 	const timer = setTimeout(async () => {
 		try {
-			const search = await loadDocsSearch();
-			const next = await search(q);
+			const next = await searchDocs(q);
 			if (!stale) hits = next;
 		} catch {
 			if (!stale) hits = [];
@@ -120,7 +115,7 @@ function go(href: string) {
 						<CommandItem value="docs:{hit.href}" forceMount onclick={() => go(hit.href)}>
 							<span class="min-w-0">
 								<span class="block truncate">
-									{hit.page}{#if hit.section}<span class="text-muted-foreground"> › {hit.section}</span>{/if}
+									{hit.page}{#if hit.section}{" "}<span class="text-muted-foreground">› {hit.section}</span>{/if}
 								</span>
 								<span class="line-clamp-2 text-muted-foreground text-xs">{hit.snippet}</span>
 							</span>

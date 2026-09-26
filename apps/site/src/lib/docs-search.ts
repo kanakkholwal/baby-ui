@@ -1,4 +1,6 @@
-import type { SearchResult } from "@docvia/search";
+import { specs } from "@baby-ui/registry-schema/components";
+import { createFetchClient, type SearchResult } from "@docvia/search";
+import { specHref } from "$lib/registry";
 
 export type DocsHit = {
 	href: string;
@@ -8,9 +10,12 @@ export type DocsHit = {
 	snippet: string;
 };
 
-type DocsSearch = (query: string, limit?: number) => Promise<DocsHit[]>;
+const client = createFetchClient("/api/search");
+const components = new Map(specs.map((spec) => [spec.slug, specHref(spec)]));
 
-let loading: Promise<DocsSearch> | null = null;
+// Hits carry a page slug; component pages and guides share one slug namespace.
+const pageFor = (slug: string) =>
+	components.get(slug) ?? (slug === "index" ? "/docs" : `/docs/${slug}`);
 
 /** Text around the first query word found in `content`, with ellipses where it was cut. */
 function snippetFor(content: string, query: string, radius = 70): string {
@@ -29,33 +34,17 @@ function snippetFor(content: string, query: string, radius = 70): string {
 	return `${start > 0 ? "…" : ""}${text.slice(start, end)}${end < text.length ? "…" : ""}`;
 }
 
-/** Loads the prebuilt docs index once, on first use; the palette works without it until then. */
-export function loadDocsSearch(): Promise<DocsSearch> {
-	loading ??= (async () => {
-		const [{ createSearch }, res] = await Promise.all([
-			import("@docvia/search"),
-			fetch("/search-index.json"),
-		]);
-		if (!res.ok) throw new Error(`search index: ${res.status}`);
-		const data = (await res.json()) as { index: string; pages: Record<string, string> };
-		const { search } = await createSearch(data.index);
-		return async (query, limit = 6) =>
-			(await search(query, { limit })).flatMap((hit: SearchResult) => {
-				const page = data.pages[hit.slug];
-				if (!page) return [];
-				const anchored = hit.sectionId && hit.sectionTitle !== hit.pageTitle;
-				return [
-					{
-						href: anchored ? `${page}#${hit.sectionId}` : page,
-						page: hit.pageTitle,
-						section: anchored ? hit.sectionTitle : null,
-						snippet: snippetFor(hit.content, query),
-					},
-				];
-			});
-	})().catch((error) => {
-		loading = null;
-		throw error;
+/** Section-level hits from docvia's search endpoint, linked to the page and heading they sit under. */
+export async function searchDocs(query: string, limit = 6): Promise<DocsHit[]> {
+	const results: SearchResult[] = await client.search(query, { limit });
+	return results.map((hit) => {
+		const page = pageFor(hit.slug);
+		const anchored = hit.sectionId !== "_top" && hit.sectionTitle !== hit.pageTitle;
+		return {
+			href: anchored ? `${page}#${hit.sectionId}` : page,
+			page: hit.pageTitle,
+			section: anchored ? hit.sectionTitle : null,
+			snippet: snippetFor(hit.content, query),
+		};
 	});
-	return loading;
 }

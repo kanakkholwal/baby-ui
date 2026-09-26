@@ -2788,3 +2788,226 @@
 		animation: none;
 	}
 }
+
+/* ImageTrail: a spawn restarts these on a pooled image; JS only writes the positions. */
+.image-trail--fade .image-trail-item[data-active] {
+	animation:
+		image-trail-travel var(--image-trail-duration, 1600ms) var(--ease-out) both,
+		image-trail-fade calc(var(--image-trail-duration, 1600ms) * 0.6) ease-out
+		calc(var(--image-trail-duration, 1600ms) * 0.4) both;
+}
+
+.image-trail--fall .image-trail-item[data-active] {
+	animation:
+		image-trail-travel var(--image-trail-duration, 1600ms) var(--ease-out) both,
+		image-trail-fall calc(var(--image-trail-duration, 1600ms) * 0.6) var(--ease-in-out)
+		calc(var(--image-trail-duration, 1600ms) * 0.4) both;
+}
+
+.image-trail--shrink .image-trail-item[data-active] {
+	animation:
+		image-trail-travel var(--image-trail-duration, 1600ms) var(--ease-out) both,
+		image-trail-shrink calc(var(--image-trail-duration, 1600ms) * 0.6) var(--ease-out)
+		calc(var(--image-trail-duration, 1600ms) * 0.4) both;
+}
+
+@keyframes image-trail-travel {
+	from {
+		translate: calc(var(--image-trail-x0) - 50%) calc(var(--image-trail-y0) - 50%);
+	}
+	to {
+		translate: calc(var(--image-trail-x) - 50%) calc(var(--image-trail-y) - 50%);
+	}
+}
+
+@keyframes image-trail-fade {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
+
+@keyframes image-trail-fall {
+	from {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	to {
+		opacity: 0;
+		transform: translateY(var(--image-trail-drop, 100%));
+	}
+}
+
+@keyframes image-trail-shrink {
+	from {
+		opacity: 1;
+		scale: 1;
+	}
+	to {
+		opacity: 0;
+		scale: 0;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.image-trail-item[data-active] {
+		animation: none;
+	}
+}
+
+/* SplitFlapDisplay: per step the old top half falls, then the new bottom half lands. */
+.split-flap-top {
+	animation: split-flap-top calc(var(--split-flap-ms, 60ms) / 2) ease-in both;
+}
+
+.split-flap-bottom {
+	animation: split-flap-bottom calc(var(--split-flap-ms, 60ms) / 2) ease-out
+		calc(var(--split-flap-ms, 60ms) / 2) both;
+}
+
+@keyframes split-flap-top {
+	from {
+		transform: rotateX(0deg);
+	}
+	to {
+		transform: rotateX(-90deg);
+	}
+}
+
+@keyframes split-flap-bottom {
+	from {
+		transform: rotateX(90deg);
+	}
+	to {
+		transform: rotateX(0deg);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.split-flap-top,
+	.split-flap-bottom {
+		animation: none;
+	}
+
+	.split-flap-top {
+		opacity: 0;
+	}
+}
+
+/* GithubCalendar: cells pop in column by column; `backwards` hands scale back to hover. */
+.github-calendar-cell {
+	animation: github-calendar-cell-in 360ms var(--ease-out) backwards;
+	animation-delay: calc(var(--col, 0) * 8ms);
+}
+
+@keyframes github-calendar-cell-in {
+	from {
+		opacity: 0;
+		scale: 0.3;
+	}
+}
+
+/* Pricing02: price characters rise in on a period change, the last two trailing. */
+.pricing-digit[data-animate] {
+	animation: pricing-digit-in 500ms cubic-bezier(0.34, 1.45, 0.64, 1) both;
+	animation-delay: var(--digit-delay, 0ms);
+}
+
+@keyframes pricing-digit-in {
+	from {
+		opacity: 0;
+		translate: 0 calc(8px * var(--digit-dir, 1));
+		filter: blur(2px);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.github-calendar-cell,
+	.pricing-digit[data-animate] {
+		animation: none;
+	}
+}
+
+/* AnimatedGradient: two oversized blob layers drift against each other on one duration. */
+.animated-gradient-drift {
+	animation: animated-gradient-drift var(--animated-gradient-duration, 20s) ease-in-out infinite
+		alternate;
+}
+
+.animated-gradient-drift-alt {
+	animation: animated-gradient-drift-alt var(--animated-gradient-duration, 20s) ease-in-out
+		infinite alternate;
+}
+
+@keyframes animated-gradient-drift {
+	0% {
+		transform: translate(-8%, -4%) rotate(0deg) scale(1);
+	}
+	50% {
+		transform: translate(6%, 8%) rotate(90deg) scale(1.15);
+	}
+	100% {
+		transform: translate(8%, -6%) rotate(180deg) scale(0.95);
+	}
+}
+
+@keyframes animated-gradient-drift-alt {
+	0% {
+		transform: translate(6%, 6%) rotate(0deg) scale(1.1);
+	}
+	50% {
+		transform: translate(-8%, -2%) rotate(-80deg) scale(0.95);
+	}
+	100% {
+		transform: translate(-4%, 8%) rotate(-160deg) scale(1.2);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.animated-gradient-drift,
+	.animated-gradient-drift-alt {
+		animation: none;
+	}
+}
+
+/* GrainGradient: the glow and the shadow edge breathe out of phase; the grain stays still. */
+.grain-gradient-glow {
+	animation: grain-gradient-glow var(--grain-gradient-duration, 12s) ease-in-out infinite
+		alternate;
+}
+
+.grain-gradient-shadow {
+	animation: grain-gradient-shadow calc(var(--grain-gradient-duration, 12s) * 1.3) ease-in-out
+		infinite alternate;
+}
+
+@keyframes grain-gradient-glow {
+	from {
+		translate: -4% -3%;
+		scale: 1;
+	}
+	to {
+		translate: 6% 5%;
+		scale: 1.12;
+	}
+}
+
+@keyframes grain-gradient-shadow {
+	from {
+		translate: 6% 0;
+		scale: 1;
+	}
+	to {
+		translate: -6% 2%;
+		scale: 1.08 1.14;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.grain-gradient-glow,
+	.grain-gradient-shadow {
+		animation: none;
+	}
+}

@@ -18,6 +18,11 @@ export { default as AlertDialogFooter } from "./alert-dialog/alert-dialog-footer
 export { default as AlertDialogHeader } from "./alert-dialog/alert-dialog-header.svelte";
 export { default as AlertDialogTitle } from "./alert-dialog/alert-dialog-title.svelte";
 export { default as AlertDialogTrigger } from "./alert-dialog/alert-dialog-trigger.svelte";
+export { default as AnimatedGradient } from "./animated-gradient/animated-gradient.svelte";
+export type {
+	AnimatedGradientPosition,
+	AnimatedGradientTone,
+} from "./animated-gradient/variants";
 export { default as AnimatedGradientText } from "./animated-gradient-text/animated-gradient-text.svelte";
 export type { GradientTextTone } from "./animated-gradient-text/variants";
 export { default as Area } from "./area-chart/area.svelte";
@@ -27,9 +32,23 @@ export { default as ArtGallery } from "./art-gallery/art-gallery.svelte";
 export type { ArtGalleryItem } from "./art-gallery/gallery";
 export type { ArtGalleryLabels } from "./art-gallery/labels";
 export type { ArtGalleryLens } from "./art-gallery/variants";
+export { default as AsciiEffect } from "./ascii-effect/ascii-effect.svelte";
+export type {
+	AsciiEffectDither,
+	AsciiEffectFit,
+	AsciiEffectPosition,
+	AsciiEffectTone,
+	AsciiEffectVariant,
+} from "./ascii-effect/variants";
 export { default as Attachment } from "./attachment/attachment.svelte";
 export type { AttachmentLabels } from "./attachment/labels";
 export type { AttachmentStatus } from "./attachment/variants";
+export { default as AuroraFlow } from "./aurora-flow/aurora-flow.svelte";
+export type {
+	AuroraFlowPosition,
+	AuroraFlowSpeed,
+	AuroraFlowTone,
+} from "./aurora-flow/variants";
 export { default as Avatar } from "./avatar/avatar.svelte";
 export { default as AvatarFallback } from "./avatar/avatar-fallback.svelte";
 export { default as AvatarImage } from "./avatar/avatar-image.svelte";
@@ -166,6 +185,12 @@ export { default as CircularText } from "./circular-text/circular-text.svelte";
 export type { CircularTextDirection } from "./circular-text/variants";
 export { default as ClickSpark } from "./click-spark/click-spark.svelte";
 export type { ClickSparkScope, ClickSparkTone } from "./click-spark/variants";
+export { default as ClosingPlasma } from "./closing-plasma/closing-plasma.svelte";
+export type {
+	ClosingPlasmaPosition,
+	ClosingPlasmaSpeed,
+	ClosingPlasmaTone,
+} from "./closing-plasma/variants";
 export { default as CodeBlock } from "./code-block/code-block.svelte";
 export { default as CollabCard } from "./collab-card/collab-card.svelte";
 export type { CollabCardCollaborator } from "./collab-card/types";
@@ -250,6 +275,12 @@ export { default as DialogTrigger } from "./dialog/dialog-trigger.svelte";
 export { default as DiffTable } from "./diff-table/diff-table.svelte";
 export type { DiffRow } from "./diff-table/types";
 export type { DiffRowChange } from "./diff-table/variants";
+export { default as DitherGradient } from "./dither-gradient/dither-gradient.svelte";
+export type {
+	DitherGradientMatrix,
+	DitherGradientPosition,
+	DitherGradientTone,
+} from "./dither-gradient/variants";
 export { default as DocsNav } from "./docs-nav/docs-nav.svelte";
 export type { DocsNavItem, DocsNavSection } from "./docs-nav/types";
 export type { DocsNavConnector } from "./docs-nav/variants";
@@ -333,8 +364,26 @@ export { default as GaugeChart } from "./gauge-chart/gauge-chart.svelte";
 export type { GaugeChartLayout, GaugeChartTone } from "./gauge-chart/variants";
 export { default as GibberishText } from "./gibberish-text/gibberish-text.svelte";
 export type { GibberishTextSize } from "./gibberish-text/variants";
+export type {
+	GithubCalendarDay,
+	GithubCalendarLabels,
+	GithubCalendarLevel,
+	GithubCalendarWeekStart,
+} from "./github-calendar/calendar";
+export { default as GithubCalendar } from "./github-calendar/github-calendar.svelte";
+export type {
+	GithubCalendarShape,
+	GithubCalendarSize,
+	GithubCalendarTone,
+	GithubCalendarVariant,
+} from "./github-calendar/variants";
 export { default as GlitchText } from "./glitch-text/glitch-text.svelte";
 export type { GlitchTextBlendMode, GlitchTextSize } from "./glitch-text/variants";
+export { default as GradientHero01 } from "./gradient-hero-01/gradient-hero-01.svelte";
+export type { GradientHero01Action } from "./gradient-hero-01/types";
+export type { GradientHero01Size, GradientHero01Tone } from "./gradient-hero-01/variants";
+export { default as GrainGradient } from "./grain-gradient/grain-gradient.svelte";
+export type { GrainGradientPosition, GrainGradientTone } from "./grain-gradient/variants";
 export {
 	type HeatmapLevel,
 	type HeatmapWeekStart,
@@ -349,6 +398,13 @@ export type { HeroStageMotion } from "./hero-stage/variants";
 export { default as HoverCard } from "./hover-card/hover-card.svelte";
 export { default as HoverCardContent } from "./hover-card/hover-card-content.svelte";
 export { default as HoverCardTrigger } from "./hover-card/hover-card-trigger.svelte";
+export { default as HoverTransition } from "./hover-transition/hover-transition.svelte";
+export type {
+	HoverTransitionDirection,
+	HoverTransitionEffect,
+} from "./hover-transition/variants";
+export { default as ImageTrail } from "./image-trail/image-trail.svelte";
+export type { ImageTrailSize, ImageTrailVariant } from "./image-trail/trail";
 export { default as Input } from "./input/input.svelte";
 export type { InputSize } from "./input/variants";
 export { default as JitterText } from "./jitter-text/jitter-text.svelte";
@@ -361,6 +417,12 @@ export { default as Line } from "./line-chart/line.svelte";
 export { default as LineChart } from "./line-chart/line-chart.svelte";
 export { default as ProfitLossLine } from "./line-chart/profit-loss-line.svelte";
 export type { LineCurve, LineVariant, ProfitLossEncoding } from "./line-chart/variants";
+export { default as LiquidChrome } from "./liquid-chrome/liquid-chrome.svelte";
+export type {
+	LiquidChromePosition,
+	LiquidChromeSpeed,
+	LiquidChromeTone,
+} from "./liquid-chrome/variants";
 export { type LiveContextValue, useLive } from "./live-line-chart/context";
 export type { LiveFrame, LivePoint, Momentum } from "./live-line-chart/live";
 export { default as LiveLine } from "./live-line-chart/live-line.svelte";
@@ -382,6 +444,9 @@ export type {
 export { default as LoadingState } from "./loading-state/loading-state.svelte";
 export type { LoadingStateVariant } from "./loading-state/types";
 export { default as LogoCarousel } from "./logo-carousel/logo-carousel.svelte";
+export type { MacKeyboardLabels } from "./mac-keyboard/layout";
+export { default as MacKeyboard } from "./mac-keyboard/mac-keyboard.svelte";
+export type { MacKeyboardSize, MacKeyboardVariant } from "./mac-keyboard/variants";
 export { default as Markdown } from "./markdown/markdown.svelte";
 export type { MarkdownSize } from "./markdown/variants";
 export { default as Marker } from "./marker/marker.svelte";
@@ -429,9 +494,26 @@ export { default as ParticleText } from "./particle-text/particle-text.svelte";
 export type { ParticleTextShape, ParticleTextSize } from "./particle-text/particles";
 export { default as PieChart } from "./pie-chart/pie-chart.svelte";
 export type { PieHover, PieVariant } from "./pie-chart/variants";
+export { default as PixelCanvas } from "./pixel-canvas/pixel-canvas.svelte";
+export type {
+	PixelCanvasPosition,
+	PixelCanvasTone,
+	PixelCanvasVariant,
+} from "./pixel-canvas/variants";
+export { default as PixelImageTrail } from "./pixel-image-trail/pixel-image-trail.svelte";
+export type {
+	PixelImageTrailSize,
+	PixelImageTrailVariant,
+} from "./pixel-image-trail/pixel-trail";
 export { default as Popover } from "./popover/popover.svelte";
 export { default as PopoverContent } from "./popover/popover-content.svelte";
 export { default as PopoverTrigger } from "./popover/popover-trigger.svelte";
+export { default as Pricing01 } from "./pricing-01/pricing-01.svelte";
+export type { Pricing01Labels, Pricing01Period, Pricing01Plan } from "./pricing-01/types";
+export type { Pricing01Variant } from "./pricing-01/variants";
+export { default as Pricing02 } from "./pricing-02/pricing-02.svelte";
+export type { Pricing02Labels, Pricing02Period, Pricing02Plan } from "./pricing-02/types";
+export type { Pricing02Variant } from "./pricing-02/variants";
 export { default as Progress } from "./progress/progress.svelte";
 export type { ProgressSize, ProgressTone, ProgressVariant } from "./progress/variants";
 export {
@@ -587,11 +669,29 @@ export type {
 	SidebarWorkspaceAction,
 } from "./sidebar-nav/types";
 export type { SidebarNavSize } from "./sidebar-nav/variants";
+export { default as SilkAurora } from "./silk-aurora/silk-aurora.svelte";
+export type {
+	SilkAuroraPosition,
+	SilkAuroraSpeed,
+	SilkAuroraTone,
+} from "./silk-aurora/variants";
 export { default as Skeleton } from "./skeleton/skeleton.svelte";
 export type { SkeletonShape } from "./skeleton/variants";
 export { default as Slider } from "./slider/slider.svelte";
 export type { SliderMark, SliderSize } from "./slider/variants";
+export { default as SpectralRibbon } from "./spectral-ribbon/spectral-ribbon.svelte";
+export type {
+	SpectralRibbonPosition,
+	SpectralRibbonSpeed,
+	SpectralRibbonTone,
+} from "./spectral-ribbon/variants";
 export { default as Spinner } from "./spinner/spinner.svelte";
+export { default as SplitFlapDisplay } from "./split-flap-display/split-flap-display.svelte";
+export type {
+	SplitFlapIndicator,
+	SplitFlapSize,
+	SplitFlapVariant,
+} from "./split-flap-display/variants";
 export { default as SplitText } from "./split-text/split-text.svelte";
 export type { SplitTextSize } from "./split-text/variants";
 export { default as StaggeredLetter } from "./staggered-letter/staggered-letter.svelte";
@@ -707,6 +807,12 @@ export { default as UsageCard } from "./usage-card/usage-card.svelte";
 export type { UsageCardLayout } from "./usage-card/variants";
 export type { WaveRevealDirection, WaveRevealMode } from "./wave-reveal/variants";
 export { default as WaveReveal } from "./wave-reveal/wave-reveal.svelte";
+export type {
+	WebglLiquidPosition,
+	WebglLiquidSpeed,
+	WebglLiquidTone,
+} from "./webgl-liquid/variants";
+export { default as WebglLiquid } from "./webgl-liquid/webgl-liquid.svelte";
 export type { WeekStartsOn } from "./week-calendar/dates";
 export type { WeekCalendarLabels, WeekCalendarVariant } from "./week-calendar/variants";
 export { default as WeekCalendar } from "./week-calendar/week-calendar.svelte";

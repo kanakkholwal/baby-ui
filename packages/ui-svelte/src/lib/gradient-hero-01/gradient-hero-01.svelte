@@ -1,0 +1,79 @@
+<script lang="ts">
+import type { HTMLAttributes } from "svelte/elements";
+import Badge from "../badge/badge.svelte";
+import Button from "../button/button.svelte";
+import { cn } from "../lib/cn";
+import type { GradientHero01Action } from "./types";
+import {
+	type GradientHero01Size,
+	type GradientHero01Tone,
+	gradientHero01,
+} from "./variants";
+
+type Props = Omit<HTMLAttributes<HTMLElement>, "title"> & {
+	headline: string;
+	description?: string;
+	/** Pill above the headline. */
+	badge?: string;
+	/** The first is the primary action; the rest are outlined. */
+	actions?: GradientHero01Action[];
+	tone?: GradientHero01Tone;
+	size?: GradientHero01Size;
+};
+
+let {
+	headline,
+	description,
+	badge,
+	actions = [],
+	tone = "primary",
+	size = "screen",
+	class: classProp,
+	...rest
+}: Props = $props();
+
+const s = $derived(gradientHero01({ tone, size }));
+const live = $derived(
+	actions.filter((a) => a.href !== undefined || a.onClick !== undefined),
+);
+</script>
+
+<section data-slot="gradient-hero-01" class={cn(s.root(), classProp)} {...rest}>
+	<div aria-hidden="true" class={s.blob()}></div>
+	<div aria-hidden="true" class={s.wash()}></div>
+	<div aria-hidden="true" class={s.vignette()}></div>
+	<div aria-hidden="true" class={s.fade()}></div>
+	<div class={s.inner()}>
+		{#if badge}
+			<Badge variant="outline" class={s.badge()}>{badge}</Badge>
+		{/if}
+		<h1 class={s.title()}>{headline}</h1>
+		{#if description}<p class={s.description()}>{description}</p>{/if}
+		{#if live.length}
+			<div class={s.actions()}>
+				{#each live as action, i (action.label)}
+					{#if action.href !== undefined}
+						<Button
+							href={action.href}
+							variant={i === 0 ? "default" : "outline"}
+							size="lg"
+							class={s.action()}
+							onclick={action.onClick}
+						>
+							{action.label}
+						</Button>
+					{:else}
+						<Button
+							variant={i === 0 ? "default" : "outline"}
+							size="lg"
+							class={s.action()}
+							onclick={action.onClick}
+						>
+							{action.label}
+						</Button>
+					{/if}
+				{/each}
+			</div>
+		{/if}
+	</div>
+</section>

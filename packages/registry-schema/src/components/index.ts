@@ -3,10 +3,13 @@ import { accordion } from "./accordion";
 import { agentScreen } from "./agent-screen";
 import { alert } from "./alert";
 import { alertDialog } from "./alert-dialog";
+import { animatedGradient } from "./animated-gradient";
 import { animatedGradientText } from "./animated-gradient-text";
 import { areaChart } from "./area-chart";
 import { artGallery } from "./art-gallery";
+import { asciiEffect } from "./ascii-effect";
 import { attachment } from "./attachment";
+import { auroraFlow } from "./aurora-flow";
 import { avatar } from "./avatar";
 import { badge } from "./badge";
 import { barChart } from "./bar-chart";
@@ -25,6 +28,7 @@ import { checkbox } from "./checkbox";
 import { choroplethChart } from "./choropleth-chart";
 import { circularText } from "./circular-text";
 import { clickSpark } from "./click-spark";
+import { closingPlasma } from "./closing-plasma";
 import { codeBlock } from "./code-block";
 import { collabCard } from "./collab-card";
 import { collapsible } from "./collapsible";
@@ -43,6 +47,7 @@ import { cycleText } from "./cycle-text";
 import { diaText } from "./dia-text";
 import { dialog } from "./dialog";
 import { diffTable } from "./diff-table";
+import { ditherGradient } from "./dither-gradient";
 import { docsNav } from "./docs-nav";
 import { doubleUnderline } from "./double-underline";
 import { draggableMarquee } from "./draggable-marquee";
@@ -60,18 +65,25 @@ import { funnelChart } from "./funnel-chart";
 import { gauge } from "./gauge";
 import { gaugeChart } from "./gauge-chart";
 import { gibberishText } from "./gibberish-text";
+import { githubCalendar } from "./github-calendar";
 import { glitchText } from "./glitch-text";
+import { gradientHero01 } from "./gradient-hero-01";
+import { grainGradient } from "./grain-gradient";
 import { heatmapChart } from "./heatmap-chart";
 import { heroStage } from "./hero-stage";
 import { hoverCard } from "./hover-card";
+import { hoverTransition } from "./hover-transition";
+import { imageTrail } from "./image-trail";
 import { input } from "./input";
 import { jitterText } from "./jitter-text";
 import { jumpingText } from "./jumping-text";
 import { label } from "./label";
+import { liquidChrome } from "./liquid-chrome";
 import { liveLineChart } from "./live-line-chart";
 import { loadingScreen } from "./loading-screen";
 import { loadingState } from "./loading-state";
 import { logoCarousel } from "./logo-carousel";
+import { macKeyboard } from "./mac-keyboard";
 import { markdown } from "./markdown";
 import { marker } from "./marker";
 import { maskText } from "./mask-text";
@@ -86,7 +98,11 @@ import { overviewCard } from "./overview-card";
 import { pagination } from "./pagination";
 import { particleText } from "./particle-text";
 import { pieChart } from "./pie-chart";
+import { pixelCanvas } from "./pixel-canvas";
+import { pixelImageTrail } from "./pixel-image-trail";
 import { popover } from "./popover";
+import { pricing01 } from "./pricing-01";
+import { pricing02 } from "./pricing-02";
 import { progress } from "./progress";
 import { projectionLine } from "./projection-line";
 import { question } from "./question";
@@ -117,9 +133,12 @@ import { shortcut } from "./shortcut";
 import { showMore } from "./show-more";
 import { showcaseGrid } from "./showcase-grid";
 import { sidebarNav } from "./sidebar-nav";
+import { silkAurora } from "./silk-aurora";
 import { skeleton } from "./skeleton";
 import { slider } from "./slider";
+import { spectralRibbon } from "./spectral-ribbon";
 import { spinner } from "./spinner";
+import { splitFlapDisplay } from "./split-flap-display";
 import { splitText } from "./split-text";
 import { staggeredLetter } from "./staggered-letter";
 import { statCard, statCardMap } from "./stat-card";
@@ -157,6 +176,7 @@ import { typography } from "./typography";
 import { underlineHoverText } from "./underline-hover-text";
 import { usageCard } from "./usage-card";
 import { waveReveal } from "./wave-reveal";
+import { webglLiquid } from "./webgl-liquid";
 import { weekCalendar } from "./week-calendar";
 import { wheelCarousel } from "./wheel-carousel";
 import { wheelPicker } from "./wheel-picker";
@@ -325,6 +345,26 @@ export const specs: ComponentSpec[] = [
 	overviewCard,
 	usageCard,
 	scoreCard,
+	githubCalendar,
+	pricing01,
+	pricing02,
+	gradientHero01,
+	imageTrail,
+	pixelImageTrail,
+	splitFlapDisplay,
+	hoverTransition,
+	macKeyboard,
+	animatedGradient,
+	asciiEffect,
+	ditherGradient,
+	grainGradient,
+	pixelCanvas,
+	auroraFlow,
+	closingPlasma,
+	silkAurora,
+	spectralRibbon,
+	webglLiquid,
+	liquidChrome,
 ];
 
 export function getSpec(slug: string): ComponentSpec | undefined {

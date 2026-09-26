@@ -7,8 +7,6 @@ node_modules
 .wrangler
 /.svelte-kit
 /build
-# Built by scripts/build-search-index.mjs
-/static/search-index.json
 
 # OS
 .DS_Store

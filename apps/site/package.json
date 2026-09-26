@@ -4,8 +4,8 @@
 	"type": "module",
 	"scripts": {
 		"dev": "cross-env PORTLESS_HTTPS=0 portless",
-		"dev:app": "node scripts/build-search-index.mjs && vite dev",
-		"build": "node scripts/build-search-index.mjs && vite build",
+		"dev:app": "vite dev",
+		"build": "vite build",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
