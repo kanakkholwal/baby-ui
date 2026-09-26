@@ -4,13 +4,15 @@
 	"tasks": {
 		"build": {
 			"dependsOn": ["^build", "^registry"],
-			"env": ["VITE_POSTHOG_KEY"],
+			"env": ["VITE_POSTHOG_KEY", "BABY_UI_REGISTRY_URL", "BABY_UI_SITE_URL"],
 			"outputs": ["dist/**", ".svelte-kit/**", "build/**", ".docvia/**"]
 		},
 		"registry": {
 			"dependsOn": ["^build"],
+			"env": ["BABY_UI_REGISTRY_URL", "BABY_UI_SITE_URL"],
 			"inputs": [
 				"src/**",
+				"../tokens/src/**",
 				"../registry-schema/src/**",
 				"../ui-react/src/**",
 				"../ui-svelte/src/**",

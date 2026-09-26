@@ -314,7 +314,11 @@ export {
 	default as FullscreenNav,
 	type NavLink,
 } from "./fullscreen-nav/fullscreen-nav.svelte";
-export type { FullscreenNavVariant } from "./fullscreen-nav/variants";
+export type {
+	FullscreenNavAlign,
+	FullscreenNavSize,
+	FullscreenNavVariant,
+} from "./fullscreen-nav/variants";
 export { default as FunnelChart } from "./funnel-chart/funnel-chart.svelte";
 export type { FunnelStage } from "./funnel-chart/geometry";
 export type {

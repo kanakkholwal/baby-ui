@@ -10,6 +10,7 @@ export const RegistryItemSchema = z.object({
 	description: z.string(),
 	author: z.string().optional(),
 	dependencies: z.array(z.string()).optional(),
+	devDependencies: z.array(z.string()).optional(),
 	registryDependencies: z.array(z.string()).optional(),
 	files: z.array(
 		z.object({

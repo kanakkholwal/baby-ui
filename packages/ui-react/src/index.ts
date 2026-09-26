@@ -428,7 +428,11 @@ export {
 	type FullscreenNavProps,
 	type NavLink,
 } from "./fullscreen-nav/fullscreen-nav";
-export type { FullscreenNavVariant } from "./fullscreen-nav/variants";
+export type {
+	FullscreenNavAlign,
+	FullscreenNavSize,
+	FullscreenNavVariant,
+} from "./fullscreen-nav/variants";
 export {
 	FunnelChart,
 	type FunnelChartProps,

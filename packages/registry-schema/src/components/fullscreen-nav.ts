@@ -1,24 +1,30 @@
 import { defineComponent } from "../index";
 
+const VARIANTS = ["fade", "slide", "clip"];
+const ALIGNS = ["start", "center"];
+const SIZES = ["md", "lg"];
+
 export const fullscreenNav = defineComponent({
 	slug: "fullscreen-nav",
 	name: "Fullscreen Nav",
 	description:
-		"Full-viewport navigation overlay with staggered links and scroll locking.",
+		"Full-viewport navigation overlay with staggered links, a current-page mark and an optional footer.",
 	category: "blocks",
 	status: "stable",
+	variants: { variant: VARIANTS, align: ALIGNS, size: SIZES },
 	props: [
 		{
 			name: "open",
 			type: "boolean",
-			description: "Whether the overlay is shown. Bindable.",
+			description:
+				"Whether the overlay is shown. Controlled with onOpenChange (React also defaultOpen); bindable in Svelte.",
 			default: false,
 			control: { kind: "none" },
 		},
 		{
 			name: "links",
 			type: "NavLink[]",
-			description: "Navigation targets, in order.",
+			description: "Navigation targets, in order; each may carry a short description.",
 			control: { kind: "none" },
 		},
 		{
@@ -29,12 +35,53 @@ export const fullscreenNav = defineComponent({
 			control: { kind: "text" },
 		},
 		{
-			name: "variant",
-			type: '"fade" | "slide"',
+			name: "current",
+			type: "string",
 			description:
-				"Fade dissolves the panel in place; slide drops it from the top edge and lifts it back.",
+				'href of the page being viewed; that link gets aria-current="page" and an underline.',
+			control: { kind: "none" },
+		},
+		{
+			name: "variant",
+			type: VARIANTS.map((v) => `"${v}"`).join(" | "),
+			description:
+				"Fade dissolves in place; slide drops from the top edge; clip grows as a circle from the top-right corner, where menu triggers usually sit.",
 			default: "fade",
-			control: { kind: "select", options: ["fade", "slide"] },
+			control: { kind: "select", options: VARIANTS },
+		},
+		{
+			name: "align",
+			type: ALIGNS.map((v) => `"${v}"`).join(" | "),
+			description: "Links hug the left edge or sit centred.",
+			default: "start",
+			control: { kind: "select", options: ALIGNS },
+		},
+		{
+			name: "size",
+			type: SIZES.map((v) => `"${v}"`).join(" | "),
+			description: "Link type scale.",
+			default: "md",
+			control: { kind: "select", options: SIZES },
+		},
+		{
+			name: "numbered",
+			type: "boolean",
+			description: "Prefix each link with 01, 02…",
+			default: false,
+			control: { kind: "boolean" },
+		},
+		{
+			name: "footer",
+			type: "ReactNode | Snippet",
+			description: "Content pinned under the links, e.g. contact details or socials.",
+			control: { kind: "none" },
+		},
+		{
+			name: "closeLabel",
+			type: "string",
+			description: "Accessible name of the close button.",
+			default: "Close",
+			control: { kind: "none" },
 		},
 	],
 	motion: {
@@ -43,6 +90,7 @@ export const fullscreenNav = defineComponent({
 		behaviour: [
 			"The overlay fades in over 280ms and the links stagger in at 45ms intervals, which is inside the range where stagger still reads as one gesture.",
 			"Links animate opacity and transform only, so a long list does not cost layout.",
+			"Hovering or focusing a link dims its siblings; the dim lives on an inner row so the entrance stagger never delays it.",
 		],
 	},
 	a11y: {
@@ -68,6 +116,7 @@ export const fullscreenNav = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["@base-ui/react", "clsx", "tailwind-merge", "tailwind-variants"],
+			registryDependencies: ["button"],
 		},
 		svelte: {
 			entry: "FullscreenNav",
@@ -77,6 +126,7 @@ export const fullscreenNav = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["bits-ui", "clsx", "tailwind-merge", "tailwind-variants"],
+			registryDependencies: ["button"],
 		},
 	},
 	keywords: ["fullscreen", "nav"],

@@ -1,6 +1,7 @@
 import { defineComponent } from "../index";
 
 const SIZES = ["sm", "md", "lg"];
+const MOTIONS = ["slide", "flip"];
 
 export const swapText = defineComponent({
 	slug: "swap-text",
@@ -8,7 +9,7 @@ export const swapText = defineComponent({
 	description: "Swaps between two texts on click or hover.",
 	category: "text",
 	status: "stable",
-	variants: { size: SIZES },
+	variants: { size: SIZES, motion: MOTIONS },
 	props: [
 		{
 			name: "initialText",
@@ -60,9 +61,24 @@ export const swapText = defineComponent({
 		{
 			name: "durationMs",
 			type: "number",
-			description: "How long the swap slide takes.",
+			description: "How long the swap takes; per letter for `flip`.",
 			default: 1000,
 			control: { kind: "number", min: 200, max: 2000, step: 50 },
+		},
+		{
+			name: "motion",
+			type: MOTIONS.map((v) => `"${v}"`).join(" | "),
+			description:
+				"Slide lifts one text out and the other in; flip turns each letter over in 3D, one after another.",
+			default: "slide",
+			control: { kind: "select", options: MOTIONS },
+		},
+		{
+			name: "staggerMs",
+			type: "number",
+			description: "Delay between neighbouring letters for `flip`.",
+			default: 44,
+			control: { kind: "number", min: 0, max: 120, step: 4 },
 		},
 		{
 			name: "size",
@@ -76,15 +92,22 @@ export const swapText = defineComponent({
 		springs: [],
 		reducedMotion: "The swap still happens, just without the travel.",
 		behaviour: [
-			"Both texts sit in a fixed-height stack; the active one slides up and out, the other slides up into view.",
+			"Slide: both texts sit in a fixed-height stack; the active one slides up and out, the other slides up into view.",
+			"Flip: letters tip away one by one while the next word's letters turn up behind them; turning off replays it right to left.",
 		],
 	},
 	a11y: {
 		notes: [
 			"A real `<button>`; toggling is reachable by keyboard (Enter/Space) even when `supportsHover` is off.",
+			"In flip mode the letters are aria-hidden; the button is named by whichever text is showing and reports aria-pressed.",
 		],
 	},
-
+	licenseOrigin: {
+		source: "componentry",
+		url: "https://componentry.dev",
+		license: "MIT",
+		copyright: "Copyright (c) 2026 Harsh Jadhav",
+	},
 	impl: {
 		react: {
 			entry: "SwapText",

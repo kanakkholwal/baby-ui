@@ -32,6 +32,8 @@ export const FRAMEWORK: Record<
 		uiAlias: string;
 		uiTarget: string;
 		libTarget: string;
+		/** shadcn-svelte resolves a file target from its ui/lib alias; shadcn from the root. */
+		aliasRelativeTargets?: boolean;
 	}
 > = {
 	react: {
@@ -49,6 +51,7 @@ export const FRAMEWORK: Record<
 		uiAlias: "$lib/components/ui",
 		uiTarget: "src/lib/components/ui",
 		libTarget: "src/lib",
+		aliasRelativeTargets: true,
 	},
 };
 

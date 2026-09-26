@@ -2,7 +2,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { FRAMEWORKS, type Framework } from "@baby-ui/registry-schema";
 import { specs } from "@baby-ui/registry-schema/components";
-import { buildItem, toJsItem } from "./build";
+import { buildItem, projectPath, toJsItem } from "./build";
 import { cssText } from "./component-css";
 import {
 	FRAMEWORK,
@@ -121,7 +121,7 @@ async function main() {
 					const js = await toJavaScript(file.content, file.path).catch(() => null);
 					return {
 						path: file.path,
-						target: file.target,
+						target: file.target && projectPath(framework, file.target, file.type),
 						ts: file.content,
 						js,
 						jsPath: js ? jsPath(file.path) : null,

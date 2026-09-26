@@ -1,6 +1,12 @@
 <script lang="ts">
 import { cn } from "../lib/cn";
-import { type SwapTextSize, swapText } from "./variants";
+import {
+	type SwapTextMotion,
+	type SwapTextSize,
+	swapChars,
+	swapText,
+	swapTextFlip,
+} from "./variants";
 
 let {
 	initialText,
@@ -11,7 +17,9 @@ let {
 	supportsHover = true,
 	disableClick = false,
 	durationMs = 1000,
+	staggerMs = 44,
 	size = "lg",
+	motion = "slide",
 	class: classProp,
 }: {
 	initialText: string;
@@ -21,9 +29,12 @@ let {
 	onActiveChange?: (active: boolean) => void;
 	supportsHover?: boolean;
 	disableClick?: boolean;
-	/** How long the swap slide takes, in ms. */
+	/** How long the swap takes, in ms (per letter for `flip`). */
 	durationMs?: number;
+	/** Delay between neighbouring letters for `flip`, in ms. */
+	staggerMs?: number;
 	size?: SwapTextSize;
+	motion?: SwapTextMotion;
 	class?: string;
 } = $props();
 
@@ -38,7 +49,38 @@ function setActive(next: boolean) {
 }
 
 const LAYER = "block transition-transform ease-[var(--ease-out)]";
+const flip = (layer: "first" | "second") => swapTextFlip({ layer, active, hover: supportsHover });
 </script>
+
+{#snippet letters(text: string, layer: "first" | "second")}
+	{@const chars = swapChars(text)}
+	<span aria-hidden="true" class={flip(layer).layer()}>
+		{#each chars as c, i (i)}
+			<span class={flip(layer).char()} style="--i: {i}; --n: {chars.length}">{c}</span>
+		{/each}
+	</span>
+{/snippet}
+
+{#if motion === "flip"}
+	<div data-slot="swap-text" class={cn("relative text-foreground", classProp)}>
+		<button
+			type="button"
+			disabled={disableClick}
+			aria-label={active ? finalText : initialText}
+			aria-pressed={active}
+			onclick={() => !disableClick && setActive(!active)}
+			class={cn(swapText({ size, motion }), "group/swap")}
+		>
+			<span
+				class={flip("first").stage()}
+				style="--swap-duration: {durationMs}ms; --swap-stagger: {staggerMs}ms; --swap-lag: {Math.round(durationMs * 0.62)}ms"
+			>
+				{@render letters(initialText, "first")}
+				{@render letters(finalText, "second")}
+			</span>
+		</button>
+	</div>
+{:else}
 
 <div data-slot="swap-text" class={cn("relative overflow-hidden text-foreground", classProp)}>
 	<button
@@ -68,3 +110,4 @@ const LAYER = "block transition-transform ease-[var(--ease-out)]";
 		</span>
 	</button>
 </div>
+{/if}

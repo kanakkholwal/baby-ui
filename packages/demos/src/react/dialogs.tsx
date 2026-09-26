@@ -40,6 +40,8 @@ import {
 	DrawerTrigger,
 	type DrawerVariant,
 	FullscreenNav,
+	type FullscreenNavAlign,
+	type FullscreenNavSize,
 	type FullscreenNavVariant,
 	Input,
 	Label,
@@ -400,19 +402,31 @@ const NAV = [
 	{ href: "#blog", label: "Blog" },
 ];
 
+const FULLSCREEN_LINKS = [
+	{ href: "#product", label: "Product", description: "What it does and who it is for" },
+	{ href: "#pricing", label: "Pricing", description: "Plans for teams of every size" },
+	{ href: "#docs", label: "Docs", description: "Guides and API reference" },
+	{ href: "#blog", label: "Blog", description: "Release notes and stories" },
+];
+
 export function FullscreenNavDemo({ props }: { props: Props }) {
 	const [open, setOpen] = useState(false);
 	return (
 		<>
-			<button type="button" className={BTN} onClick={() => setOpen(true)}>
+			<Button variant="outline" onClick={() => setOpen(true)}>
 				Open navigation
-			</button>
+			</Button>
 			<FullscreenNav
-				links={NAV}
+				links={FULLSCREEN_LINKS}
 				open={open}
 				onOpenChange={setOpen}
+				current="#product"
 				title={(props.title as string) || "Menu"}
 				variant={(props.variant as FullscreenNavVariant) ?? "fade"}
+				align={(props.align as FullscreenNavAlign) ?? "start"}
+				size={(props.size as FullscreenNavSize) ?? "md"}
+				numbered={props.numbered === true}
+				footer={<span>hello@example.com</span>}
 			/>
 		</>
 	);

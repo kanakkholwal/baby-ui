@@ -40,6 +40,7 @@ import {
 	StaggeredLetter,
 	type StaggeredLetterDirection,
 	SwapText,
+	type SwapTextMotion,
 	type SwapTextSize,
 	TextBorderAnimation,
 	type TextBorderAnimationSize,
@@ -272,6 +273,8 @@ export function SwapTextDemo({ props }: { props: Props }) {
 			finalText={(props.finalText as string) || "Click me"}
 			defaultActive={props.defaultActive === true}
 			size={(props.size as SwapTextSize) ?? "lg"}
+			motion={(props.motion as SwapTextMotion) ?? "slide"}
+			staggerMs={Number(props.staggerMs ?? 44)}
 			supportsHover={props.supportsHover !== false}
 			disableClick={props.disableClick === true}
 			durationMs={Number(props.durationMs ?? 1000)}

@@ -1,49 +1,93 @@
 "use client";
 
 import { Dialog as DialogPrimitive } from "@base-ui/react/dialog";
-import { useRef } from "react";
+import { type ReactNode, useRef, useState } from "react";
+import { button } from "../button/variants";
 import { cn } from "../lib/cn";
-import { type FullscreenNavVariant, fullscreenNav } from "./variants";
+import {
+	type FullscreenNavAlign,
+	type FullscreenNavSize,
+	type FullscreenNavVariant,
+	fullscreenNav,
+	linkDelay,
+	linkIndex,
+	panelDelay,
+} from "./variants";
 
-export type { FullscreenNavVariant };
+export type { FullscreenNavAlign, FullscreenNavSize, FullscreenNavVariant };
 
-export type NavLink = { href: string; label: string };
+export type NavLink = {
+	href: string;
+	label: string;
+	/** Optional short line under the label. */
+	description?: string;
+};
 
 export interface FullscreenNavProps {
 	links: NavLink[];
-	open: boolean;
+	/** Controlled open state; pair with onOpenChange. */
+	open?: boolean;
+	defaultOpen?: boolean;
+	onOpenChange?: (open: boolean) => void;
+	/** href of the page being viewed; that link gets aria-current="page". */
+	current?: string;
 	title?: string;
+	closeLabel?: string;
+	/** Prefix each link with 01, 02…. */
+	numbered?: boolean;
 	variant?: FullscreenNavVariant;
+	align?: FullscreenNavAlign;
+	size?: FullscreenNavSize;
+	/** Content pinned under the links, e.g. contact details or socials. */
+	footer?: ReactNode;
 	className?: string;
-	onOpenChange: (open: boolean) => void;
 }
 
+/** A full-viewport menu on Base UI's Dialog: staggered links, focus on the first, Escape to close. */
 export function FullscreenNav({
 	links,
-	open,
-	title = "Menu",
-	variant = "fade",
-	className,
+	open: openProp,
+	defaultOpen = false,
 	onOpenChange,
+	current,
+	title = "Menu",
+	closeLabel = "Close",
+	numbered = false,
+	variant = "fade",
+	align,
+	size,
+	footer,
+	className,
 }: FullscreenNavProps) {
+	const [innerOpen, setInnerOpen] = useState(defaultOpen);
+	const open = openProp ?? innerOpen;
 	const firstLinkRef = useRef<HTMLAnchorElement>(null);
-	const styles = fullscreenNav({ variant });
+	const styles = fullscreenNav({ variant, align, size });
+
+	function setOpen(next: boolean) {
+		if (openProp === undefined) setInnerOpen(next);
+		onOpenChange?.(next);
+	}
 
 	return (
-		<DialogPrimitive.Root open={open} onOpenChange={(next) => onOpenChange(next)}>
+		<DialogPrimitive.Root open={open} onOpenChange={(next) => setOpen(next)}>
 			<DialogPrimitive.Portal>
 				<DialogPrimitive.Popup
 					data-slot="fullscreen-nav"
 					data-variant={variant}
 					initialFocus={firstLinkRef}
+					style={{ transitionDelay: panelDelay(links.length, open) }}
 					className={cn(styles.popup(), className)}
 				>
 					<div className={styles.header()}>
 						<DialogPrimitive.Title className={styles.title()}>
 							{title}
 						</DialogPrimitive.Title>
-						<DialogPrimitive.Close aria-label="Close" className={styles.close()}>
-							<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-4">
+						<DialogPrimitive.Close
+							aria-label={closeLabel}
+							className={button({ variant: "outline", size: "icon" })}
+						>
+							<svg viewBox="0 0 16 16" fill="none" aria-hidden>
 								<path
 									d="m4 4 8 8M12 4l-8 8"
 									stroke="currentColor"
@@ -54,21 +98,34 @@ export function FullscreenNav({
 						</DialogPrimitive.Close>
 					</div>
 
-					<nav className={styles.nav()}>
+					<nav aria-label={title} className={styles.nav()}>
 						{links.map((link, i) => (
 							<a
 								key={link.href}
 								ref={i === 0 ? firstLinkRef : undefined}
 								href={link.href}
-								onClick={() => onOpenChange(false)}
+								aria-current={link.href === current ? "page" : undefined}
+								onClick={() => setOpen(false)}
 								data-state={open ? "open" : "closed"}
-								style={{ transitionDelay: `${60 + i * 45}ms` }}
+								style={{ transitionDelay: linkDelay(i, links.length, open) }}
 								className={styles.link()}
 							>
-								{link.label}
+								<span className={styles.row()}>
+									{numbered ? (
+										<span className={styles.index()}>{linkIndex(i)}</span>
+									) : null}
+									<span className={styles.text()}>
+										<span className={styles.label()}>{link.label}</span>
+										{link.description ? (
+											<span className={styles.description()}>{link.description}</span>
+										) : null}
+									</span>
+								</span>
 							</a>
 						))}
 					</nav>
+
+					{footer ? <div className={styles.footer()}>{footer}</div> : null}
 				</DialogPrimitive.Popup>
 			</DialogPrimitive.Portal>
 		</DialogPrimitive.Root>
