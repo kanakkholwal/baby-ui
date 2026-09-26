@@ -84,6 +84,7 @@ import { morphingModal } from "./morphing-modal";
 import { navbar } from "./navbar";
 import { overviewCard } from "./overview-card";
 import { pagination } from "./pagination";
+import { particleText } from "./particle-text";
 import { pieChart } from "./pie-chart";
 import { popover } from "./popover";
 import { progress } from "./progress";
@@ -107,6 +108,7 @@ import { scoreCard } from "./score-card";
 import { scrollArea } from "./scroll-area";
 import { scrollProgress } from "./scroll-progress";
 import { scrollReveal } from "./scroll-reveal";
+import { scrollVelocity } from "./scroll-velocity";
 import { scrubField } from "./scrub-field";
 import { select } from "./select";
 import { sheet } from "./sheet";
@@ -137,6 +139,7 @@ import { textFlip } from "./text-flip";
 import { textInertia } from "./text-inertia";
 import { textLoop } from "./text-loop";
 import { textReel } from "./text-reel";
+import { textRepel } from "./text-repel";
 import { textTransition } from "./text-transition";
 import { textarea } from "./textarea";
 import { themeToggle } from "./theme-toggle";
@@ -155,6 +158,7 @@ import { underlineHoverText } from "./underline-hover-text";
 import { usageCard } from "./usage-card";
 import { waveReveal } from "./wave-reveal";
 import { weekCalendar } from "./week-calendar";
+import { wheelCarousel } from "./wheel-carousel";
 import { wheelPicker } from "./wheel-picker";
 
 export const specs: ComponentSpec[] = [
@@ -245,6 +249,7 @@ export const specs: ComponentSpec[] = [
 	draggableMarquee,
 	clickSpark,
 	artGallery,
+	wheelCarousel,
 	recommendationCard,
 	chatComposer,
 	thinkingState,
@@ -314,6 +319,9 @@ export const specs: ComponentSpec[] = [
 	wheelPicker,
 	fillButton,
 	loadingScreen,
+	textRepel,
+	particleText,
+	scrollVelocity,
 	overviewCard,
 	usageCard,
 	scoreCard,

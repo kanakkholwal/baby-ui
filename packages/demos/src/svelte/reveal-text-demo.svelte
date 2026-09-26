@@ -1,8 +1,10 @@
 <script lang="ts">
 import {
 	RevealText,
+	type RevealTextDirection,
 	type RevealTextSize,
 	type RevealTextSplit,
+	type RevealTextStaggerFrom,
 	type RevealTextTrigger,
 } from "@baby-ui/svelte";
 
@@ -23,6 +25,9 @@ const trigger = $derived((props.trigger as RevealTextTrigger) ?? "mount");
 			staggerMs={Number(props.staggerMs ?? 90)}
 			delayMs={Number(props.delayMs ?? 0)}
 			blur={Number(props.blur ?? 12)}
+			direction={(props.direction as RevealTextDirection) ?? "up"}
+			staggerFrom={(props.staggerFrom as RevealTextStaggerFrom) ?? "start"}
+			mask={props.mask === true}
 			size={(props.size as RevealTextSize) ?? "inherit"}
 			class="text-center font-semibold text-foreground tracking-tight"
 		/>

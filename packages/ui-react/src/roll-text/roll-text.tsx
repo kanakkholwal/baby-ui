@@ -11,9 +11,15 @@ import {
 	useState,
 } from "react";
 import { cn } from "../lib/cn";
-import { type RollStagger, type RollTextSize, rollText } from "./variants";
+import {
+	ROLL_DONE,
+	type RollStagger,
+	type RollTextMotion,
+	type RollTextSize,
+	rollText,
+} from "./variants";
 
-export type { RollStagger, RollTextSize };
+export type { RollStagger, RollTextMotion, RollTextSize };
 
 export interface RollTextProps {
 	/** Label duplicated across the two stacked roll layers. */
@@ -28,6 +34,7 @@ export interface RollTextProps {
 	staggerMs?: number;
 	durationMs?: number;
 	size?: RollTextSize;
+	motion?: RollTextMotion;
 	className?: string;
 }
 
@@ -95,6 +102,7 @@ export function RollText({
 	staggerMs = 32,
 	durationMs = 450,
 	size = "md",
+	motion = "slide",
 	className,
 }: RollTextProps) {
 	const segments = useMemo(
@@ -156,11 +164,14 @@ export function RollText({
 		};
 	}, [groupHover, disabled, playOpen]);
 
-	const handleStackAnimationEnd = useCallback(() => {
-		if (phaseRef.current !== "animating") return;
-		remainingRef.current -= 1;
-		if (remainingRef.current <= 0) setPhase("open");
-	}, []);
+	const handleStackAnimationEnd = useCallback(
+		(event: React.AnimationEvent<HTMLSpanElement>) => {
+			if (phaseRef.current !== "animating" || !ROLL_DONE.has(event.animationName)) return;
+			remainingRef.current -= 1;
+			if (remainingRef.current <= 0) setPhase("open");
+		},
+		[],
+	);
 
 	return (
 		// biome-ignore lint/a11y/noStaticElementInteractions: decorative roll, focusable for parity, no action to give it a role for
@@ -168,7 +179,7 @@ export function RollText({
 			ref={rootRef}
 			tabIndex={groupHover ? undefined : 0}
 			className={cn(
-				rollText({ size }),
+				rollText({ size, motion }),
 				phase === "animating" && "roll-text--animating",
 				phase === "open" && "roll-text--open",
 				className,

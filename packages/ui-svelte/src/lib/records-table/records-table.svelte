@@ -1,4 +1,7 @@
 <script lang="ts">
+import Avatar from "../avatar/avatar.svelte";
+import AvatarFallback from "../avatar/avatar-fallback.svelte";
+import AvatarImage from "../avatar/avatar-image.svelte";
 import Checkbox from "../checkbox/checkbox.svelte";
 import DropdownMenu from "../dropdown-menu/dropdown-menu.svelte";
 import DropdownMenuContent from "../dropdown-menu/dropdown-menu-content.svelte";
@@ -365,6 +368,10 @@ const footerCell = $derived(
 									aria-label={text.selectRow(row.name)}
 									class="shrink-0"
 								/>
+								<Avatar shape="square" class="size-5 rounded-[5px] bg-muted text-[10px]">
+									<AvatarImage src={row.logo} alt="" />
+									<AvatarFallback>{row.name.charAt(0)}</AvatarFallback>
+								</Avatar>
 								<a
 									href={row.website ? `https://${row.website}` : undefined}
 									onclick={(event) => {

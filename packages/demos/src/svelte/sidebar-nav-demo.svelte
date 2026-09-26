@@ -61,7 +61,11 @@ $effect.pre(() => {
 {/snippet}
 
 <SidebarNav
-	workspace={{ name: "Acme Studio", monogram: "A" }}
+	workspace={{
+				name: "Acme Studio",
+				monogram: "A",
+				image: "https://avatar.vercel.sh/acme-studio?size=48",
+			}}
 	logo={logoIcon as unknown as Snippet}
 	navItems={NAV_ITEMS.map((item, i) => ({
 		...item,

@@ -9,6 +9,7 @@ export const CATEGORY_LABEL: Record<Category, string> = {
 	animated: "Animated",
 	agents: "Agents",
 	text: "Text",
+	backgrounds: "Backgrounds",
 	charts: "Charts",
 };
 
@@ -19,6 +20,8 @@ export const CATEGORY_BLURB: Record<Category, string> = {
 	animated: "Pieces where the motion is the point.",
 	agents: "Interface parts for products that talk back: messages, tools, reasoning.",
 	text: "Copy that moves: reveals, swaps, hovers and loops built for headlines and labels.",
+	backgrounds:
+		"Full-bleed animated surfaces and canvas effects that idle when nothing moves.",
 	charts:
 		"SVG charts on d3 with keyboard, screen-reader and reduced-motion support built in.",
 };
@@ -56,6 +59,8 @@ export type SearchItem = {
 	slug: string;
 	group: string;
 	description: string;
+	/** Space-separated words the command filter also matches. */
+	keywords: string;
 };
 
 /** Flat index for the command palette, rebuilt from the specs on every load. */
@@ -67,6 +72,10 @@ export function searchItems(): SearchItem[] {
 			slug: s.slug,
 			group: CATEGORY_LABEL[s.category],
 			description: s.description,
+			// The command filter matches these words too, so a search finds what a component does.
+			keywords: [s.slug, CATEGORY_LABEL[s.category], ...s.keywords, s.description].join(
+				" ",
+			),
 		}))
 		.sort((a, b) => a.name.localeCompare(b.name));
 }

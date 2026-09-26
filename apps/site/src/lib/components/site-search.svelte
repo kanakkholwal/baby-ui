@@ -12,13 +12,30 @@ import {
 import IconSearch from "@tabler/icons-svelte/icons/search";
 import { goto } from "$app/navigation";
 import { track } from "$lib/analytics";
+import { type DocsHit, loadDocsSearch } from "$lib/docs-search";
 import { searchItems } from "$lib/registry";
 
 let open = $state(false);
+let query = $state("");
+let hits = $state<DocsHit[]>([]);
 let mac = $state(false);
 
 const GUIDES = [
-	{ href: "/docs", name: "Getting started", description: "Install and set up" },
+	{
+		href: "/docs",
+		name: "Introduction",
+		description: "What Baby UI is and how it installs",
+	},
+	{
+		href: "/docs/installation",
+		name: "Installation",
+		description: "Set up a project and add components with the shadcn CLI",
+	},
+	{
+		href: "/docs/theming",
+		name: "Theming",
+		description: "Colour, dark mode and motion variables",
+	},
 	{ href: "/components", name: "All components", description: "Browse the registry" },
 ];
 
@@ -43,6 +60,33 @@ $effect(() => {
 	return () => window.removeEventListener("keydown", onKey);
 });
 
+// Full-text hits from the docs, beside the command filter's matches on names and descriptions.
+$effect(() => {
+	if (open) void loadDocsSearch().catch(() => {});
+});
+
+$effect(() => {
+	const q = query.trim();
+	if (q.length < 2) {
+		hits = [];
+		return;
+	}
+	let stale = false;
+	const timer = setTimeout(async () => {
+		try {
+			const search = await loadDocsSearch();
+			const next = await search(q);
+			if (!stale) hits = next;
+		} catch {
+			if (!stale) hits = [];
+		}
+	}, 120);
+	return () => {
+		stale = true;
+		clearTimeout(timer);
+	};
+});
+
 function go(href: string) {
 	open = false;
 	track("search_selected", { href });
@@ -64,9 +108,26 @@ function go(href: string) {
 <CommandDialog bind:open variant="framed">
 	<Command>
 		<CommandHeader>Search</CommandHeader>
-		<CommandInput placeholder="Search components and guides…" />
+		<CommandInput
+			placeholder="Search components and docs…"
+			oninput={(e) => (query = e.currentTarget.value)}
+		/>
 		<CommandList>
 			<CommandEmpty>Nothing matches that.</CommandEmpty>
+			{#if hits.length}
+				<CommandGroup heading="In the docs" forceMount>
+					{#each hits as hit (hit.href)}
+						<CommandItem value="docs:{hit.href}" forceMount onclick={() => go(hit.href)}>
+							<span class="min-w-0">
+								<span class="block truncate">
+									{hit.page}{#if hit.section}<span class="text-muted-foreground"> › {hit.section}</span>{/if}
+								</span>
+								<span class="line-clamp-2 text-muted-foreground text-xs">{hit.snippet}</span>
+							</span>
+						</CommandItem>
+					{/each}
+				</CommandGroup>
+			{/if}
 			<CommandGroup heading="Guides">
 				{#each GUIDES as guide (guide.href)}
 					<CommandItem value={guide.name} keywords={guide.description} onclick={() => go(guide.href)}>
@@ -84,7 +145,7 @@ function go(href: string) {
 					{#each group.items as item (item.href)}
 						<CommandItem
 							value={item.name}
-							keywords={item.slug}
+							keywords={item.keywords}
 							onclick={() => go(item.href)}
 						>
 							<span class="min-w-0">

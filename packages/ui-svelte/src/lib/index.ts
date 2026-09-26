@@ -425,6 +425,8 @@ export { default as PaginationLink } from "./pagination/pagination-link.svelte";
 export { default as PaginationNext } from "./pagination/pagination-next.svelte";
 export { default as PaginationPrevious } from "./pagination/pagination-previous.svelte";
 export { paginationRange } from "./pagination/range";
+export { default as ParticleText } from "./particle-text/particle-text.svelte";
+export type { ParticleTextShape, ParticleTextSize } from "./particle-text/particles";
 export { default as PieChart } from "./pie-chart/pie-chart.svelte";
 export type { PieHover, PieVariant } from "./pie-chart/variants";
 export { default as Popover } from "./popover/popover.svelte";
@@ -509,14 +511,16 @@ export { default as ResponsiveDialogTitle } from "./responsive-dialog/responsive
 export { default as ResponsiveDialogTrigger } from "./responsive-dialog/responsive-dialog-trigger.svelte";
 export { default as RevealText } from "./reveal-text/reveal-text.svelte";
 export type {
+	RevealTextDirection,
 	RevealTextSize,
 	RevealTextSplit,
+	RevealTextStaggerFrom,
 	RevealTextTrigger,
 } from "./reveal-text/variants";
 export { default as RingChart } from "./ring-chart/ring-chart.svelte";
 export type { RingCap } from "./ring-chart/variants";
 export { default as RollText } from "./roll-text/roll-text.svelte";
-export type { RollStagger, RollTextSize } from "./roll-text/variants";
+export type { RollStagger, RollTextMotion, RollTextSize } from "./roll-text/variants";
 export type { RollingDigitsLocale } from "./rolling-digits/format";
 export { default as RollingDigits } from "./rolling-digits/rolling-digits.svelte";
 export type {
@@ -541,6 +545,12 @@ export { default as ScrollProgress } from "./scroll-progress/scroll-progress.sve
 export type { ScrollProgressPosition } from "./scroll-progress/variants";
 export { default as ScrollReveal } from "./scroll-reveal/scroll-reveal.svelte";
 export type { ScrollRevealSize } from "./scroll-reveal/variants";
+export { default as ScrollVelocity } from "./scroll-velocity/scroll-velocity.svelte";
+export type {
+	ScrollVelocityDirection,
+	ScrollVelocityLayout,
+	ScrollVelocitySize,
+} from "./scroll-velocity/variants";
 export { default as ScrubField } from "./scrub-field/scrub-field.svelte";
 export type { ScrubFieldSize, ScrubFieldTone } from "./scrub-field/variants";
 export { default as Select } from "./select/select.svelte";
@@ -604,7 +614,7 @@ export type { SunburstNode } from "./sunburst-chart/geometry";
 export { default as SunburstChart } from "./sunburst-chart/sunburst-chart.svelte";
 export type { SunburstVariant } from "./sunburst-chart/variants";
 export { default as SwapText } from "./swap-text/swap-text.svelte";
-export type { SwapTextSize } from "./swap-text/variants";
+export type { SwapTextMotion, SwapTextSize } from "./swap-text/variants";
 export { default as Switch } from "./switch/switch.svelte";
 export { default as Table } from "./table/table.svelte";
 export { default as TableBody } from "./table/table-body.svelte";
@@ -646,6 +656,8 @@ export { default as TextLoop } from "./text-loop/text-loop.svelte";
 export type { TextLoopDirection, TextLoopSize } from "./text-loop/variants";
 export { default as TextReel } from "./text-reel/text-reel.svelte";
 export type { TextReelSize } from "./text-reel/variants";
+export { default as TextRepel } from "./text-repel/text-repel.svelte";
+export type { TextRepelMode, TextRepelSize } from "./text-repel/variants";
 export type {
 	TextTransitionPreset,
 	TextTransitionTarget,
@@ -698,6 +710,13 @@ export { default as WaveReveal } from "./wave-reveal/wave-reveal.svelte";
 export type { WeekStartsOn } from "./week-calendar/dates";
 export type { WeekCalendarLabels, WeekCalendarVariant } from "./week-calendar/variants";
 export { default as WeekCalendar } from "./week-calendar/week-calendar.svelte";
+export type { WheelCarouselItem } from "./wheel-carousel/types";
+export type {
+	WheelCarouselAspect,
+	WheelCarouselPhotoSide,
+	WheelCarouselSize,
+} from "./wheel-carousel/variants";
+export { default as WheelCarousel } from "./wheel-carousel/wheel-carousel.svelte";
 export type { WheelPickerOption, WheelPickerRows } from "./wheel-picker/variants";
 export { default as WheelPicker } from "./wheel-picker/wheel-picker.svelte";
 export { default as WheelPickerColumn } from "./wheel-picker/wheel-picker-column.svelte";

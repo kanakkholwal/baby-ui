@@ -76,5 +76,11 @@ export const swapTextFlip = tv({
 
 /** Letters as rendered: spaces become no-break spaces so inline-block cells keep their width. */
 export function swapChars(text: string): string[] {
-	return Array.from(text, (c) => (c === " " ? " " : c));
+	return Array.from(text, (c) => (c === " " ? "\u00a0" : c));
+}
+
+/** Flip timing from `durationMs`: each letter turns in 40% of it, the second word lags 62% of a turn. */
+export function flipTiming(durationMs: number): { letter: number; lag: number } {
+	const letter = Math.round(durationMs * 0.4);
+	return { letter, lag: Math.round(letter * 0.62) };
 }

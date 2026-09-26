@@ -20,6 +20,11 @@ notices are reproduced here as those licenses require.
 - Source: https://github.com/bklit/bklit-ui
 - License: MIT
 
+## componentry
+
+- Source: https://componentry.dev
+- License: MIT
+
 ## iconiq
 
 - Source: https://iconiqui.com

@@ -1,7 +1,9 @@
 import { defineComponent } from "../index";
 
 const SIZES = ["inherit", "sm", "md", "lg"];
-const SPLITS = ["word", "char"];
+const SPLITS = ["word", "char", "line"];
+const DIRECTIONS = ["up", "down", "left", "right"];
+const ORIGINS = ["start", "end", "center", "edges", "random"];
 const TRIGGERS = ["mount", "view"];
 
 export const revealText = defineComponent({
@@ -11,7 +13,13 @@ export const revealText = defineComponent({
 		"Words or letters rise out of a blur one after another, on mount or in view.",
 	category: "text",
 	status: "stable",
-	variants: { split: SPLITS, trigger: TRIGGERS, size: SIZES },
+	variants: {
+		split: SPLITS,
+		trigger: TRIGGERS,
+		direction: DIRECTIONS,
+		staggerFrom: ORIGINS,
+		size: SIZES,
+	},
 	props: [
 		{
 			name: "text",
@@ -73,6 +81,29 @@ export const revealText = defineComponent({
 			description: "Starting blur in px; skipped on touch screens.",
 			default: 12,
 			control: { kind: "number", min: 0, max: 24, step: 2 },
+		},
+		{
+			name: "direction",
+			type: DIRECTIONS.map((v) => `"${v}"`).join(" | "),
+			description: "The side each unit travels in from.",
+			default: "up",
+			control: { kind: "select", options: DIRECTIONS },
+		},
+		{
+			name: "staggerFrom",
+			type: ORIGINS.map((v) => `"${v}"`).join(" | "),
+			description:
+				"Where the stagger wave starts; random is seeded, so it is the same every run.",
+			default: "start",
+			control: { kind: "select", options: ORIGINS },
+		},
+		{
+			name: "mask",
+			type: "boolean",
+			description:
+				"Clip each unit so it rises out of its own line box instead of floating in.",
+			default: false,
+			control: { kind: "boolean" },
 		},
 		{
 			name: "size",

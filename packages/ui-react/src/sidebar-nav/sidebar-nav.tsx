@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 import { useRef, useState } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "../avatar/avatar";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -22,7 +23,12 @@ export type SidebarNavItem = {
 	count?: string;
 };
 export type SidebarRecent = { id: string; label: string; prompt?: string };
-export type SidebarWorkspace = { name: string; monogram: string };
+export type SidebarWorkspace = {
+	name: string;
+	monogram: string;
+	/** Workspace image URL; the monogram shows while it loads or if it fails. */
+	image?: string;
+};
 export type SidebarWorkspaceAction = {
 	label: string;
 	icon?: ReactNode;
@@ -318,7 +324,12 @@ export function SidebarNav({
 									isCollapsed && "opacity-0",
 								)}
 							>
-								{logo}
+								{logo ??
+									(workspace.image ? (
+										<Avatar shape="square" className="size-5 rounded-[5px]">
+											<AvatarImage src={workspace.image} alt="" />
+										</Avatar>
+									) : null)}
 							</span>
 							<span
 								className={cn(
@@ -339,9 +350,15 @@ export function SidebarNav({
 						</DropdownMenuTrigger>
 						<DropdownMenuContent align="start" className="w-64">
 							<DropdownMenuItem className="h-10 gap-1.5">
-								<span className="flex size-6 shrink-0 items-center justify-center rounded-md bg-foreground font-semibold text-[11px] text-background">
-									{workspace.monogram}
-								</span>
+								<Avatar
+									shape="square"
+									className="size-6 rounded-md bg-foreground font-semibold text-[11px]"
+								>
+									<AvatarImage src={workspace.image} alt="" />
+									<AvatarFallback className="text-background">
+										{workspace.monogram}
+									</AvatarFallback>
+								</Avatar>
 								<span className="min-w-0 flex-1 truncate font-medium text-[13.5px] text-foreground">
 									{workspace.name}
 								</span>

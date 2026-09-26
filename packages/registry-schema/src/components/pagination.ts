@@ -50,7 +50,7 @@ export const pagination = defineComponent({
 			entry: "Pagination",
 			files: [
 				{ path: "pagination/pagination.tsx", type: "registry:ui" },
-				{ path: "pagination/range.ts", type: "registry:lib" },
+				{ path: "pagination/range.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge"],
@@ -65,7 +65,7 @@ export const pagination = defineComponent({
 				{ path: "pagination/pagination-previous.svelte", type: "registry:ui" },
 				{ path: "pagination/pagination-next.svelte", type: "registry:ui" },
 				{ path: "pagination/pagination-ellipsis.svelte", type: "registry:ui" },
-				{ path: "pagination/range.ts", type: "registry:lib" },
+				{ path: "pagination/range.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge"],

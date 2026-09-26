@@ -1,5 +1,10 @@
 <script lang="ts">
-import { type RollStagger, RollText, type RollTextSize } from "@baby-ui/svelte";
+import {
+	type RollStagger,
+	RollText,
+	type RollTextMotion,
+	type RollTextSize,
+} from "@baby-ui/svelte";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
 </script>
@@ -12,5 +17,6 @@ let { props = {} }: { props?: Record<string, unknown> } = $props();
 	staggerMs={Number(props.staggerMs ?? 32)}
 	durationMs={Number(props.durationMs ?? 450)}
 	size={(props.size as RollTextSize) ?? "md"}
+	motion={(props.motion as RollTextMotion) ?? "slide"}
 	class="text-2xl font-semibold text-foreground"
 />

@@ -11,14 +11,22 @@ import {
 } from "react";
 import { cn } from "../lib/cn";
 import {
+	type RevealTextDirection,
 	type RevealTextSize,
 	type RevealTextSplit,
+	type RevealTextStaggerFrom,
 	type RevealTextTrigger,
 	revealText,
 	revealUnits,
 } from "./variants";
 
-export type { RevealTextSize, RevealTextSplit, RevealTextTrigger };
+export type {
+	RevealTextDirection,
+	RevealTextSize,
+	RevealTextSplit,
+	RevealTextStaggerFrom,
+	RevealTextTrigger,
+};
 
 export interface RevealTextProps {
 	/** One string, or one per line. */
@@ -36,6 +44,12 @@ export interface RevealTextProps {
 	delayMs?: number;
 	/** Starting blur in px; skipped on touch screens and reduced motion. */
 	blur?: number;
+	/** The side each unit travels in from. */
+	direction?: RevealTextDirection;
+	/** Where the stagger wave starts. */
+	staggerFrom?: RevealTextStaggerFrom;
+	/** Clip each unit so it rises out of its own line box. */
+	mask?: boolean;
 	size?: RevealTextSize;
 	as?: ElementType;
 	className?: string;
@@ -51,6 +65,9 @@ export function RevealText({
 	staggerMs = 90,
 	delayMs = 0,
 	blur = 12,
+	direction = "up",
+	staggerFrom = "start",
+	mask = false,
 	size = "inherit",
 	as = "span",
 	className,
@@ -65,10 +82,10 @@ export function RevealText({
 		[text],
 	);
 	const units = useMemo(
-		() => revealUnits(lines, split, delayMs, staggerMs),
-		[lines, split, delayMs, staggerMs],
+		() => revealUnits(lines, split, delayMs, staggerMs, staggerFrom),
+		[lines, split, delayMs, staggerMs, staggerFrom],
 	);
-	const styles = revealText({ split, trigger, size });
+	const styles = revealText({ split, trigger, direction, mask, staggerFrom, size });
 
 	useEffect(() => {
 		const set = (next: boolean) => {
@@ -108,12 +125,13 @@ export function RevealText({
 			{units.map((line, l) => (
 				<span key={l} className={styles.line()}>
 					{line.map((unit) => (
-						<span
-							key={unit.key}
-							className={styles.unit()}
-							style={{ "--reveal-delay": `${unit.delay}ms` } as CSSProperties}
-						>
-							{unit.text}
+						<span key={unit.key} className={styles.mask()}>
+							<span
+								className={styles.unit()}
+								style={{ "--reveal-delay": `${unit.delay}ms` } as CSSProperties}
+							>
+								{unit.text}
+							</span>
 						</span>
 					))}
 				</span>

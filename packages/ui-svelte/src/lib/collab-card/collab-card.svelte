@@ -1,4 +1,6 @@
 <script lang="ts">
+import Avatar from "../avatar/avatar.svelte";
+import AvatarImage from "../avatar/avatar-image.svelte";
 import { cn } from "../lib/cn";
 import type { CollabCardCollaborator } from "./types";
 import { type CollabCardTone, collabCard } from "./variants";
@@ -6,6 +8,7 @@ import { type CollabCardTone, collabCard } from "./variants";
 let {
 	collaborators,
 	presenceColors,
+	presenceAvatars = [],
 	extraCount = 0,
 	greeting = "hello!",
 	eyebrow = "Now in multiplayer",
@@ -19,6 +22,8 @@ let {
 }: {
 	collaborators: [CollabCardCollaborator, CollabCardCollaborator];
 	presenceColors: string[];
+	/** Avatar image URLs, matched to `presenceColors` by index; the colour shows until each loads. */
+	presenceAvatars?: string[];
 	extraCount?: number;
 	greeting?: string;
 	eyebrow?: string;
@@ -91,7 +96,9 @@ const CORNERS = [
 		<ul class="m-0 flex list-none items-center p-0" aria-hidden="true">
 			{#each presenceColors as color, index (index)}
 				<li class={cn("relative size-[3.25cqi] shrink-0", index > 0 && OVERLAP)} style="z-index:{index + 1}">
-					<span class={styles.swatch()} style="background-color:{color}"></span>
+					<Avatar class={styles.swatch()} style="background-color:{color}">
+						<AvatarImage src={presenceAvatars[index]} alt="" />
+					</Avatar>
 				</li>
 			{/each}
 			{#if extraCount > 0}

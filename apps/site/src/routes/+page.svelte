@@ -44,7 +44,7 @@ $effect(() => {
 	if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 	const id = setInterval(() => {
 		showcaseIndex = (showcaseIndex + 1) % SHOWCASE.length;
-	}, 3500);
+	}, 2400);
 	return () => clearInterval(id);
 });
 </script>
@@ -80,11 +80,7 @@ $effect(() => {
 				/>
 			</div>
 		</div>
-		{#key showcaseSlug}
-			<div class="starting:opacity-0 transition-opacity duration-300 motion-reduce:transition-none">
-				<InstallCommand slug={showcaseSlug} />
-			</div>
-		{/key}
+		<InstallCommand slug={showcaseSlug} cascade />
 		<p class="mt-4 text-center text-muted-foreground text-xs">
 			New here? <a
 				href="/docs/installation"

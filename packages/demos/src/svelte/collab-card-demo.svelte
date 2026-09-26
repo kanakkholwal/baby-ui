@@ -4,6 +4,7 @@ import {
 	type CollabCardCollaborator,
 	type CollabCardTone,
 } from "@baby-ui/svelte";
+import { avatar } from "../data/media";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
 
@@ -28,6 +29,7 @@ const presenceColors = [
 	"var(--chart-1)",
 	"var(--chart-3)",
 ];
+const presenceAvatars = [12, 32, 47, 5].map(avatar);
 </script>
 
 <div class="w-full max-w-md">
@@ -41,6 +43,7 @@ const presenceColors = [
 		tone={(props.tone as CollabCardTone) ?? "inverted"}
 		{collaborators}
 		{presenceColors}
+		{presenceAvatars}
 		extraCount={Number(props.extraCount ?? 2)}
 	/>
 </div>

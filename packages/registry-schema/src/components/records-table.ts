@@ -145,6 +145,7 @@ export const recordsTable = defineComponent({
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 			registryDependencies: [
+				"avatar",
 				"checkbox",
 				"dropdown-menu",
 				"popover",
@@ -168,6 +169,7 @@ export const recordsTable = defineComponent({
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 			registryDependencies: [
+				"avatar",
 				"checkbox",
 				"dropdown-menu",
 				"popover",

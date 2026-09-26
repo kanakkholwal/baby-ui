@@ -15,8 +15,8 @@ see [Installation](/docs/installation#use-this-sites-look).
 }
 ```
 
-`--ring` derives from `--primary`, so focus rings follow it. The header's palette control
-writes this pair.
+With the `theme` item, `--ring` derives from `--primary`, so focus rings follow it. The theme
+swatches in this site's Settings panel write exactly this pair.
 
 ## Extra variables
 

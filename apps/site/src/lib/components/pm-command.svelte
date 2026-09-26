@@ -11,13 +11,20 @@ let {
 	kind,
 	args,
 	highlight = "",
+	cascade = false,
 	analytics = { event: "command_copied", props: { kind } },
-}: { kind: PmKind; args: string; highlight?: string; analytics?: TrackEvent } = $props();
+}: {
+	kind: PmKind;
+	args: string;
+	highlight?: string;
+	cascade?: boolean;
+	analytics?: TrackEvent;
+} = $props();
 
 const command = $derived(pmCommand(kind, args, prefs.pm));
 </script>
 
 <CodeFrame copyText={command} {analytics}>
 	{#snippet title()}<PmTabs />{/snippet}
-	<PmTerminal {kind} {args} {highlight} />
+	<PmTerminal {kind} {args} {highlight} {cascade} />
 </CodeFrame>

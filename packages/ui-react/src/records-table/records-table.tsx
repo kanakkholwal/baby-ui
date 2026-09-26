@@ -7,6 +7,7 @@ import {
 	useMemo,
 	useState,
 } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "../avatar/avatar";
 import { Checkbox } from "../checkbox/checkbox";
 import {
 	DropdownMenu,
@@ -461,6 +462,13 @@ export function RecordsTable({
 												aria-label={text.selectRow(row.name)}
 												className="shrink-0"
 											/>
+											<Avatar
+												shape="square"
+												className="size-5 rounded-[5px] bg-muted text-[10px]"
+											>
+												<AvatarImage src={row.logo} alt="" />
+												<AvatarFallback>{row.name.charAt(0)}</AvatarFallback>
+											</Avatar>
 											<a
 												href={row.website ? `https://${row.website}` : undefined}
 												onClick={(event) => {

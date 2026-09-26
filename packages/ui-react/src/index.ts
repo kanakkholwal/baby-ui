@@ -581,6 +581,12 @@ export {
 	PaginationPrevious,
 } from "./pagination/pagination";
 export { paginationRange } from "./pagination/range";
+export {
+	ParticleText,
+	type ParticleTextProps,
+	type ParticleTextShape,
+	type ParticleTextSize,
+} from "./particle-text/particle-text";
 export { PieChart, type PieChartProps } from "./pie-chart/pie-chart";
 export type { PieHover, PieVariant } from "./pie-chart/variants";
 export { Popover, PopoverContent, PopoverTrigger } from "./popover/popover";
@@ -694,14 +700,16 @@ export {
 } from "./responsive-dialog/responsive-dialog";
 export { RevealText, type RevealTextProps } from "./reveal-text/reveal-text";
 export type {
+	RevealTextDirection,
 	RevealTextSize,
 	RevealTextSplit,
+	RevealTextStaggerFrom,
 	RevealTextTrigger,
 } from "./reveal-text/variants";
 export { RingChart, type RingChartProps } from "./ring-chart/ring-chart";
 export type { RingCap } from "./ring-chart/variants";
 export { RollText, type RollTextProps } from "./roll-text/roll-text";
-export type { RollStagger, RollTextSize } from "./roll-text/variants";
+export type { RollStagger, RollTextMotion, RollTextSize } from "./roll-text/variants";
 export type { RollingDigitsLocale } from "./rolling-digits/format";
 export { RollingDigits, type RollingDigitsProps } from "./rolling-digits/rolling-digits";
 export type {
@@ -736,6 +744,13 @@ export {
 export type { ScrollProgressPosition } from "./scroll-progress/variants";
 export { ScrollReveal, type ScrollRevealProps } from "./scroll-reveal/scroll-reveal";
 export type { ScrollRevealSize } from "./scroll-reveal/variants";
+export {
+	ScrollVelocity,
+	type ScrollVelocityDirection,
+	type ScrollVelocityLayout,
+	type ScrollVelocityProps,
+	type ScrollVelocitySize,
+} from "./scroll-velocity/scroll-velocity";
 export { ScrubField, type ScrubFieldProps } from "./scrub-field/scrub-field";
 export type { ScrubFieldSize, ScrubFieldTone } from "./scrub-field/variants";
 export {
@@ -828,7 +843,7 @@ export {
 } from "./sunburst-chart/sunburst-chart";
 export type { SunburstVariant } from "./sunburst-chart/variants";
 export { SwapText, type SwapTextProps } from "./swap-text/swap-text";
-export type { SwapTextSize } from "./swap-text/variants";
+export type { SwapTextMotion, SwapTextSize } from "./swap-text/variants";
 export { Switch, type SwitchProps } from "./switch/switch";
 export {
 	Table,
@@ -887,6 +902,12 @@ export type { TextInertiaSize } from "./text-inertia/variants";
 export { TextLoop, type TextLoopProps } from "./text-loop/text-loop";
 export type { TextLoopDirection, TextLoopSize } from "./text-loop/variants";
 export { TextReel, type TextReelProps, type TextReelSize } from "./text-reel/text-reel";
+export {
+	TextRepel,
+	type TextRepelMode,
+	type TextRepelProps,
+	type TextRepelSize,
+} from "./text-repel/text-repel";
 export type {
 	TextTransitionPreset,
 	TextTransitionTarget,
@@ -956,6 +977,14 @@ export { WaveReveal, type WaveRevealProps } from "./wave-reveal/wave-reveal";
 export type { WeekStartsOn } from "./week-calendar/dates";
 export type { WeekCalendarLabels, WeekCalendarVariant } from "./week-calendar/variants";
 export { WeekCalendar, type WeekCalendarProps } from "./week-calendar/week-calendar";
+export {
+	WheelCarousel,
+	type WheelCarouselAspect,
+	type WheelCarouselItem,
+	type WheelCarouselPhotoSide,
+	type WheelCarouselProps,
+	type WheelCarouselSize,
+} from "./wheel-carousel/wheel-carousel";
 export type { WheelPickerOption, WheelPickerRows } from "./wheel-picker/variants";
 export {
 	WheelPicker,

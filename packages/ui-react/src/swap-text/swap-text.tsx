@@ -3,6 +3,7 @@
 import { type CSSProperties, useState } from "react";
 import { cn } from "../lib/cn";
 import {
+	flipTiming,
 	type SwapTextMotion,
 	type SwapTextSize,
 	swapChars,
@@ -66,7 +67,6 @@ export function SwapText({
 				<span aria-hidden className={flip(layer).layer()}>
 					{chars.map((c, i) => (
 						<span
-							// biome-ignore lint/suspicious/noArrayIndexKey: letters repeat, position is the identity
 							key={i}
 							className={flip(layer).char()}
 							style={{ "--i": i, "--n": chars.length } as CSSProperties}
@@ -91,9 +91,9 @@ export function SwapText({
 						className={flip("first").stage()}
 						style={
 							{
-								"--swap-duration": `${durationMs}ms`,
+								"--swap-duration": `${flipTiming(durationMs).letter}ms`,
 								"--swap-stagger": `${staggerMs}ms`,
-								"--swap-lag": `${Math.round(durationMs * 0.62)}ms`,
+								"--swap-lag": `${flipTiming(durationMs).lag}ms`,
 							} as CSSProperties
 						}
 					>

@@ -95,6 +95,7 @@ import {
 	TooltipDemo,
 } from "./overlays";
 import { OverviewCardDemo } from "./overview-card";
+import { ParticleTextDemo } from "./particle-text";
 import { PieChartDemo } from "./pie-chart";
 import {
 	AccordionDemo,
@@ -133,6 +134,7 @@ import { SankeyChartDemo } from "./sankey-chart";
 import { ScatterChartDemo } from "./scatter-chart";
 import { ScoreCardDemo } from "./score-card";
 import { ScrollProgressDemo } from "./scroll-progress";
+import { ScrollVelocityDemo } from "./scroll-velocity";
 import { ShowcaseGridDemo } from "./showcase-grid";
 import { SidebarNavDemo } from "./sidebar-nav";
 import { StatCardDemo, StatCardMapDemo } from "./stat-card";
@@ -179,11 +181,13 @@ import {
 	TextLoopDemo,
 	TypewriterDemo,
 } from "./text-motion";
+import { TextRepelDemo } from "./text-repel";
 import { ThemeToggleDemo } from "./theme-toggle";
 import { ThinkingStateDemo } from "./thinking-state";
 import { ToolChipsDemo } from "./tool-chips";
 import { UsageCardDemo } from "./usage-card";
 import { WeekCalendarDemo } from "./week-calendar";
+import { WheelCarouselDemo } from "./wheel-carousel";
 import { WheelPickerDemo } from "./wheel-picker";
 
 type Props = Record<string, unknown>;
@@ -373,6 +377,9 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"copy-button": CopyButtonDemo,
 	"fill-button": FillButtonDemo,
 	"loading-screen": LoadingScreenDemo,
+	"text-repel": TextRepelDemo,
+	"particle-text": ParticleTextDemo,
+	"scroll-velocity": ScrollVelocityDemo,
 	"code-block": CodeBlockDemo,
 	markdown: MarkdownDemo,
 	"file-diff": FileDiffDemo,
@@ -504,6 +511,7 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"week-calendar": WeekCalendarDemo,
 	"rolling-digits": RollingDigitsDemo,
 	marker: MarkerDemo,
+	"wheel-carousel": WheelCarouselDemo,
 	"wheel-picker": WheelPickerDemo,
 	"overview-card": OverviewCardDemo,
 	"usage-card": UsageCardDemo,

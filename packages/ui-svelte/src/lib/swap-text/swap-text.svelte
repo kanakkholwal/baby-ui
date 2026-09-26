@@ -1,6 +1,7 @@
 <script lang="ts">
 import { cn } from "../lib/cn";
 import {
+	flipTiming,
 	type SwapTextMotion,
 	type SwapTextSize,
 	swapChars,
@@ -49,7 +50,8 @@ function setActive(next: boolean) {
 }
 
 const LAYER = "block transition-transform ease-[var(--ease-out)]";
-const flip = (layer: "first" | "second") => swapTextFlip({ layer, active, hover: supportsHover });
+const flip = (layer: "first" | "second") =>
+	swapTextFlip({ layer, active, hover: supportsHover });
 </script>
 
 {#snippet letters(text: string, layer: "first" | "second")}
@@ -73,7 +75,7 @@ const flip = (layer: "first" | "second") => swapTextFlip({ layer, active, hover:
 		>
 			<span
 				class={flip("first").stage()}
-				style="--swap-duration: {durationMs}ms; --swap-stagger: {staggerMs}ms; --swap-lag: {Math.round(durationMs * 0.62)}ms"
+				style="--swap-duration: {flipTiming(durationMs).letter}ms; --swap-stagger: {staggerMs}ms; --swap-lag: {flipTiming(durationMs).lag}ms"
 			>
 				{@render letters(initialText, "first")}
 				{@render letters(finalText, "second")}

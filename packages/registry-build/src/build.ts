@@ -72,7 +72,9 @@ const TYPES: Record<string, string[]> = {
 };
 
 function typesFor(dependencies: string[]): string[] | undefined {
-	const types = [...new Set(dependencies.flatMap((dep) => TYPES[dep.replace(/@[^@/]*$/, "")] ?? []))];
+	const types = [
+		...new Set(dependencies.flatMap((dep) => TYPES[dep.replace(/@[^@/]*$/, "")] ?? [])),
+	];
 	return types.length ? types.sort() : undefined;
 }
 
@@ -129,7 +131,9 @@ export async function buildItem(
 			tokensUrl(framework),
 		],
 		files,
-		cssVars: Object.keys(spec.cssVars).length ? bareVars({ theme: spec.cssVars }) : undefined,
+		cssVars: Object.keys(spec.cssVars).length
+			? bareVars({ theme: spec.cssVars })
+			: undefined,
 		css: await cssFor(files.map((f) => f.content)),
 		categories: [spec.category],
 		meta: {

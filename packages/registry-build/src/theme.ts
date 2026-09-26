@@ -127,7 +127,9 @@ export function bareVars<T extends VarGroups>(groups: T): T {
 		Object.entries(groups).map(([group, vars]) => [
 			group,
 			vars &&
-				Object.fromEntries(Object.entries(vars).map(([k, v]) => [k.replace(/^--/, ""), v])),
+				Object.fromEntries(
+					Object.entries(vars).map(([k, v]) => [k.replace(/^--/, ""), v]),
+				),
 		]),
 	) as T;
 }

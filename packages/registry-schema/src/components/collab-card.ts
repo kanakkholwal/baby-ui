@@ -24,6 +24,13 @@ export const collabCard = defineComponent({
 			control: { kind: "none" },
 		},
 		{
+			name: "presenceAvatars",
+			type: "string[]",
+			description:
+				"Avatar image URLs matched to `presenceColors` by index; each colour shows until its image loads.",
+			control: { kind: "none" },
+		},
+		{
 			name: "extraCount",
 			type: "number",
 			description: "Editors beyond the visible swatches, shown as a `+N` avatar.",
@@ -117,6 +124,7 @@ export const collabCard = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			registryDependencies: ["avatar"],
 		},
 		svelte: {
 			entry: "CollabCard",
@@ -127,6 +135,7 @@ export const collabCard = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			registryDependencies: ["avatar"],
 		},
 	},
 	keywords: ["collaboration", "multiplayer", "cursors", "presence", "figma", "bento"],

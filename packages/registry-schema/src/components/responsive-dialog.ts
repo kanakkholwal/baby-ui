@@ -116,7 +116,7 @@ export const responsiveDialog = defineComponent({
 				{ path: "lib/use-is-mobile.svelte.ts", type: "registry:lib" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge", "vaul-svelte@next", "bits-ui"],
+			dependencies: ["clsx", "tailwind-merge", "vaul-svelte@^1.0.0-next.7", "bits-ui"],
 			registryDependencies: ["dialog", "drawer"],
 		},
 	},

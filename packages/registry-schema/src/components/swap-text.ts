@@ -61,7 +61,7 @@ export const swapText = defineComponent({
 		{
 			name: "durationMs",
 			type: "number",
-			description: "How long the swap takes; per letter for `flip`.",
+			description: "How long the swap takes; for `flip`, each letter turns in 40% of it.",
 			default: 1000,
 			control: { kind: "number", min: 200, max: 2000, step: 50 },
 		},

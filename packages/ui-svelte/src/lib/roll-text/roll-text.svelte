@@ -1,6 +1,12 @@
 <script lang="ts">
 import { cn } from "../lib/cn";
-import { type RollStagger, type RollTextSize, rollText } from "./variants";
+import {
+	ROLL_DONE,
+	type RollStagger,
+	type RollTextMotion,
+	type RollTextSize,
+	rollText,
+} from "./variants";
 
 let {
 	text,
@@ -10,6 +16,7 @@ let {
 	staggerMs = 32,
 	durationMs = 450,
 	size = "md",
+	motion = "slide",
 	class: classProp,
 }: {
 	text: string;
@@ -19,6 +26,7 @@ let {
 	staggerMs?: number;
 	durationMs?: number;
 	size?: RollTextSize;
+	motion?: RollTextMotion;
 	class?: string;
 } = $props();
 
@@ -85,15 +93,15 @@ $effect(() => {
 	};
 });
 
-function onStackAnimationEnd() {
-	if (phase !== "animating") return;
+function onStackAnimationEnd(event: AnimationEvent) {
+	if (phase !== "animating" || !ROLL_DONE.has(event.animationName)) return;
 	remaining -= 1;
 	if (remaining <= 0) phase = "open";
 }
 
 const classes = $derived(
 	cn(
-		rollText({ size }),
+		rollText({ size, motion }),
 		phase === "animating" && "roll-text--animating",
 		phase === "open" && "roll-text--open",
 		classProp,

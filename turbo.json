@@ -9,7 +9,7 @@
 		},
 		"registry": {
 			"dependsOn": ["^build"],
-			"env": ["BABY_UI_REGISTRY_URL", "BABY_UI_SITE_URL"],
+			"env": ["BABY_UI_REGISTRY_URL", "BABY_UI_SITE_URL", "BABY_UI_REGISTRY_OUT"],
 			"inputs": [
 				"src/**",
 				"../tokens/src/**",

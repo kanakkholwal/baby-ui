@@ -1,3 +1,4 @@
+import { Avatar, AvatarImage } from "../avatar/avatar";
 import { cn } from "../lib/cn";
 import { type CollabCardTone, collabCard } from "./variants";
 
@@ -18,6 +19,8 @@ export interface CollabCardProps {
 	collaborators: [CollabCardCollaborator, CollabCardCollaborator];
 	/** Avatar swatch colors for the visible presence stack (left to right). */
 	presenceColors: string[];
+	/** Avatar image URLs, matched to `presenceColors` by index; the colour shows until each loads. */
+	presenceAvatars?: string[];
 	/** Editors beyond the visible swatches, shown as a `+N` avatar. */
 	extraCount?: number;
 	greeting?: string;
@@ -72,6 +75,7 @@ function ClickBurst({ className }: { className?: string }) {
 export function CollabCard({
 	collaborators,
 	presenceColors,
+	presenceAvatars = [],
 	extraCount = 0,
 	greeting = "hello!",
 	eyebrow = "Now in multiplayer",
@@ -121,7 +125,9 @@ export function CollabCard({
 							className={cn("relative size-[3.25cqi] shrink-0", index > 0 && OVERLAP)}
 							style={{ zIndex: index + 1 }}
 						>
-							<span className={styles.swatch()} style={{ backgroundColor: color }} />
+							<Avatar className={styles.swatch()} style={{ backgroundColor: color }}>
+								<AvatarImage src={presenceAvatars[index]} alt="" />
+							</Avatar>
 						</li>
 					))}
 					{extraCount > 0 ? (

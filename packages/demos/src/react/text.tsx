@@ -32,6 +32,7 @@ import {
 	type MirrorTextDirection,
 	type RollStagger,
 	RollText,
+	type RollTextMotion,
 	type RollTextSize,
 	ScrollReveal,
 	type ScrollRevealSize,
@@ -238,6 +239,7 @@ export function RollTextDemo({ props }: { props: Props }) {
 			staggerMs={Number(props.staggerMs ?? 32)}
 			durationMs={Number(props.durationMs ?? 450)}
 			size={(props.size as RollTextSize) ?? "md"}
+			motion={(props.motion as RollTextMotion) ?? "slide"}
 			className="text-2xl font-semibold text-foreground"
 		/>
 	);

@@ -5,6 +5,7 @@ import {
 	type CollabCardCollaborator,
 	type CollabCardTone,
 } from "@baby-ui/react";
+import { avatar } from "../data/media";
 
 type Props = Record<string, unknown>;
 
@@ -30,6 +31,8 @@ const PRESENCE_COLORS = [
 	"var(--chart-3)",
 ];
 
+const PRESENCE_AVATARS = [12, 32, 47, 5].map(avatar);
+
 export function CollabCardDemo({ props }: { props: Props }) {
 	return (
 		<div className="w-full max-w-md">
@@ -45,6 +48,7 @@ export function CollabCardDemo({ props }: { props: Props }) {
 				tone={(props.tone as CollabCardTone) ?? "inverted"}
 				collaborators={COLLABORATORS}
 				presenceColors={PRESENCE_COLORS}
+				presenceAvatars={PRESENCE_AVATARS}
 				extraCount={Number(props.extraCount ?? 2)}
 			/>
 		</div>

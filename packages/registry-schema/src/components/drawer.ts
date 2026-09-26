@@ -105,10 +105,9 @@ export const drawer = defineComponent({
 			],
 			dependencies: [
 				"tailwind-variants",
-				"vaul-svelte",
+				"vaul-svelte@^1.0.0-next.7",
 				"clsx",
 				"tailwind-merge",
-				"vaul-svelte@next",
 				"bits-ui",
 			],
 		},

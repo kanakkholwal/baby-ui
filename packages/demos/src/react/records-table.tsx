@@ -13,6 +13,7 @@ const ROWS: RecordRow[] = [
 		last: "3 days ago",
 		strength: "strong",
 		website: "northwindtraders.com",
+		logo: "https://avatar.vercel.sh/northwindtraders.com?size=40",
 		aiValue: "Series B, $40M raised",
 	},
 	{
@@ -22,6 +23,7 @@ const ROWS: RecordRow[] = [
 		last: "2 weeks ago",
 		strength: "weak",
 		website: "vantageanalytics.io",
+		logo: "https://avatar.vercel.sh/vantageanalytics.io?size=40",
 		aiValue: "Bootstrapped, profitable",
 	},
 	{
@@ -39,6 +41,7 @@ const ROWS: RecordRow[] = [
 		last: "1 month ago",
 		strength: "veryweak",
 		website: "ferrousrobotics.com",
+		logo: "https://avatar.vercel.sh/ferrousrobotics.com?size=40",
 		aiValue: "Series A, $12M raised",
 	},
 	{
@@ -48,6 +51,7 @@ const ROWS: RecordRow[] = [
 		last: "Yesterday",
 		strength: "strong",
 		website: "lumenhealth.co",
+		logo: "https://avatar.vercel.sh/lumenhealth.co?size=40",
 		aiValue: "Series C, $85M raised",
 	},
 ];

@@ -54,6 +54,8 @@ export type RecordRow = {
 	last: string;
 	strength: RecordStrength;
 	website?: string;
+	/** Company logo URL; the name's first letter shows while it loads or if it fails. */
+	logo?: string;
 	/** Real, caller-supplied resolved value for the AI column; shown once "Go calculate" finishes. */
 	aiValue?: string;
 };

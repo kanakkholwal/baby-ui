@@ -14,7 +14,7 @@ export const sidebarNav = defineComponent({
 		{
 			name: "workspace",
 			type: "SidebarWorkspace",
-			description: "The current workspace's name and monogram.",
+			description: "The current workspace's name, monogram and optional image URL.",
 			control: { kind: "none" },
 		},
 		{
@@ -94,7 +94,7 @@ export const sidebarNav = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
-			registryDependencies: ["dropdown-menu"],
+			registryDependencies: ["avatar", "dropdown-menu"],
 		},
 		svelte: {
 			entry: "SidebarNav",
@@ -106,7 +106,7 @@ export const sidebarNav = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
-			registryDependencies: ["dropdown-menu"],
+			registryDependencies: ["avatar", "dropdown-menu"],
 		},
 	},
 	keywords: ["sidebar", "navigation", "workspace", "chat"],

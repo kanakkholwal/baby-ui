@@ -84,7 +84,7 @@ export const morphingModal = defineComponent({
 			entry: "MorphingModal",
 			files: [
 				{ path: "morphing-modal/morphing-modal.tsx", type: "registry:ui" },
-				{ path: "morphing-modal/use-morph.ts", type: "registry:hook" },
+				{ path: "morphing-modal/use-morph.ts", type: "registry:ui" },
 				{ path: "morphing-modal/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],

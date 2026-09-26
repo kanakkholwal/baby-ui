@@ -55,4 +55,7 @@ export const FRAMEWORK: Record<
 	},
 };
 
-export const OUT_DIR = resolve(REPO_ROOT, "apps/site/static");
+// Overridable so an install test can serve its own copy without touching the site's files.
+export const OUT_DIR = process.env.BABY_UI_REGISTRY_OUT
+	? resolve(process.env.BABY_UI_REGISTRY_OUT)
+	: resolve(REPO_ROOT, "apps/site/static");

@@ -7,7 +7,12 @@ export type SidebarNavItem = {
 	count?: string;
 };
 export type SidebarRecent = { id: string; label: string; prompt?: string };
-export type SidebarWorkspace = { name: string; monogram: string };
+export type SidebarWorkspace = {
+	name: string;
+	monogram: string;
+	/** Workspace image URL; the monogram shows while it loads or if it fails. */
+	image?: string;
+};
 export type SidebarWorkspaceAction = {
 	label: string;
 	icon?: Snippet;

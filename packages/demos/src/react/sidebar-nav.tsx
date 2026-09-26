@@ -79,7 +79,11 @@ export function SidebarNavDemo({ props }: { props: Props }) {
 
 	return (
 		<SidebarNav
-			workspace={{ name: "Acme Studio", monogram: "A" }}
+			workspace={{
+				name: "Acme Studio",
+				monogram: "A",
+				image: "https://avatar.vercel.sh/acme-studio?size=48",
+			}}
 			logo={<LogoIcon />}
 			navItems={NAV_ITEMS}
 			recents={RECENTS}

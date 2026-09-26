@@ -1,6 +1,7 @@
 import { defineComponent } from "../index";
 
 const SIZES = ["sm", "md", "lg"];
+const MOTIONS = ["slide", "tilt"];
 
 export const rollText = defineComponent({
 	slug: "roll-text",
@@ -9,7 +10,7 @@ export const rollText = defineComponent({
 		"Stacked text layers that roll vertically on hover, like a flip-clock digit.",
 	category: "text",
 	status: "stable",
-	variants: { size: SIZES },
+	variants: { size: SIZES, motion: MOTIONS },
 	props: [
 		{
 			name: "text",
@@ -56,6 +57,14 @@ export const rollText = defineComponent({
 			control: { kind: "number", min: 100, max: 1000, step: 50 },
 		},
 		{
+			name: "motion",
+			type: MOTIONS.map((v) => `"${v}"`).join(" | "),
+			description:
+				"Slide rolls a second copy up into place; tilt tips each letter back while its copy flips up in 3D.",
+			default: "slide",
+			control: { kind: "select", options: MOTIONS },
+		},
+		{
 			name: "size",
 			type: SIZES.map((v) => `"${v}"`).join(" | "),
 			description: "Type scale.",
@@ -67,6 +76,7 @@ export const rollText = defineComponent({
 		springs: [],
 		reducedMotion: "The roll completes instantly to its open state instead of animating.",
 		behaviour: [
+			"Tilt: the front letter tips back and blurs away while an echo flips up from below with a slight overshoot; units finish on the echo landing.",
 			"On hover/focus, two stacked copies of the label roll: the top slides up out of view, the bottom rises in to replace it. Re-triggering while open rolls again from the top.",
 		],
 	},

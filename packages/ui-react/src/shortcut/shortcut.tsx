@@ -7,7 +7,7 @@ import {
 	parseShortcut,
 	shortcutBlocked,
 	shortcutOwner,
-} from "../lib/shortcut";
+} from "../lib/shortcut-keys";
 import { type ShortcutSize, type ShortcutVariant, shortcutCap } from "./variants";
 
 export type { ShortcutSize, ShortcutVariant };

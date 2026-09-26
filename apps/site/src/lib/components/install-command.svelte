@@ -3,7 +3,7 @@ import origins from "$lib/generated/origins.json";
 import { prefs } from "$lib/preferences.svelte";
 import PmCommand from "./pm-command.svelte";
 
-let { slug }: { slug: string } = $props();
+let { slug, cascade = false }: { slug: string; cascade?: boolean } = $props();
 
 const CLI = { react: "shadcn@latest", svelte: "shadcn-svelte@latest" } as const;
 const ROUTE = { react: "r", svelte: "svelte/r" } as const;
@@ -18,5 +18,6 @@ const url = $derived(
 	kind="dlx"
 	args="{CLI[prefs.framework]} add {url}"
 	highlight="{slug}.json"
+	{cascade}
 	analytics={{ event: "install_copied", props: { item: slug, method: "cli" } }}
 />

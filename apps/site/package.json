@@ -4,8 +4,8 @@
 	"type": "module",
 	"scripts": {
 		"dev": "cross-env PORTLESS_HTTPS=0 portless",
-		"dev:app": "vite dev",
-		"build": "vite build",
+		"dev:app": "node scripts/build-search-index.mjs && vite dev",
+		"build": "node scripts/build-search-index.mjs && vite build",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
@@ -38,6 +38,7 @@
 		"@baby-ui/tokens": "workspace:*",
 		"@docvia/renderer-core": "^0.2.3",
 		"@docvia/renderer-svelte": "^0.2.4",
+		"@docvia/search": "^0.4.1",
 		"@docvia/source": "^0.4.0",
 		"@fontsource-variable/inter": "catalog:",
 		"@fontsource-variable/jetbrains-mono": "catalog:",

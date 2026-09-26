@@ -1,5 +1,8 @@
 <script lang="ts">
 import type { Snippet } from "svelte";
+import Avatar from "../avatar/avatar.svelte";
+import AvatarFallback from "../avatar/avatar-fallback.svelte";
+import AvatarImage from "../avatar/avatar-image.svelte";
 import DropdownMenu from "../dropdown-menu/dropdown-menu.svelte";
 import DropdownMenuContent from "../dropdown-menu/dropdown-menu-content.svelte";
 import DropdownMenuItem from "../dropdown-menu/dropdown-menu-item.svelte";
@@ -219,7 +222,13 @@ function onGlideOver(group: string, event: MouseEvent) {
 							collapsed && "opacity-0",
 						)}
 					>
-						{#if logo}{@render logo()}{/if}
+						{#if logo}
+							{@render logo()}
+						{:else if workspace.image}
+							<Avatar shape="square" class="size-5 rounded-[5px]">
+								<AvatarImage src={workspace.image} alt="" />
+							</Avatar>
+						{/if}
 					</span>
 					<span
 						class={cn(
@@ -240,9 +249,10 @@ function onGlideOver(group: string, event: MouseEvent) {
 				</DropdownMenuTrigger>
 				<DropdownMenuContent align="start" class="w-64">
 					<DropdownMenuItem class="h-10 gap-1.5">
-						<span class="flex size-6 shrink-0 items-center justify-center rounded-md bg-foreground font-semibold text-[11px] text-background">
-							{workspace.monogram}
-						</span>
+						<Avatar shape="square" class="size-6 rounded-md bg-foreground font-semibold text-[11px]">
+							<AvatarImage src={workspace.image} alt="" />
+							<AvatarFallback class="text-background">{workspace.monogram}</AvatarFallback>
+						</Avatar>
 						<span class="min-w-0 flex-1 truncate font-medium text-[13.5px] text-foreground">
 							{workspace.name}
 						</span>
