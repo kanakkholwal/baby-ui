@@ -1,6 +1,6 @@
 import { createRequire } from "node:module";
 import { dirname, join } from "node:path";
-import { docvia } from "@docvia/plugin-vite";
+import { docvia, docviaSourcePlugin } from "@docvia/plugin-vite";
 import adapter from "@sveltejs/adapter-cloudflare";
 import { sveltekit } from "@sveltejs/kit/vite";
 import tailwindcss from "@tailwindcss/vite";
@@ -76,6 +76,8 @@ export default defineConfig({
 	plugins: [
 		tailwindcss(),
 		docvia(docviaConfig),
+		// Resolves `docvia/registry` to the registry alone; docvia() only serves the full source.
+		docviaSourcePlugin(),
 		sveltekit({
 			// The navbar and fullscreen-nav demos ship placeholder anchors like #product,
 			// which have no target on the page that previews them. Warn, do not fail.
@@ -83,9 +85,6 @@ export default defineConfig({
 			// Per-component sheets inline (each link is a blocking round trip); the 370KB Tailwind
 			// sheet stays linked so it caches across pages instead of riding in every HTML file.
 			inlineStyleThreshold: 16 * 1024,
-			// docvia's generated output. Pages import `$docvia/registry` alone: the virtual source
-			// module also builds every collection, which ships the whole docs corpus to the client.
-			alias: { $docvia: ".docvia", "$docvia/*": ".docvia/*" },
 			compilerOptions: {
 				// Force runes mode for the project, except for libraries. Can be removed in svelte 6.
 				runes: ({ filename }) =>
