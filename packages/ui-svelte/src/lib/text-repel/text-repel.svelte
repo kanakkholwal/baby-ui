@@ -63,7 +63,6 @@ function onLeave() {
 <span
 	bind:this={root}
 	data-slot="text-repel"
-	role="presentation"
 	class={cn(s.root(), className)}
 	onpointermove={onMove}
 	onpointerleave={onLeave}

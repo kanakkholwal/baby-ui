@@ -71,8 +71,9 @@ export const pixelImageTrail = defineComponent({
 		{
 			name: "radius",
 			type: "number",
-			description: "Farthest distance, in px, for an occasional satellite square.",
-			default: 58,
+			description:
+				"Reveal reach in px: squares whose centre lies within it show. 0 reveals only the square under the pointer.",
+			default: 40,
 			control: { kind: "number", min: 0, max: 200, step: 10 },
 		},
 	],
@@ -81,15 +82,16 @@ export const pixelImageTrail = defineComponent({
 		reducedMotion:
 			"No trail and no fading: only the squares under the pointer show, and they clear on leave.",
 		behaviour: [
-			"The pointer's grid cell and its three nearest neighbours reveal the image at full strength.",
+			"The pointer's grid cell and every cell whose centre lies within `radius` reveal the image at full strength; occasional satellites land just past it.",
 			"Cells crossed between two moves are filled in, then fade over `fadeDuration` (or shrink, per `variant`).",
 			"The frame loop runs only while trail squares are fading, and stops while the pointer rests or the tab is hidden.",
 			"Keyboard focus inside the area reveals its centre; touch drives it through pointer events.",
 		],
 	},
 	a11y: {
-		keyboard: [],
-		notes: ["The canvas is aria-hidden; a visually hidden image carries `alt`."],
+		role: "group",
+		keyboard: ["Tab focuses the area and reveals its centre; blur clears it"],
+		notes: ["The canvas is aria-hidden; the focusable group is labelled by `alt`."],
 	},
 	licenseOrigin: {
 		source: "componentry",

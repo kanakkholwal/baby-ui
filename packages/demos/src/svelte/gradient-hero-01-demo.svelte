@@ -16,6 +16,6 @@ let { props = {} }: { props?: Record<string, unknown> } = $props();
 		{ label: "Explore blocks", href: "/components/blocks" },
 		{ label: "View source", href: "https://github.com/kanakkholwal/baby-ui" },
 	]}
-	tone={(props.tone as GradientHero01Tone) ?? "primary"}
-	size={(props.size as GradientHero01Size) ?? "section"}
+	tone={(props.tone as GradientHero01Tone) ?? "chart"}
+	size={(props.size as GradientHero01Size) ?? "screen"}
 />

@@ -26,7 +26,7 @@ let {
 	description,
 	badge,
 	actions = [],
-	tone = "primary",
+	tone = "chart",
 	size = "screen",
 	class: classProp,
 	...rest
@@ -51,7 +51,7 @@ const live = $derived(
 		{#if description}<p class={s.description()}>{description}</p>{/if}
 		{#if live.length}
 			<div class={s.actions()}>
-				{#each live as action, i (action.label)}
+				{#each live as action, i (i)}
 					{#if action.href !== undefined}
 						<Button
 							href={action.href}

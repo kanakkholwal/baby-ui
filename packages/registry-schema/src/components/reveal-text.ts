@@ -31,7 +31,7 @@ export const revealText = defineComponent({
 		{
 			name: "split",
 			type: SPLITS.map((v) => `"${v}"`).join(" | "),
-			description: "Stagger by word or by letter.",
+			description: "Stagger by line, word or letter.",
 			default: "word",
 			control: { kind: "select", options: SPLITS },
 		},

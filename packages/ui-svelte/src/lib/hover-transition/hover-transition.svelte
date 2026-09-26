@@ -1,7 +1,7 @@
 <script lang="ts">
 import type { Snippet } from "svelte";
 import { cn } from "../lib/cn";
-import { baseVars, hoverLayers, movesDefault, styleString } from "./effects";
+import { baseVars, hoverLayers, styleString } from "./effects";
 import {
 	type HoverTransitionDirection,
 	type HoverTransitionEffect,
@@ -92,7 +92,8 @@ function untilt(event: PointerEvent & { currentTarget: HTMLDivElement }) {
 >
 	<div data-active={active ? "true" : "false"} class={styles.stage()}>
 		<div
-			aria-hidden={active || movesDefault(effect) ? true : undefined}
+			aria-hidden={active ? true : undefined}
+			inert={active}
 			class={styles.base()}
 			style={styleString(baseVars(effect, active))}
 		>
@@ -100,7 +101,9 @@ function untilt(event: PointerEvent & { currentTarget: HTMLDivElement }) {
 		</div>
 		{#each layers as layer, i (i)}
 			<div
+				data-exposed={i === firstHover && active ? "true" : undefined}
 				aria-hidden={i === firstHover && active ? undefined : true}
+				inert={!(i === firstHover && active)}
 				class={styles.layer()}
 				style={styleString(layer.vars)}
 			>

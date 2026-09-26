@@ -80,7 +80,7 @@ function CalcCell({ label }: { label: string }) {
 	return (
 		<span className="inline-flex items-center gap-1.5 text-[13px] text-muted-foreground">
 			{label}
-			<span className="size-1.5 animate-pulse rounded-full bg-muted-foreground" />
+			<span className="size-1.5 animate-pulse rounded-full bg-muted-foreground motion-reduce:animate-none" />
 		</span>
 	);
 }
@@ -168,7 +168,8 @@ export function RecordsTable({
 	>({});
 	const [resizingColumn, setResizingColumn] = useState<ColumnKey | null>(null);
 	const [openColumn, setOpenColumn] = useState<ColumnKey | null>(null);
-	const { root, cell, headerCell } = recordsTable({ density });
+	const { root, table, cell, headerCell, row: rowClass, pinCell, aiCol, aiCell, aiInner } =
+		recordsTable({ density, aiShown });
 
 	const widths = { ...COLUMN_WIDTHS[density], ...widthOverrides };
 	const visibleColumns = COLUMN_ORDER.filter((key) => key !== "ai" || aiShown);
@@ -191,11 +192,10 @@ export function RecordsTable({
 			? undefined
 			: { position: "sticky", left: offsets[key], zIndex: 2 };
 	const pinClass = (key: ColumnKey, selectedRow = false) =>
-		offsets[key] === undefined
-			? undefined
-			: selectedRow
-				? "bg-[color-mix(in_oklab,var(--primary)_4%,var(--card))]"
-				: "bg-card";
+		offsets[key] === undefined ? undefined : pinCell({ selected: selectedRow });
+	/** The AI column stays mounted so show/hide animates its width instead of snapping. */
+	const aiProps = (key: ColumnKey) =>
+		key === "ai" ? { inert: !aiShown } : {};
 
 	function toggleAll() {
 		const ids = visibleRows.map((row) => row.id);
@@ -266,13 +266,15 @@ export function RecordsTable({
 			<th
 				key={key}
 				style={pinStyle(key)}
+				{...aiProps(key)}
 				className={cn(
 					headerCell(),
 					"relative border-border border-r border-b bg-card text-left font-medium text-[12.5px] text-muted-foreground",
 					openColumn === key && "bg-primary/[0.04]",
+					key === "ai" && aiCell(),
 				)}
 			>
-				<div className="flex min-w-0 items-center gap-1.5">
+				<div className={cn("flex min-w-0 items-center gap-1.5", key === "ai" && aiInner())}>
 					{lead}
 					<Popover
 						open={openColumn === key}
@@ -299,7 +301,7 @@ export function RecordsTable({
 								setSort(nextSort(sort, sortKey));
 							}}
 							className={cn(
-								"shrink-0 cursor-pointer text-muted-foreground transition-[opacity,rotate] duration-150",
+								"shrink-0 cursor-pointer text-muted-foreground transition-[opacity,rotate] duration-150 motion-reduce:transition-none",
 								sort.key === sortKey
 									? "opacity-100"
 									: "opacity-0 hover:opacity-60 focus-visible:opacity-60",
@@ -340,13 +342,17 @@ export function RecordsTable({
 				style={{ scrollbarWidth: "thin" }}
 			>
 				<table
-					className="border-collapse text-[13px]"
+					className={table()}
 					style={{ width: fill ? "100%" : tableWidth, minWidth: tableWidth }}
 				>
 					<colgroup>
-						{visibleColumns.map((key) => (
-							<col key={key} style={{ width: widths[key] }} />
-						))}
+						{COLUMN_ORDER.map((key) =>
+							key === "ai" ? (
+								<col key={key} className={aiCol()} style={{ width: aiShown ? widths.ai : 0 }} />
+							) : (
+								<col key={key} style={{ width: widths[key] }} />
+							),
+						)}
 						<col style={{ width: ACTIONS_WIDTH }} />
 					</colgroup>
 					<thead>
@@ -366,12 +372,10 @@ export function RecordsTable({
 							{header("last", "last")}
 							{header("strength", "strength")}
 							{header("links")}
-							{aiShown
-								? header("ai", undefined, undefined, () => {
-										setAiShown(false);
-										setOpenColumn(null);
-									})
-								: null}
+							{header("ai", undefined, undefined, () => {
+								setAiShown(false);
+								setOpenColumn(null);
+							})}
 							<th className={cn(headerCell(), "border-border border-b bg-card px-2")}>
 								<div className="flex items-center gap-1">
 									<DropdownMenu>
@@ -437,10 +441,12 @@ export function RecordsTable({
 							const isSelected = selected.includes(row.id);
 							const td = (key: ColumnKey, extra?: string) => ({
 								style: pinStyle(key),
+								...aiProps(key),
 								className: cn(
 									cell(),
 									"border-border border-r border-b",
 									pinClass(key, isSelected),
+									key === "ai" && aiCell(),
 									extra,
 								),
 							});
@@ -449,7 +455,7 @@ export function RecordsTable({
 									key={row.id}
 									data-slot="records-table-row"
 									data-selected={isSelected || undefined}
-									className={cn("transition-colors", isSelected && "bg-primary/[0.04]")}
+									className={rowClass({ selected: isSelected })}
 								>
 									<td {...td("company")}>
 										<div className="flex min-w-0 items-center gap-2">
@@ -463,6 +469,7 @@ export function RecordsTable({
 												className="shrink-0"
 											/>
 											<Avatar
+												aria-hidden
 												shape="square"
 												className="size-5 rounded-[5px] bg-muted text-[10px]"
 											>
@@ -533,8 +540,8 @@ export function RecordsTable({
 											<span className="text-muted-foreground">{text.empty}</span>
 										)}
 									</td>
-									{aiShown ? (
-										<td {...td("ai")}>
+									<td {...td("ai")}>
+										<div className={aiInner()}>
 											{isCalc("ai", index) ? (
 												<CalcCell label={text.calculating} />
 											) : (
@@ -544,8 +551,8 @@ export function RecordsTable({
 													{row.aiValue ?? text.empty}
 												</span>
 											)}
-										</td>
-									) : null}
+										</div>
+									</td>
 									<td className={cn(cell(), "border-border border-b px-2")} />
 								</tr>
 							);
@@ -584,11 +591,15 @@ export function RecordsTable({
 							<td style={pinStyle("links")} className={cn(footerCell, pinClass("links"))}>
 								{text.linkCount(rows.filter((row) => row.website).length)}
 							</td>
-							{aiShown ? (
-								<td style={pinStyle("ai")} className={cn(footerCell, pinClass("ai"))}>
+							<td
+								style={pinStyle("ai")}
+								{...aiProps("ai")}
+								className={cn(footerCell, pinClass("ai"), aiCell())}
+							>
+								<div className={aiInner()}>
 									{text.filled(rows.filter((row) => row.aiValue).length)}
-								</td>
-							) : null}
+								</div>
+							</td>
 							<td className={cn(cell(), "px-2")} />
 						</tr>
 					</tfoot>

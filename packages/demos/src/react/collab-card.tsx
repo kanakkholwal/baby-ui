@@ -37,9 +37,9 @@ export function CollabCardDemo({ props }: { props: Props }) {
 	return (
 		<div className="w-full max-w-md">
 			<CollabCard
-				greeting={(props.greeting as string) || undefined}
-				eyebrow={(props.eyebrow as string) || undefined}
-				intro={(props.intro as string) || undefined}
+				greeting={(props.greeting as string) || "hello!"}
+				eyebrow={(props.eyebrow as string) || "Now in multiplayer"}
+				intro={(props.intro as string) || "editing"}
 				conjunction={(props.conjunction as string) || undefined}
 				trailing={(props.trailing as string) || undefined}
 				backgroundUrl={

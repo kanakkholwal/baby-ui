@@ -20,6 +20,7 @@ type Props = Omit<HTMLAttributes<HTMLElement>, "title"> & {
 	periods: Pricing02Period[];
 	/** Bindable. */
 	period?: string;
+	onPeriodChange?: (period: string) => void;
 	/** Called by a plan's button when the plan has no `href`. */
 	onSelect?: (planId: string, period: string) => void;
 	eyebrow?: string;
@@ -36,6 +37,7 @@ let {
 	plans,
 	periods,
 	period = $bindable(),
+	onPeriodChange,
 	onSelect,
 	eyebrow,
 	title,
@@ -73,7 +75,9 @@ const moved = $derived.by(() => {
 });
 
 function setPeriod(next: string) {
-	if (next) period = next;
+	if (!next) return;
+	period = next;
+	onPeriodChange?.(next);
 }
 </script>
 

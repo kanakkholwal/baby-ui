@@ -34,9 +34,9 @@ const presenceAvatars = [12, 32, 47, 5].map(avatar);
 
 <div class="w-full max-w-md">
 	<CollabCard
-		greeting={(props.greeting as string) || undefined}
-		eyebrow={(props.eyebrow as string) || undefined}
-		intro={(props.intro as string) || undefined}
+		greeting={(props.greeting as string) || "hello!"}
+		eyebrow={(props.eyebrow as string) || "Now in multiplayer"}
+		intro={(props.intro as string) || "editing"}
 		conjunction={(props.conjunction as string) || undefined}
 		trailing={(props.trailing as string) || undefined}
 		backgroundUrl={(props.backgroundUrl as string) || "https://picsum.photos/id/1043/800/500"}

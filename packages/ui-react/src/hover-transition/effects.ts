@@ -123,23 +123,33 @@ export function hoverLayers(
 				},
 			];
 		case "curtain": {
-			const vertical = vy !== 0 || direction === "center";
-			const leaf = (first: boolean) =>
-				vars({
-					clip: vertical
-						? first
-							? "inset(0 0 50% 0)"
-							: "inset(50% 0 0 0)"
-						: first
-							? "inset(0 50% 0 0)"
-							: "inset(0 0 0 50%)",
-					transform: active
-						? vertical
-							? `translate3d(0, ${first ? -100 : 100}%, 0)`
-							: `translate3d(${first ? -100 : 100}%, 0, 0)`
-						: "translate3d(0, 0, 0)",
+			// Both leaves retract away from the named side, the nearer one first.
+			const leaf = (clip: string, x: number, y: number, lead = true) => ({
+				content: "default" as const,
+				vars: vars({
+					clip,
+					transform: active ? `translate3d(${x}%, ${y}%, 0)` : "translate3d(0, 0, 0)",
 					filter: active ? "blur(1px)" : "blur(0px)",
-				});
+					delay: lead !== active ? "calc(var(--ht-duration) * 0.12)" : "0ms",
+				}),
+			});
+			const leaves =
+				direction === "center"
+					? [
+							leaf("inset(0 50% 50% 0)", -100, -100),
+							leaf("inset(0 0 50% 50%)", 100, -100),
+							leaf("inset(50% 0 0 50%)", 100, 100),
+							leaf("inset(50% 50% 0 0)", -100, 100),
+						]
+					: vx === 0
+						? [
+								leaf("inset(0 50% 0 0)", 0, -dy),
+								leaf("inset(0 0 0 50%)", 0, -dy, false),
+							]
+						: [
+								leaf("inset(0 0 50% 0)", -dx, -dy, vy <= 0),
+								leaf("inset(50% 0 0 0)", -dx, -dy, vy > 0),
+							];
 			return [
 				{
 					content: "hover",
@@ -149,18 +159,44 @@ export function hoverLayers(
 						transform: active ? "scale(1)" : "scale(.96)",
 					}),
 				},
-				{ content: "default", vars: leaf(true) },
-				{ content: "default", vars: leaf(false) },
+				...leaves,
 			];
 		}
 		case "diagonal": {
-			const fromLeft = direction.includes("left");
-			const shard = (clip: string, x: number, y: number) =>
-				vars({
+			const UR = "polygon(0 0, 100% 0, 100% 100%)";
+			const LL = "polygon(0 0, 100% 100%, 0 100%)";
+			const UL = "polygon(0 0, 100% 0, 0 100%)";
+			const LR = "polygon(100% 0, 100% 100%, 0 100%)";
+			const shard = (clip: string, move: string, origin = "50% 50%", lead = true) => ({
+				content: "default" as const,
+				vars: vars({
 					clip,
-					transform: active ? `translate3d(${x}%, ${y}%, 0)` : "translate3d(0, 0, 0)",
+					transform: active ? move : "translate3d(0, 0, 0) rotate(0deg)",
 					filter: active ? "blur(1px)" : "blur(0px)",
-				});
+					origin,
+					delay: lead !== active ? "calc(var(--ht-duration) * 0.15)" : "0ms",
+				}),
+			});
+			const go = (x: number, y: number) => `translate3d(${x}%, ${y}%, 0) rotate(0deg)`;
+			const spin = (deg: number) => `translate3d(0, 0, 0) rotate(${deg}deg)`;
+			const mid = "50% 50%";
+			// Corners swing open on a hinge at the opposite corner; edges slide out, named edge first.
+			const SHARDS: Record<HoverTransitionDirection, HoverLayer[]> = {
+				"top-left": [shard(UR, spin(90), "100% 100%"), shard(LL, spin(-90), "100% 100%")],
+				"bottom-right": [shard(UR, spin(-90), "0% 0%"), shard(LL, spin(90), "0% 0%")],
+				"top-right": [shard(UL, spin(-90), "0% 100%"), shard(LR, spin(90), "0% 100%")],
+				"bottom-left": [shard(UL, spin(90), "100% 0%"), shard(LR, spin(-90), "100% 0%")],
+				right: [shard(UR, go(100, 0)), shard(LL, go(0, 100), mid, false)],
+				left: [shard(LL, go(-100, 0)), shard(UR, go(0, -100), mid, false)],
+				top: [shard(UL, go(0, -100)), shard(LR, go(100, 0), mid, false)],
+				bottom: [shard(LR, go(0, 100)), shard(UL, go(-100, 0), mid, false)],
+				center: [
+					shard("polygon(0 0, 100% 0, 50% 50%)", go(0, -100)),
+					shard("polygon(100% 0, 100% 100%, 50% 50%)", go(100, 0)),
+					shard("polygon(100% 100%, 0 100%, 50% 50%)", go(0, 100)),
+					shard("polygon(0 100%, 0 0, 50% 50%)", go(-100, 0)),
+				],
+			};
 			return [
 				{
 					content: "hover",
@@ -170,18 +206,7 @@ export function hoverLayers(
 						transform: active ? "scale(1)" : "scale(.97)",
 					}),
 				},
-				{
-					content: "default",
-					vars: fromLeft
-						? shard("polygon(0 0, 100% 0, 100% 100%)", 100, -100)
-						: shard("polygon(0 0, 100% 0, 0 100%)", -100, -100),
-				},
-				{
-					content: "default",
-					vars: fromLeft
-						? shard("polygon(0 0, 100% 100%, 0 100%)", -100, 100)
-						: shard("polygon(100% 0, 100% 100%, 0 100%)", 100, 100),
-				},
+				...SHARDS[direction],
 			];
 		}
 		case "morph":
@@ -202,25 +227,38 @@ export function hoverLayers(
 			];
 		case "strips": {
 			const count = 8;
+			const center = direction === "center";
 			const vertical = Math.abs(vx) >= Math.abs(vy);
-			const ox = (vx || (vy === 0 ? 1 : 0)) * 72;
-			const oy = vy * 72;
-			return Array.from({ length: count }, (_, i) => {
+			// Unclipped copy under the strips, shown once they land: the one interactive hover view.
+			const underlay: HoverLayer = {
+				content: "hover",
+				vars: vars({
+					opacity: active ? 1 : 0,
+					delay: active ? "var(--ht-duration)" : "0ms",
+					scale: 0.01,
+				}),
+			};
+			const strips = Array.from({ length: count }, (_, i): HoverLayer => {
 				const start = pct((i / count) * 100);
 				const end = pct(100 - ((i + 1) / count) * 100);
-				const order = active ? i : count - i - 1;
+				// Center: strips alternate up and down, landing from the middle outward.
+				const rank = center ? (Math.abs(i - (count - 1) / 2) - 0.5) / 3 : i / (count - 1);
+				const order = active ? rank : 1 - rank;
+				const ox = center ? 0 : vx * 72;
+				const oy = center ? (i % 2 ? 72 : -72) : vy * 72;
 				return {
-					content: "hover" as const,
+					content: "hover",
 					vars: vars({
 						clip: vertical ? `inset(0 ${end} 0 ${start})` : `inset(${start} 0 ${end} 0)`,
 						filter: blur(1.5),
 						opacity: active ? 1 : 0,
 						transform: active ? "translate3d(0, 0, 0)" : `translate3d(${ox}%, ${oy}%, 0)`,
-						delay: `calc(var(--ht-duration) * ${((order / (count - 1)) * 0.15).toFixed(4)})`,
+						delay: `calc(var(--ht-duration) * ${(order * 0.15).toFixed(4)})`,
 						scale: 0.85,
 					}),
 				};
 			});
+			return [underlay, ...strips];
 		}
 		case "slide":
 			return [

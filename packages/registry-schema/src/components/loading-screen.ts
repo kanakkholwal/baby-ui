@@ -74,14 +74,14 @@ export const loadingScreen = defineComponent({
 		reducedMotion:
 			"The breathe, dots and bar sweep stop; closing still hides the screen, without the fade.",
 		behaviour: [
-			"Closing fades opacity then flips visibility, so the hidden screen never blocks clicks.",
+			"Opening fades in over --duration-overlay; closing fades over --duration-exit, then flips visibility so the hidden screen never blocks clicks.",
 			"The bar is the registry Progress: indeterminate until `progress` is set, then it fills.",
 		],
 	},
 	a11y: {
 		keyboard: [],
 		notes: [
-			'The screen is a single `role="status"` region; the logo and indicator are aria-hidden so the label is read once.',
+			'The screen is a single `role="status"` region; its sr-only text carries the label and percent, so progress updates are announced.',
 			"A closed screen is `inert`, so nothing inside it can take focus.",
 		],
 	},

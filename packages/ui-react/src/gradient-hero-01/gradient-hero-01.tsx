@@ -27,7 +27,7 @@ export function GradientHero01({
 	description,
 	badge,
 	actions = [],
-	tone = "primary",
+	tone = "chart",
 	size = "screen",
 	className,
 	...props
@@ -55,7 +55,7 @@ export function GradientHero01({
 							const variant = i === 0 ? "default" : "outline";
 							return action.href !== undefined ? (
 								<Button
-									key={action.label}
+									key={i}
 									href={action.href}
 									variant={variant}
 									size="lg"
@@ -66,7 +66,7 @@ export function GradientHero01({
 								</Button>
 							) : (
 								<Button
-									key={action.label}
+									key={i}
 									variant={variant}
 									size="lg"
 									className={s.action()}

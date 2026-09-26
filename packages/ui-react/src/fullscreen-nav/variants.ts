@@ -25,6 +25,7 @@ export const fullscreenNav = tv({
 		row: [
 			"flex items-baseline gap-4 rounded-lg transition-opacity duration-150",
 			"group-has-[a:hover]/nav:opacity-45 hover:!opacity-100 group-has-[:focus-visible]/nav:opacity-45 group-focus-visible/link:!opacity-100",
+			"group-focus-visible/link:ring-2 group-focus-visible/link:ring-ring group-focus-visible/link:ring-offset-4 group-focus-visible/link:ring-offset-background",
 		],
 		index: "w-8 shrink-0 font-mono text-muted-foreground text-xs tabular-nums",
 		text: "flex min-w-0 flex-col",

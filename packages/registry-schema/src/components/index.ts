@@ -83,7 +83,6 @@ import { liveLineChart } from "./live-line-chart";
 import { loadingScreen } from "./loading-screen";
 import { loadingState } from "./loading-state";
 import { logoCarousel } from "./logo-carousel";
-import { macKeyboard } from "./mac-keyboard";
 import { markdown } from "./markdown";
 import { marker } from "./marker";
 import { maskText } from "./mask-text";
@@ -353,7 +352,6 @@ export const specs: ComponentSpec[] = [
 	pixelImageTrail,
 	splitFlapDisplay,
 	hoverTransition,
-	macKeyboard,
 	animatedGradient,
 	asciiEffect,
 	ditherGradient,

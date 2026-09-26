@@ -17,6 +17,7 @@ the caller owns the reveal timing, the component only renders it.
 type RecordRow = {
   id: string;
   name: string;
+  logo?: string;
   tags: string[];
   last: string;
   strength: "strong" | "weak" | "veryweak" | "none";

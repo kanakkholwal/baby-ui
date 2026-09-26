@@ -19,7 +19,7 @@ export function PixelImageTrailDemo({ props }: { props: Props }) {
 			fadeDuration={Number(props.fadeDuration ?? 900)}
 			maxPixels={Number(props.maxPixels ?? 84)}
 			initialPixels={Number(props.initialPixels ?? 24)}
-			radius={Number(props.radius ?? 58)}
+			radius={Number(props.radius ?? 40)}
 			className="max-w-3xl"
 		/>
 	);

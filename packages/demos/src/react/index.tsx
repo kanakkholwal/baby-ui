@@ -87,7 +87,6 @@ import { LiveLineChartDemo } from "./live-line-chart";
 import { LoadingScreenDemo } from "./loading-screen";
 import { LoadingStateDemo } from "./loading-state";
 import { LogoCarouselDemo } from "./logo-carousel";
-import { MacKeyboardDemo } from "./mac-keyboard";
 import { MarkerDemo } from "./marker";
 import { MegaNavbarDemo } from "./mega-navbar";
 import {
@@ -550,7 +549,6 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	marker: MarkerDemo,
 	"split-flap-display": SplitFlapDisplayDemo,
 	"hover-transition": HoverTransitionDemo,
-	"mac-keyboard": MacKeyboardDemo,
 	"wheel-carousel": WheelCarouselDemo,
 	"wheel-picker": WheelPickerDemo,
 	"overview-card": OverviewCardDemo,

@@ -42,7 +42,10 @@ export function ScrollVelocity({
 	const s = scrollVelocity({ layout, direction, size });
 	const rowCount = layout === "double" ? 2 : 1;
 
-	useEffect(() => followScroll(rows.current.filter(Boolean), boost), [boost]);
+	useEffect(() => {
+		rows.current.length = rowCount;
+		return followScroll(rows.current.filter(Boolean), boost);
+	}, [boost, rowCount]);
 
 	const half = (key: string) => (
 		<div key={key} className={s.half()}>

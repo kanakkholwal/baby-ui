@@ -230,18 +230,29 @@ export function TextBorderAnimationDemo({ props }: { props: Props }) {
 }
 
 export function RollTextDemo({ props }: { props: Props }) {
-	return (
+	const groupHover = props.groupHover === true;
+	const roll = (
 		<RollText
 			text={(props.text as string) || "Roll on hover"}
-			groupHover={props.groupHover === true}
+			groupHover={groupHover}
 			disabled={props.disabled === true}
 			stagger={(props.stagger as RollStagger) ?? "none"}
 			staggerMs={Number(props.staggerMs ?? 32)}
 			durationMs={Number(props.durationMs ?? 450)}
-			size={(props.size as RollTextSize) ?? "md"}
+			size={(props.size as RollTextSize) ?? "lg"}
 			motion={(props.motion as RollTextMotion) ?? "slide"}
-			className="text-2xl font-semibold text-foreground"
+			className="font-semibold text-foreground"
 		/>
+	);
+	if (!groupHover) return roll;
+	return (
+		<button
+			type="button"
+			data-roll-group
+			className="rounded-lg border border-border px-6 py-4 text-left hover:bg-foreground/[0.06]"
+		>
+			{roll}
+		</button>
 	);
 }
 

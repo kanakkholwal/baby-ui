@@ -93,7 +93,7 @@ const text: RecordsTableLabels = $derived({ ...RECORDS_TABLE_LABELS, ...labels }
 let widthOverrides = $state<Partial<Record<ColumnKey, number>>>({});
 let resizingColumn = $state<ColumnKey | null>(null);
 let openColumn = $state<ColumnKey | null>(null);
-const classes = $derived(recordsTable({ density }));
+const classes = $derived(recordsTable({ density, aiShown: showAiColumn }));
 
 const widths = $derived({ ...COLUMN_WIDTHS[density], ...widthOverrides });
 const visibleColumns = $derived(
@@ -145,9 +145,7 @@ function pinStyle(key: ColumnKey) {
 }
 function pinClass(key: ColumnKey, selectedRow = false) {
 	if (offsets[key] === undefined) return undefined;
-	return selectedRow
-		? "bg-[color-mix(in_oklab,var(--primary)_4%,var(--card))]"
-		: "bg-card";
+	return classes.pinCell({ selected: selectedRow });
 }
 
 function toggleAll() {
@@ -200,13 +198,15 @@ const footerCell = $derived(
 	{@const label = text[key]}
 	<th
 		style={pinStyle(key)}
+		inert={key === "ai" && !showAiColumn}
 		class={cn(
 			classes.headerCell(),
 			"relative border-border border-r border-b bg-card text-left font-medium text-[12.5px] text-muted-foreground",
 			openColumn === key && "bg-primary/[0.04]",
+			key === "ai" && classes.aiCell(),
 		)}
 	>
-		<div class="flex min-w-0 items-center gap-1.5">
+		<div class={cn("flex min-w-0 items-center gap-1.5", key === "ai" && classes.aiInner())}>
 			{#if withSelectAll}
 				<Checkbox
 					bind:checked={() => allSelected, () => toggleAll()}
@@ -252,7 +252,7 @@ const footerCell = $derived(
 						setSort(nextSort(sort, sortKey));
 					}}
 					class={cn(
-						"shrink-0 cursor-pointer text-muted-foreground transition-[opacity,rotate] duration-150",
+						"shrink-0 cursor-pointer text-muted-foreground transition-[opacity,rotate] duration-150 motion-reduce:transition-none",
 						sort.key === sortKey ? "opacity-100" : "opacity-0 hover:opacity-60 focus-visible:opacity-60",
 						sort.key === sortKey && sort.dir === -1 && "rotate-180",
 					)}
@@ -281,16 +281,20 @@ const footerCell = $derived(
 {#snippet calcCell()}
 	<span class="inline-flex items-center gap-1.5 text-[13px] text-muted-foreground">
 		{text.calculating}
-		<span class="size-1.5 animate-pulse rounded-full bg-muted-foreground"></span>
+		<span class="size-1.5 animate-pulse rounded-full bg-muted-foreground motion-reduce:animate-none"></span>
 	</span>
 {/snippet}
 
 <div data-slot="records-table" class={cn(classes.root(), fill ? "w-full" : "w-fit max-w-full", classProp)}>
 	<div data-slot="records-table-scroll" class="overflow-auto rounded-2xl border border-border" style="scrollbar-width: thin;">
-		<table class="border-collapse text-[13px]" style="width: {fill ? '100%' : `${tableWidth}px`}; min-width: {tableWidth}px;">
+		<table class={classes.table()} style="width: {fill ? '100%' : `${tableWidth}px`}; min-width: {tableWidth}px;">
 			<colgroup>
-				{#each visibleColumns as key (key)}
-					<col style="width: {widths[key]}px;" />
+				{#each COLUMN_ORDER as key (key)}
+					{#if key === "ai"}
+						<col class={classes.aiCol()} style="width: {showAiColumn ? widths.ai : 0}px;" />
+					{:else}
+						<col style="width: {widths[key]}px;" />
+					{/if}
 				{/each}
 				<col style="width: {ACTIONS_WIDTH}px;" />
 			</colgroup>
@@ -301,9 +305,7 @@ const footerCell = $derived(
 					{@render header("last", "last")}
 					{@render header("strength", "strength")}
 					{@render header("links")}
-					{#if showAiColumn}
-						{@render header("ai", undefined, false, hideAi)}
-					{/if}
+					{@render header("ai", undefined, false, hideAi)}
 					<th class={cn(classes.headerCell(), "border-border border-b bg-card px-2")}>
 						<div class="flex items-center gap-1">
 							<DropdownMenu>
@@ -358,7 +360,7 @@ const footerCell = $derived(
 					<tr
 						data-slot="records-table-row"
 						data-selected={isSelected || undefined}
-						class={cn("transition-colors", isSelected && "bg-primary/[0.04]")}
+						class={classes.row({ selected: isSelected })}
 					>
 						<td style={pinStyle("company")} class={td("company")}>
 							<div class="flex min-w-0 items-center gap-2">
@@ -368,7 +370,7 @@ const footerCell = $derived(
 									aria-label={text.selectRow(row.name)}
 									class="shrink-0"
 								/>
-								<Avatar shape="square" class="size-5 rounded-[5px] bg-muted text-[10px]">
+								<Avatar aria-hidden="true" shape="square" class="size-5 rounded-[5px] bg-muted text-[10px]">
 									<AvatarImage src={row.logo} alt="" />
 									<AvatarFallback>{row.name.charAt(0)}</AvatarFallback>
 								</Avatar>
@@ -422,15 +424,15 @@ const footerCell = $derived(
 								<span class="text-muted-foreground">{text.empty}</span>
 							{/if}
 						</td>
-						{#if showAiColumn}
-							<td style={pinStyle("ai")} class={td("ai")}>
+						<td style={pinStyle("ai")} inert={!showAiColumn} class={td("ai", classes.aiCell())}>
+							<div class={classes.aiInner()}>
 								{#if isCalc("ai", index)}
 									{@render calcCell()}
 								{:else}
 									<span class={row.aiValue ? undefined : "text-muted-foreground"}>{row.aiValue ?? text.empty}</span>
 								{/if}
-							</td>
-						{/if}
+							</div>
+						</td>
 						<td class={cn(classes.cell(), "border-border border-b px-2")}></td>
 					</tr>
 				{/each}
@@ -450,11 +452,9 @@ const footerCell = $derived(
 					<td style={pinStyle("links")} class={cn(footerCell, pinClass("links"))}>
 						{text.linkCount(rows.filter((row) => row.website).length)}
 					</td>
-					{#if showAiColumn}
-						<td style={pinStyle("ai")} class={cn(footerCell, pinClass("ai"))}>
-							{text.filled(rows.filter((row) => row.aiValue).length)}
-						</td>
-					{/if}
+					<td style={pinStyle("ai")} inert={!showAiColumn} class={cn(footerCell, pinClass("ai"), classes.aiCell())}>
+						<div class={classes.aiInner()}>{text.filled(rows.filter((row) => row.aiValue).length)}</div>
+					</td>
 					<td class={cn(classes.cell(), "px-2")}></td>
 				</tr>
 			</tfoot>

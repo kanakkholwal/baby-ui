@@ -49,10 +49,10 @@ export function LoadingScreen({
 		<div
 			data-slot="loading-screen"
 			role="status"
-			aria-label={statusLabel(label, progress)}
 			inert={!open}
 			className={cn(s.root(), className)}
 		>
+			<span className={s.srOnly()}>{statusLabel(label, progress)}</span>
 			{logo ? (
 				<div aria-hidden className={s.logo()}>
 					{logo}

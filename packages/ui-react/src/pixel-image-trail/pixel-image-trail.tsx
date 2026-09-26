@@ -19,7 +19,7 @@ export interface PixelImageTrailProps {
 	alt: string;
 	/** Edge of one square, in px (at least 12). */
 	pixelSize?: number;
-	/** Farthest distance, in px, for an occasional satellite square. */
+	/** Reveal reach in px: squares whose centre lies this close to the pointer show; 0 is one square. */
 	radius?: number;
 	/** Time in ms before a trail square has fully faded. */
 	fadeDuration?: number;
@@ -38,7 +38,7 @@ export function PixelImageTrail({
 	src,
 	alt,
 	pixelSize = 36,
-	radius = 58,
+	radius = 40,
 	fadeDuration = 900,
 	maxPixels = 84,
 	initialPixels = 24,
@@ -79,8 +79,17 @@ export function PixelImageTrail({
 	}, [pixelSize, radius, fadeDuration, maxPixels, initialPixels, variant]);
 
 	return (
-		<div ref={root} data-slot="pixel-image-trail" className={cn(s.root(), className)}>
-			<img ref={image} src={src} alt={alt} draggable={false} className={s.image()} />
+		// biome-ignore lint/a11y/useSemanticElements: a fieldset would add form semantics to an image area
+		<div
+			ref={root}
+			data-slot="pixel-image-trail"
+			role="group"
+			aria-label={alt}
+			// biome-ignore lint/a11y/noNoninteractiveTabindex: focus is how keyboard users reveal the image
+			tabIndex={0}
+			className={cn(s.root(), className)}
+		>
+			<img ref={image} src={src} alt="" draggable={false} className={s.image()} />
 			<canvas ref={canvas} aria-hidden className={s.canvas()} />
 			{children ? <div className={s.content()}>{children}</div> : null}
 		</div>

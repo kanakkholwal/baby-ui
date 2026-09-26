@@ -3,9 +3,11 @@ import { registry } from "virtual:docvia/source";
 import { Renderer } from "@docvia/renderer-svelte";
 import IconList from "@tabler/icons-svelte/icons/list";
 import MobileNavDrawer from "$lib/components/mobile-nav-drawer.svelte";
+import OutlineToggle from "$lib/components/outline-toggle.svelte";
 import PageMenu from "$lib/components/page-menu.svelte";
 import PropsRail from "$lib/components/props-rail.svelte";
 import Seo from "$lib/components/seo.svelte";
+import { outlinePanelClass, outlineSidebar } from "$lib/docs-sidebar.svelte";
 import type { PageProps } from "./$types";
 
 let { data }: PageProps = $props();
@@ -30,10 +32,13 @@ let { data }: PageProps = $props();
 				<p class="mt-2 text-muted-foreground">{data.page.data.description}</p>
 			{/if}
 		</div>
-		<PageMenu
-			markdownUrl="/docs/{data.slug}.md"
-			copyText={data.page.data?.description ?? ""}
-		/>
+		<div class="flex shrink-0 items-center gap-2 self-start">
+			<PageMenu
+				markdownUrl="/docs/{data.slug}.md"
+				copyText={data.page.data?.description ?? ""}
+			/>
+			<OutlineToggle />
+		</div>
 	</div>
 	{#if data.headings.length}
 		<div class="mt-4 xl:hidden">
@@ -50,7 +55,9 @@ let { data }: PageProps = $props();
 
 <aside aria-label="On this page" class="hidden min-w-0 xl:block">
 	<div
-		class="scrollbar-hide fixed top-24 right-8 z-10 max-h-[calc(100dvh-8rem)] w-(--right-sidebar-width) overflow-y-auto pb-1"
+		id="outline-sidebar"
+		inert={!outlineSidebar.current}
+		class={["scrollbar-hide fixed top-24 right-8 z-10 max-h-[calc(100dvh-8rem)] w-(--right-sidebar-width) overflow-y-auto pb-1", ...outlinePanelClass(outlineSidebar.current)]}
 	>
 		{@render railContent()}
 	</div>

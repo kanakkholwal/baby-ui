@@ -15,12 +15,14 @@ import ControlsPanel from "$lib/components/controls-panel.svelte";
 import DemoPreview from "$lib/components/demo-preview.svelte";
 import InstallBlock from "$lib/components/install-block.svelte";
 import MobileNavDrawer from "$lib/components/mobile-nav-drawer.svelte";
+import OutlineToggle from "$lib/components/outline-toggle.svelte";
 import PageMenu from "$lib/components/page-menu.svelte";
 import PreviewToolbar from "$lib/components/preview-toolbar.svelte";
 import PropsRail from "$lib/components/props-rail.svelte";
 import PropsTable from "$lib/components/props-table.svelte";
 import Seo from "$lib/components/seo.svelte";
 import Tabs from "$lib/components/tabs.svelte";
+import { outlinePanelClass, outlineSidebar } from "$lib/docs-sidebar.svelte";
 import { prefs } from "$lib/preferences.svelte";
 import {
 	adjacentComponents,
@@ -175,6 +177,7 @@ const breadcrumbJsonLd = $derived(
 					markdownUrl="{specHref(data.spec)}.md"
 					copyText={data.spec.description}
 				/>
+				{#if !split}<OutlineToggle />{/if}
 				<div class="flex shrink-0 items-center gap-1.5">
 					<a
 						href={adjacent.prev?.href}
@@ -415,7 +418,9 @@ const breadcrumbJsonLd = $derived(
 {:else}
 	<aside aria-label="On this page" class="hidden min-w-0 xl:block">
 		<div
-			class="scrollbar-hide fixed top-24 right-8 z-10 max-h-[calc(100dvh-8rem)] w-(--right-sidebar-width) overflow-y-auto pb-1"
+			id="outline-sidebar"
+			inert={!outlineSidebar.current}
+			class={["scrollbar-hide fixed top-24 right-8 z-10 max-h-[calc(100dvh-8rem)] w-(--right-sidebar-width) overflow-y-auto pb-1", ...outlinePanelClass(outlineSidebar.current)]}
 		>
 			<PropsRail slug={data.spec.slug} {outline} />
 		</div>

@@ -3,7 +3,7 @@ import { defineComponent } from "../index";
 const VARIANTS = ["default", "glow", "minimal"];
 const SHAPES = ["square", "rounded", "circle"];
 const SIZES = ["sm", "md", "lg"];
-const TONES = ["scale", "primary", "mono"];
+const TONES = ["scale", "success", "primary"];
 
 export const githubCalendar = defineComponent({
 	slug: "github-calendar",
@@ -46,7 +46,8 @@ export const githubCalendar = defineComponent({
 		{
 			name: "tone",
 			type: TONES.map((v) => `"${v}"`).join(" | "),
-			description: "Level colours: the chart scale, the primary colour, or greys.",
+			description:
+				"Level colours: the chart scale, the success green, or the primary colour.",
 			default: "scale",
 			control: { kind: "select", options: TONES },
 		},

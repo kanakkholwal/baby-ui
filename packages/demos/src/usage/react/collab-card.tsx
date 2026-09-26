@@ -10,6 +10,9 @@ const collaborators: [CollabCardCollaborator, CollabCardCollaborator] = [
 export function Example() {
 	return (
 		<CollabCard
+			greeting="hello!"
+			eyebrow="Now in multiplayer"
+			intro="editing"
 			collaborators={collaborators}
 			presenceColors={["#A259FF", "#FF7262", "#1ABCFE"]}
 			extraCount={1}

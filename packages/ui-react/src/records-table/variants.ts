@@ -1,14 +1,38 @@
 import { tv, type VariantProps } from "tailwind-variants";
 
 export const recordsTable = tv({
-	slots: { root: "", cell: "px-3", headerCell: "px-3" },
+	slots: {
+		root: "",
+		table:
+			"border-collapse text-[13px] transition-[width,min-width] duration-300 ease-[var(--ease-out)] motion-reduce:transition-none",
+		cell: "px-3",
+		headerCell: "px-3",
+		row: "transition-colors",
+		pinCell: "bg-card",
+		aiCol: "transition-[width] duration-300 ease-[var(--ease-out)] motion-reduce:transition-none",
+		aiCell:
+			"transition-[padding,opacity] duration-300 ease-[var(--ease-out)] motion-reduce:transition-none",
+		// minmax(0,1fr) gives the cell a zero min-content, so the col width alone sizes it.
+		aiInner: "grid grid-cols-[minmax(0,1fr)] overflow-hidden",
+	},
 	variants: {
 		density: {
 			comfortable: { cell: "py-2", headerCell: "py-2" },
 			compact: { cell: "py-1", headerCell: "py-1.5" },
 		},
+		selected: {
+			true: {
+				row: "bg-primary/[0.04]",
+				pinCell: "bg-[color-mix(in_oklab,var(--primary)_4%,var(--card))]",
+			},
+			false: {},
+		},
+		aiShown: {
+			true: {},
+			false: { aiCell: "border-r-0 px-0 opacity-0" },
+		},
 	},
-	defaultVariants: { density: "comfortable" },
+	defaultVariants: { density: "comfortable", selected: false, aiShown: true },
 });
 
 export type RecordsDensity = NonNullable<VariantProps<typeof recordsTable>["density"]>;

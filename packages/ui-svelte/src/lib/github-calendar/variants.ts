@@ -11,7 +11,7 @@ export const githubCalendar = tv({
 		month:
 			"w-0 overflow-visible whitespace-nowrap pb-1.5 text-[10px] text-muted-foreground leading-none",
 		weekday: "self-center pr-2 text-[10px] text-muted-foreground leading-none",
-		cell: "github-calendar-cell relative block bg-[var(--cell)] outline-none transition-[scale,box-shadow,background-color] duration-200 ease-[var(--ease-out)] hover:z-10 hover:scale-125 focus-visible:z-10 focus-visible:ring-2 focus-visible:ring-ring data-[active]:z-10 data-[active]:ring-2 data-[active]:ring-foreground/70 motion-reduce:transition-none",
+		cell: "github-calendar-cell relative block bg-[var(--cell)] outline-none transition-[scale,box-shadow,background-color] duration-200 ease-[var(--ease-out)] hover:z-10 hover:scale-125 motion-reduce:hover:scale-100 focus-visible:z-10 focus-visible:ring-2 focus-visible:ring-ring data-[active]:z-10 data-[active]:ring-2 data-[active]:ring-foreground/70 motion-reduce:transition-none",
 		legend: "flex items-center justify-end gap-1 text-muted-foreground text-xs",
 		swatch: "block bg-[var(--cell)]",
 		tip: "flex items-baseline gap-1 whitespace-nowrap",
@@ -24,7 +24,7 @@ export const githubCalendar = tv({
 			glow: {
 				cell: "shadow-[0_0_6px_var(--cell)] data-[level=0]:shadow-none data-[level=4]:shadow-[0_0_12px_var(--cell)]",
 			},
-			minimal: { cell: "scale-[0.7] hover:scale-100" },
+			minimal: { cell: "scale-[0.7] hover:scale-100 motion-reduce:hover:scale-[0.7]" },
 		},
 		shape: {
 			square: { cell: "rounded-none", swatch: "rounded-none" },
@@ -39,7 +39,7 @@ export const githubCalendar = tv({
 		tone: {
 			scale: {},
 			primary: {},
-			mono: {},
+			success: {},
 		},
 	},
 	defaultVariants: { variant: "default", shape: "rounded", size: "md", tone: "scale" },
@@ -72,11 +72,11 @@ export const TONE_FILL: Record<GithubCalendarTone, readonly string[]> = {
 		"color-mix(in oklch, var(--primary) 80%, transparent)",
 		"var(--primary)",
 	],
-	mono: [
+	success: [
 		EMPTY,
-		"color-mix(in oklch, var(--foreground) 24%, transparent)",
-		"color-mix(in oklch, var(--foreground) 44%, transparent)",
-		"color-mix(in oklch, var(--foreground) 66%, transparent)",
-		"color-mix(in oklch, var(--foreground) 90%, transparent)",
+		"color-mix(in oklch, var(--success) 30%, transparent)",
+		"color-mix(in oklch, var(--success) 55%, transparent)",
+		"color-mix(in oklch, var(--success) 80%, transparent)",
+		"var(--success)",
 	],
 };

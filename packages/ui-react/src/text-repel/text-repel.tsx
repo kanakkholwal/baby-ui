@@ -43,6 +43,7 @@ export function TextRepel({
 		reduced.current = matchMedia("(prefers-reduced-motion: reduce)").matches;
 		const node = root.current;
 		if (!node) return;
+		letters.current.length = Array.from(text).length;
 		const measure = () => {
 			origins.current = letterOrigins(letters.current.filter(Boolean));
 		};
@@ -50,7 +51,7 @@ export function TextRepel({
 		const observer = new ResizeObserver(measure);
 		observer.observe(node);
 		return () => observer.disconnect();
-	}, []);
+	}, [text]);
 
 	function onMove(event: PointerEvent<HTMLSpanElement>) {
 		const node = root.current;

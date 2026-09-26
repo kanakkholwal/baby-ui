@@ -7,6 +7,7 @@ import {
 	swapChars,
 	swapText,
 	swapTextFlip,
+	swapTextSlide,
 } from "./variants";
 
 let {
@@ -49,7 +50,7 @@ function setActive(next: boolean) {
 	onActiveChange?.(next);
 }
 
-const LAYER = "block transition-transform ease-[var(--ease-out)]";
+const slide = $derived(swapTextSlide({ active, hover: supportsHover }));
 const flip = (layer: "first" | "second") =>
 	swapTextFlip({ layer, active, hover: supportsHover });
 </script>
@@ -88,24 +89,22 @@ const flip = (layer: "first" | "second") =>
 	<button
 		type="button"
 		disabled={disableClick}
+		aria-label={active ? finalText : initialText}
+		aria-pressed={active}
 		onclick={() => !disableClick && setActive(!active)}
 		class={cn(swapText({ size }), "group/swap")}
 	>
 		<span
-			class={cn(LAYER, "flex flex-col", {
-				"-translate-y-full": active,
-				"group-hover/swap:-translate-y-full": supportsHover,
-			})}
+			aria-hidden="true"
+			class={slide.first()}
 			style="transition-duration: {durationMs}ms;"
 		>
 			{initialText}
 			{#if longer}<span class="invisible h-0">{longer}</span>{/if}
 		</span>
 		<span
-			class={cn(LAYER, "absolute top-full", {
-				"-translate-y-full": active,
-				"group-hover/swap:-translate-y-full": supportsHover,
-			})}
+			aria-hidden="true"
+			class={slide.second()}
 			style="transition-duration: {durationMs}ms;"
 		>
 			{finalText}

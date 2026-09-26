@@ -7,6 +7,6 @@ tags: [hero, landing, gradient, headline]
 ---
 
 The glow is four stacked gradients mixed from theme tokens, so it follows light and dark mode
-and any palette. `tone` picks the primary colour, chart colours 1 to 3, or a grey.
+and any palette. `tone` picks chart colour 1, chart colours 1 to 3, or the primary colour.
 
 The first action is the primary button, the rest are outlined. Composes `badge` and `button`.

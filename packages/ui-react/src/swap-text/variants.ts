@@ -20,6 +20,29 @@ export const swapText = tv({
 export type SwapTextSize = NonNullable<VariantProps<typeof swapText>["size"]>;
 export type SwapTextMotion = NonNullable<VariantProps<typeof swapText>["motion"]>;
 
+export const swapTextSlide = tv({
+	slots: {
+		first:
+			"flex flex-col transition-transform ease-[var(--ease-out)] motion-reduce:transition-none",
+		second:
+			"absolute top-full block transition-transform ease-[var(--ease-out)] motion-reduce:transition-none",
+	},
+	variants: {
+		active: {
+			true: { first: "-translate-y-full", second: "-translate-y-full" },
+			false: {},
+		},
+		hover: {
+			true: {
+				first: "group-hover/swap:-translate-y-full",
+				second: "group-hover/swap:-translate-y-full",
+			},
+			false: {},
+		},
+	},
+	defaultVariants: { active: false, hover: true },
+});
+
 // Delays read --i/--n per letter: forward when turning on, reversed when turning off, so the
 // exit replays the entrance backwards. --swap-lag holds the second word until the first tips.
 const FIRST_ON =

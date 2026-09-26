@@ -41,7 +41,7 @@ export const swapText = defineComponent({
 		{
 			name: "onActiveChange",
 			type: "(active: boolean) => void",
-			description: "Fired on click or hover toggle.",
+			description: "Fired when a click toggles the text; hover swaps are visual only.",
 			control: { kind: "none" },
 		},
 		{
@@ -99,7 +99,7 @@ export const swapText = defineComponent({
 	a11y: {
 		notes: [
 			"A real `<button>`; toggling is reachable by keyboard (Enter/Space) even when `supportsHover` is off.",
-			"In flip mode the letters are aria-hidden; the button is named by whichever text is showing and reports aria-pressed.",
+			"The visual layers are aria-hidden in both modes; the button is named by whichever text is showing and reports aria-pressed.",
 		],
 	},
 	licenseOrigin: {

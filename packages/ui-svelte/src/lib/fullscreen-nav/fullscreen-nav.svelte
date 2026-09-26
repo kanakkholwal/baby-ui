@@ -58,6 +58,15 @@ let firstLink = $state<HTMLAnchorElement>();
 
 function refFirst(node: HTMLAnchorElement, isFirst: boolean) {
 	if (isFirst) firstLink = node;
+	return {
+		update(next: boolean) {
+			if (next) firstLink = node;
+			else if (firstLink === node) firstLink = undefined;
+		},
+		destroy() {
+			if (firstLink === node) firstLink = undefined;
+		},
+	};
 }
 
 function setOpen(next: boolean) {

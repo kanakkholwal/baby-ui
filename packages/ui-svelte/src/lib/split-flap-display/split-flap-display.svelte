@@ -1,6 +1,6 @@
 <script lang="ts">
 import { cn } from "../lib/cn";
-import { flapRows, SPLIT_FLAP_CHARACTERS } from "./flap";
+import { flapColumns, flapRows, SPLIT_FLAP_CHARACTERS } from "./flap";
 import SplitFlapCell from "./split-flap-cell.svelte";
 import {
 	type SplitFlapIndicator,
@@ -11,7 +11,7 @@ import {
 
 let {
 	value,
-	columns = 14,
+	columns = 24,
 	variant = "solid",
 	size = "md",
 	indicator = "success",
@@ -39,23 +39,58 @@ let {
 
 const styles = $derived(splitFlap({ variant, size, indicator }));
 const rows = $derived(flapRows(value, columns));
+const cols = $derived(flapColumns(columns));
+
+// Rows and cells stay mounted once seen so shrinking can animate closed.
+let initial: { rows: number; cols: number } | undefined;
+let seen = { rows: 0, cols: 0 };
+const extent = $derived.by(() => {
+	initial ??= { rows: rows.length, cols };
+	seen = { rows: Math.max(seen.rows, rows.length), cols: Math.max(seen.cols, cols) };
+	return seen;
+});
 </script>
 
-<div
-	data-slot="split-flap-display"
-	class={cn(styles.root(), className)}
-	style="--split-flap-ms: {stepMs}ms;"
->
-	<span class="sr-only">{value}</span>
-	{#each rows as row, r (r)}
-		<div aria-hidden="true" class={styles.row()}>
-			{#if indicator !== "none"}<span class={styles.indicator()}></span>{/if}
-			<div class={styles.cells()}>
-				{#each row as char, c (c)}
-					<SplitFlapCell {char} delayMs={c * staggerMs} {stepMs} {characters} {styles} />
-				{/each}
+<div data-slot="split-flap-display" class={cn(styles.root(), className)}>
+	<span class="sr-only" aria-live="polite">{value}</span>
+	<div
+		aria-hidden="true"
+		class={styles.board()}
+		style="--split-flap-ms: {stepMs}ms; --split-flap-columns: {cols};"
+	>
+		{#each { length: extent.rows }, r (r)}
+			<div
+				class={styles.rowShell()}
+				data-open={r < rows.length || undefined}
+				data-enter={r >= (initial?.rows ?? 0) || undefined}
+				inert={r >= rows.length}
+			>
+				<div class={styles.rowClip()}>
+					<div class={styles.row()}>
+						{#if indicator !== "none"}<span class={styles.indicator()}></span>{/if}
+						<div class={styles.cells()}>
+							{#each { length: extent.cols }, c (c)}
+								<span
+									class={styles.cellShell()}
+									data-open={c < cols || undefined}
+									data-enter={c >= (initial?.cols ?? 0) || undefined}
+								>
+									<span class={styles.cellClip()}>
+										<SplitFlapCell
+											char={rows[r]?.[c] ?? " "}
+											delayMs={(c + r) * staggerMs}
+											{stepMs}
+											{characters}
+											{styles}
+										/>
+									</span>
+								</span>
+							{/each}
+						</div>
+						{#if indicator !== "none"}<span class={styles.indicator()}></span>{/if}
+					</div>
+				</div>
 			</div>
-			{#if indicator !== "none"}<span class={styles.indicator()}></span>{/if}
-		</div>
-	{/each}
+		{/each}
+	</div>
 </div>

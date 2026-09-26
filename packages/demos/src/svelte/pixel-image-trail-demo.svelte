@@ -17,6 +17,6 @@ let { props = {} }: { props?: Record<string, unknown> } = $props();
 	fadeDuration={Number(props.fadeDuration ?? 900)}
 	maxPixels={Number(props.maxPixels ?? 84)}
 	initialPixels={Number(props.initialPixels ?? 24)}
-	radius={Number(props.radius ?? 58)}
+	radius={Number(props.radius ?? 40)}
 	class="max-w-3xl"
 />

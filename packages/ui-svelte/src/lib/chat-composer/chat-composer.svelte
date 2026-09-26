@@ -179,7 +179,13 @@ async function copyConversation() {
 			</div>
 		</div>
 
-		<div bind:this={thread} class={s.thread()}>
+		<div
+			bind:this={thread}
+			role="log"
+			aria-live="polite"
+			aria-relevant="additions"
+			class={s.thread()}
+		>
 			{#each messages as m, i (m.id)}
 				{#if m.role === "user"}
 					<p class={s.user()}>{m.body}</p>

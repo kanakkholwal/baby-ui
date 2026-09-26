@@ -1,6 +1,6 @@
 "use client";
 
-import { type CSSProperties, type HTMLAttributes, useRef, useState } from "react";
+import { type CSSProperties, type HTMLAttributes, useState } from "react";
 import { Button } from "../button/button";
 import { Card } from "../card/card";
 import { cn } from "../lib/cn";
@@ -85,9 +85,9 @@ export function Pricing02({
 	const s = pricing02({ variant });
 
 	// Digits only roll once the period has changed, never on first paint.
-	const initial = useRef(current?.value);
-	const moved = useRef(false);
-	if (current?.value !== initial.current) moved.current = true;
+	const [initial] = useState(current?.value);
+	const [moved, setMoved] = useState(false);
+	if (!moved && current?.value !== initial) setMoved(true);
 
 	function setPeriod(next: string) {
 		if (!next) return;
@@ -150,7 +150,7 @@ export function Pricing02({
 											{chars.map((char, i) => (
 												<span
 													key={`${current?.value}-${i}-${char}`}
-													data-animate={moved.current ? "" : undefined}
+													data-animate={moved ? "" : undefined}
 													className={s.digit()}
 													style={
 														{

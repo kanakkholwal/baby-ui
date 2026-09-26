@@ -598,9 +598,6 @@ export {
 	type LoadingStateVariant,
 } from "./loading-state/loading-state";
 export { LogoCarousel, type LogoCarouselProps } from "./logo-carousel/logo-carousel";
-export type { MacKeyboardLabels } from "./mac-keyboard/layout";
-export { MacKeyboard, type MacKeyboardProps } from "./mac-keyboard/mac-keyboard";
-export type { MacKeyboardSize, MacKeyboardVariant } from "./mac-keyboard/variants";
 export { Markdown, type MarkdownProps } from "./markdown/markdown";
 export type { MarkdownSize } from "./markdown/variants";
 export { Marker, type MarkerProps } from "./marker/marker";

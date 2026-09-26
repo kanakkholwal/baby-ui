@@ -9,4 +9,4 @@ tags: [text, roll, hover, flip]
 Two stacked copies of the label: the top slides up out of view, the bottom rises in to
 replace it. `stagger` splits the roll across words or characters instead of moving the
 whole label as one unit. `groupHover` plays it from a `[data-roll-group]` ancestor's
-hover/focus instead of the element's own -- useful inside a card link.
+hover/focus instead of the element's own, which suits a card link.

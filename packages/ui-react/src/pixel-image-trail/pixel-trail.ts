@@ -2,7 +2,7 @@ import { tv, type VariantProps } from "tailwind-variants";
 
 export const pixelImageTrail = tv({
 	slots: {
-		root: "relative isolate w-full touch-pan-y overflow-hidden rounded-xl bg-muted",
+		root: "relative isolate w-full touch-pan-y overflow-hidden rounded-xl bg-muted outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
 		image: "pointer-events-none absolute inset-0 size-full object-cover opacity-0",
 		canvas: "pointer-events-none absolute inset-0 block size-full",
 		content: "relative z-10 flex size-full items-center justify-center",
@@ -31,7 +31,7 @@ export type PixelImageTrailSize = NonNullable<
 export type PixelTrailOptions = {
 	/** Edge of one square, in px (at least 12). */
 	pixelSize: number;
-	/** Farthest distance, in px, for an occasional satellite square. */
+	/** Reveal reach in px: squares whose centre lies this close to the pointer show; 0 is one square. */
 	radius: number;
 	/** Time in ms before a trail square has fully faded. */
 	fadeDuration: number;
@@ -198,28 +198,27 @@ export function mountPixelTrail(
 			}
 		}
 
-		const sx = x % size > size / 2 ? 1 : -1;
-		const sy = y % size > size / 2 ? 1 : -1;
-		const cluster: Array<[number, number]> = [
-			[column, row],
-			[column + sx, row],
-			[column, row + sy],
-			[column + sx, row + sy],
-		];
-		for (const [c, r] of cluster) {
-			if (!inBounds(c, r)) continue;
-			hovered.add(`${c}:${r}`);
-			mark(c, r, now);
+		const reach = Math.max(0, options.radius);
+		const span = Math.ceil(reach / size) + 1;
+		for (let i = -span; i <= span; i += 1) {
+			for (let j = -span; j <= span; j += 1) {
+				const c = column + i;
+				const r = row + j;
+				if (!inBounds(c, r)) continue;
+				const far = Math.hypot((c + 0.5) * size - x, (r + 0.5) * size - y) > reach;
+				if ((i !== 0 || j !== 0) && far) continue;
+				hovered.add(`${c}:${r}`);
+				mark(c, r, now);
+			}
 		}
 
 		const moved = lastColumn !== column || lastRow !== row;
-		if (moved && !still && Math.random() < 0.34) {
-			const spread = Math.max(1, Math.floor(options.radius / size));
-			const distance =
-				(1 + Math.floor(Math.random() * spread)) * (Math.random() < 0.5 ? -1 : 1);
+		if (moved && !still && reach > 0 && Math.random() < 0.34) {
+			// Occasional satellite just past the reach, perpendicular to the motion.
+			const distance = reach * (1 + Math.random() * 0.6) * (Math.random() < 0.5 ? -1 : 1);
 			const horizontal = Math.abs(dc) >= Math.abs(dr);
-			const c = column + (horizontal ? 0 : distance);
-			const r = row + (horizontal ? distance : 0);
+			const c = Math.floor((x + (horizontal ? 0 : distance)) / size);
+			const r = Math.floor((y + (horizontal ? distance : 0)) / size);
 			if (inBounds(c, r)) mark(c, r, now - options.fadeDuration * 0.18);
 		}
 

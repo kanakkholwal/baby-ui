@@ -45,10 +45,10 @@ const s = $derived(loadingScreen({ position, logoMotion, indicator, open }));
 <div
 	data-slot="loading-screen"
 	role="status"
-	aria-label={statusLabel(label, progress)}
 	inert={!open}
 	class={cn(s.root(), className)}
 >
+	<span class={s.srOnly()}>{statusLabel(label, progress)}</span>
 	{#if logo}
 		<div aria-hidden="true" class={s.logo()}>{@render logo()}</div>
 	{/if}

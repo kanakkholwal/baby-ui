@@ -9,6 +9,7 @@ import {
 	swapChars,
 	swapText,
 	swapTextFlip,
+	swapTextSlide,
 } from "./variants";
 
 export type { SwapTextMotion, SwapTextSize };
@@ -31,8 +32,6 @@ export interface SwapTextProps {
 	motion?: SwapTextMotion;
 	className?: string;
 }
-
-const LAYER = "block transition-transform ease-[var(--ease-out)]";
 
 export function SwapText({
 	initialText,
@@ -105,6 +104,7 @@ export function SwapText({
 		);
 	}
 
+	const slide = swapTextSlide({ active, hover: supportsHover });
 	return (
 		<div
 			data-slot="swap-text"
@@ -113,24 +113,22 @@ export function SwapText({
 			<button
 				type="button"
 				disabled={disableClick}
+				aria-label={active ? finalText : initialText}
+				aria-pressed={active}
 				onClick={() => !disableClick && setActive(!active)}
 				className={cn(swapText({ size }), "group/swap")}
 			>
 				<span
-					className={cn(LAYER, "flex flex-col", {
-						"-translate-y-full": active,
-						"group-hover/swap:-translate-y-full": supportsHover,
-					})}
+					aria-hidden
+					className={slide.first()}
 					style={{ transitionDuration: `${durationMs}ms` }}
 				>
 					{initialText}
 					{longer ? <span className="invisible h-0">{longer}</span> : null}
 				</span>
 				<span
-					className={cn(LAYER, "absolute top-full", {
-						"-translate-y-full": active,
-						"group-hover/swap:-translate-y-full": supportsHover,
-					})}
+					aria-hidden
+					className={slide.second()}
 					style={{ transitionDuration: `${durationMs}ms` }}
 				>
 					{finalText}

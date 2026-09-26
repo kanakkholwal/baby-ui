@@ -5,7 +5,7 @@ import { AgentScreen, type AgentScreenSize } from "@baby-ui/react";
 type Props = Record<string, unknown>;
 
 const PLACEHOLDER =
-	"https://95dnc2a95qgwt9ff.public.blob.vercel-storage.com/agent-desktop-v3.png";
+	"https://wsrv.nl/?url=95dnc2a95qgwt9ff.public.blob.vercel-storage.com/agent-desktop-v3.png&w=1280&output=webp&q=80";
 
 export function AgentScreenDemo({ props }: { props: Props }) {
 	return (

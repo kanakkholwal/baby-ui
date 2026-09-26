@@ -38,6 +38,7 @@ type Props = Omit<HTMLAttributes<HTMLDivElement>, "title"> & {
 	thresholds?: number[];
 	/** Selected day as `YYYY-MM-DD`; bindable. */
 	value?: string | null;
+	onValueChange?: (value: string | null) => void;
 	labels?: Partial<GithubCalendarLabels>;
 	locale?: string;
 };
@@ -54,6 +55,7 @@ let {
 	weekStart = "sunday",
 	thresholds,
 	value = $bindable(null),
+	onValueChange,
 	labels,
 	locale,
 	class: classProp,
@@ -85,13 +87,18 @@ function noun(count: number) {
 	return count === 1 ? l.contribution : l.contributions;
 }
 
+function select(next: string | null) {
+	value = next;
+	onValueChange?.(next);
+}
+
 function onkeydown(event: KeyboardEvent) {
 	const next = moveIndex(event.key, tabStop, grid.cells.length);
 	if (next === null) return;
 	event.preventDefault();
 	const cell = grid.cells[next];
 	if (!cell) return;
-	value = cell.key;
+	select(cell.key);
 	scroller?.querySelectorAll<HTMLElement>("[data-day]")[next]?.focus();
 }
 </script>
@@ -147,7 +154,7 @@ function onkeydown(event: KeyboardEvent) {
 							tabindex={i === tabStop ? 0 : -1}
 							aria-label="{formats.number.format(cell.count)} {noun(cell.count)} {l.on} {formats.day.format(cell.date)}"
 							aria-pressed={i === selected}
-							onclick={() => (value = i === selected ? null : cell.key)}
+							onclick={() => select(i === selected ? null : cell.key)}
 							class={s.cell()}
 							style="--cell: {fills[cell.level]}; --col: {cell.col}; grid-column: {cell.col + 2}; grid-row: {cell.row + 2}"
 						/>

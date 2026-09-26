@@ -10,9 +10,9 @@ let {
 	presenceColors,
 	presenceAvatars = [],
 	extraCount = 0,
-	greeting = "hello!",
-	eyebrow = "Now in multiplayer",
-	intro = "editing",
+	greeting,
+	eyebrow,
+	intro,
 	conjunction = "&",
 	trailing = "",
 	liveLabel,
@@ -25,9 +25,9 @@ let {
 	/** Avatar image URLs, matched to `presenceColors` by index; the colour shows until each loads. */
 	presenceAvatars?: string[];
 	extraCount?: number;
-	greeting?: string;
-	eyebrow?: string;
-	intro?: string;
+	greeting: string;
+	eyebrow: string;
+	intro: string;
 	conjunction?: string;
 	trailing?: string;
 	liveLabel?: string;

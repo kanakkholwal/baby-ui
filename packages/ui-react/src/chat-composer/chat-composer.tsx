@@ -220,7 +220,13 @@ export function ChatComposer({
 					</div>
 				</div>
 
-				<div ref={thread} className={s.thread()}>
+				<div
+					ref={thread}
+					role="log"
+					aria-live="polite"
+					aria-relevant="additions"
+					className={s.thread()}
+				>
 					{messages.map((m, i) =>
 						m.role === "user" ? (
 							<p key={m.id} className={s.user()}>

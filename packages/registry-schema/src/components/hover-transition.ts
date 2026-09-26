@@ -108,7 +108,9 @@ export const hoverTransition = defineComponent({
 		behaviour: [
 			"Every effect is a CSS transition on clip-path, transform, opacity, filter and radius; leaving plays it back in reverse.",
 			"Parallax, curtain, diagonal and slide move the resting content too, drawn as its own layers.",
-			"Strips stagger eight slices over the first 15% of the duration, reversing order on exit.",
+			"Curtain leaves retract away from the named edge or corner, nearer leaf first; center splits into four quadrants.",
+			"Diagonal corners swing open on a hinge at the opposite corner; edges slide out named edge first; center splits into four triangles.",
+			"Strips stagger eight slices over the first 15% of the duration, reversing order on exit; center lands them from the middle outward.",
 			"The stage lifts 1.2% and tilts up to 2.4 degrees toward a mouse pointer.",
 		],
 	},
@@ -116,7 +118,8 @@ export const hoverTransition = defineComponent({
 		role: "group",
 		keyboard: ["Focus reveals the hover content; blur restores the resting content"],
 		notes: [
-			"Only the visible view is exposed to assistive tech; duplicate layers are aria-hidden.",
+			"Exactly one copy of the visible view is exposed: the resting content while idle, one hover copy while active.",
+			"Every duplicate layer is aria-hidden and inert, so interactive hover content has a single tab stop.",
 		],
 	},
 	licenseOrigin: {

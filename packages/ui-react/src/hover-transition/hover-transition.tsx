@@ -2,7 +2,7 @@
 
 import { type CSSProperties, type PointerEvent, type ReactNode, useState } from "react";
 import { cn } from "../lib/cn";
-import { baseVars, hoverLayers, movesDefault } from "./effects";
+import { baseVars, hoverLayers } from "./effects";
 import {
 	type HoverTransitionDirection,
 	type HoverTransitionEffect,
@@ -101,7 +101,8 @@ export function HoverTransition({
 		>
 			<div data-active={active ? "true" : "false"} className={styles.stage()}>
 				<div
-					aria-hidden={active || movesDefault(effect) ? true : undefined}
+					aria-hidden={active ? true : undefined}
+					inert={active}
 					className={styles.base()}
 					style={baseVars(effect, active) as CSSProperties}
 				>
@@ -110,7 +111,9 @@ export function HoverTransition({
 				{layers.map((layer, i) => (
 					<div
 						key={i}
+						data-exposed={i === firstHover && active ? "true" : undefined}
 						aria-hidden={i === firstHover && active ? undefined : true}
+						inert={!(i === firstHover && active)}
 						className={styles.layer()}
 						style={layer.vars as CSSProperties}
 					>

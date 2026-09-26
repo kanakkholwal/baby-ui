@@ -103,6 +103,8 @@ export function mountAscii(
 	let visible = true;
 	let frame = 0;
 	let timer = 0;
+	// Late callbacks (fonts.ready, image load) must not restart a torn-down engine.
+	let destroyed = false;
 	let last = 0;
 	let time = 0;
 
@@ -276,6 +278,7 @@ export function mountAscii(
 	};
 
 	const tear = () => {
+		if (destroyed) return;
 		timer = 0;
 		if (options.variant !== "glitch" || !running()) return;
 		bands = new Map();
@@ -291,12 +294,14 @@ export function mountAscii(
 	};
 
 	const heal = () => {
+		if (destroyed) return;
 		bands.clear();
 		render();
 		timer = window.setTimeout(tear, (500 + Math.random() * 600) / options.speed);
 	};
 
 	const wake = () => {
+		if (destroyed) return;
 		if (!frame) frame = requestAnimationFrame(tick);
 		if (!timer && options.variant === "glitch" && running()) {
 			timer = window.setTimeout(tear, 400 / options.speed);
@@ -304,6 +309,7 @@ export function mountAscii(
 	};
 
 	const reset = () => {
+		if (destroyed) return;
 		layout();
 		wake();
 	};
@@ -355,6 +361,7 @@ export function mountAscii(
 			reset();
 		},
 		destroy() {
+			destroyed = true;
 			cancelAnimationFrame(frame);
 			window.clearTimeout(timer);
 			if (image) image.onload = null;

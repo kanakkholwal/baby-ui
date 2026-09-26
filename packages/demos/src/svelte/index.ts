@@ -183,7 +183,6 @@ export const demos: Record<string, DemoLoader> = {
 	marker: () => import("./marker-demo.svelte"),
 	"split-flap-display": () => import("./split-flap-display-demo.svelte"),
 	"hover-transition": () => import("./hover-transition-demo.svelte"),
-	"mac-keyboard": () => import("./mac-keyboard-demo.svelte"),
 	"wheel-carousel": () => import("./wheel-carousel-demo.svelte"),
 	"wheel-picker": () => import("./wheel-picker-demo.svelte"),
 	"text-explode-imessage": () => import("./text-explode-imessage-demo.svelte"),

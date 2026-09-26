@@ -86,7 +86,8 @@ export const fullscreenNav = defineComponent({
 	],
 	motion: {
 		springs: [],
-		reducedMotion: "The overlay and its links appear at once, with no fade or travel.",
+		reducedMotion:
+			"The overlay and its links only fade in place, with no travel, clip or stagger delay.",
 		behaviour: [
 			"The overlay fades in over 280ms and the links stagger in at 45ms intervals, which is inside the range where stagger still reads as one gesture.",
 			"Links animate opacity and transform only, so a long list does not cost layout.",

@@ -73,7 +73,7 @@ export function RevealTextDemo({ props }: { props: Props }) {
 	return (
 		<div className="text-2xl">
 			<RevealText
-				key={`${split}-${trigger}-${props.staggerMs}-${props.blur}`}
+				key={`${split}-${trigger}-${props.once}-${props.staggerMs}-${props.delayMs}-${props.blur}-${props.direction}-${props.staggerFrom}-${props.mask}`}
 				as="h2"
 				text="Design meets motion, one word at a time"
 				split={split}

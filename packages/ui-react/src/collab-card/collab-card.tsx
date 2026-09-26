@@ -23,9 +23,9 @@ export interface CollabCardProps {
 	presenceAvatars?: string[];
 	/** Editors beyond the visible swatches, shown as a `+N` avatar. */
 	extraCount?: number;
-	greeting?: string;
-	eyebrow?: string;
-	intro?: string;
+	greeting: string;
+	eyebrow: string;
+	intro: string;
 	conjunction?: string;
 	trailing?: string;
 	/** Status line beside the live dot. Defaults to a count derived from `presenceColors`/`extraCount`. */
@@ -77,9 +77,9 @@ export function CollabCard({
 	presenceColors,
 	presenceAvatars = [],
 	extraCount = 0,
-	greeting = "hello!",
-	eyebrow = "Now in multiplayer",
-	intro = "editing",
+	greeting,
+	eyebrow,
+	intro,
 	conjunction = "&",
 	trailing = "",
 	liveLabel,

@@ -14,7 +14,7 @@ let {
 	src,
 	alt,
 	pixelSize = 36,
-	radius = 58,
+	radius = 40,
 	fadeDuration = 900,
 	maxPixels = 84,
 	initialPixels = 24,
@@ -29,7 +29,7 @@ let {
 	alt: string;
 	/** Edge of one square, in px (at least 12). */
 	pixelSize?: number;
-	/** Farthest distance, in px, for an occasional satellite square. */
+	/** Reveal reach in px: squares whose centre lies this close to the pointer show; 0 is one square. */
 	radius?: number;
 	/** Time in ms before a trail square has fully faded. */
 	fadeDuration?: number;
@@ -75,8 +75,16 @@ $effect(() => {
 });
 </script>
 
-<div bind:this={root} data-slot="pixel-image-trail" class={cn(s.root(), className)}>
-	<img bind:this={image} {src} {alt} draggable="false" class={s.image()} />
+<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+<div
+	bind:this={root}
+	data-slot="pixel-image-trail"
+	role="group"
+	aria-label={alt}
+	tabindex="0"
+	class={cn(s.root(), className)}
+>
+	<img bind:this={image} {src} alt="" draggable="false" class={s.image()} />
 	<canvas bind:this={canvas} aria-hidden="true" class={s.canvas()}></canvas>
 	{#if children}
 		<div class={s.content()}>{@render children()}</div>

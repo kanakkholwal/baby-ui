@@ -45,7 +45,7 @@ const REST = 0.05;
 
 /**
  * Samples `text` into particles and runs their physics only while something is moving:
- * the frame loop stops once every particle is home and the pointer has left.
+ * the loop stops once no particle moved this frame and wakes on pointer movement.
  */
 export function mountParticles(
 	container: HTMLElement,
@@ -60,6 +60,7 @@ export function mountParticles(
 	let width = 0;
 	let height = 0;
 	let color = "#000";
+	let destroyed = false;
 	const reduced = matchMedia("(prefers-reduced-motion: reduce)");
 
 	const sample = () => {
@@ -136,10 +137,13 @@ export function mountParticles(
 			p.vy = (p.vy + (p.oy - p.y) * options.returnSpeed) * FRICTION;
 			p.x += p.vx;
 			p.y += p.vy;
-			if (Math.abs(p.x - p.ox) > REST || Math.abs(p.y - p.oy) > REST) moving = true;
+			// A resting pointer holds particles off home, so only velocity counts while it is set.
+			if (Math.abs(p.vx) > REST || Math.abs(p.vy) > REST) moving = true;
+			else if (!pointer && (Math.abs(p.x - p.ox) > REST || Math.abs(p.y - p.oy) > REST))
+				moving = true;
 		}
 		draw();
-		frame = moving || pointer ? requestAnimationFrame(step) : 0;
+		frame = moving ? requestAnimationFrame(step) : 0;
 	};
 
 	const wake = () => {
@@ -148,6 +152,7 @@ export function mountParticles(
 	};
 
 	const reset = () => {
+		if (destroyed) return;
 		sample();
 		wake();
 	};
@@ -162,10 +167,17 @@ export function mountParticles(
 		pointer = null;
 		wake();
 	};
+	const onReducedChange = () => {
+		cancelAnimationFrame(frame);
+		frame = 0;
+		pointer = null;
+		reset();
+	};
 
 	canvas.addEventListener("pointermove", onMove);
 	canvas.addEventListener("pointerleave", onLeave);
 	canvas.addEventListener("pointercancel", onLeave);
+	reduced.addEventListener("change", onReducedChange);
 	const resize = new ResizeObserver(reset);
 	resize.observe(container);
 	// Theme switches change `color`; resample so the particles follow.
@@ -182,7 +194,9 @@ export function mountParticles(
 			reset();
 		},
 		destroy() {
+			destroyed = true;
 			cancelAnimationFrame(frame);
+			reduced.removeEventListener("change", onReducedChange);
 			resize.disconnect();
 			theme.disconnect();
 			canvas.removeEventListener("pointermove", onMove);

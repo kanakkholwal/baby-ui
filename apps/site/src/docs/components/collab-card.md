@@ -22,3 +22,7 @@ light/dark mode, the same way a browser-chrome mockup wouldn't reskin either.
 `liveLabel` defaults to a count derived from `presenceColors`/`extraCount`, never a fixed
 number baked into the component: the "N editing" line can't drift from what's actually
 shown in the presence stack.
+
+## No built-in copy
+
+`greeting`, `eyebrow` and `intro` are required: the card ships no words of its own.

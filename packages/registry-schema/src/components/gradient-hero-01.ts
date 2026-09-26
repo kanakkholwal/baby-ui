@@ -1,6 +1,6 @@
 import { defineComponent } from "../index";
 
-const TONES = ["primary", "chart", "mono"];
+const TONES = ["chart", "spectrum", "primary"];
 const SIZES = ["screen", "section"];
 
 export const gradientHero01 = defineComponent({
@@ -41,8 +41,9 @@ export const gradientHero01 = defineComponent({
 		{
 			name: "tone",
 			type: TONES.map((v) => `"${v}"`).join(" | "),
-			description: "Glow colours: the primary colour, chart colours 1 to 3, or a grey.",
-			default: "primary",
+			description:
+				"Glow colours: chart colour 1, chart colours 1 to 3, or the primary colour.",
+			default: "chart",
 			control: { kind: "select", options: TONES },
 		},
 		{

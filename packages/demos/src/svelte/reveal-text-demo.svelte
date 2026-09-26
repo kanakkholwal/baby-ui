@@ -15,7 +15,7 @@ const trigger = $derived((props.trigger as RevealTextTrigger) ?? "mount");
 </script>
 
 <div class="text-2xl">
-	{#key `${split}-${trigger}-${props.staggerMs}-${props.blur}`}
+	{#key `${split}-${trigger}-${props.once}-${props.staggerMs}-${props.delayMs}-${props.blur}-${props.direction}-${props.staggerFrom}-${props.mask}`}
 		<RevealText
 			as="h2"
 			text="Design meets motion, one word at a time"

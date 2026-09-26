@@ -444,9 +444,6 @@ export type {
 export { default as LoadingState } from "./loading-state/loading-state.svelte";
 export type { LoadingStateVariant } from "./loading-state/types";
 export { default as LogoCarousel } from "./logo-carousel/logo-carousel.svelte";
-export type { MacKeyboardLabels } from "./mac-keyboard/layout";
-export { default as MacKeyboard } from "./mac-keyboard/mac-keyboard.svelte";
-export type { MacKeyboardSize, MacKeyboardVariant } from "./mac-keyboard/variants";
 export { default as Markdown } from "./markdown/markdown.svelte";
 export type { MarkdownSize } from "./markdown/variants";
 export { default as Marker } from "./marker/marker.svelte";

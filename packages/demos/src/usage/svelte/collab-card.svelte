@@ -9,4 +9,11 @@ const collaborators: [CollabCardCollaborator, CollabCardCollaborator] = [
 const presenceColors = ["#A259FF", "#FF7262", "#1ABCFE"];
 </script>
 
-<CollabCard {collaborators} {presenceColors} extraCount={1} />
+<CollabCard
+	greeting="hello!"
+	eyebrow="Now in multiplayer"
+	intro="editing"
+	{collaborators}
+	{presenceColors}
+	extraCount={1}
+/>

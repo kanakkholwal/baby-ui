@@ -6,7 +6,23 @@ import { defaultProps, specHref } from "$lib/registry";
 
 let { spec }: { spec: ComponentSpec } = $props();
 
-const demoPromise = $derived(demos[spec.slug]?.());
+let frame = $state<HTMLElement>();
+let near = $state(false);
+
+// /components holds every card; loading all demos up front pulls ~200 chunks and dozens of canvases.
+$effect(() => {
+	if (!frame || near) return;
+	const io = new IntersectionObserver(
+		(entries) => {
+			if (entries.some((e) => e.isIntersecting)) near = true;
+		},
+		{ rootMargin: "400px 0px" },
+	);
+	io.observe(frame);
+	return () => io.disconnect();
+});
+
+const demoPromise = $derived(near ? demos[spec.slug]?.() : undefined);
 const demoProps = $derived(defaultProps(spec));
 </script>
 
@@ -27,6 +43,7 @@ const demoProps = $derived(defaultProps(spec));
 			</p>
 		</div>
 		<div
+			bind:this={frame}
 			class="grid min-h-44 max-h-64 min-w-0 flex-1 grid-cols-[minmax(0,1fr)] place-items-center overflow-hidden rounded-[7px] bg-background bg-[radial-gradient(var(--border)_1px,transparent_1px)] [background-size:16px_16px] p-4"
 		>
 			{#if demoPromise}

@@ -21,9 +21,13 @@ export function flapSteps(
 	return steps;
 }
 
+export function flapColumns(columns: number): number {
+	return Math.max(1, Math.floor(columns));
+}
+
 /** Uppercased board rows (split on newlines), each padded or cut to `columns` cells. */
 export function flapRows(value: string, columns: number): string[][] {
-	const width = Math.max(1, Math.floor(columns));
+	const width = flapColumns(columns);
 	return value
 		.toUpperCase()
 		.split("\n")
