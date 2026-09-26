@@ -1,6 +1,6 @@
 ---
 title: Introduction
-description: Copy-paste components for React and Svelte, built from one spec.
+description: Copy-paste components for React and Svelte, built from one spec and installed with the shadcn CLI.
 ---
 
 Baby UI is a shadcn registry, not a package. The CLI copies source into your project and you

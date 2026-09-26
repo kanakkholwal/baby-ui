@@ -2,7 +2,7 @@ import { FRAMEWORKS, type Framework } from "@baby-ui/registry-schema";
 import { specs } from "@baby-ui/registry-schema/components";
 import { error, json } from "@sveltejs/kit";
 import { installSource } from "$lib/install-source.server";
-import { findSpec } from "$lib/registry";
+import { findSpec } from "$lib/server/registry";
 import type { EntryGenerator, RequestHandler } from "./$types";
 
 export const prerender = true;

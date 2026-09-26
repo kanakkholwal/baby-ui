@@ -1,6 +1,6 @@
 import { CATEGORIES, type Category } from "@baby-ui/registry-schema";
-import { specs } from "@baby-ui/registry-schema/components";
 import { error } from "@sveltejs/kit";
+import { cardItems, specs } from "$lib/server/registry";
 import type { PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = ({ params }) => {
@@ -9,9 +9,11 @@ export const load: PageServerLoad = ({ params }) => {
 		throw error(404, `No category named "${params.category}"`);
 	return {
 		category,
-		slugs: specs
-			.filter((s) => s.category === category)
-			.sort((a, b) => a.name.localeCompare(b.name))
-			.map((s) => s.slug),
+		items: cardItems(
+			specs
+				.filter((s) => s.category === category)
+				.sort((a, b) => a.name.localeCompare(b.name))
+				.map((s) => s.slug),
+		),
 	};
 };

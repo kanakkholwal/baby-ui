@@ -11,7 +11,8 @@ Any agent (Claude Code, Codex, Cursor, Copilot) should read this file first.
 - Never write custom CSS when Tailwind utilities and CSS variables can do it. Custom CSS is
   for keyframes, `::backdrop`, pseudo-element thumbs, scrollbars, and nothing else.
 - Never add site-only CSS to `packages/tokens`; it goes in `apps/site/src/routes/layout.css`.
-- Never use Lucide. Icons are `@tabler/icons-svelte` / `@tabler/icons-react`.
+- Never use Lucide. Site chrome uses `@tabler/icons-svelte`; registry components hand-draw Tabler
+  glyphs as inline `<svg>` (viewBox 0 0 24 24, stroke 2), no icon package import.
 - Never use `--accent` as a hover surface. Hovers are `bg-foreground/[0.06]`.
 - Never leave a comment over 2 lines or a file-header comment (`scripts/check-comments.mjs --all`).
 - Never print licence/copyright credits on any component page, base or ported — per-component

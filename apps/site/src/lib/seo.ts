@@ -1,26 +1,46 @@
 import origins from "./generated/origins.json";
+import { componentCountLabel } from "./registry";
 
 export const SITE_URL = origins.site;
 export const SITE_NAME = "Baby UI";
+export const REPO_URL = "https://github.com/kanakkholwal/baby-ui";
 
 export const DEFAULT_KEYWORDS = [
 	"react components",
 	"svelte components",
-	"ui library",
+	"react 19 components",
+	"svelte 5 components",
+	"ui component library",
+	"shadcn registry",
+	"shadcn-svelte",
 	"shadcn alternative",
 	"animated components",
-	"tailwind components",
+	"accessible components",
+	"tailwind css components",
 	"d3 charts",
 ];
 
-/** `origin` is the request's own origin (`page.url.origin` / `event.url.origin`), so this
- * resolves to the local dev server in dev and the real domain once deployed. */
+/** A component page's search terms: its own keywords plus the framework phrasings people type. */
+export function componentKeywords(name: string, keywords: string[]): string[] {
+	const term = name.toLowerCase();
+	return [
+		...new Set([
+			term,
+			`react ${term}`,
+			`svelte ${term}`,
+			`${term} component`,
+			`shadcn ${term}`,
+			...keywords,
+		]),
+	];
+}
+
+/** Resolves `path` against `origin`; pages pass `SITE_URL` outside dev. */
 export function absoluteUrl(origin: string, path: string): string {
 	return new URL(path, origin).toString();
 }
 
-/** Builds the branded OG image URL for a page; `tag` is a small category label. `origin`
- * is the request's own origin, so a local preview renders from the local dev server. */
+/** Builds the branded OG image URL for a page; `tag` is a small category label. */
 export function ogImageUrl(
 	origin: string,
 	params: { title: string; description?: string; tag?: string },
@@ -30,4 +50,156 @@ export function ogImageUrl(
 	if (params.description) url.searchParams.set("description", params.description);
 	if (params.tag) url.searchParams.set("tag", params.tag);
 	return url.toString();
+}
+
+/** Appends `suffix` when the result still fits a search snippet (160 chars). */
+export function metaDescription(base: string, suffix: string): string {
+	const text = base.trim().replace(/\.?$/, ".");
+	return text.length + suffix.length + 1 <= 160 ? `${text} ${suffix}` : text;
+}
+
+// --- Structured data ---
+
+export type JsonLd = Record<string, unknown>;
+
+const site = (path: string) => absoluteUrl(SITE_URL, path);
+
+const ORGANIZATION_ID = site("/#organization");
+const WEBSITE_ID = site("/#website");
+
+/** The publisher every other node points at. */
+export function organizationLd(): JsonLd {
+	return {
+		"@type": "Organization",
+		"@id": ORGANIZATION_ID,
+		name: SITE_NAME,
+		url: site("/"),
+		logo: site("/logo.svg"),
+		sameAs: [REPO_URL],
+	};
+}
+
+export function websiteLd(description: string): JsonLd {
+	return {
+		"@type": "WebSite",
+		"@id": WEBSITE_ID,
+		name: SITE_NAME,
+		url: site("/"),
+		description,
+		inLanguage: "en",
+		publisher: { "@id": ORGANIZATION_ID },
+	};
+}
+
+/** The library itself, as Google's software rich result expects it: category, OS and a free offer. */
+export function softwareApplicationLd(params: {
+	description: string;
+	keywords: string[];
+	componentCount: number;
+}): JsonLd {
+	return {
+		"@type": "SoftwareApplication",
+		"@id": site("/#software"),
+		name: SITE_NAME,
+		description: params.description,
+		url: site("/"),
+		applicationCategory: "DeveloperApplication",
+		applicationSubCategory: "UI component library",
+		operatingSystem: "Web",
+		offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+		license: "https://www.apache.org/licenses/LICENSE-2.0",
+		keywords: params.keywords.join(", "),
+		featureList: [
+			`${componentCountLabel(params.componentCount)} components with React and Svelte ports`,
+			"Installs through the shadcn and shadcn-svelte CLIs",
+			"TypeScript and JavaScript output",
+			"Keyboard and screen-reader support, reduced-motion aware",
+		],
+		screenshot: site("/og?title=Baby+UI"),
+		downloadUrl: site("/docs/installation"),
+		sameAs: [REPO_URL],
+		publisher: { "@id": ORGANIZATION_ID },
+	};
+}
+
+/** Trail from the home page; each entry is a visible page, last one the current page. */
+export function breadcrumbLd(trail: { name: string; path: string }[]): JsonLd {
+	return {
+		"@type": "BreadcrumbList",
+		itemListElement: [{ name: "Home", path: "/" }, ...trail].map((item, i) => ({
+			"@type": "ListItem",
+			position: i + 1,
+			name: item.name,
+			item: site(item.path),
+		})),
+	};
+}
+
+export function collectionLd(params: {
+	name: string;
+	description: string;
+	path: string;
+	items: { name: string; path: string }[];
+}): JsonLd {
+	return {
+		"@type": "CollectionPage",
+		name: params.name,
+		description: params.description,
+		url: site(params.path),
+		isPartOf: { "@id": WEBSITE_ID },
+		mainEntity: {
+			"@type": "ItemList",
+			numberOfItems: params.items.length,
+			itemListElement: params.items.map((item, i) => ({
+				"@type": "ListItem",
+				position: i + 1,
+				name: item.name,
+				url: site(item.path),
+			})),
+		},
+	};
+}
+
+/** A component page: source code in two languages, installable through the shadcn CLI. */
+export function componentLd(params: {
+	name: string;
+	description: string;
+	path: string;
+	keywords: string[];
+}): JsonLd {
+	return {
+		"@type": "SoftwareSourceCode",
+		name: params.name,
+		description: params.description,
+		url: site(params.path),
+		codeRepository: REPO_URL,
+		programmingLanguage: ["TypeScript", "Svelte", "React"],
+		runtimePlatform: "Web browser",
+		license: "https://www.apache.org/licenses/LICENSE-2.0",
+		keywords: params.keywords.join(", "),
+		isPartOf: { "@id": WEBSITE_ID },
+		publisher: { "@id": ORGANIZATION_ID },
+	};
+}
+
+export function articleLd(params: {
+	title: string;
+	description: string;
+	path: string;
+}): JsonLd {
+	return {
+		"@type": "TechArticle",
+		headline: params.title,
+		description: params.description,
+		url: site(params.path),
+		inLanguage: "en",
+		isPartOf: { "@id": WEBSITE_ID },
+		publisher: { "@id": ORGANIZATION_ID },
+	};
+}
+
+/** One `<script type="application/ld+json">` body; `<` escaped so content can't close the tag. */
+export function jsonLdScript(nodes: JsonLd[]): string {
+	const json = JSON.stringify({ "@context": "https://schema.org", "@graph": nodes });
+	return `<script type="application/ld+json">${json.replace(/</g, "\\u003c")}</script>`;
 }

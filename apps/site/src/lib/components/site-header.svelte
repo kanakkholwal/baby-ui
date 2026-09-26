@@ -14,7 +14,7 @@ import { mobileNav } from "$lib/mobile-nav.svelte";
 import { prefs } from "$lib/preferences.svelte";
 import { siteNav } from "$lib/registry";
 
-const NAV = siteNav();
+const NAV = $derived(siteNav(page.data.categories ?? []));
 
 // The header's own hamburger only opens something on routes that render a SiteSidebar.
 const hasSidebar = $derived(
@@ -116,7 +116,7 @@ function active(match: string) {
 				type="button"
 				onclick={() => (prefs.open = true)}
 				aria-label="Settings"
-				class="gear hidden size-9 items-center justify-center rounded-xl text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground sm:flex"
+				class="gear flex size-9 shrink-0 items-center justify-center rounded-xl text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground"
 			>
 				<IconSettings size={17} stroke={1.6} />
 			</button>

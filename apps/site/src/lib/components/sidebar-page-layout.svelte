@@ -10,7 +10,7 @@ import SiteSidebar from "./site-sidebar.svelte";
 
 let { groups, children }: { groups: SidebarGroup[]; children: Snippet } = $props();
 
-const nav = siteNav();
+const nav = $derived(siteNav(page.data.categories ?? []));
 // Split gives a component page's preview half the content area; other pages keep the rail.
 const split = $derived(prefs.layout === "split" && Boolean(page.params.slug));
 // Transitions start after mount, so a stored "closed" doesn't animate on load.

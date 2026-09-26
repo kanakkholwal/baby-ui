@@ -6,8 +6,16 @@ let {
 	tabs,
 	active = $bindable(),
 	variant = "pill",
+	controls = "panel",
 	class: classProp,
-}: { tabs: Tab[]; active: string; variant?: Variant; class?: string } = $props();
+}: {
+	tabs: Tab[];
+	active: string;
+	variant?: Variant;
+	/** Id prefix of each tab's panel (`panel-<id>`); null when the tabs switch content with no panel. */
+	controls?: string | null;
+	class?: string;
+} = $props();
 
 const radius = $derived(variant === "pill" ? "rounded-full" : "rounded-md");
 
@@ -99,7 +107,7 @@ function onkeydown(event: KeyboardEvent) {
 			id="tab-{tab.id}"
 			data-tab={tab.id}
 			aria-selected={active === tab.id}
-			aria-controls="panel-{tab.id}"
+			aria-controls={controls ? `${controls}-${tab.id}` : undefined}
 			tabindex={active === tab.id ? 0 : -1}
 			onclick={() => (active = tab.id)}
 			{onkeydown}

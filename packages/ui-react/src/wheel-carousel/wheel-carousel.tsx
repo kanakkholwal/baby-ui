@@ -148,14 +148,8 @@ export function WheelCarousel({
 			className={cn(s.root(), className)}
 			style={{ "--photo-width": `${photoWidth}%` } as CSSProperties}
 		>
-			<div
-				ref={stageRef}
-				role="listbox"
-				aria-label={label}
-				aria-activedescendant={selected ? `${id}-${current}` : undefined}
-				tabIndex={0}
-				className={s.stage()}
-			>
+			{/* The stage takes drag, wheel and keys; the listbox is the labels alone, so it owns only options. */}
+			<div ref={stageRef} className={s.stage()}>
 				<div className={s.photoCol()}>
 					<div className={s.photo()}>
 						{layers.map((layer) => {
@@ -173,7 +167,14 @@ export function WheelCarousel({
 						})}
 					</div>
 				</div>
-				<div ref={listRef} className={s.list()}>
+				<div
+					ref={listRef}
+					role="listbox"
+					aria-label={label}
+					aria-activedescendant={selected ? `${id}-${current}` : undefined}
+					tabIndex={0}
+					className={s.list()}
+				>
 					{showMarker ? (
 						<span
 							aria-hidden="true"

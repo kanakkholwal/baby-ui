@@ -1,6 +1,25 @@
 # allow crawling everything by default; pages that shouldn't be indexed carry
 # their own noindex meta tag instead, so crawlers can still see it
 User-agent: *
-Disallow:
+Allow: /
+Disallow: /api/
+Disallow: /ingest/
 
+# AI search and assistant crawlers are welcome: docs and specs are written to be quoted
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: ClaudeBot
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+User-agent: CCBot
+Allow: /
+Disallow: /api/
+Disallow: /ingest/
+
+# Plain-text guide for LLM tools: https://baby-ui.nexonauts.com/llms.txt
 Sitemap: https://baby-ui.nexonauts.com/sitemap.xml

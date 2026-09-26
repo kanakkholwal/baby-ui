@@ -1,5 +1,4 @@
 <script lang="ts">
-import { specs } from "@baby-ui/registry-schema/components";
 import {
 	Badge,
 	Button,
@@ -10,18 +9,23 @@ import {
 import IconArrowRight from "@tabler/icons-svelte/icons/arrow-right";
 import IconRefresh from "@tabler/icons-svelte/icons/refresh";
 import { page } from "$app/state";
-import { specHref } from "$lib/registry";
+import { type CatalogItem, loadCatalog } from "$lib/registry";
 
 const status = $derived(page.status);
 const notFound = $derived(status === 404);
 const path = $derived(page.url.pathname);
 
 // A mistyped slug is the likeliest 404, so rank real components by shared prefix and letters.
+let catalog = $state<CatalogItem[]>([]);
+$effect(() => {
+	if (notFound) void loadCatalog().then((items) => (catalog = items));
+});
+
 const suggestions = $derived.by(() => {
 	if (!notFound) return [];
 	const wanted = path.split("/").filter(Boolean).pop()?.toLowerCase() ?? "";
-	if (!wanted) return specs.slice(0, 4);
-	return specs
+	if (!wanted) return catalog.slice(0, 4);
+	return catalog
 		.map((spec) => {
 			const shared = [...new Set(wanted)].filter((ch) => spec.slug.includes(ch)).length;
 			const prefix = spec.slug.startsWith(wanted.slice(0, 3)) ? 10 : 0;
@@ -77,7 +81,7 @@ const message = $derived(
 						{#each suggestions as spec (spec.slug)}
 							<li>
 								<a
-									href={specHref(spec)}
+									href={spec.href}
 									class="group flex items-center justify-between gap-3 rounded-lg px-3 py-2.5 outline-none transition-colors hover:bg-foreground/[0.06] focus-visible:ring-2 focus-visible:ring-ring"
 								>
 									<span class="min-w-0">

@@ -19,6 +19,7 @@ import { breadcrumb } from "./breadcrumb";
 import { button } from "./button";
 import { candlestickChart } from "./candlestick-chart";
 import { card } from "./card";
+import { caseStudyFlipStack } from "./case-study-flip-stack";
 import { chart, lineChart } from "./chart";
 import { chartBrush } from "./chart-brush";
 import { chartMarkers } from "./chart-markers";
@@ -26,12 +27,14 @@ import { chartSeries } from "./chart-series";
 import { chatComposer } from "./chat-composer";
 import { checkbox } from "./checkbox";
 import { choroplethChart } from "./choropleth-chart";
+import { circuitBoard } from "./circuit-board";
 import { circularText } from "./circular-text";
 import { clickSpark } from "./click-spark";
 import { closingPlasma } from "./closing-plasma";
 import { codeBlock } from "./code-block";
 import { collabCard } from "./collab-card";
 import { collapsible } from "./collapsible";
+import { collectionSurfer } from "./collection-surfer";
 import { colorPicker } from "./color-picker";
 import { combobox } from "./combobox";
 import { command } from "./command";
@@ -48,16 +51,20 @@ import { diaText } from "./dia-text";
 import { dialog } from "./dialog";
 import { diffTable } from "./diff-table";
 import { ditherGradient } from "./dither-gradient";
+import { ditheredLogo } from "./dithered-logo";
 import { docsNav } from "./docs-nav";
 import { doubleUnderline } from "./double-underline";
 import { draggableMarquee } from "./draggable-marquee";
 import { drawer } from "./drawer";
 import { dropdownMenu } from "./dropdown-menu";
+import { eyeTracking } from "./eye-tracking";
 import { fileDiff } from "./file-diff";
 import { fileTree } from "./file-tree";
 import { fillButton } from "./fill-button";
 import { filterTable } from "./filter-table";
 import { fineTuneCard } from "./fine-tune-card";
+import { fisheyeInfiniteGrid } from "./fisheye-infinite-grid";
+import { flightStatusCard } from "./flight-status-card";
 import { flowchart } from "./flowchart";
 import { footer } from "./footer";
 import { fullscreenNav } from "./fullscreen-nav";
@@ -74,15 +81,18 @@ import { heroStage } from "./hero-stage";
 import { hoverCard } from "./hover-card";
 import { hoverTransition } from "./hover-transition";
 import { imageTrail } from "./image-trail";
+import { infiniteImageField } from "./infinite-image-field";
 import { input } from "./input";
 import { jitterText } from "./jitter-text";
 import { jumpingText } from "./jumping-text";
 import { label } from "./label";
+import { layeredStack } from "./layered-stack";
 import { liquidChrome } from "./liquid-chrome";
 import { liveLineChart } from "./live-line-chart";
 import { loadingScreen } from "./loading-screen";
 import { loadingState } from "./loading-state";
 import { logoCarousel } from "./logo-carousel";
+import { magnetLines } from "./magnet-lines";
 import { markdown } from "./markdown";
 import { marker } from "./marker";
 import { maskText } from "./mask-text";
@@ -92,7 +102,9 @@ import { metisText } from "./metis-text";
 import { mirrorText } from "./mirror-text";
 import { morphText } from "./morph-text";
 import { morphingModal } from "./morphing-modal";
+import { musicPlayer } from "./music-player";
 import { navbar } from "./navbar";
+import { orbitCardStack } from "./orbit-card-stack";
 import { overviewCard } from "./overview-card";
 import { pagination } from "./pagination";
 import { particleText } from "./particle-text";
@@ -102,6 +114,7 @@ import { pixelImageTrail } from "./pixel-image-trail";
 import { popover } from "./popover";
 import { pricing01 } from "./pricing-01";
 import { pricing02 } from "./pricing-02";
+import { prismGradient } from "./prism-gradient";
 import { progress } from "./progress";
 import { projectionLine } from "./projection-line";
 import { question } from "./question";
@@ -115,14 +128,18 @@ import { responseStream } from "./response-stream";
 import { responsiveDialog } from "./responsive-dialog";
 import { revealText } from "./reveal-text";
 import { ringChart } from "./ring-chart";
+import { rippleTransition } from "./ripple-transition";
 import { rollText } from "./roll-text";
 import { rollingDigits } from "./rolling-digits";
 import { sankeyChart } from "./sankey-chart";
 import { scatterChart } from "./scatter-chart";
 import { scoreCard } from "./score-card";
 import { scrollArea } from "./scroll-area";
+import { scrollChoreography } from "./scroll-choreography";
 import { scrollProgress } from "./scroll-progress";
 import { scrollReveal } from "./scroll-reveal";
+import { scrollSplitCard } from "./scroll-split-card";
+import { scrollTiltedGrid } from "./scroll-tilted-grid";
 import { scrollVelocity } from "./scroll-velocity";
 import { scrubField } from "./scrub-field";
 import { select } from "./select";
@@ -132,6 +149,7 @@ import { shortcut } from "./shortcut";
 import { showMore } from "./show-more";
 import { showcaseGrid } from "./showcase-grid";
 import { sidebarNav } from "./sidebar-nav";
+import { signature } from "./signature";
 import { silkAurora } from "./silk-aurora";
 import { skeleton } from "./skeleton";
 import { slider } from "./slider";
@@ -142,6 +160,7 @@ import { splitText } from "./split-text";
 import { staggeredLetter } from "./staggered-letter";
 import { statCard, statCardMap } from "./stat-card";
 import { statusMonitor } from "./status-monitor";
+import { stickyScrollCards } from "./sticky-scroll-cards";
 import { streamingText } from "./streaming-text";
 import { sunburstChart } from "./sunburst-chart";
 import { swapText } from "./swap-text";
@@ -363,6 +382,25 @@ export const specs: ComponentSpec[] = [
 	spectralRibbon,
 	webglLiquid,
 	liquidChrome,
+	ditheredLogo,
+	fisheyeInfiniteGrid,
+	infiniteImageField,
+	magnetLines,
+	rippleTransition,
+	eyeTracking,
+	prismGradient,
+	caseStudyFlipStack,
+	collectionSurfer,
+	scrollChoreography,
+	scrollSplitCard,
+	flightStatusCard,
+	musicPlayer,
+	circuitBoard,
+	signature,
+	scrollTiltedGrid,
+	stickyScrollCards,
+	layeredStack,
+	orbitCardStack,
 ];
 
 export function getSpec(slug: string): ComponentSpec | undefined {

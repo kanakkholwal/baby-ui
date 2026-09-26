@@ -1,22 +1,10 @@
 <script lang="ts">
-import { specs } from "@baby-ui/registry-schema/components";
 import { Button } from "@baby-ui/svelte";
 import IconBrandGithub from "@tabler/icons-svelte/icons/brand-github";
+import { page } from "$app/state";
 import Logo from "$lib/components/logo.svelte";
-import { categoryHref, sidebarGroups, specHref } from "$lib/registry";
 import ShowcaseDots from "./showcase-dots.svelte";
 
-const groups = sidebarGroups();
-const PICKS = [
-	"dia-text",
-	"reasoning",
-	"records-table",
-	"rolling-digits",
-	"sidebar-nav",
-	"week-calendar",
-]
-	.map((slug) => specs.find((s) => s.slug === slug))
-	.filter((s) => s !== undefined);
 const RESOURCES = [
 	{ href: "/docs", label: "Docs" },
 	{ href: "/docs/installation", label: "Installation" },
@@ -58,11 +46,11 @@ const CELL = "border-border border-r border-b p-6 md:p-8";
 				<nav aria-label="Categories" class="{CELL} md:col-span-3">
 					<p class={HEAD}>Components</p>
 					<ul class="space-y-2.5">
-						{#each groups as group (group.category)}
+						{#each page.data.categories ?? [] as group (group.category)}
 							<li>
-								<a href={categoryHref(group.category)} class="{LINK} flex items-center justify-between gap-3">
+								<a href={group.href} class="{LINK} flex items-center justify-between gap-3">
 									{group.label}
-									<span class="text-muted-foreground text-xs tabular-nums">{group.items.length}</span>
+									<span class="text-muted-foreground text-xs tabular-nums">{group.count}</span>
 								</a>
 							</li>
 						{/each}
@@ -72,8 +60,8 @@ const CELL = "border-border border-r border-b p-6 md:p-8";
 				<nav aria-label="Picks" class="{CELL} md:col-span-3">
 					<p class={HEAD}>Worth a look</p>
 					<ul class="space-y-2.5">
-						{#each PICKS as spec (spec.slug)}
-							<li><a href={specHref(spec)} class={LINK}>{spec.name}</a></li>
+						{#each page.data.footerPicks ?? [] as pick (pick.slug)}
+							<li><a href={pick.href} class={LINK}>{pick.name}</a></li>
 						{/each}
 					</ul>
 				</nav>
@@ -98,8 +86,6 @@ const CELL = "border-border border-r border-b p-6 md:p-8";
 
 	<p
 		aria-hidden="true"
-		class="pointer-events-none mx-auto -mb-[0.22em] max-w-7xl select-none text-center font-normal text-[clamp(4rem,19vw,16rem)] text-foreground/[0.05] leading-none tracking-[-0.07em]"
-	>
-		Baby UI
-	</p>
+		class="pointer-events-none mx-auto -mb-[0.22em] max-w-7xl select-none text-center font-normal text-[clamp(4rem,19vw,16rem)] text-foreground/[0.05] leading-none tracking-[-0.07em] before:content-['Baby_UI']"
+	></p>
 </footer>

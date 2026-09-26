@@ -3,11 +3,26 @@ import { Button, DiaText, FillButton, ShimmerText } from "@baby-ui/svelte";
 import IconArrowUpRight from "@tabler/icons-svelte/icons/arrow-up-right";
 import IconBrandReact from "@tabler/icons-svelte/icons/brand-react";
 import IconBrandSvelte from "@tabler/icons-svelte/icons/brand-svelte";
-import HeroDashboard from "./hero-dashboard.svelte";
 
 let { count }: { count: number } = $props();
 
 const TAILS = ["feel alive.", "move with you.", "ship twice."];
+
+type Dashboard = typeof import("./hero-dashboard.svelte").default;
+let Dashboard = $state<Dashboard>();
+
+// Client-only and md+ only: phones never download, render or hydrate it. The slot below keeps
+// its measured height (559px at every width), so it fills in without shifting the copy.
+$effect(() => {
+	const query = matchMedia("(min-width: 768px)");
+	const load = () => {
+		if (query.matches && !Dashboard)
+			void import("./hero-dashboard.svelte").then((m) => (Dashboard = m.default));
+	};
+	load();
+	query.addEventListener("change", load);
+	return () => query.removeEventListener("change", load);
+});
 </script>
 
 <div class="mx-auto grid w-full max-w-7xl items-center gap-14 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-10">
@@ -67,7 +82,11 @@ const TAILS = ["feel alive.", "move with you.", "ship twice."];
 	</div>
 
 	<div class="reveal hidden md:block" style:animation-delay="150ms">
-		<HeroDashboard />
+		<div class="min-h-[559px]">
+			{#if Dashboard}
+				<div class="dashboard-in"><Dashboard /></div>
+			{/if}
+		</div>
 	</div>
 </div>
 
@@ -78,6 +97,26 @@ const TAILS = ["feel alive.", "move with you.", "ship twice."];
 		animation: reveal 620ms var(--ease-out) forwards;
 	}
 
+	/* Phones: text is visible from the first frame and only rises in, so first paint is the LCP. */
+	@media (max-width: 767px) {
+		.reveal {
+			opacity: 1;
+			animation-name: reveal-rise;
+		}
+	}
+
+	.dashboard-in {
+		animation: reveal 620ms var(--ease-out) both;
+		opacity: 0;
+		transform: translateY(0.4em);
+	}
+
+	@keyframes reveal-rise {
+		to {
+			transform: none;
+		}
+	}
+
 	@keyframes reveal {
 		to {
 			opacity: 1;
@@ -86,7 +125,8 @@ const TAILS = ["feel alive.", "move with you.", "ship twice."];
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.reveal {
+		.reveal,
+		.dashboard-in {
 			animation: none;
 			opacity: 1;
 			transform: none;

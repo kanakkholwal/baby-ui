@@ -1,10 +1,9 @@
+// Client-safe: types only from the schema package, whose runtime entry pulls in zod. Anything
+// that reads the spec list lives in $lib/server/registry.ts and reaches pages as load data.
 import type { Category, ComponentSpec } from "@baby-ui/registry-schema";
-import { CATEGORIES, docsPath } from "@baby-ui/registry-schema";
-import { specs } from "@baby-ui/registry-schema/components";
 
 /** Marketing count, floored to the ten below with a plus (182 reads "180+"). */
-export const componentCountLabel = (count = specs.length) =>
-	`${Math.floor(count / 10) * 10}+`;
+export const componentCountLabel = (count: number) => `${Math.floor(count / 10) * 10}+`;
 
 export const CATEGORY_LABEL: Record<Category, string> = {
 	base: "Base",
@@ -35,24 +34,49 @@ export function categoryHref(category: Category): string {
 	return category === "charts" ? "/charts" : `/components/${category}`;
 }
 
-export const specHref = docsPath;
-
-/** Nav entries, derived from the specs so a new component shows up without edits here. */
-export function navCategories(): { href: string; label: string; match: string }[] {
-	return CATEGORIES.filter((c) => specs.some((s) => s.category === c)).map(
-		(category) => ({
-			href: categoryHref(category),
-			label: CATEGORY_LABEL[category],
-			match: categoryHref(category),
-		}),
-	);
+/** Same as the schema's `docsPath`, kept here so the client never imports the schema runtime. */
+export function specHref(spec: Pick<ComponentSpec, "category" | "slug">): string {
+	return spec.category === "charts"
+		? `/charts/${spec.slug}`
+		: `/components/${spec.category}/${spec.slug}`;
 }
 
+/** A category that has at least one component, with its count. */
+export type NavCategory = {
+	category: Category;
+	label: string;
+	href: string;
+	count: number;
+};
+
+/** What a component card or showcase panel needs, without the full spec. */
+export type CardItem = {
+	slug: string;
+	name: string;
+	description: string;
+	href: string;
+	defaults: Record<string, unknown>;
+};
+
+/** One search/catalog row; served from /catalog.json so pages don't carry it. */
+export type CatalogItem = {
+	slug: string;
+	name: string;
+	category: Category;
+	description: string;
+	keywords: string[];
+	href: string;
+};
+
 /** The global top-level nav, shared by the header links and the mobile drawer's top row. */
-export function siteNav(): { href: string; label: string; match: string }[] {
+export function siteNav(
+	categories: NavCategory[],
+): { href: string; label: string; match: string }[] {
 	return [
 		{ href: "/components", label: "Components", match: "/components" },
-		...navCategories().filter((c) => c.label === "Agents" || c.label === "Charts"),
+		...categories
+			.filter((c) => c.category === "agents" || c.category === "charts")
+			.map((c) => ({ href: c.href, label: c.label, match: c.href })),
 		{ href: "/docs", label: "Docs", match: "/docs" },
 	];
 }
@@ -67,11 +91,11 @@ export type SearchItem = {
 	keywords: string;
 };
 
-/** Flat index for the command palette, rebuilt from the specs on every load. */
-export function searchItems(): SearchItem[] {
-	return specs
+/** Flat index for the command palette. */
+export function searchItems(catalog: CatalogItem[]): SearchItem[] {
+	return catalog
 		.map((s) => ({
-			href: specHref(s),
+			href: s.href,
 			name: s.name,
 			slug: s.slug,
 			group: CATEGORY_LABEL[s.category],
@@ -84,61 +108,31 @@ export function searchItems(): SearchItem[] {
 		.sort((a, b) => a.name.localeCompare(b.name));
 }
 
+let catalogRequest: Promise<CatalogItem[]> | undefined;
+
+/** The prerendered catalog, fetched once per session on first need. */
+export function loadCatalog(): Promise<CatalogItem[]> {
+	catalogRequest ??= fetch("/catalog.json")
+		.then((res) => (res.ok ? (res.json() as Promise<CatalogItem[]>) : []))
+		.catch(() => {
+			catalogRequest = undefined;
+			return [];
+		});
+	return catalogRequest;
+}
+
 export type SidebarGroup = {
 	category: Category;
 	label: string;
 	items: { slug: string; name: string; href: string; status: ComponentSpec["status"] }[];
 };
 
-/** Every category, with `lead` (the route's own category) moved to the front. */
-export function sidebarGroups(lead?: Category): SidebarGroup[] {
-	return [...CATEGORIES]
-		.sort((a, b) => Number(b === lead) - Number(a === lead))
-		.map((category) => ({
-			category,
-			label: CATEGORY_LABEL[category],
-			// Alphabetical: the sidebar is for finding a known name, not for browsing.
-			items: specs
-				.filter((s) => s.category === category)
-				.map((s) => ({
-					slug: s.slug,
-					name: s.name,
-					href: specHref(s),
-					status: s.status,
-				}))
-				.sort((a, b) => a.name.localeCompare(b.name)),
-		}))
-		.filter((g) => g.items.length > 0);
-}
-
-export function findSpec(category: string, slug: string): ComponentSpec | undefined {
-	return specs.find((s) => s.slug === slug && s.category === category);
-}
-
 export type AdjacentComponent = { name: string; href: string };
 
-/** Previous/next in the same order the sidebar lists them: category, then alphabetical. */
-export function adjacentComponents(
-	category: string,
-	slug: string,
-): { prev: AdjacentComponent | null; next: AdjacentComponent | null } {
-	const flat = sidebarGroups(category as Category).flatMap((group) =>
-		group.items.map((item) => ({ ...item, category: group.category })),
-	);
-	const index = flat.findIndex(
-		(item) => item.category === category && item.slug === slug,
-	);
-	if (index === -1) return { prev: null, next: null };
-	const prev = flat[index - 1];
-	const next = flat[index + 1];
-	return {
-		prev: prev ? { name: prev.name, href: prev.href } : null,
-		next: next ? { name: next.name, href: next.href } : null,
-	};
-}
-
 /** Initial control values, from each prop's declared default. */
-export function defaultProps(spec: ComponentSpec): Record<string, unknown> {
+export function defaultProps(
+	spec: Pick<ComponentSpec, "props">,
+): Record<string, unknown> {
 	const out: Record<string, unknown> = {};
 	for (const prop of spec.props) {
 		if (prop.control.kind === "none") continue;

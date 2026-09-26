@@ -4,12 +4,12 @@ export const wheelCarousel = tv({
 	slots: {
 		root: "card-fade-up flex w-full items-center justify-center overflow-hidden",
 		stage:
-			"flex h-full w-full touch-none select-none items-stretch overflow-hidden rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-grab active:cursor-grabbing",
+			"flex h-full w-full touch-none select-none items-stretch overflow-hidden rounded-xl has-focus-visible:ring-2 has-focus-visible:ring-ring cursor-grab active:cursor-grabbing",
 		photoCol: "flex h-full w-[var(--photo-width)] shrink-0 items-center justify-center",
 		photo: "relative isolate w-full max-h-full overflow-hidden rounded-[14px] bg-muted",
 		image:
 			"absolute inset-0 size-full object-cover transition-[opacity,scale] duration-[var(--duration-overlay)] ease-[var(--ease-out)] starting:scale-[1.04] starting:opacity-0 data-[leaving]:opacity-0 motion-reduce:transition-none",
-		list: "relative h-full min-w-0 flex-1 overflow-hidden mask-[linear-gradient(to_bottom,transparent,black_30%,black_70%,transparent)]",
+		list: "relative h-full min-w-0 flex-1 overflow-hidden outline-none mask-[linear-gradient(to_bottom,transparent,black_30%,black_70%,transparent)]",
 		marker:
 			"absolute top-1/2 z-10 size-4 -translate-x-full -translate-y-1/2 rounded-full bg-primary",
 		item: "absolute top-1/2 origin-left whitespace-nowrap font-medium leading-none tracking-[-0.01em] text-muted-foreground transition-colors duration-150 data-[selected]:text-foreground",

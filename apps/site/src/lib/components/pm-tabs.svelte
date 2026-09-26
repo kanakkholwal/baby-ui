@@ -10,4 +10,5 @@ const tabs = PMS.map((id) => ({ id, label: id }));
 	{tabs}
 	bind:active={() => prefs.pm, (next) => prefs.set("pm", next as PackageManager)}
 	variant="segment"
+	controls={null}
 />

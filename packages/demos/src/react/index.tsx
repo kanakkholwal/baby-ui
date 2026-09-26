@@ -32,14 +32,17 @@ import { AsciiEffectDemo } from "./ascii-effect";
 import { AuroraFlowDemo } from "./aurora-flow";
 import { BarChartDemo } from "./bar-chart";
 import { CandlestickChartDemo } from "./candlestick-chart";
+import { CaseStudyFlipStackDemo } from "./case-study-flip-stack";
 import { ChartBrushDemo } from "./chart-brush";
 import { ChartMarkersDemo } from "./chart-markers";
 import { ChartSeriesDemo } from "./chart-series";
 import { ChartDemo, LineChartDemo } from "./charts";
 import { ChatComposerDemo } from "./chat-composer";
 import { ChoroplethChartDemo } from "./choropleth-chart";
+import { CircuitBoardDemo } from "./circuit-board";
 import { ClosingPlasmaDemo } from "./closing-plasma";
 import { CollabCardDemo } from "./collab-card";
+import { CollectionSurferDemo } from "./collection-surfer";
 import { ComposedChartDemo } from "./composed-chart";
 import {
 	AttachmentDemo,
@@ -67,10 +70,14 @@ import {
 } from "./dialogs";
 import { DiffTableDemo } from "./diff-table";
 import { DitherGradientDemo } from "./dither-gradient";
+import { DitheredLogoDemo } from "./dithered-logo";
 import { DocsNavDemo } from "./docs-nav";
+import { EyeTrackingDemo } from "./eye-tracking";
 import { FillButtonDemo } from "./fill-button";
 import { FilterTableDemo } from "./filter-table";
 import { FineTuneCardDemo } from "./fine-tune-card";
+import { FisheyeInfiniteGridDemo } from "./fisheye-infinite-grid";
+import { FlightStatusCardDemo } from "./flight-status-card";
 import { FlowchartDemo } from "./flowchart";
 import { FooterDemo } from "./footer";
 import { FunnelChartDemo } from "./funnel-chart";
@@ -82,13 +89,17 @@ import { HeatmapChartDemo } from "./heatmap-chart";
 import { HeroStageDemo } from "./hero-stage";
 import { HoverTransitionDemo } from "./hover-transition";
 import { ImageTrailDemo } from "./image-trail";
+import { InfiniteImageFieldDemo } from "./infinite-image-field";
+import { LayeredStackDemo } from "./layered-stack";
 import { LiquidChromeDemo } from "./liquid-chrome";
 import { LiveLineChartDemo } from "./live-line-chart";
 import { LoadingScreenDemo } from "./loading-screen";
 import { LoadingStateDemo } from "./loading-state";
 import { LogoCarouselDemo } from "./logo-carousel";
+import { MagnetLinesDemo } from "./magnet-lines";
 import { MarkerDemo } from "./marker";
 import { MegaNavbarDemo } from "./mega-navbar";
+import { MusicPlayerDemo } from "./music-player";
 import {
 	ArtGalleryDemo,
 	ClickSparkDemo,
@@ -96,6 +107,7 @@ import {
 	DraggableMarqueeDemo,
 	TextReelDemo,
 } from "./obsidian";
+import { OrbitCardStackDemo } from "./orbit-card-stack";
 import {
 	ComboboxDemo,
 	ContextMenuDemo,
@@ -139,24 +151,31 @@ import {
 	ToggleGroupDemo,
 	TypographyDemo,
 } from "./primitives2";
+import { PrismGradientDemo } from "./prism-gradient";
 import { ProjectionLineDemo } from "./projection-line";
 import { RadarChartDemo } from "./radar-chart";
 import { RecommendationCardDemo } from "./recommendation-card";
 import { RecordsTableDemo } from "./records-table";
 import { ResponsiveDialogDemo } from "./responsive-dialog";
 import { RingChartDemo } from "./ring-chart";
+import { RippleTransitionDemo } from "./ripple-transition";
 import { SankeyChartDemo } from "./sankey-chart";
 import { ScatterChartDemo } from "./scatter-chart";
 import { ScoreCardDemo } from "./score-card";
+import { ScrollChoreographyDemo } from "./scroll-choreography";
 import { ScrollProgressDemo } from "./scroll-progress";
+import { ScrollSplitCardDemo } from "./scroll-split-card";
+import { ScrollTiltedGridDemo } from "./scroll-tilted-grid";
 import { ScrollVelocityDemo } from "./scroll-velocity";
 import { ShowcaseGridDemo } from "./showcase-grid";
 import { SidebarNavDemo } from "./sidebar-nav";
+import { SignatureDemo } from "./signature";
 import { SilkAuroraDemo } from "./silk-aurora";
 import { SpectralRibbonDemo } from "./spectral-ribbon";
 import { SplitFlapDisplayDemo } from "./split-flap-display";
 import { StatCardDemo, StatCardMapDemo } from "./stat-card";
 import { StatusMonitorDemo } from "./status-monitor";
+import { StickyScrollCardsDemo } from "./sticky-scroll-cards";
 import { StreamingTextDemo } from "./streaming-text";
 import { SunburstChartDemo } from "./sunburst-chart";
 import { TableDemo } from "./table";
@@ -411,6 +430,13 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"spectral-ribbon": SpectralRibbonDemo,
 	"webgl-liquid": WebglLiquidDemo,
 	"liquid-chrome": LiquidChromeDemo,
+	"dithered-logo": DitheredLogoDemo,
+	"fisheye-infinite-grid": FisheyeInfiniteGridDemo,
+	"flight-status-card": FlightStatusCardDemo,
+	"music-player": MusicPlayerDemo,
+	"circuit-board": CircuitBoardDemo,
+	signature: SignatureDemo,
+	"infinite-image-field": InfiniteImageFieldDemo,
 	"scroll-velocity": ScrollVelocityDemo,
 	"code-block": CodeBlockDemo,
 	markdown: MarkdownDemo,
@@ -476,6 +502,10 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"heatmap-chart": HeatmapChartDemo,
 	"sankey-chart": SankeyChartDemo,
 	"ring-chart": RingChartDemo,
+	"magnet-lines": MagnetLinesDemo,
+	"ripple-transition": RippleTransitionDemo,
+	"eye-tracking": EyeTrackingDemo,
+	"prism-gradient": PrismGradientDemo,
 	"radar-chart": RadarChartDemo,
 	"gauge-chart": GaugeChartDemo,
 	"sunburst-chart": SunburstChartDemo,
@@ -554,4 +584,12 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"overview-card": OverviewCardDemo,
 	"usage-card": UsageCardDemo,
 	"score-card": ScoreCardDemo,
+	"scroll-tilted-grid": ScrollTiltedGridDemo,
+	"sticky-scroll-cards": StickyScrollCardsDemo,
+	"layered-stack": LayeredStackDemo,
+	"orbit-card-stack": OrbitCardStackDemo,
+	"case-study-flip-stack": CaseStudyFlipStackDemo,
+	"collection-surfer": CollectionSurferDemo,
+	"scroll-choreography": ScrollChoreographyDemo,
+	"scroll-split-card": ScrollSplitCardDemo,
 };

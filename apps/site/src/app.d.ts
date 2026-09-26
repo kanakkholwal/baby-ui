@@ -4,7 +4,12 @@ declare global {
 	namespace App {
 		// interface Error {}
 		// interface Locals {}
-		// interface PageData {}
+		/** From the root +layout.server.ts, so every page has it. */
+		interface PageData {
+			categories?: import("$lib/registry").NavCategory[];
+			total?: number;
+			footerPicks?: { slug: string; name: string; href: string }[];
+		}
 		// interface PageState {}
 		// interface Platform {}
 	}

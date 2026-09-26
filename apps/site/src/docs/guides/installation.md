@@ -1,6 +1,6 @@
 ---
 title: Installation
-description: From an empty folder to a rendered component, in React or Svelte.
+description: From an empty folder to a rendered component, in React or Svelte, with the shadcn CLI and Tailwind CSS v4.
 ---
 
 Already on shadcn/ui or shadcn-svelte? Skip to [Add a component](#4-add-a-component).

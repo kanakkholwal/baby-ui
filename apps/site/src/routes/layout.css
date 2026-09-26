@@ -2,7 +2,10 @@
 @import "@fontsource-variable/jetbrains-mono";
 @import "@baby-ui/tokens/theme.css";
 @source "../../../../packages/ui-svelte/src/lib";
-@source "../../../../packages/demos/src";
+/* Only what the site renders: React demos and usage snippets appear as code, never as markup. */
+@source "../../../../packages/demos/src/svelte";
+@source "../../../../packages/demos/src/controls";
+@source "../../../../packages/demos/src/data";
 
 @layer base {
 	* {
@@ -144,8 +147,21 @@
 	}
 }
 
-/* The header's Browse button. Site-only, so it lives here rather than in the tokens. */
+/* The header's Browse button. Site-only, so it lives here rather than in the tokens.
+   The gradient slides on a pseudo-element with transform: compositor-only, no per-frame repaint. */
 .rainbow-ring {
+	position: relative;
+	isolation: isolate;
+}
+
+.rainbow-ring::before {
+	content: "";
+	position: absolute;
+	inset-block: 0;
+	left: -100%;
+	z-index: -1;
+	width: 200%;
+	will-change: transform;
 	background-image: linear-gradient(
 		90deg,
 		var(--success),
@@ -158,18 +174,17 @@
 		var(--violet),
 		var(--success)
 	);
-	background-size: 200% 100%;
 	animation: rainbow-ring 3s linear infinite;
 }
 
 @keyframes rainbow-ring {
 	to {
-		background-position: 200% 0;
+		transform: translateX(50%);
 	}
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.rainbow-ring {
+	.rainbow-ring::before {
 		animation: none;
 	}
 }

@@ -1,6 +1,5 @@
 <script lang="ts">
 import type { Framework } from "@baby-ui/registry-schema";
-import { specs } from "@baby-ui/registry-schema/components";
 import IconBrandJavascript from "@tabler/icons-svelte/icons/brand-javascript";
 import IconBrandReact from "@tabler/icons-svelte/icons/brand-react";
 import IconBrandSvelte from "@tabler/icons-svelte/icons/brand-svelte";
@@ -15,17 +14,20 @@ import Seo from "$lib/components/seo.svelte";
 import SiteFooter from "$lib/components/site-footer.svelte";
 import { type Dialect, prefs } from "$lib/preferences.svelte";
 import { componentCountLabel } from "$lib/registry";
-import { SITE_URL } from "$lib/seo";
+import {
+	DEFAULT_KEYWORDS,
+	organizationLd,
+	softwareApplicationLd,
+	websiteLd,
+} from "$lib/seo";
+import type { PageProps } from "./$types";
 
-const websiteJsonLd = JSON.stringify({
-	"@context": "https://schema.org",
-	"@type": "WebSite",
-	name: "Baby UI",
-	url: SITE_URL,
-	description: "Animated, accessible components for React and Svelte.",
-});
+let { data }: PageProps = $props();
+const total = $derived(data.total ?? 0);
 
-const featured = specs.slice(0, 8);
+const DESCRIPTION = $derived(
+	`Animated, accessible React and Svelte components on one token layer. Install any of ${componentCountLabel(total)} components with the shadcn CLI, in TypeScript or JavaScript.`,
+);
 
 const FRAMEWORKS = [
 	{ id: "react", label: "React", icon: IconBrandReact },
@@ -37,9 +39,9 @@ const DIALECTS = [
 ];
 
 // A few featured slugs, cycled so the terminal shows the CLI installing something new.
-const SHOWCASE = featured.slice(0, 5).map((s) => s.slug);
+const SHOWCASE = $derived(data.showcase.slice(0, 5).map((s) => s.slug));
 let showcaseIndex = $state(0);
-const showcaseSlug = $derived(SHOWCASE[showcaseIndex] ?? featured[0]?.slug ?? "button");
+const showcaseSlug = $derived(SHOWCASE[showcaseIndex] ?? "button");
 
 $effect(() => {
 	if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -51,17 +53,23 @@ $effect(() => {
 </script>
 
 <Seo
-	title="Baby UI"
-	description="Animated, accessible components for React and Svelte. Copy-paste, one token layer, zero runtime dependency."
-	tag="{componentCountLabel()} components"
+	title="Baby UI: Animated React & Svelte Components"
+	description={DESCRIPTION}
+	tag="{componentCountLabel(total)} components"
+	jsonLd={[
+		organizationLd(),
+		websiteLd(DESCRIPTION),
+		softwareApplicationLd({
+			description: DESCRIPTION,
+			keywords: DEFAULT_KEYWORDS,
+			componentCount: total,
+		}),
+	]}
 />
-<svelte:head>
-	{@html `<script type="application/ld+json">${websiteJsonLd}</script>`}
-</svelte:head>
 
 <div class="relative">
 	<section class="relative isolate overflow-x-clip px-4 pt-20 pb-20 md:pt-28 lg:pb-32">
-		<LandingHero count={specs.length} />
+		<LandingHero count={total} />
 	</section>
 
 	<section class="mx-auto max-w-2xl px-4 pb-16">
@@ -94,9 +102,9 @@ $effect(() => {
 		</p>
 	</section>
 
-	<HomeShowcase />
+	<HomeShowcase items={data.showcase} />
 	<HomeFeatures />
-	<HomeCta count={specs.length} />
+	<HomeCta count={total} />
 
 	<SiteFooter />
 </div>

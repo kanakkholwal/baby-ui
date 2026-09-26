@@ -3025,3 +3025,473 @@
 		animation: none;
 	}
 }
+
+/* Scroll-linked components: the track's own view() timeline drives --scroll-p (registered in
+   lib/scroll-frame.ts, which writes it from a scroll listener where timelines are missing). */
+@supports (animation-timeline: view()) {
+	.scroll-frame-track {
+		animation: scroll-frame-progress linear both;
+		animation-timeline: view();
+		animation-range: contain 0% contain 100%;
+	}
+}
+
+@keyframes scroll-frame-progress {
+	from {
+		--scroll-p: 0;
+	}
+	to {
+		--scroll-p: 1;
+	}
+}
+
+/* CaseStudyFlipStack: the hint arrows bob, the second one a beat behind. */
+.case-study-bob {
+	animation: case-study-bob 1400ms ease-in-out infinite;
+}
+
+@keyframes case-study-bob {
+	0%,
+	100% {
+		translate: 0 0;
+	}
+	50% {
+		translate: 0 10px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.case-study-bob {
+		animation: none;
+	}
+}
+
+/* RippleTransition: the next image opens as a circle from the origin while rings ride its edge. */
+.ripple-transition-enter {
+	animation: ripple-transition-reveal var(--rt-duration, 1200ms) var(--ease-in-out) both;
+}
+
+.ripple-transition-enter > img {
+	animation: ripple-transition-settle var(--rt-duration, 1200ms) var(--ease-out) both;
+}
+
+.ripple-transition-leave > img {
+	animation: ripple-transition-push var(--rt-duration, 1200ms) var(--ease-in-out) both;
+}
+
+.ripple-transition-ring {
+	animation: ripple-transition-ring var(--rt-duration, 1200ms) var(--ease-in-out) both;
+}
+
+@keyframes ripple-transition-reveal {
+	from {
+		clip-path: circle(0px at var(--rt-x, 50%) var(--rt-y, 50%));
+	}
+	to {
+		clip-path: circle(var(--rt-r, 150%) at var(--rt-x, 50%) var(--rt-y, 50%));
+	}
+}
+
+@keyframes ripple-transition-settle {
+	from {
+		scale: 1.12;
+		filter: saturate(1.5) brightness(1.2);
+	}
+	to {
+		scale: 1;
+		filter: none;
+	}
+}
+
+@keyframes ripple-transition-push {
+	from {
+		scale: 1;
+		filter: none;
+	}
+	to {
+		scale: 1.06;
+		filter: brightness(0.8);
+	}
+}
+
+@keyframes ripple-transition-ring {
+	from {
+		width: 0;
+		height: 0;
+		opacity: 1;
+	}
+	to {
+		width: calc(var(--rt-r, 100%) * 2);
+		height: calc(var(--rt-r, 100%) * 2);
+		opacity: 0;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.ripple-transition-enter,
+	.ripple-transition-enter > img,
+	.ripple-transition-leave > img,
+	.ripple-transition-ring {
+		animation: none;
+	}
+}
+
+/* EyeTracking: a quick lid close near the end of each cycle; the cyber variant sweeps a scan line. */
+.eye-tracking-blink {
+	animation: eye-tracking-blink var(--et-blink, 4000ms) ease-in-out infinite;
+}
+
+.eye-tracking-scan {
+	animation: eye-tracking-scan 3s linear infinite;
+}
+
+@keyframes eye-tracking-blink {
+	0%,
+	95%,
+	100% {
+		scale: 1 1;
+	}
+	97.5% {
+		scale: 1 0.05;
+	}
+}
+
+@keyframes eye-tracking-scan {
+	0%,
+	100% {
+		top: 0;
+	}
+	50% {
+		top: calc(100% - 2px);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.eye-tracking-blink,
+	.eye-tracking-scan {
+		animation: none;
+	}
+}
+
+/* Scroll tilted grid: keyframes run on each figure's view timeline, or stay paused and are
+   scrubbed through animation-delay by --scroll-tilted-progress where timelines are missing. */
+.scroll-tilted-tile {
+	transform-style: preserve-3d;
+	animation: scroll-tilted-tile 1s linear both paused;
+	animation-delay: calc(var(--scroll-tilted-progress, 0.5) * -1s);
+}
+
+.scroll-tilted-image {
+	animation: scroll-tilted-image 1s linear both paused;
+	animation-delay: calc(var(--scroll-tilted-progress, 0.5) * -1s);
+}
+
+@supports (animation-timeline: view()) {
+	.scroll-tilted-tile,
+	.scroll-tilted-image {
+		animation-play-state: running;
+		animation-delay: 0s;
+		animation-duration: auto;
+		animation-timeline: --scroll-tilted;
+	}
+}
+
+@keyframes scroll-tilted-tile {
+	0% {
+		transform: translate3d(calc(var(--scroll-tilted-side) * 18%), 24%, 180px)
+			rotateX(calc(var(--scroll-tilted-tilt) * 1deg)) rotateZ(calc(var(--scroll-tilted-side) * -3deg))
+			skewX(calc(var(--scroll-tilted-side) * 7deg));
+		filter: blur(calc(var(--scroll-tilted-blur) * 1px)) brightness(0.5) saturate(0.5);
+	}
+	10% {
+		transform: translate3d(calc(var(--scroll-tilted-side) * 16.128%), 17.203%, 161.28px)
+			rotateX(calc(var(--scroll-tilted-tilt) * 0.8deg)) rotateZ(calc(var(--scroll-tilted-side) * -2.4deg))
+			skewX(calc(var(--scroll-tilted-side) * 5.6deg));
+		filter: blur(calc(var(--scroll-tilted-blur) * 0.896px)) brightness(0.552) saturate(0.552);
+	}
+	20% {
+		transform: translate3d(calc(var(--scroll-tilted-side) * 11.664%), 9.331%, 116.64px)
+			rotateX(calc(var(--scroll-tilted-tilt) * 0.6deg)) rotateZ(calc(var(--scroll-tilted-side) * -1.8deg))
+			skewX(calc(var(--scroll-tilted-side) * 4.2deg));
+		filter: blur(calc(var(--scroll-tilted-blur) * 0.648px)) brightness(0.676) saturate(0.676);
+	}
+	30% {
+		transform: translate3d(calc(var(--scroll-tilted-side) * 6.336%), 3.379%, 63.36px)
+			rotateX(calc(var(--scroll-tilted-tilt) * 0.4deg)) rotateZ(calc(var(--scroll-tilted-side) * -1.2deg))
+			skewX(calc(var(--scroll-tilted-side) * 2.8deg));
+		filter: blur(calc(var(--scroll-tilted-blur) * 0.352px)) brightness(0.824) saturate(0.824);
+	}
+	40% {
+		transform: translate3d(calc(var(--scroll-tilted-side) * 1.872%), 0.499%, 18.72px)
+			rotateX(calc(var(--scroll-tilted-tilt) * 0.2deg)) rotateZ(calc(var(--scroll-tilted-side) * -0.6deg))
+			skewX(calc(var(--scroll-tilted-side) * 1.4deg));
+		filter: blur(calc(var(--scroll-tilted-blur) * 0.104px)) brightness(0.948) saturate(0.948);
+	}
+	50% {
+		transform: translate3d(calc(var(--scroll-tilted-side) * 0%), 0%, 0px)
+			rotateX(calc(var(--scroll-tilted-tilt) * 0deg)) rotateZ(calc(var(--scroll-tilted-side) * 0deg))
+			skewX(calc(var(--scroll-tilted-side) * 0deg));
+		filter: blur(calc(var(--scroll-tilted-blur) * 0px)) brightness(1) saturate(1);
+	}
+	60% {
+		transform: translate3d(calc(var(--scroll-tilted-side) * 1.872%), -0.499%, 18.72px)
+			rotateX(calc(var(--scroll-tilted-tilt) * -0.2deg)) rotateZ(calc(var(--scroll-tilted-side) * 0.6deg))
+			skewX(calc(var(--scroll-tilted-side) * -1.4deg));
+		filter: blur(calc(var(--scroll-tilted-blur) * 0.104px)) brightness(0.948) saturate(0.948);
+	}
+	70% {
+		transform: translate3d(calc(var(--scroll-tilted-side) * 6.336%), -3.379%, 63.36px)
+			rotateX(calc(var(--scroll-tilted-tilt) * -0.4deg)) rotateZ(calc(var(--scroll-tilted-side) * 1.2deg))
+			skewX(calc(var(--scroll-tilted-side) * -2.8deg));
+		filter: blur(calc(var(--scroll-tilted-blur) * 0.352px)) brightness(0.824) saturate(0.824);
+	}
+	80% {
+		transform: translate3d(calc(var(--scroll-tilted-side) * 11.664%), -9.331%, 116.64px)
+			rotateX(calc(var(--scroll-tilted-tilt) * -0.6deg)) rotateZ(calc(var(--scroll-tilted-side) * 1.8deg))
+			skewX(calc(var(--scroll-tilted-side) * -4.2deg));
+		filter: blur(calc(var(--scroll-tilted-blur) * 0.648px)) brightness(0.676) saturate(0.676);
+	}
+	90% {
+		transform: translate3d(calc(var(--scroll-tilted-side) * 16.128%), -17.203%, 161.28px)
+			rotateX(calc(var(--scroll-tilted-tilt) * -0.8deg)) rotateZ(calc(var(--scroll-tilted-side) * 2.4deg))
+			skewX(calc(var(--scroll-tilted-side) * -5.6deg));
+		filter: blur(calc(var(--scroll-tilted-blur) * 0.896px)) brightness(0.552) saturate(0.552);
+	}
+	100% {
+		transform: translate3d(calc(var(--scroll-tilted-side) * 18%), -24%, 180px)
+			rotateX(calc(var(--scroll-tilted-tilt) * -1deg)) rotateZ(calc(var(--scroll-tilted-side) * 3deg))
+			skewX(calc(var(--scroll-tilted-side) * -7deg));
+		filter: blur(calc(var(--scroll-tilted-blur) * 1px)) brightness(0.5) saturate(0.5);
+	}
+}
+
+@keyframes scroll-tilted-image {
+	0% {
+		scale: 1.18;
+	}
+	10% {
+		scale: 1.164;
+	}
+	20% {
+		scale: 1.127;
+	}
+	30% {
+		scale: 1.083;
+	}
+	40% {
+		scale: 1.046;
+	}
+	50% {
+		scale: 1.03;
+	}
+	60% {
+		scale: 1.046;
+	}
+	70% {
+		scale: 1.083;
+	}
+	80% {
+		scale: 1.127;
+	}
+	90% {
+		scale: 1.164;
+	}
+	100% {
+		scale: 1.18;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.scroll-tilted-tile,
+	.scroll-tilted-image {
+		animation: none;
+	}
+}
+
+/* Sticky scroll cards: each card scales from 1 to its resting size between its start and the
+   end of the stack's contain range; the fallback clamps --sticky-scroll-progress the same way. */
+.sticky-scroll-card {
+	animation: sticky-scroll-card 1s linear both paused;
+	animation-delay: calc(
+		clamp(
+				0,
+				(var(--sticky-scroll-progress, 0) - var(--sticky-scroll-start)) /
+					(1 - var(--sticky-scroll-start)),
+				1
+			) *
+			-1s
+	);
+}
+
+@supports (animation-timeline: view()) {
+	.sticky-scroll-card {
+		animation-play-state: running;
+		animation-delay: 0s;
+		animation-duration: auto;
+		animation-timeline: --sticky-scroll;
+		animation-range: contain calc(var(--sticky-scroll-start) * 100%) contain 100%;
+	}
+}
+
+@keyframes sticky-scroll-card {
+	from {
+		scale: 1;
+	}
+	to {
+		scale: var(--sticky-scroll-rest);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.sticky-scroll-card {
+		animation: none;
+	}
+}
+
+/* FlightStatusCard: code glyphs rise in one after another; the progress fill wipes in once. */
+.flight-status-char {
+	animation: flight-status-char 420ms var(--ease-out) var(--flight-status-delay, 0ms) both;
+}
+
+.flight-status-reveal {
+	animation: flight-status-reveal 1100ms var(--ease-out) 200ms both;
+}
+
+@keyframes flight-status-char {
+	from {
+		opacity: 0;
+		translate: 0 4px;
+	}
+}
+
+@keyframes flight-status-reveal {
+	from {
+		clip-path: inset(0 100% 0 0);
+	}
+	to {
+		clip-path: inset(0 0 0 0);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.flight-status-char,
+	.flight-status-reveal {
+		animation: none;
+	}
+}
+
+/* CircuitBoard: traces draw in (pathLength 100), nodes pop, then dashes of 8 ride each trace. */
+.circuit-board-trace {
+	animation: circuit-board-draw 900ms var(--ease-out) var(--circuit-board-delay, 0s) both;
+}
+
+.circuit-board-pulse {
+	opacity: 0;
+	animation: circuit-board-pulse var(--circuit-board-speed, 2.2s) linear
+		var(--circuit-board-delay, 0s) infinite;
+}
+
+.circuit-board-pulse-back {
+	animation-direction: reverse;
+}
+
+.circuit-board-node {
+	animation: circuit-board-node 420ms var(--ease-spring) var(--circuit-board-delay, 0s) both;
+}
+
+.circuit-board-busy {
+	animation: circuit-board-busy 1.5s ease-in-out infinite;
+}
+
+@keyframes circuit-board-draw {
+	from {
+		stroke-dashoffset: 100;
+	}
+	to {
+		stroke-dashoffset: 0;
+	}
+}
+
+@keyframes circuit-board-pulse {
+	from {
+		stroke-dashoffset: 100;
+		opacity: 1;
+	}
+	to {
+		stroke-dashoffset: 0;
+		opacity: 1;
+	}
+}
+
+@keyframes circuit-board-node {
+	from {
+		opacity: 0;
+		scale: 0.4;
+	}
+}
+
+@keyframes circuit-board-busy {
+	50% {
+		fill-opacity: 0.45;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.circuit-board-trace,
+	.circuit-board-node,
+	.circuit-board-busy {
+		animation: none;
+	}
+
+	.circuit-board-pulse {
+		display: none;
+	}
+}
+
+/* Signature: each glyph strokes in one step after the last (dash 8em, so any glyph fits), then fills. */
+.signature-glyph {
+	stroke-dasharray: 8em 100em;
+	fill-opacity: 0;
+	animation: signature-stroke calc(var(--signature-step, 0.2s) * 2.5) var(--ease-in-out)
+		calc(var(--signature-delay, 0s) + var(--signature-i, 0) * var(--signature-step, 0.2s)) both;
+}
+
+.signature-glyph.signature-ink {
+	animation:
+		signature-stroke calc(var(--signature-step, 0.2s) * 2.5) var(--ease-in-out)
+			calc(var(--signature-delay, 0s) + var(--signature-i, 0) * var(--signature-step, 0.2s)) both,
+		signature-fill calc(var(--signature-step, 0.2s) * 2) var(--ease-out)
+			calc(var(--signature-delay, 0s) + (var(--signature-i, 0) + 1.5) * var(--signature-step, 0.2s))
+			both;
+}
+
+[data-state="idle"] .signature-glyph {
+	animation-play-state: paused;
+}
+
+@keyframes signature-stroke {
+	from {
+		stroke-dashoffset: 8em;
+	}
+	to {
+		stroke-dashoffset: 0;
+	}
+}
+
+@keyframes signature-fill {
+	to {
+		fill-opacity: 1;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.signature-glyph,
+	.signature-glyph.signature-ink {
+		animation: none;
+		stroke-dasharray: none;
+	}
+
+	.signature-glyph.signature-ink {
+		fill-opacity: 1;
+	}
+}

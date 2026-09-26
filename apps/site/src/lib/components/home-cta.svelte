@@ -1,11 +1,9 @@
 <script lang="ts">
 import { Badge, Button, FillButton, RollingDigits } from "@baby-ui/svelte";
-import { categoryHref, sidebarGroups } from "$lib/registry";
+import { page } from "$app/state";
 import ShowcaseDots from "./showcase-dots.svelte";
 
 let { count }: { count: number } = $props();
-
-const groups = sidebarGroups();
 </script>
 
 <section aria-labelledby="home-cta-heading" class="mx-auto max-w-7xl px-4 pb-12 md:px-8">
@@ -38,11 +36,11 @@ const groups = sidebarGroups();
 					<RollingDigits value={count} />
 				</span>
 				<div class="flex flex-wrap gap-2">
-					{#each groups as group (group.category)}
-						<a href={categoryHref(group.category)} class="rounded-md">
+					{#each page.data.categories ?? [] as group (group.category)}
+						<a href={group.href} class="rounded-md">
 							<Badge variant="outline">
 								{group.label}
-								<span class="text-muted-foreground tabular-nums">{group.items.length}</span>
+								<span class="text-muted-foreground tabular-nums">{group.count}</span>
 							</Badge>
 						</a>
 					{/each}

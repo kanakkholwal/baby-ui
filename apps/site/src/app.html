@@ -4,6 +4,9 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="text-scale" content="scale" />
+		<meta name="application-name" content="Baby UI" />
+		<meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)" />
+		<meta name="theme-color" content="#0f0f0f" media="(prefers-color-scheme: dark)" />
 		<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 		<style>
 			/* Boot screen: painted before any JS, faded out by the root layout once hydrated. */
@@ -20,10 +23,18 @@
 				transition:
 					opacity 320ms cubic-bezier(0.16, 1, 0.3, 1),
 					visibility 0s linear 320ms;
+				/* Capped in CSS so prerendered content shows even when hydration is slow. */
+				animation: boot-out 240ms cubic-bezier(0.16, 1, 0.3, 1) 450ms forwards;
 			}
 			html.dark #boot {
 				background: var(--background, #0f0f0f);
 				color: var(--foreground, #f5f5f5);
+			}
+			@keyframes boot-out {
+				to {
+					opacity: 0;
+					visibility: hidden;
+				}
 			}
 			html[data-ready] #boot {
 				opacity: 0;
@@ -72,7 +83,8 @@
 				}
 			}
 		</style>
-		<noscript><style>#boot { display: none; }</style></noscript>		%sveltekit.head%
+		<noscript><style>#boot { display: none; }</style></noscript>
+		%sveltekit.head%
 	</head>
 	<body data-sveltekit-preload-data="hover">
 		<div id="boot" aria-hidden="true">

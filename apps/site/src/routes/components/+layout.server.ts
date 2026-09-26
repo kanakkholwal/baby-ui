@@ -1,5 +1,5 @@
 import { CATEGORIES, type Category } from "@baby-ui/registry-schema";
-import { sidebarGroups } from "$lib/registry";
+import { sidebarGroups } from "$lib/server/registry";
 import type { LayoutServerLoad } from "./$types";
 
 /** The category in the URL (/charts or /components/<category>/...) leads the sidebar. */

@@ -8,16 +8,35 @@ import PageMenu from "$lib/components/page-menu.svelte";
 import PropsRail from "$lib/components/props-rail.svelte";
 import Seo from "$lib/components/seo.svelte";
 import { OUTLINE_PANEL, outlineSidebar } from "$lib/docs-sidebar.svelte";
+import { articleLd, breadcrumbLd } from "$lib/seo";
 import type { PageProps } from "./$types";
 
 let { data }: PageProps = $props();
+
+const title = $derived(data.page.data?.title ?? "Docs");
+const description = $derived(data.page.data?.description ?? "Baby UI documentation.");
+const path = $derived(data.slug === "index" ? "/docs" : `/docs/${data.slug}`);
 </script>
 
 <Seo
-	title={data.page.data?.title ?? "Docs"}
-	description={data.page.data?.description ?? "Baby UI documentation."}
+	{title}
+	{description}
+	type="article"
+	tag="Docs"
 	keywords={data.page.data?.tags}
 	noindex={data.page.data?.draft === true}
+	markdown="/docs/{data.slug}.md"
+	jsonLd={[
+		articleLd({ title, description, path }),
+		breadcrumbLd(
+			path === "/docs"
+				? [{ name: "Docs", path }]
+				: [
+						{ name: "Docs", path: "/docs" },
+						{ name: title, path },
+					],
+		),
+	]}
 />
 
 {#snippet railContent()}
@@ -51,6 +70,12 @@ let { data }: PageProps = $props();
 		</div>
 	{/if}
 	<article class="prose-baby mt-8 max-w-2xl"><Renderer nodes={data.page.content} {registry} /></article>
+	<p class="mt-10 text-muted-foreground text-xs">
+		<!-- A real link, not only the menu item: crawlers and agents follow it to the markdown twin. -->
+		<a href="/docs/{data.slug}.md" class="underline decoration-border underline-offset-4 transition-colors hover:text-foreground">
+			View this page as Markdown
+		</a>
+	</p>
 </main>
 
 <aside aria-label="On this page" class="hidden min-w-0 xl:block">

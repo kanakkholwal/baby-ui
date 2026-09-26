@@ -1,7 +1,6 @@
 <script lang="ts">
 import { registry } from "virtual:docvia/source";
 import { demos } from "@baby-ui/demos/svelte";
-import { specs } from "@baby-ui/registry-schema/components";
 import { Renderer } from "@docvia/renderer-svelte";
 import IconArrowLeft from "@tabler/icons-svelte/icons/arrow-left";
 import IconArrowRight from "@tabler/icons-svelte/icons/arrow-right";
@@ -24,14 +23,8 @@ import Seo from "$lib/components/seo.svelte";
 import Tabs from "$lib/components/tabs.svelte";
 import { OUTLINE_PANEL, outlineSidebar } from "$lib/docs-sidebar.svelte";
 import { prefs } from "$lib/preferences.svelte";
-import {
-	adjacentComponents,
-	CATEGORY_LABEL,
-	categoryHref,
-	defaultProps,
-	specHref,
-} from "$lib/registry";
-import { absoluteUrl } from "$lib/seo";
+import { CATEGORY_LABEL, categoryHref, defaultProps, specHref } from "$lib/registry";
+import { breadcrumbLd, componentKeywords, componentLd, metaDescription } from "$lib/seo";
 import { installSourceUrl } from "$lib/source";
 import type { PageProps } from "./$types";
 
@@ -79,13 +72,9 @@ $effect(() => {
 });
 
 const port = $derived(data.ports.find((p) => p.framework === framework) ?? data.ports[0]);
-const adjacent = $derived(adjacentComponents(data.spec.category, data.spec.slug));
+const adjacent = $derived(data.adjacent);
 const hasControls = $derived(data.spec.props.some((p) => p.control.kind !== "none"));
-const related = $derived(
-	specs
-		.filter((s) => s.category === data.spec.category && s.slug !== data.spec.slug)
-		.slice(0, 6),
-);
+const related = $derived(data.related);
 // In split the stage is pinned beside the page, so its tab becomes the controls, or goes.
 const tabs = $derived(
 	[
@@ -117,38 +106,38 @@ const outline = $derived(
 const usage = $derived(
 	dialect === "js" && port?.usage?.js ? port.usage.js : (port?.usage?.ts ?? null),
 );
-const breadcrumbJsonLd = $derived(
-	JSON.stringify({
-		"@context": "https://schema.org",
-		"@type": "BreadcrumbList",
-		itemListElement: [
-			{
-				"@type": "ListItem",
-				position: 1,
-				name: CATEGORY_LABEL[data.spec.category],
-				item: absoluteUrl(page.url.origin, categoryHref(data.spec.category)),
-			},
-			{
-				"@type": "ListItem",
-				position: 2,
-				name: data.spec.name,
-				item: absoluteUrl(page.url.origin, specHref(data.spec)),
-			},
-		],
-	}),
+const seoDescription = $derived(
+	metaDescription(
+		data.spec.description,
+		"React and Svelte component, installable with the shadcn CLI.",
+	),
+);
+const categoryTrail = $derived(
+	data.spec.category === "charts" ? [] : [{ name: "Components", path: "/components" }],
 );
 </script>
 
 <Seo
-	title={data.spec.name}
-	description={data.spec.description}
+	title="{data.spec.name}: React & Svelte Component"
+	description={seoDescription}
 	tag={CATEGORY_LABEL[data.spec.category]}
-	keywords={data.spec.keywords}
+	keywords={componentKeywords(data.spec.name, data.spec.keywords)}
 	noindex={data.spec.status === "alpha" || data.spec.status === "experimental"}
+	markdown="{specHref(data.spec)}.md"
+	jsonLd={[
+		componentLd({
+			name: data.spec.name,
+			description: seoDescription,
+			path: specHref(data.spec),
+			keywords: componentKeywords(data.spec.name, data.spec.keywords),
+		}),
+		breadcrumbLd([
+			...categoryTrail,
+			{ name: CATEGORY_LABEL[data.spec.category], path: categoryHref(data.spec.category) },
+			{ name: data.spec.name, path: specHref(data.spec) },
+		]),
+	]}
 />
-<svelte:head>
-	{@html `<script type="application/ld+json">${breadcrumbJsonLd}</script>`}
-</svelte:head>
 
 <div class="@container min-w-0 py-8">
 	<div id="overview" class="scroll-mt-24">
@@ -339,7 +328,7 @@ const breadcrumbJsonLd = $derived(
 			</p>
 			<div class="mt-4 grid grid-cols-[minmax(0,1fr)] gap-4 [grid-auto-rows:19rem] @lg:grid-cols-2 @4xl:grid-cols-3">
 				{#each related as item (item.slug)}
-					<ComponentCard spec={item} />
+					<ComponentCard {item} />
 				{/each}
 			</div>
 		</section>
@@ -369,6 +358,12 @@ const breadcrumbJsonLd = $derived(
 			{/if}
 		</nav>
 	{/if}
+	<p class="mt-10 text-muted-foreground text-xs">
+		<!-- A real link, not only the menu item: crawlers and agents follow it to the markdown twin. -->
+		<a href="{specHref(data.spec)}.md" class="underline decoration-border underline-offset-4 transition-colors hover:text-foreground">
+			View this page as Markdown
+		</a>
+	</p>
 </div>
 
 {#snippet previewStage(fill = false)}

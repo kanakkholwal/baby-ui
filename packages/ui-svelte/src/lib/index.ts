@@ -92,6 +92,12 @@ export { default as CardFooter } from "./card/card-footer.svelte";
 export { default as CardHeader } from "./card/card-header.svelte";
 export { default as CardTitle } from "./card/card-title.svelte";
 export type { CardVariant } from "./card/variants";
+export { default as CaseStudyFlipStack } from "./case-study-flip-stack/case-study-flip-stack.svelte";
+export type { CaseStudyFlipItem } from "./case-study-flip-stack/types";
+export type {
+	CaseStudyFlipStackSize,
+	CaseStudyFlipStackTone,
+} from "./case-study-flip-stack/variants";
 export { default as Background } from "./chart/background.svelte";
 export { default as CartesianGrid } from "./chart/cartesian-grid.svelte";
 export { default as ChartContainer } from "./chart/chart-container.svelte";
@@ -181,6 +187,13 @@ export {
 } from "./choropleth-chart/choropleth-chart.svelte";
 export type { GeoCollection, GeoFeature, ZoomState } from "./choropleth-chart/geometry";
 export type { ChoroplethProjection } from "./choropleth-chart/variants";
+export { default as CircuitBoard } from "./circuit-board/circuit-board.svelte";
+export type { CircuitConnection, CircuitNode } from "./circuit-board/geometry";
+export type {
+	CircuitBoardSpeed,
+	CircuitBoardTone,
+	CircuitNodeStatus,
+} from "./circuit-board/variants";
 export { default as CircularText } from "./circular-text/circular-text.svelte";
 export type { CircularTextDirection } from "./circular-text/variants";
 export { default as ClickSpark } from "./click-spark/click-spark.svelte";
@@ -198,6 +211,12 @@ export type { CollabCardTone } from "./collab-card/variants";
 export { default as Collapsible } from "./collapsible/collapsible.svelte";
 export { default as CollapsibleContent } from "./collapsible/collapsible-content.svelte";
 export { default as CollapsibleTrigger } from "./collapsible/collapsible-trigger.svelte";
+export { default as CollectionSurfer } from "./collection-surfer/collection-surfer.svelte";
+export type { CollectionSurferItem } from "./collection-surfer/types";
+export type {
+	CollectionSurferSize,
+	CollectionSurferVariant,
+} from "./collection-surfer/variants";
 export { default as ColorPicker } from "./color-picker/color-picker.svelte";
 export { default as Combobox } from "./combobox/combobox.svelte";
 export { default as ComboboxContent } from "./combobox/combobox-content.svelte";
@@ -281,6 +300,12 @@ export type {
 	DitherGradientPosition,
 	DitherGradientTone,
 } from "./dither-gradient/variants";
+export { default as DitheredLogo } from "./dithered-logo/dithered-logo.svelte";
+export type {
+	DitheredLogoSize,
+	DitheredLogoTone,
+	DitheredLogoVariant,
+} from "./dithered-logo/variants";
 export { default as DocsNav } from "./docs-nav/docs-nav.svelte";
 export type { DocsNavItem, DocsNavSection } from "./docs-nav/types";
 export type { DocsNavConnector } from "./docs-nav/variants";
@@ -311,6 +336,8 @@ export { default as DropdownMenuSub } from "./dropdown-menu/dropdown-menu-sub.sv
 export { default as DropdownMenuSubContent } from "./dropdown-menu/dropdown-menu-sub-content.svelte";
 export { default as DropdownMenuSubTrigger } from "./dropdown-menu/dropdown-menu-sub-trigger.svelte";
 export { default as DropdownMenuTrigger } from "./dropdown-menu/dropdown-menu-trigger.svelte";
+export { default as EyeTracking } from "./eye-tracking/eye-tracking.svelte";
+export type { EyeTrackingSize, EyeTrackingVariant } from "./eye-tracking/variants";
 export { type DiffLine, default as FileDiff } from "./file-diff/file-diff.svelte";
 export { default as FileTree } from "./file-tree/file-tree.svelte";
 export type { FileTreeNode } from "./file-tree/types";
@@ -330,6 +357,19 @@ export type {
 	FineTuneState,
 } from "./fine-tune-card/types";
 export type { FineTuneCardSize } from "./fine-tune-card/variants";
+export type { FisheyeGridItem } from "./fisheye-infinite-grid/fisheye";
+export { default as FisheyeInfiniteGrid } from "./fisheye-infinite-grid/fisheye-infinite-grid.svelte";
+export type { FisheyeInfiniteGridLabels } from "./fisheye-infinite-grid/labels";
+export type {
+	FisheyeInfiniteGridSize,
+	FisheyeInfiniteGridVariant,
+} from "./fisheye-infinite-grid/variants";
+export { default as FlightStatusCard } from "./flight-status-card/flight-status-card.svelte";
+export type { FlightStatus, FlightStatusLabels } from "./flight-status-card/types";
+export type {
+	FlightStatusDisplay,
+	FlightStatusTone,
+} from "./flight-status-card/variants";
 export { default as Flowchart } from "./flowchart/flowchart.svelte";
 export type {
 	FlowchartConditionRow,
@@ -405,6 +445,13 @@ export type {
 } from "./hover-transition/variants";
 export { default as ImageTrail } from "./image-trail/image-trail.svelte";
 export type { ImageTrailSize, ImageTrailVariant } from "./image-trail/trail";
+export { default as InfiniteImageField } from "./infinite-image-field/infinite-image-field.svelte";
+export type { InfiniteImageFieldLabels } from "./infinite-image-field/labels";
+export type {
+	InfiniteImageFieldLayout,
+	InfiniteImageFieldShape,
+	InfiniteImageFieldSize,
+} from "./infinite-image-field/variants";
 export { default as Input } from "./input/input.svelte";
 export type { InputSize } from "./input/variants";
 export { default as JitterText } from "./jitter-text/jitter-text.svelte";
@@ -412,6 +459,12 @@ export type { JitterTextSize } from "./jitter-text/variants";
 export { default as JumpingText } from "./jumping-text/jumping-text.svelte";
 export type { JumpingTextMode, JumpingTextSize } from "./jumping-text/variants";
 export { default as Label } from "./label/label.svelte";
+export { default as LayeredStack } from "./layered-stack/layered-stack.svelte";
+export type {
+	LayeredStackAspect,
+	LayeredStackColumns,
+	LayeredStackItem,
+} from "./layered-stack/variants";
 export { cn } from "./lib/cn";
 export { default as Line } from "./line-chart/line.svelte";
 export { default as LineChart } from "./line-chart/line-chart.svelte";
@@ -444,6 +497,8 @@ export type {
 export { default as LoadingState } from "./loading-state/loading-state.svelte";
 export type { LoadingStateVariant } from "./loading-state/types";
 export { default as LogoCarousel } from "./logo-carousel/logo-carousel.svelte";
+export { default as MagnetLines } from "./magnet-lines/magnet-lines.svelte";
+export type { MagnetLinesSize, MagnetLinesTone } from "./magnet-lines/variants";
 export { default as Markdown } from "./markdown/markdown.svelte";
 export type { MarkdownSize } from "./markdown/variants";
 export { default as Marker } from "./marker/marker.svelte";
@@ -475,8 +530,18 @@ export type { MorphTextSize } from "./morph-text/variants";
 export type { MorphSpring } from "./morphing-modal/morph";
 export { default as MorphingModal } from "./morphing-modal/morphing-modal.svelte";
 export type { MorphingModalSize } from "./morphing-modal/variants";
+export { default as MusicPlayer } from "./music-player/music-player.svelte";
+export type { MusicPlayerLabels } from "./music-player/types";
+export type { MusicPlayerLayout } from "./music-player/variants";
 export { default as Navbar } from "./navbar/navbar.svelte";
 export type { NavbarVariant } from "./navbar/variants";
+export { default as OrbitCardStack } from "./orbit-card-stack/orbit-card-stack.svelte";
+export type {
+	OrbitCardStackLabels,
+	OrbitCardStackLayout,
+	OrbitCardStackSize,
+	OrbitStackItem,
+} from "./orbit-card-stack/variants";
 export { default as OverviewCard } from "./overview-card/overview-card.svelte";
 export type { OverviewCardChart, OverviewCardSize } from "./overview-card/variants";
 export { default as Pagination } from "./pagination/pagination.svelte";
@@ -511,6 +576,12 @@ export type { Pricing01Variant } from "./pricing-01/variants";
 export { default as Pricing02 } from "./pricing-02/pricing-02.svelte";
 export type { Pricing02Labels, Pricing02Period, Pricing02Plan } from "./pricing-02/types";
 export type { Pricing02Variant } from "./pricing-02/variants";
+export { default as PrismGradient } from "./prism-gradient/prism-gradient.svelte";
+export type {
+	PrismGradientPosition,
+	PrismGradientSpeed,
+	PrismGradientTone,
+} from "./prism-gradient/variants";
 export { default as Progress } from "./progress/progress.svelte";
 export type { ProgressSize, ProgressTone, ProgressVariant } from "./progress/variants";
 export {
@@ -598,6 +669,12 @@ export type {
 } from "./reveal-text/variants";
 export { default as RingChart } from "./ring-chart/ring-chart.svelte";
 export type { RingCap } from "./ring-chart/variants";
+export type { RippleTransitionImage } from "./ripple-transition/ripple";
+export { default as RippleTransition } from "./ripple-transition/ripple-transition.svelte";
+export type {
+	RippleTransitionRadius,
+	RippleTransitionRings,
+} from "./ripple-transition/variants";
 export { default as RollText } from "./roll-text/roll-text.svelte";
 export type { RollStagger, RollTextMotion, RollTextSize } from "./roll-text/variants";
 export type { RollingDigitsLocale } from "./rolling-digits/format";
@@ -620,10 +697,32 @@ export type { ScatterShape, ScatterSize } from "./scatter-chart/variants";
 export { default as ScoreCard } from "./score-card/score-card.svelte";
 export type { ScoreCardSize } from "./score-card/variants";
 export { default as ScrollArea } from "./scroll-area/scroll-area.svelte";
+export { default as ScrollChoreography } from "./scroll-choreography/scroll-choreography.svelte";
+export type {
+	ScrollChoreographyImage,
+	ScrollChoreographyImages,
+} from "./scroll-choreography/types";
+export type {
+	ScrollChoreographySize,
+	ScrollChoreographyVariant,
+} from "./scroll-choreography/variants";
 export { default as ScrollProgress } from "./scroll-progress/scroll-progress.svelte";
 export type { ScrollProgressPosition } from "./scroll-progress/variants";
 export { default as ScrollReveal } from "./scroll-reveal/scroll-reveal.svelte";
 export type { ScrollRevealSize } from "./scroll-reveal/variants";
+export { default as ScrollSplitCard } from "./scroll-split-card/scroll-split-card.svelte";
+export type { ScrollSplitCardItem } from "./scroll-split-card/types";
+export type {
+	ScrollSplitCardSize,
+	ScrollSplitCardTone,
+} from "./scroll-split-card/variants";
+export { default as ScrollTiltedGrid } from "./scroll-tilted-grid/scroll-tilted-grid.svelte";
+export type {
+	ScrollTiltedGridAspect,
+	ScrollTiltedGridImage,
+	ScrollTiltedGridRadius,
+	ScrollTiltedGridSize,
+} from "./scroll-tilted-grid/variants";
 export { default as ScrollVelocity } from "./scroll-velocity/scroll-velocity.svelte";
 export type {
 	ScrollVelocityDirection,
@@ -666,6 +765,8 @@ export type {
 	SidebarWorkspaceAction,
 } from "./sidebar-nav/types";
 export type { SidebarNavSize } from "./sidebar-nav/variants";
+export { default as Signature } from "./signature/signature.svelte";
+export type { SignatureVariant } from "./signature/variants";
 export { default as SilkAurora } from "./silk-aurora/silk-aurora.svelte";
 export type {
 	SilkAuroraPosition,
@@ -704,6 +805,12 @@ export type {
 	StatusMonitorUnit,
 } from "./status-monitor/timeline";
 export type { StatusMonitorSize, StatusMonitorStatus } from "./status-monitor/variants";
+export { default as StickyScrollCards } from "./sticky-scroll-cards/sticky-scroll-cards.svelte";
+export type {
+	StickyScrollCardItem,
+	StickyScrollCardsSize,
+	StickyScrollCardsVariant,
+} from "./sticky-scroll-cards/variants";
 export { default as StreamingText } from "./streaming-text/streaming-text.svelte";
 export type { StreamingSource, StreamingToken } from "./streaming-text/types";
 export type { StreamingTextLayout } from "./streaming-text/variants";

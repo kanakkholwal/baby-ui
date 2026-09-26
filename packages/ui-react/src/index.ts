@@ -117,6 +117,13 @@ export {
 	type CardVariant,
 } from "./card/card";
 export {
+	type CaseStudyFlipItem,
+	CaseStudyFlipStack,
+	type CaseStudyFlipStackProps,
+	type CaseStudyFlipStackSize,
+	type CaseStudyFlipStackTone,
+} from "./case-study-flip-stack/case-study-flip-stack";
+export {
 	Background,
 	type BackgroundProps,
 	ReferenceArea,
@@ -240,6 +247,17 @@ export {
 } from "./choropleth-chart/choropleth-chart";
 export type { GeoCollection, GeoFeature, ZoomState } from "./choropleth-chart/geometry";
 export type { ChoroplethProjection } from "./choropleth-chart/variants";
+export {
+	CircuitBoard,
+	type CircuitBoardProps,
+	type CircuitConnection,
+	type CircuitNode,
+} from "./circuit-board/circuit-board";
+export type {
+	CircuitBoardSpeed,
+	CircuitBoardTone,
+	CircuitNodeStatus,
+} from "./circuit-board/variants";
 export { CircularText, type CircularTextProps } from "./circular-text/circular-text";
 export type { CircularTextDirection } from "./circular-text/variants";
 export {
@@ -266,6 +284,13 @@ export {
 	CollapsibleContent,
 	CollapsibleTrigger,
 } from "./collapsible/collapsible";
+export {
+	CollectionSurfer,
+	type CollectionSurferItem,
+	type CollectionSurferProps,
+	type CollectionSurferSize,
+	type CollectionSurferVariant,
+} from "./collection-surfer/collection-surfer";
 export { ColorPicker, type ColorPickerProps } from "./color-picker/color-picker";
 export {
 	Combobox,
@@ -371,6 +396,13 @@ export {
 	type DitherGradientTone,
 } from "./dither-gradient/dither-gradient";
 export {
+	DitheredLogo,
+	type DitheredLogoProps,
+	type DitheredLogoSize,
+	type DitheredLogoTone,
+	type DitheredLogoVariant,
+} from "./dithered-logo/dithered-logo";
+export {
 	DocsNav,
 	type DocsNavConnector,
 	type DocsNavItem,
@@ -415,6 +447,12 @@ export {
 	DropdownMenuSubTrigger,
 	DropdownMenuTrigger,
 } from "./dropdown-menu/dropdown-menu";
+export {
+	EyeTracking,
+	type EyeTrackingProps,
+	type EyeTrackingSize,
+	type EyeTrackingVariant,
+} from "./eye-tracking/eye-tracking";
 export { type DiffLine, FileDiff, type FileDiffProps } from "./file-diff/file-diff";
 export { FileTree, type FileTreeProps } from "./file-tree/file-tree";
 export type { FileTreeNode } from "./file-tree/types";
@@ -440,6 +478,23 @@ export {
 	type FineTuneState,
 } from "./fine-tune-card/fine-tune-card";
 export type { FineTuneCardSize } from "./fine-tune-card/variants";
+export {
+	type FisheyeGridItem,
+	FisheyeInfiniteGrid,
+	type FisheyeInfiniteGridLabels,
+	type FisheyeInfiniteGridProps,
+	type FisheyeInfiniteGridSize,
+	type FisheyeInfiniteGridVariant,
+} from "./fisheye-infinite-grid/fisheye-infinite-grid";
+export {
+	FlightStatusCard,
+	type FlightStatusCardProps,
+} from "./flight-status-card/flight-status-card";
+export type { FlightStatus, FlightStatusLabels } from "./flight-status-card/types";
+export type {
+	FlightStatusDisplay,
+	FlightStatusTone,
+} from "./flight-status-card/variants";
 export {
 	Flowchart,
 	type FlowchartConditionRow,
@@ -542,6 +597,14 @@ export {
 	type ImageTrailSize,
 	type ImageTrailVariant,
 } from "./image-trail/image-trail";
+export {
+	InfiniteImageField,
+	type InfiniteImageFieldLabels,
+	type InfiniteImageFieldLayout,
+	type InfiniteImageFieldProps,
+	type InfiniteImageFieldShape,
+	type InfiniteImageFieldSize,
+} from "./infinite-image-field/infinite-image-field";
 export { Input, type InputProps } from "./input/input";
 export type { InputSize } from "./input/variants";
 export { JitterText, type JitterTextProps } from "./jitter-text/jitter-text";
@@ -549,6 +612,13 @@ export type { JitterTextSize } from "./jitter-text/variants";
 export { JumpingText, type JumpingTextProps } from "./jumping-text/jumping-text";
 export type { JumpingTextMode, JumpingTextSize } from "./jumping-text/variants";
 export { Label, type LabelProps } from "./label/label";
+export {
+	LayeredStack,
+	type LayeredStackAspect,
+	type LayeredStackColumns,
+	type LayeredStackItem,
+	type LayeredStackProps,
+} from "./layered-stack/layered-stack";
 export { cn } from "./lib/cn";
 export {
 	Line,
@@ -598,6 +668,12 @@ export {
 	type LoadingStateVariant,
 } from "./loading-state/loading-state";
 export { LogoCarousel, type LogoCarouselProps } from "./logo-carousel/logo-carousel";
+export {
+	MagnetLines,
+	type MagnetLinesProps,
+	type MagnetLinesSize,
+	type MagnetLinesTone,
+} from "./magnet-lines/magnet-lines";
 export { Markdown, type MarkdownProps } from "./markdown/markdown";
 export type { MarkdownSize } from "./markdown/variants";
 export { Marker, type MarkerProps } from "./marker/marker";
@@ -642,8 +718,19 @@ export {
 } from "./morphing-modal/morphing-modal";
 export type { MorphSpring } from "./morphing-modal/use-morph";
 export type { MorphingModalSize } from "./morphing-modal/variants";
+export { MusicPlayer, type MusicPlayerProps } from "./music-player/music-player";
+export type { MusicPlayerLabels } from "./music-player/types";
+export type { MusicPlayerLayout } from "./music-player/variants";
 export { Navbar, type NavbarLink, type NavbarProps } from "./navbar/navbar";
 export type { NavbarVariant } from "./navbar/variants";
+export {
+	OrbitCardStack,
+	type OrbitCardStackLabels,
+	type OrbitCardStackLayout,
+	type OrbitCardStackProps,
+	type OrbitCardStackSize,
+	type OrbitStackItem,
+} from "./orbit-card-stack/orbit-card-stack";
 export {
 	OverviewCard,
 	type OverviewCardChart,
@@ -698,6 +785,13 @@ export {
 	type Pricing02Props,
 	type Pricing02Variant,
 } from "./pricing-02/pricing-02";
+export {
+	PrismGradient,
+	type PrismGradientPosition,
+	type PrismGradientProps,
+	type PrismGradientSpeed,
+	type PrismGradientTone,
+} from "./prism-gradient/prism-gradient";
 export { Progress, type ProgressProps } from "./progress/progress";
 export type { ProgressSize, ProgressTone, ProgressVariant } from "./progress/variants";
 export {
@@ -816,6 +910,13 @@ export type {
 } from "./reveal-text/variants";
 export { RingChart, type RingChartProps } from "./ring-chart/ring-chart";
 export type { RingCap } from "./ring-chart/variants";
+export {
+	RippleTransition,
+	type RippleTransitionImage,
+	type RippleTransitionProps,
+	type RippleTransitionRadius,
+	type RippleTransitionRings,
+} from "./ripple-transition/ripple-transition";
 export { RollText, type RollTextProps } from "./roll-text/roll-text";
 export type { RollStagger, RollTextMotion, RollTextSize } from "./roll-text/variants";
 export type { RollingDigitsLocale } from "./rolling-digits/format";
@@ -846,12 +947,35 @@ export {
 } from "./score-card/score-card";
 export { ScrollArea, type ScrollAreaProps } from "./scroll-area/scroll-area";
 export {
+	ScrollChoreography,
+	type ScrollChoreographyImage,
+	type ScrollChoreographyImages,
+	type ScrollChoreographyProps,
+	type ScrollChoreographySize,
+	type ScrollChoreographyVariant,
+} from "./scroll-choreography/scroll-choreography";
+export {
 	ScrollProgress,
 	type ScrollProgressProps,
 } from "./scroll-progress/scroll-progress";
 export type { ScrollProgressPosition } from "./scroll-progress/variants";
 export { ScrollReveal, type ScrollRevealProps } from "./scroll-reveal/scroll-reveal";
 export type { ScrollRevealSize } from "./scroll-reveal/variants";
+export {
+	ScrollSplitCard,
+	type ScrollSplitCardItem,
+	type ScrollSplitCardProps,
+	type ScrollSplitCardSize,
+	type ScrollSplitCardTone,
+} from "./scroll-split-card/scroll-split-card";
+export {
+	ScrollTiltedGrid,
+	type ScrollTiltedGridAspect,
+	type ScrollTiltedGridImage,
+	type ScrollTiltedGridProps,
+	type ScrollTiltedGridRadius,
+	type ScrollTiltedGridSize,
+} from "./scroll-tilted-grid/scroll-tilted-grid";
 export {
 	ScrollVelocity,
 	type ScrollVelocityDirection,
@@ -905,6 +1029,8 @@ export {
 	type SidebarWorkspaceAction,
 } from "./sidebar-nav/sidebar-nav";
 export type { SidebarNavSize } from "./sidebar-nav/variants";
+export { Signature, type SignatureProps } from "./signature/signature";
+export type { SignatureVariant } from "./signature/variants";
 export { SilkAurora, type SilkAuroraProps } from "./silk-aurora/silk-aurora";
 export type {
 	SilkAuroraPosition,
@@ -961,6 +1087,13 @@ export {
 	type StatusMonitorStatus,
 	type StatusMonitorUnit,
 } from "./status-monitor/status-monitor";
+export {
+	type StickyScrollCardItem,
+	StickyScrollCards,
+	type StickyScrollCardsProps,
+	type StickyScrollCardsSize,
+	type StickyScrollCardsVariant,
+} from "./sticky-scroll-cards/sticky-scroll-cards";
 export {
 	type StreamingSource,
 	StreamingText,

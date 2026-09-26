@@ -1,7 +1,10 @@
 <script lang="ts">
 import { Button, ShowcaseGrid, type ShowcaseSpan } from "@baby-ui/svelte";
 import IconArrowRight from "@tabler/icons-svelte/icons/arrow-right";
+import type { CardItem } from "$lib/registry";
 import ShowcasePanel from "./showcase-panel.svelte";
+
+let { items }: { items: CardItem[] } = $props();
 
 type Cell = { slug: string; span: ShowcaseSpan; class?: string };
 
@@ -28,7 +31,12 @@ const CELLS: Cell[] = [
 
 	<ShowcaseGrid class="mt-8 sm:mt-10">
 		{#each CELLS as cell (cell.slug)}
-			<ShowcasePanel slug={cell.slug} span={cell.span} class={cell.class} />
+			<ShowcasePanel
+				slug={cell.slug}
+				item={items.find((i) => i.slug === cell.slug)}
+				span={cell.span}
+				class={cell.class}
+			/>
 		{/each}
 	</ShowcaseGrid>
 

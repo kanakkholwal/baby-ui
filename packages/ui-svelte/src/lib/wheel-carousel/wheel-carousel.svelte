@@ -129,14 +129,8 @@ $effect(() => {
 </script>
 
 <div data-slot="wheel-carousel" class={cn(s.root(), classProp)} style:--photo-width="{photoWidth}%">
-	<div
-		bind:this={stage}
-		role="listbox"
-		aria-label={label}
-		aria-activedescendant={selected ? `${id}-${current}` : undefined}
-		tabindex="0"
-		class={s.stage()}
-	>
+	<!-- The stage takes drag, wheel and keys; the listbox is the labels alone, so it owns only options. -->
+	<div bind:this={stage} class={s.stage()}>
 		<div class={s.photoCol()}>
 			<div class={s.photo()}>
 				{#each layers as layer (`${layer.index}-${items[layer.index]?.image}`)}
@@ -153,7 +147,14 @@ $effect(() => {
 				{/each}
 			</div>
 		</div>
-		<div bind:this={list} class={s.list()}>
+		<div
+			bind:this={list}
+			role="listbox"
+			aria-label={label}
+			aria-activedescendant={selected ? `${id}-${current}` : undefined}
+			tabindex="0"
+			class={s.list()}
+		>
 			{#if showMarker}
 				<span aria-hidden="true" class={s.marker()} style:left="calc({apexInset}% - 20px)"></span>
 			{/if}

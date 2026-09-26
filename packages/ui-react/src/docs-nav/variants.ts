@@ -8,7 +8,7 @@ export const docsNav = tv({
 		trigger:
 			"h-8 w-full justify-start gap-1.5 pr-3 pl-1.5 font-semibold text-[11px] text-muted-foreground uppercase tracking-wider hover:text-foreground",
 		count:
-			"inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-foreground/[0.06] px-1 font-medium text-[10px] text-muted-foreground tabular-nums",
+			"inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-foreground/[0.06] px-1 font-medium text-[10px] text-foreground/70 tabular-nums",
 		content: "px-0 pt-1 pb-1",
 		list: "relative",
 		pill: "pointer-events-none absolute right-0 rounded-md bg-foreground/[0.06] transition-[transform,height] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none",

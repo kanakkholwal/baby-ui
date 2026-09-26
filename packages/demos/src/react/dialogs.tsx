@@ -395,13 +395,6 @@ export function CommandDemo({ props }: { props: Props }) {
 	);
 }
 
-const NAV = [
-	{ href: "#product", label: "Product" },
-	{ href: "#pricing", label: "Pricing" },
-	{ href: "#docs", label: "Docs" },
-	{ href: "#blog", label: "Blog" },
-];
-
 const FULLSCREEN_LINKS = [
 	{ href: "#product", label: "Product", description: "What it does and who it is for" },
 	{ href: "#pricing", label: "Pricing", description: "Plans for teams of every size" },

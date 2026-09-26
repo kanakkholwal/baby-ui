@@ -13,7 +13,7 @@ import IconSearch from "@tabler/icons-svelte/icons/search";
 import { goto } from "$app/navigation";
 import { track } from "$lib/analytics";
 import { type DocsHit, searchDocs } from "$lib/docs-search";
-import { searchItems } from "$lib/registry";
+import { type CatalogItem, loadCatalog, searchItems } from "$lib/registry";
 
 let open = $state(false);
 let query = $state("");
@@ -39,8 +39,15 @@ const GUIDES = [
 	{ href: "/components", name: "All components", description: "Browse the registry" },
 ];
 
+let catalog = $state<CatalogItem[]>([]);
+
+// The catalog is fetched on first open, so pages don't carry every component's metadata.
+$effect(() => {
+	if (open && !catalog.length) void loadCatalog().then((items) => (catalog = items));
+});
+
 const groups = $derived.by(() => {
-	const items = searchItems();
+	const items = searchItems(catalog);
 	const names = [...new Set(items.map((item) => item.group))];
 	return names.map((name) => ({
 		name,
@@ -70,7 +77,7 @@ $effect(() => {
 	let stale = false;
 	const timer = setTimeout(async () => {
 		try {
-			const next = await searchDocs(q);
+			const next = await searchDocs(q, await loadCatalog());
 			if (!stale) hits = next;
 		} catch {
 			if (!stale) hits = [];

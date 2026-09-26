@@ -5,8 +5,8 @@ import { specs } from "@baby-ui/registry-schema/components";
 import { error } from "@sveltejs/kit";
 import { prepare } from "$lib/docs-nodes";
 import { highlight, langFor } from "$lib/highlight";
-import { findSpec } from "$lib/registry";
 import { componentCss, cssNames } from "$lib/registry-items";
+import { adjacentComponents, cardItems, findSpec } from "$lib/server/registry";
 import { usageSnippet } from "$lib/usage";
 import type { EntryGenerator, PageServerLoad } from "./$types";
 
@@ -58,8 +58,14 @@ export const load: PageServerLoad = async ({ params }) => {
 	);
 
 	const prose = doc ? await prepare(doc.content) : null;
+	const related = specs
+		.filter((s) => s.category === spec.category && s.slug !== spec.slug)
+		.slice(0, 6)
+		.map((s) => s.slug);
 	return {
 		spec,
+		related: cardItems(related),
+		adjacent: adjacentComponents(spec.category, spec.slug),
 		ports,
 		prose: prose?.content ?? null,
 		proseHeadings: prose?.headings ?? [],

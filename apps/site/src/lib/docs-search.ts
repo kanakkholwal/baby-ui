@@ -1,6 +1,5 @@
-import { specs } from "@baby-ui/registry-schema/components";
 import { createFetchClient, type SearchResult } from "@docvia/search";
-import { specHref } from "$lib/registry";
+import type { CatalogItem } from "$lib/registry";
 
 export type DocsHit = {
 	href: string;
@@ -11,11 +10,10 @@ export type DocsHit = {
 };
 
 const client = createFetchClient("/api/search");
-const components = new Map(specs.map((spec) => [spec.slug, specHref(spec)]));
-
 // Hits carry a page slug; component pages and guides share one slug namespace.
-const pageFor = (slug: string) =>
-	components.get(slug) ?? (slug === "index" ? "/docs" : `/docs/${slug}`);
+const pageFor = (slug: string, catalog: CatalogItem[]) =>
+	catalog.find((item) => item.slug === slug)?.href ??
+	(slug === "index" ? "/docs" : `/docs/${slug}`);
 
 /** Text around the first query word found in `content`, with ellipses where it was cut. */
 function snippetFor(content: string, query: string, radius = 70): string {
@@ -35,10 +33,14 @@ function snippetFor(content: string, query: string, radius = 70): string {
 }
 
 /** Section-level hits from docvia's search endpoint, linked to the page and heading they sit under. */
-export async function searchDocs(query: string, limit = 6): Promise<DocsHit[]> {
+export async function searchDocs(
+	query: string,
+	catalog: CatalogItem[],
+	limit = 6,
+): Promise<DocsHit[]> {
 	const results: SearchResult[] = await client.search(query, { limit });
 	return results.map((hit) => {
-		const page = pageFor(hit.slug);
+		const page = pageFor(hit.slug, catalog);
 		const anchored = hit.sectionId !== "_top" && hit.sectionTitle !== hit.pageTitle;
 		return {
 			href: anchored ? `${page}#${hit.sectionId}` : page,

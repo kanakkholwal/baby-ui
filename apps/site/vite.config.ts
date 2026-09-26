@@ -70,6 +70,9 @@ export default defineConfig({
 			// The navbar and fullscreen-nav demos ship placeholder anchors like #product,
 			// which have no target on the page that previews them. Warn, do not fail.
 			prerender: { handleMissingId: "warn" },
+			// Per-component sheets inline (each link is a blocking round trip); the 370KB Tailwind
+			// sheet stays linked so it caches across pages instead of riding in every HTML file.
+			inlineStyleThreshold: 16 * 1024,
 			compilerOptions: {
 				// Force runes mode for the project, except for libraries. Can be removed in svelte 6.
 				runes: ({ filename }) =>
