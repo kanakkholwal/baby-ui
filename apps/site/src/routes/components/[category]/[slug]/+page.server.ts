@@ -1,12 +1,11 @@
-import { components } from "virtual:docvia/source";
+import { components, docviaSource } from "virtual:docvia/source";
 import type { Framework } from "@baby-ui/registry-schema";
 import { FRAMEWORKS } from "@baby-ui/registry-schema";
-import { specs } from "@baby-ui/registry-schema/components";
 import { error } from "@sveltejs/kit";
 import { prepare } from "$lib/docs-nodes";
 import { highlight, langFor } from "$lib/highlight";
 import { componentCss, cssNames } from "$lib/registry-items";
-import { adjacentComponents, cardItems, findSpec } from "$lib/server/registry";
+import { adjacentComponents, cardItems, findSpec, specs } from "$lib/server/registry";
 import { usageSnippet } from "$lib/usage";
 import type { EntryGenerator, PageServerLoad } from "./$types";
 
@@ -21,7 +20,14 @@ export const load: PageServerLoad = async ({ params }) => {
 	const spec = findSpec(params.category, params.slug);
 	if (!spec) throw error(404, `No ${params.category} component named "${params.slug}"`);
 
-	const doc = await components.getPage([params.slug]);
+	// Pro prose is its own collection, present only when the Pro submodule is checked out.
+	const collections = docviaSource.collections as Record<
+		string,
+		typeof components | undefined
+	>;
+	const doc = await (spec.tier === "pro" ? collections.pro : components)?.getPage([
+		params.slug,
+	]);
 
 	const ports = await Promise.all(
 		FRAMEWORKS.filter((f) => spec.impl[f]).map(async (framework: Framework) => {

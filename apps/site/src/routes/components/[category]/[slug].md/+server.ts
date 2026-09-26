@@ -1,7 +1,6 @@
-import { specs } from "@baby-ui/registry-schema/components";
 import { error } from "@sveltejs/kit";
 import { componentMarkdown } from "$lib/markdown";
-import { findSpec } from "$lib/server/registry";
+import { findSpec, specs } from "$lib/server/registry";
 import type { EntryGenerator, RequestHandler } from "./$types";
 
 export const prerender = true;

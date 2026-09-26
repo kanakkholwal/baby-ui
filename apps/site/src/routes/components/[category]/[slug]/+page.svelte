@@ -1,5 +1,4 @@
 <script lang="ts">
-import { demos } from "@baby-ui/demos/svelte";
 import { Renderer } from "@docvia/renderer-svelte";
 import IconArrowLeft from "@tabler/icons-svelte/icons/arrow-left";
 import IconArrowRight from "@tabler/icons-svelte/icons/arrow-right";
@@ -22,6 +21,7 @@ import PropsRail from "$lib/components/props-rail.svelte";
 import PropsTable from "$lib/components/props-table.svelte";
 import Seo from "$lib/components/seo.svelte";
 import Tabs from "$lib/components/tabs.svelte";
+import { demos } from "$lib/demos";
 import { OUTLINE_PANEL, outlineSidebar } from "$lib/docs-sidebar.svelte";
 import { prefs } from "$lib/preferences.svelte";
 import { CATEGORY_LABEL, categoryHref, defaultProps, specHref } from "$lib/registry";

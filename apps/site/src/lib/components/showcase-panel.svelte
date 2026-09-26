@@ -1,7 +1,7 @@
 <script lang="ts">
-import { demos } from "@baby-ui/demos/svelte";
 import { Button, ShowcasePanel, type ShowcaseSpan, Spinner } from "@baby-ui/svelte";
 import IconRefresh from "@tabler/icons-svelte/icons/refresh";
+import { demos } from "$lib/demos";
 import type { CardItem } from "$lib/registry";
 
 let {

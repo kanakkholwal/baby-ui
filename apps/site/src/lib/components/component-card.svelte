@@ -1,6 +1,6 @@
 <script lang="ts">
-import { demos } from "@baby-ui/demos/svelte";
 import { Spinner } from "@baby-ui/svelte";
+import { demos } from "$lib/demos";
 import type { CardItem } from "$lib/registry";
 
 let { item }: { item: CardItem } = $props();

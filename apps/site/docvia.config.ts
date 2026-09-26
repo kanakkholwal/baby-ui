@@ -1,6 +1,10 @@
+import { existsSync } from "node:fs";
 import { ComponentDocExtrasSchema } from "@baby-ui/registry-schema";
 import { defineConfig } from "@docvia/cli";
 import { createSvelteRenderer } from "@docvia/renderer-svelte/node";
+
+// Prose for Pro components lives in the private submodule, when it is checked out.
+const PRO_DOCS = "../../pro/docs/components";
 
 export default defineConfig({
 	sourceDir: "src/docs",
@@ -8,6 +12,9 @@ export default defineConfig({
 	collections: [
 		{ name: "components", sourceDir: "src/docs/components", baseUrl: "/components" },
 		{ name: "guides", sourceDir: "src/docs/guides", baseUrl: "/docs" },
+		...(existsSync(PRO_DOCS)
+			? [{ name: "pro", sourceDir: PRO_DOCS, baseUrl: "/components" }]
+			: []),
 	],
 	frontmatter: ComponentDocExtrasSchema,
 

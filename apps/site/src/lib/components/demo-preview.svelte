@@ -1,7 +1,7 @@
 <script lang="ts">
-import type { DemoLoader } from "@baby-ui/demos/svelte";
 import type { Framework } from "@baby-ui/registry-schema";
 import { Spinner } from "@baby-ui/svelte";
+import type { DemoLoader } from "$lib/demos";
 import { REACT_RUNNER_URL } from "$lib/flags";
 
 let {

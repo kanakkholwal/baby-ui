@@ -1,8 +1,8 @@
 import { guides } from "virtual:docvia/source";
 import { CATEGORIES, docsPath } from "@baby-ui/registry-schema";
-import { specs } from "@baby-ui/registry-schema/components";
 import { categoryHref } from "$lib/registry";
 import { absoluteUrl, SITE_URL } from "$lib/seo";
+import { specs } from "$lib/server/registry";
 import type { RequestHandler } from "./$types";
 
 export const prerender = true;

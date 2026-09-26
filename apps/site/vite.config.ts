@@ -20,7 +20,11 @@ const rendererSvelte = join(
 );
 
 export default defineConfig({
-	resolve: { alias: { yaml: yamlEsm, "@docvia/renderer-svelte": rendererSvelte } },
+	resolve: {
+		alias: { yaml: yamlEsm, "@docvia/renderer-svelte": rendererSvelte },
+		// The Pro submodule has its own node_modules; one Svelte runtime keeps kernel context shared.
+		dedupe: ["svelte"],
+	},
 	// The package ships a raw .svelte file in dist; dev SSR externalises it and Node
 	// then refuses the extension. Harmless in the bundled prod build, fatal in dev.
 	ssr: { noExternal: ["@docvia/renderer-svelte"] },

@@ -6,6 +6,9 @@
 @source "../../../../packages/demos/src/svelte";
 @source "../../../../packages/demos/src/controls";
 @source "../../../../packages/demos/src/data";
+/* The private Pro submodule; Tailwind skips these paths when it is not checked out. */
+@source "../../../../pro/packages/svelte/src";
+@source "../../../../pro/packages/demos/src/svelte";
 
 @layer base {
 	* {

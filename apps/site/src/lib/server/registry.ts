@@ -1,5 +1,5 @@
 import { CATEGORIES, type Category, type ComponentSpec } from "@baby-ui/registry-schema";
-import { specs } from "@baby-ui/registry-schema/components";
+import { specs as publicSpecs } from "@baby-ui/registry-schema/components";
 import {
 	type AdjacentComponent,
 	CATEGORY_LABEL,
@@ -12,7 +12,20 @@ import {
 	specHref,
 } from "$lib/registry";
 
-export { specs };
+// pro/ is the private Pro submodule; in a public checkout this glob matches nothing.
+const pro = import.meta.glob<ComponentSpec[]>(
+	"../../../../../pro/packages/schema/src/index.ts",
+	{
+		eager: true,
+		import: "proSpecs",
+	},
+);
+
+/** Public specs, plus Pro specs when the private submodule is checked out. */
+export const specs: readonly ComponentSpec[] = [
+	...publicSpecs,
+	...Object.values(pro).flat(),
+];
 
 /** Categories with at least one component, in schema order. */
 export function navCategories(): NavCategory[] {
