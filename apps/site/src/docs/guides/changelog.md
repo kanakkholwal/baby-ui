@@ -1,5 +1,7 @@
 ---
 title: Changelog
+# Hidden until it is brought up to date: drafts 404 and are left out of nav and exports.
+draft: true
 description: What changed, newest first.
 ---
 

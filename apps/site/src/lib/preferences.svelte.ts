@@ -5,6 +5,8 @@ import { persisted } from "./persisted-state.svelte";
 
 export type Dialect = "ts" | "js";
 export type PackageManager = "bun" | "npm" | "pnpm" | "yarn";
+/** Component pages: preview above the docs, or a sticky preview column beside them. */
+export type PageLayout = "stacked" | "split";
 
 type Ramp = { primary: string; fg: string };
 
@@ -99,6 +101,7 @@ type Stored = {
 	dialect: Dialect;
 	pm: PackageManager;
 	clickSpark: boolean;
+	layout: PageLayout;
 };
 
 const DEFAULT_STORED: Stored = {
@@ -106,6 +109,7 @@ const DEFAULT_STORED: Stored = {
 	dialect: "ts",
 	pm: "bun",
 	clickSpark: true,
+	layout: "stacked",
 };
 
 class Preferences {
@@ -124,6 +128,10 @@ class Preferences {
 	}
 	get clickSpark() {
 		return this.#stored.current.clickSpark;
+	}
+	// Stores saved before this field existed have no layout.
+	get layout(): PageLayout {
+		return this.#stored.current.layout ?? "stacked";
 	}
 	get theme() {
 		return this.#theme.current;

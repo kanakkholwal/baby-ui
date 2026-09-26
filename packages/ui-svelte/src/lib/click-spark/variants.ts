@@ -10,7 +10,7 @@ export const clickSpark = tv({
 			muted: "text-muted-foreground",
 		},
 		scope: {
-			page: "fixed inset-0 z-[9999]",
+			page: "click-spark-page fixed inset-0 z-[9999]",
 			parent: "absolute inset-0",
 		},
 	},

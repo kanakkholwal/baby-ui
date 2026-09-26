@@ -1,24 +1,20 @@
 "use client";
 
 import { LogoCarousel } from "@baby-ui/react";
+import { BRANDS } from "../data/media";
 
 type Props = Record<string, unknown>;
 
-const NAMES = [
-	"Acme",
-	"Nimbus",
-	"Kestrel",
-	"Orbital",
-	"Vantage",
-	"Fathom",
-	"Beacon",
-	"Marrow",
-];
-
-function LogoMark({ name }: { name: string }) {
+function LogoMark({ brand }: { brand: (typeof BRANDS)[number] }) {
 	return (
-		<span className="flex h-10 w-28 items-center justify-center rounded-lg border border-border bg-card font-medium text-muted-foreground text-sm">
-			{name}
+		<span className="flex h-10 w-28 items-center justify-center gap-2 text-muted-foreground">
+			<span
+				role="img"
+				aria-label={brand.name}
+				className="size-6 bg-current"
+				style={{ mask: `url(${brand.logo}) center / contain no-repeat` }}
+			/>
+			<span className="font-medium text-sm">{brand.name}</span>
 		</span>
 	);
 }
@@ -30,8 +26,8 @@ export function LogoCarouselDemo({ props }: { props: Props }) {
 			direction={(props.direction as "ltr" | "rtl") ?? "ltr"}
 			className="w-full max-w-lg gap-3"
 		>
-			{NAMES.map((name) => (
-				<LogoMark key={name} name={name} />
+			{BRANDS.map((brand) => (
+				<LogoMark key={brand.name} brand={brand} />
 			))}
 		</LogoCarousel>
 	);

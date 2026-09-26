@@ -32,8 +32,19 @@ export {
 	type AreaProps,
 } from "./area-chart/area-chart";
 export type { AreaVariant } from "./area-chart/variants";
-export { Attachment, type AttachmentProps } from "./attachment/attachment";
-export type { AttachmentStatus } from "./attachment/variants";
+export {
+	ArtGallery,
+	type ArtGalleryItem,
+	type ArtGalleryLabels,
+	type ArtGalleryLens,
+	type ArtGalleryProps,
+} from "./art-gallery/art-gallery";
+export {
+	Attachment,
+	type AttachmentLabels,
+	type AttachmentProps,
+	type AttachmentStatus,
+} from "./attachment/attachment";
 export { Avatar, AvatarFallback, AvatarImage } from "./avatar/avatar";
 export { Badge, type BadgeProps } from "./badge/badge";
 export type { BadgeSize, BadgeVariant } from "./badge/variants";
@@ -192,8 +203,12 @@ export {
 export type { SeriesLoadingStyle, SeriesMarkerAppearance } from "./chart-series/variants";
 export {
 	ChatComposer,
+	type ChatComposerLabels,
 	type ChatComposerProps,
+	type ChatComposerSize,
+	type ChatComposerVariant,
 	type ChatMessage,
+	type ChatStatus,
 	type ChatTopic,
 } from "./chat-composer/chat-composer";
 export { Checkbox, type CheckboxProps } from "./checkbox/checkbox";
@@ -487,6 +502,13 @@ export type {
 	LiveLineTint,
 	LiveMomentum,
 } from "./live-line-chart/variants";
+export {
+	LoadingScreen,
+	type LoadingScreenIndicator,
+	type LoadingScreenLogoMotion,
+	type LoadingScreenPosition,
+	type LoadingScreenProps,
+} from "./loading-screen/loading-screen";
 export {
 	LoadingState,
 	type LoadingStateProps,

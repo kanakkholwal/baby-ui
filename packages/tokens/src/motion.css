@@ -2641,3 +2641,54 @@
 		animation: none;
 	}
 }
+
+/* ClickSpark: the page canvas gets its own view-transition layer and stays live on top, so
+   bursts keep animating through a theme reveal instead of freezing in the root snapshot. */
+.click-spark-page {
+	view-transition-name: click-spark;
+}
+
+:root:has(.click-spark-page)::view-transition-old(click-spark) {
+	display: none;
+}
+
+:root:has(.click-spark-page)::view-transition-group(click-spark),
+:root:has(.click-spark-page)::view-transition-new(click-spark) {
+	animation: none;
+}
+
+/* LoadingScreen: the logo's breathe and the three-dot indicator. */
+.loading-screen-breathe {
+	animation: loading-screen-breathe 1.6s ease-in-out infinite;
+}
+
+.loading-screen-dot {
+	animation: loading-screen-dot 1.2s ease-in-out infinite;
+}
+
+@keyframes loading-screen-breathe {
+	50% {
+		opacity: 0.55;
+		transform: scale(0.94);
+	}
+}
+
+@keyframes loading-screen-dot {
+	0%,
+	80%,
+	100% {
+		opacity: 0.25;
+		transform: translateY(0);
+	}
+	40% {
+		opacity: 1;
+		transform: translateY(-3px);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.loading-screen-breathe,
+	.loading-screen-dot {
+		animation: none;
+	}
+}

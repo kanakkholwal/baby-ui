@@ -8,7 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@baby-ui/svelte";
 	</Avatar>
 	<Avatar>
 		<AvatarFallback>GH</AvatarFallback>
-		<AvatarImage src="/grace.jpg" alt="Grace Hopper" />
+		<AvatarImage src="https://i.pravatar.cc/160?img=47" alt="Grace Hopper" />
 	</Avatar>
 	<Avatar size="lg" shape="square">
 		<AvatarFallback>AT</AvatarFallback>

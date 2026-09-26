@@ -16,9 +16,17 @@ let { props = {} }: { props?: Record<string, unknown> } = $props();
 	pauseOnHover={(props.pauseOnHover as boolean) ?? false}
 >
 	{#each MARQUEE_TILES as tile (tile.title)}
-		<div class="flex h-32 w-48 flex-col justify-between rounded-2xl border border-border bg-card p-4">
-			<span class="font-mono text-[11px] text-muted-foreground uppercase">{tile.meta}</span>
-			<span class="font-medium text-foreground text-lg">{tile.title}</span>
-		</div>
+		<figure class="w-56">
+			<img
+				src={tile.src}
+				alt={tile.title}
+				loading="lazy"
+				class="aspect-[3/2] w-full rounded-2xl border border-border object-cover"
+			/>
+			<figcaption class="mt-2 flex justify-between text-sm">
+				<span class="font-medium text-foreground">{tile.title}</span>
+				<span class="text-muted-foreground">{tile.meta}</span>
+			</figcaption>
+		</figure>
 	{/each}
 </DraggableMarquee>

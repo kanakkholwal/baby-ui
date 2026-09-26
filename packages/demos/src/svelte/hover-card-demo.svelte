@@ -2,6 +2,7 @@
 import {
 	Avatar,
 	AvatarFallback,
+	AvatarImage,
 	HoverCard,
 	HoverCardContent,
 	HoverCardTrigger,
@@ -24,7 +25,9 @@ let { props = {} }: { props?: Record<string, unknown> } = $props();
 	</HoverCardTrigger>
 	<HoverCardContent side={(props.side as never) ?? "bottom"}>
 		<div class="flex items-start gap-3">
-			<Avatar size="sm"><AvatarFallback>KK</AvatarFallback></Avatar>
+			<Avatar size="sm"
+				><AvatarFallback>KK</AvatarFallback><AvatarImage src="https://github.com/kanakkholwal.png" alt="Kanak Kholwal" /></Avatar
+			>
 			<div>
 				<p class="font-medium text-foreground">Kanak Kholwal</p>
 				<p class="mt-1 text-muted-foreground text-xs">

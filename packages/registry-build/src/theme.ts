@@ -119,6 +119,19 @@ function pick(vars: Vars, keep: (name: string) => boolean): Vars {
 	return Object.fromEntries(Object.entries(vars).filter(([name]) => keep(name)));
 }
 
+type VarGroups = Record<string, Record<string, string> | undefined>;
+
+/** shadcn adds the `--` itself; a key that already has one installs as `var(----name)`. */
+export function bareVars<T extends VarGroups>(groups: T): T {
+	return Object.fromEntries(
+		Object.entries(groups).map(([group, vars]) => [
+			group,
+			vars &&
+				Object.fromEntries(Object.entries(vars).map(([k, v]) => [k.replace(/^--/, ""), v])),
+		]),
+	) as T;
+}
+
 function item(
 	framework: Framework,
 	partial: Partial<RegistryItem> & { name: string },
@@ -128,6 +141,7 @@ function item(
 		files: [],
 		meta: { docs: `${SITE_URL}/docs/installation` },
 		...partial,
+		cssVars: partial.cssVars && bareVars(partial.cssVars as VarGroups),
 	});
 }
 

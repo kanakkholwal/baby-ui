@@ -21,7 +21,7 @@ const initials = $derived(
 		shape={(props.shape as "circle" | "square") ?? "circle"}
 	>
 		<AvatarFallback>{initials}</AvatarFallback>
-		<AvatarImage src={(props.src as string) || undefined} alt={name} />
+		<AvatarImage src={(props.src as string) || "https://github.com/kanakkholwal.png"} alt={name} />
 	</Avatar>
 	<div class="text-sm">
 		<p class="font-medium text-foreground">{name}</p>

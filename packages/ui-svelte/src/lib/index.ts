@@ -23,7 +23,12 @@ export type { GradientTextTone } from "./animated-gradient-text/variants";
 export { default as Area } from "./area-chart/area.svelte";
 export { default as AreaChart } from "./area-chart/area-chart.svelte";
 export type { AreaVariant } from "./area-chart/variants";
+export { default as ArtGallery } from "./art-gallery/art-gallery.svelte";
+export type { ArtGalleryItem } from "./art-gallery/gallery";
+export type { ArtGalleryLabels } from "./art-gallery/labels";
+export type { ArtGalleryLens } from "./art-gallery/variants";
 export { default as Attachment } from "./attachment/attachment.svelte";
+export type { AttachmentLabels } from "./attachment/labels";
 export type { AttachmentStatus } from "./attachment/variants";
 export { default as Avatar } from "./avatar/avatar.svelte";
 export { default as AvatarFallback } from "./avatar/avatar-fallback.svelte";
@@ -143,7 +148,13 @@ export { default as SeriesMarkers } from "./chart-series/series-markers.svelte";
 export { default as TerminalMarker } from "./chart-series/terminal-marker.svelte";
 export type { SeriesLoadingStyle, SeriesMarkerAppearance } from "./chart-series/variants";
 export { default as ChatComposer } from "./chat-composer/chat-composer.svelte";
-export type { ChatMessage, ChatTopic } from "./chat-composer/types";
+export type {
+	ChatComposerLabels,
+	ChatMessage,
+	ChatStatus,
+	ChatTopic,
+} from "./chat-composer/types";
+export type { ChatComposerSize, ChatComposerVariant } from "./chat-composer/variants";
 export { default as Checkbox } from "./checkbox/checkbox.svelte";
 export {
 	type ChoroplethLabels,
@@ -358,6 +369,12 @@ export type {
 	LiveLineTint,
 	LiveMomentum,
 } from "./live-line-chart/variants";
+export { default as LoadingScreen } from "./loading-screen/loading-screen.svelte";
+export type {
+	LoadingScreenIndicator,
+	LoadingScreenLogoMotion,
+	LoadingScreenPosition,
+} from "./loading-screen/variants";
 export { default as LoadingState } from "./loading-state/loading-state.svelte";
 export type { LoadingStateVariant } from "./loading-state/types";
 export { default as LogoCarousel } from "./logo-carousel/logo-carousel.svelte";

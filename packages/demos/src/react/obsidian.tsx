@@ -1,6 +1,8 @@
 "use client";
 
 import {
+	ArtGallery,
+	type ArtGalleryLens,
 	ClickSpark,
 	type ClickSparkTone,
 	CubeText,
@@ -12,7 +14,7 @@ import {
 	TextReel,
 	type TextReelSize,
 } from "@baby-ui/react";
-import { MARQUEE_TILES, REEL_ITEMS } from "../data/obsidian";
+import { GALLERY_ITEMS, MARQUEE_TILES, REEL_ITEMS } from "../data/obsidian";
 
 type Props = Record<string, unknown>;
 
@@ -51,15 +53,18 @@ export function DraggableMarqueeDemo({ props }: { props: Props }) {
 			pauseOnHover={(props.pauseOnHover as boolean) ?? false}
 		>
 			{MARQUEE_TILES.map((tile) => (
-				<div
-					key={tile.title}
-					className="flex h-32 w-48 flex-col justify-between rounded-2xl border border-border bg-card p-4"
-				>
-					<span className="font-mono text-[11px] text-muted-foreground uppercase">
-						{tile.meta}
-					</span>
-					<span className="font-medium text-foreground text-lg">{tile.title}</span>
-				</div>
+				<figure key={tile.title} className="w-56">
+					<img
+						src={tile.src}
+						alt={tile.title}
+						loading="lazy"
+						className="aspect-[3/2] w-full rounded-2xl border border-border object-cover"
+					/>
+					<figcaption className="mt-2 flex justify-between text-sm">
+						<span className="font-medium text-foreground">{tile.title}</span>
+						<span className="text-muted-foreground">{tile.meta}</span>
+					</figcaption>
+				</figure>
 			))}
 		</DraggableMarquee>
 	);
@@ -78,5 +83,17 @@ export function ClickSparkDemo({ props }: { props: Props }) {
 				durationMs={Number(props.durationMs ?? 400)}
 			/>
 		</div>
+	);
+}
+
+export function ArtGalleryDemo({ props }: { props: Props }) {
+	return (
+		<ArtGallery
+			items={GALLERY_ITEMS}
+			lens={(props.lens as ArtGalleryLens) ?? "barrel"}
+			cellSize={Number(props.cellSize ?? 0.75)}
+			dragZoom={Number(props.dragZoom ?? 1.25)}
+			showHint={(props.showHint as boolean) ?? true}
+		/>
 	);
 }

@@ -1,21 +1,19 @@
 <script lang="ts">
-import { ChatComposer, type ChatTopic } from "@baby-ui/svelte";
+import { ChatComposer, type ChatMessage } from "@baby-ui/svelte";
 
-const TOPICS: ChatTopic[] = [
+let messages = $state<ChatMessage[]>([
+	{ id: "1", role: "user", body: "Compare mint chip to last summer" },
 	{
-		key: "flavors",
-		label: "Flavors",
-		initialPrompt: "Compare mint chip to last summer",
-		messages: [
-			{
-				label: "Sales History",
-				sub: "Flavor Data",
-				time: "4s",
-				body: "Pulled 3 summers of data.",
-			},
-		],
+		id: "2",
+		role: "assistant",
+		author: "Sales History",
+		meta: "for 4s",
+		body: "Up 12% on weekends.",
 	},
-];
+]);
 </script>
 
-<ChatComposer topics={TOPICS} />
+<ChatComposer
+	{messages}
+	onSend={(text) => (messages = [...messages, { id: crypto.randomUUID(), role: "user", body: text }])}
+/>

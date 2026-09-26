@@ -10,13 +10,13 @@ let { data }: PageProps = $props();
 
 <Seo
 	title="Components"
-	description="Every component in the registry, in React and Svelte: {specs.filter((s) => s.category !== 'charts').length} components built from one spec."
+	description="Every component in the registry, in React and Svelte: {specs.length} components built from one spec."
 />
 
 <div class="min-w-0 py-8 xl:col-span-2">
 	<h1 class="font-semibold text-3xl text-foreground tracking-tight">Components</h1>
 	<p class="mt-2 max-w-2xl text-muted-foreground">
-		{specs.filter((s) => s.category !== "charts").length} components, each with a React and a Svelte port built from the same spec.
+		{specs.length} components, charts included, each with a React and a Svelte port built from the same spec.
 	</p>
 
 	{#each data.groups as group (group.category)}

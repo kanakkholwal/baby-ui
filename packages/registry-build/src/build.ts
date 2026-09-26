@@ -11,7 +11,7 @@ import {
 import { cssFor } from "./component-css";
 import { FRAMEWORK, REGISTRY_URL, SITE_URL } from "./config";
 import { rewriteImports } from "./rewrite";
-import { tokensUrl } from "./theme";
+import { bareVars, tokensUrl } from "./theme";
 import { jsPath, toJavaScript } from "./tojs";
 
 /** A bare slug in a spec's `registryDependencies` resolves to that item's own URL,
@@ -68,7 +68,7 @@ export async function buildItem(
 			tokensUrl(framework),
 		],
 		files,
-		cssVars: Object.keys(spec.cssVars).length ? { theme: spec.cssVars } : undefined,
+		cssVars: Object.keys(spec.cssVars).length ? bareVars({ theme: spec.cssVars }) : undefined,
 		css: await cssFor(files.map((f) => f.content)),
 		categories: [spec.category],
 		meta: {

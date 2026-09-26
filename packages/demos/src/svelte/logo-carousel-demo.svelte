@@ -1,31 +1,26 @@
 <script lang="ts">
 import { LogoCarousel } from "@baby-ui/svelte";
 import type { Snippet } from "svelte";
+import { BRANDS } from "../data/media";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
-
-const NAMES = [
-	"Acme",
-	"Nimbus",
-	"Kestrel",
-	"Orbital",
-	"Vantage",
-	"Fathom",
-	"Beacon",
-	"Marrow",
-];
 </script>
 
-{#snippet logo(name: unknown)}
-	<span
-		class="flex h-10 w-28 items-center justify-center rounded-lg border border-border bg-card font-medium text-muted-foreground text-sm"
-	>
-		{String(name)}
+{#snippet logo(item: unknown)}
+	{@const brand = item as (typeof BRANDS)[number]}
+	<span class="flex h-10 w-28 items-center justify-center gap-2 text-muted-foreground">
+		<span
+			role="img"
+			aria-label={brand.name}
+			class="size-6 bg-current"
+			style:mask="url({brand.logo}) center / contain no-repeat"
+		></span>
+		<span class="font-medium text-sm">{brand.name}</span>
 	</span>
 {/snippet}
 
 <LogoCarousel
-	items={NAMES}
+	items={BRANDS}
 	logo={logo as Snippet<[unknown]>}
 	columnCount={Number(props.columnCount ?? 4)}
 	direction={(props.direction as "ltr" | "rtl") ?? "ltr"}

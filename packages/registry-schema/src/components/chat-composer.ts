@@ -1,46 +1,106 @@
 import { defineComponent } from "../index";
 
+const VARIANTS = ["framed", "outline"];
+const SIZES = ["sm", "md"];
+
 export const chatComposer = defineComponent({
 	slug: "chat-composer",
 	name: "Chat Composer",
 	description:
-		"Interactive chat panel with switchable topic tabs, scripted replies, and a composer.",
+		"A controlled chat panel: topic toggles, a scrolling thread and a composer, built from registry parts.",
 	category: "agents",
 	status: "stable",
+	variants: { variant: VARIANTS, size: SIZES },
 	props: [
 		{
-			name: "topics",
-			type: "ChatTopic[]",
+			name: "messages",
+			type: "ChatMessage[]",
 			description:
-				"Every switchable thread; the header tabs are these topics, each with its own starting prompt and scripted replies.",
+				"Every message in the active thread, oldest first. Required: the caller appends replies, the panel never simulates them.",
 			control: { kind: "none" },
 		},
 		{
-			name: "placeholder",
+			name: "topics",
+			type: "ChatTopic[]",
+			description: "Switchable threads shown as header toggles; hidden when empty.",
+			control: { kind: "none" },
+		},
+		{
+			name: "topic",
 			type: "string",
-			description: "Composer input placeholder.",
-			default: "Send a message…",
-			control: { kind: "text" },
+			description:
+				"Active topic key. Controlled with onTopicChange (React also defaultTopic); bindable in Svelte.",
+			control: { kind: "none" },
+		},
+		{
+			name: "value",
+			type: "string",
+			description:
+				"Draft text. Controlled with onValueChange (React also defaultValue); bindable in Svelte.",
+			control: { kind: "none" },
+		},
+		{
+			name: "status",
+			type: '"idle" | "streaming"',
+			description:
+				"`streaming` dims the newest assistant message and holds the send button until the caller settles it.",
+			default: "idle",
+			control: { kind: "none" },
+		},
+		{
+			name: "onSend",
+			type: "(text: string, topic?: string) => void",
+			description:
+				"Fired with the trimmed prompt (Enter, the send button, or a history pick).",
+			control: { kind: "none" },
+		},
+		{
+			name: "onNew",
+			type: "() => void",
+			description: 'Shows the "new conversation" action when provided.',
+			control: { kind: "none" },
+		},
+		{
+			name: "variant",
+			type: VARIANTS.map((v) => `"${v}"`).join(" | "),
+			description:
+				"`framed` sits in Card's inset rim; `outline` is a flat bordered card.",
+			default: "framed",
+			control: { kind: "select", options: VARIANTS },
+		},
+		{
+			name: "size",
+			type: SIZES.map((v) => `"${v}"`).join(" | "),
+			description: "Panel height and message type size.",
+			default: "sm",
+			control: { kind: "select", options: SIZES },
+		},
+		{
+			name: "labels",
+			type: "Partial<ChatComposerLabels>",
+			description: "Every built-in string, including the placeholder and aria labels.",
+			control: { kind: "none" },
 		},
 	],
 	motion: {
 		springs: [],
 		reducedMotion:
-			"Every transition here is opacity/colour-only already; no travel to drop.",
+			"New messages still appear; the fade-up and the resolving dim drop to an instant change.",
 		behaviour: [
-			"The card's height never changes: replies scroll into a fixed conversation region rather than growing the panel.",
-			"Each reply fades up on reveal; the first reply dims slightly while the second is still resolving, then settles at full opacity.",
+			"The panel height is fixed: the thread scrolls to the newest message instead of growing the card.",
+			"New messages fade up; while `status` is streaming the newest assistant message dims, then settles.",
+			"The draft grows up to four lines, then scrolls; Shift+Enter adds a line.",
 		],
 	},
 	a11y: {
 		keyboard: [
-			"Enter in the input sends",
-			"Tab reaches the topic tabs, header actions, and the send button",
+			"Enter sends, Shift+Enter adds a new line",
+			"Arrow keys move between topic toggles; Tab reaches the actions, the prompt and send",
 		],
 		notes: [
-			"The composer's click-to-focus wrapper has no ARIA role of its own; the real input carries `aria-label=\"Chat prompt\"` and is independently focusable, so the wrapper's click is a mouse-only convenience with no keyboard functionality riding on it.",
-			'"New", "Prompt history" and "More actions" each have their own distinct `aria-label`, not a shared generic one.',
-			'Copying the conversation announces its result ("Copied"/"Couldn\'t copy") through a `role="status"` live region.',
+			"Topics are a single-select ToggleGroup, so each carries its checked state.",
+			"The prompt, send, history and more-actions controls each have their own label from `labels`.",
+			'Copying the conversation announces its result through a `role="status"` live region.',
 		],
 	},
 	licenseOrigin: {
@@ -54,20 +114,35 @@ export const chatComposer = defineComponent({
 			entry: "ChatComposer",
 			files: [
 				{ path: "chat-composer/chat-composer.tsx", type: "registry:ui" },
+				{ path: "chat-composer/types.ts", type: "registry:ui" },
+				{ path: "chat-composer/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
-			registryDependencies: ["dropdown-menu"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			registryDependencies: [
+				"button",
+				"card",
+				"dropdown-menu",
+				"textarea",
+				"toggle-group",
+			],
 		},
 		svelte: {
 			entry: "ChatComposer",
 			files: [
 				{ path: "chat-composer/chat-composer.svelte", type: "registry:ui" },
 				{ path: "chat-composer/types.ts", type: "registry:ui" },
+				{ path: "chat-composer/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
-			registryDependencies: ["dropdown-menu"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			registryDependencies: [
+				"button",
+				"card",
+				"dropdown-menu",
+				"textarea",
+				"toggle-group",
+			],
 		},
 	},
 	keywords: ["chat", "composer", "conversation", "agent"],

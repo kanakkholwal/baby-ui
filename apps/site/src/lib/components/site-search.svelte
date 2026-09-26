@@ -54,15 +54,11 @@ function go(href: string) {
 	type="button"
 	onclick={() => (open = true)}
 	aria-label="Search"
-	class="flex size-9 shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-2xl border border-border bg-card/20 text-muted-foreground text-xs transition-colors hover:border-border-strong hover:text-foreground sm:h-9 sm:w-auto sm:justify-start sm:px-3 lg:w-48"
+	aria-keyshortcuts={mac ? "Meta+K" : "Control+K"}
+	title="Search ({mac ? "⌘K" : "Ctrl K"})"
+	class="grid size-9 shrink-0 place-items-center rounded-xl text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground"
 >
-	<IconSearch size={14} stroke={1.6} class="shrink-0" />
-	<span class="hidden lg:inline">Search…</span>
-	<kbd
-		class="ml-auto hidden shrink-0 rounded border border-border px-1 font-mono text-[10px] leading-4 lg:inline"
-	>
-		{mac ? "⌘K" : "Ctrl K"}
-	</kbd>
+	<IconSearch size={17} stroke={1.6} />
 </button>
 
 <CommandDialog bind:open variant="framed">

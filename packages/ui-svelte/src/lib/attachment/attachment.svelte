@@ -1,61 +1,100 @@
 <script lang="ts">
 import { cn } from "../lib/cn";
-import { type AttachmentStatus, attachment } from "./variants";
+import { ATTACHMENT_LABELS, type AttachmentLabels } from "./labels";
+import { ATTACHMENT_ICON, type AttachmentStatus, attachment } from "./variants";
 
 let {
 	name,
 	size,
 	status = "ready",
 	progress = 0,
+	preview,
+	labels,
 	class: classProp,
 	onremove,
+	onretry,
 }: {
 	name: string;
+	/** Human-readable file size, shown once ready. */
 	size?: string;
 	status?: AttachmentStatus;
+	/** Upload percentage, 0 to 100, while uploading. */
 	progress?: number;
+	/** Thumbnail URL, e.g. an object URL for an image being uploaded. */
+	preview?: string;
+	labels?: Partial<AttachmentLabels>;
 	class?: string;
 	onremove?: () => void;
+	/** Shows a retry action on failed uploads. */
+	onretry?: () => void;
 } = $props();
 
+const l = $derived({ ...ATTACHMENT_LABELS, ...labels });
 const clamped = $derived(Math.min(100, Math.max(0, progress)));
-const frame = $derived(attachment({ status }));
+const s = $derived(attachment({ status }));
+const uploading = $derived(status === "uploading");
+const meta = $derived(
+	uploading
+		? `${l.uploading} ${Math.round(clamped)}%`
+		: status === "error"
+			? l.error
+			: (size ?? l.ready),
+);
 </script>
 
-<div class={cn(frame.root(), classProp)}>
-	<span
-		aria-hidden="true"
-		class="grid size-9 shrink-0 place-items-center rounded-lg bg-background text-muted-foreground"
-	>
-		<svg viewBox="0 0 16 16" fill="none" class="size-4">
-			<path d="M9 1.5H4A1.5 1.5 0 0 0 2.5 3v10A1.5 1.5 0 0 0 4 14.5h8a1.5 1.5 0 0 0 1.5-1.5V6L9 1.5zM9 1.5V6h4.5" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" />
-		</svg>
+<div data-slot="attachment" data-status={status} class={cn(s.root(), classProp)}>
+	<span aria-hidden="true" class={s.tile()}>
+		{#if preview && status !== "error"}
+			<img src={preview} alt="" class={s.thumb()} />
+		{:else}
+			<svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class="size-4">
+				<path
+					d={ATTACHMENT_ICON[status === "error" ? "error" : "file"]}
+					stroke="currentColor"
+					stroke-width="1.2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				/>
+			</svg>
+		{/if}
 	</span>
 
-	<div class="min-w-0 flex-1">
-		<p class="truncate font-medium text-foreground text-sm">{name}</p>
-		{#if status === "uploading"}
-			<div class="mt-1.5 h-1 w-full overflow-hidden rounded-full bg-input">
+	<div class={s.body()}>
+		<p class={s.name()}>{name}</p>
+		<p class={s.meta()}>{meta}</p>
+		<div class={s.progress()} inert={!uploading}>
+			<div class="min-h-0 overflow-hidden">
 				<div
-					style:width="{clamped}%"
-					class="h-full rounded-full bg-primary transition-[width] duration-[var(--duration-overlay)] ease-[var(--ease-out)]"
-				></div>
+					role="progressbar"
+					aria-label={name}
+					aria-valuemin={0}
+					aria-valuemax={100}
+					aria-valuenow={Math.round(clamped)}
+					class={s.track()}
+				>
+					<div class={s.fill()} style:transform="scaleX({clamped / 100})"></div>
+				</div>
 			</div>
-			<p class="mt-1 text-muted-foreground text-xs">Uploading {Math.round(clamped)}%</p>
-		{:else}
-			<p class={frame.meta()}>
-				{status === "error" ? "Upload failed" : (size ?? "Ready")}
-			</p>
-		{/if}
+		</div>
+		<!-- Announces state changes only; every percent would be noise. -->
+		<span class="sr-only" aria-live="polite">{uploading ? "" : `${name}: ${l[status]}`}</span>
 	</div>
 
+	{#if status === "error" && onretry}
+		<button type="button" aria-label="{l.retry} {name}" onclick={onretry} class={s.action()}>
+			<svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class="size-3.5">
+				<path
+					d="M13.5 8a5.5 5.5 0 1 1-1.6-3.9M13.5 2.5v3h-3"
+					stroke="currentColor"
+					stroke-width="1.5"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				/>
+			</svg>
+		</button>
+	{/if}
 	{#if onremove}
-		<button
-			type="button"
-			aria-label="Remove {name}"
-			onclick={onremove}
-			class="shrink-0 rounded-md p-1 text-muted-foreground transition-colors hover:text-foreground"
-		>
+		<button type="button" aria-label="{l.remove} {name}" onclick={onremove} class={s.action()}>
 			<svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class="size-3.5">
 				<path d="m4 4 8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
 			</svg>

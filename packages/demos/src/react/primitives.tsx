@@ -88,7 +88,10 @@ export function AvatarDemo({ props }: { props: Props }) {
 				shape={(props.shape as "circle" | "square") ?? "circle"}
 			>
 				<AvatarFallback>{initials}</AvatarFallback>
-				<AvatarImage src={(props.src as string) || undefined} alt={name} />
+				<AvatarImage
+					src={(props.src as string) || "https://github.com/kanakkholwal.png"}
+					alt={name}
+				/>
 			</Avatar>
 			<div className="text-sm">
 				<p className="font-medium text-foreground">{name}</p>

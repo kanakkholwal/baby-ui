@@ -1,11 +1,12 @@
 <script lang="ts">
 import { LogoCarousel } from "@baby-ui/svelte";
 
-const LOGOS = ["Acme", "Nimbus", "Kestrel", "Orbital"];
+let { logos }: { logos: { src: string; alt: string }[] } = $props();
 </script>
 
-{#snippet logo(name: unknown)}
-	<span class="flex h-10 w-24 items-center justify-center text-sm">{String(name)}</span>
+{#snippet logo(item: unknown)}
+	{@const entry = item as { src: string; alt: string }}
+	<img src={entry.src} alt={entry.alt} class="h-8 w-24 object-contain" />
 {/snippet}
 
-<LogoCarousel items={LOGOS} {logo} columnCount={4} />
+<LogoCarousel items={logos} {logo} columnCount={4} />

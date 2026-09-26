@@ -5,6 +5,7 @@ import { alert } from "./alert";
 import { alertDialog } from "./alert-dialog";
 import { animatedGradientText } from "./animated-gradient-text";
 import { areaChart } from "./area-chart";
+import { artGallery } from "./art-gallery";
 import { attachment } from "./attachment";
 import { avatar } from "./avatar";
 import { badge } from "./badge";
@@ -68,6 +69,7 @@ import { jitterText } from "./jitter-text";
 import { jumpingText } from "./jumping-text";
 import { label } from "./label";
 import { liveLineChart } from "./live-line-chart";
+import { loadingScreen } from "./loading-screen";
 import { loadingState } from "./loading-state";
 import { logoCarousel } from "./logo-carousel";
 import { markdown } from "./markdown";
@@ -242,6 +244,7 @@ export const specs: ComponentSpec[] = [
 	textReel,
 	draggableMarquee,
 	clickSpark,
+	artGallery,
 	recommendationCard,
 	chatComposer,
 	thinkingState,
@@ -310,6 +313,7 @@ export const specs: ComponentSpec[] = [
 	marker,
 	wheelPicker,
 	fillButton,
+	loadingScreen,
 	overviewCard,
 	usageCard,
 	scoreCard,

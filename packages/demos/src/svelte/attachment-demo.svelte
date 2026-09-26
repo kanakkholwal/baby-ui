@@ -12,6 +12,12 @@ let { props = {} }: { props?: Record<string, unknown> } = $props();
 		progress={Number(props.progress ?? 40)}
 		onremove={() => {}}
 	/>
-	<Attachment name="screenshot.png" status="uploading" progress={62} />
-	<Attachment name="huge-video.mov" status="error" />
+	<Attachment
+		name="screenshot.png"
+		status="uploading"
+		progress={62}
+		preview="https://picsum.photos/id/1025/96/96"
+		onremove={() => {}}
+	/>
+	<Attachment name="huge-video.mov" status="error" onretry={() => {}} onremove={() => {}} />
 </div>

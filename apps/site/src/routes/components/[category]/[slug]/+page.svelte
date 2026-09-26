@@ -39,6 +39,18 @@ let tab = $state("preview");
 let viewport = $state<"desktop" | "mobile">("desktop");
 let fullscreen = $state(false);
 let reloadKey = $state(0);
+let wide = $state(false);
+
+$effect(() => {
+	const query = matchMedia("(min-width: 1280px)");
+	const sync = () => (wide = query.matches);
+	sync();
+	query.addEventListener("change", sync);
+	return () => query.removeEventListener("change", sync);
+});
+
+// Split pins the stage in the right column; below xl the page stays stacked either way.
+const split = $derived(prefs.layout === "split" && wide);
 
 // Framework and language are global preferences, set from the header settings drawer.
 const framework = $derived(prefs.framework);
@@ -72,11 +84,20 @@ const related = $derived(
 		.filter((s) => s.category === data.spec.category && s.slug !== data.spec.slug)
 		.slice(0, 6),
 );
-const tabs = [
-	{ id: "preview", label: "Preview" },
-	{ id: "usage", label: "Usage" },
-	{ id: "install", label: "Installation" },
-];
+// In split the stage is pinned beside the page, so its tab becomes the controls, or goes.
+const tabs = $derived(
+	[
+		!split
+			? { id: "preview", label: "Preview" }
+			: hasControls && { id: "preview", label: "Controls" },
+		{ id: "usage", label: "Usage" },
+		{ id: "install", label: "Installation" },
+	].filter((t): t is { id: string; label: string } => Boolean(t)),
+);
+
+$effect(() => {
+	if (!tabs.some((t) => t.id === tab)) tab = tabs[0]?.id ?? "usage";
+});
 const hasA11y = $derived(
 	data.spec.a11y.keyboard.length > 0 || data.spec.a11y.notes.length > 0,
 );
@@ -127,7 +148,7 @@ const breadcrumbJsonLd = $derived(
 	{@html `<script type="application/ld+json">${breadcrumbJsonLd}</script>`}
 </svelte:head>
 
-<div class="min-w-0 py-8">
+<div class="@container min-w-0 py-8">
 	<div id="overview" class="scroll-mt-24">
 		<nav aria-label="Breadcrumb" class="flex items-center gap-1.5 text-sm">
 			<a
@@ -140,7 +161,7 @@ const breadcrumbJsonLd = $derived(
 			<span class="font-medium text-foreground">{data.spec.name}</span>
 		</nav>
 
-		<div class="mt-4 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+		<div class="mt-4 flex flex-col gap-4 @xl:flex-row @xl:items-start @xl:justify-between">
 			<div class="flex items-center gap-3">
 				<h1 class="font-semibold text-3xl text-foreground tracking-tight">{data.spec.name}</h1>
 				{#if data.spec.status !== "stable"}
@@ -149,7 +170,7 @@ const breadcrumbJsonLd = $derived(
 					</span>
 				{/if}
 			</div>
-			<div class="flex flex-wrap items-center gap-2 sm:justify-end">
+			<div class="flex flex-wrap items-center gap-2 @xl:justify-end">
 				<PageMenu
 					markdownUrl="{specHref(data.spec)}.md"
 					copyText={data.spec.description}
@@ -189,7 +210,7 @@ const breadcrumbJsonLd = $derived(
 
 		<p class="mt-2 max-w-2xl text-muted-foreground">{data.spec.description}</p>
 
-		<div class="mt-4 xl:hidden">
+		<div class={["mt-4", !split && "xl:hidden"]}>
 			<MobileNavDrawer label="On this page" title="On this page">
 				{#snippet icon()}<IconList size={14} stroke={1.6} />{/snippet}
 				{#snippet children()}
@@ -213,15 +234,17 @@ const breadcrumbJsonLd = $derived(
 				variant="underline"
 				class="min-w-0 flex-1"
 			/>
-			{#if tab === "preview"}
+			{#if tab === "preview" && !split}
 				<PreviewToolbar bind:viewport bind:fullscreen onReload={() => reloadKey++} />
 			{/if}
 		</div>
 		<div id="panel-{tab}" role="tabpanel" aria-labelledby="tab-{tab}" class="mt-4">
 			{#if tab === "preview"}
-				<div class="overflow-x-auto">
-					{@render previewStage()}
-				</div>
+				{#if !split}
+					<div class="overflow-x-auto">
+						{@render previewStage()}
+					</div>
+				{/if}
 				{#if hasControls}
 					<ControlsPanel spec={data.spec} bind:values />
 				{/if}
@@ -311,7 +334,7 @@ const breadcrumbJsonLd = $derived(
 			<p class="mt-1 text-muted-foreground text-sm">
 				More from {CATEGORY_LABEL[data.spec.category]}.
 			</p>
-			<div class="mt-4 grid grid-cols-[minmax(0,1fr)] gap-4 [grid-auto-rows:19rem] sm:grid-cols-2 lg:grid-cols-3">
+			<div class="mt-4 grid grid-cols-[minmax(0,1fr)] gap-4 [grid-auto-rows:19rem] @lg:grid-cols-2 @4xl:grid-cols-3">
 				{#each related as item (item.slug)}
 					<ComponentCard spec={item} />
 				{/each}
@@ -377,10 +400,24 @@ const breadcrumbJsonLd = $derived(
 	</div>
 {/if}
 
-<aside aria-label="On this page" class="hidden min-w-0 xl:block">
-	<div
-		class="scrollbar-hide fixed top-24 right-8 z-10 max-h-[calc(100dvh-8rem)] w-(--right-sidebar-width) overflow-y-auto pb-1"
-	>
-		<PropsRail slug={data.spec.slug} {outline} />
-	</div>
-</aside>
+{#if split}
+	<aside aria-label="Live preview" class="hidden min-w-0 xl:block">
+		<div class="sticky top-14 flex h-[calc(100dvh-3.5rem)] flex-col gap-3 py-8">
+			<div class="flex items-center justify-between gap-3">
+				<p class="font-medium text-foreground text-sm">Preview</p>
+				<PreviewToolbar bind:viewport bind:fullscreen onReload={() => reloadKey++} />
+			</div>
+			<div class="min-h-0 flex-1">
+				{@render previewStage(true)}
+			</div>
+		</div>
+	</aside>
+{:else}
+	<aside aria-label="On this page" class="hidden min-w-0 xl:block">
+		<div
+			class="scrollbar-hide fixed top-24 right-8 z-10 max-h-[calc(100dvh-8rem)] w-(--right-sidebar-width) overflow-y-auto pb-1"
+		>
+			<PropsRail slug={data.spec.slug} {outline} />
+		</div>
+	</aside>
+{/if}

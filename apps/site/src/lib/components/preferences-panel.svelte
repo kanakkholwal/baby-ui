@@ -14,7 +14,9 @@ import IconBrandReact from "@tabler/icons-svelte/icons/brand-react";
 import IconBrandSvelte from "@tabler/icons-svelte/icons/brand-svelte";
 import IconBrandTypescript from "@tabler/icons-svelte/icons/brand-typescript";
 import IconCheck from "@tabler/icons-svelte/icons/check";
-import { type Dialect, prefs, THEMES } from "$lib/preferences.svelte";
+import IconLayoutColumns from "@tabler/icons-svelte/icons/layout-columns";
+import IconLayoutRows from "@tabler/icons-svelte/icons/layout-rows";
+import { type Dialect, type PageLayout, prefs, THEMES } from "$lib/preferences.svelte";
 import SegmentControl from "./segment-control.svelte";
 
 const FRAMEWORKS: { id: Framework; label: string; icon: Icon }[] = [
@@ -26,6 +28,11 @@ const DIALECTS: { id: Dialect; label: string; icon: Icon }[] = [
 	{ id: "ts", label: "TS", icon: IconBrandTypescript },
 	{ id: "js", label: "JS", icon: IconBrandJavascript },
 ];
+
+const LAYOUTS: { id: PageLayout; label: string; icon: Icon }[] = [
+	{ id: "stacked", label: "Stacked", icon: IconLayoutRows },
+	{ id: "split", label: "Split", icon: IconLayoutColumns },
+];
 </script>
 
 <Sheet bind:open={prefs.open}>
@@ -36,7 +43,6 @@ const DIALECTS: { id: Dialect; label: string; icon: Icon }[] = [
 		</SheetHeader>
 
 		<div class="flex flex-col divide-y divide-border">
-
 			<div class="flex flex-col gap-2 px-4 py-3">
 				<span class="text-foreground text-xs">Theme</span>
 				<div class="flex flex-wrap gap-2">
@@ -64,6 +70,18 @@ const DIALECTS: { id: Dialect; label: string; icon: Icon }[] = [
 					size="sm"
 					aria-label="Click sparks"
 					bind:checked={() => prefs.clickSpark, (on) => prefs.set("clickSpark", on)}
+				/>
+			</div>
+
+			<div class="flex items-center justify-between gap-3 px-4 py-2.5">
+				<span class="flex flex-col">
+					<span class="text-foreground text-xs">Page layout</span>
+					<span class="text-[11px] text-muted-foreground">Split needs a wide screen</span>
+				</span>
+				<SegmentControl
+					options={LAYOUTS}
+					current={prefs.layout}
+					onPick={(id) => prefs.set("layout", id as PageLayout)}
 				/>
 			</div>
 

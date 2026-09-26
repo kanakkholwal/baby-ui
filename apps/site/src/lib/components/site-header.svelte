@@ -106,9 +106,9 @@ function active(match: string) {
 			<ThemeToggle
 				theme={mode.current === "dark" ? "dark" : "light"}
 				onThemeChange={pickMode}
-				variant="circle"
-				start="top-right"
-				class="size-9 rounded-2xl border border-border bg-card/20 text-muted-foreground transition-colors hover:border-border-strong hover:text-foreground"
+				variant="rectangle"
+				start="bottom-up"
+				class="size-9 rounded-xl text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground"
 				iconClass="size-4"
 			/>
 
@@ -116,7 +116,7 @@ function active(match: string) {
 				type="button"
 				onclick={() => (prefs.open = true)}
 				aria-label="Settings"
-				class="gear hidden size-9 items-center justify-center rounded-2xl border border-border bg-card/20 text-muted-foreground transition-colors hover:border-border-strong hover:text-foreground sm:flex"
+				class="gear hidden size-9 items-center justify-center rounded-xl text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground sm:flex"
 			>
 				<IconSettings size={17} stroke={1.6} />
 			</button>

@@ -21,7 +21,13 @@ $effect(() => {
 		pm: prefs.pm,
 	});
 });
-onMount(() => void initAnalytics());
+onMount(() => {
+	void initAnalytics();
+	// Fades out the boot screen app.html paints before hydration, then drops it.
+	const root = document.documentElement;
+	root.dataset.ready = "";
+	setTimeout(() => document.getElementById("boot")?.remove(), 400);
+});
 
 // The landing view is sent by initAnalytics; client-side route changes are ours to send.
 const changesPage = (from?: URL, to?: URL) => from?.pathname !== to?.pathname;

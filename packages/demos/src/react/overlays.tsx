@@ -3,6 +3,7 @@
 import {
 	Avatar,
 	AvatarFallback,
+	AvatarImage,
 	Button,
 	Combobox,
 	ComboboxContent,
@@ -272,6 +273,7 @@ export function HoverCardDemo({ props }: { props: Props }) {
 				<div className="flex items-start gap-3">
 					<Avatar size="sm">
 						<AvatarFallback>KK</AvatarFallback>
+						<AvatarImage src="https://github.com/kanakkholwal.png" alt="Kanak Kholwal" />
 					</Avatar>
 					<div>
 						<p className="font-medium text-foreground">Kanak Kholwal</p>

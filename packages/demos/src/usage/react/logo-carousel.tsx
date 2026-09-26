@@ -2,15 +2,16 @@
 
 import { LogoCarousel } from "@baby-ui/react";
 
-const LOGOS = ["Acme", "Nimbus", "Kestrel", "Orbital"];
-
-export function Example() {
+export function Example({ logos }: { logos: { src: string; alt: string }[] }) {
 	return (
 		<LogoCarousel columnCount={4}>
-			{LOGOS.map((name) => (
-				<span key={name} className="flex h-10 w-24 items-center justify-center text-sm">
-					{name}
-				</span>
+			{logos.map((logo) => (
+				<img
+					key={logo.src}
+					src={logo.src}
+					alt={logo.alt}
+					className="h-8 w-24 object-contain"
+				/>
 			))}
 		</LogoCarousel>
 	);

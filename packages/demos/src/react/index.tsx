@@ -73,11 +73,13 @@ import { GaugeChartDemo } from "./gauge-chart";
 import { HeatmapChartDemo } from "./heatmap-chart";
 import { HeroStageDemo } from "./hero-stage";
 import { LiveLineChartDemo } from "./live-line-chart";
+import { LoadingScreenDemo } from "./loading-screen";
 import { LoadingStateDemo } from "./loading-state";
 import { LogoCarouselDemo } from "./logo-carousel";
 import { MarkerDemo } from "./marker";
 import { MegaNavbarDemo } from "./mega-navbar";
 import {
+	ArtGalleryDemo,
 	ClickSparkDemo,
 	CubeTextDemo,
 	DraggableMarqueeDemo,
@@ -234,10 +236,26 @@ const CELLS = [
 		span: "2x1" as const,
 		title: "Registry",
 		body: "shadcn and shadcn-svelte, one spec.",
+		image: "https://picsum.photos/id/1036/800/300",
 	},
-	{ span: "1x1" as const, title: "Tokens", body: "Shared colour and motion." },
-	{ span: "1x1" as const, title: "Agents", body: "llms.txt and specs.json." },
-	{ span: "1x1" as const, title: "Playground", body: "Both renders, side by side." },
+	{
+		span: "1x1" as const,
+		title: "Tokens",
+		body: "Shared colour and motion.",
+		image: "https://picsum.photos/id/1050/400/300",
+	},
+	{
+		span: "1x1" as const,
+		title: "Agents",
+		body: "llms.txt and specs.json.",
+		image: "https://picsum.photos/id/1057/400/300",
+	},
+	{
+		span: "1x1" as const,
+		title: "Playground",
+		body: "Both renders, side by side.",
+		image: "https://picsum.photos/id/1067/400/300",
+	},
 ];
 
 const NAV_LINKS = [
@@ -260,7 +278,14 @@ function BentoGridDemo({ props }: { props: Props }) {
 					span={cell.span}
 					title={cell.title}
 					description={cell.body}
-				/>
+				>
+					<img
+						src={cell.image}
+						alt=""
+						loading="lazy"
+						className="mt-3 size-full rounded-lg object-cover"
+					/>
+				</BentoCell>
 			))}
 		</BentoGrid>
 	);
@@ -347,6 +372,7 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"morphing-modal": MorphingModalDemo,
 	"copy-button": CopyButtonDemo,
 	"fill-button": FillButtonDemo,
+	"loading-screen": LoadingScreenDemo,
 	"code-block": CodeBlockDemo,
 	markdown: MarkdownDemo,
 	"file-diff": FileDiffDemo,
@@ -455,6 +481,7 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"text-reel": TextReelDemo,
 	"draggable-marquee": DraggableMarqueeDemo,
 	"click-spark": ClickSparkDemo,
+	"art-gallery": ArtGalleryDemo,
 	"jitter-text": JitterTextDemo,
 	"jumping-text": JumpingTextDemo,
 	"mask-text": MaskTextDemo,

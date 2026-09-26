@@ -80,7 +80,7 @@ async function copyPage() {
 			<IconChevronDown size={14} stroke={1.6} />
 		</DropdownMenuTrigger>
 		<DropdownMenuContent align="end" collisionPadding={16} class="w-52">
-			<DropdownMenuItem>
+			<DropdownMenuItem class="justify-start">
 				{#snippet child({ props })}
 					<a {...props} href={markdownUrl}>
 						{@render mark(MARKDOWN)}
@@ -89,7 +89,7 @@ async function copyPage() {
 				{/snippet}
 			</DropdownMenuItem>
 			{#each agents as agent (agent.href)}
-				<DropdownMenuItem>
+				<DropdownMenuItem class="justify-start">
 					{#snippet child({ props })}
 						<a {...props} href={agent.href} target="_blank" rel="noreferrer noopener">
 							{@render mark(agent)}

@@ -20,7 +20,6 @@ const PICKS = [
 const RESOURCES = [
 	{ href: "/docs", label: "Docs" },
 	{ href: "/docs/installation", label: "Installation" },
-	{ href: "/docs/changelog", label: "Changelog" },
 	{ href: "/llms.txt", label: "llms.txt" },
 	{ href: "/r/registry.json", label: "registry.json" },
 ];

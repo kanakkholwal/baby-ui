@@ -167,8 +167,19 @@ export function AttachmentDemo({ props }: { props: Props }) {
 				progress={Number(props.progress ?? 40)}
 				onRemove={() => {}}
 			/>
-			<Attachment name="screenshot.png" status="uploading" progress={62} />
-			<Attachment name="huge-video.mov" status="error" />
+			<Attachment
+				name="screenshot.png"
+				status="uploading"
+				progress={62}
+				preview="https://picsum.photos/id/1025/96/96"
+				onRemove={() => {}}
+			/>
+			<Attachment
+				name="huge-video.mov"
+				status="error"
+				onRetry={() => {}}
+				onRemove={() => {}}
+			/>
 		</div>
 	);
 }
