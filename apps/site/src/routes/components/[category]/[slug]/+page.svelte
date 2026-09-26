@@ -22,7 +22,7 @@ import PropsRail from "$lib/components/props-rail.svelte";
 import PropsTable from "$lib/components/props-table.svelte";
 import Seo from "$lib/components/seo.svelte";
 import Tabs from "$lib/components/tabs.svelte";
-import { outlinePanelClass, outlineSidebar } from "$lib/docs-sidebar.svelte";
+import { OUTLINE_PANEL, outlineSidebar } from "$lib/docs-sidebar.svelte";
 import { prefs } from "$lib/preferences.svelte";
 import {
 	adjacentComponents,
@@ -420,7 +420,7 @@ const breadcrumbJsonLd = $derived(
 		<div
 			id="outline-sidebar"
 			inert={!outlineSidebar.current}
-			class={["scrollbar-hide fixed top-24 right-8 z-10 max-h-[calc(100dvh-8rem)] w-(--right-sidebar-width) overflow-y-auto pb-1", ...outlinePanelClass(outlineSidebar.current)]}
+			class={["scrollbar-hide fixed top-24 right-8 z-10 max-h-[calc(100dvh-8rem)] w-(--right-sidebar-width) overflow-y-auto pb-1", OUTLINE_PANEL]}
 		>
 			<PropsRail slug={data.spec.slug} {outline} />
 		</div>

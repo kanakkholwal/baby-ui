@@ -28,14 +28,15 @@ let {
 	size = "md",
 	collapsed = $bindable(false),
 	onCollapsedChange,
-	activeNav = $bindable("chats"),
+	activeNav = $bindable(),
 	onNavigate,
 	activeTitle = $bindable(null),
 	onPick,
+	chatNavKey,
 	newChatLabel = "New chat",
 	newChatIcon,
 	onNewChat,
-	footerLabel = "Upgrade",
+	footerLabel,
 	footerIcon,
 	onFooterClick,
 	fill = false,
@@ -51,13 +52,17 @@ let {
 	size?: SidebarNavSize;
 	collapsed?: boolean;
 	onCollapsedChange?: (collapsed: boolean) => void;
+	/** Bindable; defaults to the first nav item. */
 	activeNav?: string;
 	onNavigate?: (key: string) => void;
 	activeTitle?: string | null;
 	onPick?: (id: string, label: string, prompt?: string) => void;
+	/** Nav key that picking a recent or starting a new chat activates; defaults to the first nav item. */
+	chatNavKey?: string;
 	newChatLabel?: string;
 	newChatIcon?: Snippet;
 	onNewChat?: () => void;
+	/** The footer button renders only when `onFooterClick` is passed. */
 	footerLabel?: string;
 	footerIcon?: Snippet;
 	onFooterClick?: () => void;
@@ -77,9 +82,11 @@ let glideBox = $state<Record<string, { top: number; height: number } | null>>({}
 let glideVisible = $state<Record<string, boolean>>({});
 
 const classes = $derived(sidebarNav({ size }));
-const visibleRecents = $derived(
-	recents.filter((item) => item.label.toLowerCase().includes(query.trim().toLowerCase())),
-);
+const currentNav = $derived(activeNav ?? navItems[0]?.key);
+const chatKey = $derived(chatNavKey ?? navItems[0]?.key);
+const trimmed = $derived(query.trim().toLowerCase());
+const matches = (item: SidebarRecent) => item.label.toLowerCase().includes(trimmed);
+const matchCount = $derived(recents.filter(matches).length);
 
 function setCollapsed(next: boolean) {
 	collapsed = next;
@@ -90,13 +97,14 @@ function setCollapsed(next: boolean) {
 	}
 }
 
-function selectNav(key: string) {
+function selectNav(key: string | undefined) {
+	if (key === undefined) return;
 	activeNav = key;
 	onNavigate?.(key);
 }
 
 function pick(item: SidebarRecent) {
-	selectNav("chats");
+	selectNav(chatKey);
 	activeTitle = item.label;
 	onPick?.(item.id, item.label, item.prompt);
 }
@@ -178,7 +186,7 @@ function onGlideOver(group: string, event: MouseEvent) {
 		</span>
 		<span
 			class={cn(
-				"ml-1.5 min-w-0 flex-1 truncate text-[14px] font-medium transition-[opacity,transform] duration-150",
+				"ml-1.5 min-w-0 flex-1 truncate text-[14px] font-medium transition-[opacity,transform] duration-150 motion-reduce:transition-none",
 				active ? "text-foreground" : "text-muted-foreground",
 				collapsed && "translate-x-2 opacity-0",
 			)}
@@ -188,7 +196,7 @@ function onGlideOver(group: string, event: MouseEvent) {
 		{#if count}
 			<span
 				class={cn(
-					"mr-2 shrink-0 text-[12px] font-medium text-muted-foreground tabular-nums transition-opacity duration-150",
+					"mr-2 shrink-0 text-[12px] font-medium text-muted-foreground tabular-nums transition-opacity duration-150 motion-reduce:transition-none",
 					collapsed && "opacity-0",
 				)}
 			>
@@ -224,15 +232,16 @@ function onGlideOver(group: string, event: MouseEvent) {
 					>
 						{#if logo}
 							{@render logo()}
-						{:else if workspace.image}
-							<Avatar shape="square" class="size-5 rounded-[5px]">
+						{:else}
+							<Avatar aria-hidden="true" shape="square" class="size-5 rounded-[5px] bg-foreground font-semibold text-[10px]">
 								<AvatarImage src={workspace.image} alt="" />
+								<AvatarFallback class="text-background">{workspace.monogram}</AvatarFallback>
 							</Avatar>
 						{/if}
 					</span>
 					<span
 						class={cn(
-							"ml-1.5 min-w-0 flex-1 truncate text-[14px] font-medium text-muted-foreground transition-[opacity,transform] duration-150",
+							"ml-1.5 min-w-0 flex-1 truncate text-[14px] font-medium text-muted-foreground transition-[opacity,transform] duration-150 motion-reduce:transition-none",
 							collapsed && "translate-x-2 opacity-0",
 						)}
 					>
@@ -249,7 +258,7 @@ function onGlideOver(group: string, event: MouseEvent) {
 				</DropdownMenuTrigger>
 				<DropdownMenuContent align="start" class="w-64">
 					<DropdownMenuItem class="h-10 gap-1.5">
-						<Avatar shape="square" class="size-6 rounded-md bg-foreground font-semibold text-[11px]">
+						<Avatar aria-hidden="true" shape="square" class="size-6 rounded-md bg-foreground font-semibold text-[11px]">
 							<AvatarImage src={workspace.image} alt="" />
 							<AvatarFallback class="text-background">{workspace.monogram}</AvatarFallback>
 						</Avatar>
@@ -261,7 +270,7 @@ function onGlideOver(group: string, event: MouseEvent) {
 					{#if workspaceActions.length > 0}
 						<DropdownMenuSeparator />
 						{#each workspaceActions as action (action.label)}
-							<DropdownMenuItem onclick={action.onSelect} class="h-9 gap-1.5">
+							<DropdownMenuItem onclick={action.onSelect} disabled={!action.onSelect} class="h-9 gap-1.5">
 								{#if action.icon}
 									<span class="flex size-5 shrink-0 items-center justify-center text-muted-foreground">
 										{@render action.icon()}
@@ -322,11 +331,11 @@ function onGlideOver(group: string, event: MouseEvent) {
 		{#snippet navRows()}
 			{@render railButton(newChatIcon, newChatLabel, false, undefined, () => {
 				activeTitle = null;
-				selectNav("chats");
+				selectNav(chatKey);
 				onNewChat?.();
 			})}
 			{#each navItems as item (item.key)}
-				{@render railButton(item.icon, item.label, activeNav === item.key, item.count, () =>
+				{@render railButton(item.icon, item.label, currentNav === item.key, item.count, () =>
 					selectNav(item.key),
 				)}
 			{/each}
@@ -346,7 +355,7 @@ function onGlideOver(group: string, event: MouseEvent) {
 						searchOpen ? "pointer-events-none -translate-x-1 opacity-0" : "translate-x-0 opacity-100",
 					)}
 				>
-					<span class="shrink-0 transition-transform duration-150" style:transform={recentsOpen ? "" : "rotate(-90deg)"}>
+					<span class="shrink-0 transition-transform duration-150 motion-reduce:transition-none" style:transform={recentsOpen ? "" : "rotate(-90deg)"}>
 						{@render chevronDownIcon()}
 					</span>
 					<span>{labels.recents}</span>
@@ -404,24 +413,34 @@ function onGlideOver(group: string, event: MouseEvent) {
 			</div>
 
 			{#snippet recentRows()}
-				{#each visibleRecents as item (item.id)}
+				{#each recents as item (item.id)}
 					{@const active = item.label === activeTitle}
-					<button
-						data-row
-						type="button"
-						title={item.label}
-						onclick={() => pick(item)}
-						class={cn(
-							"relative z-10 mx-2 flex h-8 items-center rounded-lg px-2 text-left transition-[background-color,transform] duration-150 active:scale-[0.98]",
-							active && "bg-foreground/[0.06]",
-						)}
+					{@const shown = matches(item)}
+					<div
+						class="grid transition-[grid-template-rows,opacity] duration-200 ease-[var(--ease-out)] motion-reduce:transition-none"
+						style:grid-template-rows={shown ? "1fr" : "0fr"}
+						style:opacity={shown ? 1 : 0}
+						inert={!shown}
 					>
-						<span class={cn("min-w-0 flex-1 truncate text-[14px] font-medium", active ? "text-foreground" : "text-muted-foreground")}>
-							{item.label}
-						</span>
-					</button>
+						<div class="overflow-hidden">
+							<button
+								data-row
+								type="button"
+								title={item.label}
+								onclick={() => pick(item)}
+								class={cn(
+									"relative z-10 mx-2 mb-px flex h-8 items-center rounded-lg px-2 text-left transition-[background-color,transform] duration-150 active:scale-[0.98]",
+									active && "bg-foreground/[0.06]",
+								)}
+							>
+								<span class={cn("min-w-0 flex-1 truncate text-[14px] font-medium", active ? "text-foreground" : "text-muted-foreground")}>
+									{item.label}
+								</span>
+							</button>
+						</div>
+					</div>
 				{/each}
-				{#if query && visibleRecents.length === 0}
+				{#if query && matchCount === 0}
 					<div class="mx-2 px-2 py-2 text-[12.5px] text-muted-foreground">{labels.noResults}</div>
 				{/if}
 			{/snippet}
@@ -434,20 +453,22 @@ function onGlideOver(group: string, event: MouseEvent) {
 			inert={collapsed || !recentsOpen}
 			>
 				<div class="overflow-hidden">
-					{@render glideList("recents", "", recentRows as unknown as Snippet)}
+					{@render glideList("recents", "gap-0", recentRows as unknown as Snippet)}
 				</div>
 			</div>
 		</div>
 
-		<div class={cn("mx-2 mt-3 border-border border-t pt-3 transition-opacity duration-150", collapsed && "opacity-0")} inert={collapsed}>
-			<button
-				type="button"
-				onclick={onFooterClick ?? onNewChat}
-				class="flex h-8 w-full items-center justify-center gap-1.5 rounded-md bg-foreground/[0.06] font-medium text-[12.5px] text-foreground transition-[background-color,transform] duration-150 hover:bg-foreground/[0.1] active:scale-[0.98]"
-			>
-				{#if footerIcon}{@render footerIcon()}{/if}
-				{footerLabel}
-			</button>
-		</div>
+		{#if onFooterClick}
+			<div class={cn("mx-2 mt-3 border-border border-t pt-3 transition-opacity duration-150 motion-reduce:transition-none", collapsed && "opacity-0")} inert={collapsed}>
+				<button
+					type="button"
+					onclick={onFooterClick}
+					class="flex h-8 w-full items-center justify-center gap-1.5 rounded-md bg-foreground/[0.06] font-medium text-[12.5px] text-foreground transition-[background-color,transform] duration-150 hover:bg-foreground/[0.1] active:scale-[0.98]"
+				>
+					{#if footerIcon}{@render footerIcon()}{/if}
+					{footerLabel}
+				</button>
+			</div>
+		{/if}
 	</div>
 </aside>

@@ -2857,31 +2857,45 @@
 	}
 }
 
-/* SplitFlapDisplay: per step the old top half falls, then the new bottom half lands. */
+/* SplitFlapDisplay: the old top half accelerates down, then the new bottom half lands and settles. */
 .split-flap-top {
-	animation: split-flap-top calc(var(--split-flap-ms, 60ms) / 2) ease-in both;
+	animation: split-flap-top calc(var(--split-flap-ms, 60ms) * 0.5) cubic-bezier(0.5, 0, 0.9, 0.5) both;
 }
 
 .split-flap-bottom {
-	animation: split-flap-bottom calc(var(--split-flap-ms, 60ms) / 2) ease-out
-		calc(var(--split-flap-ms, 60ms) / 2) both;
+	animation: split-flap-bottom calc(var(--split-flap-ms, 60ms) * 0.5) linear
+		calc(var(--split-flap-ms, 60ms) * 0.5) both;
 }
 
 @keyframes split-flap-top {
 	from {
 		transform: rotateX(0deg);
+		filter: brightness(1);
 	}
 	to {
 		transform: rotateX(-90deg);
+		filter: brightness(0.6);
 	}
 }
 
 @keyframes split-flap-bottom {
-	from {
+	0% {
 		transform: rotateX(90deg);
+		filter: brightness(0.7);
+		animation-timing-function: cubic-bezier(0.3, 0.5, 0.7, 1);
 	}
-	to {
+	70% {
 		transform: rotateX(0deg);
+		filter: brightness(1);
+		animation-timing-function: ease-out;
+	}
+	85% {
+		transform: rotateX(7deg);
+		animation-timing-function: ease-in;
+	}
+	100% {
+		transform: rotateX(0deg);
+		filter: brightness(1);
 	}
 }
 

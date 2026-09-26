@@ -9,7 +9,10 @@ export const hoverTransition = tv({
 		stage:
 			"relative size-full transform-3d transition-transform duration-(--duration-drawer) ease-(--ease-out) [transform:perspective(1000px)_rotateX(var(--ht-tilt-x,0deg))_rotateY(var(--ht-tilt-y,0deg))_scale(var(--ht-lift,1))] data-[active=true]:duration-(--duration-dropdown) data-[active=true]:[--ht-lift:1.012] motion-reduce:transform-none motion-reduce:transition-none",
 		base: ["relative size-full", MOTION],
-		layer: ["pointer-events-none absolute inset-0 data-[exposed=true]:pointer-events-auto", MOTION],
+		layer: [
+			"pointer-events-none absolute inset-0 data-[exposed=true]:pointer-events-auto",
+			MOTION,
+		],
 		inner: ["size-full", MOTION],
 	},
 	variants: {

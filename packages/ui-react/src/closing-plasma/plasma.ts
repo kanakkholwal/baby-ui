@@ -331,7 +331,7 @@ export function mountClosingPlasma(
 	seen.observe(root);
 	theme.observe(document.documentElement, {
 		attributes: true,
-		attributeFilter: ["class", "style"],
+		attributeFilter: ["class", "style", "data-theme"],
 	});
 	reduced.addEventListener("change", sync);
 	document.addEventListener("visibilitychange", sync);

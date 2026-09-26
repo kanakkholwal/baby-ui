@@ -74,6 +74,7 @@ const RECENTS: SidebarRecent[] = [
 
 export function SidebarNavDemo({ props }: { props: Props }) {
 	const [collapsed, setCollapsed] = useState(props.collapsed === true);
+	const [nav, setNav] = useState("home");
 
 	useEffect(() => setCollapsed(props.collapsed === true), [props.collapsed]);
 
@@ -89,9 +90,13 @@ export function SidebarNavDemo({ props }: { props: Props }) {
 			recents={RECENTS}
 			newChatIcon={<EditIcon />}
 			workspaceActions={[
-				{ label: "Workspace settings" },
-				{ label: "Invite team members" },
+				{ label: "Invite team members", onSelect: () => setNav("invite") },
 			]}
+			activeNav={nav}
+			onNavigate={setNav}
+			chatNavKey="home"
+			footerLabel="Invite users"
+			onFooterClick={() => setNav("invite")}
 			onSignOut={() => {}}
 			size={(props.size as SidebarNavSize) ?? "md"}
 			collapsed={collapsed}

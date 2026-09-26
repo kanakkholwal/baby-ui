@@ -13,50 +13,50 @@ let { groups, children }: { groups: SidebarGroup[]; children: Snippet } = $props
 const nav = siteNav();
 // Split gives a component page's preview half the content area; other pages keep the rail.
 const split = $derived(prefs.layout === "split" && Boolean(page.params.slug));
-const outline = $derived(outlineSidebar.current);
 // Transitions start after mount, so a stored "closed" doesn't animate on load.
 let ready = $state(false);
 $effect(() => {
 	requestAnimationFrame(() => (ready = true));
 });
 
-// FLIP: the column snaps in one layout, then the content slides from where it was. Animating the
-// width itself relaid out every chart and canvas on each frame.
+// Columns and panels key off <html> attributes set from the persisted state while the boot screen
+// still covers the page; toggling an attribute restyles only the grid, not the whole subtree.
 let grid = $state<HTMLElement>();
-let lefts = new Map<Element, number>();
-let was = { docs: docsSidebar.current, outline: outlineSidebar.current };
-$effect.pre(() => {
-	void docsSidebar.current;
-	void outlineSidebar.current;
-	if (!grid) return;
-	lefts = new Map(
-		[...grid.children].slice(1).map((el) => [el, el.getBoundingClientRect().left]),
-	);
+$effect(() => {
+	const left = docsSidebar.current ? "open" : "closed";
+	const root = document.documentElement.dataset;
+	if (root.leftRail === left) return;
+	const main = grid?.children[1];
+	const before = main?.getBoundingClientRect().left;
+	root.leftRail = left;
+	if (!main || before === undefined || !untrack(() => ready) || reduced()) return;
+	// FLIP the content only: a transform on an aside would re-anchor its fixed rail.
+	const dx = before - main.getBoundingClientRect().left;
+	const css = getComputedStyle(main);
+	main.animate([{ translate: `${dx}px 0` }, { translate: "0 0" }], {
+		duration: Number.parseFloat(
+			css.getPropertyValue(left === "open" ? "--duration-drawer" : "--duration-overlay"),
+		),
+		easing: css.getPropertyValue("--ease-drawer").trim() || "ease-out",
+	});
 });
 $effect(() => {
-	const now = { docs: docsSidebar.current, outline: outlineSidebar.current };
-	const opening = (now.docs && !was.docs) || (now.outline && !was.outline);
-	was = now;
-	if (
-		!grid ||
-		!untrack(() => ready) ||
-		matchMedia("(prefers-reduced-motion: reduce)").matches
-	)
+	const open = outlineSidebar.current;
+	const root = document.documentElement.dataset;
+	root.rightRail = open ? "open" : "closed";
+	if (open || !untrack(() => ready) || reduced()) {
+		root.rightCol = root.rightRail;
 		return;
-	const css = getComputedStyle(grid);
-	const duration = Number.parseFloat(
-		css.getPropertyValue(opening ? "--duration-drawer" : "--duration-overlay"),
-	);
-	const easing = css.getPropertyValue("--ease-drawer").trim() || "ease-out";
-	for (const [el, left] of lefts) {
-		const dx = left - el.getBoundingClientRect().left;
-		if (Math.abs(dx) > 0.5)
-			el.animate([{ translate: `${dx}px 0` }, { translate: "0 0" }], {
-				duration,
-				easing,
-			});
 	}
+	// Closing: the rail slides out first, then the column gives its space back.
+	const wait = Number.parseFloat(
+		getComputedStyle(document.documentElement).getPropertyValue("--duration-overlay"),
+	);
+	const timer = setTimeout(() => (root.rightCol = "closed"), wait);
+	return () => clearTimeout(timer);
 });
+
+const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 function active(match: string) {
 	if (match === "/components") return page.url.pathname === "/components";
@@ -70,16 +70,10 @@ function active(match: string) {
 	data-ready={ready || undefined}
 	class={[
 		"grid min-w-0 grid-cols-[minmax(0,1fr)] px-4 [--right-sidebar-width:20rem] md:gap-4 md:px-6 xl:gap-8 xl:px-8",
-		// Literal columns, not an inherited variable: toggling one would restyle the whole page.
-		docsSidebar.current ? "md:grid-cols-[15rem_minmax(0,1fr)]" : "md:grid-cols-[0rem_minmax(0,1fr)]",
-		{
-			"xl:grid-cols-[15rem_minmax(0,1fr)_minmax(0,1fr)]": docsSidebar.current && split,
-			"xl:grid-cols-[0rem_minmax(0,1fr)_minmax(0,1fr)]": !docsSidebar.current && split,
-			"xl:grid-cols-[15rem_minmax(0,1fr)_20rem]": docsSidebar.current && !split && outline,
-			"xl:grid-cols-[0rem_minmax(0,1fr)_20rem]": !docsSidebar.current && !split && outline,
-			"xl:grid-cols-[15rem_minmax(0,1fr)_0rem]": docsSidebar.current && !split && !outline,
-			"xl:grid-cols-[0rem_minmax(0,1fr)_0rem]": !docsSidebar.current && !split && !outline,
-		},
+		"md:grid-cols-[15rem_minmax(0,1fr)] md:[[data-left-rail=closed]_&]:grid-cols-[0rem_minmax(0,1fr)]",
+		split
+			? "xl:grid-cols-[15rem_minmax(0,1fr)_minmax(0,1fr)]! xl:[[data-left-rail=closed]_&]:grid-cols-[0rem_minmax(0,1fr)_minmax(0,1fr)]!"
+			: "xl:grid-cols-[15rem_minmax(0,1fr)_20rem] xl:[[data-left-rail=closed]_&]:grid-cols-[0rem_minmax(0,1fr)_20rem] xl:[[data-right-col=closed]_&]:grid-cols-[15rem_minmax(0,1fr)_0rem] xl:[[data-left-rail=closed][data-right-col=closed]_&]:grid-cols-[0rem_minmax(0,1fr)_0rem]",
 	]}
 >
 	<div class="hidden min-w-0 md:block">
@@ -90,9 +84,7 @@ function active(match: string) {
 			class={[
 				"scrollbar-hide fixed top-14 bottom-0 w-60 overflow-y-auto bg-background py-6 pr-4",
 				"ease-[var(--ease-drawer)] in-data-[ready]:transition-[translate] motion-reduce:transition-none",
-				docsSidebar.current
-					? "translate-x-0 duration-[var(--duration-drawer)]"
-					: "-translate-x-[17rem] duration-[var(--duration-overlay)]",
+				"translate-x-0 duration-[var(--duration-drawer)] [[data-left-rail=closed]_&]:-translate-x-[17rem] [[data-left-rail=closed]_&]:duration-[var(--duration-overlay)]",
 			]}
 		>
 			<SiteSidebar {groups} connector="curve" rungs />

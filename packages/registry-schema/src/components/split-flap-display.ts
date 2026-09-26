@@ -3,6 +3,7 @@ import { defineComponent } from "../index";
 const VARIANTS = ["solid", "card"];
 const SIZES = ["sm", "md", "lg"];
 const INDICATORS = ["none", "success", "primary", "warning", "destructive"];
+const LAYOUTS = ["board", "line"];
 const union = (values: string[]) => values.map((v) => `"${v}"`).join(" | ");
 
 export const splitFlapDisplay = defineComponent({
@@ -19,15 +20,22 @@ export const splitFlapDisplay = defineComponent({
 			type: "string",
 			description: "Board text; a newline starts a new row. Uppercased.",
 			required: true,
-			default: "DEPARTURES",
-			control: { kind: "text" },
+			control: { kind: "none" },
+		},
+		{
+			name: "layout",
+			type: union(LAYOUTS),
+			description:
+				"Demo only: a rotating departures board or one rotating line (the real component takes `value`).",
+			default: "board",
+			control: { kind: "select", options: LAYOUTS },
 		},
 		{
 			name: "columns",
 			type: "number",
 			description: "Cells per row; shorter rows pad with blanks, longer ones are cut.",
-			default: 14,
-			control: { kind: "number", min: 4, max: 20, step: 1 },
+			default: 24,
+			control: { kind: "number", min: 4, max: 32, step: 1 },
 		},
 		{
 			name: "variant",
@@ -39,7 +47,7 @@ export const splitFlapDisplay = defineComponent({
 		{
 			name: "size",
 			type: union(SIZES),
-			description: "Cell size.",
+			description: "Largest glyph size; the board shrinks below it to fit its container.",
 			default: "md",
 			control: { kind: "select", options: SIZES },
 		},
@@ -68,7 +76,7 @@ export const splitFlapDisplay = defineComponent({
 			name: "characters",
 			type: "string",
 			description: "Drum order each cell flips through. Glyphs outside it snap in.",
-			default: " A-Z 0-9 $.,!?:;+-=%&#@/'",
+			default: " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$.,!?:;+-=%&#@/'",
 			control: { kind: "none" },
 		},
 	],
@@ -77,14 +85,18 @@ export const splitFlapDisplay = defineComponent({
 		reducedMotion: "Cells show the new value immediately with no flaps.",
 		behaviour: [
 			"Each cell steps forward through the drum from its current glyph to the target, one flap per step.",
-			"Per step the old top half folds down on rotateX, then the new bottom half lands.",
-			"Cells start staggerMs apart, left to right, so a change rolls across the row.",
+			"Per step the old glyph's top half falls on rotateX(0 to -90deg), then the new glyph's bottom half lands (90 to 0deg) with a small settle.",
+			"Cells that already match do not flap; the rest start staggerMs apart per column and row, so a change rolls across the board.",
+			"Rows and cells added or removed (row count, columns) open and close on grid-template-rows/columns and stay mounted, inert when closed.",
+			"The glyph size fits the container width, capped by size.",
 			"On mount every cell flips up from blank.",
 		],
 	},
 	a11y: {
 		keyboard: [],
-		notes: ["The board is aria-hidden; a visually hidden copy carries the value once."],
+		notes: [
+			"The board is aria-hidden; a visually hidden aria-live polite copy carries the value once.",
+		],
 	},
 	licenseOrigin: {
 		source: "componentry",

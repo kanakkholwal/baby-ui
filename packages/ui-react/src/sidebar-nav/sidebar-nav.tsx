@@ -184,7 +184,7 @@ function RailButton({
 			</span>
 			<span
 				className={cn(
-					"ml-1.5 min-w-0 flex-1 truncate text-[14px] font-medium transition-[opacity,transform] duration-150",
+					"ml-1.5 min-w-0 flex-1 truncate text-[14px] font-medium transition-[opacity,transform] duration-150 motion-reduce:transition-none",
 					active ? "text-foreground" : "text-muted-foreground",
 					collapsed && "translate-x-2 opacity-0",
 				)}
@@ -194,7 +194,7 @@ function RailButton({
 			{count ? (
 				<span
 					className={cn(
-						"mr-2 shrink-0 text-[12px] font-medium text-muted-foreground tabular-nums transition-opacity duration-150",
+						"mr-2 shrink-0 text-[12px] font-medium text-muted-foreground tabular-nums transition-opacity duration-150 motion-reduce:transition-none",
 						collapsed && "opacity-0",
 					)}
 				>
@@ -217,14 +217,18 @@ export interface SidebarNavProps {
 	defaultCollapsed?: boolean;
 	onCollapsedChange?: (collapsed: boolean) => void;
 	activeNav?: string;
+	/** Defaults to the first nav item. */
 	defaultActiveNav?: string;
 	onNavigate?: (key: string) => void;
 	activeTitle?: string | null;
 	defaultActiveTitle?: string | null;
 	onPick?: (id: string, label: string, prompt?: string) => void;
+	/** Nav key that picking a recent or starting a new chat activates; defaults to the first nav item. */
+	chatNavKey?: string;
 	newChatLabel?: string;
 	newChatIcon?: ReactNode;
 	onNewChat?: () => void;
+	/** The footer button renders only when `onFooterClick` is passed. */
 	footerLabel?: string;
 	footerIcon?: ReactNode;
 	onFooterClick?: () => void;
@@ -248,15 +252,16 @@ export function SidebarNav({
 	defaultCollapsed = false,
 	onCollapsedChange,
 	activeNav,
-	defaultActiveNav = "chats",
+	defaultActiveNav,
 	onNavigate,
 	activeTitle,
 	defaultActiveTitle = null,
 	onPick,
+	chatNavKey,
 	newChatLabel = "New chat",
 	newChatIcon,
 	onNewChat,
-	footerLabel = "Upgrade",
+	footerLabel,
 	footerIcon,
 	onFooterClick,
 	fill = false,
@@ -265,7 +270,7 @@ export function SidebarNav({
 }: SidebarNavProps) {
 	const labels = { ...SIDEBAR_NAV_LABELS, ...labelsProp };
 	const [internalCollapsed, setInternalCollapsed] = useState(defaultCollapsed);
-	const [internalNav, setInternalNav] = useState(defaultActiveNav);
+	const [internalNav, setInternalNav] = useState(defaultActiveNav ?? navItems[0]?.key);
 	const [internalTitle, setInternalTitle] = useState(defaultActiveTitle);
 	const [searchOpen, setSearchOpen] = useState(false);
 	const [recentsOpen, setRecentsOpen] = useState(true);
@@ -274,10 +279,11 @@ export function SidebarNav({
 
 	const isCollapsed = collapsed ?? internalCollapsed;
 	const currentNav = activeNav ?? internalNav;
+	const chatKey = chatNavKey ?? navItems[0]?.key;
+	const trimmed = query.trim().toLowerCase();
 	const currentTitle = activeTitle ?? internalTitle;
-	const visibleRecents = recents.filter((item) =>
-		item.label.toLowerCase().includes(query.trim().toLowerCase()),
-	);
+	const matches = (item: SidebarRecent) => item.label.toLowerCase().includes(trimmed);
+	const matchCount = recents.filter(matches).length;
 
 	function setCollapsed(next: boolean) {
 		if (collapsed === undefined) setInternalCollapsed(next);
@@ -288,13 +294,14 @@ export function SidebarNav({
 		}
 	}
 
-	function selectNav(key: string) {
+	function selectNav(key: string | undefined) {
+		if (key === undefined) return;
 		if (activeNav === undefined) setInternalNav(key);
 		onNavigate?.(key);
 	}
 
 	function pick(item: SidebarRecent) {
-		selectNav("chats");
+		selectNav(chatKey);
 		if (activeTitle === undefined) setInternalTitle(item.label);
 		onPick?.(item.id, item.label, item.prompt);
 	}
@@ -324,16 +331,22 @@ export function SidebarNav({
 									isCollapsed && "opacity-0",
 								)}
 							>
-								{logo ??
-									(workspace.image ? (
-										<Avatar shape="square" className="size-5 rounded-[5px]">
-											<AvatarImage src={workspace.image} alt="" />
-										</Avatar>
-									) : null)}
+								{logo ?? (
+									<Avatar
+										aria-hidden
+										shape="square"
+										className="size-5 rounded-[5px] bg-foreground font-semibold text-[10px]"
+									>
+										<AvatarImage src={workspace.image} alt="" />
+										<AvatarFallback className="text-background">
+											{workspace.monogram}
+										</AvatarFallback>
+									</Avatar>
+								)}
 							</span>
 							<span
 								className={cn(
-									"ml-1.5 min-w-0 flex-1 truncate text-[14px] font-medium text-muted-foreground transition-[opacity,transform] duration-150",
+									"ml-1.5 min-w-0 flex-1 truncate text-[14px] font-medium text-muted-foreground transition-[opacity,transform] duration-150 motion-reduce:transition-none",
 									isCollapsed && "translate-x-2 opacity-0",
 								)}
 							>
@@ -351,6 +364,7 @@ export function SidebarNav({
 						<DropdownMenuContent align="start" className="w-64">
 							<DropdownMenuItem className="h-10 gap-1.5">
 								<Avatar
+									aria-hidden
 									shape="square"
 									className="size-6 rounded-md bg-foreground font-semibold text-[11px]"
 								>
@@ -373,6 +387,7 @@ export function SidebarNav({
 										<DropdownMenuItem
 											key={action.label}
 											onClick={action.onSelect}
+											disabled={!action.onSelect}
 											className="h-9 gap-1.5"
 										>
 											{action.icon ? (
@@ -446,7 +461,7 @@ export function SidebarNav({
 						collapsed={isCollapsed}
 						onClick={() => {
 							if (activeTitle === undefined) setInternalTitle(null);
-							selectNav("chats");
+							selectNav(chatKey);
 							onNewChat?.();
 						}}
 					/>
@@ -485,7 +500,7 @@ export function SidebarNav({
 							)}
 						>
 							<span
-								className="shrink-0 transition-transform duration-150"
+								className="shrink-0 transition-transform duration-150 motion-reduce:transition-none"
 								style={{ transform: recentsOpen ? undefined : "rotate(-90deg)" }}
 							>
 								<ChevronDownIcon />
@@ -558,33 +573,45 @@ export function SidebarNav({
 						inert={isCollapsed || !recentsOpen}
 					>
 						<div className="overflow-hidden">
-							<GlideList>
-								{visibleRecents.map((item) => {
+							<GlideList className="gap-0">
+								{recents.map((item) => {
 									const active = item.label === currentTitle;
+									const shown = matches(item);
 									return (
-										<button
+										<div
 											key={item.id}
-											data-row
-											type="button"
-											title={item.label}
-											onClick={() => pick(item)}
-											className={cn(
-												"relative z-10 mx-2 flex h-8 items-center rounded-lg px-2 text-left transition-[background-color,transform] duration-150 active:scale-[0.98]",
-												active && "bg-foreground/[0.06]",
-											)}
+											className="grid transition-[grid-template-rows,opacity] duration-200 ease-[var(--ease-out)] motion-reduce:transition-none"
+											style={{
+												gridTemplateRows: shown ? "1fr" : "0fr",
+												opacity: shown ? 1 : 0,
+											}}
+											inert={!shown}
 										>
-											<span
-												className={cn(
-													"min-w-0 flex-1 truncate text-[14px] font-medium",
-													active ? "text-foreground" : "text-muted-foreground",
-												)}
-											>
-												{item.label}
-											</span>
-										</button>
+											<div className="overflow-hidden">
+												<button
+													data-row
+													type="button"
+													title={item.label}
+													onClick={() => pick(item)}
+													className={cn(
+														"relative z-10 mx-2 mb-px flex h-8 items-center rounded-lg px-2 text-left transition-[background-color,transform] duration-150 active:scale-[0.98]",
+														active && "bg-foreground/[0.06]",
+													)}
+												>
+													<span
+														className={cn(
+															"min-w-0 flex-1 truncate text-[14px] font-medium",
+															active ? "text-foreground" : "text-muted-foreground",
+														)}
+													>
+														{item.label}
+													</span>
+												</button>
+											</div>
+										</div>
 									);
 								})}
-								{query && visibleRecents.length === 0 ? (
+								{query && matchCount === 0 ? (
 									<div className="mx-2 px-2 py-2 text-[12.5px] text-muted-foreground">
 										{labels.noResults}
 									</div>
@@ -594,22 +621,24 @@ export function SidebarNav({
 					</div>
 				</div>
 
-				<div
-					className={cn(
-						"mx-2 mt-3 border-border border-t pt-3 transition-opacity duration-150",
-						isCollapsed && "opacity-0",
-					)}
-					inert={isCollapsed}
-				>
-					<button
-						type="button"
-						onClick={onFooterClick ?? onNewChat}
-						className="flex h-8 w-full items-center justify-center gap-1.5 rounded-md bg-foreground/[0.06] font-medium text-[12.5px] text-foreground transition-[background-color,transform] duration-150 hover:bg-foreground/[0.1] active:scale-[0.98]"
+				{onFooterClick ? (
+					<div
+						className={cn(
+							"mx-2 mt-3 border-border border-t pt-3 transition-opacity duration-150 motion-reduce:transition-none",
+							isCollapsed && "opacity-0",
+						)}
+						inert={isCollapsed}
 					>
-						{footerIcon}
-						{footerLabel}
-					</button>
-				</div>
+						<button
+							type="button"
+							onClick={onFooterClick}
+							className="flex h-8 w-full items-center justify-center gap-1.5 rounded-md bg-foreground/[0.06] font-medium text-[12.5px] text-foreground transition-[background-color,transform] duration-150 hover:bg-foreground/[0.1] active:scale-[0.98]"
+						>
+							{footerIcon}
+							{footerLabel}
+						</button>
+					</div>
+				) : null}
 			</div>
 		</aside>
 	);

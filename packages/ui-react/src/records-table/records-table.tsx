@@ -168,8 +168,17 @@ export function RecordsTable({
 	>({});
 	const [resizingColumn, setResizingColumn] = useState<ColumnKey | null>(null);
 	const [openColumn, setOpenColumn] = useState<ColumnKey | null>(null);
-	const { root, table, cell, headerCell, row: rowClass, pinCell, aiCol, aiCell, aiInner } =
-		recordsTable({ density, aiShown });
+	const {
+		root,
+		table,
+		cell,
+		headerCell,
+		row: rowClass,
+		pinCell,
+		aiCol,
+		aiCell,
+		aiInner,
+	} = recordsTable({ density, aiShown });
 
 	const widths = { ...COLUMN_WIDTHS[density], ...widthOverrides };
 	const visibleColumns = COLUMN_ORDER.filter((key) => key !== "ai" || aiShown);
@@ -194,8 +203,7 @@ export function RecordsTable({
 	const pinClass = (key: ColumnKey, selectedRow = false) =>
 		offsets[key] === undefined ? undefined : pinCell({ selected: selectedRow });
 	/** The AI column stays mounted so show/hide animates its width instead of snapping. */
-	const aiProps = (key: ColumnKey) =>
-		key === "ai" ? { inert: !aiShown } : {};
+	const aiProps = (key: ColumnKey) => (key === "ai" ? { inert: !aiShown } : {});
 
 	function toggleAll() {
 		const ids = visibleRows.map((row) => row.id);
@@ -274,7 +282,9 @@ export function RecordsTable({
 					key === "ai" && aiCell(),
 				)}
 			>
-				<div className={cn("flex min-w-0 items-center gap-1.5", key === "ai" && aiInner())}>
+				<div
+					className={cn("flex min-w-0 items-center gap-1.5", key === "ai" && aiInner())}
+				>
 					{lead}
 					<Popover
 						open={openColumn === key}
@@ -348,7 +358,11 @@ export function RecordsTable({
 					<colgroup>
 						{COLUMN_ORDER.map((key) =>
 							key === "ai" ? (
-								<col key={key} className={aiCol()} style={{ width: aiShown ? widths.ai : 0 }} />
+								<col
+									key={key}
+									className={aiCol()}
+									style={{ width: aiShown ? widths.ai : 0 }}
+								/>
 							) : (
 								<col key={key} style={{ width: widths[key] }} />
 							),

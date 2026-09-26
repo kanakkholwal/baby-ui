@@ -33,7 +33,27 @@ export const sidebarNav = defineComponent({
 			name: "workspaceActions",
 			type: "SidebarWorkspaceAction[]",
 			description:
-				"Extra actions in the workspace switcher's menu, below the workspace itself.",
+				"Extra actions in the workspace switcher's menu; an action without `onSelect` renders disabled.",
+			control: { kind: "none" },
+		},
+		{
+			name: "chatNavKey",
+			type: "string",
+			description:
+				"Nav key activated by picking a recent or starting a new chat. Defaults to the first nav item.",
+			control: { kind: "none" },
+		},
+		{
+			name: "onFooterClick",
+			type: "() => void",
+			description:
+				"Footer action handler; the footer button renders only when this is passed.",
+			control: { kind: "none" },
+		},
+		{
+			name: "footerLabel",
+			type: "string",
+			description: "Footer button text. No default copy.",
 			control: { kind: "none" },
 		},
 		{
@@ -62,15 +82,16 @@ export const sidebarNav = defineComponent({
 	motion: {
 		springs: [],
 		reducedMotion:
-			"The collapse width transition and every label's fade/slide both drop to an instant change.",
+			"The collapse width, every label's fade/slide, the recents chevron and recents filtering all drop to an instant change.",
 		behaviour: [
 			"Collapsing keeps every icon's x-position fixed; only the labels fade and slide out, so nothing reflows.",
+			"Filtering recents collapses non-matching rows through grid-template-rows 1fr to 0fr, kept mounted and inert.",
 			"Hovering a nav or recents row glides a highlight to it, measured from the row's own layout rather than a fixed track.",
 		],
 	},
 	a11y: {
 		keyboard: [
-			"Tab reaches the workspace switcher, every nav row, search and the footer action",
+			"Tab reaches the workspace switcher, every nav row, search and the footer action when present",
 		],
 		notes: [
 			"Collapsed controls are `aria-hidden` or `inert`, and closed recents are `inert`, so nothing invisible stays focusable.",

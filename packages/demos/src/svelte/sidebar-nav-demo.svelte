@@ -23,6 +23,7 @@ const RECENTS: SidebarRecent[] = [
 
 // svelte-ignore state_referenced_locally -- intentional one-time seed, matching React's useState(initialValue)
 let collapsed = $state(false);
+let nav = $state("home");
 
 $effect.pre(() => {
 	collapsed = props.collapsed === true;
@@ -73,7 +74,11 @@ $effect.pre(() => {
 	}))}
 	recents={RECENTS}
 	newChatIcon={editIcon as unknown as Snippet}
-	workspaceActions={[{ label: "Workspace settings" }, { label: "Invite team members" }]}
+	workspaceActions={[{ label: "Invite team members", onSelect: () => (nav = "invite") }]}
+	bind:activeNav={nav}
+	chatNavKey="home"
+	footerLabel="Invite users"
+	onFooterClick={() => (nav = "invite")}
 	onSignOut={() => {}}
 	size={(props.size as SidebarNavSize) ?? "md"}
 	bind:collapsed

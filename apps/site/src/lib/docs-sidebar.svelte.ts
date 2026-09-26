@@ -7,9 +7,5 @@ export const docsSidebar = new PersistedState("baby-ui:docs-sidebar-open", true)
 export const outlineSidebar = new PersistedState("baby-ui:outline-sidebar-open", true);
 
 /** Classes for a right-rail panel: slides past the right gutter while closed, on the drawer curve. */
-export const outlinePanelClass = (open: boolean) => [
-	"ease-[var(--ease-drawer)] in-data-[ready]:transition-[translate] motion-reduce:transition-none",
-	open
-		? "translate-x-0 duration-[var(--duration-drawer)]"
-		: "translate-x-[22rem] duration-[var(--duration-overlay)]",
-];
+export const OUTLINE_PANEL =
+	"ease-[var(--ease-drawer)] in-data-[ready]:transition-[translate] motion-reduce:transition-none translate-x-0 duration-[var(--duration-drawer)] [[data-right-rail=closed]_&]:translate-x-[22rem] [[data-right-rail=closed]_&]:duration-[var(--duration-overlay)]";

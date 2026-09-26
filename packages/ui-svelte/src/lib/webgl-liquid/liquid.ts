@@ -302,7 +302,7 @@ export function mountWebglLiquid(
 	seen.observe(root);
 	theme.observe(document.documentElement, {
 		attributes: true,
-		attributeFilter: ["class", "style"],
+		attributeFilter: ["class", "style", "data-theme"],
 	});
 	reduced.addEventListener("change", sync);
 	document.addEventListener("visibilitychange", sync);
@@ -313,6 +313,8 @@ export function mountWebglLiquid(
 	return {
 		update(next: WebglLiquidOptions) {
 			const recolor = next.colors.join() !== opts.colors.join();
+			// Turning reveal back on replays the sweep; while off, draw() shows the full frame.
+			if (next.reveal && !opts.reveal) revealed = 0;
 			opts = next;
 			if (!ready) return;
 			if (recolor) readColors();

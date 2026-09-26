@@ -1,4 +1,5 @@
 <script lang="ts">
+import { untrack } from "svelte";
 import { cn } from "../lib/cn";
 import { flapColumns, flapRows, SPLIT_FLAP_CHARACTERS } from "./flap";
 import SplitFlapCell from "./split-flap-cell.svelte";
@@ -42,10 +43,9 @@ const rows = $derived(flapRows(value, columns));
 const cols = $derived(flapColumns(columns));
 
 // Rows and cells stay mounted once seen so shrinking can animate closed.
-let initial: { rows: number; cols: number } | undefined;
-let seen = { rows: 0, cols: 0 };
+const initial = untrack(() => ({ rows: rows.length, cols }));
+let seen = initial;
 const extent = $derived.by(() => {
-	initial ??= { rows: rows.length, cols };
 	seen = { rows: Math.max(seen.rows, rows.length), cols: Math.max(seen.cols, cols) };
 	return seen;
 });
@@ -62,7 +62,7 @@ const extent = $derived.by(() => {
 			<div
 				class={styles.rowShell()}
 				data-open={r < rows.length || undefined}
-				data-enter={r >= (initial?.rows ?? 0) || undefined}
+				data-enter={r >= initial.rows || undefined}
 				inert={r >= rows.length}
 			>
 				<div class={styles.rowClip()}>
@@ -73,7 +73,7 @@ const extent = $derived.by(() => {
 								<span
 									class={styles.cellShell()}
 									data-open={c < cols || undefined}
-									data-enter={c >= (initial?.cols ?? 0) || undefined}
+									data-enter={c >= initial.cols || undefined}
 								>
 									<span class={styles.cellClip()}>
 										<SplitFlapCell

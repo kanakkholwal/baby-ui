@@ -142,10 +142,7 @@ export function hoverLayers(
 							leaf("inset(50% 50% 0 0)", -100, 100),
 						]
 					: vx === 0
-						? [
-								leaf("inset(0 50% 0 0)", 0, -dy),
-								leaf("inset(0 0 0 50%)", 0, -dy, false),
-							]
+						? [leaf("inset(0 50% 0 0)", 0, -dy), leaf("inset(0 0 0 50%)", 0, -dy, false)]
 						: [
 								leaf("inset(0 0 50% 0)", -dx, -dy, vy <= 0),
 								leaf("inset(50% 0 0 0)", -dx, -dy, vy > 0),

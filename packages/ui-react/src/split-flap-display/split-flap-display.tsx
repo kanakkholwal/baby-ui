@@ -39,7 +39,15 @@ export interface SplitFlapDisplayProps {
 type Face = { current: string; prev: string; step: number; flipping: boolean };
 type Styles = ReturnType<typeof splitFlap>;
 
-function Half({ className, char, styles }: { className: string; char: string; styles: Styles }) {
+function Half({
+	className,
+	char,
+	styles,
+}: {
+	className: string;
+	char: string;
+	styles: Styles;
+}) {
 	return (
 		<span className={className}>
 			<span className={styles.char()}>{char}</span>
@@ -60,7 +68,12 @@ function FlapCell({
 	characters: string;
 	styles: Styles;
 }) {
-	const [face, setFace] = useState<Face>({ current: " ", prev: " ", step: 0, flipping: false });
+	const [face, setFace] = useState<Face>({
+		current: " ",
+		prev: " ",
+		step: 0,
+		flipping: false,
+	});
 	const shown = useRef(" ");
 
 	useEffect(() => {
@@ -76,11 +89,19 @@ function FlapCell({
 		const tick = () => {
 			const next = steps[i++] ?? char;
 			shown.current = next;
-			setFace((f) => ({ current: next, prev: f.current, step: f.step + 1, flipping: true }));
+			setFace((f) => ({
+				current: next,
+				prev: f.current,
+				step: f.step + 1,
+				flipping: true,
+			}));
 			timer = setTimeout(i < steps.length ? tick : settle, stepMs);
 		};
 		// An interrupted flip still lands before the halves collapse to one glyph.
-		let timer = setTimeout(steps.length > 0 ? tick : settle, steps.length > 0 ? delayMs : stepMs);
+		let timer = setTimeout(
+			steps.length > 0 ? tick : settle,
+			steps.length > 0 ? delayMs : stepMs,
+		);
 		return () => clearTimeout(timer);
 	}, [char, delayMs, stepMs, characters]);
 
@@ -99,7 +120,11 @@ function FlapCell({
 							<Half className={styles.glyphTop()} char={face.prev} styles={styles} />
 						</span>
 						<span className={cn(styles.bottom(), styles.flapBottom())}>
-							<Half className={styles.glyphBottom()} char={face.current} styles={styles} />
+							<Half
+								className={styles.glyphBottom()}
+								char={face.current}
+								styles={styles}
+							/>
 						</span>
 					</span>
 				)}
@@ -127,7 +152,10 @@ export function SplitFlapDisplay({
 	const [initial] = useState({ rows: rows.length, cols });
 	const [extent, setExtent] = useState(initial);
 	if (rows.length > extent.rows || cols > extent.cols) {
-		setExtent({ rows: Math.max(extent.rows, rows.length), cols: Math.max(extent.cols, cols) });
+		setExtent({
+			rows: Math.max(extent.rows, rows.length),
+			cols: Math.max(extent.cols, cols),
+		});
 	}
 
 	return (
@@ -139,7 +167,10 @@ export function SplitFlapDisplay({
 				aria-hidden="true"
 				className={styles.board()}
 				style={
-					{ "--split-flap-ms": `${stepMs}ms`, "--split-flap-columns": cols } as CSSProperties
+					{
+						"--split-flap-ms": `${stepMs}ms`,
+						"--split-flap-columns": cols,
+					} as CSSProperties
 				}
 			>
 				{Array.from({ length: extent.rows }, (_, r) => (

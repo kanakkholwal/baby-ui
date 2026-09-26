@@ -9,7 +9,8 @@ export const recordsTable = tv({
 		headerCell: "px-3",
 		row: "transition-colors",
 		pinCell: "bg-card",
-		aiCol: "transition-[width] duration-300 ease-[var(--ease-out)] motion-reduce:transition-none",
+		aiCol:
+			"transition-[width] duration-300 ease-[var(--ease-out)] motion-reduce:transition-none",
 		aiCell:
 			"transition-[padding,opacity] duration-300 ease-[var(--ease-out)] motion-reduce:transition-none",
 		// minmax(0,1fr) gives the cell a zero min-content, so the col width alone sizes it.

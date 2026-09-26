@@ -52,7 +52,10 @@ $effect(() => {
 		timer = setTimeout(i < steps.length ? tick : settle, stepMs);
 	};
 	// An interrupted flip still lands before the halves collapse to one glyph.
-	let timer = setTimeout(steps.length > 0 ? tick : settle, steps.length > 0 ? delayMs : stepMs);
+	let timer = setTimeout(
+		steps.length > 0 ? tick : settle,
+		steps.length > 0 ? delayMs : stepMs,
+	);
 	return () => clearTimeout(timer);
 });
 </script>

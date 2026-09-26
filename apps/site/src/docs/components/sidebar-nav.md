@@ -19,3 +19,8 @@ keyboard handling all come from that primitive.
 
 `workspace`, `navItems` and `recents` are all required: the workspace name, nav items and
 chat history are the whole point of the sidebar, so there's no built-in sample content.
+
+## Footer only with a handler
+
+The footer button renders only when `onFooterClick` is passed, and ships no default label.
+Picking a recent activates `chatNavKey` (the first nav item by default).
