@@ -1,4 +1,9 @@
-import { CATEGORIES, type Category, type ComponentSpec } from "@baby-ui/registry-schema";
+import {
+	CATEGORIES,
+	type Category,
+	type ComponentSpec,
+	PREVIEW_CATEGORIES,
+} from "@baby-ui/registry-schema";
 import { specs as publicSpecs } from "@baby-ui/registry-schema/components";
 import {
 	type AdjacentComponent,
@@ -21,9 +26,10 @@ const pro = import.meta.glob<ComponentSpec[]>(
 	},
 );
 
-/** Public specs, plus Pro specs when the private submodule is checked out and Pro is shown. */
+/** Public specs, plus Pro specs when the private submodule is checked out and Pro is shown.
+ * Preview categories (emails) ride the same flag until they launch. */
 export const specs: readonly ComponentSpec[] = [
-	...publicSpecs,
+	...publicSpecs.filter((s) => __SHOW_PRO__ || !PREVIEW_CATEGORIES.includes(s.category)),
 	...(__SHOW_PRO__ ? Object.values(pro).flat() : []),
 ];
 

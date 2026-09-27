@@ -40,6 +40,7 @@ import { LogoCarouselDemo } from "./logo-carousel";
 import { MarkerDemo } from "./marker";
 import { MegaNavbarDemo } from "./mega-navbar";
 import { MusicPlayerDemo } from "./music-player";
+import { NotchedShelfDemo } from "./notched-shelf";
 import { ClickSparkDemo, DraggableMarqueeDemo, TextReelDemo } from "./obsidian";
 import { OgNewsletterIssueDemo } from "./og-newsletter-issue";
 import { ComboboxDemo, ContextMenuDemo, DropdownMenuDemo, HoverCardDemo, PopoverDemo, SelectDemo, TooltipDemo } from "./overlays";
@@ -236,6 +237,7 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"morphing-modal": MorphingModalDemo,
 	"music-player": MusicPlayerDemo,
 	navbar: NavbarDemo,
+	"notched-shelf": NotchedShelfDemo,
 	"og-author-profile": OgAuthorProfileDemo,
 	"og-blog-post": OgBlogPostDemo,
 	"og-changelog": OgChangelogDemo,

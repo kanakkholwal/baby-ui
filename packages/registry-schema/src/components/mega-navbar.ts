@@ -64,10 +64,11 @@ export const megaNavbar = defineComponent({
 		},
 		{
 			name: "variant",
-			type: '"solid" | "floating"',
-			description: "Solid spans the page edge to edge; floating is an inset rounded bar.",
+			type: '"solid" | "floating" | "notched"',
+			description:
+				"Solid spans the page edge to edge; floating is an inset rounded bar; notched hangs a shelf from the top edge on desktop, over a plain ruled bar and a top sheet on mobile.",
 			default: "solid",
-			control: { kind: "select", options: ["solid", "floating"] },
+			control: { kind: "select", options: ["solid", "floating", "notched"] },
 		},
 	],
 	motion: {
@@ -79,11 +80,13 @@ export const megaNavbar = defineComponent({
 			"A disclosure pattern, not role=menu: contents are links to pages, so the browser's own link semantics are what a screen reader hears.",
 			"Hovering off a trigger toward the panel schedules a short close delay so the diagonal path to the panel doesn't close it first.",
 			"Navigating (an `active` change) closes the mobile sheet automatically.",
+			"Notched: the mobile bar's hairline rule fades in once the page scrolls, and the sheet drops from the top edge.",
 		],
 	},
 	a11y: {
 		keyboard: [
 			"Escape on a desktop trigger closes its panel and returns focus to the trigger",
+			"ArrowDown on a desktop trigger opens its panel and moves focus to the first link",
 			"Tab reaches every trigger, panel link, mobile accordion header and mobile link",
 		],
 		notes: [
@@ -100,7 +103,7 @@ export const megaNavbar = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "@base-ui/react", "tailwind-variants"],
-			registryDependencies: ["collapsible", "sheet"],
+			registryDependencies: ["collapsible", "sheet", "notched-shelf"],
 		},
 		svelte: {
 			entry: "MegaNavbar",
@@ -111,7 +114,7 @@ export const megaNavbar = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "bits-ui", "tailwind-variants"],
-			registryDependencies: ["collapsible", "sheet"],
+			registryDependencies: ["collapsible", "sheet", "notched-shelf"],
 		},
 	},
 	keywords: ["navbar", "header", "mega menu", "navigation", "mobile menu", "marketing"],

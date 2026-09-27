@@ -3,6 +3,7 @@ import type { Snippet } from "svelte";
 import Collapsible from "../collapsible/collapsible.svelte";
 import CollapsibleContent from "../collapsible/collapsible-content.svelte";
 import { cn } from "../lib/cn";
+import NotchedShelf from "../notched-shelf/notched-shelf.svelte";
 import Sheet from "../sheet/sheet.svelte";
 import SheetContent from "../sheet/sheet-content.svelte";
 import SheetHeader from "../sheet/sheet-header.svelte";
@@ -90,6 +91,8 @@ $effect(() => {
 });
 
 const footerActions = $derived(mobileActions ?? actions);
+// The notched shelf drops its panel a little further, clearing the wing curve.
+const drop = $derived(variant === "notched" ? 10 : 8);
 </script>
 
 <svelte:window
@@ -117,152 +120,198 @@ const footerActions = $derived(mobileActions ?? actions);
 	</svg>
 {/snippet}
 
-<div data-slot="mega-navbar" data-variant={variant} class={cn(styles.root(), className)}>
-	<nav aria-label="Primary" class={styles.nav()}>
-		{#if brand}
-			<span class="flex shrink-0 items-center gap-2.5 py-1 pr-2">{@render brand()}</span>
-		{/if}
+{#snippet brandSlot()}
+	{#if brand}
+		<span class="flex shrink-0 items-center gap-2.5 py-1 pr-2">{@render brand()}</span>
+	{/if}
+{/snippet}
 
-		<div class="hidden flex-1 items-center justify-center @3xl:flex">
-			<div
-				bind:this={row}
-				class="relative hidden items-center gap-1 @3xl:flex"
-				onmouseleave={scheduleClose}
-				onmouseenter={cancelClose}
-				role="presentation"
+{#snippet desktopMenu()}
+	<div
+		bind:this={row}
+		class="relative hidden items-center gap-1 @3xl:flex"
+		onmouseleave={scheduleClose}
+		onmouseenter={cancelClose}
+		role="presentation"
+	>
+		{#each groups as group, i (group.label)}
+			{@const isOpen = openDesktopGroup === i}
+			<button
+				bind:this={triggers[i]}
+				type="button"
+				aria-expanded={isOpen}
+				aria-controls="mega-navbar-panel"
+				onmouseenter={() => {
+					cancelClose();
+					openDesktopGroup = i;
+				}}
+				onfocus={() => {
+					cancelClose();
+					openDesktopGroup = i;
+				}}
+				onclick={() => (openDesktopGroup = openDesktopGroup === i ? -1 : i)}
+				onkeydown={(e) => {
+					if (e.key === "Escape") {
+						openDesktopGroup = -1;
+						triggers[i]?.focus();
+					} else if (e.key === "ArrowDown") {
+						e.preventDefault();
+						cancelClose();
+						openDesktopGroup = i;
+						// The pane is inert until the open state renders.
+						requestAnimationFrame(() => panels[i]?.querySelector("a")?.focus());
+					}
+				}}
+				class={styles.trigger({ current: isOpen || isCurrent(group.href) })}
 			>
-				{#each groups as group, i (group.label)}
-					{@const isOpen = openDesktopGroup === i}
-					<button
-						bind:this={triggers[i]}
-						type="button"
-						aria-expanded={isOpen}
-						aria-controls="mega-navbar-panel"
-						onmouseenter={() => {
-							cancelClose();
-							openDesktopGroup = i;
-						}}
-						onfocus={() => {
-							cancelClose();
-							openDesktopGroup = i;
-						}}
-						onclick={() => (openDesktopGroup = openDesktopGroup === i ? -1 : i)}
-						onkeydown={(e) => {
-							if (e.key === "Escape") {
-								openDesktopGroup = -1;
-								triggers[i]?.focus();
-							}
-						}}
-						class={styles.trigger({ current: isOpen || isCurrent(group.href) })}
-					>
-						{group.label}
-						{@render chevronDown(styles.chevron({ open: isOpen }))}
-					</button>
-				{/each}
+				{group.label}
+				{@render chevronDown(styles.chevron({ open: isOpen }))}
+			</button>
+		{/each}
 
+		<div
+			id="mega-navbar-panel"
+			aria-hidden={openDesktopGroup < 0}
+			onmouseenter={cancelClose}
+			onmouseleave={scheduleClose}
+			onkeydown={(e) => {
+				if (e.key !== "Escape" || openDesktopGroup < 0) return;
+				triggers[openDesktopGroup]?.focus();
+				openDesktopGroup = -1;
+			}}
+			role="presentation"
+			class={styles.panel({ open: openDesktopGroup >= 0 })}
+			style="width:{box.width}px;height:{box.height}px;transform:translate3d({box.left}px, {openDesktopGroup >= 0 ? drop : 2}px, 0) scale({openDesktopGroup >= 0 ? 1 : 0.98});"
+		>
+			{#each groups as group, i (group.label)}
+				{@const isOpen = openDesktopGroup === i}
 				<div
-					id="mega-navbar-panel"
-					aria-hidden={openDesktopGroup < 0}
-					onmouseenter={cancelClose}
-					onmouseleave={scheduleClose}
-					role="presentation"
-					class={styles.panel({ open: openDesktopGroup >= 0 })}
-					style="width:{box.width}px;height:{box.height}px;transform:translate3d({box.left}px, {openDesktopGroup >= 0 ? 8 : 2}px, 0) scale({openDesktopGroup >= 0 ? 1 : 0.98});"
+					bind:this={panels[i]}
+					inert={!isOpen}
+					class={styles.pane({ open: isOpen })}
 				>
-					{#each groups as group, i (group.label)}
-						{@const isOpen = openDesktopGroup === i}
-						<div
-							bind:this={panels[i]}
-							inert={!isOpen}
-							class={styles.pane({ open: isOpen })}
-						>
-							<ul class="grid w-[34rem] grid-cols-2 gap-1 p-2">
-								{#each group.items as item (item.href)}
-									<li>
-										<a
-											href={item.href}
-											target={item.external ? "_blank" : undefined}
-											rel={item.external ? "noreferrer" : undefined}
-											onclick={() => (openDesktopGroup = -1)}
-											aria-current={isCurrent(item.href) ? "page" : undefined}
-											class="flex gap-3 rounded-lg p-3 transition-colors hover:bg-foreground/[0.06] aria-[current=page]:bg-foreground/[0.06] motion-reduce:transition-none"
-										>
-											{#if item.icon}
-												<span class="mt-0.5 shrink-0 text-muted-foreground [&_svg]:size-4">
-													{@render item.icon()}
-												</span>
-											{/if}
-											<span class="min-w-0">
-												<span class="flex items-center gap-1 font-medium text-foreground text-sm">
-													{item.label}
-													{#if item.external}
-														{@render arrowUpRight("size-3 text-muted-foreground")}
-													{/if}
-												</span>
-												{#if item.description}
-													<span class="mt-0.5 block text-muted-foreground text-xs">{item.description}</span>
-												{/if}
-											</span>
-										</a>
-									</li>
-								{/each}
-							</ul>
-							{#if group.footer}
+					<ul class={styles.list()}>
+						{#each group.items as item (item.href)}
+							<li>
 								<a
-									href={group.footer.href}
+									href={item.href}
+									target={item.external ? "_blank" : undefined}
+									rel={item.external ? "noreferrer" : undefined}
 									onclick={() => (openDesktopGroup = -1)}
-									class="group/cta flex items-center justify-between gap-4 border-border border-t bg-foreground/[0.02] px-5 py-3 transition-colors hover:bg-foreground/[0.06] motion-reduce:transition-none"
+									aria-current={isCurrent(item.href) ? "page" : undefined}
+									class="flex gap-3 rounded-lg p-3 transition-colors hover:bg-foreground/[0.06] aria-[current=page]:bg-foreground/[0.06] motion-reduce:transition-none"
 								>
-									<span class="font-medium text-foreground text-sm">{group.footer.label}</span>
-									<span class="flex items-center gap-1.5 text-muted-foreground text-xs">
-										{group.footer.hint}
-										{@render arrowRight("size-3.5 transition-transform group-hover/cta:translate-x-0.5 motion-reduce:transition-none")}
+									{#if item.icon}
+										<span class="mt-0.5 shrink-0 text-muted-foreground [&_svg]:size-4">
+											{@render item.icon()}
+										</span>
+									{/if}
+									<span class="min-w-0">
+										<span class="flex items-center gap-1 font-medium text-foreground text-sm">
+											{item.label}
+											{#if item.external}
+												{@render arrowUpRight("size-3 text-muted-foreground")}
+											{/if}
+										</span>
+										{#if item.description}
+											<span class="mt-0.5 block text-muted-foreground text-xs">{item.description}</span>
+										{/if}
 									</span>
 								</a>
-							{/if}
-						</div>
-					{/each}
-				</div>
-			</div>
-
-			<ul class="flex items-center gap-1">
-				{#each links as link (link.href)}
-					<li>
+							</li>
+						{/each}
+					</ul>
+					{#if group.footer}
 						<a
-							href={link.href}
-							target={link.external ? "_blank" : undefined}
-							rel={link.external ? "noreferrer" : undefined}
-							aria-current={isCurrent(link.href) ? "page" : undefined}
-							class={styles.link({ current: isCurrent(link.href) })}
+							href={group.footer.href}
+							onclick={() => (openDesktopGroup = -1)}
+							class="group/cta flex items-center justify-between gap-4 border-border border-t bg-foreground/[0.02] px-5 py-3 transition-colors hover:bg-foreground/[0.06] motion-reduce:transition-none"
 						>
-							{link.label}
+							<span class="font-medium text-foreground text-sm">{group.footer.label}</span>
+							<span class="flex items-center gap-1.5 text-muted-foreground text-xs">
+								{group.footer.hint}
+								{@render arrowRight("size-3.5 transition-transform group-hover/cta:translate-x-0.5 motion-reduce:transition-none")}
+							</span>
 						</a>
-					</li>
-				{/each}
-			</ul>
+					{/if}
+				</div>
+			{/each}
 		</div>
+	</div>
+{/snippet}
 
-		<div class="ml-auto flex shrink-0 items-center gap-2 @3xl:ml-0">
-			{#if actions}
-				<span class="hidden items-center gap-2 @3xl:flex">{@render actions()}</span>
-			{/if}
-			<button
-				type="button"
-				onclick={() => (mobileOpen = true)}
-				aria-expanded={mobileOpen}
-				aria-label="Open menu"
-				class="grid size-9 cursor-pointer place-items-center rounded-lg text-foreground transition-colors hover:bg-foreground/[0.06] @3xl:hidden motion-reduce:transition-none"
-			>
-				<svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class="size-5">
-					<path d="M2 4.5h12M2 8h12M2 11.5h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
-				</svg>
-			</button>
-		</div>
-	</nav>
+{#snippet linkList()}
+	<ul class="flex items-center gap-1">
+		{#each links as link (link.href)}
+			<li>
+				<a
+					href={link.href}
+					target={link.external ? "_blank" : undefined}
+					rel={link.external ? "noreferrer" : undefined}
+					aria-current={isCurrent(link.href) ? "page" : undefined}
+					class={styles.link({ current: isCurrent(link.href) })}
+				>
+					{link.label}
+				</a>
+			</li>
+		{/each}
+	</ul>
+{/snippet}
+
+{#snippet menuButton()}
+	<button
+		type="button"
+		onclick={() => (mobileOpen = true)}
+		aria-expanded={mobileOpen}
+		aria-label="Open menu"
+		class={styles.menuButton()}
+	>
+		<svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class="size-5">
+			<path d="M2 4.5h12M2 8h12M2 11.5h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+		</svg>
+	</button>
+{/snippet}
+
+<div data-slot="mega-navbar" data-variant={variant} class={cn(styles.root(), className)}>
+	{#if variant === "notched"}
+		<nav aria-label="Primary">
+			<div class={styles.shelf()}>
+				<NotchedShelf size="lg" fill="text-card">
+					<div class={styles.shelfBar()}>
+						{@render brandSlot()}
+						{@render desktopMenu()}
+						{@render linkList()}
+						{#if actions}
+							<span class="flex items-center gap-2">{@render actions()}</span>
+						{/if}
+					</div>
+				</NotchedShelf>
+			</div>
+			<div class={styles.mobileBar()}>
+				{@render brandSlot()}
+				{@render menuButton()}
+			</div>
+			<span aria-hidden="true" class={styles.rule()}></span>
+		</nav>
+	{:else}
+		<nav aria-label="Primary" class={styles.nav()}>
+			{@render brandSlot()}
+			<div class="hidden flex-1 items-center justify-center @3xl:flex">
+				{@render desktopMenu()}
+				{@render linkList()}
+			</div>
+			<div class="ml-auto flex shrink-0 items-center gap-2 @3xl:ml-0">
+				{#if actions}
+					<span class="hidden items-center gap-2 @3xl:flex">{@render actions()}</span>
+				{/if}
+				{@render menuButton()}
+			</div>
+		</nav>
+	{/if}
 </div>
 
 <Sheet bind:open={mobileOpen}>
-	<SheetContent side="right" class="w-full gap-0 p-0 sm:max-w-sm">
+	<SheetContent side={variant === "notched" ? "top" : "right"} class={styles.sheet()}>
 		<SheetHeader class="border-border border-b px-5 py-4">
 			<SheetTitle class="flex items-center gap-2.5">
 				{#if brand}{@render brand()}{/if}

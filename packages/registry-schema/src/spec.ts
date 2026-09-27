@@ -11,6 +11,7 @@ export const CATEGORIES = [
 	"backgrounds",
 	"charts",
 	"og-images",
+	"emails",
 ] as const;
 export const FRAMEWORKS = ["react", "svelte"] as const;
 
@@ -110,13 +111,40 @@ export const ComponentSpecSchema = z.object({
 	/** CSS custom properties the component reads, beyond the shared token layer. */
 	cssVars: z.record(z.string(), z.string()).default({}),
 	keywords: z.array(z.string()).default([]),
+	/** Overrides the category's install folder, e.g. `emails/ui` for the email kit. */
+	installDir: z.string().optional(),
 });
 
 export type ComponentSpec = z.infer<typeof ComponentSpecSchema>;
 export type ComponentSpecInput = z.input<typeof ComponentSpecSchema>;
 
 /** Categories served from their own top-level route (`/charts`, `/og-images`), not /components. */
-export const TOP_LEVEL_CATEGORIES: readonly Category[] = ["charts", "og-images"];
+export const TOP_LEVEL_CATEGORIES: readonly Category[] = [
+	"charts",
+	"og-images",
+	"emails",
+];
+
+/** Folder under the consumer's `components/` that each category installs into. */
+export const INSTALL_DIR: Record<Category, string> = {
+	base: "ui",
+	advanced: "ui",
+	blocks: "blocks",
+	animated: "animated",
+	text: "text",
+	backgrounds: "backgrounds",
+	agents: "agents",
+	charts: "charts",
+	"og-images": "og",
+	emails: "emails",
+};
+
+export function installDir(spec: Pick<ComponentSpec, "category" | "installDir">): string {
+	return spec.installDir ?? INSTALL_DIR[spec.category];
+}
+
+/** Categories still in preview: hidden from the public registry and the production site. */
+export const PREVIEW_CATEGORIES: readonly Category[] = ["emails"];
 
 /** Site path of a component page. */
 export function docsPath(spec: Pick<ComponentSpec, "category" | "slug">): string {

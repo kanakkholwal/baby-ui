@@ -1,9 +1,10 @@
 import { readFile } from "node:fs/promises";
-import { basename, resolve } from "node:path";
+import { basename, posix, resolve } from "node:path";
 import {
 	type ComponentSpec,
 	docsPath,
 	type Framework,
+	installDir,
 	REGISTRY_ITEM_SCHEMA_URL,
 	type RegistryItem,
 	RegistryItemSchema,
@@ -24,25 +25,32 @@ function resolveRegistryDep(framework: Framework, dep: string): string {
 
 const isLib = (type: string) => type === "registry:lib" || type === "registry:hook";
 
-function targetFor(framework: Framework, path: string, type: string): string {
+/** `dir` is the category's install folder; shadcn-svelte resolves targets from the ui alias. */
+function targetFor(
+	framework: Framework,
+	path: string,
+	type: string,
+	dir: string,
+): string {
 	const { uiTarget, libTarget, aliasRelativeTargets } = FRAMEWORK[framework];
-	const file = isLib(type) ? basename(path) : path;
-	if (aliasRelativeTargets) return file;
-	return `${isLib(type) ? libTarget : uiTarget}/${file}`;
+	if (isLib(type))
+		return aliasRelativeTargets ? basename(path) : `${libTarget}/${basename(path)}`;
+	if (aliasRelativeTargets) return dir === "ui" ? path : `../${dir}/${path}`;
+	return `${uiTarget.replace(/\/ui$/, "")}/${dir}/${path}`;
 }
 
 /** Where the file lands in the project, for the Manual install view. */
 export function projectPath(framework: Framework, target: string, type: string): string {
 	const { uiTarget, libTarget, aliasRelativeTargets } = FRAMEWORK[framework];
 	if (!aliasRelativeTargets) return target;
-	return `${isLib(type) ? libTarget : uiTarget}/${target}`;
+	return posix.normalize(`${isLib(type) ? libTarget : uiTarget}/${target}`);
 }
 
 const EXPORT_FROM = /export\s+(?:type\s+)?\{[^}]*\}\s+from\s+"\.\/([^"]+)";/g;
 
 /**
  * An `index.ts` for the item's own folder, re-exporting what the package index exports from
- * it, so `@/components/ui/<slug>` resolves. Only files this item ships are re-exported.
+ * it, so `@/components/<dir>/<slug>` resolves. Only files this item ships are re-exported.
  */
 async function barrelFor(
 	framework: Framework,
@@ -58,7 +66,84 @@ async function barrelFor(
 		if (!file) continue;
 		lines.push(match[0].replace(`"./${folder}/`, '"./').replace(/\s+/g, " "));
 	}
-	return lines.length ? `${lines.join("\n")}\n` : null;
+	if (!lines.length) return null;
+	const compat = [
+		...(framework === "svelte" ? namespaceAliases(lines, folder) : []),
+		...shadcnNames(lines, folder, framework),
+	];
+	return `${[...lines, ...compat].join("\n")}\n`;
+}
+
+const pascal = (slug: string) =>
+	slug.replace(/(^|-)([a-z0-9])/g, (_m, _dash, c: string) => c.toUpperCase());
+
+const exportedNames = (lines: string[]) =>
+	new Set(
+		lines.flatMap((line) =>
+			(line.match(/\{([^}]*)\}/)?.[1] ?? "").split(",").map(
+				(spec) =>
+					spec
+						.trim()
+						.replace(/^type\s+/, "")
+						.split(/\s+as\s+/)
+						.pop() ?? "",
+			),
+		),
+	);
+
+/**
+ * shadcn-svelte barrels also export short part names (`Root`, `Header`, `Provider`), so
+ * `import * as Card from ...` then `<Card.Root>` works as it does with shadcn's own items.
+ */
+function namespaceAliases(lines: string[], folder: string): string[] {
+	const prefix = pascal(folder);
+	const taken = exportedNames(lines);
+	const out: string[] = [];
+	for (const line of lines) {
+		const from = line.match(/from\s+"([^"]+)"/)?.[1];
+		const specs = line.match(/\{([^}]*)\}/)?.[1];
+		if (!from || !specs) continue;
+		for (const spec of specs.split(",")) {
+			const name = spec.trim().match(/^default as (\w+)$/)?.[1];
+			if (!name) continue;
+			const rest = name.slice(prefix.length);
+			const short =
+				name === prefix
+					? "Root"
+					: name.startsWith(prefix) && /^[A-Z]/.test(rest)
+						? rest
+						: null;
+			if (!short || taken.has(short)) continue;
+			taken.add(short);
+			out.push(`export { default as ${short} } from "${from}";`);
+		}
+	}
+	return out;
+}
+
+type ShadcnName = { from: string; name: string; as: string; type?: boolean };
+
+/** shadcn's names for our tv() configs and prop types, which its blocks import by name. */
+const SHADCN_NAMES: Record<string, ShadcnName[]> = {
+	button: [
+		{ from: "./variants", name: "button", as: "buttonVariants" },
+		{ from: "./button.svelte", name: "ButtonProps", as: "ButtonProps", type: true },
+		{ from: "./button.svelte", name: "ButtonProps", as: "Props", type: true },
+	],
+	badge: [{ from: "./variants", name: "badge", as: "badgeVariants" }],
+	toggle: [{ from: "./variants", name: "toggleButton", as: "toggleVariants" }],
+};
+
+function shadcnNames(lines: string[], folder: string, framework: Framework): string[] {
+	const taken = exportedNames(lines);
+	return (SHADCN_NAMES[folder] ?? [])
+		.filter((n) => framework === "svelte" || !n.from.endsWith(".svelte"))
+		.filter((n) => !taken.has(n.as))
+		.map((n) => {
+			taken.add(n.as);
+			const spec = n.name === n.as ? n.name : `${n.name} as ${n.as}`;
+			return `export ${n.type ? "type " : ""}{ ${spec} } from "${n.from}";`;
+		});
 }
 
 /** Runtime packages that ship no types of their own; strict TS projects need these to compile. */
@@ -78,9 +163,11 @@ function typesFor(dependencies: string[]): string[] | undefined {
 	return types.length ? types.sort() : undefined;
 }
 
+/** `dirs` maps every source folder to its install folder, from `folderDirs`. */
 export async function buildItem(
 	spec: ComponentSpec,
 	framework: Framework,
+	dirs: ReadonlyMap<string, string>,
 ): Promise<RegistryItem | null> {
 	const impl = spec.impl[framework];
 	if (!impl) return null;
@@ -96,9 +183,10 @@ export async function buildItem(
 			});
 			return {
 				path: file.path,
-				content: rewriteImports(raw, framework),
+				content: rewriteImports(raw, framework, dirs),
 				type: file.type,
-				target: file.target ?? targetFor(framework, file.path, file.type),
+				target:
+					file.target ?? targetFor(framework, file.path, file.type, installDir(spec)),
 			};
 		}),
 	);
@@ -111,9 +199,9 @@ export async function buildItem(
 	if (own && barrel) {
 		files.push({
 			path: `${own}/index.ts`,
-			content: rewriteImports(barrel, framework),
+			content: rewriteImports(barrel, framework, dirs),
 			type: "registry:ui",
-			target: targetFor(framework, `${own}/index.ts`, "registry:ui"),
+			target: targetFor(framework, `${own}/index.ts`, "registry:ui", installDir(spec)),
 		});
 	}
 

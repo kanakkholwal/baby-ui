@@ -22,6 +22,7 @@
 		"check": "svelte-check --tsconfig ./tsconfig.json"
 	},
 	"dependencies": {
+		"@better-svelte-email/components": "catalog:",
 		"bits-ui": "catalog:",
 		"clsx": "catalog:",
 		"d3-array": "catalog:",
@@ -39,10 +40,10 @@
 		"@sveltejs/vite-plugin-svelte": "catalog:",
 		"@types/d3-array": "catalog:",
 		"@types/d3-geo": "catalog:",
-		"@types/geojson": "catalog:",
 		"@types/d3-sankey": "catalog:",
 		"@types/d3-scale": "catalog:",
 		"@types/d3-shape": "catalog:",
+		"@types/geojson": "catalog:",
 		"svelte-check": "catalog:",
 		"typescript": "catalog:",
 		"vite": "catalog:"

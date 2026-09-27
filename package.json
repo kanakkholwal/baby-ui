@@ -9,6 +9,7 @@
 	},
 	"scripts": {
 		"gen": "node scripts/generate.mjs",
+		"emails": "node scripts/emails/render.mjs",
 		"prepare": "node scripts/generate.mjs",
 		"build": "turbo run build",
 		"check": "node scripts/check-comments.mjs && node scripts/check-import-extensions.mjs && turbo run check",
@@ -26,10 +27,14 @@
 		"test:chart": "node --test scripts/test-chart-core.mjs"
 	},
 	"devDependencies": {
+		"@better-svelte-email/server": "catalog:",
 		"@biomejs/biome": "^2.5.14",
 		"@types/node": "catalog:",
 		"cross-env": "^10.1.0",
+		"esbuild": "^0.28.2",
 		"portless": "^0.15.6",
+		"react": "catalog:",
+		"react-dom": "catalog:",
 		"takumi-js": "^2.14.0",
 		"turbo": "^2.11.1",
 		"typescript": "catalog:"

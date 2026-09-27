@@ -1,11 +1,11 @@
 <script lang="ts">
 import type { Snippet } from "svelte";
 import { cn } from "../lib/cn";
-import { getCommandDialogState, hasCommandDialogState } from "./context";
+import { getCommandDialogState } from "./context";
 
 let { children, class: classProp }: { children?: Snippet; class?: string } = $props();
 
-const dialogState = hasCommandDialogState() ? getCommandDialogState() : undefined;
+const dialogState = getCommandDialogState();
 
 // Rendered by CommandDialog in the rim above the card, so nothing is emitted here.
 $effect(() => {

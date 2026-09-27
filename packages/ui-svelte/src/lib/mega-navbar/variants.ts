@@ -20,14 +20,30 @@ export const megaNavbar = tv({
 			"flex min-h-12 items-center gap-3 rounded-lg px-2 py-2 transition-colors motion-reduce:transition-none",
 		mobileLink:
 			"flex min-h-12 items-center rounded-lg px-2 font-medium text-foreground transition-colors motion-reduce:transition-none",
+		list: "grid w-[34rem] grid-cols-2 gap-1 p-2",
+		sheet: "w-full gap-0 p-0 sm:max-w-sm",
+		menuButton:
+			"grid size-9 cursor-pointer place-items-center rounded-lg text-foreground transition-colors hover:bg-foreground/[0.06] @3xl:hidden motion-reduce:transition-none",
+		shelf: "pointer-events-auto hidden @3xl:block",
+		shelfBar: "flex h-16 items-center gap-4 px-5 @5xl:gap-6 @5xl:px-6",
+		mobileBar:
+			"pointer-events-auto flex h-16 items-center justify-between gap-2 bg-card px-4 transition-[background-color,backdrop-filter] duration-[var(--duration-dropdown)] @3xl:hidden motion-reduce:transition-none",
+		rule: "pointer-events-none block h-px w-full bg-border transition-opacity duration-[var(--duration-dropdown)] @3xl:hidden motion-reduce:transition-none",
 	},
 	variants: {
-		/** Solid spans the page edge to edge; floating is an inset rounded bar. */
+		/** Solid spans the page edge to edge; floating is an inset rounded bar; notched hangs a
+		 * shelf from the top edge on desktop and a plain bar below it. */
 		variant: {
 			solid: { root: "border-b" },
 			floating: {
 				root: "px-3 pt-3",
 				nav: "h-14 rounded-2xl border px-4 transition-[background,border-color,box-shadow,backdrop-filter] duration-[var(--duration-dropdown)] motion-reduce:transition-none",
+			},
+			// The root spans the page but only the shelf and bar catch the pointer.
+			notched: {
+				root: "pointer-events-none",
+				list: "w-[32rem]",
+				sheet: "h-dvh max-h-dvh sm:max-w-none",
 			},
 		},
 		/** Resting, scrolled over content with blur, scrolled without blur. */
@@ -90,6 +106,13 @@ export const megaNavbar = tv({
 			surface: "opaque",
 			class: { nav: "border-border bg-background/85 shadow-lg" },
 		},
+		{ variant: "notched", surface: "clear", class: { rule: "opacity-0" } },
+		{
+			variant: "notched",
+			surface: "blurred",
+			class: { mobileBar: "bg-card/85 backdrop-blur", rule: "opacity-100" },
+		},
+		{ variant: "notched", surface: "opaque", class: { rule: "opacity-100" } },
 	],
 	defaultVariants: {
 		variant: "solid",

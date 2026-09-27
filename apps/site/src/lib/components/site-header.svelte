@@ -17,7 +17,7 @@ import { siteNav } from "$lib/registry";
 const NAV = $derived(siteNav(page.data.categories ?? []));
 
 // The header's own hamburger only opens something on routes that render a SiteSidebar.
-const SIDEBAR_ROUTES = ["/components", "/charts", "/og-images", "/docs"];
+const SIDEBAR_ROUTES = ["/components", "/charts", "/og-images", "/emails", "/docs"];
 const hasSidebar = $derived(
 	SIDEBAR_ROUTES.some((route) => page.url.pathname.startsWith(route)),
 );

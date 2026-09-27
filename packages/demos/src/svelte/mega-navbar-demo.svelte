@@ -113,5 +113,5 @@ const links = [
 			<Button href="https://recast.li/download" size="sm" variant="dark">Download</Button>
 		{/snippet}
 	</MegaNavbar>
-	<div class="h-24 bg-background"></div>
+	<div class="h-72 bg-background"></div>
 </div>

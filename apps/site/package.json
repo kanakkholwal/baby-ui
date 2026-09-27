@@ -38,6 +38,7 @@
 		"@baby-ui/registry-schema": "workspace:*",
 		"@baby-ui/svelte": "workspace:*",
 		"@baby-ui/tokens": "workspace:*",
+		"@better-svelte-email/server": "catalog:",
 		"@docvia/renderer-core": "^0.2.3",
 		"@docvia/renderer-svelte": "^0.2.4",
 		"@docvia/search": "^0.4.1",

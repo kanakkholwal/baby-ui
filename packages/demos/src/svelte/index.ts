@@ -112,6 +112,7 @@ export const demos: Record<string, DemoLoader> = {
 	"morphing-modal": () => import("./morphing-modal-demo.svelte"),
 	"music-player": () => import("./music-player-demo.svelte"),
 	navbar: () => import("./navbar-demo.svelte"),
+	"notched-shelf": () => import("./notched-shelf-demo.svelte"),
 	"og-author-profile": () => import("./auto/og-author-profile-demo.svelte"),
 	"og-blog-post": () => import("./auto/og-blog-post-demo.svelte"),
 	"og-changelog": () => import("./auto/og-changelog-demo.svelte"),

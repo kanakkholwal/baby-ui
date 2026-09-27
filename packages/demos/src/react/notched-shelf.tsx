@@ -1,0 +1,64 @@
+"use client";
+
+import {
+	cn,
+	NotchedShelf,
+	type NotchedShelfAlign,
+	type NotchedShelfLayout,
+	type NotchedShelfShape,
+	type NotchedShelfSize,
+	type NotchedShelfVariant,
+} from "@baby-ui/react";
+
+type Props = Record<string, unknown>;
+
+export function NotchedShelfDemo({ props }: { props: Props }) {
+	const variant = (props.variant as NotchedShelfVariant) ?? "solid";
+	const layout = (props.layout as NotchedShelfLayout) ?? "hanging";
+	const size = (props.size as NotchedShelfSize) ?? "md";
+	return (
+		// Muted matches the card, so it bridges into a page-coloured surface instead.
+		<div
+			className={cn(
+				"flex h-64 w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-border",
+				variant === "muted" ? "bg-background" : "bg-card",
+				layout === "rising" ? "justify-end" : "justify-start",
+			)}
+		>
+			<NotchedShelf
+				variant={variant}
+				layout={layout}
+				size={size}
+				shape={(props.shape as NotchedShelfShape) ?? "smooth"}
+				align={(props.align as NotchedShelfAlign) ?? "center"}
+				edge={props.edge === true}
+			>
+				<a
+					href="#top"
+					className={cn(
+						"inline-flex items-center gap-2 rounded-full font-medium outline-none focus-visible:ring-2 focus-visible:ring-ring",
+						size === "sm"
+							? "px-3 text-xs"
+							: size === "lg"
+								? "px-6 text-sm"
+								: "px-5 text-sm",
+					)}
+				>
+					<svg
+						viewBox="0 0 16 16"
+						fill="none"
+						stroke="currentColor"
+						strokeWidth="1.6"
+						strokeLinecap="round"
+						strokeLinejoin="round"
+						aria-hidden
+						className="size-4"
+					>
+						<path d="M8 13.5V3M3.5 7.5 8 3l4.5 4.5" />
+					</svg>
+					Back to top
+				</a>
+			</NotchedShelf>
+		</div>
+	);
+}

@@ -139,6 +139,10 @@ export { draggableMarquee, type DraggableMarqueeGap, type DraggableMarqueeDirect
 export { type DrawerDirection, type DrawerProps, Drawer, DrawerTrigger, DrawerPortal, DrawerOverlay, DrawerContent, DrawerHeader, DrawerFooter, DrawerTitle, DrawerDescription, DrawerClose } from "./drawer/drawer";
 export { drawerFrame, type DrawerVariant } from "./drawer/variants";
 export { DropdownMenu, DropdownMenuSub, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuShortcut, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuSubTrigger, DropdownMenuSubContent } from "./dropdown-menu/dropdown-menu";
+export { type EmailShellProps, EmailShell, type EmailHeaderProps, EmailHeader, EmailHeading, EmailText, EmailButton, EmailCallout, EmailDivider, type EmailFooterLink, type EmailFooterProps, EmailFooter, EmailCode, type EmailKeyValueRow, EmailKeyValue } from "./email-kit/email-kit";
+export { emailShell, emailHeader, emailHeading, emailText, emailButton, EMAIL_BUTTON_PADDING, emailCallout, emailDivider, emailFooter, emailCode, emailKeyValue, type EmailShellWidth, type EmailShellSurface, type EmailHeaderAlign, type EmailHeadingSize, type EmailTextTone, type EmailTextSize, type EmailButtonVariant, type EmailButtonSize, type EmailCalloutTone, type EmailDividerSpacing, type EmailFooterAlign, type EmailCodeSize, type EmailKeyValueDensity } from "./email-kit/variants";
+export { type EmailWelcomeStep, type EmailWelcomeProps, EmailWelcome } from "./email-welcome/email-welcome";
+export { emailWelcome, type EmailWelcomeDensity } from "./email-welcome/variants";
 export { type EyeTrackingProps, EyeTracking } from "./eye-tracking/eye-tracking";
 export { type EyeTrackingOptions, mountEyeTracking } from "./eye-tracking/eyes";
 export { eyeTracking, type EyeTrackingVariant, type EyeTrackingSize } from "./eye-tracking/variants";
@@ -252,6 +256,8 @@ export { type MusicPlayerLabels, MUSIC_PLAYER_LABELS, formatTime, clampUnit, SEE
 export { musicPlayer, type MusicPlayerLayout } from "./music-player/variants";
 export { type NavbarLink, type NavbarProps, Navbar } from "./navbar/navbar";
 export { navbar, type NavbarVariant } from "./navbar/variants";
+export { type NotchedShelfProps, NotchedShelf } from "./notched-shelf/notched-shelf";
+export { notchedShelf, type NotchedShelfVariant, type NotchedShelfLayout, type NotchedShelfSize, type NotchedShelfShape, type NotchedShelfAlign, NOTCHED_SHELF_PATHS } from "./notched-shelf/variants";
 export { type OgAuthorProfileProps, OgAuthorProfile } from "./og-author-profile/og-author-profile";
 export { ogAuthorProfile, type OgAuthorProfileMode, type OgAuthorProfileTone } from "./og-author-profile/variants";
 export { type OgBlogPostProps, OgBlogPost } from "./og-blog-post/og-blog-post";

@@ -189,7 +189,7 @@ export function MegaNavbarDemo({ props }: { props: Props }) {
 					</Button>
 				}
 			/>
-			<div className="h-24 bg-background" />
+			<div className="h-72 bg-background" />
 		</div>
 	);
 }

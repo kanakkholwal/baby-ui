@@ -1,10 +1,11 @@
-<script lang="ts">
+<script lang="ts" module>
 import type { Snippet } from "svelte";
 import type { HTMLAnchorAttributes, HTMLButtonAttributes } from "svelte/elements";
-import { cn } from "../lib/cn";
-import { type ButtonSize, type ButtonVariant, button, isIconSize } from "./variants";
+import type { ButtonSize, ButtonVariant } from "./variants";
 
-type Props = {
+export type { ButtonSize, ButtonVariant };
+
+export type ButtonProps = {
 	variant?: ButtonVariant;
 	size?: ButtonSize;
 	href?: string;
@@ -12,9 +13,17 @@ type Props = {
 	loadingLabel?: string;
 	children?: Snippet;
 	class?: string;
-} & Partial<HTMLButtonAttributes | HTMLAnchorAttributes>;
+	/** Bindable: the rendered `<button>` or `<a>`. */
+	ref?: HTMLElement | null;
+} & Omit<HTMLButtonAttributes & HTMLAnchorAttributes, "class" | "children">;
+</script>
+
+<script lang="ts">
+import { cn } from "../lib/cn";
+import { button, isIconSize } from "./variants";
 
 let {
+	ref = $bindable(null),
 	variant,
 	size,
 	href,
@@ -24,7 +33,7 @@ let {
 	class: classProp,
 	onclick,
 	...rest
-}: Props = $props();
+}: ButtonProps = $props();
 
 const FACE =
 	"col-start-1 row-start-1 flex items-center justify-center gap-2 transition-[opacity,transform,scale,translate,filter] duration-200 ease-[var(--ease-out)] motion-reduce:transition-none data-[on=false]:pointer-events-none data-[on=false]:translate-y-[3px] data-[on=false]:opacity-0 data-[on=false]:blur-[3px]";
@@ -69,6 +78,7 @@ function activate(event: MouseEvent) {
 
 {#if href !== undefined}
 	<a
+		bind:this={ref}
 		{...rest as HTMLAnchorAttributes}
 		href={loading ? undefined : href}
 		role={loading ? "link" : undefined}
@@ -90,6 +100,7 @@ function activate(event: MouseEvent) {
 	</a>
 {:else}
 	<button
+		bind:this={ref}
 		{...rest as HTMLButtonAttributes}
 		type={(rest as HTMLButtonAttributes).type ?? "button"}
 		class={classes}

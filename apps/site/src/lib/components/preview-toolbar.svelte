@@ -9,6 +9,8 @@ import type { Icon } from "@tabler/icons-svelte";
 import IconArrowsMaximize from "@tabler/icons-svelte/icons/arrows-maximize";
 import IconDeviceDesktop from "@tabler/icons-svelte/icons/device-desktop";
 import IconDeviceMobile from "@tabler/icons-svelte/icons/device-mobile";
+import IconFileText from "@tabler/icons-svelte/icons/file-text";
+import IconMail from "@tabler/icons-svelte/icons/mail";
 import IconPhoto from "@tabler/icons-svelte/icons/photo";
 import IconPlayerPlay from "@tabler/icons-svelte/icons/player-play";
 import IconRefresh from "@tabler/icons-svelte/icons/refresh";
@@ -20,6 +22,8 @@ let {
 	fullscreen = $bindable(),
 	ogView = $bindable(),
 	og = false,
+	emailView = $bindable(),
+	email = false,
 	onReload,
 }: {
 	viewport: "desktop" | "mobile";
@@ -27,6 +31,9 @@ let {
 	ogView?: "live" | "png";
 	/** OG templates add a Live / PNG switch. */
 	og?: boolean;
+	emailView?: "html" | "text";
+	/** Email templates add an HTML / plain-text switch. */
+	email?: boolean;
 	onReload: () => void;
 } = $props();
 
@@ -59,6 +66,26 @@ const groups = $derived<Action[][]>(
 						icon: IconPhoto,
 						pressed: ogView === "png",
 						run: () => (ogView = "png"),
+					},
+				]
+			: [],
+		email
+			? [
+					{
+						id: "email_html",
+						label: "HTML email",
+						hint: "Rendered HTML, following the site theme",
+						icon: IconMail,
+						pressed: emailView === "html",
+						run: () => (emailView = "html"),
+					},
+					{
+						id: "email_text",
+						label: "Plain text",
+						hint: "The plain-text part sent alongside the HTML",
+						icon: IconFileText,
+						pressed: emailView === "text",
+						run: () => (emailView = "text"),
 					},
 				]
 			: [],

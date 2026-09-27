@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 import { Collapsible, CollapsibleContent } from "../collapsible/collapsible";
 import { cn } from "../lib/cn";
+import { NotchedShelf } from "../notched-shelf/notched-shelf";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "../sheet/sheet";
 import { type MegaNavbarVariant, megaNavbar } from "./variants";
 
@@ -91,12 +92,16 @@ function isCurrent(href: string, active?: string) {
 function DesktopMegaMenu({
 	groups,
 	active,
+	variant,
 }: {
 	groups: MegaMenuGroup[];
 	active?: string;
+	variant: MegaNavbarVariant;
 }) {
 	const [open, setOpen] = useState(-1);
-	const styles = megaNavbar();
+	const styles = megaNavbar({ variant });
+	// The notched shelf drops its panel a little further, clearing the wing curve.
+	const drop = variant === "notched" ? 10 : 8;
 	const [box, setBox] = useState({ width: 0, height: 0, left: 0 });
 	const row = useRef<HTMLDivElement>(null);
 	const panels = useRef<(HTMLDivElement | null)[]>([]);
@@ -164,6 +169,14 @@ function DesktopMegaMenu({
 							if (event.key === "Escape") {
 								setOpen(-1);
 								triggers.current[index]?.focus();
+							} else if (event.key === "ArrowDown") {
+								event.preventDefault();
+								cancelClose();
+								setOpen(index);
+								// The pane is inert until the open state renders.
+								requestAnimationFrame(() =>
+									panels.current[index]?.querySelector<HTMLElement>("a")?.focus(),
+								);
 							}
 						}}
 						className={styles.trigger({
@@ -181,11 +194,16 @@ function DesktopMegaMenu({
 				aria-hidden={open < 0}
 				onMouseEnter={cancelClose}
 				onMouseLeave={scheduleClose}
+				onKeyDown={(event) => {
+					if (event.key !== "Escape" || open < 0) return;
+					triggers.current[open]?.focus();
+					setOpen(-1);
+				}}
 				className={styles.panel({ open: open >= 0 })}
 				style={{
 					width: box.width,
 					height: box.height,
-					transform: `translate3d(${box.left}px, ${open >= 0 ? 8 : 2}px, 0) scale(${open >= 0 ? 1 : 0.98})`,
+					transform: `translate3d(${box.left}px, ${open >= 0 ? drop : 2}px, 0) scale(${open >= 0 ? 1 : 0.98})`,
 				}}
 			>
 				{groups.map((group, index) => {
@@ -199,7 +217,7 @@ function DesktopMegaMenu({
 							inert={!isOpen}
 							className={styles.pane({ open: isOpen })}
 						>
-							<ul className="grid w-[34rem] grid-cols-2 gap-1 p-2">
+							<ul className={styles.list()}>
 								{group.items.map((item) => (
 									<li key={item.href}>
 										<a
@@ -263,6 +281,7 @@ function MobileNav({
 	links,
 	actions,
 	active,
+	variant,
 }: {
 	open: boolean;
 	onOpenChange: (open: boolean) => void;
@@ -271,13 +290,17 @@ function MobileNav({
 	links: MegaNavLink[];
 	actions?: ReactNode;
 	active?: string;
+	variant: MegaNavbarVariant;
 }) {
 	const [openGroup, setOpenGroup] = useState(0);
-	const styles = megaNavbar();
+	const styles = megaNavbar({ variant });
 
 	return (
 		<Sheet open={open} onOpenChange={onOpenChange}>
-			<SheetContent side="right" className="w-full gap-0 p-0 sm:max-w-sm">
+			<SheetContent
+				side={variant === "notched" ? "top" : "right"}
+				className={styles.sheet()}
+			>
 				<SheetHeader className="border-border border-b px-5 py-4">
 					<SheetTitle className="flex items-center gap-2.5">{brand}</SheetTitle>
 				</SheetHeader>
@@ -415,49 +438,79 @@ export function MegaNavbar({
 		surface: scrolled ? (blur ? "blurred" : "opaque") : "clear",
 	});
 
+	const brandSlot = brand ? (
+		<span className="flex shrink-0 items-center gap-2.5 py-1 pr-2">{brand}</span>
+	) : null;
+	const linkList = (
+		<ul className="flex items-center gap-1">
+			{links.map((link) => (
+				<li key={link.href}>
+					<a
+						href={link.href}
+						target={link.external ? "_blank" : undefined}
+						rel={link.external ? "noreferrer" : undefined}
+						aria-current={isCurrent(link.href, active) ? "page" : undefined}
+						className={styles.link({ current: isCurrent(link.href, active) })}
+					>
+						{link.label}
+					</a>
+				</li>
+			))}
+		</ul>
+	);
+	const menuButton = (
+		<button
+			type="button"
+			onClick={() => setMobileOpen(true)}
+			aria-expanded={mobileOpen}
+			aria-label="Open menu"
+			className={styles.menuButton()}
+		>
+			<MenuIcon className="size-5" />
+		</button>
+	);
+
 	return (
 		<div
 			data-slot="mega-navbar"
 			data-variant={variant}
 			className={cn(styles.root(), className)}
 		>
-			<nav aria-label="Primary" className={styles.nav()}>
-				{brand ? (
-					<span className="flex shrink-0 items-center gap-2.5 py-1 pr-2">{brand}</span>
-				) : null}
-				<div className="hidden flex-1 items-center justify-center @3xl:flex">
-					<DesktopMegaMenu groups={groups} active={active} />
-					<ul className="flex items-center gap-1">
-						{links.map((link) => (
-							<li key={link.href}>
-								<a
-									href={link.href}
-									target={link.external ? "_blank" : undefined}
-									rel={link.external ? "noreferrer" : undefined}
-									aria-current={isCurrent(link.href, active) ? "page" : undefined}
-									className={styles.link({ current: isCurrent(link.href, active) })}
-								>
-									{link.label}
-								</a>
-							</li>
-						))}
-					</ul>
-				</div>
-				<div className="ml-auto flex shrink-0 items-center gap-2 @3xl:ml-0">
-					{actions ? (
-						<span className="hidden items-center gap-2 @3xl:flex">{actions}</span>
-					) : null}
-					<button
-						type="button"
-						onClick={() => setMobileOpen(true)}
-						aria-expanded={mobileOpen}
-						aria-label="Open menu"
-						className="grid size-9 cursor-pointer place-items-center rounded-lg text-foreground transition-colors hover:bg-foreground/[0.06] @3xl:hidden motion-reduce:transition-none"
-					>
-						<MenuIcon className="size-5" />
-					</button>
-				</div>
-			</nav>
+			{variant === "notched" ? (
+				<nav aria-label="Primary">
+					<div className={styles.shelf()}>
+						<NotchedShelf size="lg" fill="text-card">
+							<div className={styles.shelfBar()}>
+								{brandSlot}
+								<DesktopMegaMenu groups={groups} active={active} variant={variant} />
+								{linkList}
+								{actions ? (
+									<span className="flex items-center gap-2">{actions}</span>
+								) : null}
+							</div>
+						</NotchedShelf>
+					</div>
+					<div className={styles.mobileBar()}>
+						{brandSlot}
+						{menuButton}
+					</div>
+					<span aria-hidden className={styles.rule()} />
+				</nav>
+			) : (
+				<nav aria-label="Primary" className={styles.nav()}>
+					{brandSlot}
+					<div className="hidden flex-1 items-center justify-center @3xl:flex">
+						<DesktopMegaMenu groups={groups} active={active} variant={variant} />
+						{linkList}
+					</div>
+					<div className="ml-auto flex shrink-0 items-center gap-2 @3xl:ml-0">
+						{actions ? (
+							<span className="hidden items-center gap-2 @3xl:flex">{actions}</span>
+						) : null}
+						{menuButton}
+					</div>
+				</nav>
+			)}
 
 			<MobileNav
 				open={mobileOpen}
@@ -467,6 +520,7 @@ export function MegaNavbar({
 				links={links}
 				actions={mobileActions ?? actions}
 				active={active}
+				variant={variant}
 			/>
 		</div>
 	);

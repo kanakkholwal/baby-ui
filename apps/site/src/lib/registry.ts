@@ -15,6 +15,7 @@ export const CATEGORY_LABEL: Record<Category, string> = {
 	backgrounds: "Backgrounds",
 	charts: "Charts",
 	"og-images": "OG Images",
+	emails: "Emails",
 };
 
 export const CATEGORY_BLURB: Record<Category, string> = {
@@ -28,12 +29,14 @@ export const CATEGORY_BLURB: Record<Category, string> = {
 		"Full-bleed animated surfaces and canvas effects that idle when nothing moves.",
 	charts:
 		"SVG charts on d3 with keyboard, screen-reader and reduced-motion support built in.",
+	emails:
+		"Transactional email templates for React Email and Svelte, themed from your tokens, tested for real inboxes.",
 	"og-images":
 		"1200x630 social cards built from your theme tokens, rendered to PNG with takumi.",
 };
 
 /** Client copy of the schema's `TOP_LEVEL_CATEGORIES`: served at `/<category>`, not /components. */
-export const TOP_LEVEL: readonly Category[] = ["charts", "og-images"];
+export const TOP_LEVEL: readonly Category[] = ["charts", "og-images", "emails"];
 
 export function categoryHref(category: Category): string {
 	return TOP_LEVEL.includes(category) ? `/${category}` : `/components/${category}`;

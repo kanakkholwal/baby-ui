@@ -1,8 +1,10 @@
 <script lang="ts">
 import {
+	Button,
 	Footer,
 	type FooterColumn,
 	type FooterLayout,
+	type FooterLink,
 	type FooterSocialLink,
 } from "@baby-ui/svelte";
 import type { Snippet } from "svelte";
@@ -13,10 +15,30 @@ const COLUMNS: FooterColumn[] = [
 	{
 		title: "Product",
 		links: [
-			{ label: "Features", href: "https://recast.li/features", external: true },
-			{ label: "Download", href: "https://recast.li/download", external: true },
-			{ label: "Pricing", href: "https://recast.li/pricing", external: true },
-			{ label: "Sign in", href: "https://recast.li/login", external: true },
+			{
+				label: "Features",
+				href: "https://recast.li/features",
+				external: true,
+				description: "Zoom, cursor smoothing, captions",
+			},
+			{
+				label: "Download",
+				href: "https://recast.li/download",
+				external: true,
+				description: "Windows, macOS and Linux",
+			},
+			{
+				label: "Pricing",
+				href: "https://recast.li/pricing",
+				external: true,
+				description: "Free to record",
+			},
+			{
+				label: "Sign in",
+				href: "https://recast.li/login",
+				external: true,
+				description: "The optional cloud tier",
+			},
 		],
 	},
 	{
@@ -33,18 +55,13 @@ const COLUMNS: FooterColumn[] = [
 		links: [
 			{ label: "Contact", href: "mailto:try-recast@gmail.com" },
 			{ label: "X / Twitter", href: "https://x.com/kanakkholwal", external: true },
-			{
-				label: "Privacy Policy",
-				href: "https://recast.li/privacy-policy",
-				external: true,
-			},
-			{
-				label: "Terms of Service",
-				href: "https://recast.li/terms-of-service",
-				external: true,
-			},
 		],
 	},
+];
+
+const LEGAL: FooterLink[] = [
+	{ label: "Privacy", href: "https://recast.li/privacy-policy", external: true },
+	{ label: "Terms", href: "https://recast.li/terms-of-service", external: true },
 ];
 </script>
 
@@ -75,7 +92,13 @@ const COLUMNS: FooterColumn[] = [
 		{ icon: mailIcon, href: "mailto:try-recast@gmail.com", label: "Email" },
 	] as FooterSocialLink[]}
 	copyright={copyright as unknown as Snippet}
+	legal={LEGAL}
+	topHref="#top"
+	topLabel={(props.topLabel as string) || "Back to top"}
 >
+	{#snippet actions()}
+		<Button href="https://github.com/kanakkholwal/recast/releases" size="sm" variant="ghost">Releases</Button>
+	{/snippet}
 	{#snippet brand()}
 		<span class="grid size-8 place-items-center rounded-lg bg-foreground p-1">
 			<svg width="22" height="22" viewBox="0 0 584 584" fill="none" aria-hidden="true">

@@ -12,6 +12,7 @@ import CodeBlock from "$lib/components/code-block.svelte";
 import ComponentCard from "$lib/components/component-card.svelte";
 import ControlsPanel from "$lib/components/controls-panel.svelte";
 import DemoPreview from "$lib/components/demo-preview.svelte";
+import EmailFrame from "$lib/components/email-frame.svelte";
 import InstallBlock from "$lib/components/install-block.svelte";
 import MobileNavDrawer from "$lib/components/mobile-nav-drawer.svelte";
 import OutlineToggle from "$lib/components/outline-toggle.svelte";
@@ -86,6 +87,41 @@ $effect(() => {
 		clearTimeout(timer);
 	};
 });
+const isEmail = $derived(data.email !== null);
+let emailView = $state<"html" | "text">("html");
+let liveEmail = $state<{ html: string; text: string; bytes: number } | null>(null);
+let emailPending = $state(false);
+// Defaults show the build-time render of the chosen port; changed controls re-render via Svelte.
+$effect(() => {
+	const email = data.email;
+	if (!email) return;
+	const changed = JSON.stringify(values) !== JSON.stringify(defaultProps(data.spec));
+	if (!changed || email.slug !== data.spec.slug) {
+		liveEmail = null;
+		return;
+	}
+	const url = `/api/email/${email.slug}?props=${encodeURIComponent(JSON.stringify(values))}`;
+	const controller = new AbortController();
+	const timer = setTimeout(async () => {
+		emailPending = true;
+		try {
+			const res = await fetch(url, { signal: controller.signal });
+			if (res.ok) liveEmail = await res.json();
+		} catch {
+			// Aborted by the next keystroke, or offline: keep the last render.
+		}
+		if (!controller.signal.aborted) emailPending = false;
+	}, 350);
+	return () => {
+		clearTimeout(timer);
+		controller.abort();
+	};
+});
+const shownEmail = $derived(
+	liveEmail ??
+		(data.email ? data.email[framework === "react" ? "react" : "svelte"] : null),
+);
+
 // Viewport sizes are a fullscreen tool; leaving fullscreen restores the full-width frame.
 $effect(() => {
 	if (!fullscreen) viewport = "desktop";
@@ -445,7 +481,11 @@ const categoryTrail = $derived(
 					slug={data.spec.slug}
 					demo={demos[data.spec.slug]}
 					props={values}
-					content={isOg && ogView === "png" ? (pngView as Snippet) : undefined}
+					content={isEmail
+						? (emailStage as Snippet)
+						: isOg && ogView === "png"
+							? (pngView as Snippet)
+							: undefined}
 					class={fill ? "h-full flex-1" : undefined}
 				/>
 			{/key}
@@ -455,11 +495,26 @@ const categoryTrail = $derived(
 					bind:fullscreen
 					bind:ogView
 					og={isOg}
+					bind:emailView
+					email={isEmail}
 					onReload={() => reloadKey++}
 				/>
 			</div>
 		</div>
 	</div>
+{/snippet}
+
+{#snippet emailStage()}
+	{#if shownEmail}
+		<EmailFrame
+			html={shownEmail.html}
+			text={shownEmail.text}
+			bytes={shownEmail.bytes}
+			view={emailView}
+			pending={emailPending}
+			title="{data.spec.name} preview"
+		/>
+	{/if}
 {/snippet}
 
 {#snippet pngView()}

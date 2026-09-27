@@ -2,12 +2,18 @@ import { existsSync } from "node:fs";
 import { mkdir, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
-import { type ComponentSpec, FRAMEWORKS, type Framework } from "@baby-ui/registry-schema";
+import {
+	type ComponentSpec,
+	FRAMEWORKS,
+	type Framework,
+	PREVIEW_CATEGORIES,
+} from "@baby-ui/registry-schema";
 import { specs } from "@baby-ui/registry-schema/components";
 import { buildItem, projectPath, toJsItem } from "./build";
 import { cssText } from "./component-css";
 import {
 	FRAMEWORK,
+	ISOLATED,
 	OUT_DIR,
 	REGISTRY_NAME,
 	REGISTRY_URL,
@@ -16,6 +22,7 @@ import {
 } from "./config";
 import { buildThirdPartyLicenses } from "./licenses";
 import { buildLlmsTxt } from "./llms";
+import { folderDirs } from "./rewrite";
 import { buildThemeItems } from "./theme";
 import { buildThemeCss } from "./theme-css";
 import { jsPath, toJavaScript } from "./tojs";
@@ -33,6 +40,8 @@ async function writeJson(relative: string, value: unknown) {
 // that slug's source text instead of every component's.
 async function writeGenerated(relative: string, value: unknown) {
 	const path = resolve(REPO_ROOT, "apps/site/src/lib/generated", relative);
+	// An isolated build's localhost origins must never reach the user's running site.
+	if (ISOLATED) return `(skipped, isolated) ${relative}`;
 	await mkdir(dirname(path), { recursive: true });
 	await writeFile(path, `${JSON.stringify(value, null, 2)}\n`, "utf8");
 	return `../src/lib/generated/${relative}`;
@@ -63,8 +72,15 @@ async function main() {
 	}
 
 	const written: string[] = [];
+	const proSpecs = await loadProSpecs();
+	const dirs = folderDirs([...specs, ...proSpecs]);
 	// Pro source ships only from the private registry, so it never lands in public output.
 	const publicSpecs = specs.filter((spec) => spec.tier !== "pro");
+	// Preview categories publish only with the site's Pro flag, which production builds leave off.
+	const showPreview = process.env.VITE_SHOW_PRO === "true";
+	const releasedSpecs = publicSpecs.filter(
+		(spec) => showPreview || !PREVIEW_CATEGORIES.includes(spec.category),
+	);
 
 	for (const framework of FRAMEWORKS as readonly Framework[]) {
 		const { routePrefix } = FRAMEWORK[framework];
@@ -80,8 +96,8 @@ async function main() {
 			jsIndex.push(summary);
 		}
 
-		for (const spec of publicSpecs) {
-			const item = await buildItem(spec, framework);
+		for (const spec of releasedSpecs) {
+			const item = await buildItem(spec, framework, dirs);
 			if (!item) continue;
 			written.push(await writeJson(`${routePrefix}/${spec.slug}.json`, item));
 			const { $schema: _, files: __, ...summary } = item;
@@ -116,7 +132,11 @@ async function main() {
 	}
 
 	written.push(
-		await writeJson("r/specs.json", { site: SITE_URL, registry: REGISTRY_URL, specs }),
+		await writeJson("r/specs.json", {
+			site: SITE_URL,
+			registry: REGISTRY_URL,
+			specs: releasedSpecs,
+		}),
 	);
 
 	// TS and its JS counterpart per file, generated here so prettier and babel never
@@ -125,7 +145,7 @@ async function main() {
 		const perFramework: Record<string, unknown[]> = {};
 		const perFrameworkCss: Record<string, string> = {};
 		for (const framework of FRAMEWORKS as readonly Framework[]) {
-			const item = await buildItem(spec, framework);
+			const item = await buildItem(spec, framework, dirs);
 			if (!item) continue;
 			if (item.css)
 				perFrameworkCss[framework] = cssText(item.css as Parameters<typeof cssText>[0]);
@@ -146,43 +166,47 @@ async function main() {
 		written.push(await writeGenerated(`css/${spec.slug}.json`, perFrameworkCss));
 	}
 
-	for (const spec of [...specs, ...(await loadProSpecs())]) {
+	for (const spec of [...specs, ...proSpecs]) {
 		const perFramework: Record<string, unknown> = {};
 		for (const framework of FRAMEWORKS as readonly Framework[]) {
-			const snippet = await buildUsage(spec, framework);
+			const snippet = await buildUsage(spec, framework, [...specs, ...proSpecs]);
 			if (snippet) perFramework[framework] = snippet;
 		}
 		written.push(await writeGenerated(`usage/${spec.slug}.json`, perFramework));
 	}
 
-	const themeCssPath = resolve(REPO_ROOT, "apps/site/src/lib/generated/theme-css.json");
-	await writeFile(
-		themeCssPath,
-		`${JSON.stringify({ css: await buildThemeCss() })}
+	if (!ISOLATED) {
+		const themeCssPath = resolve(REPO_ROOT, "apps/site/src/lib/generated/theme-css.json");
+		await writeFile(
+			themeCssPath,
+			`${JSON.stringify({ css: await buildThemeCss() })}
 `,
-		"utf8",
-	);
-	written.push("../src/lib/generated/theme-css.json");
+			"utf8",
+		);
+		written.push("../src/lib/generated/theme-css.json");
 
-	const originsPath = resolve(REPO_ROOT, "apps/site/src/lib/generated/origins.json");
-	await mkdir(dirname(originsPath), { recursive: true });
-	await writeFile(
-		originsPath,
-		`${JSON.stringify({ site: SITE_URL, registry: REGISTRY_URL }, null, 2)}
+		const originsPath = resolve(REPO_ROOT, "apps/site/src/lib/generated/origins.json");
+		await mkdir(dirname(originsPath), { recursive: true });
+		await writeFile(
+			originsPath,
+			`${JSON.stringify({ site: SITE_URL, registry: REGISTRY_URL }, null, 2)}
 `,
-		"utf8",
-	);
-	written.push("../src/lib/generated/origins.json");
+			"utf8",
+		);
+		written.push("../src/lib/generated/origins.json");
+	}
 
-	await writeFile(resolve(OUT_DIR, "llms.txt"), buildLlmsTxt([...specs]), "utf8");
+	await writeFile(resolve(OUT_DIR, "llms.txt"), buildLlmsTxt([...releasedSpecs]), "utf8");
 	written.push("llms.txt");
 
-	await writeFile(
-		resolve(REPO_ROOT, "THIRD_PARTY_LICENSES.md"),
-		buildThirdPartyLicenses([...specs]),
-		"utf8",
-	);
-	written.push("../../THIRD_PARTY_LICENSES.md");
+	if (!ISOLATED) {
+		await writeFile(
+			resolve(REPO_ROOT, "THIRD_PARTY_LICENSES.md"),
+			buildThirdPartyLicenses([...specs]),
+			"utf8",
+		);
+		written.push("../../THIRD_PARTY_LICENSES.md");
+	}
 
 	console.log(`registry-build wrote ${written.length} files to apps/site/static`);
 	for (const w of written) console.log(`  ${w}`);

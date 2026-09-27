@@ -12,7 +12,8 @@ let {
 	description,
 	disabled = false,
 	class: classProp,
-}: {
+	...rest
+}: Omit<RadioGroupPrimitive.ItemProps, "value" | "disabled" | "class" | "children"> & {
 	children?: Snippet;
 	value: string;
 	label?: string;
@@ -26,7 +27,7 @@ const frame = $derived(radioGroup({ variant: group.variant, size: group.size }))
 </script>
 
 <label data-slot="radio-group-item" class={cn(frame.label(), classProp)}>
-	<RadioGroupPrimitive.Item {value} {disabled} class={frame.ring()}>
+	<RadioGroupPrimitive.Item {...rest} {value} {disabled} class={frame.ring()}>
 		{#snippet children({ checked })}
 			<span data-on={checked} class={frame.dot()}></span>
 		{/snippet}

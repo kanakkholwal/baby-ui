@@ -4,14 +4,15 @@ export const footer = defineComponent({
 	slug: "footer",
 	name: "Footer",
 	description:
-		"Marketing site footer: brand and socials, link columns, an optional giant wordmark.",
+		"Marketing site footer: brand and socials, link columns, legal links, an optional giant wordmark and a notched back-to-top layout.",
 	category: "blocks",
 	status: "stable",
 	props: [
 		{
 			name: "columns",
 			type: "FooterColumn[]",
-			description: "Link columns shown beside the brand block.",
+			description:
+				"Link columns shown beside the brand block. A link's `description` adds a muted second line, e.g. a product's kind.",
 			required: true,
 			control: { kind: "none" },
 		},
@@ -30,7 +31,8 @@ export const footer = defineComponent({
 		{
 			name: "socials",
 			type: "FooterSocialLink[]",
-			description: "Icon links row under the description.",
+			description:
+				"Links under the description: icon buttons, or text with an arrow when a link has no icon or the layout is notched.",
 			default: "[]",
 			control: { kind: "none" },
 		},
@@ -41,6 +43,34 @@ export const footer = defineComponent({
 			control: { kind: "none" },
 		},
 		{
+			name: "legal",
+			type: "FooterLink[]",
+			description: "Policy links beside the copyright.",
+			default: "[]",
+			control: { kind: "none" },
+		},
+		{
+			name: "actions",
+			type: "ReactNode",
+			description: "Small controls beside the copyright, e.g. a theme toggle.",
+			control: { kind: "none" },
+		},
+		{
+			name: "topHref",
+			type: "string",
+			description:
+				"Target of the notched layout's back-to-top tab. The tab only renders with one.",
+			control: { kind: "none" },
+		},
+		{
+			name: "topLabel",
+			type: "string",
+			description: "Label of the back-to-top tab.",
+			default: "Back to top",
+			control: { kind: "text" },
+			showWhen: { layout: ["notched"] },
+		},
+		{
 			name: "wordmark",
 			type: "string",
 			description: "Giant animated background text. Omit to skip that section entirely.",
@@ -48,10 +78,11 @@ export const footer = defineComponent({
 		},
 		{
 			name: "layout",
-			type: '"split" | "centered"',
-			description: "Brand block beside the link columns, or centred above them.",
+			type: '"split" | "centered" | "notched"',
+			description:
+				"Brand block beside the link columns, centred above them, or a rounded top with a notched back-to-top tab and a ruled bottom row.",
 			default: "split",
-			control: { kind: "select", options: ["split", "centered"] },
+			control: { kind: "select", options: ["split", "centered", "notched"] },
 		},
 	],
 	motion: {
@@ -74,6 +105,7 @@ export const footer = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			registryDependencies: ["notched-shelf"],
 		},
 		svelte: {
 			entry: "Footer",
@@ -84,6 +116,7 @@ export const footer = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			registryDependencies: ["notched-shelf"],
 		},
 	},
 	keywords: ["footer", "site footer", "links", "marketing", "wordmark"],

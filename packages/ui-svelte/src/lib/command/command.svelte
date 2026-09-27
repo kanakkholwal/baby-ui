@@ -2,7 +2,7 @@
 import { Command as CommandPrimitive } from "bits-ui";
 import type { Snippet } from "svelte";
 import { cn } from "../lib/cn";
-import { getCommandDialogState, hasCommandDialogState, setCommand } from "./context";
+import { getCommandDialogState, setCommand } from "./context";
 import { commandFrame } from "./variants";
 
 let {
@@ -15,7 +15,7 @@ let {
 } = $props();
 
 let resultCount = $state(0);
-const dialogState = hasCommandDialogState() ? getCommandDialogState() : undefined;
+const dialogState = getCommandDialogState();
 const variant = $derived(dialogState?.variant ?? "default");
 
 setCommand({

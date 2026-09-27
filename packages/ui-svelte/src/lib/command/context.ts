@@ -1,4 +1,4 @@
-import { createContext, type Snippet } from "svelte";
+import { createContext, getContext, hasContext, type Snippet, setContext } from "svelte";
 import type { DialogVariant } from "../dialog/context";
 
 export type CommandContext = {
@@ -18,8 +18,13 @@ export type CommandDialogState = {
 	/** CommandHeader hoists here so CommandDialog can render it in the rim above the card. */
 	header: { children?: Snippet; class?: string } | undefined;
 };
-export const [getCommandDialogState, setCommandDialogState, hasCommandDialogState] =
-	createContext<CommandDialogState>();
+// A plain key, not createContext: its tuple has no `has` member on some Svelte 5 releases.
+const DIALOG_STATE = Symbol("command-dialog-state");
+export const setCommandDialogState = (state: CommandDialogState) =>
+	setContext(DIALOG_STATE, state);
+/** Undefined outside a CommandDialog. */
+export const getCommandDialogState = (): CommandDialogState | undefined =>
+	hasContext(DIALOG_STATE) ? getContext<CommandDialogState>(DIALOG_STATE) : undefined;
 
 /** Same choreography as a dialog panel, but the palette drops from above its shortcut. */
 export const COMMAND_PANEL = [

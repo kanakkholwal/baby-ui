@@ -56,6 +56,8 @@ export const FRAMEWORK: Record<
 };
 
 // Overridable so an install test can serve its own copy without touching the site's files.
+/** An install-test build: registry JSON only, never the site's generated files or licences. */
+export const ISOLATED = Boolean(process.env.BABY_UI_REGISTRY_OUT);
 export const OUT_DIR = process.env.BABY_UI_REGISTRY_OUT
 	? resolve(process.env.BABY_UI_REGISTRY_OUT)
 	: resolve(REPO_ROOT, "apps/site/static");

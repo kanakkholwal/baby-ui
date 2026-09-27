@@ -3,6 +3,7 @@ import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { flush, Output, ROOT, rel } from "./gen/core.mjs";
 import { autoDemos } from "./gen/demos.mjs";
+import { emailTheme } from "./gen/email-theme.mjs";
 import { indexes } from "./gen/indexes.mjs";
 import { isShared, sharedFiles } from "./gen/shared.mjs";
 import { usageFiles } from "./gen/usage.mjs";
@@ -41,6 +42,8 @@ const PRO_ROOTS = HAS_PRO ? ["pro/packages/svelte/src/lib"] : [];
 export function generate({ check = false, quiet = false } = {}) {
 	const output = new Output([...PUBLIC_ROOTS, ...PRO_ROOTS]);
 	const report = { collisions: [], unmatched: [], demoless: [] };
+	// Written before the shared step so its Svelte copy is generated in the same run.
+	emailTheme(output);
 	for (const target of TARGETS) {
 		sharedFiles(output, target);
 	}

@@ -2,6 +2,7 @@ import { OG_SAMPLE_BY_PROPS } from "./og-samples";
 
 // Auto demos import one typed sample per slug, named in SCREAMING_SNAKE (OG_BLOG_POST).
 export * from "./demo-samples";
+export * from "./email-samples";
 export * from "./og-samples";
 
 /** Samples that follow a control value, keyed by slug. */

@@ -9,6 +9,15 @@ import { adjacentComponents, cardItems, findSpec, specs } from "$lib/server/regi
 import { usageSnippet } from "$lib/usage";
 import type { EntryGenerator, PageServerLoad } from "./$types";
 
+type EmailRender = { html: string; text: string; bytes: number };
+// Written by `pnpm emails`: both ports rendered at build and gated for parity.
+const emailRenders = import.meta.glob<{ react: EmailRender; svelte: EmailRender }>(
+	"/src/lib/generated/emails/*.json",
+	{ import: "default" },
+);
+// The kit has no layout of its own, so its page previews the welcome email built from it.
+const EMAIL_PREVIEW: Record<string, string> = { "email-kit": "email-welcome" };
+
 // Listed rather than crawled, so a component nothing links to still gets built. Charts are
 // crawled from /charts, which the reroute hook serves at their public URL.
 export const entries: EntryGenerator = () =>
@@ -63,6 +72,12 @@ export const load: PageServerLoad = async ({ params }) => {
 		}),
 	);
 
+	const emailSlug = EMAIL_PREVIEW[spec.slug] ?? spec.slug;
+	const email =
+		spec.category === "emails"
+			? ((await emailRenders[`/src/lib/generated/emails/${emailSlug}.json`]?.()) ?? null)
+			: null;
+
 	const prose = doc ? await prepare(doc.content) : null;
 	const related = specs
 		.filter((s) => s.category === spec.category && s.slug !== spec.slug)
@@ -73,6 +88,7 @@ export const load: PageServerLoad = async ({ params }) => {
 		related: cardItems(related),
 		adjacent: adjacentComponents(spec.category, spec.slug),
 		ports,
+		email: email && { slug: emailSlug, react: email.react, svelte: email.svelte },
 		prose: prose?.content ?? null,
 		proseHeadings: prose?.headings ?? [],
 	};

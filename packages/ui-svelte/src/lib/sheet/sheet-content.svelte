@@ -7,6 +7,7 @@ import { type SheetSide, sheetPanel } from "./variants";
 let {
 	class: classProp,
 	side = "right",
+	ref = $bindable(null),
 	...rest
 }: SheetPrimitive.ContentProps & { side?: SheetSide } = $props();
 </script>
@@ -14,6 +15,7 @@ let {
 <SheetPrimitive.Portal>
 	<SheetPrimitive.Overlay data-slot="sheet-backdrop" class={DIALOG_BACKDROP} />
 	<SheetPrimitive.Content
+		bind:ref
 		{...rest}
 		data-slot="sheet-content"
 		data-side={side}

@@ -1,9 +1,11 @@
 "use client";
 
 import {
+	Button,
 	Footer,
 	type FooterColumn,
 	type FooterLayout,
+	type FooterLink,
 	type FooterSocialLink,
 } from "@baby-ui/react";
 
@@ -74,10 +76,30 @@ const COLUMNS: FooterColumn[] = [
 	{
 		title: "Product",
 		links: [
-			{ label: "Features", href: "https://recast.li/features", external: true },
-			{ label: "Download", href: "https://recast.li/download", external: true },
-			{ label: "Pricing", href: "https://recast.li/pricing", external: true },
-			{ label: "Sign in", href: "https://recast.li/login", external: true },
+			{
+				label: "Features",
+				href: "https://recast.li/features",
+				external: true,
+				description: "Zoom, cursor smoothing, captions",
+			},
+			{
+				label: "Download",
+				href: "https://recast.li/download",
+				external: true,
+				description: "Windows, macOS and Linux",
+			},
+			{
+				label: "Pricing",
+				href: "https://recast.li/pricing",
+				external: true,
+				description: "Free to record",
+			},
+			{
+				label: "Sign in",
+				href: "https://recast.li/login",
+				external: true,
+				description: "The optional cloud tier",
+			},
 		],
 	},
 	{
@@ -98,16 +120,6 @@ const COLUMNS: FooterColumn[] = [
 		links: [
 			{ label: "Contact", href: "mailto:try-recast@gmail.com" },
 			{ label: "X / Twitter", href: "https://x.com/kanakkholwal", external: true },
-			{
-				label: "Privacy Policy",
-				href: "https://recast.li/privacy-policy",
-				external: true,
-			},
-			{
-				label: "Terms of Service",
-				href: "https://recast.li/terms-of-service",
-				external: true,
-			},
 		],
 	},
 ];
@@ -120,6 +132,11 @@ const SOCIALS: FooterSocialLink[] = [
 	},
 	{ icon: <XMark />, href: "https://x.com/kanakkholwal", label: "X / Twitter" },
 	{ icon: <MailMark />, href: "mailto:try-recast@gmail.com", label: "Email" },
+];
+
+const LEGAL: FooterLink[] = [
+	{ label: "Privacy", href: "https://recast.li/privacy-policy", external: true },
+	{ label: "Terms", href: "https://recast.li/terms-of-service", external: true },
 ];
 
 export function FooterDemo({ props }: { props: Props }) {
@@ -142,6 +159,18 @@ export function FooterDemo({ props }: { props: Props }) {
 			columns={COLUMNS}
 			socials={SOCIALS}
 			copyright={`© ${new Date().getFullYear()} Recast. All rights reserved.`}
+			legal={LEGAL}
+			actions={
+				<Button
+					href="https://github.com/kanakkholwal/recast/releases"
+					size="sm"
+					variant="ghost"
+				>
+					Releases
+				</Button>
+			}
+			topHref="#top"
+			topLabel={(props.topLabel as string) || "Back to top"}
 		/>
 	);
 }

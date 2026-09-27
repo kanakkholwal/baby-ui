@@ -1,23 +1,28 @@
+import type { ComponentProps } from "react";
 import { cn } from "../lib/cn";
 import { type SkeletonShape, skeleton } from "./variants";
 
-export interface SkeletonProps {
+export interface SkeletonProps extends ComponentProps<"div"> {
+	/** Overrides the class width; omit to size with classes. */
 	width?: string;
 	height?: string;
 	shape?: SkeletonShape;
-	className?: string;
 }
 
 export function Skeleton({
-	width = "100%",
-	height = "1rem",
+	width,
+	height,
 	shape = "line",
 	className,
+	style,
+	...props
 }: SkeletonProps) {
 	return (
 		<div
 			aria-hidden
-			style={{ width, height }}
+			data-slot="skeleton"
+			{...props}
+			style={{ width, height, ...style }}
 			className={cn(skeleton({ shape }), className)}
 		/>
 	);

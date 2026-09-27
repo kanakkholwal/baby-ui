@@ -3,7 +3,10 @@ import { Switch as SwitchPrimitive } from "bits-ui";
 import { cn } from "../lib/cn";
 import { type SwitchSize, switchThumb, switchTrack } from "./variants";
 
-type Props = {
+type Props = Omit<
+	SwitchPrimitive.RootProps,
+	"checked" | "disabled" | "class" | "children"
+> & {
 	checked?: boolean;
 	disabled?: boolean;
 	size?: SwitchSize;
@@ -19,13 +22,17 @@ let {
 	label,
 	"aria-label": ariaLabel,
 	class: classProp,
+	id: idProp,
+	...rest
 }: Props = $props();
 
-const id = $props.id();
+const autoId = $props.id();
+const id = $derived(idProp ?? autoId);
 </script>
 
 {#snippet control()}
 	<SwitchPrimitive.Root
+		{...rest}
 		{id}
 		{disabled}
 		bind:checked

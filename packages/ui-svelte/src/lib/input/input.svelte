@@ -8,10 +8,13 @@ type Props = {
 	class?: string;
 	size?: InputSize;
 	invalid?: boolean;
+	/** Bindable: the `<input>` element. */
+	ref?: HTMLInputElement | null;
 } & Omit<HTMLInputAttributes, "size" | "value" | "class">;
 
 let {
 	value = $bindable(""),
+	ref = $bindable(null),
 	class: classProp,
 	size = "md",
 	invalid = false,
@@ -20,6 +23,8 @@ let {
 </script>
 
 <input
+	bind:this={ref}
+	data-slot="input"
 	{...rest}
 	bind:value
 	aria-invalid={invalid || undefined}

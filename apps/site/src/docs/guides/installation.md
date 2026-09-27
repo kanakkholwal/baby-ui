@@ -101,6 +101,10 @@ Each component lands in its own folder with an `index` file, for example
 Your colour variables are never touched. Every component page has this command ready, and a
 Manual tab for copying by hand.
 
+The folder under `components/` follows the category: `ui` (base and advanced), `blocks`,
+`animated`, `text`, `backgrounds`, `agents`, `charts`, `og` and `emails` (the email kit in
+`emails/ui`). Imports between items are rewritten to match, so a block finds its Button.
+
 If `init` created shadcn's own `components/ui/button.tsx`, delete it: it would shadow
 `components/ui/button/`, so `@/components/ui/button` would import the wrong Button.
 

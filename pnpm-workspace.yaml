@@ -13,6 +13,9 @@ allowBuilds:
 # One version of everything, declared once. Packages reference these as
 # `catalog:` so a component copied out of here can't pick up a stale peer.
 catalog:
+  react-email: ^6.11.0
+  "@better-svelte-email/components": ^2.3.0
+  "@better-svelte-email/server": ^2.3.0
   sonner: ^2.0.8
   svelte-sonner: ^1.2.1
   vaul: ^1.1.2

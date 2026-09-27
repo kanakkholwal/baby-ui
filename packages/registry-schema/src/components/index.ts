@@ -57,6 +57,8 @@ import { doubleUnderline } from "./double-underline";
 import { draggableMarquee } from "./draggable-marquee";
 import { drawer } from "./drawer";
 import { dropdownMenu } from "./dropdown-menu";
+import { emailKit } from "./email-kit";
+import { emailWelcome } from "./email-welcome";
 import { eyeTracking } from "./eye-tracking";
 import { fileDiff } from "./file-diff";
 import { fileTree } from "./file-tree";
@@ -104,6 +106,7 @@ import { morphText } from "./morph-text";
 import { morphingModal } from "./morphing-modal";
 import { musicPlayer } from "./music-player";
 import { navbar } from "./navbar";
+import { notchedShelf } from "./notched-shelf";
 import { ogAuthorProfile } from "./og-author-profile";
 import { ogBlogPost } from "./og-blog-post";
 import { ogChangelog } from "./og-changelog";
@@ -266,6 +269,8 @@ export const specs: ComponentSpec[] = [
 	draggableMarquee,
 	drawer,
 	dropdownMenu,
+	emailKit,
+	emailWelcome,
 	eyeTracking,
 	fileDiff,
 	fileTree,
@@ -313,6 +318,7 @@ export const specs: ComponentSpec[] = [
 	morphingModal,
 	musicPlayer,
 	navbar,
+	notchedShelf,
 	ogAuthorProfile,
 	ogBlogPost,
 	ogChangelog,

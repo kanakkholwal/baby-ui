@@ -17,8 +17,6 @@ let {
 	values = $bindable(),
 }: { spec: ComponentSpec; values: Record<string, unknown> } = $props();
 
-const dials = $derived(spec.props.filter((p) => p.control.kind !== "none"));
-
 function seed(target: ComponentSpec): Record<string, unknown> {
 	const out: Record<string, unknown> = {};
 	for (const prop of target.props) {
@@ -35,6 +33,16 @@ function seed(target: ComponentSpec): Record<string, unknown> {
 
 // The parent keys this component on the slug, so reading spec once is the intent.
 let state = $state(untrack(() => seed(spec)));
+
+const dials = $derived(
+	spec.props.filter(
+		(p) =>
+			p.control.kind !== "none" &&
+			Object.entries(p.showWhen ?? {}).every(([name, allowed]) =>
+				allowed.includes(state[name] as string | number | boolean),
+			),
+	),
+);
 
 $effect(() => {
 	values = { ...state };

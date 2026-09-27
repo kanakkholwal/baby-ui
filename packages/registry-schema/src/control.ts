@@ -26,6 +26,11 @@ export const PropSpecSchema = z.object({
 	/** Serialised default, shown in the table and used as the control's initial value. */
 	default: z.union([z.string(), z.number(), z.boolean(), z.null()]).optional(),
 	control: ControlSchema.default({ kind: "none" }),
+	/** Shows the control only while every named prop holds one of the listed values, so a dial
+	 * that does nothing for the current combination stays out of the rail. */
+	showWhen: z
+		.record(z.string(), z.array(z.union([z.string(), z.number(), z.boolean()])))
+		.optional(),
 });
 
 export type PropSpec = z.infer<typeof PropSpecSchema>;

@@ -1,7 +1,8 @@
 import { tv, type VariantProps } from "tailwind-variants";
 
 export const skeleton = tv({
-	base: "skeleton-shimmer bg-card",
+	// Size defaults live in classes so a caller's own `h-*`/`w-*` wins, as with shadcn's.
+	base: "skeleton-shimmer h-4 w-full bg-card",
 	variants: {
 		shape: {
 			line: "rounded-md",

@@ -22,7 +22,7 @@ SvelteKit, `src/routes/og/author/+server.ts`:
 import { render } from "svelte/server";
 import { googleFonts } from "takumi-js/helpers";
 import { ImageResponse } from "takumi-js/response";
-import OgAuthorProfile from "$lib/components/ui/og-author-profile/og-author-profile.svelte";
+import OgAuthorProfile from "$lib/components/og/og-author-profile/og-author-profile.svelte";
 import css from "../../../app.css?inline";
 
 const fonts = googleFonts({ families: [{ name: "Inter", weight: [400, 600, 700] }] });
@@ -42,7 +42,7 @@ Next.js has no inline CSS import, so compile your stylesheet once (add it to you
 import { readFile } from "node:fs/promises";
 import { googleFonts } from "takumi-js/helpers";
 import { ImageResponse } from "takumi-js/response";
-import { OgAuthorProfile } from "@/components/ui/og-author-profile/og-author-profile";
+import { OgAuthorProfile } from "@/components/og/og-author-profile/og-author-profile";
 
 const fonts = googleFonts({ families: [{ name: "Inter", weight: [400, 600, 700] }] });
 

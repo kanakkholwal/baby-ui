@@ -16,10 +16,13 @@ type Props = {
 	description?: string;
 	maxlength?: number;
 	showCount?: boolean;
+	/** Bindable: the `<textarea>` element. */
+	ref?: HTMLTextAreaElement | null;
 } & Omit<HTMLTextareaAttributes, "rows" | "value" | "class" | "maxlength">;
 
 let {
 	value = $bindable(""),
+	ref = $bindable(null),
 	class: classProp,
 	rows = 3,
 	size = "md",
@@ -36,11 +39,11 @@ let {
 
 const id = $props.id();
 const wrapped = $derived(Boolean(label || description || showCount));
-let el = $state<HTMLTextAreaElement>();
 
 // Height follows content, never eases: easing lags behind the character just typed.
 $effect(() => {
 	void value;
+	const el = ref;
 	if (!autoGrow || !el) return;
 	const line = Number.parseFloat(getComputedStyle(el).lineHeight) || 20;
 	el.style.height = "auto";
@@ -53,7 +56,7 @@ $effect(() => {
 		{...rest}
 		{id}
 		{maxlength}
-		bind:this={el}
+		bind:this={ref}
 		bind:value
 		{rows}
 		aria-invalid={invalid || undefined}

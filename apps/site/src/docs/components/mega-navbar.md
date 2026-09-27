@@ -19,3 +19,11 @@ The panel holds links to pages, not commands, so it's a disclosure pattern rathe
 Below `md`, the trigger opens a full-height sheet: one accordion section open at a time,
 plus the same `links`/`actions` data the desktop row uses. Navigating (an `active` change)
 closes it automatically.
+
+## Notched variant
+
+`variant="notched"` hangs the whole row from the top edge on a card-coloured
+[Notched Shelf](/components/blocks/notched-shelf), leaving the page visible on either
+side. The mega panel drops from the shelf the same way it drops from the solid bar.
+Below `md` it becomes a plain bar with a hairline rule that fades in once the page
+scrolls, and the sheet drops from the top instead of sliding in from the side.

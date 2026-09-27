@@ -5,14 +5,30 @@
 		"//#gen": {
 			"cache": false
 		},
+		"//#emails": {
+			"dependsOn": ["//#gen"],
+			"inputs": [
+				"scripts/emails/**",
+				"packages/tokens/src/**",
+				"packages/ui-react/src/email-*/**",
+				"packages/ui-svelte/src/lib/email-*/**",
+				"packages/demos/src/data/email-samples.ts"
+			],
+			"outputs": ["apps/site/src/lib/generated/emails/**"]
+		},
 		"build": {
-			"dependsOn": ["//#gen", "^build", "^registry"],
+			"dependsOn": ["//#gen", "//#emails", "^build", "^registry"],
 			"env": ["VITE_POSTHOG_KEY", "BABY_UI_REGISTRY_URL", "BABY_UI_SITE_URL"],
 			"outputs": ["dist/**", ".svelte-kit/**", "build/**", ".docvia/**"]
 		},
 		"registry": {
 			"dependsOn": ["//#gen", "^build"],
-			"env": ["BABY_UI_REGISTRY_URL", "BABY_UI_SITE_URL", "BABY_UI_REGISTRY_OUT"],
+			"env": [
+				"BABY_UI_REGISTRY_URL",
+				"BABY_UI_SITE_URL",
+				"BABY_UI_REGISTRY_OUT",
+				"VITE_SHOW_PRO"
+			],
 			"inputs": [
 				"src/**",
 				"../tokens/src/**",
@@ -30,12 +46,12 @@
 			]
 		},
 		"check": {
-			"dependsOn": ["//#gen", "^build", "^registry"]
+			"dependsOn": ["//#gen", "//#emails", "^build", "^registry"]
 		},
 		"dev": {
 			"cache": false,
 			"persistent": true,
-			"dependsOn": ["//#gen", "^registry"]
+			"dependsOn": ["//#gen", "//#emails", "^registry"]
 		}
 	}
 }

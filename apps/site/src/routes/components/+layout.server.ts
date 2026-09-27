@@ -6,6 +6,7 @@ import type { LayoutServerLoad } from "./$types";
 function leadCategory(pathname: string): Category | undefined {
 	if (pathname.startsWith("/charts")) return "charts";
 	if (pathname.startsWith("/og-images")) return "og-images";
+	if (pathname.startsWith("/emails")) return "emails";
 	const segment = pathname.split("/")[2] as Category | undefined;
 	return segment && CATEGORIES.includes(segment) ? segment : undefined;
 }
