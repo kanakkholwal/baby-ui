@@ -82,11 +82,13 @@ function namespaceAliases(lines: string[], folder: string): string[] {
 		for (const spec of specs.split(",")) {
 			const name = spec.trim().match(/^default as (\w+)$/)?.[1];
 			if (!name) continue;
+			// Case-insensitive, so shadcn's InputOTPSlot still shortens under the input-otp folder.
 			const rest = name.slice(prefix.length);
+			const same = name.slice(0, prefix.length).toLowerCase() === prefix.toLowerCase();
 			const short =
-				name === prefix
+				name.toLowerCase() === prefix.toLowerCase()
 					? "Root"
-					: name.startsWith(prefix) && /^[A-Z]/.test(rest)
+					: same && /^[A-Z]/.test(rest)
 						? rest
 						: null;
 			if (!short || taken.has(short)) continue;
@@ -108,6 +110,8 @@ const SHADCN_NAMES: Record<string, ShadcnName[]> = {
 	],
 	badge: [{ from: "./variants", name: "badge", as: "badgeVariants" }],
 	toggle: [{ from: "./variants", name: "toggleButton", as: "toggleVariants" }],
+	// shadcn-svelte re-exports formsnap's Control as `Form.Control`.
+	form: [{ from: "./control", name: "FormControl", as: "Control" }],
 };
 
 function shadcnNames(lines: string[], folder: string, framework: Framework): string[] {

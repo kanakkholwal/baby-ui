@@ -58,10 +58,8 @@ const BODY =
 				id="panel-{panel.id}"
 				aria-labelledby="tab-{panel.id}"
 				inert={shift !== 0}
-				style:translate="{shift * 1.25}rem 0"
 				class={[
-					"transition-[opacity,translate] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none",
-					shift === 0 ? "relative opacity-100" : "pointer-events-none absolute inset-0 opacity-0",
+					shift === 0 ? "relative" : "pointer-events-none absolute inset-0 invisible",
 				]}
 			>
 				{#if panel.pm}

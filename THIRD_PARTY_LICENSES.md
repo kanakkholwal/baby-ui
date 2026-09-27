@@ -30,6 +30,16 @@ notices are reproduced here as those licenses require.
 - Source: https://iconiqui.com
 - License: MIT
 
+## shadcn-svelte
+
+- Source: https://github.com/huntabyte/shadcn-svelte
+- License: MIT
+
+## shadcn/ui
+
+- Source: https://github.com/shadcn-ui/ui
+- License: MIT
+
 ## sivir-ui
 
 - Source: https://github.com/aidan-neel/sivir-ui

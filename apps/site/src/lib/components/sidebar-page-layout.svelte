@@ -40,31 +40,20 @@ $effect(() => {
 		easing: css.getPropertyValue("--ease-drawer").trim() || "ease-out",
 	});
 });
+// The column snaps; only the rail panel slides (OUTLINE_PANEL). Animating grid tracks
+// re-laid out the whole page every frame, and main's left edge never moves anyway.
 $effect(() => {
 	const right = outlineSidebar.current ? "open" : "closed";
 	const root = document.documentElement.dataset;
-	if (root.rightRail === right && root.rightCol === right) return;
-	const before = grid ? getComputedStyle(grid).gridTemplateColumns : "";
 	root.rightRail = right;
 	root.rightCol = right;
-	if (!grid || !untrack(() => ready) || reduced()) return;
-	// The column resizes in the same frames the rail slides, from resolved px tracks to px tracks.
-	const after = getComputedStyle(grid).gridTemplateColumns;
-	if (before === after) return;
-	const css = getComputedStyle(grid);
-	grid.animate([{ gridTemplateColumns: before }, { gridTemplateColumns: after }], {
-		duration: Number.parseFloat(
-			css.getPropertyValue(right === "open" ? "--duration-drawer" : "--duration-overlay"),
-		),
-		easing: css.getPropertyValue("--ease-drawer").trim() || "ease-out",
-	});
 });
 
 const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-function active(match: string) {
-	if (match === "/components") return page.url.pathname === "/components";
-	return page.url.pathname.startsWith(match);
+function active(match: string[]) {
+	const path = page.url.pathname;
+	return match.some((m) => path === m || path.startsWith(`${m}/`));
 }
 </script>
 
@@ -77,7 +66,8 @@ function active(match: string) {
 		"md:grid-cols-[15rem_minmax(0,1fr)] md:[[data-left-rail=closed]_&]:grid-cols-[0rem_minmax(0,1fr)]",
 		split
 			? "xl:grid-cols-[15rem_minmax(0,1fr)_minmax(0,1fr)]! xl:[[data-left-rail=closed]_&]:grid-cols-[0rem_minmax(0,1fr)_minmax(0,1fr)]!"
-			: "xl:grid-cols-[15rem_minmax(0,1fr)_20rem] xl:[[data-left-rail=closed]_&]:grid-cols-[0rem_minmax(0,1fr)_20rem] xl:[[data-right-col=closed]_&]:grid-cols-[15rem_minmax(0,1fr)_0rem] xl:[[data-left-rail=closed][data-right-col=closed]_&]:grid-cols-[0rem_minmax(0,1fr)_0rem]",
+			: // The right column is closed unless opened, so prerendered HTML matches the default.
+				"xl:grid-cols-[15rem_minmax(0,1fr)_0rem] xl:[[data-left-rail=closed]_&]:grid-cols-[0rem_minmax(0,1fr)_0rem] xl:[[data-right-col=open]_&]:grid-cols-[15rem_minmax(0,1fr)_20rem] xl:[[data-left-rail=closed][data-right-col=open]_&]:grid-cols-[0rem_minmax(0,1fr)_20rem]",
 	]}
 >
 	<div class="hidden min-w-0 md:block">

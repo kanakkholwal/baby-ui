@@ -17,6 +17,8 @@ export type ShaderScene<N extends string> = {
 	context?: WebGLContextAttributes;
 	/** Shader time of the first frame and of the reduced-motion still frame. */
 	stillTime: number;
+	/** Minimum ms between drawn frames; skipped frames keep the loop alive without drawing. */
+	frameMs?: number;
 	/** Uploads colour uniforms; `rgb` resolves any CSS colour to 0..1 sRGB channels. */
 	colors(u: Uniforms<N>, rgb: (css: string) => Rgb): void;
 	/** Per-frame uniforms other than `uTime`. */
@@ -182,6 +184,10 @@ export function mountShader<N extends string>(
 
 	const live = () => ready && surface.live() && (scene.moving?.() ?? true);
 	const tick = (now: number) => {
+		if (scene.frameMs && now - last < scene.frameMs) {
+			frame = live() ? requestAnimationFrame(tick) : 0;
+			return;
+		}
 		time += scene.step(Math.min((now - last) / 1000, 0.05));
 		last = now;
 		draw();

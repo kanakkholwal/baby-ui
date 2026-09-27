@@ -13,7 +13,7 @@ const OPEN =
 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" class={className}>
 	<path d={OUTER} fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
 	<path
-		class="fill-background transition-[d] duration-[350ms] ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none"
+		class="fill-background transition-[d] duration-[var(--duration-overlay)] ease-[var(--ease-drawer)] motion-reduce:transition-none"
 		style:d={`path("${open ? OPEN : CLOSED}")`}
 	/>
 </svg>

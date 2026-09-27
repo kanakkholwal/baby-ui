@@ -11,6 +11,10 @@ export const silkAurora = tv({
 	},
 	variants: {
 		tone: {
+			surface: {
+				fallback:
+					"bg-[image:radial-gradient(ellipse_at_28%_46%,color-mix(in_oklch,var(--foreground)_8%,transparent),transparent_45%),radial-gradient(ellipse_at_70%_36%,color-mix(in_oklch,var(--primary)_8%,transparent),transparent_40%)]",
+			},
 			pearl: {
 				fallback:
 					"bg-[image:radial-gradient(ellipse_at_28%_46%,var(--accent),transparent_45%),radial-gradient(ellipse_at_70%_36%,var(--chart-4),transparent_40%)]",
@@ -43,6 +47,13 @@ export type SilkAuroraPosition = NonNullable<VariantProps<typeof silkAurora>["po
 
 /** Base, mid, sheen and accent colours per tone. */
 export const SILK_AURORA_COLORS: Record<SilkAuroraTone, readonly string[]> = {
+	// Tonal: a sheen of the page's own ink, so it sits behind text in either mode.
+	surface: [
+		"var(--background)",
+		"color-mix(in oklch, var(--foreground) 4%, var(--background))",
+		"color-mix(in oklch, var(--foreground) 11%, var(--background))",
+		"color-mix(in oklch, var(--primary) 14%, var(--background))",
+	],
 	pearl: [
 		"var(--background)",
 		"color-mix(in oklch, var(--foreground) 6%, var(--background))",

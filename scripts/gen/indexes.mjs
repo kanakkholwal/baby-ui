@@ -12,7 +12,14 @@ const DEMOS_SVELTE = join(ROOT, "packages/demos/src/svelte");
 // From lib/ only `cn` is public; the other helpers are internal to the components that use them.
 const LIB_PUBLIC = ["cn.ts"];
 // Filenames whose PascalCase differs from the component's established name.
-const NAME_OVERRIDES = { "text-explode-imessage": "TextExplodeIMessage" };
+const NAME_OVERRIDES = {
+	"text-explode-imessage": "TextExplodeIMessage",
+	// shadcn spells the one-time-code parts InputOTP*; match it so its blocks import cleanly.
+	"input-otp": "InputOTP",
+	"input-otp-group": "InputOTPGroup",
+	"input-otp-slot": "InputOTPSlot",
+	"input-otp-separator": "InputOTPSeparator",
+};
 // Svelte parts published under a second name too (Combobox shares Command's parts).
 const EXTRA_DEFAULTS = {
 	"command/command-empty.svelte": ["ComboboxEmpty"],

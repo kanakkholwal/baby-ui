@@ -1,17 +1,39 @@
 import { CATEGORIES, type Category } from "@baby-ui/registry-schema";
 import { error } from "@sveltejs/kit";
+import {
+	CATEGORY_BLURB,
+	CATEGORY_LABEL,
+	COLLECTIONS,
+	categoryHref,
+	isCollection,
+	TOP_LEVEL,
+} from "$lib/registry";
 import { cardItems, specs } from "$lib/server/registry";
 import type { PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = ({ params }) => {
-	const category = params.category as Category;
-	if (!CATEGORIES.includes(category))
-		throw error(404, `No category named "${params.category}"`);
+	const id = params.category;
+	if (isCollection(id)) {
+		const { label, blurb, slugs } = COLLECTIONS[id];
+		const shown = specs.filter((s) => (slugs as readonly string[]).includes(s.slug));
+		const items = cardItems(
+			shown.sort((a, b) => a.name.localeCompare(b.name)).map((s) => s.slug),
+		);
+		return { label, blurb, path: `/${id}`, topLevel: true, items };
+	}
+	const category = id as Category;
+	if (!CATEGORIES.includes(category)) throw error(404, `No category named "${id}"`);
 	const slugs = specs
 		.filter((s) => s.category === category)
 		.sort((a, b) => a.name.localeCompare(b.name))
 		.map((s) => s.slug);
 	// A preview category has no visible specs while its flag is off.
-	if (!slugs.length) throw error(404, `No category named "${params.category}"`);
-	return { category, items: cardItems(slugs) };
+	if (!slugs.length) throw error(404, `No category named "${id}"`);
+	return {
+		label: CATEGORY_LABEL[category],
+		blurb: CATEGORY_BLURB[category],
+		path: categoryHref(category),
+		topLevel: TOP_LEVEL.includes(category),
+		items: cardItems(slugs),
+	};
 };

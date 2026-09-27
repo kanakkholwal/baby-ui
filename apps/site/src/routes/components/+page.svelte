@@ -28,7 +28,7 @@ const DESCRIPTION = $derived(
 	]}
 />
 
-<div class="min-w-0 py-8 xl:col-span-2">
+<main class="min-w-0 py-8 xl:col-span-2">
 	<h1 class="font-semibold text-3xl text-foreground tracking-tight">Components</h1>
 	<p class="mt-2 max-w-2xl text-muted-foreground">
 		{total} components, charts included, each with a React and a Svelte port built from the same spec.
@@ -49,4 +49,4 @@ const DESCRIPTION = $derived(
 			</div>
 		</section>
 	{/each}
-</div>
+</main>

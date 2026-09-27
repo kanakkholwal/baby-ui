@@ -11,3 +11,11 @@ Composes `card`, `badge`, `counter` and the area or line chart. At rest it shows
 month and its change from the previous row.
 
 Pass `formatValue` for currency or units, and `locale` for the month and percent formats.
+
+Set `positive="down"` for metrics where a fall is good news (churn, latency, cost); a 0%
+change is always neutral. `comparisonLabel` finishes the sentence screen readers hear for
+the badge, e.g. "Increased by 12.5% vs last month".
+
+`status` covers the fetch lifecycle: `loading` skeletons the headline and badge, `empty`
+and `error` replace the chart with a message, and `onRetry` adds a Retry button to the
+error state. The headline only counts when `value` changes; hovering swaps it instantly.

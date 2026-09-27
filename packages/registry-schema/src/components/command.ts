@@ -83,6 +83,7 @@ export const command = defineComponent({
 			entry: "Command",
 			files: [
 				{ path: "command/command.tsx", type: "registry:ui" },
+				{ path: "command/score.ts", type: "registry:ui" },
 				{ path: "command/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
@@ -110,6 +111,7 @@ export const command = defineComponent({
 				{ path: "command/command-shortcut.svelte", type: "registry:ui" },
 				{ path: "command/command-separator.svelte", type: "registry:ui" },
 				{ path: "command/context.ts", type: "registry:ui" },
+				{ path: "command/score.ts", type: "registry:ui" },
 				{ path: "command/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],

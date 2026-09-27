@@ -31,7 +31,7 @@ export const GITHUB_CALENDAR_LABELS: GithubCalendarLabels = {
 
 export type GithubCalendarWeekStart = "sunday" | "monday";
 
-export interface CalendarCell {
+export interface GithubCalendarCell {
 	key: string;
 	date: Date;
 	count: number;
@@ -40,8 +40,8 @@ export interface CalendarCell {
 	row: number;
 }
 
-export interface CalendarGrid {
-	cells: CalendarCell[];
+export interface GithubCalendarGrid {
+	cells: GithubCalendarCell[];
 	weeks: number;
 	months: { col: number; date: Date }[];
 	weekdays: Date[];
@@ -87,7 +87,7 @@ export function buildGrid(
 	days: readonly GithubCalendarDay[],
 	weekStart: GithubCalendarWeekStart,
 	thresholds?: readonly number[],
-): CalendarGrid {
+): GithubCalendarGrid {
 	const byKey = new Map<
 		string,
 		{ date: Date; count: number; level?: GithubCalendarLevel }
@@ -108,7 +108,7 @@ export function buildGrid(
 	const start = weekStart === "monday" ? 1 : 0;
 	const lead = (first.getDay() - start + 7) % 7;
 	const max = Math.max(0, ...sorted.map((d) => d.count));
-	const cells: CalendarCell[] = [];
+	const cells: GithubCalendarCell[] = [];
 	const months: { col: number; date: Date }[] = [];
 	let total = 0;
 	for (let d = new Date(first), i = 0; d <= last; d.setDate(d.getDate() + 1), i++) {

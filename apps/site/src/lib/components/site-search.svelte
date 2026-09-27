@@ -119,7 +119,11 @@ function go(href: string) {
 			{#if hits.length}
 				<CommandGroup heading="In the docs" forceMount>
 					{#each hits as hit (hit.href)}
-						<CommandItem value="docs:{hit.href}" forceMount onclick={() => go(hit.href)}>
+						<CommandItem
+							value={hit.section ? `${hit.page} › ${hit.section}` : hit.page}
+							forceMount
+							onclick={() => go(hit.href)}
+						>
 							<span class="min-w-0">
 								<span class="block truncate">
 									{hit.page}{#if hit.section}{" "}<span class="text-muted-foreground">› {hit.section}</span>{/if}

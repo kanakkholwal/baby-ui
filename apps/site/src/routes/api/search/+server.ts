@@ -1,5 +1,6 @@
 import { docviaSource } from "virtual:docvia/source";
 import { createFromSource, createSearchHandler } from "@docvia/search";
+import { specs } from "$lib/server/registry";
 import type { RequestHandler } from "./$types";
 
 // Queries arrive as `?q=`, so this runs in the Worker instead of being prerendered.
@@ -8,12 +9,17 @@ export const prerender = false;
 type Collection =
 	(typeof docviaSource.collections)[keyof typeof docviaSource.collections];
 
-// Drafts (the hidden changelog) 404 as pages, so they stay out of search too.
+const retired = new Set(specs.filter((s) => s.retired).map((s) => s.slug));
+
+// Drafts (the hidden changelog) 404 as pages and retired components are unlisted, so
+// neither shows up in search.
 const published = (collection: Collection) => ({
 	getPages: () => collection.getPages(),
 	getPage: async (slugs: string[]) => {
 		const page = await collection.getPage(slugs);
-		return (page?.data as { draft?: boolean } | undefined)?.draft ? undefined : page;
+		const data = page?.data as { draft?: boolean; component?: string } | undefined;
+		if (data?.draft || (data?.component && retired.has(data.component))) return undefined;
+		return page;
 	},
 });
 

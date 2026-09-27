@@ -59,17 +59,111 @@ export type CatalogItem = {
 	href: string;
 };
 
+/** Task-first shelves over existing categories, served at `/<id>`. Items keep their category URL. */
+export const COLLECTIONS = {
+	data: {
+		label: "Data",
+		blurb: "Tables, stat cards and trees for products that show numbers and records.",
+		slugs: [
+			"records-table",
+			"filter-table",
+			"diff-table",
+			"file-tree",
+			"stat-card",
+			"stat-card-map",
+			"usage-card",
+			"score-card",
+			"status-monitor",
+			"github-calendar",
+		],
+	},
+	forms: {
+		label: "Forms",
+		blurb: "Fields and controls for sign-ups, settings and checkout, keyboard-first.",
+		slugs: [
+			"input",
+			"textarea",
+			"label",
+			"select",
+			"combobox",
+			"tag-input",
+			"checkbox",
+			"radio-group",
+			"switch",
+			"slider",
+			"scrub-field",
+			"color-picker",
+			"input-otp",
+			"calendar",
+			"range-calendar",
+		],
+	},
+} as const satisfies Record<
+	string,
+	{ label: string; blurb: string; slugs: readonly string[] }
+>;
+
+export type CollectionId = keyof typeof COLLECTIONS;
+export const isCollection = (id: string): id is CollectionId =>
+	Object.hasOwn(COLLECTIONS, id);
+
+export type NavLink = { href: string; label: string };
+export type NavItem = NavLink & {
+	/** Path prefixes that mark this item current. */
+	match: string[];
+	/** Grouped links shown in a menu instead of navigating on click. */
+	menu?: { heading?: string; links: NavLink[] }[];
+};
+
 /** The global top-level nav, shared by the header links and the mobile drawer's top row. */
-export function siteNav(
-	categories: NavCategory[],
-): { href: string; label: string; match: string }[] {
+export function siteNav(categories: NavCategory[]): NavItem[] {
+	const find = (id: Category) => categories.find((c) => c.category === id);
+	const link = (c: NavCategory): NavItem => ({
+		href: c.href,
+		label: c.label,
+		match: [c.href],
+	});
+	const agents = find("agents");
+	const charts = find("charts");
+	const templates = categories.filter(
+		(c) => c.category === "og-images" || c.category === "emails",
+	);
+	const rest = categories.filter(
+		(c) => !TOP_LEVEL.includes(c.category) && c.category !== "agents",
+	);
 	return [
-		{ href: "/components", label: "Components", match: "/components" },
-		...categories
-			.filter((c) => CATEGORY[c.category].inNav)
-			.map((c) => ({ href: c.href, label: c.label, match: c.href })),
-		{ href: "/docs", label: "Docs", match: "/docs" },
-		...(__SHOW_PRO__ ? [{ href: "/pricing", label: "Pricing", match: "/pricing" }] : []),
+		...(agents ? [link(agents)] : []),
+		...(Object.keys(COLLECTIONS) as CollectionId[]).map((id) => ({
+			href: `/${id}`,
+			label: COLLECTIONS[id].label,
+			match: [`/${id}`],
+		})),
+		...(charts ? [link(charts)] : []),
+		{
+			href: "/components",
+			label: "Components",
+			match: ["/components", ...templates.map((c) => c.href)],
+			menu: [
+				{
+					links: [
+						{ href: "/components", label: "All components" },
+						...rest.map((c) => ({ href: c.href, label: c.label })),
+					],
+				},
+				...(templates.length
+					? [
+							{
+								heading: "Templates",
+								links: templates.map((c) => ({ href: c.href, label: c.label })),
+							},
+						]
+					: []),
+			],
+		},
+		{ href: "/docs", label: "Docs", match: ["/docs"] },
+		...(__SHOW_PRO__
+			? [{ href: "/pricing", label: "Pricing", match: ["/pricing"] }]
+			: []),
 	];
 }
 

@@ -22,8 +22,6 @@ export type CategoryInfo = {
 	blurb: string;
 	/** `top-level` serves the category at `/<category>`; the rest live under /components. */
 	route: "top-level" | "components";
-	/** Also listed in the site header next to Components and Docs. */
-	inNav: boolean;
 	/** Folder under the consumer's `components/` it installs into. */
 	installDir: string;
 	/** Hidden from the public registry and production site until launch. */
@@ -37,7 +35,6 @@ export const CATEGORY: Record<Category, CategoryInfo> = {
 		title: "Base components",
 		blurb: "The controls every interface needs, with the motion already worked out.",
 		route: "components",
-		inNav: false,
 		installDir: "ui",
 		preview: false,
 	},
@@ -46,7 +43,6 @@ export const CATEGORY: Record<Category, CategoryInfo> = {
 		title: "Blocks",
 		blurb: "Whole sections you would otherwise rebuild on every project.",
 		route: "components",
-		inNav: false,
 		installDir: "blocks",
 		preview: false,
 	},
@@ -55,7 +51,6 @@ export const CATEGORY: Record<Category, CategoryInfo> = {
 		title: "Advanced components",
 		blurb: "Components with real interaction models behind them.",
 		route: "components",
-		inNav: false,
 		installDir: "ui",
 		preview: false,
 	},
@@ -64,7 +59,6 @@ export const CATEGORY: Record<Category, CategoryInfo> = {
 		title: "Animated components",
 		blurb: "Pieces where the motion is the point.",
 		route: "components",
-		inNav: false,
 		installDir: "animated",
 		preview: false,
 	},
@@ -73,7 +67,6 @@ export const CATEGORY: Record<Category, CategoryInfo> = {
 		title: "Agent UI components",
 		blurb: "Interface parts for products that talk back: messages, tools, reasoning.",
 		route: "components",
-		inNav: true,
 		installDir: "agents",
 		preview: false,
 	},
@@ -83,7 +76,6 @@ export const CATEGORY: Record<Category, CategoryInfo> = {
 		blurb:
 			"Copy that moves: reveals, swaps, hovers and loops built for headlines and labels.",
 		route: "components",
-		inNav: false,
 		installDir: "text",
 		preview: false,
 	},
@@ -93,7 +85,6 @@ export const CATEGORY: Record<Category, CategoryInfo> = {
 		blurb:
 			"Full-bleed animated surfaces and canvas effects that idle when nothing moves.",
 		route: "components",
-		inNav: false,
 		installDir: "backgrounds",
 		preview: false,
 	},
@@ -103,7 +94,6 @@ export const CATEGORY: Record<Category, CategoryInfo> = {
 		blurb:
 			"SVG charts on d3 with keyboard, screen-reader and reduced-motion support built in.",
 		route: "top-level",
-		inNav: true,
 		installDir: "charts",
 		preview: false,
 	},
@@ -113,7 +103,6 @@ export const CATEGORY: Record<Category, CategoryInfo> = {
 		blurb:
 			"1200x630 social cards built from your theme tokens, rendered to PNG with takumi.",
 		route: "top-level",
-		inNav: true,
 		installDir: "og",
 		preview: false,
 	},
@@ -123,7 +112,6 @@ export const CATEGORY: Record<Category, CategoryInfo> = {
 		blurb:
 			"Transactional email templates for React Email and Svelte, themed from your tokens, tested for real inboxes.",
 		route: "top-level",
-		inNav: true,
 		installDir: "emails",
 		preview: true,
 	},

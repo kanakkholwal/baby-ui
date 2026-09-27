@@ -9,6 +9,7 @@ export const pricing02 = defineComponent({
 		"A pricing section with a monthly and yearly toggle whose prices roll digit by digit, and a feature list under each plan.",
 	category: "blocks",
 	status: "stable",
+	retired: true,
 	variants: { variant: VARIANTS },
 	props: [
 		{

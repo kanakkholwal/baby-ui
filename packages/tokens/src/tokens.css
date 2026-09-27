@@ -13,10 +13,10 @@
 	--neon: oklch(80% 0.22 145);
 	--violet: oklch(68% 0.22 295);
 	/* Used as text too, so the light values sit at 4.5:1 on --background. */
-	--danger: oklch(52% 0.2 25);
-	--success: oklch(48% 0.15 155);
+	--danger: oklch(51% 0.2 25);
+	--success: oklch(48% 0.118 155);
 	--warning: oklch(50% 0.14 75);
-	--info: oklch(52% 0.18 255);
+	--info: oklch(49% 0.16 255);
 	--glass-bg: oklch(99% 0 0 / 0.55);
 	--glass-border: oklch(15% 0 0 / 0.08);
 	--gradient-bg: linear-gradient(135deg, oklch(99% 0 0) 0%, oklch(96% 0.008 210) 100%);
@@ -40,7 +40,8 @@
 	--destructive-foreground: oklch(99% 0 0);
 	--input: var(--border);
 	/* Derived, so focus reads as the brand colour in every theme without a second knob. */
-	--ring: color-mix(in oklch, var(--primary) 50%, transparent);
+	/* Solid: at 50% alpha the ring fell under 3:1 on 19 of 20 theme and mode pairs. */
+	--ring: var(--primary);
 
 	/* Series order is the colour-blind safety mechanism; never cycle or reorder. Sub-3:1
 	   light slots are relieved by the legend and the data table every chart ships. */
@@ -75,7 +76,9 @@
 	--border-strong: rgb(255 255 255 / 0.1);
 	--accent: oklch(80% 0.18 195);
 	--accent-fg: #151515;
-	--danger: oklch(62% 0.22 25);
+	--danger: oklch(69% 0.2 25);
+	/* Dark text, like the other status fills: white on this red is 2.96:1. */
+	--destructive-foreground: #151515;
 	--success: oklch(70% 0.18 155);
 	--warning: oklch(78% 0.18 75);
 	--info: oklch(70% 0.15 255);

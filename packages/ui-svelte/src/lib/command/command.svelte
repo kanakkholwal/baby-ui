@@ -1,13 +1,16 @@
 <script lang="ts">
-import { Command as CommandPrimitive } from "bits-ui";
+import { Command as CommandPrimitive, computeCommandScore } from "bits-ui";
 import type { Snippet } from "svelte";
 import { cn } from "../lib/cn";
 import { getCommandDialogState, setCommand } from "./context";
+import { rankCommandMatch } from "./score";
 import { commandFrame } from "./variants";
 
 let {
 	children,
 	value = $bindable(""),
+	filter = (item: string, search: string, keywords?: string[]) =>
+		rankCommandMatch(computeCommandScore(item, search, keywords), item, search),
 	class: classProp,
 	...rest
 }: Omit<CommandPrimitive.RootProps, "value" | "onStateChange"> & {
@@ -30,6 +33,7 @@ setCommand({
 
 <CommandPrimitive.Root
 	bind:value
+	{filter}
 	onStateChange={(state) => {
 		resultCount = state.filtered.count;
 	}}

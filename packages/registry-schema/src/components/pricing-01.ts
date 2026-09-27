@@ -9,6 +9,7 @@ export const pricing01 = defineComponent({
 		"A pricing section of plan cards that lift on hover while a note rises behind them, with a billing period toggle.",
 	category: "blocks",
 	status: "stable",
+	retired: true,
 	variants: { variant: VARIANTS },
 	props: [
 		{

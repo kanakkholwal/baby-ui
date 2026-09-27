@@ -9,11 +9,14 @@ let {
 	slug,
 	outline = [],
 	heading = true,
+	promo = true,
 }: {
 	slug: string;
 	outline?: Heading[];
 	/** Off inside a drawer that already titles itself "On this page". */
 	heading?: boolean;
+	/** Off where the page shows the sibling product elsewhere. */
+	promo?: boolean;
 } = $props();
 </script>
 
@@ -29,5 +32,5 @@ let {
 			<TableOfContents items={outline} />
 		</div>
 	{/if}
-	<PromoCard product={productFor(slug)} />
+	{#if promo}<PromoCard product={productFor(slug)} />{/if}
 </div>

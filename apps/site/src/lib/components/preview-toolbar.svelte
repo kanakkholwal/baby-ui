@@ -82,7 +82,7 @@ const groups = $derived<Action[][]>(
 );
 
 const button =
-	"grid size-7 shrink-0 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground aria-pressed:bg-foreground/[0.08] aria-pressed:text-foreground";
+	"grid size-7 shrink-0 place-items-center rounded-full pointer-coarse:size-10 text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground aria-pressed:bg-foreground/[0.08] aria-pressed:text-foreground";
 </script>
 
 <!-- Floats over the bottom of the preview frame. -->

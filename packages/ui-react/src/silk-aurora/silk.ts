@@ -113,6 +113,9 @@ const COLORS = ["uBase", "uMid", "uSheen", "uAccent"] as const;
 const STILL_TIME = 7.25;
 const POINTER_EASE = 0.045;
 
+// A slow ambient field reads the same at 30fps and halves GPU work on 120Hz screens.
+const FRAME_MS = 1000 / 30 - 1;
+
 /** Runs the silk shader on `canvas`; `onReady(false)` means WebGL is missing or lost. */
 export function mountSilkAurora(
 	root: HTMLElement,
@@ -123,19 +126,31 @@ export function mountSilkAurora(
 	let opts = initial;
 	const pointer = { x: 0.5, y: 0.5 };
 	const target = { x: 0.5, y: 0.5 };
+	// Touch has no hover, so pointer lean would only ever jump to the last tap.
+	const coarse = matchMedia("(pointer: coarse)");
 	const shader = mountShader(
 		root,
 		canvas,
 		{
 			fragment: FRAGMENT,
 			uniforms: [...UNIFORMS, ...COLORS],
+			context: {
+				alpha: true,
+				antialias: false,
+				depth: false,
+				powerPreference: "low-power",
+			},
 			stillTime: STILL_TIME,
+			frameMs: FRAME_MS,
 			colors: (u, rgb) => uploadInvertible(u, rgb, COLORS, opts.colors),
 			draw(u, reduced) {
 				u.vec2("uPointer", pointer.x, pointer.y);
 				u.float("uIntensity", opts.intensity);
 				u.float("uGrain", opts.grain);
-				u.float("uPointerStrength", opts.interactive && !reduced ? 1 : 0);
+				u.float(
+					"uPointerStrength",
+					opts.interactive && !reduced && !coarse.matches ? 1 : 0,
+				);
 			},
 			step(dt) {
 				pointer.x += (target.x - pointer.x) * POINTER_EASE;

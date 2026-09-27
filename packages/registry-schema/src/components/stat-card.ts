@@ -39,6 +39,35 @@ export const statCard = defineComponent({
 			control: { kind: "none" },
 		},
 		{
+			name: "comparisonLabel",
+			type: "string",
+			description:
+				'What the trend compares against, read after it by screen readers, e.g. "vs last month".',
+			control: { kind: "none" },
+		},
+		{
+			name: "positive",
+			type: '"up" | "down"',
+			description:
+				'Which direction is good news. Use "down" for churn, latency or cost; 0% is always neutral.',
+			default: "up",
+			control: { kind: "select", options: ["up", "down"] },
+		},
+		{
+			name: "status",
+			type: '"loading" | "ready" | "empty" | "error"',
+			description:
+				"Loading skeletons the headline and badge; empty and error replace the chart with a message.",
+			default: "ready",
+			control: { kind: "select", options: ["loading", "ready", "empty", "error"] },
+		},
+		{
+			name: "onRetry",
+			type: "() => void",
+			description: "Shows a Retry button in the error state.",
+			control: { kind: "none" },
+		},
+		{
 			name: "chart",
 			type: '"area" | "line"',
 			description: "Chart under the headline.",
@@ -70,7 +99,7 @@ export const statCard = defineComponent({
 		springs: [],
 		reducedMotion: "The headline swaps without counting; the chart settles instantly.",
 		behaviour: [
-			"The headline counts to the hovered value over 400ms and back to the resting value when the pointer leaves.",
+			"The headline counts over 400ms only when `value` changes; hovering the chart swaps the figure instantly.",
 			"The chart keeps the area or line chart's own reveal and hover motion.",
 		],
 	},
@@ -78,6 +107,8 @@ export const statCard = defineComponent({
 		keyboard: ["Inherits the chart plot's keyboard model"],
 		notes: [
 			"The trend badge pairs its colour with an arrow and a signed percentage, so direction never rests on colour alone.",
+			'Screen readers hear the badge as a sentence ("Increased by 12.5% vs last month"); 0% reads as no change.',
+			"A polite live region announces a new resting value, and the chart's summary uses the card's own number format.",
 		],
 	},
 	licenseOrigin: BKLIT,
@@ -97,6 +128,8 @@ export const statCard = defineComponent({
 				"card",
 				"badge",
 				"counter",
+				"skeleton",
+				"button",
 			],
 		},
 		svelte: {
@@ -114,6 +147,8 @@ export const statCard = defineComponent({
 				"card",
 				"badge",
 				"counter",
+				"skeleton",
+				"button",
 			],
 		},
 	},

@@ -17,6 +17,7 @@ import { bentoGrid } from "./bento-grid";
 import { boldCopy } from "./bold-copy";
 import { breadcrumb } from "./breadcrumb";
 import { button } from "./button";
+import { calendar, rangeCalendar } from "./calendar";
 import { candlestickChart } from "./candlestick-chart";
 import { card } from "./card";
 import { caseStudyFlipStack } from "./case-study-flip-stack";
@@ -60,6 +61,7 @@ import { dropdownMenu } from "./dropdown-menu";
 import { emailKit } from "./email-kit";
 import { emailWelcome } from "./email-welcome";
 import { eyeTracking } from "./eye-tracking";
+import { field } from "./field";
 import { fileDiff } from "./file-diff";
 import { fileTree } from "./file-tree";
 import { fillButton } from "./fill-button";
@@ -69,6 +71,7 @@ import { fisheyeInfiniteGrid } from "./fisheye-infinite-grid";
 import { flightStatusCard } from "./flight-status-card";
 import { flowchart } from "./flowchart";
 import { footer } from "./footer";
+import { form } from "./form";
 import { fullscreenNav } from "./fullscreen-nav";
 import { funnelChart } from "./funnel-chart";
 import { gaugeChart } from "./gauge-chart";
@@ -84,6 +87,8 @@ import { hoverCard } from "./hover-card";
 import { hoverTransition } from "./hover-transition";
 import { imageTrail } from "./image-trail";
 import { infiniteImageField } from "./infinite-image-field";
+import { inputGroup } from "./input-group";
+import { inputOtp } from "./input-otp";
 import { input } from "./input";
 import { jitterText } from "./jitter-text";
 import { jumpingText } from "./jumping-text";
@@ -105,7 +110,9 @@ import { mirrorText } from "./mirror-text";
 import { morphText } from "./morph-text";
 import { morphingModal } from "./morphing-modal";
 import { musicPlayer } from "./music-player";
+import { nativeSelect } from "./native-select";
 import { navbar } from "./navbar";
+import { navigationMenu } from "./navigation-menu";
 import { notchedShelf } from "./notched-shelf";
 import { ogAuthorProfile } from "./og-author-profile";
 import { ogBlogPost } from "./og-blog-post";
@@ -152,6 +159,7 @@ import { scrollTiltedGrid } from "./scroll-tilted-grid";
 import { scrollVelocity } from "./scroll-velocity";
 import { scrubField } from "./scrub-field";
 import { select } from "./select";
+import { separator } from "./separator";
 import { sheet } from "./sheet";
 import { shimmerText } from "./shimmer-text";
 import { shortcut } from "./shortcut";
@@ -228,6 +236,8 @@ export const specs: ComponentSpec[] = [
 	boldCopy,
 	breadcrumb,
 	button,
+	calendar,
+	rangeCalendar,
 	candlestickChart,
 	card,
 	caseStudyFlipStack,
@@ -272,6 +282,7 @@ export const specs: ComponentSpec[] = [
 	emailKit,
 	emailWelcome,
 	eyeTracking,
+	field,
 	fileDiff,
 	fileTree,
 	fillButton,
@@ -281,6 +292,7 @@ export const specs: ComponentSpec[] = [
 	flightStatusCard,
 	flowchart,
 	footer,
+	form,
 	fullscreenNav,
 	funnelChart,
 	gaugeChart,
@@ -296,6 +308,8 @@ export const specs: ComponentSpec[] = [
 	hoverTransition,
 	imageTrail,
 	infiniteImageField,
+	inputGroup,
+	inputOtp,
 	input,
 	jitterText,
 	jumpingText,
@@ -317,7 +331,9 @@ export const specs: ComponentSpec[] = [
 	morphText,
 	morphingModal,
 	musicPlayer,
+	nativeSelect,
 	navbar,
+	navigationMenu,
 	notchedShelf,
 	ogAuthorProfile,
 	ogBlogPost,
@@ -364,6 +380,7 @@ export const specs: ComponentSpec[] = [
 	scrollVelocity,
 	scrubField,
 	select,
+	separator,
 	sheet,
 	shimmerText,
 	shortcut,

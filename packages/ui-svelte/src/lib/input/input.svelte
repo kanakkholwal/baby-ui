@@ -27,6 +27,6 @@ let {
 	data-slot="input"
 	{...rest}
 	bind:value
-	aria-invalid={invalid || undefined}
+	aria-invalid={invalid || rest["aria-invalid"] || undefined}
 	class={cn(input({ size }), classProp)}
 />

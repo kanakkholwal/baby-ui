@@ -21,7 +21,8 @@ const head = $derived(
 </script>
 
 <div class="scroll-area overflow-x-auto">
-	<div class="min-w-max whitespace-nowrap px-5 py-4 font-mono text-[13px] leading-[1.7]">
+	<!-- Phones wrap the command inside its box; wider screens keep it on one line. -->
+	<div class="px-5 py-4 font-mono text-[13px] leading-[1.7] [overflow-wrap:anywhere] sm:min-w-max sm:whitespace-nowrap">
 		<span class="select-none text-muted-foreground">$&nbsp;</span
 		><span class="text-[#1f6feb] dark:text-[#ffa657]">{verb[0]}</span
 		>{#if verb[1]}<span class="text-[#6f42c1] dark:text-[#d2a8ff]">&nbsp;{verb[1]}</span

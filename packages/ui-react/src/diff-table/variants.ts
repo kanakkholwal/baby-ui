@@ -5,7 +5,8 @@ export const diffRow = tv({
 		row: "",
 		label: "font-medium tabular-nums transition-colors duration-200",
 		detail: "transition-colors duration-200",
-		mark: "text-white",
+		// White on the dark-mode status fills is under 3:1.
+		mark: "text-white dark:text-background",
 	},
 	variants: {
 		change: {

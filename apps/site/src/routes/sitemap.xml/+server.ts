@@ -1,8 +1,8 @@
 import { guides } from "virtual:docvia/source";
 import { CATEGORIES, docsPath } from "@baby-ui/registry-schema";
-import { categoryHref } from "$lib/registry";
+import { COLLECTIONS, categoryHref } from "$lib/registry";
 import { absoluteUrl, SITE_URL } from "$lib/seo";
-import { specs } from "$lib/server/registry";
+import { liveSpecs as specs } from "$lib/server/registry";
 import type { RequestHandler } from "./$types";
 
 export const prerender = true;
@@ -15,9 +15,12 @@ function url(path: string, priority: string): string {
 export const GET: RequestHandler = async () => {
 	const staticPages = [url("/", "1.0"), url("/components", "0.9")];
 
-	const categoryPages = CATEGORIES.filter((c) => specs.some((s) => s.category === c)).map(
-		(c) => url(categoryHref(c), "0.7"),
-	);
+	const categoryPages = [
+		...CATEGORIES.filter((c) => specs.some((s) => s.category === c)).map((c) =>
+			categoryHref(c),
+		),
+		...Object.keys(COLLECTIONS).map((id) => `/${id}`),
+	].map((path) => url(path, "0.7"));
 
 	// Alpha/experimental components are noindexed; keep them out of the sitemap too.
 	const componentPages = specs

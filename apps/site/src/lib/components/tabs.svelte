@@ -88,10 +88,11 @@ function onkeydown(event: KeyboardEvent) {
 		classProp,
 	]}
 >
+	<!-- No motion: tabs switch tens of times a session, often by arrow key. -->
 	<span
 		aria-hidden="true"
 		class={[
-			"pointer-events-none absolute left-0 transition-[transform,scale,translate,width] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none",
+			"pointer-events-none absolute left-0",
 			variant === "pill" && "top-1 bottom-1 rounded-full bg-primary",
 			variant === "segment" && "top-0.5 bottom-0.5 rounded-md border border-border bg-background",
 			variant === "underline" && "-bottom-px h-0.5 rounded-full bg-primary",
@@ -112,7 +113,7 @@ function onkeydown(event: KeyboardEvent) {
 			onclick={() => (active = tab.id)}
 			{onkeydown}
 			class={[
-				"relative z-10 inline-flex shrink-0 items-center justify-center whitespace-nowrap bg-transparent font-medium text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring",
+				"relative z-10 inline-flex shrink-0 items-center justify-center whitespace-nowrap bg-transparent font-medium text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring",
 				radius,
 				variant === "pill" && "px-3.5 py-1.5 text-sm",
 				variant === "segment" && "h-7 px-2.5 text-xs aria-selected:text-foreground",
@@ -124,7 +125,7 @@ function onkeydown(event: KeyboardEvent) {
 				<span
 					aria-hidden="true"
 					class={[
-						"pointer-events-none absolute inset-0 inline-flex items-center justify-center transition-[clip-path] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none",
+						"pointer-events-none absolute inset-0 inline-flex items-center justify-center",
 						radius,
 						variant === "pill" ? "text-primary-foreground" : "text-foreground",
 					]}

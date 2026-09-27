@@ -1,135 +1,96 @@
 <script lang="ts">
-import { Button, DiaText, FillButton, ShimmerText } from "@baby-ui/svelte";
-import IconArrowUpRight from "@tabler/icons-svelte/icons/arrow-up-right";
-import IconBrandReact from "@tabler/icons-svelte/icons/brand-react";
-import IconBrandSvelte from "@tabler/icons-svelte/icons/brand-svelte";
-
-let { count }: { count: number } = $props();
+import { DiaText, FillButton, SilkAurora } from "@baby-ui/svelte";
 
 const TAILS = ["feel alive.", "move with you.", "ship twice."];
 
-type Dashboard = typeof import("./hero-dashboard.svelte").default;
-let Dashboard = $state<Dashboard>();
-
-// Client-only and md+ only: phones never download, render or hydrate it. The slot below keeps
-// its measured height (559px at every width), so it fills in without shifting the copy.
-$effect(() => {
-	const query = matchMedia("(min-width: 768px)");
-	const load = () => {
-		if (query.matches && !Dashboard)
-			void import("./hero-dashboard.svelte").then((m) => (Dashboard = m.default));
-	};
-	load();
-	query.addEventListener("change", load);
-	return () => query.removeEventListener("change", load);
-});
+// Measured, not claimed: the chart and base pages pass axe, and every component ships both ports.
+const PROOF = [
+	"0 axe violations",
+	"Keyboard first",
+	"Reduced motion",
+	"React + Svelte",
+	"shadcn CLI",
+];
 </script>
 
-<div class="mx-auto grid w-full max-w-7xl items-center gap-14 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-10">
-	<div class="text-center lg:text-left">
-		<a
-			href="/components"
-			class="reveal group mb-7 inline-flex min-h-8 items-center gap-2 rounded-full border border-border bg-background py-1 pr-3 pl-1 text-foreground text-xs transition-colors hover:border-ring"
-		>
-			<span class="rounded-full bg-primary px-2 py-0.5 font-medium text-[11px] text-primary-foreground">New</span>
-			<ShimmerText as="span" text="Charts, text motion and AI blocks" />
-			<IconArrowUpRight
-				size={13}
-				stroke={1.7}
-				class="text-muted-foreground transition-transform duration-150 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 motion-reduce:transition-none"
-			/>
-		</a>
+<div class="relative isolate overflow-x-clip">
+	<SilkAurora
+		tone="surface"
+		speed="slow"
+		intensity={0.8}
+		class="-z-10 [mask-image:linear-gradient(to_bottom,black_45%,transparent)]"
+	/>
 
-		<h1 class="font-normal text-5xl text-foreground leading-[1.02] tracking-[-0.05em] sm:text-6xl xl:text-7xl">
-			<span class="reveal block">Interfaces that</span>
-			<span class="reveal block" style:animation-delay="120ms">
+	<div class="mx-auto flex max-w-3xl flex-col items-center px-4 pt-24 pb-24 text-center md:pt-36 md:pb-32">
+		<h1 class="hero-in font-normal text-5xl text-foreground leading-[1.02] tracking-[-0.05em] sm:text-6xl xl:text-7xl">
+			<span class="block">Interfaces that</span>
+			<span class="block">
 				<DiaText text={TAILS} repeat triggerOnView={false} durationMs={900} repeatDelayMs={2600} />
 			</span>
 		</h1>
 
 		<p
-			class="reveal mx-auto mt-6 max-w-md text-pretty text-base text-foreground/70 leading-7 lg:mx-0"
-			style:animation-delay="260ms"
+			class="hero-in mt-6 max-w-lg text-pretty text-base text-foreground/70 leading-7 sm:text-lg sm:leading-8"
+			style:--i="1"
 		>
-			Accessible, animated components for React and Svelte. One spec, one token layer, installed
-			with the shadcn CLI.
+			Accessible components for React and Svelte, built for real product screens: agents, data,
+			forms and charts. Installed as source with the shadcn CLI.
 		</p>
 
-		<div
-			class="reveal mt-8 flex flex-wrap items-center justify-center gap-3 lg:justify-start"
-			style:animation-delay="380ms"
-		>
+		<div class="hero-in mt-9" style:--i="2">
 			<FillButton href="/components">Browse components</FillButton>
-			<Button href="/docs" size="lg" variant="outline" class="h-11 rounded-xl">Read the docs</Button>
 		</div>
 
-		<div
-			class="reveal mt-8 flex items-center justify-center gap-3 lg:justify-start"
-			style:animation-delay="480ms"
+		<ul
+			aria-label="What every component ships with"
+			class="hero-in mt-12 flex max-w-xl flex-wrap items-center justify-center gap-x-5 gap-y-2 text-muted-foreground text-xs"
+			style:--i="3"
 		>
-			<div class="flex -space-x-2">
-				<span class="grid size-8 place-items-center rounded-full border border-border bg-background text-foreground">
-					<IconBrandReact size={16} stroke={1.6} />
-				</span>
-				<span class="grid size-8 place-items-center rounded-full border border-border bg-background text-foreground">
-					<IconBrandSvelte size={16} stroke={1.6} />
-				</span>
-			</div>
-			<p class="text-left text-foreground/70 text-xs leading-snug">
-				{count} components<br />React 19 and Svelte 5
-			</p>
-		</div>
-	</div>
-
-	<div class="reveal hidden md:block" style:animation-delay="150ms">
-		<div class="min-h-[559px]">
-			{#if Dashboard}
-				<div class="dashboard-in"><Dashboard /></div>
-			{/if}
-		</div>
+			{#each PROOF as fact, i (fact)}
+				<li class="flex items-center gap-5">
+					{#if i > 0}<span aria-hidden="true" class="size-1 rounded-full bg-border-strong"></span>{/if}
+					{fact}
+				</li>
+			{/each}
+		</ul>
 	</div>
 </div>
 
 <style>
-	.reveal {
-		opacity: 0;
-		transform: translateY(0.4em);
-		animation: reveal 620ms var(--ease-out) forwards;
+	/* One entrance, played once: 400ms per block, 50ms apart, done by 550ms. */
+	.hero-in {
+		animation: hero-in 400ms var(--ease-out) both;
+		animation-delay: calc(var(--i, 0) * 50ms);
 	}
 
-	/* Phones: text is visible from the first frame and only rises in, so first paint is the LCP. */
+	/* Phones: visible from the first frame, so the headline is the LCP paint; it only rises. */
 	@media (max-width: 767px) {
-		.reveal {
-			opacity: 1;
-			animation-name: reveal-rise;
+		.hero-in {
+			animation-name: hero-rise;
 		}
 	}
 
-	.dashboard-in {
-		animation: reveal 620ms var(--ease-out) both;
-		opacity: 0;
-		transform: translateY(0.4em);
+	/* Keyboard focus never waits for an entrance to finish. */
+	.hero-in:focus-within {
+		animation: none;
 	}
 
-	@keyframes reveal-rise {
-		to {
-			transform: none;
+	@keyframes hero-in {
+		from {
+			opacity: 0;
+			transform: translateY(8px);
 		}
 	}
 
-	@keyframes reveal {
-		to {
-			opacity: 1;
-			transform: none;
+	@keyframes hero-rise {
+		from {
+			transform: translateY(8px);
 		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.reveal,
-		.dashboard-in {
+		.hero-in {
 			animation: none;
-			opacity: 1;
-			transform: none;
 		}
 	}
 </style>

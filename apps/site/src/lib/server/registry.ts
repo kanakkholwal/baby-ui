@@ -33,10 +33,13 @@ export const specs: readonly ComponentSpec[] = [
 	...(__SHOW_PRO__ ? Object.values(pro).flat() : []),
 ];
 
+/** What the site lists: retired specs keep their page and registry item, nothing else. */
+export const liveSpecs: readonly ComponentSpec[] = specs.filter((s) => !s.retired);
+
 /** Categories with at least one component, in schema order. */
 export function navCategories(): NavCategory[] {
 	return CATEGORIES.flatMap((category) => {
-		const count = specs.filter((s) => s.category === category).length;
+		const count = liveSpecs.filter((s) => s.category === category).length;
 		return count
 			? [
 					{
@@ -51,7 +54,7 @@ export function navCategories(): NavCategory[] {
 }
 
 export function catalog(): CatalogItem[] {
-	return specs.map((s) => ({
+	return liveSpecs.map((s) => ({
 		slug: s.slug,
 		name: s.name,
 		category: s.category,
@@ -76,7 +79,7 @@ export function cardItem(spec: ComponentSpec): CardItem {
 /** Card data for the given slugs, in the order given; unknown slugs are dropped. */
 export function cardItems(slugs: string[]): CardItem[] {
 	return slugs.flatMap((slug) => {
-		const spec = specs.find((s) => s.slug === slug);
+		const spec = liveSpecs.find((s) => s.slug === slug);
 		return spec ? [cardItem(spec)] : [];
 	});
 }
@@ -89,7 +92,7 @@ export function sidebarGroups(lead?: Category): SidebarGroup[] {
 			category,
 			label: CATEGORY_LABEL[category],
 			// Alphabetical: the sidebar is for finding a known name, not for browsing.
-			items: specs
+			items: liveSpecs
 				.filter((s) => s.category === category)
 				.map((s) => ({
 					slug: s.slug,

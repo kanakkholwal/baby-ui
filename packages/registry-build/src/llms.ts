@@ -6,7 +6,9 @@ const entry = (title: string, url: string, notes: string) =>
 	`- [${title}](${url}): ${notes}`;
 
 /** llmstxt.org layout: H1, summary blockquote, prose, then H2 sections of markdown links. */
-export function buildLlmsTxt(specs: ComponentSpec[]): string {
+export function buildLlmsTxt(all: ComponentSpec[]): string {
+	// Retired items still install, but nothing should point a reader at them.
+	const specs = all.filter((s) => !s.retired);
 	const lines = [
 		"# Baby UI",
 		"",

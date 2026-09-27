@@ -37,7 +37,8 @@ let {
 	...rest
 }: Props = $props();
 
-const id = $props.id();
+const autoId = $props.id();
+const id = $derived(rest.id ?? autoId);
 const wrapped = $derived(Boolean(label || description || showCount));
 
 // Height follows content, never eases: easing lags behind the character just typed.
@@ -59,8 +60,8 @@ $effect(() => {
 		bind:this={ref}
 		bind:value
 		{rows}
-		aria-invalid={invalid || undefined}
-		aria-describedby={description ? `${id}-description` : undefined}
+		aria-invalid={invalid || rest["aria-invalid"] || undefined}
+		aria-describedby={description ? `${id}-description` : rest["aria-describedby"]}
 		class={cn(textarea({ size, variant, autoGrow }), classProp)}
 	></textarea>
 {/snippet}
