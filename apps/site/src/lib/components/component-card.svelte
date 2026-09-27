@@ -1,39 +1,7 @@
-<script module lang="ts">
-type Slot = { visible: boolean; release: () => void };
-
-// Bounded pool of mounted demos. Past the cap, the oldest off-screen card gives up its slot,
-// so scrolling the full catalog never keeps more than a screenful of live demos.
-const pool: Slot[] = [];
-
-function claim(slot: Slot) {
-	pool.push(slot);
-	const cap = matchMedia("(hover: hover)").matches ? 12 : 4;
-	while (pool.length > cap) {
-		const i = pool.findIndex((s) => !s.visible);
-		const [evicted] = pool.splice(i === -1 ? 0 : i, 1);
-		evicted?.release();
-	}
-}
-
-function drop(slot: Slot) {
-	const i = pool.indexOf(slot);
-	if (i !== -1) pool.splice(i, 1);
-}
-
-// Safari has no requestIdleCallback.
-const onIdle = (cb: () => void) =>
-	typeof requestIdleCallback === "function"
-		? requestIdleCallback(cb, { timeout: 1000 })
-		: window.setTimeout(cb, 1);
-const offIdle = (id: number) =>
-	typeof cancelIdleCallback === "function"
-		? cancelIdleCallback(id)
-		: window.clearTimeout(id);
-</script>
-
 <script lang="ts">
 import { Spinner } from "@baby-ui/svelte";
 import { demos } from "$lib/demos";
+import { claim, type LiveSlot, watchLive } from "$lib/live-demo";
 import type { CardItem } from "$lib/registry";
 
 let { item }: { item: CardItem } = $props();
@@ -41,7 +9,7 @@ let { item }: { item: CardItem } = $props();
 let frame = $state<HTMLElement>();
 let live = $state(false);
 
-const slot: Slot = { visible: false, release: () => (live = false) };
+const slot: LiveSlot = { visible: false, release: () => (live = false) };
 
 function activate() {
 	if (live) return;
@@ -49,43 +17,10 @@ function activate() {
 	claim(slot);
 }
 
-// A card goes live after resting in view for 300ms and the browser is idle, so a fast scroll
-// through the catalog mounts nothing; it releases its demo once it is far out of view.
+// Live after resting in view while idle; released once far out of view.
 $effect(() => {
-	const el = frame;
-	if (!el) return;
-	let timer: number | undefined;
-	let idle: number | undefined;
-	const cancel = () => {
-		window.clearTimeout(timer);
-		if (idle !== undefined) offIdle(idle);
-		idle = undefined;
-	};
-	const seen = new IntersectionObserver(
-		([entry]) => {
-			slot.visible = Boolean(entry?.isIntersecting);
-			cancel();
-			if (!slot.visible) return;
-			timer = window.setTimeout(() => (idle = onIdle(activate)), 300);
-		},
-		{ threshold: 0.25 },
-	);
-	const far = new IntersectionObserver(
-		([entry]) => {
-			if (entry?.isIntersecting) return;
-			live = false;
-			drop(slot);
-		},
-		{ rootMargin: "600px 0px" },
-	);
-	seen.observe(el);
-	far.observe(el);
-	return () => {
-		cancel();
-		seen.disconnect();
-		far.disconnect();
-		drop(slot);
-	};
+	if (!frame) return;
+	return watchLive(frame, slot, activate, () => (live = false));
 });
 
 const demoPromise = $derived(live ? demos[item.slug]?.() : undefined);

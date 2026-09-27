@@ -3512,3 +3512,68 @@
 		animation: none;
 	}
 }
+
+/* bits-ui navigation menu: its presence waits for animations, not transitions, so the panels
+   cross-slide on keyframes keyed to data-motion, as shadcn-svelte does. */
+.nav-menu-content[data-motion="from-start"] {
+	animation: nav-menu-from-start var(--duration-overlay) var(--ease-out);
+}
+.nav-menu-content[data-motion="from-end"] {
+	animation: nav-menu-from-end var(--duration-overlay) var(--ease-out);
+}
+.nav-menu-content[data-motion="to-start"] {
+	animation: nav-menu-to-start var(--duration-overlay) var(--ease-out) forwards;
+}
+.nav-menu-content[data-motion="to-end"] {
+	animation: nav-menu-to-end var(--duration-overlay) var(--ease-out) forwards;
+}
+.nav-menu-viewport[data-state="open"] {
+	animation: nav-menu-viewport-in var(--duration-dropdown) var(--ease-out);
+}
+.nav-menu-viewport[data-state="closed"] {
+	animation: nav-menu-viewport-out var(--duration-exit) var(--ease-out) forwards;
+}
+
+@keyframes nav-menu-from-start {
+	from {
+		opacity: 0;
+		translate: -13rem 0;
+	}
+}
+@keyframes nav-menu-from-end {
+	from {
+		opacity: 0;
+		translate: 13rem 0;
+	}
+}
+@keyframes nav-menu-to-start {
+	to {
+		opacity: 0;
+		translate: -13rem 0;
+	}
+}
+@keyframes nav-menu-to-end {
+	to {
+		opacity: 0;
+		translate: 13rem 0;
+	}
+}
+@keyframes nav-menu-viewport-in {
+	from {
+		opacity: 0;
+		scale: 0.9;
+	}
+}
+@keyframes nav-menu-viewport-out {
+	to {
+		opacity: 0;
+		scale: 0.9;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.nav-menu-content,
+	.nav-menu-viewport {
+		animation: none !important;
+	}
+}

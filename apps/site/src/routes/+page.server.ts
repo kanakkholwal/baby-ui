@@ -1,7 +1,14 @@
 import { cardItems } from "$lib/server/registry";
 import type { PageServerLoad } from "./$types";
 
-/** The components the home page's area switcher shows, one per tab. */
-const SHOWCASE = ["message", "records-table", "input", "line-chart"];
+/** The showcase grid: one live panel per area, none repeating the hero. */
+const GRID = [
+	"area-chart",
+	"text-loop",
+	"task-rows",
+	"webgl-liquid",
+	"circuit-board",
+	"week-calendar",
+];
 
-export const load: PageServerLoad = () => ({ showcase: cardItems(SHOWCASE) });
+export const load: PageServerLoad = () => ({ grid: cardItems(GRID) });

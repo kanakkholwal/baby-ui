@@ -38,7 +38,7 @@ const duration = $derived(prefersReducedMotion.current ? 0 : 200);
 								onclick={() => (open[prop.name] = !expanded)}
 								class="grid w-full grid-cols-[42%_minmax(0,1fr)_2.5rem] items-center text-left transition-colors hover:bg-foreground/[0.03] sm:grid-cols-[30%_minmax(0,1fr)_2.5rem]"
 							>
-								<span class="min-w-0 px-4 py-3 font-mono text-[13px] text-sky-400 wrap-anywhere">
+								<span class="min-w-0 px-4 py-3 font-mono text-[13px] text-info wrap-anywhere">
 									{prop.name}{prop.required ? "" : "?"}
 								</span>
 								<span class="min-w-0 px-4 py-3 font-mono text-[13px] text-foreground wrap-anywhere">

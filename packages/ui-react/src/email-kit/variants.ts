@@ -5,9 +5,11 @@ import { tv, type VariantProps } from "tailwind-variants";
 export const emailShell = tv({
 	slots: {
 		body: "m-0 font-sans",
-		page: "bg-card py-10 dark:bg-card-dark",
+		page: "bg-card py-12 dark:bg-card-dark",
 		container: "mx-auto w-full px-4",
-		card: "rounded-lg border border-border border-solid bg-background px-8 py-9 dark:border-border-dark dark:bg-background-dark",
+		// The card has no padding of its own, so a footer band inside it can run edge to edge.
+		card: "rounded-lg border border-border border-solid bg-background dark:border-border-dark dark:bg-background-dark",
+		content: "px-8 py-10",
 	},
 	variants: {
 		width: {
@@ -18,19 +20,29 @@ export const emailShell = tv({
 			card: {},
 			plain: {
 				page: "bg-background dark:bg-background-dark",
-				card: "rounded-none border-0 bg-transparent px-0 dark:bg-transparent",
+				card: "rounded-none border-0 bg-transparent dark:bg-transparent",
+				content: "px-0",
+			},
+			// Children are EmailSection cards with gaps between them, on the quiet page.
+			stacked: {
+				card: "rounded-none border-0 bg-transparent dark:bg-transparent",
+				content: "px-0 py-0",
 			},
 		},
+		accent: {
+			none: {},
+			top: { card: "border-t-4 border-t-accent dark:border-t-accent-dark" },
+		},
 	},
-	defaultVariants: { width: "md", surface: "card" },
+	defaultVariants: { width: "md", surface: "card", accent: "none" },
 });
 
 export const emailHeader = tv({
 	slots: {
-		root: "mb-8",
+		root: "mb-10",
 		logo: "h-8 w-auto",
 		brand:
-			"m-0 font-semibold text-[15px] text-foreground leading-[24px] dark:text-foreground-dark",
+			"m-0 font-semibold text-[16px] text-foreground leading-[24px] tracking-[-0.01em] dark:text-foreground-dark",
 	},
 	variants: {
 		align: {
@@ -42,14 +54,124 @@ export const emailHeader = tv({
 });
 
 export const emailHeading = tv({
-	base: "m-0 font-semibold text-foreground tracking-[-0.01em] dark:text-foreground-dark",
+	base: "m-0 font-semibold text-foreground tracking-[-0.02em] dark:text-foreground-dark",
 	variants: {
 		size: {
 			md: "text-[20px] leading-[28px]",
-			lg: "text-[24px] leading-[32px]",
+			lg: "text-[26px] leading-[34px]",
+			display: "font-extrabold text-[40px] leading-[44px] tracking-[-0.03em]",
+		},
+		align: {
+			left: "text-left",
+			center: "text-center",
 		},
 	},
-	defaultVariants: { size: "lg" },
+	defaultVariants: { size: "lg", align: "left" },
+});
+
+export const emailHero = tv({
+	slots: {
+		root: "rounded-lg px-7 py-8",
+		eyebrow: "m-0 font-semibold text-[12px] leading-[18px] tracking-[0.04em]",
+		meta: "m-0 text-right text-[12px] leading-[18px]",
+		title: "m-0 mt-4 font-extrabold tracking-[-0.03em]",
+		text: "m-0 mt-3 text-[15px] leading-[24px]",
+		image: "mt-6 w-full rounded-lg",
+	},
+	variants: {
+		tone: {
+			muted: {
+				root: "bg-card dark:bg-card-dark",
+				eyebrow: "text-muted-foreground dark:text-muted-foreground-dark",
+				meta: "text-muted-foreground dark:text-muted-foreground-dark",
+				title: "text-foreground dark:text-foreground-dark",
+				text: "text-muted-foreground dark:text-muted-foreground-dark",
+			},
+			accent: {
+				root: "bg-accent-soft dark:bg-accent-soft-dark",
+				eyebrow: "text-foreground dark:text-foreground-dark",
+				meta: "text-foreground dark:text-foreground-dark",
+				title: "text-foreground dark:text-foreground-dark",
+				text: "text-foreground dark:text-foreground-dark",
+			},
+			inverse: {
+				root: "bg-foreground dark:bg-foreground-dark",
+				eyebrow: "text-background dark:text-background-dark",
+				meta: "text-background dark:text-background-dark",
+				title: "text-background dark:text-background-dark",
+				text: "text-background dark:text-background-dark",
+			},
+			destructive: {
+				root: "bg-destructive-soft dark:bg-destructive-soft-dark",
+				eyebrow: "text-destructive dark:text-destructive-dark",
+				meta: "text-foreground dark:text-foreground-dark",
+				title: "text-foreground dark:text-foreground-dark",
+				text: "text-foreground dark:text-foreground-dark",
+			},
+		},
+		size: {
+			md: { title: "text-[26px] leading-[32px]" },
+			display: { title: "text-[40px] leading-[44px]" },
+		},
+		align: {
+			left: { root: "text-left" },
+			center: { root: "text-center" },
+		},
+	},
+	defaultVariants: { tone: "muted", size: "display", align: "left" },
+});
+
+export const emailPanel = tv({
+	base: "rounded-lg px-6 py-5",
+	variants: {
+		tone: {
+			muted: "bg-card dark:bg-card-dark",
+			accent: "bg-accent-soft dark:bg-accent-soft-dark",
+			outline: "border border-border border-solid dark:border-border-dark",
+		},
+	},
+	defaultVariants: { tone: "muted" },
+});
+
+export const emailSection = tv({
+	base: "mb-4 rounded-lg border border-border border-solid bg-background px-8 py-8 dark:border-border-dark dark:bg-background-dark",
+	variants: {
+		align: {
+			left: "text-left",
+			center: "text-center",
+		},
+	},
+	defaultVariants: { align: "left" },
+});
+
+export const emailList = tv({
+	slots: {
+		markerCell: "w-[40px] py-2 align-top",
+		marker:
+			"m-0 h-[26px] w-[26px] rounded-full text-center font-semibold text-[13px] leading-[26px]",
+		icon: "h-[20px] w-[20px]",
+		title:
+			"m-0 pt-[2px] font-semibold text-[14px] text-foreground leading-[22px] dark:text-foreground-dark",
+		text: "m-0 text-[14px] text-muted-foreground leading-[22px] dark:text-muted-foreground-dark",
+		body: "py-2 align-top",
+	},
+	variants: {
+		marker: {
+			number: {
+				marker:
+					"bg-accent-soft text-foreground dark:bg-accent-soft-dark dark:text-foreground-dark",
+			},
+			check: {
+				marker:
+					"bg-success-soft text-success dark:bg-success-soft-dark dark:text-success-dark",
+			},
+			dot: {
+				marker: "text-muted-foreground dark:text-muted-foreground-dark",
+			},
+			icon: {},
+		},
+	},
+	defaultVariants: { marker: "number" },
 });
 
 export const emailText = tv({
@@ -61,27 +183,56 @@ export const emailText = tv({
 		},
 		size: {
 			sm: "text-[13px] leading-[20px]",
-			md: "text-[15px] leading-[24px]",
+			md: "text-[15px] leading-[26px]",
 		},
 	},
 	defaultVariants: { tone: "default", size: "md" },
 });
 
+export const emailBadge = tv({
+	base: "m-0 inline-block rounded-sm px-2 py-[2px] font-semibold text-[12px] leading-[18px] tracking-[0.02em]",
+	variants: {
+		tone: {
+			neutral:
+				"bg-card text-muted-foreground dark:bg-card-dark dark:text-muted-foreground-dark",
+			accent:
+				"bg-accent-soft text-foreground dark:bg-accent-soft-dark dark:text-foreground-dark",
+			success:
+				"bg-success-soft text-success dark:bg-success-soft-dark dark:text-success-dark",
+			warning:
+				"bg-warning-soft text-warning dark:bg-warning-soft-dark dark:text-warning-dark",
+			destructive:
+				"bg-destructive-soft text-destructive dark:bg-destructive-soft-dark dark:text-destructive-dark",
+		},
+	},
+	defaultVariants: { tone: "neutral" },
+});
+
 export const emailButton = tv({
-	base: "rounded font-semibold no-underline",
+	base: "font-semibold",
 	variants: {
 		variant: {
 			primary:
-				"bg-primary text-primary-foreground dark:bg-primary-dark dark:text-primary-foreground-dark",
+				"rounded bg-primary text-primary-foreground no-underline dark:bg-primary-dark dark:text-primary-foreground-dark",
 			secondary:
-				"border border-border-strong border-solid bg-background text-foreground dark:border-border-strong-dark dark:bg-background-dark dark:text-foreground-dark",
+				"rounded border border-border-strong border-solid bg-background text-foreground no-underline dark:border-border-strong-dark dark:bg-background-dark dark:text-foreground-dark",
+			link: "text-foreground underline dark:text-foreground-dark",
 		},
 		size: {
 			md: "px-5 py-3 text-[14px] leading-[20px]",
 			lg: "px-6 py-[14px] text-[15px] leading-[20px]",
 		},
+		shape: {
+			rounded: "",
+			pill: "rounded-full",
+		},
+		width: {
+			auto: "",
+			full: "box-border block w-full text-center",
+		},
 	},
-	defaultVariants: { variant: "primary", size: "md" },
+	compoundVariants: [{ variant: "link", class: "px-0 py-0" }],
+	defaultVariants: { variant: "primary", size: "md", shape: "rounded", width: "auto" },
 });
 
 /** Padding the Svelte button also needs as numbers, for its Outlook (MSO) spacer. */
@@ -91,14 +242,18 @@ export const EMAIL_BUTTON_PADDING: Record<EmailButtonSize, { x: number; y: numbe
 };
 
 export const emailCallout = tv({
-	base: "rounded px-5 py-4",
+	slots: {
+		root: "rounded px-5 py-4",
+		title:
+			"m-0 mb-1 font-semibold text-[14px] text-foreground leading-[22px] dark:text-foreground-dark",
+	},
 	variants: {
 		tone: {
-			neutral: "bg-card dark:bg-card-dark",
-			info: "bg-info-soft dark:bg-info-soft-dark",
-			success: "bg-success-soft dark:bg-success-soft-dark",
-			warning: "bg-warning-soft dark:bg-warning-soft-dark",
-			destructive: "bg-destructive-soft dark:bg-destructive-soft-dark",
+			neutral: { root: "bg-card dark:bg-card-dark" },
+			info: { root: "bg-info-soft dark:bg-info-soft-dark" },
+			success: { root: "bg-success-soft dark:bg-success-soft-dark" },
+			warning: { root: "bg-warning-soft dark:bg-warning-soft-dark" },
+			destructive: { root: "bg-destructive-soft dark:bg-destructive-soft-dark" },
 		},
 	},
 	defaultVariants: { tone: "neutral" },
@@ -118,8 +273,74 @@ export const emailDivider = tv({
 export const emailFooter = tv({
 	slots: {
 		root: "mt-8 px-8",
-		text: "m-0 text-[12px] text-muted-foreground leading-[18px] dark:text-muted-foreground-dark",
+		bar: "",
+		brand:
+			"m-0 font-extrabold text-[16px] text-foreground leading-[24px] tracking-[-0.01em] dark:text-foreground-dark",
+		text: "m-0 text-[12px] text-muted-foreground leading-[20px] dark:text-muted-foreground-dark",
+		reason:
+			"m-0 mb-3 text-[12px] text-muted-foreground leading-[20px] dark:text-muted-foreground-dark",
 		link: "text-muted-foreground underline dark:text-muted-foreground-dark",
+		linksCell: "text-right align-middle",
+		linkText:
+			"m-0 text-[12px] text-muted-foreground leading-[20px] dark:text-muted-foreground-dark",
+		legal: "mt-4",
+	},
+	variants: {
+		// `plain` sits under the card; the rest go in EmailShell's `cardFooter`, inside the card.
+		layout: {
+			plain: {},
+			band: {
+				root: "mt-0 rounded-b-lg border-0 border-border border-t border-solid bg-card px-8 py-6 dark:border-border-dark dark:bg-card-dark",
+			},
+			bar: {
+				root: "mt-0 px-8 pb-8",
+				bar: "rounded-lg bg-foreground px-6 py-5 dark:bg-foreground-dark",
+				brand: "text-background dark:text-background-dark",
+				link: "text-background underline dark:text-background-dark",
+				linkText: "text-background dark:text-background-dark",
+			},
+			row: {
+				root: "mt-0 border-0 border-border border-t border-solid px-8 py-5 dark:border-border-dark",
+			},
+		},
+		align: {
+			left: { root: "text-left" },
+			center: { root: "text-center" },
+		},
+	},
+	defaultVariants: { layout: "plain", align: "center" },
+});
+
+export const emailCode = tv({
+	base: "m-0 rounded-lg border border-border border-solid bg-card px-6 py-5 text-center font-mono font-semibold text-foreground dark:border-border-dark dark:bg-card-dark dark:text-foreground-dark",
+	variants: {
+		size: {
+			md: "text-[22px] leading-[28px] tracking-[6px]",
+			lg: "text-[32px] leading-[40px] tracking-[10px]",
+		},
+	},
+	defaultVariants: { size: "lg" },
+});
+
+/** Vertical rhythm templates share, so every email spaces its parts the same way. */
+export const emailLayout = tv({
+	slots: {
+		badge: "mb-4",
+		intro: "mt-3",
+		action: "mt-8",
+		section: "mt-8",
+		label: "mb-3",
+		sectionTitle:
+			"m-0 mb-2 font-semibold text-[13px] text-foreground leading-[20px] dark:text-foreground-dark",
+		closing: "mt-4",
+		inlineLink: "text-foreground underline dark:text-foreground-dark",
+	},
+});
+
+export const emailFallbackLink = tv({
+	slots: {
+		root: "m-0 text-[13px] text-muted-foreground leading-[20px] dark:text-muted-foreground-dark",
+		link: "break-all text-foreground underline dark:text-foreground-dark",
 	},
 	variants: {
 		align: {
@@ -127,28 +348,45 @@ export const emailFooter = tv({
 			center: { root: "text-center" },
 		},
 	},
-	defaultVariants: { align: "center" },
+	defaultVariants: { align: "left" },
 });
 
-export const emailCode = tv({
-	base: "m-0 inline-block rounded bg-card px-6 py-4 font-mono font-semibold text-foreground dark:bg-card-dark dark:text-foreground-dark",
+export const emailStats = tv({
+	slots: {
+		cell: "align-top",
+		card: "rounded-lg border border-border border-solid bg-card px-4 py-4 dark:border-border-dark dark:bg-card-dark",
+		value:
+			"m-0 font-semibold text-[22px] text-foreground leading-[28px] tracking-[-0.01em] dark:text-foreground-dark",
+		label:
+			"m-0 mt-1 text-[12px] text-muted-foreground leading-[18px] dark:text-muted-foreground-dark",
+		note: "m-0 mt-2 font-semibold text-[12px] text-foreground leading-[18px] dark:text-foreground-dark",
+		gap: "w-[12px]",
+		rowGap: "h-[12px]",
+	},
 	variants: {
-		size: {
-			md: "text-[22px] tracking-[4px]",
-			lg: "text-[30px] tracking-[8px]",
+		columns: {
+			2: { cell: "w-1/2" },
+			3: { cell: "w-1/3" },
+		},
+		tone: {
+			neutral: {},
+			accent: {
+				card: "border-accent-soft bg-accent-soft dark:border-accent-soft-dark dark:bg-accent-soft-dark",
+				label: "text-foreground dark:text-foreground-dark",
+			},
 		},
 	},
-	defaultVariants: { size: "lg" },
+	defaultVariants: { columns: 3, tone: "neutral" },
 });
 
 export const emailKeyValue = tv({
 	slots: {
 		label:
-			"py-2 text-[14px] text-muted-foreground leading-[20px] dark:text-muted-foreground-dark",
+			"py-2 text-[14px] text-muted-foreground leading-[22px] dark:text-muted-foreground-dark",
 		value:
-			"py-2 text-right text-[14px] text-foreground leading-[20px] dark:text-foreground-dark",
+			"py-2 text-right text-[14px] text-foreground leading-[22px] dark:text-foreground-dark",
 		total:
-			"border-0 border-border border-t border-solid pt-3 font-semibold dark:border-border-dark",
+			"border-0 border-border border-t border-solid pt-3 font-semibold text-foreground dark:border-border-dark dark:text-foreground-dark",
 	},
 	variants: {
 		density: {
@@ -161,10 +399,22 @@ export const emailKeyValue = tv({
 
 export type EmailShellWidth = NonNullable<VariantProps<typeof emailShell>["width"]>;
 export type EmailShellSurface = NonNullable<VariantProps<typeof emailShell>["surface"]>;
+export type EmailShellAccent = NonNullable<VariantProps<typeof emailShell>["accent"]>;
 export type EmailHeaderAlign = NonNullable<VariantProps<typeof emailHeader>["align"]>;
 export type EmailHeadingSize = NonNullable<VariantProps<typeof emailHeading>["size"]>;
+export type EmailHeadingAlign = NonNullable<VariantProps<typeof emailHeading>["align"]>;
+export type EmailHeroTone = NonNullable<VariantProps<typeof emailHero>["tone"]>;
+export type EmailHeroSize = NonNullable<VariantProps<typeof emailHero>["size"]>;
+export type EmailHeroAlign = NonNullable<VariantProps<typeof emailHero>["align"]>;
+export type EmailPanelTone = NonNullable<VariantProps<typeof emailPanel>["tone"]>;
+export type EmailSectionAlign = NonNullable<VariantProps<typeof emailSection>["align"]>;
+export type EmailListMarker = NonNullable<VariantProps<typeof emailList>["marker"]>;
+export type EmailButtonShape = NonNullable<VariantProps<typeof emailButton>["shape"]>;
+export type EmailButtonWidth = NonNullable<VariantProps<typeof emailButton>["width"]>;
+export type EmailFooterLayout = NonNullable<VariantProps<typeof emailFooter>["layout"]>;
 export type EmailTextTone = NonNullable<VariantProps<typeof emailText>["tone"]>;
 export type EmailTextSize = NonNullable<VariantProps<typeof emailText>["size"]>;
+export type EmailBadgeTone = NonNullable<VariantProps<typeof emailBadge>["tone"]>;
 export type EmailButtonVariant = NonNullable<VariantProps<typeof emailButton>["variant"]>;
 export type EmailButtonSize = NonNullable<VariantProps<typeof emailButton>["size"]>;
 export type EmailCalloutTone = NonNullable<VariantProps<typeof emailCallout>["tone"]>;
@@ -173,6 +423,11 @@ export type EmailDividerSpacing = NonNullable<
 >;
 export type EmailFooterAlign = NonNullable<VariantProps<typeof emailFooter>["align"]>;
 export type EmailCodeSize = NonNullable<VariantProps<typeof emailCode>["size"]>;
+export type EmailFallbackLinkAlign = NonNullable<
+	VariantProps<typeof emailFallbackLink>["align"]
+>;
+export type EmailStatsColumns = NonNullable<VariantProps<typeof emailStats>["columns"]>;
+export type EmailStatsTone = NonNullable<VariantProps<typeof emailStats>["tone"]>;
 export type EmailKeyValueDensity = NonNullable<
 	VariantProps<typeof emailKeyValue>["density"]
 >;

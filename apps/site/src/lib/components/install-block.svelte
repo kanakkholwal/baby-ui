@@ -62,10 +62,11 @@ const manual = (step: string) => ({
 		}
 	}
 	variant="segment"
+	controls="install"
 	class="self-start"
 />
 
-<div class="mt-4">
+<div class="mt-4" role="tabpanel" id="install-{mode}" aria-labelledby="tab-{mode}">
 	{#if mode === "cli"}
 		<InstallCommand {slug} />
 		<p class="mt-2 text-muted-foreground text-xs leading-relaxed">

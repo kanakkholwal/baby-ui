@@ -9,6 +9,15 @@ import {
 	isValidHex,
 	rgbToHex,
 } from "../lib/color";
+import Popover from "../popover/popover.svelte";
+import PopoverContent from "../popover/popover-content.svelte";
+import PopoverTrigger from "../popover/popover-trigger.svelte";
+import {
+	type ColorPickerVariant,
+	colorPicker,
+	hasEyeDropper,
+	pickScreenColor,
+} from "./variants";
 
 export type ColorFormat = "hsv" | "hsl" | "rgb";
 
@@ -25,14 +34,34 @@ let {
 		"#e5e7eb",
 	],
 	label = "Colour",
+	variant = "inline",
+	recent = [],
+	eyedropper = true,
+	open = $bindable(false),
+	onOpenChange,
 	class: classProp,
 }: {
 	value?: string;
 	format?: ColorFormat;
 	swatches?: string[];
 	label?: string;
+	/** `popover` puts the picker behind a swatch-and-hex trigger. */
+	variant?: ColorPickerVariant;
+	/** Recently used colours, newest first; the parent owns the list. */
+	recent?: string[];
+	/** Offer the screen eyedropper where the browser supports it. */
+	eyedropper?: boolean;
+	/** Bindable; popover variant only. */
+	open?: boolean;
+	onOpenChange?: (open: boolean) => void;
 	class?: string;
 } = $props();
+
+const s = $derived(colorPicker({ variant }));
+let canDrop = $state(false);
+$effect(() => {
+	canDrop = eyedropper && hasEyeDropper();
+});
 
 const uid = $props.id();
 
@@ -179,129 +208,174 @@ const FORMATS: ColorFormat[] = ["hsv", "hsl", "rgb"];
 
 <svelte:window {onpointermove} onpointerup={() => (dragging = null)} onpointercancel={() => (dragging = null)} />
 
-<div
-	class={cn(
-		"w-60 select-none overflow-hidden rounded-xl border border-border bg-popover",
-		classProp,
-	)}
->
-	<!-- svelte-ignore a11y_no_static_element_interactions -->
+{#snippet picker()}
 	<div
-		bind:this={square}
-		style:--picker-hue={hueColor}
-		style:background="linear-gradient(to bottom, transparent, #000), linear-gradient(to right, #fff, var(--picker-hue))"
-		onpointerdown={(e) => {
-			dragging = "square";
-			square?.setPointerCapture(e.pointerId);
-			readSquare(e);
-		}}
-		class="relative h-36 w-full cursor-crosshair"
+		class={cn(
+			"w-60 select-none overflow-hidden rounded-xl border border-border bg-popover",
+			classProp,
+		)}
 	>
-		<span
-			aria-hidden="true"
-			style:left="{sat}%"
-			style:top="{100 - val}%"
-			style:background={preview}
-			class="-translate-x-1/2 -translate-y-1/2 pointer-events-none absolute size-3.5 rounded-full border-2 border-white shadow-[0_1px_4px_rgb(0_0_0/0.5)]"
-		></span>
-	</div>
+		<!-- svelte-ignore a11y_no_static_element_interactions -->
+		<div
+			bind:this={square}
+			style:--picker-hue={hueColor}
+			style:background="linear-gradient(to bottom, transparent, #000), linear-gradient(to right, #fff, var(--picker-hue))"
+			onpointerdown={(e) => {
+				dragging = "square";
+				square?.setPointerCapture(e.pointerId);
+				readSquare(e);
+			}}
+			class="relative h-36 w-full cursor-crosshair"
+		>
+			<span
+				aria-hidden="true"
+				style:left="{sat}%"
+				style:top="{100 - val}%"
+				style:background={preview}
+				class="-translate-x-1/2 -translate-y-1/2 pointer-events-none absolute size-3.5 rounded-full border-2 border-white shadow-[0_1px_4px_rgb(0_0_0/0.5)]"
+			></span>
+		</div>
 
-	<div class="flex items-center gap-2.5 border-border border-b p-2">
-		<span
-			aria-hidden="true"
-			style:background={preview}
-			class="size-7 shrink-0 rounded-md ring-1 ring-foreground/10 ring-inset"
-		></span>
-		<div class="min-w-0 flex-1 space-y-1.5">
-			<!-- svelte-ignore a11y_no_static_element_interactions -->
-			<div
-				bind:this={strip}
-				onpointerdown={(e) => {
-					dragging = "strip";
-					strip?.setPointerCapture(e.pointerId);
-					readStrip(e);
-				}}
-				style:background="linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00)"
-				class="relative h-2.5 w-full cursor-ew-resize rounded-full"
-			>
-				<span
-					aria-hidden="true"
-					style:left="{(hue / 360) * 100}%"
-					style:background={hueColor}
-					class="-translate-x-1/2 -translate-y-1/2 pointer-events-none absolute top-1/2 size-3.5 rounded-full border-2 border-white shadow-[0_1px_4px_rgb(0_0_0/0.5)]"
-				></span>
-			</div>
-			<div
-				class="flex items-center gap-1 rounded-md border border-border bg-background px-1.5 transition-[border-color,box-shadow] focus-within:border-ring focus-within:ring-2 focus-within:ring-ring"
-			>
-				<span class="font-mono text-[0.78rem] text-muted-foreground">#</span>
-				<input
-					id="{uid}-hex"
-					value={hex.replace(/^#/, "")}
-					aria-label="{label} hex value"
-					placeholder="000000"
-					spellcheck="false"
-					autocomplete="off"
-					oninput={(e) => typeHex(e.currentTarget.value)}
-					class="h-6 min-w-0 flex-1 bg-transparent font-mono text-[0.78rem] text-foreground uppercase outline-none"
-				/>
+		<div class="flex items-center gap-2.5 border-border border-b p-2">
+			<span
+				aria-hidden="true"
+				style:background={preview}
+				class="size-7 shrink-0 rounded-md ring-1 ring-foreground/10 ring-inset"
+			></span>
+			<div class="min-w-0 flex-1 space-y-1.5">
+				<!-- svelte-ignore a11y_no_static_element_interactions -->
+				<div
+					bind:this={strip}
+					onpointerdown={(e) => {
+						dragging = "strip";
+						strip?.setPointerCapture(e.pointerId);
+						readStrip(e);
+					}}
+					style:background="linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00)"
+					class="relative h-2.5 w-full cursor-ew-resize rounded-full"
+				>
+					<span
+						aria-hidden="true"
+						style:left="{(hue / 360) * 100}%"
+						style:background={hueColor}
+						class="-translate-x-1/2 -translate-y-1/2 pointer-events-none absolute top-1/2 size-3.5 rounded-full border-2 border-white shadow-[0_1px_4px_rgb(0_0_0/0.5)]"
+					></span>
+				</div>
+				<div
+					class="flex items-center gap-1 rounded-md border border-border bg-background px-1.5 transition-[border-color,box-shadow] focus-within:border-ring focus-within:ring-2 focus-within:ring-ring"
+				>
+					<span class="font-mono text-[0.78rem] text-muted-foreground">#</span>
+					<input
+						id="{uid}-hex"
+						value={hex.replace(/^#/, "")}
+						aria-label="{label} hex value"
+						placeholder="000000"
+						spellcheck="false"
+						autocomplete="off"
+						oninput={(e) => typeHex(e.currentTarget.value)}
+						class="h-6 min-w-0 flex-1 bg-transparent font-mono text-[0.78rem] text-foreground uppercase outline-none"
+					/>
+				</div>
 			</div>
 		</div>
-	</div>
 
-	<div class="flex flex-col gap-1.5 border-border border-b p-2">
-		<div class="flex items-center gap-0.5 rounded-md bg-card p-0.5">
-			{#each FORMATS as option (option)}
-				<button
-					type="button"
-					onclick={() => (format = option)}
-					aria-pressed={format === option}
-					class="h-5 flex-1 rounded font-mono text-[10px] text-muted-foreground uppercase transition-colors aria-pressed:bg-background aria-pressed:text-foreground"
-				>
-					{option}
-				</button>
+		<div class="flex flex-col gap-1.5 border-border border-b p-2">
+			<div class="flex items-center gap-0.5 rounded-md bg-card p-0.5">
+				{#each FORMATS as option (option)}
+					<button
+						type="button"
+						onclick={() => (format = option)}
+						aria-pressed={format === option}
+						class="h-5 flex-1 rounded font-mono text-[10px] text-muted-foreground uppercase transition-colors aria-pressed:bg-background aria-pressed:text-foreground"
+					>
+						{option}
+					</button>
+				{/each}
+			</div>
+
+			{#each CHANNELS as channel (channel.key)}
+				<div class="flex items-center gap-2">
+					<label for="{uid}-{channel.key}" class="w-3 shrink-0 font-mono text-[11px] text-muted-foreground">
+						{channel.label}
+					</label>
+					<input
+						id="{uid}-{channel.key}"
+						type="range"
+						min="0"
+						max={channel.max}
+						step="1"
+						value={channel.value}
+						style:--thumb={preview}
+						oninput={(e) => setChannel(channel.key, e.currentTarget.value)}
+						class="color-slider h-1 flex-1"
+					/>
+					<span class="w-9 shrink-0 text-right font-mono text-[10px] text-foreground tabular-nums">
+						{channel.value}{channel.unit}
+					</span>
+				</div>
 			{/each}
 		</div>
 
-		{#each CHANNELS as channel (channel.key)}
-			<div class="flex items-center gap-2">
-				<label for="{uid}-{channel.key}" class="w-3 shrink-0 font-mono text-[11px] text-muted-foreground">
-					{channel.label}
-				</label>
-				<input
-					id="{uid}-{channel.key}"
-					type="range"
-					min="0"
-					max={channel.max}
-					step="1"
-					value={channel.value}
-					style:--thumb={preview}
-					oninput={(e) => setChannel(channel.key, e.currentTarget.value)}
-					class="color-slider h-1 flex-1"
-				/>
-				<span class="w-9 shrink-0 text-right font-mono text-[10px] text-foreground tabular-nums">
-					{channel.value}{channel.unit}
-				</span>
-			</div>
-		{/each}
-	</div>
-
-	<div class="flex flex-wrap items-center gap-1.5 p-2">
-		{#each swatches as swatch (swatch)}
-			<button
-				type="button"
-				aria-label={swatch}
-				aria-pressed={value.toLowerCase() === swatch.toLowerCase()}
-				onclick={() => apply(swatch)}
-				style:background={swatch}
-				class="grid size-6 place-items-center rounded-md ring-1 ring-foreground/10 ring-inset transition-[transform,scale,translate] hover:scale-110"
-			>
-				{#if value.toLowerCase() === swatch.toLowerCase()}
-					<svg viewBox="0 0 12 12" fill="none" aria-hidden="true" class="size-3 text-white drop-shadow-[0_1px_1px_rgb(0_0_0/0.6)]">
-						<path d="M2.5 6.2 4.8 8.5 9.5 3.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-					</svg>
+		<div class="flex flex-wrap items-center gap-1.5 p-2">
+			{#each swatches as swatch (swatch)}
+				<button
+					type="button"
+					aria-label={swatch}
+					aria-pressed={value.toLowerCase() === swatch.toLowerCase()}
+					onclick={() => apply(swatch)}
+					style:background={swatch}
+					class="grid size-6 place-items-center rounded-md ring-1 ring-foreground/10 ring-inset transition-[transform,scale,translate] hover:scale-110"
+				>
+					{#if value.toLowerCase() === swatch.toLowerCase()}
+						<svg viewBox="0 0 12 12" fill="none" aria-hidden="true" class="size-3 text-white drop-shadow-[0_1px_1px_rgb(0_0_0/0.6)]">
+							<path d="M2.5 6.2 4.8 8.5 9.5 3.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+						</svg>
+					{/if}
+				</button>
+			{/each}
+		</div>
+		{#if recent.length || canDrop}
+			<div class={s.extras()}>
+				{#if recent.length}<span class={s.extrasLabel()}>Recent</span>{/if}
+				{#each recent as swatch (swatch)}
+					<button
+						type="button"
+						aria-label="Recent {swatch}"
+						onclick={() => apply(swatch)}
+						style:background={swatch}
+						class="size-6 rounded-md ring-1 ring-foreground/10 ring-inset"
+					></button>
+				{/each}
+				{#if canDrop}
+					<button
+						type="button"
+						aria-label="Pick a colour from the screen"
+						class={s.eyedropper()}
+						onclick={async () => {
+							const picked = await pickScreenColor();
+							if (picked) apply(picked);
+						}}
+					>
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="M11 7l6 6M4 16L15.7 4.3a1 1 0 0 1 1.4 0l2.6 2.6a1 1 0 0 1 0 1.4L8 20H4z" />
+						</svg>
+					</button>
 				{/if}
-			</button>
-		{/each}
+			</div>
+		{/if}
 	</div>
-</div>
+{/snippet}
+
+{#if variant === "inline"}
+	{@render picker()}
+{:else}
+	<Popover bind:open onOpenChange={(next) => onOpenChange?.(next)}>
+		<PopoverTrigger aria-label="{label}: {preview}" class={s.trigger()}>
+			<span aria-hidden="true" style:background={preview} class={s.swatch()}></span>
+			<span class={s.hex()}>{preview}</span>
+		</PopoverTrigger>
+		<PopoverContent align="start" class={s.content()}>
+			{@render picker()}
+		</PopoverContent>
+	</Popover>
+{/if}

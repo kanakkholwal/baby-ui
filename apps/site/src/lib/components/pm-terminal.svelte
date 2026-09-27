@@ -20,7 +20,9 @@ const head = $derived(
 );
 </script>
 
-<div class="scroll-area overflow-x-auto">
+<!-- Focusable so a long command can be scrolled sideways by keyboard. -->
+<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+<div class="scroll-area overflow-x-auto rounded-md outline-none focus-visible:ring-2 focus-visible:ring-ring" tabindex="0">
 	<!-- Phones wrap the command inside its box; wider screens keep it on one line. -->
 	<div class="px-5 py-4 font-mono text-[13px] leading-[1.7] [overflow-wrap:anywhere] sm:min-w-max sm:whitespace-nowrap">
 		<span class="select-none text-muted-foreground">$&nbsp;</span

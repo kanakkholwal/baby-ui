@@ -1,18 +1,30 @@
 <script lang="ts">
 import {
-	NavigationMenu,
-	NavigationMenuContent,
-	NavigationMenuItem,
-	NavigationMenuLink,
-	NavigationMenuList,
-	NavigationMenuTrigger,
-	navigationMenuTriggerStyle,
+	MegaMenu,
+	type MegaMenuGroup,
+	type MegaMenuItem,
 	ThemeToggle,
 	type ThemeToggleValue,
 } from "@baby-ui/svelte";
+import IconBackground from "@tabler/icons-svelte/icons/background";
+import IconBook from "@tabler/icons-svelte/icons/book";
 import IconBrandGithub from "@tabler/icons-svelte/icons/brand-github";
+import IconChartBar from "@tabler/icons-svelte/icons/chart-bar";
+import IconComponents from "@tabler/icons-svelte/icons/components";
+import IconFileText from "@tabler/icons-svelte/icons/file-text";
+import IconForms from "@tabler/icons-svelte/icons/forms";
+import IconLayoutGrid from "@tabler/icons-svelte/icons/layout-grid";
+import IconMail from "@tabler/icons-svelte/icons/mail";
 import IconMenu2 from "@tabler/icons-svelte/icons/menu-2";
+import IconPalette from "@tabler/icons-svelte/icons/palette";
+import IconPhoto from "@tabler/icons-svelte/icons/photo";
+import IconRobot from "@tabler/icons-svelte/icons/robot";
 import IconSettings from "@tabler/icons-svelte/icons/settings";
+import IconSparkles from "@tabler/icons-svelte/icons/sparkles";
+import IconStack2 from "@tabler/icons-svelte/icons/stack-2";
+import IconTable from "@tabler/icons-svelte/icons/table";
+import IconTerminal2 from "@tabler/icons-svelte/icons/terminal-2";
+import IconTypography from "@tabler/icons-svelte/icons/typography";
 import { mode, setMode } from "mode-watcher";
 import { page } from "$app/state";
 import Logo from "$lib/components/logo.svelte";
@@ -21,9 +33,54 @@ import SiteSearch from "$lib/components/site-search.svelte";
 import { docsSidebar } from "$lib/docs-sidebar.svelte";
 import { mobileNav } from "$lib/mobile-nav.svelte";
 import { prefs } from "$lib/preferences.svelte";
-import { COLLECTIONS, categoryHref, siteNav, TOP_LEVEL } from "$lib/registry";
+import {
+	COLLECTIONS,
+	categoryHref,
+	type NavIcon,
+	siteNav,
+	TOP_LEVEL,
+} from "$lib/registry";
 
 const NAV = $derived(siteNav(page.data.categories ?? []));
+
+const ICONS: Record<NavIcon, typeof IconBook> = {
+	agents: IconRobot,
+	data: IconTable,
+	forms: IconForms,
+	charts: IconChartBar,
+	base: IconComponents,
+	text: IconTypography,
+	animated: IconSparkles,
+	backgrounds: IconBackground,
+	blocks: IconLayoutGrid,
+	advanced: IconStack2,
+	"og-images": IconPhoto,
+	emails: IconMail,
+	intro: IconBook,
+	install: IconTerminal2,
+	theming: IconPalette,
+	llms: IconFileText,
+};
+
+// Menu items become MegaMenu groups; plain links (Pricing) sit beside them.
+const GROUPS = $derived<MegaMenuGroup[]>(
+	NAV.filter((item) => item.menu).map((item) => ({
+		label: item.label,
+		href: item.href,
+		footer: item.footer,
+		items: (item.menu ?? []).map((link) => ({
+			href: link.href,
+			label: link.label,
+			description: link.description,
+		})),
+	})),
+);
+const LINKS = $derived(NAV.filter((item) => !item.menu));
+const iconFor = $derived(
+	new Map(
+		NAV.flatMap((item) => item.menu ?? []).map((link) => [link.href, ICONS[link.icon]]),
+	),
+);
 
 // The header's own hamburger only opens something on routes that render a SiteSidebar.
 const SIDEBAR_ROUTES = [
@@ -96,51 +153,27 @@ function active(match: string[]) {
 				<span class="font-semibold font-display whitespace-nowrap">Baby UI</span>
 			</a>
 
-			<NavigationMenu aria-label="Main" class="hidden md:flex">
-				<NavigationMenuList>
-					{#each NAV as item (item.href)}
-						{@const current = active(item.match)}
-						{#if item.menu}
-							<NavigationMenuItem value={item.href}>
-								<NavigationMenuTrigger
-									aria-current={current ? "page" : undefined}
-									class="px-1.5 lg:px-3"
-								>
-									{item.label}
-								</NavigationMenuTrigger>
-								<NavigationMenuContent>
-									<div class="grid w-max grid-cols-[repeat(2,minmax(9rem,auto))] gap-x-2 gap-y-3">
-										{#each item.menu as group, i (group.heading ?? i)}
-											<div class="flex flex-col gap-0.5">
-												{#if group.heading}
-													<p class="px-3 pt-1 pb-0.5 font-medium text-muted-foreground text-xs">
-														{group.heading}
-													</p>
-												{/if}
-												{#each group.links as link (link.href)}
-													<NavigationMenuLink href={link.href} active={page.url.pathname === link.href}>
-														{link.label}
-													</NavigationMenuLink>
-												{/each}
-											</div>
-										{/each}
-									</div>
-								</NavigationMenuContent>
-							</NavigationMenuItem>
-						{:else}
-							<NavigationMenuItem>
-								<NavigationMenuLink
-									href={item.href}
-									active={current}
-									class={navigationMenuTriggerStyle({ class: "px-1.5 lg:px-3" })}
-								>
-									{item.label}
-								</NavigationMenuLink>
-							</NavigationMenuItem>
-						{/if}
-					{/each}
-				</NavigationMenuList>
-			</NavigationMenu>
+			<nav aria-label="Main" class="hidden items-center gap-1 md:flex">
+				<MegaMenu groups={GROUPS} active={page.url.pathname}>
+					{#snippet itemIcon(item: MegaMenuItem)}
+						{@const Icon = iconFor.get(item.href)}
+						{#if Icon}<Icon stroke={1.6} aria-hidden="true" />{/if}
+					{/snippet}
+				</MegaMenu>
+				{#each LINKS as link (link.href)}
+					{@const current = active(link.match)}
+					<a
+						href={link.href}
+						aria-current={current ? "page" : undefined}
+						class={[
+							"inline-flex items-center whitespace-nowrap rounded-full px-3.5 py-2 font-medium text-sm transition-colors motion-reduce:transition-none",
+							current ? "text-foreground" : "text-muted-foreground hover:text-foreground",
+						]}
+					>
+						{link.label}
+					</a>
+				{/each}
+			</nav>
 		</div>
 
 		<nav aria-label="Site tools" class="flex items-center gap-2">

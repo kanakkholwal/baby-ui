@@ -41,6 +41,15 @@ const CELL = "border-border border-r border-b p-6 md:p-8";
 							Star on GitHub
 						</Button>
 					</div>
+					<p class="text-muted-foreground text-xs">
+						Built by
+						<a
+							href="https://x.com/kanakkholwal"
+							target="_blank"
+							rel="noopener noreferrer"
+							class="font-medium text-foreground underline-offset-4 hover:underline"
+						>Kanak</a>
+					</p>
 				</div>
 
 				<nav aria-label="Categories" class="{CELL} md:col-span-3">

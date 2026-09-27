@@ -11,10 +11,21 @@ import type { EntryGenerator, PageServerLoad } from "./$types";
 
 type EmailRender = { html: string; text: string; bytes: number };
 // Written by `pnpm emails`: both ports rendered at build and gated for parity.
-const emailRenders = import.meta.glob<{ react: EmailRender; svelte: EmailRender }>(
-	"/src/lib/generated/emails/*.json",
-	{ import: "default" },
-);
+type EmailRenders = { react: EmailRender; svelte: EmailRender };
+const emailRenders = {
+	...import.meta.glob<EmailRenders>("../../../../lib/generated/emails/*.json", {
+		import: "default",
+	}),
+	// Pro renders only reach a build that shows Pro; the literal keeps the glob tree-shakable.
+	...(__SHOW_PRO__
+		? import.meta.glob<EmailRenders>("../../../../lib/generated/emails-pro/*.json", {
+				import: "default",
+			})
+		: {}),
+};
+const emailRender = (slug: string) =>
+	emailRenders[`../../../../lib/generated/emails/${slug}.json`] ??
+	emailRenders[`../../../../lib/generated/emails-pro/${slug}.json`];
 // The kit has no layout of its own, so its page previews the welcome email built from it.
 const EMAIL_PREVIEW: Record<string, string> = { "email-kit": "email-welcome" };
 
@@ -74,9 +85,7 @@ export const load: PageServerLoad = async ({ params }) => {
 
 	const emailSlug = EMAIL_PREVIEW[spec.slug] ?? spec.slug;
 	const email =
-		spec.category === "emails"
-			? ((await emailRenders[`/src/lib/generated/emails/${emailSlug}.json`]?.()) ?? null)
-			: null;
+		spec.category === "emails" ? ((await emailRender(emailSlug)?.()) ?? null) : null;
 
 	const prose = doc ? await prepare(doc.content) : null;
 	const related = specs

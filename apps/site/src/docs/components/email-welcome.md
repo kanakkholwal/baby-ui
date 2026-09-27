@@ -79,5 +79,32 @@ export async function POST(request: Request) {
 }
 ```
 
+### Over SMTP with Nodemailer
+
+For your own mail server, or any provider's SMTP relay (`pnpm add nodemailer`), keep the render
+step above and swap the send call:
+
+```ts
+import nodemailer from "nodemailer";
+
+const transport = nodemailer.createTransport({
+	host: process.env.SMTP_HOST,
+	port: 587,
+	auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+});
+
+await transport.sendMail({
+	from: "Acme <hello@acme.com>",
+	to: email,
+	subject: "Welcome to Acme",
+	html,
+	text,
+});
+```
+
+`html` and `text` are the two strings rendered above: `renderer.render` plus `toPlainText` in
+SvelteKit, `render(message)` and `render(message, { plainText: true })` in Next.js. Create the
+transport once at module level so connections are reused.
+
 `logoUrl` and every link must be absolute `https://` URLs. The preview line should add to the
 subject, not repeat it.

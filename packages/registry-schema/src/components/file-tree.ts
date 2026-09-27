@@ -6,7 +6,7 @@ export const fileTree = defineComponent({
 	description:
 		"Keyboard-navigable file explorer with animated expand and collapse, indent guides, and single selection.",
 	category: "advanced",
-	status: "stable",
+	status: "beta",
 
 	props: [
 		{

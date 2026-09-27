@@ -15,11 +15,24 @@ import type { RequestHandler } from "./$types";
 // Re-renders the Svelte port as controls change; the build-time render covers the defaults.
 export const prerender = false;
 
-const loader = templateLoader(
-	import.meta.glob<TemplateModule>(
+const loader = templateLoader({
+	...import.meta.glob<TemplateModule>(
 		"../../../../../../../packages/ui-svelte/src/lib/email-*/email-*.svelte",
 	),
-);
+	// pro/ is the private Pro submodule; in a public checkout this glob matches nothing.
+	...(__SHOW_PRO__
+		? import.meta.glob<TemplateModule>(
+				"../../../../../../../pro/packages/svelte/src/lib/email-*/email-*.svelte",
+			)
+		: {}),
+});
+
+// Eager so samples resolve synchronously; empty in a public checkout.
+const proSamples = import.meta.glob<{
+	EMAIL_SAMPLES: Record<string, Record<string, unknown>>;
+}>("../../../../../../../pro/packages/demos/src/data/email-samples.ts", { eager: true });
+const proSample = (slug: string) =>
+	__SHOW_PRO__ ? Object.values(proSamples)[0]?.EMAIL_SAMPLES[slug] : undefined;
 
 const renderer = new Renderer({
 	tailwindConfig: { ...emailTailwindConfig, presets: [pixelBasedPreset] },
@@ -39,7 +52,11 @@ export const GET: RequestHandler = async ({ params, url, request }) => {
 	} catch {
 		throw error(400, "props must be JSON");
 	}
-	const props = previewProps(params.slug, { ...defaultProps(spec), ...given });
+	const props = previewProps(
+		params.slug,
+		{ ...defaultProps(spec), ...given },
+		proSample(params.slug),
+	);
 
 	const { default: Template } = await load();
 	let html: string;

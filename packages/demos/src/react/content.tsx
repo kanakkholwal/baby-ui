@@ -4,6 +4,7 @@ import {
 	Attachment,
 	CodeBlock,
 	ColorPicker,
+	type ColorPickerVariant,
 	Composer,
 	Conversation,
 	ConversationContent,
@@ -108,12 +109,20 @@ export function ColorPickerDemo({ props }: { props: Props }) {
 		() => setFormat((props.format as "hsv" | "hsl" | "rgb") ?? "hsv"),
 		[props.format],
 	);
+	// Recents live in the parent; the popover adds the colour it closed on.
+	const [recent, setRecent] = useState<string[]>([]);
 	return (
 		<ColorPicker
 			value={value}
 			onValueChange={setValue}
 			format={format}
 			onFormatChange={setFormat}
+			variant={(props.variant as ColorPickerVariant) ?? "inline"}
+			recent={recent}
+			onOpenChange={(open) => {
+				if (!open)
+					setRecent((list) => [value, ...list.filter((c) => c !== value)].slice(0, 6));
+			}}
 			label={(props.label as string) || "Accent"}
 		/>
 	);

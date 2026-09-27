@@ -11,14 +11,17 @@ import { ChartSeriesDemo } from "./chart-series";
 import { ChartDemo, LineChartDemo } from "./charts";
 import { ChatComposerDemo } from "./chat-composer";
 import { ChoroplethChartDemo } from "./choropleth-chart";
+import { ChromaticWaveDemo } from "./chromatic-wave";
 import { ClosingPlasmaDemo } from "./closing-plasma";
 import { ComposedChartDemo } from "./composed-chart";
+import { CreditCardInputDemo, CurrencyInputDemo, PasswordInputDemo, PhoneInputDemo } from "./compound-inputs";
 import { AttachmentDemo, ColorPickerDemo, ComposerDemo, ConversationDemo, CopyButtonDemo, FileDiffDemo, MarkdownDemo, QuestionDemo, ReorderListDemo, TagInputDemo, ToolDemo } from "./content";
 import { CalendarDemo, InputOTPDemo, RangeCalendarDemo } from "./dates";
 import { AlertDialogDemo, CommandDemo, DialogDemo, DrawerDemo, FullscreenNavDemo, SheetDemo, ToastDemo } from "./dialogs";
 import { DiffTableDemo } from "./diff-table";
 import { DitherGradientDemo } from "./dither-gradient";
 import { DocsNavDemo } from "./docs-nav";
+import { DotMatrixGlowDemo } from "./dot-matrix-glow";
 import { FillButtonDemo } from "./fill-button";
 import { FineTuneCardDemo } from "./fine-tune-card";
 import { FlightStatusCardDemo } from "./flight-status-card";
@@ -33,7 +36,9 @@ import { HeatmapChartDemo } from "./heatmap-chart";
 import { HeroStageDemo } from "./hero-stage";
 import { HoverTransitionDemo } from "./hover-transition";
 import { ImageTrailDemo } from "./image-trail";
+import { IridescentFoldDemo } from "./iridescent-fold";
 import { LayeredStackDemo } from "./layered-stack";
+import { LightCausticsDemo } from "./light-caustics";
 import { LiquidChromeDemo } from "./liquid-chrome";
 import { LiveLineChartDemo } from "./live-line-chart";
 import { LoadingScreenDemo } from "./loading-screen";
@@ -48,6 +53,7 @@ import { ClickSparkDemo, DraggableMarqueeDemo, TextReelDemo } from "./obsidian";
 import { OgNewsletterIssueDemo } from "./og-newsletter-issue";
 import { ComboboxDemo, ContextMenuDemo, DropdownMenuDemo, HoverCardDemo, PopoverDemo, SelectDemo, TooltipDemo } from "./overlays";
 import { OverviewCardDemo } from "./overview-card";
+import { DatePickerDemo, DateRangePickerDemo, TimePickerDemo } from "./pickers";
 import { PieChartDemo } from "./pie-chart";
 import { PixelCanvasDemo } from "./pixel-canvas";
 import { PixelImageTrailDemo } from "./pixel-image-trail";
@@ -55,7 +61,6 @@ import { Pricing01Demo } from "./pricing-01";
 import { Pricing02Demo } from "./pricing-02";
 import { AccordionDemo, AlertDemo, AvatarDemo, BadgeDemo, CardDemo, CheckboxDemo, InputDemo, LabelDemo, ProgressDemo, SkeletonDemo, SwitchDemo, TextareaDemo } from "./primitives";
 import { CollapsibleDemo, GaugeDemo, PaginationDemo, ScrollAreaDemo, ScrubFieldDemo, ShortcutDemo, ShowMoreDemo, SpinnerDemo, ToggleDemo, ToggleGroupDemo, TypographyDemo } from "./primitives2";
-import { PrismGradientDemo } from "./prism-gradient";
 import { ProjectionLineDemo } from "./projection-line";
 import { RadarChartDemo } from "./radar-chart";
 import { RecommendationCardDemo } from "./recommendation-card";
@@ -87,6 +92,7 @@ import { AnimatedGradientTextDemo, CounterDemo, CycleTextDemo, DoubleUnderlineDe
 import { ThemeToggleDemo } from "./theme-toggle";
 import { ThinkingStateDemo } from "./thinking-state";
 import { ToolChipsDemo } from "./tool-chips";
+import { FileUploadDemo, MultiSelectDemo, NumberInputDemo, SearchInputDemo } from "./utility-inputs";
 import { WebglLiquidDemo } from "./webgl-liquid";
 import { WeekCalendarDemo } from "./week-calendar";
 import { WheelCarouselDemo } from "./wheel-carousel";
@@ -163,6 +169,7 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"chat-composer": ChatComposerDemo,
 	checkbox: CheckboxDemo,
 	"choropleth-chart": ChoroplethChartDemo,
+	"chromatic-wave": ChromaticWaveDemo,
 	"circuit-board": CircuitBoardDemo,
 	"circular-text": CircularTextDemo,
 	"click-spark": ClickSparkDemo,
@@ -181,14 +188,19 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	conversation: ConversationDemo,
 	"copy-button": CopyButtonDemo,
 	counter: CounterDemo,
+	"credit-card-input": CreditCardInputDemo,
 	"cube-text": CubeTextDemo,
+	"currency-input": CurrencyInputDemo,
 	"cycle-text": CycleTextDemo,
+	"date-picker": DatePickerDemo,
+	"date-range-picker": DateRangePickerDemo,
 	"dia-text": DiaTextDemo,
 	dialog: DialogDemo,
 	"diff-table": DiffTableDemo,
 	"dither-gradient": DitherGradientDemo,
 	"dithered-logo": DitheredLogoDemo,
 	"docs-nav": DocsNavDemo,
+	"dot-matrix-glow": DotMatrixGlowDemo,
 	"double-underline": DoubleUnderlineDemo,
 	"draggable-marquee": DraggableMarqueeDemo,
 	drawer: DrawerDemo,
@@ -197,6 +209,7 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	field: FieldDemo,
 	"file-diff": FileDiffDemo,
 	"file-tree": FileTreeDemo,
+	"file-upload": FileUploadDemo,
 	"fill-button": FillButtonDemo,
 	"filter-table": FilterTableDemo,
 	"fine-tune-card": FineTuneCardDemo,
@@ -222,10 +235,12 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	input: InputDemo,
 	"input-group": InputGroupDemo,
 	"input-otp": InputOTPDemo,
+	"iridescent-fold": IridescentFoldDemo,
 	"jitter-text": JitterTextDemo,
 	"jumping-text": JumpingTextDemo,
 	label: LabelDemo,
 	"layered-stack": LayeredStackDemo,
+	"light-caustics": LightCausticsDemo,
 	"line-chart": LineChartDemo,
 	"liquid-chrome": LiquidChromeDemo,
 	"live-line-chart": LiveLineChartDemo,
@@ -242,11 +257,13 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"mirror-text": MirrorTextDemo,
 	"morph-text": MorphTextDemo,
 	"morphing-modal": MorphingModalDemo,
+	"multi-select": MultiSelectDemo,
 	"music-player": MusicPlayerDemo,
 	"native-select": NativeSelectDemo,
 	navbar: NavbarDemo,
 	"navigation-menu": NavigationMenuDemo,
 	"notched-shelf": NotchedShelfDemo,
+	"number-input": NumberInputDemo,
 	"og-author-profile": OgAuthorProfileDemo,
 	"og-blog-post": OgBlogPostDemo,
 	"og-changelog": OgChangelogDemo,
@@ -257,13 +274,14 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"overview-card": OverviewCardDemo,
 	pagination: PaginationDemo,
 	"particle-text": ParticleTextDemo,
+	"password-input": PasswordInputDemo,
+	"phone-input": PhoneInputDemo,
 	"pie-chart": PieChartDemo,
 	"pixel-canvas": PixelCanvasDemo,
 	"pixel-image-trail": PixelImageTrailDemo,
 	popover: PopoverDemo,
 	"pricing-01": Pricing01Demo,
 	"pricing-02": Pricing02Demo,
-	"prism-gradient": PrismGradientDemo,
 	progress: ProgressDemo,
 	"projection-line": ProjectionLineDemo,
 	question: QuestionDemo,
@@ -292,6 +310,7 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"scroll-tilted-grid": ScrollTiltedGridDemo,
 	"scroll-velocity": ScrollVelocityDemo,
 	"scrub-field": ScrubFieldDemo,
+	"search-input": SearchInputDemo,
 	select: SelectDemo,
 	separator: SeparatorDemo,
 	sheet: SheetDemo,
@@ -335,6 +354,7 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"theme-toggle": ThemeToggleDemo,
 	"thinking-state": ThinkingStateDemo,
 	ticker: TickerDemo,
+	"time-picker": TimePickerDemo,
 	toast: ToastDemo,
 	toggle: ToggleDemo,
 	"toggle-group": ToggleGroupDemo,

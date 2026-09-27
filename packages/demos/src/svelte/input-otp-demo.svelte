@@ -24,7 +24,12 @@ const status = $derived(
 	<p class="text-muted-foreground text-sm">
 		Enter the code we emailed you. Try <span class="font-mono">{SAMPLE_CODE}</span>.
 	</p>
-	<InputOTP maxlength={6} bind:value {size} aria-invalid={status === "wrong" || undefined}>
+	<InputOTP
+		maxlength={6}
+		bind:value
+		{size}
+		aria-label="Verification code"
+		aria-invalid={status === "wrong" || undefined}>
 		{#snippet children({ cells })}
 			<InputOTPGroup>
 				{#each cells.slice(0, 3) as cell (cell)}

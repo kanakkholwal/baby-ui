@@ -20,43 +20,80 @@ import {
 import { cn } from "../lib/cn";
 import { emailTailwindConfig } from "../lib/email-theme";
 import {
+	type EmailBadgeTone,
+	type EmailButtonShape,
 	type EmailButtonSize,
 	type EmailButtonVariant,
+	type EmailButtonWidth,
 	type EmailCalloutTone,
 	type EmailCodeSize,
 	type EmailDividerSpacing,
+	type EmailFallbackLinkAlign,
 	type EmailFooterAlign,
+	type EmailFooterLayout,
 	type EmailHeaderAlign,
+	type EmailHeadingAlign,
 	type EmailHeadingSize,
+	type EmailHeroAlign,
+	type EmailHeroSize,
+	type EmailHeroTone,
 	type EmailKeyValueDensity,
+	type EmailListMarker,
+	type EmailPanelTone,
+	type EmailSectionAlign,
+	type EmailShellAccent,
 	type EmailShellSurface,
 	type EmailShellWidth,
+	type EmailStatsColumns,
+	type EmailStatsTone,
 	type EmailTextSize,
 	type EmailTextTone,
+	emailBadge,
 	emailButton,
 	emailCallout,
 	emailCode,
 	emailDivider,
+	emailFallbackLink,
 	emailFooter,
 	emailHeader,
 	emailHeading,
+	emailHero,
 	emailKeyValue,
+	emailList,
+	emailPanel,
+	emailSection,
 	emailShell,
+	emailStats,
 	emailText,
 } from "./variants";
 
 export type {
+	EmailBadgeTone,
+	EmailButtonShape,
 	EmailButtonSize,
 	EmailButtonVariant,
+	EmailButtonWidth,
 	EmailCalloutTone,
 	EmailCodeSize,
 	EmailDividerSpacing,
+	EmailFallbackLinkAlign,
 	EmailFooterAlign,
+	EmailFooterLayout,
 	EmailHeaderAlign,
+	EmailHeadingAlign,
 	EmailHeadingSize,
+	EmailHeroAlign,
+	EmailHeroSize,
+	EmailHeroTone,
 	EmailKeyValueDensity,
+	EmailListMarker,
+	EmailPanelTone,
+	EmailSectionAlign,
+	EmailShellAccent,
 	EmailShellSurface,
 	EmailShellWidth,
+	EmailStatsColumns,
+	EmailStatsTone,
 	EmailTextSize,
 	EmailTextTone,
 };
@@ -70,8 +107,12 @@ export interface EmailShellProps {
 	lang?: string;
 	width?: EmailShellWidth;
 	surface?: EmailShellSurface;
-	/** Rendered outside the card, e.g. an EmailFooter. */
+	/** `top` adds a strip of the accent colour across the card. */
+	accent?: EmailShellAccent;
+	/** Rendered under the card, e.g. a `plain` EmailFooter. */
 	footer?: ReactNode;
+	/** Rendered inside the card after the content, edge to edge, e.g. a `band` or `bar` footer. */
+	cardFooter?: ReactNode;
 }
 
 /** Document, theme and layout for every template: a centred card on a quiet page. */
@@ -81,9 +122,11 @@ export function EmailShell({
 	lang = "en",
 	width = "md",
 	surface = "card",
+	accent = "none",
 	footer,
+	cardFooter,
 }: EmailShellProps) {
-	const s = emailShell({ width, surface });
+	const s = emailShell({ width, surface, accent });
 	return (
 		<Html lang={lang}>
 			<Tailwind config={tailwindConfig}>
@@ -95,7 +138,10 @@ export function EmailShell({
 				<Body className={s.body()}>
 					<Section className={s.page()}>
 						<Container className={s.container()}>
-							<Section className={s.card()}>{children}</Section>
+							<Section className={s.card()}>
+								<Section className={s.content()}>{children}</Section>
+								{cardFooter}
+							</Section>
 							{footer}
 						</Container>
 					</Section>
@@ -134,14 +180,134 @@ export function EmailHeader({
 export function EmailHeading({
 	children,
 	size = "lg",
+	align = "left",
 }: {
 	children: ReactNode;
 	size?: EmailHeadingSize;
+	align?: EmailHeadingAlign;
 }) {
 	return (
-		<Heading as="h1" className={emailHeading({ size })}>
+		<Heading as="h1" className={emailHeading({ size, align })}>
 			{children}
 		</Heading>
+	);
+}
+
+export interface EmailHeroProps {
+	title: string;
+	text?: string;
+	/** Small label top left, e.g. "Security" or "Order NW-58213". */
+	eyebrow?: string;
+	/** Small text top right, e.g. a pre-formatted date. */
+	meta?: string;
+	/** Absolute URL of an illustration or photo shown under the text. */
+	imageUrl?: string;
+	imageAlt?: string;
+	tone?: EmailHeroTone;
+	size?: EmailHeroSize;
+	align?: EmailHeroAlign;
+}
+
+/** A tinted opening panel: eyebrow and date, a large headline, a line of text and an image. */
+export function EmailHero({
+	title,
+	text,
+	eyebrow,
+	meta,
+	imageUrl,
+	imageAlt,
+	tone = "muted",
+	size = "display",
+	align = "left",
+}: EmailHeroProps) {
+	const s = emailHero({ tone, size, align });
+	return (
+		<Section className={s.root()}>
+			{eyebrow || meta ? (
+				<Row>
+					<Column>
+						<Text className={s.eyebrow()}>{eyebrow ?? ""}</Text>
+					</Column>
+					<Column>
+						<Text className={s.meta()}> {meta ?? ""}</Text>
+					</Column>
+				</Row>
+			) : null}
+			<Heading as="h1" className={s.title()}>
+				{title}
+			</Heading>
+			{text ? <Text className={s.text()}>{text}</Text> : null}
+			{imageUrl ? (
+				<Img src={imageUrl} alt={imageAlt ?? title} width={480} className={s.image()} />
+			) : null}
+		</Section>
+	);
+}
+
+/** A tinted, rounded box that groups a summary: totals, details, a notice. */
+export function EmailPanel({
+	children,
+	tone = "muted",
+}: {
+	children: ReactNode;
+	tone?: EmailPanelTone;
+}) {
+	return <Section className={emailPanel({ tone })}>{children}</Section>;
+}
+
+/** One card of a `stacked` EmailShell. */
+export function EmailSection({
+	children,
+	align = "left",
+}: {
+	children: ReactNode;
+	align?: EmailSectionAlign;
+}) {
+	return <Section className={emailSection({ align })}>{children}</Section>;
+}
+
+export interface EmailListItem {
+	title?: string;
+	text: string;
+	/** Absolute URL of a 20px icon; used when `marker` is "icon". */
+	iconUrl?: string;
+}
+
+/** A list with a marker per row: numbered steps, check marks, dots or your own icons. */
+export function EmailList({
+	items,
+	marker = "number",
+}: {
+	items: EmailListItem[];
+	marker?: EmailListMarker;
+}) {
+	const s = emailList({ marker });
+	return (
+		<Section>
+			{items.map((item, i) => (
+				<Row key={`${item.title ?? ""}-${item.text}`}>
+					<Column className={s.markerCell()}>
+						{marker === "icon" && item.iconUrl ? (
+							<Img
+								src={item.iconUrl}
+								alt=""
+								width={20}
+								height={20}
+								className={s.icon()}
+							/>
+						) : (
+							<Text className={s.marker()}>
+								{marker === "number" ? i + 1 : marker === "check" ? "✓" : "•"}
+							</Text>
+						)}
+					</Column>
+					<Column className={s.body()}>
+						{item.title ? <Text className={s.title()}>{item.title}</Text> : null}
+						<Text className={s.text()}>{item.text}</Text>
+					</Column>
+				</Row>
+			))}
+		</Section>
 	);
 }
 
@@ -159,19 +325,34 @@ export function EmailText({
 	return <Text className={cn(emailText({ tone, size }), className)}>{children}</Text>;
 }
 
+/** A short label such as "Security" or "Receipt"; the text carries the meaning, not the tone. */
+export function EmailBadge({
+	children,
+	tone = "neutral",
+}: {
+	children: ReactNode;
+	tone?: EmailBadgeTone;
+}) {
+	return <Text className={emailBadge({ tone })}>{children}</Text>;
+}
+
 export function EmailButton({
 	href,
 	children,
 	variant = "primary",
 	size = "md",
+	shape = "rounded",
+	width = "auto",
 }: {
 	href: string;
 	children: ReactNode;
 	variant?: EmailButtonVariant;
 	size?: EmailButtonSize;
+	shape?: EmailButtonShape;
+	width?: EmailButtonWidth;
 }) {
 	return (
-		<Button href={href} className={emailButton({ variant, size })}>
+		<Button href={href} className={emailButton({ variant, size, shape, width })}>
 			{children}
 		</Button>
 	);
@@ -179,12 +360,21 @@ export function EmailButton({
 
 export function EmailCallout({
 	children,
+	title,
 	tone = "neutral",
 }: {
 	children: ReactNode;
+	/** Bold first line, e.g. "Didn't request this?". */
+	title?: string;
 	tone?: EmailCalloutTone;
 }) {
-	return <Section className={emailCallout({ tone })}>{children}</Section>;
+	const s = emailCallout({ tone });
+	return (
+		<Section className={s.root()}>
+			{title ? <Text className={s.title()}>{title}</Text> : null}
+			{children}
+		</Section>
+	);
 }
 
 export function EmailDivider({ spacing = "md" }: { spacing?: EmailDividerSpacing }) {
@@ -200,36 +390,145 @@ export interface EmailFooterProps {
 	/** Sender identity and postal address: required for commercial mail in many regions. */
 	lines: string[];
 	links?: EmailFooterLink[];
+	/** Why the recipient got this email, e.g. "You're receiving this because you signed up". */
+	reason?: string;
+	/** Wordmark shown in the `bar` layout, usually the product name. */
+	brand?: string;
+	/** `plain` goes in EmailShell's `footer`; `band`, `bar` and `row` go in its `cardFooter`. */
+	layout?: EmailFooterLayout;
 	align?: EmailFooterAlign;
 }
 
-export function EmailFooter({ lines, links = [], align = "center" }: EmailFooterProps) {
-	const s = emailFooter({ align });
-	return (
-		<Section className={s.root()}>
+export function EmailFooter({
+	lines,
+	links = [],
+	reason,
+	brand,
+	layout = "plain",
+	align = "center",
+}: EmailFooterProps) {
+	const s = emailFooter({ layout, align });
+	const linkRow =
+		links.length > 0 ? (
+			<Text className={s.linkText()}>
+				{links.map((link, i) => (
+					<span key={link.href}>
+						{i > 0 ? " · " : null}
+						<Link href={link.href} className={s.link()}>
+							{link.label}
+						</Link>
+					</span>
+				))}
+			</Text>
+		) : null;
+	const legal = (
+		<>
+			{reason ? <Text className={s.reason()}>{reason}</Text> : null}
 			{lines.map((line) => (
 				<Text key={line} className={s.text()}>
 					{line}
 				</Text>
 			))}
-			{links.length > 0 ? (
-				<Text className={s.text()}>
-					{links.map((link, i) => (
-						<span key={link.href}>
-							{i > 0 ? " · " : null}
-							<Link href={link.href} className={s.link()}>
-								{link.label}
-							</Link>
-						</span>
-					))}
-				</Text>
-			) : null}
+		</>
+	);
+	if (layout === "bar")
+		return (
+			<Section className={s.root()}>
+				<Section className={s.bar()}>
+					<Row>
+						<Column>
+							<Text className={s.brand()}>{brand ?? ""}</Text>
+						</Column>
+						<Column className={s.linksCell()}>{linkRow}</Column>
+					</Row>
+				</Section>
+				<Section className={s.legal()}>{legal}</Section>
+			</Section>
+		);
+	if (layout === "row")
+		return (
+			<Section className={s.root()}>
+				<Row>
+					<Column>{legal}</Column>
+					<Column className={s.linksCell()}>{linkRow}</Column>
+				</Row>
+			</Section>
+		);
+	return (
+		<Section className={s.root()}>
+			{legal}
+			{linkRow}
 		</Section>
 	);
 }
 
 export function EmailCode({ code, size = "lg" }: { code: string; size?: EmailCodeSize }) {
 	return <Text className={emailCode({ size })}>{code}</Text>;
+}
+
+/** The raw URL under a button, for clients that block buttons or strip styles. */
+export function EmailFallbackLink({
+	href,
+	label = "If the button doesn't work, paste this link into your browser:",
+	align = "left",
+}: {
+	href: string;
+	label?: string;
+	align?: EmailFallbackLinkAlign;
+}) {
+	const s = emailFallbackLink({ align });
+	return (
+		<Text className={s.root()}>
+			{label}{" "}
+			<Link href={href} className={s.link()}>
+				{href}
+			</Link>
+		</Text>
+	);
+}
+
+export interface EmailStat {
+	/** Pre-formatted, e.g. "1,284" or "$12.4k". */
+	value: string;
+	label: string;
+	/** Change or context in words, e.g. "Up 12% vs last week"; colour never carries it alone. */
+	note?: string;
+}
+
+/** Headline numbers in a grid of cards, `columns` per row. */
+export function EmailStats({
+	items,
+	columns = 3,
+	tone = "neutral",
+}: {
+	items: EmailStat[];
+	columns?: EmailStatsColumns;
+	tone?: EmailStatsTone;
+}) {
+	const s = emailStats({ columns, tone });
+	const rows: EmailStat[][] = [];
+	for (let i = 0; i < items.length; i += columns) rows.push(items.slice(i, i + columns));
+	return (
+		<Section>
+			{rows.map((row, r) => (
+				<Section key={row.map((item) => item.label).join("|")}>
+					{r > 0 ? <Section className={s.rowGap()} /> : null}
+					<Row>
+						{row.flatMap((item, i) => [
+							i > 0 ? <Column key={`${item.label}-gap`} className={s.gap()} /> : null,
+							<Column key={item.label} className={s.cell()}>
+								<Section className={s.card()}>
+									<Text className={s.value()}>{item.value}</Text>
+									<Text className={s.label()}>{item.label}</Text>
+									{item.note ? <Text className={s.note()}>{item.note}</Text> : null}
+								</Section>
+							</Column>,
+						])}
+					</Row>
+				</Section>
+			))}
+		</Section>
+	);
 }
 
 export interface EmailKeyValueRow {
@@ -253,13 +552,14 @@ export function EmailKeyValue({
 			{rows.map((row) => (
 				<Row key={row.label}>
 					<Column className={s.label()}>{row.label}</Column>
-					<Column className={s.value()}>{row.value}</Column>
+					{/* The space keeps plain-text renders reading "Label value", not "Labelvalue". */}
+					<Column className={s.value()}> {row.value}</Column>
 				</Row>
 			))}
 			{total ? (
 				<Row>
 					<Column className={cn(s.label(), s.total())}>{total.label}</Column>
-					<Column className={cn(s.value(), s.total())}>{total.value}</Column>
+					<Column className={cn(s.value(), s.total())}> {total.value}</Column>
 				</Row>
 			) : null}
 		</Section>

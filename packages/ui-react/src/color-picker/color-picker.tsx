@@ -12,6 +12,15 @@ import {
 	isValidHex,
 	rgbToHex,
 } from "../lib/color";
+import { Popover, PopoverContent, PopoverTrigger } from "../popover/popover";
+import {
+	type ColorPickerVariant,
+	colorPicker,
+	hasEyeDropper,
+	pickScreenColor,
+} from "./variants";
+
+export type { ColorPickerVariant };
 
 export type ColorFormat = "hsv" | "hsl" | "rgb";
 
@@ -23,6 +32,14 @@ export interface ColorPickerProps {
 	className?: string;
 	onValueChange: (value: string) => void;
 	onFormatChange?: (format: ColorFormat) => void;
+	/** `popover` puts the picker behind a swatch-and-hex trigger. */
+	variant?: ColorPickerVariant;
+	/** Recently used colours, newest first; the parent owns the list. */
+	recent?: string[];
+	/** Offer the screen eyedropper where the browser supports it. */
+	eyedropper?: boolean;
+	open?: boolean;
+	onOpenChange?: (open: boolean) => void;
 }
 
 const DEFAULT_SWATCHES = [
@@ -48,7 +65,15 @@ export function ColorPicker({
 	className,
 	onValueChange,
 	onFormatChange,
+	variant = "inline",
+	recent = [],
+	eyedropper = true,
+	open,
+	onOpenChange,
 }: ColorPickerProps) {
+	const s = colorPicker({ variant });
+	const [canDrop, setCanDrop] = useState(false);
+	useEffect(() => setCanDrop(eyedropper && hasEyeDropper()), [eyedropper]);
 	const uid = useId();
 	const [internalFormat, setInternalFormat] = useState<ColorFormat>("hsv");
 	const format = formatProp ?? internalFormat;
@@ -213,7 +238,7 @@ export function ColorPicker({
 		readStrip(event.clientX);
 	}
 
-	return (
+	const picker = (
 		<div
 			className={cn(
 				"w-60 select-none overflow-hidden rounded-xl border border-border bg-popover",
@@ -347,6 +372,58 @@ export function ColorPicker({
 					</button>
 				))}
 			</div>
+			{recent.length || canDrop ? (
+				<div className={s.extras()}>
+					{recent.length ? <span className={s.extrasLabel()}>Recent</span> : null}
+					{recent.map((swatch) => (
+						<button
+							key={swatch}
+							type="button"
+							aria-label={`Recent ${swatch}`}
+							onClick={() => apply(swatch)}
+							style={{ background: swatch }}
+							className="size-6 rounded-md ring-1 ring-foreground/10 ring-inset"
+						/>
+					))}
+					{canDrop ? (
+						<button
+							type="button"
+							aria-label="Pick a colour from the screen"
+							onClick={async () => {
+								const picked = await pickScreenColor();
+								if (picked) apply(picked);
+							}}
+							className={s.eyedropper()}
+						>
+							<svg
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								strokeWidth={2}
+								strokeLinecap="round"
+								strokeLinejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M11 7l6 6M4 16L15.7 4.3a1 1 0 0 1 1.4 0l2.6 2.6a1 1 0 0 1 0 1.4L8 20H4z" />
+							</svg>
+						</button>
+					) : null}
+				</div>
+			) : null}
 		</div>
+	);
+
+	if (variant === "inline") return picker;
+
+	return (
+		<Popover open={open} onOpenChange={onOpenChange}>
+			<PopoverTrigger aria-label={`${label}: ${preview}`} className={s.trigger()}>
+				<span aria-hidden="true" style={{ background: preview }} className={s.swatch()} />
+				<span className={s.hex()}>{preview}</span>
+			</PopoverTrigger>
+			<PopoverContent align="start" className={s.content()}>
+				{picker}
+			</PopoverContent>
+		</Popover>
 	);
 }

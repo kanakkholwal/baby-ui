@@ -8,11 +8,17 @@ export const megaNavbar = tv({
 			"inline-flex items-center gap-1 whitespace-nowrap rounded-full px-3.5 py-2 font-medium text-sm outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none",
 		chevron:
 			"size-3.5 transition-transform duration-[var(--duration-dropdown)] motion-reduce:transition-none",
+		menu: "relative flex items-center gap-1",
+		// Recast's morph: one panel resizes and slides between groups on a long, soft settle.
 		panel: [
-			"absolute top-full z-50 origin-top overflow-hidden rounded-xl border border-border bg-card shadow-2xl",
-			"transition-[width,height,transform,opacity] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none",
+			// box-content: the measured size is the content box, so the border must sit outside it.
+			"absolute top-full left-0 z-50 box-content origin-top overflow-hidden rounded-xl border border-border bg-card shadow-2xl",
+			"transition-[width,height,transform,opacity] duration-300 ease-[cubic-bezier(0.625,0.05,0,1)] motion-reduce:transition-none",
 		],
 		pane: "absolute inset-x-0 top-0 w-max transition-opacity duration-[var(--duration-dropdown)] motion-reduce:transition-none",
+		item: "flex gap-3 rounded-lg p-3 transition-colors hover:bg-foreground/[0.06] focus-visible:bg-foreground/[0.06] focus-visible:outline-none aria-[current=page]:bg-foreground/[0.06] motion-reduce:transition-none",
+		footer:
+			"group/cta flex items-center justify-between gap-4 border-border border-t px-5 py-3 transition-colors hover:bg-foreground/[0.06] focus-visible:bg-foreground/[0.06] focus-visible:outline-none motion-reduce:transition-none",
 		link: "inline-flex items-center whitespace-nowrap rounded-full px-3.5 py-2 font-medium text-sm transition-colors hover:text-foreground motion-reduce:transition-none",
 		mobileChevron:
 			"size-4 shrink-0 text-muted-foreground transition-transform duration-[var(--duration-dropdown)] motion-reduce:transition-none",

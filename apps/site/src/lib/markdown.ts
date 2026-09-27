@@ -4,7 +4,7 @@ import origins from "./generated/origins.json";
 import { installCommand } from "./registry-items";
 import { usageSnippet } from "./usage";
 
-const RAW = import.meta.glob("/src/docs/**/*.md", {
+const RAW = import.meta.glob("../docs/**/*.md", {
 	query: "?raw",
 	eager: true,
 	import: "default",
@@ -18,7 +18,7 @@ function body(path: string): string {
 
 /** A guide as plain markdown, for agents and the Copy Page button. */
 export function guideMarkdown(slug: string, title: string, description: string): string {
-	return `# ${title}\n\n${description}\n\n${body(`/src/docs/guides/${slug}.md`)}`.trim();
+	return `# ${title}\n\n${description}\n\n${body(`../docs/guides/${slug}.md`)}`.trim();
 }
 
 /** A component page as plain markdown: install, usage, props, keyboard, then its prose. */
@@ -82,6 +82,6 @@ export async function componentMarkdown(spec: ComponentSpec): Promise<string> {
 	if (spec.a11y.notes.length) {
 		out.push("## Accessibility", "", ...spec.a11y.notes.map((n) => `- ${n}`), "");
 	}
-	out.push(body(`/src/docs/components/${spec.slug}.md`));
+	out.push(body(`../docs/components/${spec.slug}.md`));
 	return out.join("\n").trim();
 }

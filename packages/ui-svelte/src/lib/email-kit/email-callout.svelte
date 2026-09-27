@@ -1,10 +1,23 @@
 <script lang="ts">
-import { Section } from "@better-svelte-email/components";
+import { Section, Text } from "@better-svelte-email/components";
 import type { Snippet } from "svelte";
 import { type EmailCalloutTone, emailCallout } from "./variants";
 
-let { children, tone = "neutral" }: { children: Snippet; tone?: EmailCalloutTone } =
-	$props();
+let {
+	children,
+	title,
+	tone = "neutral",
+}: {
+	children: Snippet;
+	/** Bold first line, e.g. "Didn't request this?". */
+	title?: string;
+	tone?: EmailCalloutTone;
+} = $props();
+
+const s = $derived(emailCallout({ tone }));
 </script>
 
-<Section class={emailCallout({ tone })}>{@render children()}</Section>
+<Section class={s.root()}>
+	{#if title}<Text class={s.title()}>{title}</Text>{/if}
+	{@render children()}
+</Section>

@@ -4,9 +4,10 @@ import { docvia, docviaSourcePlugin } from "@docvia/plugin-vite";
 import adapter from "@sveltejs/adapter-cloudflare";
 import { sveltekit } from "@sveltejs/kit/vite";
 import tailwindcss from "@tailwindcss/vite";
+import { FontaineTransform } from "fontaine";
 import { defineConfig, loadEnv, type Plugin, searchForWorkspaceRoot } from "vite";
 import { generate, watchRoots } from "../../scripts/generate.mjs";
-import docviaConfig from "./docvia.config";
+import docviaConfig from "./docvia.config.ts";
 
 // yaml (via @docvia/schema) resolves to CJS under the SSR node condition; Rolldown
 // wraps that in createRequire(import.meta.url), undefined in Workers. Use its ESM build.
@@ -105,6 +106,15 @@ export default defineConfig(({ mode }) => {
 		},
 		plugins: [
 			generatedFiles(),
+			// Size-adjusted fallback faces, so the font swap no longer moves the layout (CLS).
+			FontaineTransform.vite({
+				fallbacks: {
+					Satoshi: ["Arial"],
+					"Inter Variable": ["Arial"],
+					"JetBrains Mono Variable": ["Courier New"],
+				},
+				resolvePath: (id) => new URL(`./static${id}`, import.meta.url),
+			}),
 			tailwindcss(),
 			docvia(docviaConfig),
 			// Resolves `docvia/registry` to the registry alone; docvia() only serves the full source.

@@ -1,5 +1,12 @@
 #!/usr/bin/env node
-import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import {
+	existsSync,
+	mkdirSync,
+	readdirSync,
+	readFileSync,
+	rmSync,
+	writeFileSync,
+} from "node:fs";
 import { createRequire } from "node:module";
 import { dirname, join, relative } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -21,9 +28,26 @@ const pascal = (slug) => slug.replace(/(^|-)(\w)/g, (_, __, c) => c.toUpperCase(
 const posix = (p) => p.split("\\").join("/");
 const str = JSON.stringify;
 
-const slugs = readdirSync(REACT_SRC).filter(
-	(d) => d.startsWith("email-") && d !== "email-kit",
-);
+const PRO = join(ROOT, "pro/packages");
+const OUT_PRO = join(ROOT, "apps/site/src/lib/generated/emails-pro");
+
+/** Every template folder: public ones, plus Pro ones when the private submodule is present. */
+function discover(reactSrc, svelteSrc, pro) {
+	if (!existsSync(reactSrc)) return [];
+	return readdirSync(reactSrc)
+		.filter((d) => d.startsWith("email-") && d !== "email-kit")
+		.map((slug) => ({
+			slug,
+			pro,
+			react: join(reactSrc, slug, slug),
+			svelte: join(svelteSrc, slug, `${slug}.svelte`),
+		}));
+}
+const templates = [
+	...discover(REACT_SRC, SVELTE_SRC, false),
+	...discover(join(PRO, "react/src"), join(PRO, "svelte/src/lib"), true),
+];
+const slugs = templates.map((t) => t.slug);
 
 async function bundle(entrySource, resolveDir, outfile, plugins = [], external = []) {
 	await build({
@@ -44,13 +68,13 @@ async function renderReact(props) {
 	const entry = [
 		'import { createElement } from "react";',
 		'import { render } from "react-email";',
-		...slugs.map((s) => `import { ${pascal(s)} } from "./${s}/${s}";`),
+		...templates.map((t) => `import { ${pascal(t.slug)} } from ${str(posix(t.react))};`),
+		`const COMPONENTS = { ${slugs.map((s) => `${str(s)}: ${pascal(s)}`).join(", ")} };`,
+		// Keys are "slug" or "slug@design"; every design renders through the same component.
 		"export default async function run(props) {",
 		"\tconst out = {};",
-		...slugs.map(
-			(s) =>
-				`\tout[${str(s)}] = await render(createElement(${pascal(s)}, props[${str(s)}]));`,
-		),
+		"\tfor (const key of Object.keys(props))",
+		'\t\tout[key] = await render(createElement(COMPONENTS[key.split("@")[0]], props[key]));',
 		"\treturn out;",
 		"}",
 	].join("\n");
@@ -87,15 +111,14 @@ async function renderSvelte(props) {
 	const entry = [
 		'import { Renderer, pixelBasedPreset } from "@better-svelte-email/server";',
 		'import { emailTailwindConfig } from "./lib/email-theme";',
-		...slugs.map((s) => `import ${pascal(s)} from "./${s}/${s}.svelte";`),
+		...templates.map((t) => `import ${pascal(t.slug)} from ${str(posix(t.svelte))};`),
 		"export default async function run(props) {",
 		"\tconst tailwindConfig = { ...emailTailwindConfig, presets: [pixelBasedPreset] };",
 		"\tconst renderer = new Renderer({ tailwindConfig });",
+		`\tconst components = { ${slugs.map((s) => `${str(s)}: ${pascal(s)}`).join(", ")} };`,
 		"\tconst out = {};",
-		...slugs.map(
-			(s) =>
-				`\tout[${str(s)}] = await renderer.render(${pascal(s)}, { props: props[${str(s)}] });`,
-		),
+		"\tfor (const key of Object.keys(props))",
+		'\t\tout[key] = await renderer.render(components[key.split("@")[0]], { props: props[key] });',
 		"\treturn out;",
 		"}",
 	].join("\n");
@@ -143,6 +166,9 @@ function audit(slug, port, html, props) {
 	if (unstyled.length)
 		fail.push(`classes left un-inlined: ${[...new Set(unstyled)].slice(0, 6).join(" ")}`);
 	if (props.preview && !html.includes(props.preview)) fail.push("preview text missing");
+	// A missing prop interpolated into copy reads as a broken email.
+	const leaked = plainText(html).match(/\b(undefined|null|NaN)\b|\[object Object\]/);
+	if (leaked) fail.push(`"${leaked[0]}" in the rendered copy`);
 	return fail.map((f) => `${slug} (${port}): ${f}`);
 }
 
@@ -159,6 +185,12 @@ const shared = await bundle(
 		`export { defaultProps } from ${str(posix(join(ROOT, "packages/registry-schema/src/spec.ts")))};`,
 		`export { getSpec } from ${str(posix(SPECS))};`,
 		`export { emailPlainText } from ${str(posix(TEMPLATES))};`,
+		...(templates.some((t) => t.pro)
+			? [
+					`export { proSpecs } from ${str(posix(join(PRO, "schema/src/index.ts")))};`,
+					`export { EMAIL_SAMPLES as PRO_SAMPLES } from ${str(posix(join(PRO, "demos/src/data/email-samples.ts")))};`,
+				]
+			: []),
 	].join("\n"),
 	ROOT,
 	join(REACT_CACHE, "shared.mjs"),
@@ -166,23 +198,42 @@ const shared = await bundle(
 	["@better-svelte-email/server"],
 );
 const plainText = shared.emailPlainText;
+// The default render per slug, plus one per extra `design` so every design passes the gates.
 const props = Object.fromEntries(
-	slugs.map((slug) => {
-		const spec = shared.getSpec(slug);
-		return [slug, shared.previewProps(slug, spec ? shared.defaultProps(spec) : {})];
+	templates.flatMap(({ slug, pro }) => {
+		const spec = pro
+			? shared.proSpecs.find((s) => s.slug === slug)
+			: shared.getSpec(slug);
+		const controls = spec ? shared.defaultProps(spec) : {};
+		const sample = pro ? shared.PRO_SAMPLES[slug] : undefined;
+		const base = shared.previewProps(slug, controls, sample);
+		const designs = (spec?.variants.design ?? []).filter((d) => d !== base.design);
+		return [
+			[slug, base],
+			...designs.map((design) => [
+				`${slug}@${design}`,
+				shared.previewProps(slug, { ...controls, design }, sample),
+			]),
+		];
 	}),
 );
 
 const [react, svelte] = await Promise.all([renderReact(props), renderSvelte(props)]);
 const failures = [];
-mkdirSync(OUT, { recursive: true });
-for (const slug of slugs) {
-	const out = { slug, props: props[slug] };
+// Rewritten from scratch each run, so a Pro render never outlives the submodule or a template.
+for (const dir of [OUT, OUT_PRO]) {
+	rmSync(dir, { recursive: true, force: true });
+	mkdirSync(dir, { recursive: true });
+}
+const kb = (n) => `${(n / 1024).toFixed(1)}KB`;
+for (const key of Object.keys(props)) {
+	const [slug] = key.split("@");
+	const out = { slug, props: props[key] };
 	for (const [port, html] of [
-		["react", react[slug]],
-		["svelte", svelte[slug]],
+		["react", react[key]],
+		["svelte", svelte[key]],
 	]) {
-		failures.push(...audit(slug, port, html, props[slug]));
+		failures.push(...audit(key, port, html, props[key]));
 		out[port] = { html, text: plainText(html), bytes: Buffer.byteLength(html) };
 	}
 	const a = normalise(out.react.text);
@@ -191,13 +242,16 @@ for (const slug of slugs) {
 		let i = 0;
 		while (a[i] === b[i]) i++;
 		failures.push(
-			`${slug}: React and Svelte text differ at ${i}: "${a.slice(i, i + 50)}" vs "${b.slice(i, i + 50)}"`,
+			`${key}: React and Svelte text differ at ${i}: "${a.slice(i, i + 50)}" vs "${b.slice(i, i + 50)}"`,
 		);
 	}
-	writeFileSync(join(OUT, `${slug}.json`), `${str(out)}\n`);
-	const kb = (n) => `${(n / 1024).toFixed(1)}KB`;
+	// Only the default design is written; other designs preview through the live endpoint.
+	if (key === slug) {
+		const pro = templates.find((t) => t.slug === slug)?.pro;
+		writeFileSync(join(pro ? OUT_PRO : OUT, `${slug}.json`), `${str(out)}\n`);
+	}
 	console.log(
-		`emails: ${slug} react ${kb(out.react.bytes)}, svelte ${kb(out.svelte.bytes)}`,
+		`emails: ${key} react ${kb(out.react.bytes)}, svelte ${kb(out.svelte.bytes)}`,
 	);
 }
 
@@ -205,4 +259,6 @@ if (failures.length) {
 	console.error(failures.map((f) => `  x ${f}`).join("\n"));
 	process.exit(1);
 }
-console.log(`emails: ${slugs.length} rendered, all gates pass`);
+console.log(
+	`emails: ${slugs.length} templates, ${Object.keys(props).length} renders, all gates pass`,
+);

@@ -40,6 +40,7 @@ export function InputOTPDemo({ props }: { props: Props }) {
 				value={value}
 				onChange={setValue}
 				size={size}
+				aria-label="Verification code"
 				aria-invalid={status === "wrong" || undefined}
 			>
 				<InputOTPGroup>

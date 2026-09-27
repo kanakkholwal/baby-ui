@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { Collapsible, CollapsibleContent } from "../collapsible/collapsible";
 import { cn } from "../lib/cn";
 import { NotchedShelf } from "../notched-shelf/notched-shelf";
@@ -87,18 +87,25 @@ function isCurrent(href: string, active?: string) {
 	return active === href || active.startsWith(`${href}/`);
 }
 
-/** Every trigger and panel share one measured box, so the panel morphs between
- * groups instead of a fresh popover mounting per item. */
-function DesktopMegaMenu({
+/** Desktop dropdowns sharing one panel that resizes and slides to centre under the open
+ * trigger, so moving along the row reads as the panel morphing, not popovers swapping. */
+export function MegaMenu({
 	groups,
 	active,
-	variant,
+	variant = "solid",
+	itemIcon,
+	className,
 }: {
 	groups: MegaMenuGroup[];
+	/** Current path; marks the matching trigger and links current. */
 	active?: string;
-	variant: MegaNavbarVariant;
+	variant?: MegaNavbarVariant;
+	/** Renders an icon for items without their own, so one function can map a whole menu. */
+	itemIcon?: (item: MegaMenuItem) => ReactNode;
+	className?: string;
 }) {
 	const [open, setOpen] = useState(-1);
+	const panelId = useId();
 	const styles = megaNavbar({ variant });
 	// The notched shelf drops its panel a little further, clearing the wing curve.
 	const drop = variant === "notched" ? 10 : 8;
@@ -117,7 +124,13 @@ function DesktopMegaMenu({
 		const triggerRect = trigger.getBoundingClientRect();
 		const width = panel.scrollWidth;
 		const ideal = triggerRect.left - rowRect.left + triggerRect.width / 2 - width / 2;
-		setBox({ width, height: panel.scrollHeight, left: Math.max(0, ideal) });
+		// Centred under the trigger, but never past the row's start or the window's end.
+		const room = window.innerWidth - rowRect.left - width - 8;
+		setBox({
+			width,
+			height: panel.scrollHeight,
+			left: Math.max(0, Math.min(ideal, room)),
+		});
 	}
 
 	useEffect(() => {
@@ -141,7 +154,7 @@ function DesktopMegaMenu({
 		// biome-ignore lint/a11y/noStaticElementInteractions: hover region only; the triggers and links inside are the real controls
 		<div
 			ref={row}
-			className="relative hidden items-center gap-1 @3xl:flex"
+			className={cn(styles.menu(), className)}
 			onMouseLeave={scheduleClose}
 			onMouseEnter={cancelClose}
 		>
@@ -155,12 +168,8 @@ function DesktopMegaMenu({
 						}}
 						type="button"
 						aria-expanded={isOpen}
-						aria-controls="mega-navbar-panel"
+						aria-controls={panelId}
 						onMouseEnter={() => {
-							cancelClose();
-							setOpen(index);
-						}}
-						onFocus={() => {
 							cancelClose();
 							setOpen(index);
 						}}
@@ -190,7 +199,7 @@ function DesktopMegaMenu({
 			})}
 
 			<div
-				id="mega-navbar-panel"
+				id={panelId}
 				aria-hidden={open < 0}
 				onMouseEnter={cancelClose}
 				onMouseLeave={scheduleClose}
@@ -226,11 +235,11 @@ function DesktopMegaMenu({
 											rel={item.external ? "noreferrer" : undefined}
 											onClick={() => setOpen(-1)}
 											aria-current={isCurrent(item.href, active) ? "page" : undefined}
-											className="flex gap-3 rounded-lg p-3 transition-colors hover:bg-foreground/[0.06] aria-[current=page]:bg-foreground/[0.06] motion-reduce:transition-none"
+											className={styles.item()}
 										>
-											{item.icon ? (
+											{item.icon || itemIcon ? (
 												<span className="mt-0.5 shrink-0 text-muted-foreground [&_svg]:size-4">
-													{item.icon}
+													{item.icon ?? itemIcon?.(item)}
 												</span>
 											) : null}
 											<span className="min-w-0">
@@ -254,7 +263,7 @@ function DesktopMegaMenu({
 								<a
 									href={group.footer.href}
 									onClick={() => setOpen(-1)}
-									className="group/cta flex items-center justify-between gap-4 border-border border-t bg-foreground/[0.02] px-5 py-3 transition-colors hover:bg-foreground/[0.06] motion-reduce:transition-none"
+									className={styles.footer()}
 								>
 									<span className="font-medium text-foreground text-sm">
 										{group.footer.label}
@@ -482,7 +491,12 @@ export function MegaNavbar({
 						<NotchedShelf size="lg" fill="text-card">
 							<div className={styles.shelfBar()}>
 								{brandSlot}
-								<DesktopMegaMenu groups={groups} active={active} variant={variant} />
+								<MegaMenu
+									groups={groups}
+									active={active}
+									variant={variant}
+									className="hidden @3xl:flex"
+								/>
 								{linkList}
 								{actions ? (
 									<span className="flex items-center gap-2">{actions}</span>
@@ -500,7 +514,12 @@ export function MegaNavbar({
 				<nav aria-label="Primary" className={styles.nav()}>
 					{brandSlot}
 					<div className="hidden flex-1 items-center justify-center @3xl:flex">
-						<DesktopMegaMenu groups={groups} active={active} variant={variant} />
+						<MegaMenu
+							groups={groups}
+							active={active}
+							variant={variant}
+							className="hidden @3xl:flex"
+						/>
 						{linkList}
 					</div>
 					<div className="ml-auto flex shrink-0 items-center gap-2 @3xl:ml-0">

@@ -12,9 +12,15 @@
 				"packages/tokens/src/**",
 				"packages/ui-react/src/email-*/**",
 				"packages/ui-svelte/src/lib/email-*/**",
-				"packages/demos/src/data/email-samples.ts"
+				"packages/demos/src/data/email-samples.ts",
+				"pro/packages/react/src/email-*/**",
+				"pro/packages/svelte/src/lib/email-*/**",
+				"pro/packages/demos/src/data/email-samples.ts"
 			],
-			"outputs": ["apps/site/src/lib/generated/emails/**"]
+			"outputs": [
+				"apps/site/src/lib/generated/emails/**",
+				"apps/site/src/lib/generated/emails-pro/**"
+			]
 		},
 		"build": {
 			"dependsOn": ["//#gen", "//#emails", "^build", "^registry"],

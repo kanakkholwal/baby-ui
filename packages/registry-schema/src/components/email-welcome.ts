@@ -10,8 +10,23 @@ export const emailWelcome = defineComponent({
 		"Sent right after sign-up: greets the user, lists their first few actions and links to the product.",
 	category: "emails",
 	status: "beta",
-	variants: { surface: SURFACES, density: DENSITIES },
+	variants: { design: ["classic", "stacked"], surface: SURFACES, density: DENSITIES },
 	props: [
+		{
+			name: "design",
+			type: '"classic" | "stacked"',
+			description:
+				"`classic` is one card; `stacked` splits the email into cards with a centred, image-led opener.",
+			default: "stacked",
+			control: { kind: "select", options: ["classic", "stacked"] },
+		},
+		{
+			name: "heroImageUrl, heroImageAlt",
+			type: "string",
+			description:
+				"Absolute URL of a wide illustration or product shot, with alt text, for `stacked`.",
+			control: { kind: "none" },
+		},
 		{
 			name: "productName",
 			type: "string",

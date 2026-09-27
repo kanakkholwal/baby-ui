@@ -1,58 +1,88 @@
 <script lang="ts">
-import { DiaText, FillButton, SilkAurora } from "@baby-ui/svelte";
+import { AuroraFlow, Button, DiaText, FillButton } from "@baby-ui/svelte";
+import IconArrowRight from "@tabler/icons-svelte/icons/arrow-right";
+import type { Component } from "svelte";
 
-const TAILS = ["feel alive.", "move with you.", "ship twice."];
+// Prism is a Pro background. Deploys with the private repo checked out render it; public and
+// CI builds have no file here and fall back to a free background.
+const prism = Object.values(
+	import.meta.glob<{ default: Component<Record<string, unknown>> }>(
+		"../../../../../pro/packages/svelte/src/lib/prism-gradient/prism-gradient.svelte",
+	),
+)[0];
 
-// Measured, not claimed: the chart and base pages pass axe, and every component ships both ports.
-const PROOF = [
-	"0 axe violations",
-	"Keyboard first",
-	"Reduced motion",
-	"React + Svelte",
-	"shadcn CLI",
+const TAILS = [
+	"agent interfaces.",
+	"data dashboards.",
+	"complex forms.",
+	"readable charts.",
 ];
+
+// Fades in below the header so nav text stays readable, and dims in dark mode, where the
+// background's highlight is the light foreground and would wash the page out.
+const BG_CLASS =
+	"-z-10 [mask-image:linear-gradient(to_bottom,transparent,black_9rem,black_45%,transparent)] dark:opacity-55";
 </script>
 
-<div class="relative isolate overflow-x-clip">
-	<SilkAurora
-		tone="surface"
-		speed="slow"
-		intensity={0.8}
-		class="-z-10 [mask-image:linear-gradient(to_bottom,black_45%,transparent)]"
-	/>
+<!-- Pulled up under the fixed header, so the header stays transparent over the hero's background. -->
+<div class="relative isolate -mt-14 flex min-h-svh flex-col justify-center overflow-x-clip pt-14">
+	{#if prism}
+		{#await prism() then mod}
+			<mod.default tone="chart" speed="slow" class={BG_CLASS} />
+		{/await}
+	{:else}
+		<AuroraFlow tone="chart" speed="slow" class={BG_CLASS} />
+	{/if}
 
-	<div class="mx-auto flex max-w-3xl flex-col items-center px-4 pt-24 pb-24 text-center md:pt-36 md:pb-32">
-		<h1 class="hero-in font-normal text-5xl text-foreground leading-[1.02] tracking-[-0.05em] sm:text-6xl xl:text-7xl">
-			<span class="block">Interfaces that</span>
-			<span class="block">
+	<!-- Text protection that fades to nothing at its own edge, so no ring shows. -->
+	<div
+		aria-hidden="true"
+		class="pointer-events-none absolute inset-x-0 top-14 -z-10 mx-auto h-[40rem] max-w-5xl bg-[radial-gradient(closest-side,color-mix(in_oklch,var(--background)_86%,transparent)_0%,color-mix(in_oklch,var(--background)_62%,transparent)_55%,transparent_100%)]"
+	></div>
+
+	<!-- Fills the first screen, so the showcase starts below the fold. -->
+	<div class="mx-auto flex w-full max-w-3xl flex-col items-center px-4 py-16 text-center md:py-20">
+		<a
+			href="/charts"
+			class="hero-in group mb-7 inline-flex items-center gap-2 rounded-full border border-border bg-background/60 py-1 pr-3 pl-1 text-foreground text-xs transition-colors hover:border-border-strong"
+		>
+			<span class="rounded-full bg-foreground px-2 py-0.5 font-medium text-background">New</span>
+			Charts you can read by keyboard
+			<IconArrowRight
+				size={13}
+				stroke={1.8}
+				aria-hidden="true"
+				class="transition-transform duration-150 group-hover:translate-x-0.5 motion-reduce:transition-none"
+			/>
+		</a>
+
+		<h1 class="hero-in font-normal text-[2.5rem] text-foreground leading-[1.04] tracking-[-0.05em] sm:text-6xl xl:text-7xl" style:--i="1">
+			<span class="block">Accessible UI for</span>
+			<!-- One line reserved for the cycling tail, so swapping words never reflows the page. -->
+			<span class="block h-[1.04em] whitespace-nowrap">
 				<DiaText text={TAILS} repeat triggerOnView={false} durationMs={900} repeatDelayMs={2600} />
 			</span>
 		</h1>
 
 		<p
-			class="hero-in mt-6 max-w-lg text-pretty text-base text-foreground/70 leading-7 sm:text-lg sm:leading-8"
-			style:--i="1"
+			class="hero-in mt-6 max-w-xl text-pretty text-base text-foreground/75 leading-7 sm:text-lg sm:leading-8"
+			style:--i="2"
 		>
-			Accessible components for React and Svelte, built for real product screens: agents, data,
-			forms and charts. Installed as source with the shadcn CLI.
+			React and Svelte components for the screens products ship, installed as source with the
+			shadcn CLI.
 		</p>
 
-		<div class="hero-in mt-9" style:--i="2">
+		<div class="hero-in mt-9 flex flex-wrap items-center justify-center gap-3" style:--i="3">
 			<FillButton href="/components">Browse components</FillButton>
+			<Button href="/docs/installation" variant="ghost" size="lg" class="group h-11 rounded-xl">
+				Read the docs
+				<IconArrowRight
+					aria-hidden="true"
+					class="transition-transform duration-150 group-hover:translate-x-0.5 motion-reduce:transition-none"
+				/>
+			</Button>
 		</div>
 
-		<ul
-			aria-label="What every component ships with"
-			class="hero-in mt-12 flex max-w-xl flex-wrap items-center justify-center gap-x-5 gap-y-2 text-muted-foreground text-xs"
-			style:--i="3"
-		>
-			{#each PROOF as fact, i (fact)}
-				<li class="flex items-center gap-5">
-					{#if i > 0}<span aria-hidden="true" class="size-1 rounded-full bg-border-strong"></span>{/if}
-					{fact}
-				</li>
-			{/each}
-		</ul>
 	</div>
 </div>
 

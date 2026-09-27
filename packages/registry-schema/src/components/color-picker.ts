@@ -3,10 +3,18 @@ import { defineComponent } from "../index";
 export const colorPicker = defineComponent({
 	slug: "color-picker",
 	name: "Color Picker",
-	description: "Saturation square, hue strip, hex field and HSV/HSL/RGB channel sliders.",
+	description:
+		"Saturation square, hue strip, hex field and HSV/HSL/RGB sliders, inline or behind a swatch popover.",
 	category: "base",
 	status: "stable",
 	props: [
+		{
+			name: "variant",
+			type: '"inline" | "popover"',
+			description: "Show the picker in place, or behind a swatch-and-hex trigger.",
+			default: "inline",
+			control: { kind: "select", options: ["inline", "popover"] },
+		},
 		{
 			name: "value",
 			type: "string",
@@ -25,6 +33,26 @@ export const colorPicker = defineComponent({
 			name: "swatches",
 			type: "string[]",
 			description: "Preset colours.",
+			control: { kind: "none" },
+		},
+		{
+			name: "recent",
+			type: "string[]",
+			description: "Recently used colours, newest first. The parent owns the list.",
+			control: { kind: "none" },
+		},
+		{
+			name: "eyedropper",
+			type: "boolean",
+			description:
+				"Offer the screen eyedropper where the browser has the EyeDropper API.",
+			default: "true",
+			control: { kind: "boolean" },
+		},
+		{
+			name: "open",
+			type: "boolean",
+			description: "Popover open state (popover variant). Bindable in Svelte.",
 			control: { kind: "none" },
 		},
 		{
@@ -47,6 +75,7 @@ export const colorPicker = defineComponent({
 		keyboard: [
 			"Tab reaches the hex field, each channel slider and each preset",
 			"Arrow keys move the focused channel slider",
+			"Popover variant: Enter or Space on the trigger opens it, Escape closes it and returns focus",
 		],
 		notes: [
 			"The square and the hue strip are pointer-only by design; the three channel sliders are their keyboard equivalent and reach every colour.",
@@ -64,20 +93,24 @@ export const colorPicker = defineComponent({
 			entry: "ColorPicker",
 			files: [
 				{ path: "color-picker/color-picker.tsx", type: "registry:ui" },
+				{ path: "color-picker/variants.ts", type: "registry:ui" },
 				{ path: "lib/color.ts", type: "registry:lib" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			registryDependencies: ["popover"],
 		},
 		svelte: {
 			entry: "ColorPicker",
 			files: [
 				{ path: "color-picker/color-picker.svelte", type: "registry:ui" },
+				{ path: "color-picker/variants.ts", type: "registry:ui" },
 				{ path: "lib/color.ts", type: "registry:lib" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			registryDependencies: ["popover"],
 		},
 	},
-	keywords: ["color", "picker"],
+	keywords: ["color", "picker", "color picker popover", "eyedropper", "swatch", "form"],
 });

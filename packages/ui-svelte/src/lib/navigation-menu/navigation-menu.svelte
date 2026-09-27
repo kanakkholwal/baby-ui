@@ -15,22 +15,6 @@ let {
 	/** Render the shared panel that slides between triggers. */
 	viewport?: boolean;
 } = $props();
-
-// bits-ui sizes the viewport but leaves it at the root's start; slide it under the open trigger.
-let offset = $state(0);
-$effect(() => {
-	const root = ref;
-	if (!value || !root) return;
-	const trigger = root.querySelector<HTMLElement>(
-		"[data-navigation-menu-trigger][data-state=open]",
-	);
-	const panel = root.querySelector<HTMLElement>("[data-navigation-menu-viewport]");
-	if (!trigger) return;
-	const rootBox = root.getBoundingClientRect();
-	const left = trigger.getBoundingClientRect().left - rootBox.left;
-	const room = window.innerWidth - rootBox.left - (panel?.offsetWidth ?? 0) - 8;
-	offset = Math.max(-rootBox.left + 8, Math.min(left, room));
-});
 </script>
 
 <NavigationMenuPrimitive.Root
@@ -43,6 +27,6 @@ $effect(() => {
 >
 	{@render children?.()}
 	{#if viewport}
-		<NavigationMenuViewport {offset} />
+		<NavigationMenuViewport />
 	{/if}
 </NavigationMenuPrimitive.Root>

@@ -5,25 +5,20 @@ import { navigationMenu } from "./variants";
 
 let {
 	ref = $bindable(null),
-	offset = 0,
 	class: classProp,
 	...rest
-}: NavigationMenuPrimitive.ViewportProps & {
-	/** Horizontal distance from the root's start to the open trigger, in px. */
-	offset?: number;
-} = $props();
+}: NavigationMenuPrimitive.ViewportProps = $props();
 </script>
 
-<div
-	class="absolute start-0 top-full isolate z-50 flex pt-1.5 transition-[translate] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none"
-	style:translate="{offset}px 0"
->
+<!-- shadcn-svelte's geometry: bits-ui measures the content without its p-2, hence the 1rem. -->
+<div class="absolute start-0 top-full isolate z-50 flex justify-center">
 	<NavigationMenuPrimitive.Viewport
 		bind:ref
 		data-slot="navigation-menu-viewport"
 		class={cn(
+			"nav-menu-viewport relative mt-1.5 w-full origin-top",
 			navigationMenu().viewport(),
-			"h-(--bits-navigation-menu-viewport-height) w-(--bits-navigation-menu-viewport-width)",
+			"h-[calc(var(--bits-navigation-menu-viewport-height)+1rem)] md:w-[calc(var(--bits-navigation-menu-viewport-width)+1rem)]",
 			classProp,
 		)}
 		{...rest}

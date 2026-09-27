@@ -82,6 +82,10 @@ export const COLLECTIONS = {
 		blurb: "Fields and controls for sign-ups, settings and checkout, keyboard-first.",
 		slugs: [
 			"input",
+			"password-input",
+			"phone-input",
+			"currency-input",
+			"credit-card-input",
 			"textarea",
 			"label",
 			"select",
@@ -96,6 +100,13 @@ export const COLLECTIONS = {
 			"input-otp",
 			"calendar",
 			"range-calendar",
+			"date-picker",
+			"date-range-picker",
+			"time-picker",
+			"file-upload",
+			"number-input",
+			"search-input",
+			"multi-select",
 		],
 	},
 } as const satisfies Record<
@@ -108,59 +119,132 @@ export const isCollection = (id: string): id is CollectionId =>
 	Object.hasOwn(COLLECTIONS, id);
 
 export type NavLink = { href: string; label: string };
+
+/** Icon names the header maps to Tabler icons; this module stays free of Svelte. */
+export type NavIcon =
+	| "agents"
+	| "data"
+	| "forms"
+	| "charts"
+	| "base"
+	| "text"
+	| "animated"
+	| "backgrounds"
+	| "blocks"
+	| "advanced"
+	| "og-images"
+	| "emails"
+	| "intro"
+	| "install"
+	| "theming"
+	| "llms";
+
+export type NavMenuItem = NavLink & {
+	description: string;
+	icon: NavIcon;
+	/** The four areas the library leads with; the mobile drawer lists these beside the top row. */
+	featured?: boolean;
+};
+
 export type NavItem = NavLink & {
 	/** Path prefixes that mark this item current. */
 	match: string[];
-	/** Grouped links shown in a menu instead of navigating on click. */
-	menu?: { heading?: string; links: NavLink[] }[];
+	/** Links shown in the shared mega panel instead of navigating on click. */
+	menu?: NavMenuItem[];
+	/** The panel's promoted closing link. */
+	footer?: NavLink & { hint: string };
 };
 
-/** The global top-level nav, shared by the header links and the mobile drawer's top row. */
+/** The global top-level nav, shared by the header's mega menu and the mobile drawer's top row. */
 export function siteNav(categories: NavCategory[]): NavItem[] {
-	const find = (id: Category) => categories.find((c) => c.category === id);
-	const link = (c: NavCategory): NavItem => ({
-		href: c.href,
-		label: c.label,
-		match: [c.href],
+	const byId = new Map(categories.map((c) => [c.category, c]));
+	const category = (id: Category, featured = false): NavMenuItem[] => {
+		const c = byId.get(id);
+		return c
+			? [
+					{
+						href: c.href,
+						label: c.label,
+						description: CATEGORY_BLURB[c.category],
+						icon: id as NavIcon,
+						featured,
+					},
+				]
+			: [];
+	};
+	const collection = (id: CollectionId): NavMenuItem => ({
+		href: `/${id}`,
+		label: COLLECTIONS[id].label,
+		description: COLLECTIONS[id].blurb,
+		icon: id,
+		featured: true,
 	});
-	const agents = find("agents");
-	const charts = find("charts");
-	const templates = categories.filter(
-		(c) => c.category === "og-images" || c.category === "emails",
-	);
-	const rest = categories.filter(
-		(c) => !TOP_LEVEL.includes(c.category) && c.category !== "agents",
-	);
+	const components: NavMenuItem[] = [
+		...category("agents", true),
+		collection("data"),
+		collection("forms"),
+		...category("charts", true),
+		...(
+			[
+				"base",
+				"text",
+				"animated",
+				"backgrounds",
+				"blocks",
+				"advanced",
+				"og-images",
+				"emails",
+			] as const
+		).flatMap((id) => category(id)),
+	];
 	return [
-		...(agents ? [link(agents)] : []),
-		...(Object.keys(COLLECTIONS) as CollectionId[]).map((id) => ({
-			href: `/${id}`,
-			label: COLLECTIONS[id].label,
-			match: [`/${id}`],
-		})),
-		...(charts ? [link(charts)] : []),
 		{
 			href: "/components",
 			label: "Components",
-			match: ["/components", ...templates.map((c) => c.href)],
+			match: ["/components", ...components.map((item) => item.href)],
+			menu: components,
+			footer: {
+				href: "/components",
+				label: "All components",
+				hint: "Browse the full catalog",
+			},
+		},
+		{
+			href: "/docs",
+			label: "Docs",
+			match: ["/docs"],
 			menu: [
 				{
-					links: [
-						{ href: "/components", label: "All components" },
-						...rest.map((c) => ({ href: c.href, label: c.label })),
-					],
+					href: "/docs",
+					label: "Introduction",
+					description: "What Baby UI is and how it installs.",
+					icon: "intro",
 				},
-				...(templates.length
-					? [
-							{
-								heading: "Templates",
-								links: templates.map((c) => ({ href: c.href, label: c.label })),
-							},
-						]
-					: []),
+				{
+					href: "/docs/installation",
+					label: "Installation",
+					description: "Set up the registry for React or Svelte.",
+					icon: "install",
+				},
+				{
+					href: "/docs/theming",
+					label: "Theming",
+					description: "Tokens, colours and motion variables.",
+					icon: "theming",
+				},
+				{
+					href: "/llms.txt",
+					label: "llms.txt",
+					description: "Every component as plain text for AI tools.",
+					icon: "llms",
+				},
 			],
+			footer: {
+				href: "/docs/installation",
+				label: "Read the docs",
+				hint: "Start with installation",
+			},
 		},
-		{ href: "/docs", label: "Docs", match: ["/docs"] },
 		...(__SHOW_PRO__
 			? [{ href: "/pricing", label: "Pricing", match: ["/pricing"] }]
 			: []),

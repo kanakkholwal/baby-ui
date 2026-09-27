@@ -27,3 +27,10 @@ closes it automatically.
 side. The mega panel drops from the shelf the same way it drops from the solid bar.
 Below `md` it becomes a plain bar with a hairline rule that fades in once the page
 scrolls, and the sheet drops from the top instead of sliding in from the side.
+
+## Just the menu
+
+`MegaMenu` is the desktop row on its own: triggers, the shared panel, hover intent and
+keyboard, without the bar, brand or mobile sheet. Drop it into a header you already have
+and pass the same `groups` and `active`. The panel centres under the open trigger, clamped
+to the row's start and the window's edge.

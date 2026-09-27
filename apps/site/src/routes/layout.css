@@ -15,6 +15,16 @@
 @source "../../../../pro/packages/demos/src/svelte";
 @source "../../../../pro/packages/demos/src/screens";
 
+/* Fontaine's metric-matched fallbacks sit behind each web font, so swapping them in keeps line
+   boxes the same size. Site only: the registry theme ships the plain stacks. */
+:root {
+	--font-heading: "Satoshi", "Satoshi fallback", "Inter Variable", "Inter Variable fallback",
+		ui-sans-serif, system-ui, sans-serif;
+	--font-body: "Inter Variable", "Inter Variable fallback", ui-sans-serif, system-ui, sans-serif;
+	--font-mono: "JetBrains Mono Variable", "JetBrains Mono Variable fallback", ui-monospace,
+		SFMono-Regular, monospace;
+}
+
 @layer base {
 	* {
 		border-color: var(--border);

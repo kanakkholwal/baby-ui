@@ -8,6 +8,7 @@ import Sheet from "../sheet/sheet.svelte";
 import SheetContent from "../sheet/sheet-content.svelte";
 import SheetHeader from "../sheet/sheet-header.svelte";
 import SheetTitle from "../sheet/sheet-title.svelte";
+import MegaMenu from "./mega-menu.svelte";
 import type { MegaMenuGroup, MegaNavLink } from "./types";
 import { type MegaNavbarVariant, megaNavbar } from "./variants";
 
@@ -49,40 +50,7 @@ const styles = $derived(
 	}),
 );
 let mobileOpen = $state(false);
-let openDesktopGroup = $state(-1);
 let openMobileGroup = $state(0);
-let box = $state({ width: 0, height: 0, left: 0 });
-
-let row: HTMLDivElement | undefined = $state();
-let panels: (HTMLDivElement | undefined)[] = $state([]);
-let triggers: (HTMLButtonElement | undefined)[] = $state([]);
-let closeTimer: ReturnType<typeof setTimeout> | null = null;
-
-function measure() {
-	if (openDesktopGroup < 0 || !row) return;
-	const panel = panels[openDesktopGroup];
-	const trigger = triggers[openDesktopGroup];
-	if (!panel || !trigger) return;
-	const rowRect = row.getBoundingClientRect();
-	const triggerRect = trigger.getBoundingClientRect();
-	const width = panel.scrollWidth;
-	const ideal = triggerRect.left - rowRect.left + triggerRect.width / 2 - width / 2;
-	box = { width, height: panel.scrollHeight, left: Math.max(0, ideal) };
-}
-
-$effect(() => {
-	void openDesktopGroup;
-	measure();
-});
-
-function cancelClose() {
-	if (closeTimer) clearTimeout(closeTimer);
-	closeTimer = null;
-}
-function scheduleClose() {
-	cancelClose();
-	closeTimer = setTimeout(() => (openDesktopGroup = -1), 140);
-}
 
 // Navigating from inside the sheet should leave it closed.
 $effect(() => {
@@ -91,15 +59,12 @@ $effect(() => {
 });
 
 const footerActions = $derived(mobileActions ?? actions);
-// The notched shelf drops its panel a little further, clearing the wing curve.
-const drop = $derived(variant === "notched" ? 10 : 8);
 </script>
 
 <svelte:window
 	onscroll={() => {
 		if (sticky) scrolled = window.scrollY > 8;
 	}}
-	onresize={measure}
 />
 
 {#snippet chevronDown(cls: string)}
@@ -114,12 +79,6 @@ const drop = $derived(variant === "notched" ? 10 : 8);
 	</svg>
 {/snippet}
 
-{#snippet arrowRight(cls: string)}
-	<svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class={cls}>
-		<path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
-	</svg>
-{/snippet}
-
 {#snippet brandSlot()}
 	{#if brand}
 		<span class="flex shrink-0 items-center gap-2.5 py-1 pr-2">{@render brand()}</span>
@@ -127,117 +86,7 @@ const drop = $derived(variant === "notched" ? 10 : 8);
 {/snippet}
 
 {#snippet desktopMenu()}
-	<div
-		bind:this={row}
-		class="relative hidden items-center gap-1 @3xl:flex"
-		onmouseleave={scheduleClose}
-		onmouseenter={cancelClose}
-		role="presentation"
-	>
-		{#each groups as group, i (group.label)}
-			{@const isOpen = openDesktopGroup === i}
-			<button
-				bind:this={triggers[i]}
-				type="button"
-				aria-expanded={isOpen}
-				aria-controls="mega-navbar-panel"
-				onmouseenter={() => {
-					cancelClose();
-					openDesktopGroup = i;
-				}}
-				onfocus={() => {
-					cancelClose();
-					openDesktopGroup = i;
-				}}
-				onclick={() => (openDesktopGroup = openDesktopGroup === i ? -1 : i)}
-				onkeydown={(e) => {
-					if (e.key === "Escape") {
-						openDesktopGroup = -1;
-						triggers[i]?.focus();
-					} else if (e.key === "ArrowDown") {
-						e.preventDefault();
-						cancelClose();
-						openDesktopGroup = i;
-						// The pane is inert until the open state renders.
-						requestAnimationFrame(() => panels[i]?.querySelector("a")?.focus());
-					}
-				}}
-				class={styles.trigger({ current: isOpen || isCurrent(group.href) })}
-			>
-				{group.label}
-				{@render chevronDown(styles.chevron({ open: isOpen }))}
-			</button>
-		{/each}
-
-		<div
-			id="mega-navbar-panel"
-			aria-hidden={openDesktopGroup < 0}
-			onmouseenter={cancelClose}
-			onmouseleave={scheduleClose}
-			onkeydown={(e) => {
-				if (e.key !== "Escape" || openDesktopGroup < 0) return;
-				triggers[openDesktopGroup]?.focus();
-				openDesktopGroup = -1;
-			}}
-			role="presentation"
-			class={styles.panel({ open: openDesktopGroup >= 0 })}
-			style="width:{box.width}px;height:{box.height}px;transform:translate3d({box.left}px, {openDesktopGroup >= 0 ? drop : 2}px, 0) scale({openDesktopGroup >= 0 ? 1 : 0.98});"
-		>
-			{#each groups as group, i (group.label)}
-				{@const isOpen = openDesktopGroup === i}
-				<div
-					bind:this={panels[i]}
-					inert={!isOpen}
-					class={styles.pane({ open: isOpen })}
-				>
-					<ul class={styles.list()}>
-						{#each group.items as item (item.href)}
-							<li>
-								<a
-									href={item.href}
-									target={item.external ? "_blank" : undefined}
-									rel={item.external ? "noreferrer" : undefined}
-									onclick={() => (openDesktopGroup = -1)}
-									aria-current={isCurrent(item.href) ? "page" : undefined}
-									class="flex gap-3 rounded-lg p-3 transition-colors hover:bg-foreground/[0.06] aria-[current=page]:bg-foreground/[0.06] motion-reduce:transition-none"
-								>
-									{#if item.icon}
-										<span class="mt-0.5 shrink-0 text-muted-foreground [&_svg]:size-4">
-											{@render item.icon()}
-										</span>
-									{/if}
-									<span class="min-w-0">
-										<span class="flex items-center gap-1 font-medium text-foreground text-sm">
-											{item.label}
-											{#if item.external}
-												{@render arrowUpRight("size-3 text-muted-foreground")}
-											{/if}
-										</span>
-										{#if item.description}
-											<span class="mt-0.5 block text-muted-foreground text-xs">{item.description}</span>
-										{/if}
-									</span>
-								</a>
-							</li>
-						{/each}
-					</ul>
-					{#if group.footer}
-						<a
-							href={group.footer.href}
-							onclick={() => (openDesktopGroup = -1)}
-							class="group/cta flex items-center justify-between gap-4 border-border border-t bg-foreground/[0.02] px-5 py-3 transition-colors hover:bg-foreground/[0.06] motion-reduce:transition-none"
-						>
-							<span class="font-medium text-foreground text-sm">{group.footer.label}</span>
-							<span class="flex items-center gap-1.5 text-muted-foreground text-xs">
-								{group.footer.hint}
-								{@render arrowRight("size-3.5 transition-transform group-hover/cta:translate-x-0.5 motion-reduce:transition-none")}
-							</span>
-						</a>
-					{/if}
-				</div>
-			{/each}
-		</div>
-	</div>
+	<MegaMenu {groups} {active} {variant} class="hidden @3xl:flex" />
 {/snippet}
 
 {#snippet linkList()}

@@ -95,7 +95,15 @@ export function NavigationMenuContent({
 	return (
 		<NavigationMenuPrimitive.Content
 			data-slot="navigation-menu-content"
-			className={cn(styles.content(), className)}
+			// In flow, as shadcn's Base UI port: the popup sizes itself to the active content.
+			className={cn(
+				"h-full w-auto transition-[opacity,translate] duration-[var(--duration-overlay)] ease-[var(--ease-out)] motion-reduce:transition-none",
+				"data-[starting-style]:opacity-0 data-[ending-style]:opacity-0",
+				"data-[starting-style]:data-[activation-direction=left]:-translate-x-1/2 data-[starting-style]:data-[activation-direction=right]:translate-x-1/2",
+				"data-[ending-style]:data-[activation-direction=left]:translate-x-1/2 data-[ending-style]:data-[activation-direction=right]:-translate-x-1/2",
+				styles.content(),
+				className,
+			)}
 			{...props}
 		/>
 	);
@@ -105,7 +113,7 @@ export function NavigationMenuContent({
 export function NavigationMenuViewport({
 	className,
 	side = "bottom",
-	sideOffset = 6,
+	sideOffset = 8,
 	align = "start",
 	alignOffset = 0,
 	...props
@@ -119,7 +127,9 @@ export function NavigationMenuViewport({
 				alignOffset={alignOffset}
 				className={cn(
 					"isolate z-50 h-(--positioner-height) w-(--positioner-width) max-w-(--available-width)",
-					"transition-[top,left,right,bottom] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] data-instant:transition-none motion-reduce:transition-none",
+					"transition-[top,left,right,bottom] duration-[var(--duration-overlay)] ease-[var(--ease-out)] data-instant:transition-none motion-reduce:transition-none",
+					// A hover bridge over the gap, so moving down to the panel never closes it.
+					"before:absolute before:inset-x-0 before:-top-2.5 before:h-2.5",
 					className,
 				)}
 				{...props}
@@ -128,9 +138,10 @@ export function NavigationMenuViewport({
 					data-slot="navigation-menu-viewport"
 					className={cn(
 						styles.viewport(),
-						"h-(--popup-height) w-(--popup-width) origin-(--transform-origin)",
-						"data-[starting-style]:scale-[var(--enter-scale)] data-[starting-style]:opacity-0",
-						"data-[ending-style]:scale-[var(--enter-scale)] data-[ending-style]:opacity-0 data-[ending-style]:duration-[var(--duration-exit)]",
+						"relative h-(--popup-height) w-(--popup-width) origin-(--transform-origin) outline-none",
+						"transition-[opacity,scale,width,height] duration-[var(--duration-overlay)] ease-[var(--ease-out)] motion-reduce:transition-none",
+						"data-[starting-style]:scale-90 data-[starting-style]:opacity-0",
+						"data-[ending-style]:scale-90 data-[ending-style]:opacity-0 data-[ending-style]:duration-[var(--duration-exit)]",
 					)}
 				>
 					<NavigationMenuPrimitive.Viewport className="relative size-full overflow-hidden" />

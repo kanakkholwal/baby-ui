@@ -11,6 +11,14 @@ import SiteSidebar from "./site-sidebar.svelte";
 let { groups, children }: { groups: SidebarGroup[]; children: Snippet } = $props();
 
 const nav = $derived(siteNav(page.data.categories ?? []));
+// The top row, then the four areas the library leads with, so both are one tap away on phones.
+const drawerLinks = $derived([
+	...nav.map(({ href, label, match }) => ({ href, label, match })),
+	...nav
+		.flatMap((item) => item.menu ?? [])
+		.filter((link) => link.featured)
+		.map(({ href, label }) => ({ href, label, match: [href] })),
+]);
 // Split gives a component page's preview half the content area; other pages keep the rail.
 const split = $derived(prefs.layout === "split" && Boolean(page.params.slug));
 // Transitions start after mount, so a stored "closed" doesn't animate on load.
@@ -94,7 +102,7 @@ function active(match: string[]) {
 		</DrawerHeader>
 		<div class="scrollbar-hide mt-2 flex max-h-[70dvh] flex-col gap-5 overflow-y-auto px-1 pb-2">
 			<nav class="flex flex-wrap gap-1">
-				{#each nav as item (item.href)}
+				{#each drawerLinks as item (item.href)}
 					<a
 						href={item.href}
 						onclick={() => (mobileNav.open = false)}

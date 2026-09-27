@@ -28,6 +28,7 @@ import { chart, lineChart } from "./chart";
 import { chatComposer } from "./chat-composer";
 import { checkbox } from "./checkbox";
 import { choroplethChart } from "./choropleth-chart";
+import { chromaticWave } from "./chromatic-wave";
 import { circuitBoard } from "./circuit-board";
 import { circularText } from "./circular-text";
 import { clickSpark } from "./click-spark";
@@ -46,24 +47,34 @@ import { contextMenu } from "./context-menu";
 import { conversation } from "./conversation";
 import { copyButton } from "./copy-button";
 import { counter } from "./counter";
+import { creditCardInput } from "./credit-card-input";
 import { cubeText } from "./cube-text";
+import { currencyInput } from "./currency-input";
 import { cycleText } from "./cycle-text";
+import { datePicker, dateRangePicker, timePicker } from "./date-picker";
 import { diaText } from "./dia-text";
 import { dialog } from "./dialog";
 import { diffTable } from "./diff-table";
 import { ditherGradient } from "./dither-gradient";
 import { ditheredLogo } from "./dithered-logo";
 import { docsNav } from "./docs-nav";
+import { dotMatrixGlow } from "./dot-matrix-glow";
 import { doubleUnderline } from "./double-underline";
 import { draggableMarquee } from "./draggable-marquee";
 import { drawer } from "./drawer";
 import { dropdownMenu } from "./dropdown-menu";
 import { emailKit } from "./email-kit";
+import { emailMagicLink } from "./email-magic-link";
+import { emailPasswordReset } from "./email-password-reset";
+import { emailReceipt } from "./email-receipt";
+import { emailTeamInvite } from "./email-team-invite";
+import { emailVerify } from "./email-verify";
 import { emailWelcome } from "./email-welcome";
 import { eyeTracking } from "./eye-tracking";
 import { field } from "./field";
 import { fileDiff } from "./file-diff";
 import { fileTree } from "./file-tree";
+import { fileUpload } from "./file-upload";
 import { fillButton } from "./fill-button";
 import { filterTable } from "./filter-table";
 import { fineTuneCard } from "./fine-tune-card";
@@ -90,10 +101,12 @@ import { infiniteImageField } from "./infinite-image-field";
 import { inputGroup } from "./input-group";
 import { inputOtp } from "./input-otp";
 import { input } from "./input";
+import { iridescentFold } from "./iridescent-fold";
 import { jitterText } from "./jitter-text";
 import { jumpingText } from "./jumping-text";
 import { label } from "./label";
 import { layeredStack } from "./layered-stack";
+import { lightCaustics } from "./light-caustics";
 import { liquidChrome } from "./liquid-chrome";
 import { liveLineChart } from "./live-line-chart";
 import { loadingScreen } from "./loading-screen";
@@ -109,11 +122,13 @@ import { metisText } from "./metis-text";
 import { mirrorText } from "./mirror-text";
 import { morphText } from "./morph-text";
 import { morphingModal } from "./morphing-modal";
+import { multiSelect } from "./multi-select";
 import { musicPlayer } from "./music-player";
 import { nativeSelect } from "./native-select";
 import { navbar } from "./navbar";
 import { navigationMenu } from "./navigation-menu";
 import { notchedShelf } from "./notched-shelf";
+import { numberInput } from "./number-input";
 import { ogAuthorProfile } from "./og-author-profile";
 import { ogBlogPost } from "./og-blog-post";
 import { ogChangelog } from "./og-changelog";
@@ -124,13 +139,14 @@ import { orbitCardStack } from "./orbit-card-stack";
 import { overviewCard } from "./overview-card";
 import { pagination } from "./pagination";
 import { particleText } from "./particle-text";
+import { passwordInput } from "./password-input";
+import { phoneInput } from "./phone-input";
 import { pieChart } from "./pie-chart";
 import { pixelCanvas } from "./pixel-canvas";
 import { pixelImageTrail } from "./pixel-image-trail";
 import { popover } from "./popover";
 import { pricing01 } from "./pricing-01";
 import { pricing02 } from "./pricing-02";
-import { prismGradient } from "./prism-gradient";
 import { progress } from "./progress";
 import { projectionLine } from "./projection-line";
 import { question } from "./question";
@@ -158,6 +174,7 @@ import { scrollSplitCard } from "./scroll-split-card";
 import { scrollTiltedGrid } from "./scroll-tilted-grid";
 import { scrollVelocity } from "./scroll-velocity";
 import { scrubField } from "./scrub-field";
+import { searchInput } from "./search-input";
 import { select } from "./select";
 import { separator } from "./separator";
 import { sheet } from "./sheet";
@@ -249,6 +266,7 @@ export const specs: ComponentSpec[] = [
 	chatComposer,
 	checkbox,
 	choroplethChart,
+	chromaticWave,
 	circuitBoard,
 	circularText,
 	clickSpark,
@@ -267,24 +285,36 @@ export const specs: ComponentSpec[] = [
 	conversation,
 	copyButton,
 	counter,
+	creditCardInput,
 	cubeText,
+	currencyInput,
 	cycleText,
+	datePicker,
+	dateRangePicker,
+	timePicker,
 	diaText,
 	dialog,
 	diffTable,
 	ditherGradient,
 	ditheredLogo,
 	docsNav,
+	dotMatrixGlow,
 	doubleUnderline,
 	draggableMarquee,
 	drawer,
 	dropdownMenu,
 	emailKit,
+	emailMagicLink,
+	emailPasswordReset,
+	emailReceipt,
+	emailTeamInvite,
+	emailVerify,
 	emailWelcome,
 	eyeTracking,
 	field,
 	fileDiff,
 	fileTree,
+	fileUpload,
 	fillButton,
 	filterTable,
 	fineTuneCard,
@@ -311,10 +341,12 @@ export const specs: ComponentSpec[] = [
 	inputGroup,
 	inputOtp,
 	input,
+	iridescentFold,
 	jitterText,
 	jumpingText,
 	label,
 	layeredStack,
+	lightCaustics,
 	liquidChrome,
 	liveLineChart,
 	loadingScreen,
@@ -330,11 +362,13 @@ export const specs: ComponentSpec[] = [
 	mirrorText,
 	morphText,
 	morphingModal,
+	multiSelect,
 	musicPlayer,
 	nativeSelect,
 	navbar,
 	navigationMenu,
 	notchedShelf,
+	numberInput,
 	ogAuthorProfile,
 	ogBlogPost,
 	ogChangelog,
@@ -345,13 +379,14 @@ export const specs: ComponentSpec[] = [
 	overviewCard,
 	pagination,
 	particleText,
+	passwordInput,
+	phoneInput,
 	pieChart,
 	pixelCanvas,
 	pixelImageTrail,
 	popover,
 	pricing01,
 	pricing02,
-	prismGradient,
 	progress,
 	projectionLine,
 	question,
@@ -379,6 +414,7 @@ export const specs: ComponentSpec[] = [
 	scrollTiltedGrid,
 	scrollVelocity,
 	scrubField,
+	searchInput,
 	select,
 	separator,
 	sheet,

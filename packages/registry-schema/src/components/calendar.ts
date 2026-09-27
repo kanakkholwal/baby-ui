@@ -70,13 +70,7 @@ export const calendar = defineComponent({
 				{ path: "calendar/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: [
-				"clsx",
-				"tailwind-merge",
-				"tailwind-variants",
-				"react-day-picker",
-				"date-fns",
-			],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "react-day-picker"],
 			registryDependencies: ["button"],
 		},
 		svelte: {
@@ -140,13 +134,7 @@ export const rangeCalendar = defineComponent({
 				{ path: "range-calendar/range-calendar.tsx", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: [
-				"clsx",
-				"tailwind-merge",
-				"tailwind-variants",
-				"react-day-picker",
-				"date-fns",
-			],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "react-day-picker"],
 			registryDependencies: ["calendar"],
 		},
 		svelte: {

@@ -1,6 +1,6 @@
 <script lang="ts">
-import HomeCategories from "$lib/components/home-categories.svelte";
 import HomeCta from "$lib/components/home-cta.svelte";
+import HomeShowcase from "$lib/components/home-showcase.svelte";
 import InstallCommand from "$lib/components/install-command.svelte";
 import LandingHero from "$lib/components/landing-hero.svelte";
 import Seo from "$lib/components/seo.svelte";
@@ -40,7 +40,7 @@ const DESCRIPTION = $derived(
 <main class="relative">
 	<LandingHero />
 
-	<HomeCategories items={data.showcase} />
+	<HomeShowcase items={data.grid} />
 
 	<section aria-labelledby="home-install-heading" class="mx-auto max-w-2xl px-4 pb-24">
 		<h2 id="home-install-heading" class="mb-4 text-center text-muted-foreground text-sm">

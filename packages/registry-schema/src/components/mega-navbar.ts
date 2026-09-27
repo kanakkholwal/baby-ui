@@ -109,6 +109,7 @@ export const megaNavbar = defineComponent({
 			entry: "MegaNavbar",
 			files: [
 				{ path: "mega-navbar/mega-navbar.svelte", type: "registry:ui" },
+				{ path: "mega-navbar/mega-menu.svelte", type: "registry:ui" },
 				{ path: "mega-navbar/variants.ts", type: "registry:ui" },
 				{ path: "mega-navbar/types.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
