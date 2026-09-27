@@ -11,7 +11,7 @@ let { class: className }: { class?: string } = $props();
 
 // The hero's fixed look: chart tone at half speed, no grain.
 const options: PrismGradientOptions = {
-	colors: ["var(--background)", "var(--chart-1)", "var(--foreground)"],
+	colors: ["var(--background)", "var(--primary)", "var(--foreground)"],
 	speed: 0.5,
 	grain: 0,
 };
@@ -48,7 +48,7 @@ const fade =
 >
 	<div
 		class={cn(
-			"absolute inset-0 bg-[radial-gradient(circle_at_55%_45%,var(--chart-1)_0%,var(--background)_48%,var(--foreground)_100%)]",
+			"absolute inset-0 bg-[radial-gradient(circle_at_55%_45%,var(--primary)_0%,var(--background)_48%,var(--foreground)_100%)]",
 			fade,
 			gl.webgl && "opacity-0",
 		)}
