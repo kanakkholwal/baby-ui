@@ -14,5 +14,7 @@ export type MegaMenuGroup = {
 	label: string;
 	href: string;
 	items: MegaMenuItem[];
+	/** Secondary links under the items, one line each in columns. */
+	more?: { heading?: string; links: MegaNavLink[] };
 	footer?: { label: string; href: string; hint?: string };
 };

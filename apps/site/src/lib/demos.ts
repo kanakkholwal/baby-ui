@@ -1,4 +1,5 @@
 import { type DemoLoader, demos as publicDemos } from "@baby-ui/demos/svelte";
+import { kitDemos } from "@baby-ui/demos/svelte/kit";
 
 export type { DemoLoader };
 
@@ -19,4 +20,8 @@ const proBySlug = Object.fromEntries(
 );
 
 /** Every demo by slug: public ones, plus Pro ones when the build shows Pro. */
-export const demos: Record<string, DemoLoader> = { ...publicDemos, ...proBySlug };
+export const demos: Record<string, DemoLoader> = {
+	...publicDemos,
+	...kitDemos,
+	...proBySlug,
+};

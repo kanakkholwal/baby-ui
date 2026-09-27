@@ -9,6 +9,10 @@
 			"svelte": "./src/svelte/index.ts",
 			"types": "./src/svelte/index.ts"
 		},
+		"./svelte/kit": {
+			"svelte": "./src/svelte/kit.ts",
+			"types": "./src/svelte/kit.ts"
+		},
 		"./controls": {
 			"svelte": "./src/controls/spec-dials.svelte",
 			"types": "./src/controls/spec-dials.svelte"

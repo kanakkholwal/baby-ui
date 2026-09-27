@@ -386,16 +386,6 @@ export { flowchartCanvas, type FlowchartBackground } from "./flowchart/variants"
 export { default as Footer } from "./footer/footer.svelte";
 export { type FooterLink, type FooterColumn, type FooterSocialLink } from "./footer/types";
 export { footer, type FooterLayout } from "./footer/variants";
-export { default as FormButton } from "./form/form-button.svelte";
-export { default as FormDescription } from "./form/form-description.svelte";
-export { default as FormElementField } from "./form/form-element-field.svelte";
-export { default as FormFieldErrors } from "./form/form-field-errors.svelte";
-export { default as FormField } from "./form/form-field.svelte";
-export { default as FormFieldset } from "./form/form-fieldset.svelte";
-export { default as FormLabel } from "./form/form-label.svelte";
-export { default as FormLegend } from "./form/form-legend.svelte";
-export { FormControl } from "./form/control";
-export { form, type FormSpacing } from "./form/variants";
 export { default as FullscreenNav, type NavLink } from "./fullscreen-nav/fullscreen-nav.svelte";
 export { fullscreenNav, type FullscreenNavVariant, type FullscreenNavAlign, type FullscreenNavSize, linkIndex, linkDelay, panelDelay } from "./fullscreen-nav/variants";
 export { default as FunnelChart } from "./funnel-chart/funnel-chart.svelte";

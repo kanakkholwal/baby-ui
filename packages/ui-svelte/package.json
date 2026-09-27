@@ -13,6 +13,10 @@
 			"svelte": "./src/lib/index.ts",
 			"types": "./src/lib/index.ts"
 		},
+		"./form": {
+			"svelte": "./src/lib/form/index.ts",
+			"types": "./src/lib/form/index.ts"
+		},
 		"./*": {
 			"svelte": "./src/lib/index.ts",
 			"types": "./src/lib/index.ts"

@@ -48,13 +48,25 @@ $effect(() => {
 		easing: css.getPropertyValue("--ease-drawer").trim() || "ease-out",
 	});
 });
-// The column snaps; only the rail panel slides (OUTLINE_PANEL). Animating grid tracks
-// re-laid out the whole page every frame, and main's left edge never moves anyway.
+// The right column resizes in the same frames the rail slides, from resolved px tracks to px
+// tracks; snapping it made the content width jump.
 $effect(() => {
 	const right = outlineSidebar.current ? "open" : "closed";
 	const root = document.documentElement.dataset;
+	if (root.rightRail === right && root.rightCol === right) return;
+	const before = grid ? getComputedStyle(grid).gridTemplateColumns : "";
 	root.rightRail = right;
 	root.rightCol = right;
+	if (!grid || !untrack(() => ready) || reduced()) return;
+	const after = getComputedStyle(grid).gridTemplateColumns;
+	if (before === after) return;
+	const css = getComputedStyle(grid);
+	grid.animate([{ gridTemplateColumns: before }, { gridTemplateColumns: after }], {
+		duration: Number.parseFloat(
+			css.getPropertyValue(right === "open" ? "--duration-drawer" : "--duration-overlay"),
+		),
+		easing: css.getPropertyValue("--ease-drawer").trim() || "ease-out",
+	});
 });
 
 const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;

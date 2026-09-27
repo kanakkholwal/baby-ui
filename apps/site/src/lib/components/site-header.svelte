@@ -62,18 +62,29 @@ const ICONS: Record<NavIcon, typeof IconBook> = {
 	llms: IconFileText,
 };
 
-// Menu items become MegaMenu groups; plain links (Pricing) sit beside them.
+// Menu items become MegaMenu groups; plain links (Pricing) sit beside them. Featured items keep
+// their descriptions; the rest collapse to one-line links so a long menu stays short.
 const GROUPS = $derived<MegaMenuGroup[]>(
-	NAV.filter((item) => item.menu).map((item) => ({
-		label: item.label,
-		href: item.href,
-		footer: item.footer,
-		items: (item.menu ?? []).map((link) => ({
-			href: link.href,
-			label: link.label,
-			description: link.description,
-		})),
-	})),
+	NAV.filter((item) => item.menu).map((item) => {
+		const menu = item.menu ?? [];
+		const featured = menu.some((link) => link.featured)
+			? menu.filter((link) => link.featured)
+			: menu;
+		const rest = menu.filter((link) => !featured.includes(link));
+		return {
+			label: item.label,
+			href: item.href,
+			footer: item.footer,
+			items: featured.map((link) => ({
+				href: link.href,
+				label: link.label,
+				description: link.description,
+			})),
+			more: rest.length
+				? { heading: "More", links: rest.map(({ href, label }) => ({ href, label })) }
+				: undefined,
+		};
+	}),
 );
 const LINKS = $derived(NAV.filter((item) => !item.menu));
 const iconFor = $derived(

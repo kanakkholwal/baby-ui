@@ -27,6 +27,12 @@ export const megaNavbar = tv({
 		mobileLink:
 			"flex min-h-12 items-center rounded-lg px-2 font-medium text-foreground transition-colors motion-reduce:transition-none",
 		list: "grid w-[34rem] grid-cols-2 gap-1 p-2",
+		// Secondary links: one line each, several columns, so a long group stays short.
+		more: "border-border border-t p-2",
+		moreHeading: "px-3 pt-1 pb-1.5 font-medium text-muted-foreground text-xs",
+		moreList: "grid grid-cols-3 gap-0.5",
+		moreLink:
+			"flex items-center rounded-md px-3 py-1.5 text-foreground text-sm transition-colors hover:bg-foreground/[0.06] focus-visible:bg-foreground/[0.06] focus-visible:outline-none motion-reduce:transition-none",
 		sheet: "w-full gap-0 p-0 sm:max-w-sm",
 		menuButton:
 			"grid size-9 cursor-pointer place-items-center rounded-lg text-foreground transition-colors hover:bg-foreground/[0.06] @3xl:hidden motion-reduce:transition-none",

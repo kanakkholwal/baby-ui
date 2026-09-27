@@ -1,4 +1,5 @@
 <script lang="ts">
+import { Input } from "@baby-ui/svelte";
 import {
 	FormButton,
 	FormControl,
@@ -7,8 +8,7 @@ import {
 	FormFieldErrors,
 	FormLabel,
 	type FormSpacing,
-	Input,
-} from "@baby-ui/svelte";
+} from "@baby-ui/svelte/form";
 import { defaults, superForm } from "sveltekit-superforms";
 import { zod4 } from "sveltekit-superforms/adapters";
 import { z } from "zod";

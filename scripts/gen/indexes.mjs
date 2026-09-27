@@ -11,6 +11,9 @@ const DEMOS_SVELTE = join(ROOT, "packages/demos/src/svelte");
 
 // From lib/ only `cn` is public; the other helpers are internal to the components that use them.
 const LIB_PUBLIC = ["cn.ts"];
+// Svelte items needing SvelteKit at runtime (formsnap pulls superforms' $app/*): kept out of the
+// barrel and demo map so plain Vite still builds; served on `@baby-ui/svelte/<dir>` and `kit`.
+export const KIT_ONLY = new Set(["form"]);
 // Filenames whose PascalCase differs from the component's established name.
 const NAME_OVERRIDES = {
 	"text-explode-imessage": "TextExplodeIMessage",
@@ -59,6 +62,7 @@ function ordered(dir, files, ext) {
 function uiIndex({ root, componentExts, defaults, external }) {
 	const modules = [];
 	for (const dir of dirs(root)) {
+		if (root === SVELTE && KIT_ONLY.has(dir)) continue;
 		const files = readdirSync(join(root, dir));
 		const pick = dir === "lib" ? (f) => LIB_PUBLIC.includes(f) : () => true;
 		if (defaults) {
@@ -199,6 +203,22 @@ export function indexes(output, report) {
 	);
 	for (const [slug, loader] of report.autoSvelte ?? [])
 		if (!svelteLoaders.has(slug)) svelteLoaders.set(slug, loader);
+	const kitLoaders = new Map([...svelteLoaders].filter(([slug]) => KIT_ONLY.has(slug)));
+	for (const slug of kitLoaders.keys()) svelteLoaders.delete(slug);
+	output.add(
+		join(DEMOS_SVELTE, "kit.ts"),
+		[
+			'import type { DemoLoader } from "./index";',
+			"",
+			"/** Demos of SvelteKit-only items; only SvelteKit apps merge these in. */",
+			"export const kitDemos: Record<string, DemoLoader> = {",
+			...[...kitLoaders]
+				.sort(([a], [b]) => a.localeCompare(b))
+				.map(([slug, loader]) => `\t${quote(slug)}: ${loader},`),
+			"};",
+			"",
+		].join("\n"),
+	);
 	output.add(
 		join(DEMOS_SVELTE, "index.ts"),
 		[

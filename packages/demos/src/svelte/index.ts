@@ -83,7 +83,6 @@ export const demos: Record<string, DemoLoader> = {
 	"flight-status-card": () => import("./flight-status-card-demo.svelte"),
 	flowchart: () => import("./flowchart-demo.svelte"),
 	footer: () => import("./footer-demo.svelte"),
-	form: () => import("./form-demo.svelte"),
 	"fullscreen-nav": () => import("./fullscreen-nav-demo.svelte"),
 	"funnel-chart": () => import("./funnel-chart-demo.svelte"),
 	gauge: () => import("./gauge-demo.svelte"),

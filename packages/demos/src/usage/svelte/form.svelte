@@ -5,8 +5,8 @@ import {
 	FormField,
 	FormFieldErrors,
 	FormLabel,
-	Input,
-} from "@baby-ui/svelte";
+} from "@baby-ui/svelte/form";
+import { Input } from "@baby-ui/svelte/input";
 import { defaults, superForm } from "sveltekit-superforms";
 import { zod4 } from "sveltekit-superforms/adapters";
 import { z } from "zod";

@@ -24,6 +24,8 @@ export type MegaMenuGroup = {
 	label: string;
 	href: string;
 	items: MegaMenuItem[];
+	/** Secondary links under the items, one line each in columns. */
+	more?: { heading?: string; links: MegaNavLink[] };
 	footer?: { label: string; href: string; hint?: string };
 };
 
@@ -259,6 +261,29 @@ export function MegaMenu({
 									</li>
 								))}
 							</ul>
+							{group.more?.links.length ? (
+								<div className={styles.more()}>
+									{group.more.heading ? (
+										<p className={styles.moreHeading()}>{group.more.heading}</p>
+									) : null}
+									<ul className={styles.moreList()}>
+										{group.more.links.map((link) => (
+											<li key={link.href}>
+												<a
+													href={link.href}
+													target={link.external ? "_blank" : undefined}
+													rel={link.external ? "noreferrer" : undefined}
+													onClick={() => setOpen(-1)}
+													aria-current={isCurrent(link.href, active) ? "page" : undefined}
+													className={styles.moreLink()}
+												>
+													{link.label}
+												</a>
+											</li>
+										))}
+									</ul>
+								</div>
+							) : null}
 							{group.footer ? (
 								<a
 									href={group.footer.href}

@@ -177,6 +177,27 @@ function show(i: number) {
 						</li>
 					{/each}
 				</ul>
+				{#if group.more?.links.length}
+					<div class={styles.more()}>
+						{#if group.more.heading}
+							<p class={styles.moreHeading()}>{group.more.heading}</p>
+						{/if}
+						<ul class={styles.moreList()}>
+							{#each group.more.links as link (link.href)}
+								<li>
+									<a
+										href={link.href}
+										target={link.external ? "_blank" : undefined}
+										rel={link.external ? "noreferrer" : undefined}
+										onclick={() => (open = -1)}
+										aria-current={isCurrent(link.href) ? "page" : undefined}
+										class={styles.moreLink()}>{link.label}</a
+									>
+								</li>
+							{/each}
+						</ul>
+					</div>
+				{/if}
 				{#if group.footer}
 					<a href={group.footer.href} onclick={() => (open = -1)} class={styles.footer()}>
 						<span class="font-medium text-foreground text-sm">{group.footer.label}</span>
