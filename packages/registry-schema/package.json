@@ -8,7 +8,8 @@
 			"types": "./dist/index.d.ts",
 			"default": "./dist/index.js"
 		},
-		"./components": "./src/components/index.ts"
+		"./components": "./src/components/index.ts",
+		"./categories": "./src/categories.ts"
 	},
 	"files": [
 		"src",

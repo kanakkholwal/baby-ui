@@ -7,7 +7,10 @@ import { generate } from "./generate.mjs";
 const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 // Read from the schema so a new category never needs a second edit here.
 const CATEGORIES = [
-	...readFileSync(resolve(REPO_ROOT, "packages/registry-schema/src/spec.ts"), "utf8")
+	...readFileSync(
+		resolve(REPO_ROOT, "packages/registry-schema/src/categories.ts"),
+		"utf8",
+	)
 		.match(/CATEGORIES = \[([^\]]*)\]/)[1]
 		.matchAll(/"([a-z-]+)"/g),
 ].map((m) => m[1]);

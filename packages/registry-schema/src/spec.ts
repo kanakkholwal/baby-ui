@@ -1,23 +1,11 @@
 import { z } from "zod";
+import { CATEGORIES, CATEGORY } from "./categories";
 import { PropSpecSchema } from "./control";
 
-export const CATEGORIES = [
-	"base",
-	"blocks",
-	"advanced",
-	"animated",
-	"agents",
-	"text",
-	"backgrounds",
-	"charts",
-	"og-images",
-	"emails",
-] as const;
 export const FRAMEWORKS = ["react", "svelte"] as const;
 
 export const CategorySchema = z.enum(CATEGORIES);
 export const FrameworkSchema = z.enum(FRAMEWORKS);
-export type Category = z.infer<typeof CategorySchema>;
 export type Framework = z.infer<typeof FrameworkSchema>;
 
 /** Mirrors shadcn's registry-item file types; both CLIs accept the same set. */
@@ -118,39 +106,8 @@ export const ComponentSpecSchema = z.object({
 export type ComponentSpec = z.infer<typeof ComponentSpecSchema>;
 export type ComponentSpecInput = z.input<typeof ComponentSpecSchema>;
 
-/** Categories served from their own top-level route (`/charts`, `/og-images`), not /components. */
-export const TOP_LEVEL_CATEGORIES: readonly Category[] = [
-	"charts",
-	"og-images",
-	"emails",
-];
-
-/** Folder under the consumer's `components/` that each category installs into. */
-export const INSTALL_DIR: Record<Category, string> = {
-	base: "ui",
-	advanced: "ui",
-	blocks: "blocks",
-	animated: "animated",
-	text: "text",
-	backgrounds: "backgrounds",
-	agents: "agents",
-	charts: "charts",
-	"og-images": "og",
-	emails: "emails",
-};
-
 export function installDir(spec: Pick<ComponentSpec, "category" | "installDir">): string {
-	return spec.installDir ?? INSTALL_DIR[spec.category];
-}
-
-/** Categories still in preview: hidden from the public registry and the production site. */
-export const PREVIEW_CATEGORIES: readonly Category[] = ["emails"];
-
-/** Site path of a component page. */
-export function docsPath(spec: Pick<ComponentSpec, "category" | "slug">): string {
-	return TOP_LEVEL_CATEGORIES.includes(spec.category)
-		? `/${spec.category}/${spec.slug}`
-		: `/components/${spec.category}/${spec.slug}`;
+	return spec.installDir ?? CATEGORY[spec.category].installDir;
 }
 
 /** Initial control values, from each prop's declared default; booleans default to false. */

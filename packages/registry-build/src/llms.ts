@@ -1,18 +1,5 @@
-import { type ComponentSpec, docsPath } from "@baby-ui/registry-schema";
+import { CATEGORY, type ComponentSpec, docsPath } from "@baby-ui/registry-schema";
 import { REGISTRY_URL, SITE_URL } from "./config";
-
-const CATEGORY_TITLE: Record<string, string> = {
-	advanced: "Advanced components",
-	agents: "Agent UI components",
-	animated: "Animated components",
-	backgrounds: "Backgrounds",
-	base: "Base components",
-	blocks: "Blocks",
-	charts: "Charts",
-	"og-images": "OG image templates",
-	emails: "Email templates",
-	text: "Text effects",
-};
 
 /** A link-list entry in llmstxt.org form: `- [Title](url): notes`. */
 const entry = (title: string, url: string, notes: string) =>
@@ -79,7 +66,7 @@ export function buildLlmsTxt(specs: ComponentSpec[]): string {
 
 	const categories = [...new Set(specs.map((s) => s.category))].sort();
 	for (const category of categories) {
-		lines.push(`## ${CATEGORY_TITLE[category] ?? category}`, "");
+		lines.push(`## ${CATEGORY[category].title}`, "");
 		for (const spec of specs.filter((s) => s.category === category)) {
 			const frameworks = Object.keys(spec.impl).sort().join(" and ");
 			lines.push(

@@ -12,12 +12,12 @@ import SiteSearch from "$lib/components/site-search.svelte";
 import { docsSidebar } from "$lib/docs-sidebar.svelte";
 import { mobileNav } from "$lib/mobile-nav.svelte";
 import { prefs } from "$lib/preferences.svelte";
-import { siteNav } from "$lib/registry";
+import { categoryHref, siteNav, TOP_LEVEL } from "$lib/registry";
 
 const NAV = $derived(siteNav(page.data.categories ?? []));
 
 // The header's own hamburger only opens something on routes that render a SiteSidebar.
-const SIDEBAR_ROUTES = ["/components", "/charts", "/og-images", "/emails", "/docs"];
+const SIDEBAR_ROUTES = ["/components", ...TOP_LEVEL.map(categoryHref), "/docs"];
 const hasSidebar = $derived(
 	SIDEBAR_ROUTES.some((route) => page.url.pathname.startsWith(route)),
 );

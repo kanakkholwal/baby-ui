@@ -1,53 +1,34 @@
-// Client-safe: types only from the schema package, whose runtime entry pulls in zod. Anything
-// that reads the spec list lives in $lib/server/registry.ts and reaches pages as load data.
-import type { Category, ComponentSpec } from "@baby-ui/registry-schema";
+// Client-safe: the zod-free categories entry plus types only from the schema. Anything that reads
+// the spec list lives in $lib/server/registry.ts and reaches pages as load data.
+import type { ComponentSpec } from "@baby-ui/registry-schema";
+import {
+	CATEGORIES,
+	CATEGORY,
+	type Category,
+	categoryHref,
+	docsPath,
+	TOP_LEVEL_CATEGORIES,
+} from "@baby-ui/registry-schema/categories";
 
 /** Marketing count, floored to the ten below with a plus (182 reads "180+"). */
 export const componentCountLabel = (count: number) => `${Math.floor(count / 10) * 10}+`;
 
-export const CATEGORY_LABEL: Record<Category, string> = {
-	base: "Base",
-	blocks: "Blocks",
-	advanced: "Advanced",
-	animated: "Animated",
-	agents: "Agents",
-	text: "Text",
-	backgrounds: "Backgrounds",
-	charts: "Charts",
-	"og-images": "OG Images",
-	emails: "Emails",
-};
+// Derived from the schema's category table; add or change a category there, not here.
+export const CATEGORY_LABEL = Object.fromEntries(
+	CATEGORIES.map((c) => [c, CATEGORY[c].label]),
+) as Record<Category, string>;
 
-export const CATEGORY_BLURB: Record<Category, string> = {
-	base: "The controls every interface needs, with the motion already worked out.",
-	blocks: "Whole sections you would otherwise rebuild on every project.",
-	advanced: "Components with real interaction models behind them.",
-	animated: "Pieces where the motion is the point.",
-	agents: "Interface parts for products that talk back: messages, tools, reasoning.",
-	text: "Copy that moves: reveals, swaps, hovers and loops built for headlines and labels.",
-	backgrounds:
-		"Full-bleed animated surfaces and canvas effects that idle when nothing moves.",
-	charts:
-		"SVG charts on d3 with keyboard, screen-reader and reduced-motion support built in.",
-	emails:
-		"Transactional email templates for React Email and Svelte, themed from your tokens, tested for real inboxes.",
-	"og-images":
-		"1200x630 social cards built from your theme tokens, rendered to PNG with takumi.",
-};
+export const CATEGORY_BLURB = Object.fromEntries(
+	CATEGORIES.map((c) => [c, CATEGORY[c].blurb]),
+) as Record<Category, string>;
 
-/** Client copy of the schema's `TOP_LEVEL_CATEGORIES`: served at `/<category>`, not /components. */
-export const TOP_LEVEL: readonly Category[] = ["charts", "og-images", "emails"];
+/** Categories served at `/<category>`, not /components. */
+export const TOP_LEVEL = TOP_LEVEL_CATEGORIES;
 
-export function categoryHref(category: Category): string {
-	return TOP_LEVEL.includes(category) ? `/${category}` : `/components/${category}`;
-}
+export { categoryHref };
 
-/** Same as the schema's `docsPath`, kept here so the client never imports the schema runtime. */
-export function specHref(spec: Pick<ComponentSpec, "category" | "slug">): string {
-	return TOP_LEVEL.includes(spec.category)
-		? `/${spec.category}/${spec.slug}`
-		: `/components/${spec.category}/${spec.slug}`;
-}
+export const specHref = (spec: Pick<ComponentSpec, "category" | "slug">): string =>
+	docsPath(spec);
 
 /** A category that has at least one component, with its count. */
 export type NavCategory = {
@@ -85,7 +66,7 @@ export function siteNav(
 	return [
 		{ href: "/components", label: "Components", match: "/components" },
 		...categories
-			.filter((c) => c.category === "agents" || TOP_LEVEL.includes(c.category))
+			.filter((c) => CATEGORY[c.category].inNav)
 			.map((c) => ({ href: c.href, label: c.label, match: c.href })),
 		{ href: "/docs", label: "Docs", match: "/docs" },
 		...(__SHOW_PRO__ ? [{ href: "/pricing", label: "Pricing", match: "/pricing" }] : []),
