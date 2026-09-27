@@ -8,7 +8,8 @@ export type PackageManager = "bun" | "npm" | "pnpm" | "yarn";
 /** Component pages: preview above the docs, or a sticky preview column beside them. */
 export type PageLayout = "stacked" | "split";
 
-type Ramp = { primary: string; fg: string };
+/** `ink` replaces the ring colour where the fill is too light to read as one. */
+type Ramp = { primary: string; fg: string; ink?: string };
 
 /** The eleven beUI themes. Each rewrites the brand ramp; neutrals never move. */
 export const THEMES = [
@@ -30,29 +31,33 @@ export const THEMES = [
 	{
 		id: "green",
 		name: "Green",
-		swatch: "oklch(56% 0.14 150)",
-		light: { primary: "oklch(56% 0.14 150)", fg: "oklch(99% 0 0)" },
+		swatch: "oklch(53% 0.14 150)",
+		light: { primary: "oklch(53% 0.14 150)", fg: "oklch(99% 0 0)" },
 		dark: { primary: "oklch(72% 0.15 150)", fg: "oklch(15% 0 0)" },
 	},
 	{
 		id: "amber",
 		name: "Amber",
 		swatch: "oklch(74% 0.15 70)",
-		light: { primary: "oklch(74% 0.15 70)", fg: "oklch(20% 0.02 70)" },
+		light: {
+			primary: "oklch(74% 0.15 70)",
+			fg: "oklch(20% 0.02 70)",
+			ink: "oklch(55% 0.118 70)",
+		},
 		dark: { primary: "oklch(80% 0.15 75)", fg: "oklch(18% 0.02 75)" },
 	},
 	{
 		id: "blood-orange",
 		name: "Blood Orange",
-		swatch: "oklch(60% 0.19 40)",
-		light: { primary: "oklch(60% 0.19 40)", fg: "oklch(99% 0 0)" },
+		swatch: "oklch(56% 0.174 40)",
+		light: { primary: "oklch(56% 0.174 40)", fg: "oklch(99% 0 0)" },
 		dark: { primary: "oklch(72% 0.17 42)", fg: "oklch(15% 0 0)" },
 	},
 	{
 		id: "rose",
 		name: "Rose",
-		swatch: "oklch(58% 0.2 12)",
-		light: { primary: "oklch(58% 0.2 12)", fg: "oklch(99% 0 0)" },
+		swatch: "oklch(57% 0.2 12)",
+		light: { primary: "oklch(57% 0.2 12)", fg: "oklch(99% 0 0)" },
 		dark: { primary: "oklch(70% 0.17 12)", fg: "oklch(15% 0 0)" },
 	},
 	{
@@ -65,8 +70,8 @@ export const THEMES = [
 	{
 		id: "teal",
 		name: "Teal",
-		swatch: "oklch(55% 0.12 185)",
-		light: { primary: "oklch(55% 0.12 185)", fg: "oklch(99% 0 0)" },
+		swatch: "oklch(53% 0.092 185)",
+		light: { primary: "oklch(53% 0.092 185)", fg: "oklch(99% 0 0)" },
 		dark: { primary: "oklch(72% 0.13 185)", fg: "oklch(15% 0 0)" },
 	},
 	{
@@ -80,7 +85,11 @@ export const THEMES = [
 		id: "lime",
 		name: "Lime",
 		swatch: "oklch(72% 0.18 130)",
-		light: { primary: "oklch(72% 0.18 130)", fg: "oklch(20% 0.04 130)" },
+		light: {
+			primary: "oklch(72% 0.18 130)",
+			fg: "oklch(20% 0.04 130)",
+			ink: "oklch(53% 0.142 130)",
+		},
 		dark: { primary: "oklch(80% 0.18 130)", fg: "oklch(18% 0.04 130)" },
 	},
 ] as const satisfies readonly {
@@ -100,7 +109,8 @@ type Stored = {
 	framework: Framework;
 	dialect: Dialect;
 	pm: PackageManager;
-	clickSpark: boolean;
+	/** Renamed from `clickSpark`, which defaulted on; old stores keep `true` under that name. */
+	sparks: boolean;
 	layout: PageLayout;
 };
 
@@ -108,7 +118,7 @@ const DEFAULT_STORED: Stored = {
 	framework: "svelte",
 	dialect: "ts",
 	pm: "bun",
-	clickSpark: true,
+	sparks: false,
 	layout: "stacked",
 };
 
@@ -127,7 +137,7 @@ class Preferences {
 		return this.#stored.current.pm;
 	}
 	get clickSpark() {
-		return this.#stored.current.clickSpark;
+		return this.#stored.current.sparks ?? false;
 	}
 	// Stores saved before this field existed have no layout.
 	get layout(): PageLayout {
@@ -145,10 +155,12 @@ class Preferences {
 
 		const entry = THEMES.find((t) => t.id === this.theme) ?? THEMES[0];
 		const ramp = "light" in entry ? (dark ? entry.dark : entry.light) : undefined;
-		// --ring derives from --primary in the token layer, so it follows on its own.
+		// --ring follows --primary unless a light fill needs a darker ink to clear 3:1.
+		const ink = (ramp as Ramp | undefined)?.ink;
 		for (const [name, value] of [
 			["--primary", ramp?.primary],
 			["--primary-foreground", ramp?.fg],
+			["--ring", ink],
 			["--accent", ramp?.primary],
 			["--accent-foreground", ramp?.fg],
 		] as const) {

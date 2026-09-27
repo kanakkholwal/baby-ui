@@ -1,4 +1,4 @@
-import { cardItems, navCategories, specs } from "$lib/server/registry";
+import { cardItems, liveSpecs, navCategories } from "$lib/server/registry";
 import type { LayoutServerLoad } from "./$types";
 
 const FOOTER_PICKS = [
@@ -13,7 +13,7 @@ const FOOTER_PICKS = [
 // Small on purpose: this lands in every page. Search fetches /catalog.json when it opens.
 export const load: LayoutServerLoad = () => ({
 	categories: navCategories(),
-	total: specs.length,
+	total: liveSpecs.length,
 	footerPicks: cardItems(FOOTER_PICKS).map(({ slug, name, href }) => ({
 		slug,
 		name,

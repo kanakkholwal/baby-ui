@@ -57,8 +57,8 @@ export function Textarea({
 			rows={rows}
 			value={value}
 			maxLength={maxLength}
-			aria-invalid={invalid || undefined}
-			aria-describedby={description ? `${id}-description` : undefined}
+			aria-invalid={invalid || rest["aria-invalid"] || undefined}
+			aria-describedby={description ? `${id}-description` : rest["aria-describedby"]}
 			className={cn(textarea({ size, variant, autoGrow }), className)}
 		/>
 	);

@@ -1,6 +1,15 @@
 <script lang="ts">
-import { ThemeToggle, type ThemeToggleValue } from "@baby-ui/svelte";
-import IconArrowUpRight from "@tabler/icons-svelte/icons/arrow-up-right";
+import {
+	NavigationMenu,
+	NavigationMenuContent,
+	NavigationMenuItem,
+	NavigationMenuLink,
+	NavigationMenuList,
+	NavigationMenuTrigger,
+	navigationMenuTriggerStyle,
+	ThemeToggle,
+	type ThemeToggleValue,
+} from "@baby-ui/svelte";
 import IconBrandGithub from "@tabler/icons-svelte/icons/brand-github";
 import IconMenu2 from "@tabler/icons-svelte/icons/menu-2";
 import IconSettings from "@tabler/icons-svelte/icons/settings";
@@ -17,7 +26,15 @@ import { siteNav } from "$lib/registry";
 const NAV = $derived(siteNav(page.data.categories ?? []));
 
 // The header's own hamburger only opens something on routes that render a SiteSidebar.
-const SIDEBAR_ROUTES = ["/components", "/charts", "/og-images", "/emails", "/docs"];
+const SIDEBAR_ROUTES = [
+	"/components",
+	"/charts",
+	"/og-images",
+	"/emails",
+	"/data",
+	"/forms",
+	"/docs",
+];
 const hasSidebar = $derived(
 	SIDEBAR_ROUTES.some((route) => page.url.pathname.startsWith(route)),
 );
@@ -37,18 +54,19 @@ $effect(() => {
 	return () => window.removeEventListener("scroll", onScroll);
 });
 
-function active(match: string) {
-	if (match === "/components") return page.url.pathname === "/components";
-	return page.url.pathname.startsWith(match);
+function active(match: string[]) {
+	const path = page.url.pathname;
+	return match.some((m) => path === m || path.startsWith(`${m}/`));
 }
 </script>
 
 <header
 	class={[
-		"fixed inset-x-0 top-0 z-40 transition-[background,border-color,backdrop-filter] duration-300",
-		scrolled
-			? "border-border border-b bg-background/70 backdrop-blur-xl backdrop-saturate-150"
-			: "border-transparent border-b bg-transparent",
+		"fixed inset-x-0 top-0 z-40",
+		// The blur layer is always composited; scrolling only fades its opacity.
+		"before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:border-border before:border-b before:bg-background/70 before:backdrop-blur-xl before:backdrop-saturate-150",
+		"before:transition-opacity before:duration-[var(--duration-dropdown)] before:ease-[var(--ease-out)] motion-reduce:before:transition-none",
+		scrolled ? "before:opacity-100" : "before:opacity-0",
 	]}
 >
 	<div class="relative flex h-14 w-full items-center justify-between gap-4 px-4 md:px-6 xl:px-8">
@@ -81,22 +99,51 @@ function active(match: string) {
 				<span class="font-semibold font-display whitespace-nowrap">Baby UI</span>
 			</a>
 
-			<nav aria-label="Main" class="hidden items-center gap-0.5 md:flex">
-				{#each NAV as item (item.href)}
-					<a
-						href={item.href}
-						aria-current={active(item.match) ? "page" : undefined}
-						class={[
-							"rounded-md px-1.5 py-1.5 text-sm transition-colors lg:px-3",
-							active(item.match)
-								? "font-medium text-foreground"
-								: "text-muted-foreground hover:text-foreground",
-						]}
-					>
-						{item.label}
-					</a>
-				{/each}
-			</nav>
+			<NavigationMenu aria-label="Main" class="hidden md:flex">
+				<NavigationMenuList>
+					{#each NAV as item (item.href)}
+						{@const current = active(item.match)}
+						{#if item.menu}
+							<NavigationMenuItem value={item.href}>
+								<NavigationMenuTrigger
+									aria-current={current ? "page" : undefined}
+									class="px-1.5 lg:px-3"
+								>
+									{item.label}
+								</NavigationMenuTrigger>
+								<NavigationMenuContent>
+									<div class="grid w-max grid-cols-[repeat(2,minmax(9rem,auto))] gap-x-2 gap-y-3">
+										{#each item.menu as group, i (group.heading ?? i)}
+											<div class="flex flex-col gap-0.5">
+												{#if group.heading}
+													<p class="px-3 pt-1 pb-0.5 font-medium text-muted-foreground text-xs">
+														{group.heading}
+													</p>
+												{/if}
+												{#each group.links as link (link.href)}
+													<NavigationMenuLink href={link.href} active={page.url.pathname === link.href}>
+														{link.label}
+													</NavigationMenuLink>
+												{/each}
+											</div>
+										{/each}
+									</div>
+								</NavigationMenuContent>
+							</NavigationMenuItem>
+						{:else}
+							<NavigationMenuItem>
+								<NavigationMenuLink
+									href={item.href}
+									active={current}
+									class={navigationMenuTriggerStyle({ class: "px-1.5 lg:px-3" })}
+								>
+									{item.label}
+								</NavigationMenuLink>
+							</NavigationMenuItem>
+						{/if}
+					{/each}
+				</NavigationMenuList>
+			</NavigationMenu>
 		</div>
 
 		<nav aria-label="Site tools" class="flex items-center gap-2">
@@ -130,28 +177,19 @@ function active(match: string) {
 				GitHub
 			</a>
 
-			<a
-				href="/components"
-				class="rainbow-ring group inline-flex h-9 items-stretch overflow-hidden rounded-2xl p-0.5 font-medium text-xs transition-[transform,scale,translate] duration-[var(--duration-press)] ease-[var(--ease-out)] active:scale-[var(--press-scale)]"
-			>
-				<span
-					class="inline-flex flex-1 items-center gap-1 rounded-[calc(1rem-2px)] bg-background px-3 text-foreground transition-colors group-hover:bg-card"
-				>
-					Browse
-					<IconArrowUpRight size={14} stroke={1.8} />
-				</span>
-			</a>
 		</nav>
 	</div>
 </header>
 
 <style>
 	.gear :global(svg) {
-		transition: transform 420ms var(--ease-out);
+		transition: transform var(--duration-dropdown) var(--ease-out);
 	}
 
-	.gear:hover :global(svg) {
-		transform: rotate(90deg);
+	@media (hover: hover) and (pointer: fine) {
+		.gear:hover :global(svg) {
+			transform: rotate(90deg);
+		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {

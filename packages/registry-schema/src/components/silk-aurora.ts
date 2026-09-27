@@ -1,6 +1,6 @@
 import { defineComponent } from "../index";
 
-const TONES = ["pearl", "chart", "violet"];
+const TONES = ["surface", "pearl", "chart", "violet"];
 const SPEEDS = ["slow", "normal", "fast"];
 const POSITIONS = ["absolute", "fixed"];
 

@@ -69,7 +69,7 @@ const LAYOUTS: { id: PageLayout; label: string; icon: Icon }[] = [
 				<Switch
 					size="sm"
 					aria-label="Click sparks"
-					bind:checked={() => prefs.clickSpark, (on) => prefs.set("clickSpark", on)}
+					bind:checked={() => prefs.clickSpark, (on) => prefs.set("sparks", on)}
 				/>
 			</div>
 

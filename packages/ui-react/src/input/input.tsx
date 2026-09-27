@@ -11,7 +11,7 @@ export function Input({ className, size = "md", invalid = false, ...rest }: Inpu
 	return (
 		<input
 			{...rest}
-			aria-invalid={invalid || undefined}
+			aria-invalid={invalid || rest["aria-invalid"] || undefined}
 			className={cn(input({ size }), className)}
 		/>
 	);

@@ -24,6 +24,7 @@ export function Example() {
 			value={51950}
 			label="Monthly average"
 			trend={18.9}
+			comparisonLabel="vs last quarter"
 			formatValue={usd}
 		/>
 	);

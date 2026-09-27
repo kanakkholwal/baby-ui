@@ -30,8 +30,6 @@ let {
 
 let expanded = $state(false);
 let contentHeight = $state(0);
-// A tall block sweeping 3000px in 280ms reads as a snap; scale the time with the distance.
-const foldMs = $derived(Math.min(600, 200 + Math.max(0, contentHeight - 288) / 8));
 
 const all = $derived<Panel[]>(
 	panels ?? [{ id: "single", label: filename ?? lang, code, html, lang }],
@@ -88,11 +86,9 @@ const BODY =
 				aria-labelledby="tab-{panel.id}"
 				inert={shift !== 0}
 				style:max-height={maxHeight}
-				style:translate="{shift * 1.25}rem 0"
 				class={[
 					BODY,
-					"transition-[opacity,translate] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none",
-					shift === 0 ? "relative opacity-100" : "pointer-events-none absolute inset-0 opacity-0",
+					shift === 0 ? "relative" : "pointer-events-none absolute inset-0 invisible",
 				]}
 			>
 				{@html panel.html}
@@ -102,11 +98,9 @@ const BODY =
 		<!-- max-height animates between two lengths, so the open end is the measured content. -->
 		<div
 			style:max-height={expanded ? `${contentHeight + 72}px` : "18rem"}
-			style:transition-duration="{foldMs}ms"
 			class={[
 				BODY,
-				"overflow-hidden transition-[max-height,padding] ease-[var(--ease-in-out)] motion-reduce:transition-none",
-				expanded && "pb-14",
+				"overflow-hidden pb-14 transition-[max-height] duration-[var(--duration-overlay)] ease-[var(--ease-out)] motion-reduce:transition-none",
 			]}
 		>
 			<div bind:clientHeight={contentHeight}>{@html html}</div>

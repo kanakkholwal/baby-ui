@@ -3495,3 +3495,20 @@
 		fill-opacity: 1;
 	}
 }
+
+/* input-otp: the caret drawn in the active slot, since the real input is invisible. */
+.otp-caret {
+	animation: otp-caret-blink 1.1s steps(1, end) infinite;
+}
+
+@keyframes otp-caret-blink {
+	50% {
+		opacity: 0;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.otp-caret {
+		animation: none;
+	}
+}

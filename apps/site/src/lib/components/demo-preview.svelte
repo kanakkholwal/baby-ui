@@ -11,6 +11,7 @@ let {
 	demo,
 	props,
 	content,
+	maxHeight,
 	class: classProp,
 }: {
 	framework: Framework;
@@ -19,6 +20,8 @@ let {
 	props: Record<string, unknown>;
 	/** Replaces the demo (the OG pages' rendered PNG); the frame stays the same. */
 	content?: Snippet;
+	/** Caps the canvas; taller demos scroll inside it instead of pushing the page down. */
+	maxHeight?: string;
 	class?: string;
 } = $props();
 
@@ -33,6 +36,7 @@ const iframeSrc = $derived(
 <!-- Sivir's inset frame: a tinted outer card, canvas sunk one level on bg-background. -->
 <div class={["rounded-xl border border-border bg-card p-1", classProp]}>
 	<div
+		style:max-height={maxHeight}
 		class="relative grid h-full min-h-88 grid-cols-[minmax(0,1fr)] place-items-center-safe overflow-auto rounded-[7px] bg-background bg-[radial-gradient(var(--border)_1px,transparent_1px)] [background-size:16px_16px] p-4 pb-16 sm:p-8 sm:pb-16"
 	>
 		{#if content}

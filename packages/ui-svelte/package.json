@@ -23,6 +23,7 @@
 	},
 	"dependencies": {
 		"@better-svelte-email/components": "catalog:",
+		"@internationalized/date": "catalog:",
 		"bits-ui": "catalog:",
 		"clsx": "catalog:",
 		"d3-array": "catalog:",
@@ -30,8 +31,10 @@
 		"d3-sankey": "catalog:",
 		"d3-scale": "catalog:",
 		"d3-shape": "catalog:",
+		"formsnap": "catalog:",
 		"svelte": "catalog:",
 		"svelte-sonner": "catalog:",
+		"sveltekit-superforms": "catalog:",
 		"tailwind-merge": "catalog:",
 		"tailwind-variants": "catalog:",
 		"vaul-svelte": "catalog:"

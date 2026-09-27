@@ -1,30 +1,24 @@
 "use client";
 
 import { Dialog as DialogPrimitive } from "@base-ui/react/dialog";
-import { Command as CommandPrimitive, useCommandState } from "cmdk";
+import { Command as CommandPrimitive, defaultFilter, useCommandState } from "cmdk";
 import type { ComponentProps, ReactNode } from "react";
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { DIALOG_BACKDROP } from "../dialog/dialog";
 import { cn } from "../lib/cn";
+import { rankCommandMatch } from "./score";
 import { commandFrame, type DialogVariant } from "./variants";
 
-/** Same top-anchored drop as before, now on Base UI's own presence attributes
- * (data-open/data-closed) instead of the old native-<dialog> data-state values. */
+/** Opened from the keyboard many times a day, so it appears at once; only closing fades. */
 const COMMAND_PANEL = [
-	"transition-[opacity,scale,translate] duration-[var(--duration-overlay)] ease-[var(--ease-out)]",
-	"data-[closed]:opacity-0 data-[closed]:scale-[var(--enter-scale)]",
-	"data-[closed]:-translate-y-[var(--enter-lift)] data-[closed]:duration-[var(--duration-exit)]",
-	"starting:data-[open]:opacity-0 starting:data-[open]:scale-[var(--enter-scale)]",
-	"starting:data-[open]:-translate-y-[var(--enter-lift)]",
+	"transition-opacity duration-0",
+	"data-[closed]:opacity-0 data-[closed]:duration-[var(--duration-exit)] data-[closed]:ease-[var(--ease-out)]",
 	"motion-reduce:transition-none",
 ].join(" ");
 
-/** One marker glides between rows, so an arrow-key run reads as a single object moving. */
-const COMMAND_MARKER = [
-	"pointer-events-none absolute top-0 left-0 rounded-md bg-foreground/[0.06]",
-	"transition-[translate,width,height] duration-[var(--duration-press)] ease-[var(--ease-out)]",
-	"motion-reduce:transition-none",
-].join(" ");
+/** One marker for the active row. It snaps: arrow keys repeat too fast for motion to help. */
+const COMMAND_MARKER =
+	"pointer-events-none absolute top-0 left-0 rounded-md bg-foreground/[0.06]";
 
 type CommandHeaderContent = { children?: ReactNode; className?: string } | null;
 
@@ -36,8 +30,12 @@ const CommandHeaderCtx = createContext<((header: CommandHeaderContent) => void) 
 /** `framed` outside any CommandDialog too, since a bare Command is still its own surface. */
 const CommandVariantCtx = createContext<DialogVariant>("default");
 
+const rankedFilter = (value: string, search: string, keywords?: string[]) =>
+	rankCommandMatch(defaultFilter(value, search, keywords), value, search);
+
 export function Command({
 	className,
+	filter = rankedFilter,
 	...props
 }: ComponentProps<typeof CommandPrimitive>) {
 	const variant = useContext(CommandVariantCtx);
@@ -46,6 +44,7 @@ export function Command({
 		<CommandPrimitive
 			data-slot="command"
 			data-variant={variant}
+			filter={filter}
 			className={cn(
 				"relative flex min-h-0 flex-col overflow-hidden text-foreground",
 				commandFrame({ variant }).body(),

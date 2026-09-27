@@ -14,12 +14,12 @@ const ANCHORED_BASE = [
 
 /**
  * Class contract every anchored surface shares, so a popover, a menu and a select
- * open and close identically. bits-ui's Positioner owns transform-origin; this owns the rest.
+ * open and close identically. bits-ui only sets the origin variable, so apply it here.
  */
 export const ANCHORED = tv({
 	base: [
 		...ANCHORED_BASE,
-		"scale-[var(--enter-scale)] transition-[opacity,scale,translate]",
+		"origin-(--bits-floating-transform-origin) scale-[var(--enter-scale)] transition-[opacity,scale,translate]",
 		// The closed state leans toward its trigger, so opening reads as unfolding from it.
 		// `side` is bits-ui's own popper attribute.
 		"data-[state=closed]:data-[placement^=bottom]:-translate-y-1",
@@ -68,13 +68,12 @@ export const UNFOLD = tv({
 /** Rows inside an `UNFOLD` surface settle in one after another; `stagger()` numbers them. */
 export const UNFOLD_ITEM = tv({
 	base: [
-		"transition-[color,background-color,opacity,translate,filter] ease-[var(--ease-out)]",
-		"[--stagger:calc(var(--i,0)*30ms+40ms)] [transition-delay:0s,0s,var(--stagger),var(--stagger),var(--stagger)]",
+		"transition-[color,background-color,opacity,translate] duration-[var(--duration-tooltip)] ease-[var(--ease-out)]",
+		// Only the first three rows stagger, so a long menu still settles in 240ms.
+		"[--stagger:calc(min(var(--i,0),2)*var(--stagger-step))] [transition-delay:0s,0s,var(--stagger),var(--stagger)]",
 		"group-data-[state=closed]/surface:opacity-0 group-data-[state=closed]/surface:-translate-y-1.5",
-		"group-data-[state=closed]/surface:blur-[3px] group-data-[state=closed]/surface:[--stagger:0s]",
-		"group-data-[state=closed]/surface:duration-[var(--duration-exit)]",
+		"group-data-[state=closed]/surface:[--stagger:0s] group-data-[state=closed]/surface:duration-[var(--duration-exit)]",
 		"starting:group-data-[state=open]/surface:opacity-0 starting:group-data-[state=open]/surface:-translate-y-1.5",
-		"starting:group-data-[state=open]/surface:blur-[3px]",
 		"motion-reduce:transition-none",
 	],
 })();

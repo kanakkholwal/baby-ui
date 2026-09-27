@@ -19,10 +19,14 @@
 	},
 	"dependencies": {
 		"@baby-ui/react": "workspace:*",
-		"@baby-ui/svelte": "workspace:*",
 		"@baby-ui/registry-schema": "workspace:*",
+		"@internationalized/date": "catalog:",
+		"@baby-ui/svelte": "workspace:*",
+		"formsnap": "catalog:",
+		"sveltekit-superforms": "catalog:",
 		"topojson-client": "catalog:",
-		"world-atlas": "catalog:"
+		"world-atlas": "catalog:",
+		"zod": "catalog:"
 	},
 	"devDependencies": {
 		"@sveltejs/vite-plugin-svelte": "catalog:",

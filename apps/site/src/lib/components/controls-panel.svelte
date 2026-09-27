@@ -9,9 +9,16 @@ import { defaultProps } from "$lib/registry";
 let {
 	spec,
 	values = $bindable(),
-}: { spec: ComponentSpec; values: Record<string, unknown> } = $props();
+	defaultOpen = false,
+}: {
+	spec: ComponentSpec;
+	values: Record<string, unknown>;
+	/** Closed by default so a first visit sees the component, not a wall of dials. */
+	defaultOpen?: boolean;
+} = $props();
 
-let open = $state(true);
+// svelte-ignore state_referenced_locally
+let open = $state(defaultOpen);
 
 // Debounced so a dragged slider reports once, when the reader settles on a value.
 $effect(() => {

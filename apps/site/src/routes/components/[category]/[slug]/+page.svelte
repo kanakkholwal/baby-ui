@@ -1,7 +1,12 @@
 <script lang="ts">
+import type { Framework } from "@baby-ui/registry-schema";
+import { Alert, AlertDescription, AlertTitle } from "@baby-ui/svelte";
 import { Renderer } from "@docvia/renderer-svelte";
 import IconArrowLeft from "@tabler/icons-svelte/icons/arrow-left";
 import IconArrowRight from "@tabler/icons-svelte/icons/arrow-right";
+import IconArrowUpRight from "@tabler/icons-svelte/icons/arrow-up-right";
+import IconBrandReact from "@tabler/icons-svelte/icons/brand-react";
+import IconBrandSvelte from "@tabler/icons-svelte/icons/brand-svelte";
 import IconChevronRight from "@tabler/icons-svelte/icons/chevron-right";
 import IconList from "@tabler/icons-svelte/icons/list";
 import { registry } from "docvia/registry";
@@ -21,12 +26,14 @@ import PreviewToolbar from "$lib/components/preview-toolbar.svelte";
 import ProInstallGate from "$lib/components/pro-install-gate.svelte";
 import PropsRail from "$lib/components/props-rail.svelte";
 import PropsTable from "$lib/components/props-table.svelte";
+import SegmentControl from "$lib/components/segment-control.svelte";
 import Seo from "$lib/components/seo.svelte";
 import Tabs from "$lib/components/tabs.svelte";
 import { demos } from "$lib/demos";
 import type { Heading } from "$lib/docs-nodes";
 import { OUTLINE_PANEL, outlineSidebar } from "$lib/docs-sidebar.svelte";
 import { prefs } from "$lib/preferences.svelte";
+import { productFor } from "$lib/products";
 import {
 	CATEGORY_LABEL,
 	categoryHref,
@@ -157,16 +164,21 @@ const tabs = $derived(
 			? { id: "preview", label: "Preview" }
 			: hasControls && { id: "preview", label: "Controls" },
 		{ id: "usage", label: "Usage" },
-		{ id: "install", label: "Installation" },
 	].filter((t): t is { id: string; label: string } => Boolean(t)),
 );
 
 $effect(() => {
 	if (!tabs.some((t) => t.id === tab)) tab = tabs[0]?.id ?? "usage";
 });
+const FRAMEWORKS = [
+	{ id: "svelte", label: "Svelte", icon: IconBrandSvelte },
+	{ id: "react", label: "React", icon: IconBrandReact },
+];
+const product = $derived(productFor(data.spec.slug));
 const PAGE_SECTIONS = new Set([
 	"overview",
 	"preview",
+	"installation",
 	"behaviour",
 	"accessibility",
 	"api-reference",
@@ -179,6 +191,7 @@ const outline = $derived(
 	[
 		{ id: "overview", label: "Overview", depth: 2 as const },
 		{ id: "preview", label: "Preview", depth: 2 as const },
+		{ id: "installation", label: "Installation", depth: 2 as const },
 		// A prose heading that reuses a page section's id would key the outline twice and crash it.
 		...data.proseHeadings.filter((h) => !PAGE_SECTIONS.has(h.id)),
 		data.spec.motion && { id: "behaviour", label: "Behaviour", depth: 2 as const },
@@ -216,7 +229,7 @@ const categoryTrail = $derived(
 	description={seoDescription}
 	tag={CATEGORY_LABEL[data.spec.category]}
 	keywords={componentKeywords(data.spec.name, data.spec.keywords)}
-	noindex={data.spec.status === "alpha" || data.spec.status === "experimental"}
+	noindex={data.spec.retired || data.spec.status === "alpha" || data.spec.status === "experimental"}
 	markdown="{specHref(data.spec)}.md"
 	jsonLd={[
 		componentLd({
@@ -233,7 +246,7 @@ const categoryTrail = $derived(
 	]}
 />
 
-<div class="@container min-w-0 py-8">
+<main class="@container min-w-0 pt-8 pb-16 md:pt-12">
 	<div id="overview" class="scroll-mt-24">
 		<nav aria-label="Breadcrumb" class="flex items-center gap-1.5 text-sm">
 			<a
@@ -246,9 +259,20 @@ const categoryTrail = $derived(
 			<span class="font-medium text-foreground">{data.spec.name}</span>
 		</nav>
 
-		<div class="mt-4 flex flex-col gap-4 @xl:flex-row @xl:items-start @xl:justify-between">
+		{#if data.spec.retired}
+			<Alert variant="warning" class="mt-4">
+				<AlertTitle>Retired</AlertTitle>
+				<AlertDescription>
+					No longer maintained. Installs still work, but it will be removed in a future release.
+				</AlertDescription>
+			</Alert>
+		{/if}
+
+		<div class="mt-5 flex flex-col gap-4 @xl:flex-row @xl:items-start @xl:justify-between">
 			<div class="flex items-center gap-3">
-				<h1 class="font-semibold text-3xl text-foreground tracking-tight">{data.spec.name}</h1>
+				<h1 class="text-balance font-semibold text-[2.125rem] text-foreground leading-[1.1] tracking-[-0.03em] md:text-[2.5rem]">
+					{data.spec.name}
+				</h1>
 				{#if data.spec.tier === "pro"}
 					<span class="mt-1 rounded-full bg-foreground px-2 py-0.5 font-medium text-[11px] text-background">
 						Pro
@@ -266,54 +290,26 @@ const categoryTrail = $derived(
 					copyText={data.spec.description}
 				/>
 				{#if !split}<OutlineToggle />{/if}
-				<div class="flex shrink-0 items-center gap-1.5">
-					<a
-						href={adjacent.prev?.href}
-						aria-label={adjacent.prev ? `Previous: ${adjacent.prev.name}` : "No previous component"}
-						aria-disabled={!adjacent.prev}
-						tabindex={adjacent.prev ? 0 : -1}
-						class={[
-							"grid size-8 place-items-center rounded-xl border border-border bg-card/20 text-muted-foreground transition-colors",
-							adjacent.prev
-								? "hover:bg-foreground/[0.06] hover:text-foreground"
-								: "pointer-events-none opacity-40",
-						]}
-					>
-						<IconArrowLeft size={15} stroke={1.6} />
-					</a>
-					<a
-						href={adjacent.next?.href}
-						aria-label={adjacent.next ? `Next: ${adjacent.next.name}` : "No next component"}
-						aria-disabled={!adjacent.next}
-						tabindex={adjacent.next ? 0 : -1}
-						class={[
-							"grid size-8 place-items-center rounded-xl border border-border bg-card/20 text-muted-foreground transition-colors",
-							adjacent.next
-								? "hover:bg-foreground/[0.06] hover:text-foreground"
-								: "pointer-events-none opacity-40",
-						]}
-					>
-						<IconArrowRight size={15} stroke={1.6} />
-					</a>
-				</div>
 			</div>
 		</div>
 
-		<p class="mt-2 max-w-2xl text-muted-foreground">{data.spec.description}</p>
+		<p class="mt-4 max-w-2xl text-pretty text-base text-muted-foreground leading-7 sm:text-[1.0625rem] sm:leading-8">
+			{data.spec.description}
+		</p>
 
-		<div class={["mt-4", !split && "xl:hidden"]}>
+		<div class={["mt-5", !split && "xl:hidden"]}>
 			<MobileNavDrawer label="On this page" title="On this page">
 				{#snippet icon()}<IconList size={14} stroke={1.6} />{/snippet}
 				{#snippet children()}
 					<div class="mx-auto w-full max-w-md">
-						<PropsRail slug={data.spec.slug} {outline} heading={false} />
+						<PropsRail slug={data.spec.slug} {outline} heading={false} promo={false} />
 					</div>
 				{/snippet}
 			</MobileNavDrawer>
 		</div>
 	</div>
 
-	<section id="preview" class="mt-8 scroll-mt-24">
+	<section id="preview" class="mt-10 scroll-mt-24">
 		<div class="flex flex-wrap items-center justify-between gap-3">
 			<Tabs
 				{tabs}
@@ -336,7 +332,7 @@ const categoryTrail = $derived(
 					</div>
 				{/if}
 				{#if hasControls}
-					<ControlsPanel spec={data.spec} bind:values />
+					<ControlsPanel spec={data.spec} bind:values defaultOpen={split} />
 				{/if}
 			{:else if tab === "usage"}
 				{#if usage}
@@ -348,7 +344,21 @@ const categoryTrail = $derived(
 						analytics={{ event: "usage_copied" }}
 					/>
 				{/if}
-			{:else if data.spec.tier === "pro"}
+			{/if}
+		</div>
+	</section>
+
+	<section id="installation" class="mt-16 scroll-mt-24">
+		<div class="flex flex-wrap items-center justify-between gap-3">
+			<h2 class="font-semibold text-foreground text-xl tracking-tight">Installation</h2>
+			<SegmentControl
+				options={FRAMEWORKS}
+				current={framework}
+				onPick={(id) => prefs.set("framework", id as Framework)}
+			/>
+		</div>
+		<div class="mt-4">
+			{#if data.spec.tier === "pro"}
 				<ProInstallGate name={data.spec.name} />
 			{:else if port}
 				<InstallBlock
@@ -363,19 +373,19 @@ const categoryTrail = $derived(
 	</section>
 
 	{#if data.prose}
-		<section class="mt-12 scroll-mt-24 border-border border-t pt-8">
+		<section class="mt-16 scroll-mt-24">
 			<article class="prose-baby max-w-2xl"><Renderer nodes={data.prose} {registry} /></article>
 		</section>
 	{/if}
 
 	{#if data.spec.motion}
-		<section id="behaviour" class="mt-12 scroll-mt-24 border-border border-t pt-8">
-			<h2 class="font-semibold text-foreground text-sm">Behaviour contract</h2>
-			<p class="mt-1 max-w-2xl text-muted-foreground text-sm">
+		<section id="behaviour" class="mt-16 scroll-mt-24">
+			<h2 class="font-semibold text-foreground text-xl tracking-tight">Behaviour contract</h2>
+			<p class="mt-2 max-w-2xl text-[0.9375rem] text-muted-foreground leading-7">
 				What both implementations must observably do, for an agent reading this page as well
 				as a person. Not a description of either one's code.
 			</p>
-			<div class="mt-3 max-w-2xl rounded-xl border border-border p-4">
+			<div class="mt-4 max-w-2xl rounded-xl border border-border p-4">
 				<ul class="flex list-disc flex-col gap-1.5 pl-5 text-muted-foreground text-sm [overflow-wrap:anywhere]">
 					{#each data.spec.motion.behaviour as rule (rule)}
 						<li>{rule}</li>
@@ -387,12 +397,12 @@ const categoryTrail = $derived(
 	{/if}
 
 	{#if hasA11y}
-		<section id="accessibility" class="mt-12 scroll-mt-24 border-border border-t pt-8">
-			<h2 class="font-semibold text-foreground text-sm">Accessibility</h2>
-			<p class="mt-1 max-w-2xl text-muted-foreground text-sm">
+		<section id="accessibility" class="mt-16 scroll-mt-24">
+			<h2 class="font-semibold text-foreground text-xl tracking-tight">Accessibility</h2>
+			<p class="mt-2 max-w-2xl text-[0.9375rem] text-muted-foreground leading-7">
 				Keyboard support and assistive-technology guarantees both ports share.
 			</p>
-			<div class="mt-3 flex max-w-2xl flex-col gap-4 rounded-xl border border-border p-4">
+			<div class="mt-4 flex max-w-2xl flex-col gap-4 rounded-xl border border-border p-4">
 				{#if data.spec.a11y.keyboard.length}
 					<p class="-mb-2 font-medium text-foreground text-xs">Keyboard</p>
 					<ul class="flex list-disc flex-col gap-1.5 pl-5 text-muted-foreground text-sm [overflow-wrap:anywhere]">
@@ -414,16 +424,16 @@ const categoryTrail = $derived(
 	{/if}
 
 	{#if data.spec.props.length}
-		<section id="api-reference" class="mt-12 scroll-mt-24 border-border border-t pt-8">
-			<h2 class="font-semibold text-foreground text-sm">API Reference</h2>
-			<div class="mt-3"><PropsTable props={data.spec.props} /></div>
+		<section id="api-reference" class="mt-16 scroll-mt-24">
+			<h2 class="font-semibold text-foreground text-xl tracking-tight">API Reference</h2>
+			<div class="mt-4"><PropsTable props={data.spec.props} /></div>
 		</section>
 	{/if}
 
 	{#if related.length}
-		<section id="related" class="mt-12 scroll-mt-24 border-border border-t pt-8">
-			<h2 class="font-semibold text-foreground text-sm">Related components</h2>
-			<p class="mt-1 text-muted-foreground text-sm">
+		<section id="related" class="mt-16 scroll-mt-24">
+			<h2 class="font-semibold text-foreground text-xl tracking-tight">Related components</h2>
+			<p class="mt-2 text-[0.9375rem] text-muted-foreground leading-7">
 				More from {CATEGORY_LABEL[data.spec.category]}.
 			</p>
 			<div class="mt-4 grid grid-cols-[minmax(0,1fr)] gap-4 [grid-auto-rows:19rem] @lg:grid-cols-2 @4xl:grid-cols-3">
@@ -435,7 +445,7 @@ const categoryTrail = $derived(
 	{/if}
 
 	{#if adjacent.prev || adjacent.next}
-		<nav aria-label="Component pages" class="mt-12 flex items-center justify-between gap-3 border-border border-t pt-6">
+		<nav aria-label="Component pages" class="mt-16 flex items-center justify-between gap-3 border-border border-t pt-6">
 			{#if adjacent.prev}
 				<a
 					href={adjacent.prev.href}
@@ -458,18 +468,27 @@ const categoryTrail = $derived(
 			{/if}
 		</nav>
 	{/if}
-	<p class="mt-10 text-muted-foreground text-xs">
+	<div class="mt-10 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 text-muted-foreground text-xs">
+		<a
+			href={product.href}
+			target="_blank"
+			rel="noreferrer"
+			class="inline-flex items-center gap-1 transition-colors hover:text-foreground"
+		>
+			Also from Nexonauts: <span class="text-foreground">{product.name}</span>, {product.headline}
+			<IconArrowUpRight size={12} stroke={1.8} />
+		</a>
 		<!-- A real link, not only the menu item: crawlers and agents follow it to the markdown twin. -->
 		<a href="{specHref(data.spec)}.md" class="underline decoration-border underline-offset-4 transition-colors hover:text-foreground">
 			View this page as Markdown
 		</a>
-	</p>
-</div>
+	</div>
+</main>
 
 {#snippet previewStage(fill = false)}
 	<div
 		class={[
-			"mx-auto w-full transition-[max-width] duration-300",
+			"mx-auto w-full",
 			viewport === "mobile" ? "max-w-sm" : "max-w-full",
 			fill && "flex h-full flex-col",
 		]}
@@ -486,6 +505,7 @@ const categoryTrail = $derived(
 						: isOg && ogView === "png"
 							? (pngView as Snippet)
 							: undefined}
+					maxHeight={fill ? undefined : "min(55vh, 34rem)"}
 					class={fill ? "h-full flex-1" : undefined}
 				/>
 			{/key}
@@ -567,7 +587,7 @@ const categoryTrail = $derived(
 			inert={!outlineSidebar.current}
 			class={["scrollbar-hide fixed top-24 right-8 z-10 max-h-[calc(100dvh-8rem)] w-(--right-sidebar-width) overflow-y-auto pb-1", OUTLINE_PANEL]}
 		>
-			<PropsRail slug={data.spec.slug} {outline} />
+			<PropsRail slug={data.spec.slug} {outline} promo={false} />
 		</div>
 	</aside>
 {/if}

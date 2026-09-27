@@ -1,8 +1,9 @@
 <script lang="ts">
-import type { Snippet } from "svelte";
+import { type Snippet, untrack } from "svelte";
 import Area from "../area-chart/area.svelte";
 import AreaChart from "../area-chart/area-chart.svelte";
 import Badge from "../badge/badge.svelte";
+import Button from "../button/button.svelte";
 import Card from "../card/card.svelte";
 import CardAction from "../card/card-action.svelte";
 import CardContent from "../card/card-content.svelte";
@@ -14,11 +15,18 @@ import Counter from "../counter/counter.svelte";
 import { cn } from "../lib/cn";
 import Line from "../line-chart/line.svelte";
 import LineChart from "../line-chart/line-chart.svelte";
+import Skeleton from "../skeleton/skeleton.svelte";
 import {
 	periodTrend,
 	type StatCardChartKind,
+	type StatCardPositive,
 	type StatCardSize,
+	type StatCardStatus,
 	statCard,
+	statSummary,
+	trendPath,
+	trendSentence,
+	trendTone,
 } from "./variants";
 
 let {
@@ -29,6 +37,8 @@ let {
 	value,
 	label,
 	trend,
+	comparisonLabel,
+	positive = "up",
 	chart = "area",
 	size = "md",
 	color = "var(--chart-1)",
@@ -36,6 +46,9 @@ let {
 	formatValue,
 	formatLabel,
 	status = "ready",
+	emptyMessage = "No data yet",
+	errorMessage = "Couldn't load this metric.",
+	onRetry,
 	activeIndex = $bindable(null),
 	onActiveIndexChange,
 	class: className,
@@ -52,6 +65,10 @@ let {
 	label: string;
 	/** Change over the whole period, in percent. */
 	trend: number;
+	/** What the trend compares against, read after it, e.g. "vs last month". */
+	comparisonLabel?: string;
+	/** Which direction is good news; "down" for churn, latency or cost. */
+	positive?: StatCardPositive;
 	chart?: StatCardChartKind;
 	size?: StatCardSize;
 	/** Series colour; defaults to the first chart slot. */
@@ -60,7 +77,12 @@ let {
 	formatValue?: (value: number) => string;
 	/** Caption for a hovered row. Defaults to the row's short month. */
 	formatLabel?: (date: Date) => string;
-	status?: ChartStatus;
+	/** "empty" and "error" swap the chart for a message; "loading" skeletons the figures. */
+	status?: StatCardStatus;
+	emptyMessage?: string;
+	errorMessage?: string;
+	/** Shows a retry button in the error state. */
+	onRetry?: () => void;
 	activeIndex?: number | null;
 	onActiveIndexChange?: (index: number | null) => void;
 	class?: string;
@@ -89,8 +111,39 @@ const shownLabel = $derived(
 const shownTrend = $derived(
 	(datum ? periodTrend(data, activeIndex ?? 0, dataKey) : null) ?? trend,
 );
-const up = $derived(shownTrend >= 0);
-const styles = $derived(statCard({ size, chart }));
+const magnitude = $derived(percent.format(Math.abs(shownTrend) / 100));
+const styles = $derived(statCard({ size, chart, status, positive }));
+const chartStatus = $derived<ChartStatus>(status === "loading" ? "loading" : "ready");
+const description = $derived(
+	statSummary({
+		data,
+		dataKey,
+		xKey,
+		formatValue: number,
+		formatDate: (v) => month.format(toDate(v)),
+	}),
+);
+
+// The headline counts only when `value` itself changes; hovering the chart swaps instantly.
+let settled = $state(untrack(() => value));
+$effect(() => {
+	const next = value;
+	const id = setTimeout(() => (settled = next), 450);
+	return () => clearTimeout(id);
+});
+const counterMs = $derived(activeIndex === null && value !== settled ? 400 : 0);
+
+// Announce a new resting value, not the first render and not every hovered point.
+let announced = $state("");
+let first = true;
+$effect(() => {
+	const text = `${title} ${number(value)}`;
+	if (first) {
+		first = false;
+		return;
+	}
+	announced = text;
+});
 const config = $derived({ [dataKey]: { label: title, color } });
 const margin = { top: 4, right: 0, bottom: 0, left: 0 };
 
@@ -104,33 +157,61 @@ function setActive(index: number | null) {
 	<CardHeader class={styles.header()}>
 		<CardTitle class={styles.title()}>{title}</CardTitle>
 		<CardAction>
-			<Badge variant={up ? "success" : "destructive"} size="sm">
-				<svg aria-hidden="true" viewBox="0 0 12 12" class="size-3" fill="none">
-					<path
-						d={up ? "M3 9 9 3M4.5 3H9v4.5" : "M3 3l6 6M9 4.5V9H4.5"}
-						stroke="currentColor"
-						stroke-width={1.5}
-						stroke-linecap="round"
-						stroke-linejoin="round"
-					/>
-				</svg>
-				{percent.format(shownTrend / 100)}
-			</Badge>
+			{#if status === "loading"}
+				<Skeleton class="h-5 w-14 rounded-full" />
+			{:else if status === "ready"}
+				<Badge variant={trendTone(shownTrend, positive)} size="sm" class="tabular-nums">
+					<svg aria-hidden="true" viewBox="0 0 12 12" class="size-3" fill="none">
+						<path
+							d={trendPath(shownTrend)}
+							stroke="currentColor"
+							stroke-width={1.5}
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						/>
+					</svg>
+					<span aria-hidden="true">{percent.format(shownTrend / 100)}</span>
+					<span class={styles.srOnly()}>{trendSentence(shownTrend, magnitude, comparisonLabel)}</span>
+				</Badge>
+			{/if}
 		</CardAction>
 	</CardHeader>
 	<CardContent class={styles.body()}>
-		<div class={styles.headline()}>
-			<Counter value={shownValue} format={number} size="sm" durationMs={400} triggerOnView={false} />
-			<span class={styles.label()}>{shownLabel}</span>
-		</div>
+		{#if status === "loading"}
+			<div class={styles.headline()} aria-busy="true">
+				<Skeleton class="h-7 w-28" />
+				<Skeleton class="h-3 w-20" />
+			</div>
+		{:else if status === "empty"}
+			<p class={styles.message()}>{emptyMessage}</p>
+		{:else if status === "error"}
+			<div class={styles.message()} role="alert">
+				<p>{errorMessage}</p>
+				{#if onRetry}
+					<Button size="sm" variant="outline" onclick={onRetry}>Retry</Button>
+				{/if}
+			</div>
+		{:else}
+			<div class={styles.headline()}>
+				<Counter
+					value={shownValue}
+					format={number}
+					size="sm"
+					durationMs={counterMs}
+					triggerOnView={false}
+				/>
+				<span class={styles.label()}>{shownLabel}</span>
+				<span class={styles.srOnly()} aria-live="polite">{announced}</span>
+			</div>
+		{/if}
 		<div class={styles.chart()}>
-			<ChartContainer {config} {title} aspect="auto" {locale}>
+			<ChartContainer {config} {title} {description} aspect="auto" {locale}>
 				{#if chart === "line"}
 					<LineChart
 						{data}
 						{xKey}
 						{margin}
-						{status}
+						status={chartStatus}
 						bind:activeIndex={() => activeIndex, setActive}
 					>
 						<Line {dataKey} curve="monotone" strokeWidth={2} />
@@ -141,7 +222,7 @@ function setActive(index: number | null) {
 						{data}
 						{xKey}
 						{margin}
-						{status}
+						status={chartStatus}
 						bind:activeIndex={() => activeIndex, setActive}
 					>
 						<Area {dataKey} curve="monotone" fillOpacity={0.45} />

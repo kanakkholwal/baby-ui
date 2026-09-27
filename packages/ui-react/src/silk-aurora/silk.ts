@@ -123,6 +123,8 @@ function linear(channel: number) {
 	return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
 }
 
+const FRAME_MS = 1000 / 30 - 1;
+
 /** Runs the silk shader on `canvas`; `onReady(false)` means WebGL is missing or lost. */
 export function mountSilkAurora(
 	root: HTMLElement,
@@ -131,13 +133,20 @@ export function mountSilkAurora(
 	onReady: (webgl: boolean) => void,
 ) {
 	let opts = initial;
-	const gl = canvas.getContext("webgl", { alpha: false, antialias: false, depth: false });
+	const gl = canvas.getContext("webgl", {
+		alpha: true,
+		antialias: false,
+		depth: false,
+		powerPreference: "low-power",
+	});
 	if (!gl) {
 		onReady(false);
 		return { update(_next: SilkAuroraOptions) {}, destroy() {} };
 	}
 	const context = gl;
 	const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+	// Touch has no hover, so pointer lean would only ever jump to the last tap.
+	const coarse = matchMedia("(pointer: coarse)");
 	const pixel = document.createElement("canvas");
 	pixel.width = pixel.height = 1;
 	const pen = pixel.getContext("2d", { willReadFrequently: true });
@@ -235,12 +244,20 @@ export function mountSilkAurora(
 		context.uniform2f(loc.uPointer, pointer.x, pointer.y);
 		context.uniform1f(loc.uIntensity, opts.intensity);
 		context.uniform1f(loc.uGrain, opts.grain);
-		context.uniform1f(loc.uPointerStrength, opts.interactive && !reduced.matches ? 1 : 0);
+		context.uniform1f(
+			loc.uPointerStrength,
+			opts.interactive && !reduced.matches && !coarse.matches ? 1 : 0,
+		);
 		context.drawArrays(context.TRIANGLES, 0, 3);
 	};
 
 	const live = () => ready && visible && !document.hidden && !reduced.matches;
 	const tick = (now: number) => {
+		// A slow ambient field reads the same at 30fps and halves GPU work on 120Hz screens.
+		if (now - last < FRAME_MS) {
+			frame = live() ? requestAnimationFrame(tick) : 0;
+			return;
+		}
 		time += Math.min((now - last) / 1000, 0.05) * opts.speed;
 		last = now;
 		pointer.x += (target.x - pointer.x) * POINTER_EASE;

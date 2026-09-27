@@ -14,6 +14,7 @@ import { ChoroplethChartDemo } from "./choropleth-chart";
 import { ClosingPlasmaDemo } from "./closing-plasma";
 import { ComposedChartDemo } from "./composed-chart";
 import { AttachmentDemo, ColorPickerDemo, ComposerDemo, ConversationDemo, CopyButtonDemo, FileDiffDemo, MarkdownDemo, QuestionDemo, ReorderListDemo, TagInputDemo, ToolDemo } from "./content";
+import { CalendarDemo, InputOTPDemo, RangeCalendarDemo } from "./dates";
 import { AlertDialogDemo, CommandDemo, DialogDemo, DrawerDemo, FullscreenNavDemo, SheetDemo, ToastDemo } from "./dialogs";
 import { DiffTableDemo } from "./diff-table";
 import { DitherGradientDemo } from "./dither-gradient";
@@ -23,6 +24,7 @@ import { FineTuneCardDemo } from "./fine-tune-card";
 import { FlightStatusCardDemo } from "./flight-status-card";
 import { FlowchartDemo } from "./flowchart";
 import { FooterDemo } from "./footer";
+import { FieldDemo, InputGroupDemo, NativeSelectDemo, SeparatorDemo } from "./forms";
 import { BentoGridDemo, ButtonDemo, FileTreeDemo, MorphingModalDemo, NavbarDemo } from "./foundations";
 import { FunnelChartDemo } from "./funnel-chart";
 import { GaugeChartDemo } from "./gauge-chart";
@@ -40,6 +42,7 @@ import { LogoCarouselDemo } from "./logo-carousel";
 import { MarkerDemo } from "./marker";
 import { MegaNavbarDemo } from "./mega-navbar";
 import { MusicPlayerDemo } from "./music-player";
+import { NavigationMenuDemo } from "./navigation-menu";
 import { NotchedShelfDemo } from "./notched-shelf";
 import { ClickSparkDemo, DraggableMarqueeDemo, TextReelDemo } from "./obsidian";
 import { OgNewsletterIssueDemo } from "./og-newsletter-issue";
@@ -149,6 +152,7 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"bold-copy": BoldCopyDemo,
 	breadcrumb: BreadcrumbDemo,
 	button: ButtonDemo,
+	calendar: CalendarDemo,
 	"candlestick-chart": CandlestickChartDemo,
 	card: CardDemo,
 	"case-study-flip-stack": CaseStudyFlipStackDemo,
@@ -190,6 +194,7 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	drawer: DrawerDemo,
 	"dropdown-menu": DropdownMenuDemo,
 	"eye-tracking": EyeTrackingDemo,
+	field: FieldDemo,
 	"file-diff": FileDiffDemo,
 	"file-tree": FileTreeDemo,
 	"fill-button": FillButtonDemo,
@@ -215,6 +220,8 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"image-trail": ImageTrailDemo,
 	"infinite-image-field": InfiniteImageFieldDemo,
 	input: InputDemo,
+	"input-group": InputGroupDemo,
+	"input-otp": InputOTPDemo,
 	"jitter-text": JitterTextDemo,
 	"jumping-text": JumpingTextDemo,
 	label: LabelDemo,
@@ -236,7 +243,9 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"morph-text": MorphTextDemo,
 	"morphing-modal": MorphingModalDemo,
 	"music-player": MusicPlayerDemo,
+	"native-select": NativeSelectDemo,
 	navbar: NavbarDemo,
+	"navigation-menu": NavigationMenuDemo,
 	"notched-shelf": NotchedShelfDemo,
 	"og-author-profile": OgAuthorProfileDemo,
 	"og-blog-post": OgBlogPostDemo,
@@ -260,6 +269,7 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	question: QuestionDemo,
 	"radar-chart": RadarChartDemo,
 	"radio-group": RadioGroupDemo,
+	"range-calendar": RangeCalendarDemo,
 	reasoning: ReasoningDemo,
 	"recommendation-card": RecommendationCardDemo,
 	"records-table": RecordsTableDemo,
@@ -283,6 +293,7 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"scroll-velocity": ScrollVelocityDemo,
 	"scrub-field": ScrubFieldDemo,
 	select: SelectDemo,
+	separator: SeparatorDemo,
 	sheet: SheetDemo,
 	"shimmer-text": ShimmerTextDemo,
 	shortcut: ShortcutDemo,

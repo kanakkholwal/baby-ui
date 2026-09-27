@@ -1,0 +1,120 @@
+<script lang="ts">
+import { type DateValue, isEqualMonth } from "@internationalized/date";
+import { Calendar as CalendarPrimitive } from "bits-ui";
+import type { Snippet } from "svelte";
+import type { ButtonVariant } from "../button/variants";
+import { cn } from "../lib/cn";
+import CalendarCaption from "./calendar-caption.svelte";
+import CalendarCell from "./calendar-cell.svelte";
+import CalendarDay from "./calendar-day.svelte";
+import CalendarGrid from "./calendar-grid.svelte";
+import CalendarGridBody from "./calendar-grid-body.svelte";
+import CalendarGridHead from "./calendar-grid-head.svelte";
+import CalendarGridRow from "./calendar-grid-row.svelte";
+import CalendarHeadCell from "./calendar-head-cell.svelte";
+import CalendarHeader from "./calendar-header.svelte";
+import CalendarMonth from "./calendar-month.svelte";
+import CalendarMonths from "./calendar-months.svelte";
+import CalendarNav from "./calendar-nav.svelte";
+import CalendarNextButton from "./calendar-next-button.svelte";
+import CalendarPrevButton from "./calendar-prev-button.svelte";
+import type { WithoutChildren } from "./types";
+import { type CalendarCaptionLayout, type CalendarSize, calendar } from "./variants";
+
+let {
+	ref = $bindable(null),
+	value = $bindable(),
+	placeholder = $bindable(),
+	class: classProp,
+	weekdayFormat = "short",
+	buttonVariant = "ghost",
+	captionLayout = "label",
+	size = "md",
+	locale = "en-US",
+	months: monthsProp,
+	years,
+	monthFormat: monthFormatProp,
+	yearFormat = "numeric",
+	day,
+	disableDaysOutsideMonth = false,
+	...rest
+}: WithoutChildren<CalendarPrimitive.RootProps> & {
+	buttonVariant?: ButtonVariant;
+	captionLayout?: CalendarCaptionLayout;
+	size?: CalendarSize;
+	months?: CalendarPrimitive.MonthSelectProps["months"];
+	years?: CalendarPrimitive.YearSelectProps["years"];
+	monthFormat?: CalendarPrimitive.MonthSelectProps["monthFormat"];
+	yearFormat?: CalendarPrimitive.YearSelectProps["yearFormat"];
+	day?: Snippet<[{ day: DateValue; outsideMonth: boolean }]>;
+} = $props();
+
+const monthFormat = $derived(
+	monthFormatProp ?? (captionLayout.startsWith("dropdown") ? "short" : "long"),
+);
+</script>
+
+<!-- bits-ui's single/multiple union can't narrow through a bindable, so value is cast. -->
+<CalendarPrimitive.Root
+	bind:value={value as never}
+	bind:ref
+	bind:placeholder
+	{weekdayFormat}
+	{disableDaysOutsideMonth}
+	{locale}
+	{monthFormat}
+	{yearFormat}
+	data-slot="calendar"
+	class={cn(calendar({ size }).root(), classProp)}
+	{...rest}
+>
+	{#snippet children({ months, weekdays })}
+		<CalendarMonths>
+			<CalendarNav>
+				<CalendarPrevButton variant={buttonVariant} />
+				<CalendarNextButton variant={buttonVariant} />
+			</CalendarNav>
+			{#each months as month, monthIndex (month)}
+				<CalendarMonth>
+					<CalendarHeader>
+						<CalendarCaption
+							{captionLayout}
+							months={monthsProp}
+							{monthFormat}
+							{years}
+							{yearFormat}
+							month={month.value}
+							bind:placeholder
+							{locale}
+							{monthIndex}
+						/>
+					</CalendarHeader>
+					<CalendarGrid>
+						<CalendarGridHead>
+							<CalendarGridRow class="select-none">
+								{#each weekdays as weekday, i (i)}
+									<CalendarHeadCell>{weekday.slice(0, 2)}</CalendarHeadCell>
+								{/each}
+							</CalendarGridRow>
+						</CalendarGridHead>
+						<CalendarGridBody>
+							{#each month.weeks as weekDates (weekDates)}
+								<CalendarGridRow class="mt-2">
+									{#each weekDates as date (date)}
+										<CalendarCell {date} month={month.value}>
+											{#if day}
+												{@render day({ day: date, outsideMonth: !isEqualMonth(date, month.value) })}
+											{:else}
+												<CalendarDay />
+											{/if}
+										</CalendarCell>
+									{/each}
+								</CalendarGridRow>
+							{/each}
+						</CalendarGridBody>
+					</CalendarGrid>
+				</CalendarMonth>
+			{/each}
+		</CalendarMonths>
+	{/snippet}
+</CalendarPrimitive.Root>

@@ -257,6 +257,7 @@ export const STAT_CARD = {
 	value: REVENUE_AVERAGE,
 	label: "Monthly average",
 	trend: REVENUE_TREND,
+	comparisonLabel: "vs last month",
 	formatValue: new Intl.NumberFormat("en-US", {
 		style: "currency",
 		currency: "USD",

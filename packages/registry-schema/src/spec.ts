@@ -83,6 +83,8 @@ export const ComponentSpecSchema = z.object({
 	category: CategorySchema,
 	tier: z.enum(["free", "pro"]).default("free"),
 	status: z.enum(["stable", "beta", "alpha", "experimental"]).default("beta"),
+	/** Hidden from the catalog, nav, search and counts; the registry still serves it so installs keep working. */
+	retired: z.boolean().default(false),
 
 	props: z.array(PropSpecSchema).default([]),
 	/** Named variant axes, e.g. `{ variant: ["default","ghost"], size: ["sm","lg"] }`. */

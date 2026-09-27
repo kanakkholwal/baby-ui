@@ -21,8 +21,8 @@
 				background: var(--background, #fafafa);
 				color: var(--foreground, #151515);
 				transition:
-					opacity 320ms cubic-bezier(0.16, 1, 0.3, 1),
-					visibility 0s linear 320ms;
+					opacity 200ms cubic-bezier(0.16, 1, 0.3, 1),
+					visibility 0s linear 200ms;
 				/* Capped in CSS so prerendered content shows even when hydration is slow. */
 				animation: boot-out 240ms cubic-bezier(0.16, 1, 0.3, 1) 450ms forwards;
 			}
@@ -40,10 +40,22 @@
 				opacity: 0;
 				visibility: hidden;
 			}
+			/* The glyph and bar wait 150ms, so a fast hydration never shows a loader at all. */
+			#boot > * {
+				opacity: 0;
+				animation: boot-in 120ms cubic-bezier(0.16, 1, 0.3, 1) 150ms forwards;
+			}
+			@keyframes boot-in {
+				to {
+					opacity: 1;
+				}
+			}
 			#boot svg {
 				width: 40px;
 				height: 40px;
-				animation: boot-breathe 1.6s ease-in-out infinite;
+				animation:
+					boot-in 120ms cubic-bezier(0.16, 1, 0.3, 1) 150ms forwards,
+					boot-breathe 1.6s ease-in-out 270ms infinite;
 			}
 			#boot .bar {
 				position: relative;
@@ -77,7 +89,9 @@
 				}
 			}
 			@media (prefers-reduced-motion: reduce) {
-				#boot svg,
+				#boot svg {
+					animation: boot-in 120ms linear 150ms forwards;
+				}
 				#boot .bar::after {
 					animation: none;
 				}

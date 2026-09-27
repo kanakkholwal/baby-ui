@@ -17,7 +17,7 @@ let {
 			type="button"
 			onclick={() => onPick(option.id)}
 			aria-pressed={current === option.id}
-			class="inline-flex h-7 items-center gap-1.5 rounded-md px-2 text-muted-foreground text-xs transition-colors hover:text-foreground aria-pressed:bg-background aria-pressed:font-medium aria-pressed:text-foreground aria-pressed:shadow-sm"
+			class="inline-flex h-7 items-center gap-1.5 rounded-md px-2 pointer-coarse:h-10 pointer-coarse:px-3 text-muted-foreground text-xs transition-colors hover:text-foreground aria-pressed:bg-background aria-pressed:font-medium aria-pressed:text-foreground aria-pressed:shadow-sm"
 		>
 			<Glyph size={14} stroke={1.6} />
 			{option.label}
