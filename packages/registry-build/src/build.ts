@@ -1,17 +1,16 @@
 import { readFile } from "node:fs/promises";
-import { basename, posix, resolve } from "node:path";
+import { resolve } from "node:path";
 import {
 	type ComponentSpec,
 	docsPath,
 	type Framework,
-	installDir,
 	REGISTRY_ITEM_SCHEMA_URL,
 	type RegistryItem,
 	RegistryItemSchema,
 } from "@baby-ui/registry-schema";
 import { cssFor } from "./component-css";
 import { FRAMEWORK, REGISTRY_URL, SITE_URL } from "./config";
-import { rewriteImports } from "./rewrite";
+import type { InstallLayout } from "./layout";
 import { bareVars, tokensUrl } from "./theme";
 import { jsPath, toJavaScript } from "./tojs";
 
@@ -21,29 +20,6 @@ function resolveRegistryDep(framework: Framework, dep: string): string {
 	return dep.startsWith("http")
 		? dep
 		: `${REGISTRY_URL}/${FRAMEWORK[framework].routePrefix}/${dep}.json`;
-}
-
-const isLib = (type: string) => type === "registry:lib" || type === "registry:hook";
-
-/** `dir` is the category's install folder; shadcn-svelte resolves targets from the ui alias. */
-function targetFor(
-	framework: Framework,
-	path: string,
-	type: string,
-	dir: string,
-): string {
-	const { uiTarget, libTarget, aliasRelativeTargets } = FRAMEWORK[framework];
-	if (isLib(type))
-		return aliasRelativeTargets ? basename(path) : `${libTarget}/${basename(path)}`;
-	if (aliasRelativeTargets) return dir === "ui" ? path : `../${dir}/${path}`;
-	return `${uiTarget.replace(/\/ui$/, "")}/${dir}/${path}`;
-}
-
-/** Where the file lands in the project, for the Manual install view. */
-export function projectPath(framework: Framework, target: string, type: string): string {
-	const { uiTarget, libTarget, aliasRelativeTargets } = FRAMEWORK[framework];
-	if (!aliasRelativeTargets) return target;
-	return posix.normalize(`${isLib(type) ? libTarget : uiTarget}/${target}`);
 }
 
 const EXPORT_FROM = /export\s+(?:type\s+)?\{[^}]*\}\s+from\s+"\.\/([^"]+)";/g;
@@ -163,11 +139,10 @@ function typesFor(dependencies: string[]): string[] | undefined {
 	return types.length ? types.sort() : undefined;
 }
 
-/** `dirs` maps every source folder to its install folder, from `folderDirs`. */
 export async function buildItem(
 	spec: ComponentSpec,
 	framework: Framework,
-	dirs: ReadonlyMap<string, string>,
+	layout: InstallLayout,
 ): Promise<RegistryItem | null> {
 	const impl = spec.impl[framework];
 	if (!impl) return null;
@@ -183,10 +158,9 @@ export async function buildItem(
 			});
 			return {
 				path: file.path,
-				content: rewriteImports(raw, framework, dirs),
+				content: layout.rewriteImports(raw),
 				type: file.type,
-				target:
-					file.target ?? targetFor(framework, file.path, file.type, installDir(spec)),
+				target: file.target ?? layout.target(spec, file.path, file.type),
 			};
 		}),
 	);
@@ -199,9 +173,9 @@ export async function buildItem(
 	if (own && barrel) {
 		files.push({
 			path: `${own}/index.ts`,
-			content: rewriteImports(barrel, framework, dirs),
+			content: layout.rewriteImports(barrel),
 			type: "registry:ui",
-			target: targetFor(framework, `${own}/index.ts`, "registry:ui", installDir(spec)),
+			target: layout.target(spec, `${own}/index.ts`, "registry:ui"),
 		});
 	}
 

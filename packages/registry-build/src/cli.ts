@@ -9,7 +9,7 @@ import {
 	PREVIEW_CATEGORIES,
 } from "@baby-ui/registry-schema";
 import { specs } from "@baby-ui/registry-schema/components";
-import { buildItem, projectPath, toJsItem } from "./build";
+import { buildItem, toJsItem } from "./build";
 import { cssText } from "./component-css";
 import {
 	FRAMEWORK,
@@ -20,9 +20,9 @@ import {
 	REPO_ROOT,
 	SITE_URL,
 } from "./config";
+import { type InstallLayout, installLayout } from "./layout";
 import { buildThirdPartyLicenses } from "./licenses";
 import { buildLlmsTxt } from "./llms";
-import { folderDirs } from "./rewrite";
 import { buildThemeItems } from "./theme";
 import { buildThemeCss } from "./theme-css";
 import { jsPath, toJavaScript } from "./tojs";
@@ -73,7 +73,9 @@ async function main() {
 
 	const written: string[] = [];
 	const proSpecs = await loadProSpecs();
-	const dirs = folderDirs([...specs, ...proSpecs]);
+	const layouts = Object.fromEntries(
+		FRAMEWORKS.map((f) => [f, installLayout(f, [...specs, ...proSpecs])]),
+	) as Record<Framework, InstallLayout>;
 	// Pro source ships only from the private registry, so it never lands in public output.
 	const publicSpecs = specs.filter((spec) => spec.tier !== "pro");
 	// Preview categories publish only with the site's Pro flag, which production builds leave off.
@@ -97,7 +99,7 @@ async function main() {
 		}
 
 		for (const spec of releasedSpecs) {
-			const item = await buildItem(spec, framework, dirs);
+			const item = await buildItem(spec, framework, layouts[framework]);
 			if (!item) continue;
 			written.push(await writeJson(`${routePrefix}/${spec.slug}.json`, item));
 			const { $schema: _, files: __, ...summary } = item;
@@ -145,7 +147,7 @@ async function main() {
 		const perFramework: Record<string, unknown[]> = {};
 		const perFrameworkCss: Record<string, string> = {};
 		for (const framework of FRAMEWORKS as readonly Framework[]) {
-			const item = await buildItem(spec, framework, dirs);
+			const item = await buildItem(spec, framework, layouts[framework]);
 			if (!item) continue;
 			if (item.css)
 				perFrameworkCss[framework] = cssText(item.css as Parameters<typeof cssText>[0]);
@@ -154,7 +156,7 @@ async function main() {
 					const js = await toJavaScript(file.content, file.path).catch(() => null);
 					return {
 						path: file.path,
-						target: file.target && projectPath(framework, file.target, file.type),
+						target: file.target && layouts[framework].projectPath(file.target, file.type),
 						ts: file.content,
 						js,
 						jsPath: js ? jsPath(file.path) : null,
@@ -169,7 +171,7 @@ async function main() {
 	for (const spec of [...specs, ...proSpecs]) {
 		const perFramework: Record<string, unknown> = {};
 		for (const framework of FRAMEWORKS as readonly Framework[]) {
-			const snippet = await buildUsage(spec, framework, [...specs, ...proSpecs]);
+			const snippet = await buildUsage(spec, framework, layouts[framework]);
 			if (snippet) perFramework[framework] = snippet;
 		}
 		written.push(await writeGenerated(`usage/${spec.slug}.json`, perFramework));

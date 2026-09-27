@@ -1,7 +1,8 @@
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
-import { type ComponentSpec, type Framework, installDir } from "@baby-ui/registry-schema";
-import { FRAMEWORK, REPO_ROOT } from "./config";
+import type { ComponentSpec, Framework } from "@baby-ui/registry-schema";
+import { REPO_ROOT } from "./config";
+import type { InstallLayout } from "./layout";
 import { toJavaScript } from "./tojs";
 
 const USAGE_DIR = resolve(REPO_ROOT, "packages/demos/src/usage");
@@ -23,19 +24,16 @@ export function usagePath(slug: string, framework: Framework, pro = false): stri
 	return resolve(pro ? PRO_USAGE_DIR : USAGE_DIR, framework, `${slug}.${EXT[framework]}`);
 }
 
-/** Snippets import the workspace package so they type-check; readers need the copied path,
- * which sits in the item's install folder (`components/og/og-blog-post`). */
+/** Snippets import the workspace package so they type-check; readers need the installed path. */
 function rewritePackage(
 	source: string,
 	framework: Framework,
-	spec: ComponentSpec,
-	specs: readonly ComponentSpec[],
-): string {
-	const base = FRAMEWORK[framework].uiAlias.replace(/\/ui$/, "");
-	return source.replace(SUBPATH[framework], (_m, sub?: string) => {
-		const item = sub ? (specs.find((s) => s.slug === sub) ?? spec) : spec;
-		return `${base}/${installDir(item)}/${sub ?? spec.slug}`;
-	});
+	slug: string,
+	layout: InstallLayout,
+) {
+	return source.replace(SUBPATH[framework], (_m, sub?: string) =>
+		layout.itemImport(sub ?? slug),
+	);
 }
 
 export type UsageVariant = { path: string; ts: string; js: string | null };
@@ -43,13 +41,13 @@ export type UsageVariant = { path: string; ts: string; js: string | null };
 export async function buildUsage(
 	spec: ComponentSpec,
 	framework: Framework,
-	specs: readonly ComponentSpec[],
+	layout: InstallLayout,
 ): Promise<UsageVariant | null> {
 	const file = usagePath(spec.slug, framework, spec.tier === "pro");
 	const raw = await readFile(file, "utf8").catch(() => null);
 	if (raw === null) return null;
 	const path = `${spec.slug}.${EXT[framework]}`;
-	const ts = rewritePackage(raw, framework, spec, specs);
+	const ts = rewritePackage(raw, framework, spec.slug, layout);
 	return { path, ts, js: await toJavaScript(ts, path).catch(() => null) };
 }
 
