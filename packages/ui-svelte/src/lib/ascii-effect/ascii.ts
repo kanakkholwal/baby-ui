@@ -1,3 +1,4 @@
+import { readColors, watchSurface } from "../lib/surface";
 import type {
 	AsciiEffectDither,
 	AsciiEffectFit,
@@ -39,22 +40,6 @@ const BAYER4 = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
 
 const clamp = (value: number, min = 0, max = 1) => Math.min(max, Math.max(min, value));
 
-function readColors(
-	el: HTMLElement,
-	names: string[],
-	probe: CanvasRenderingContext2D,
-): Rgb[] {
-	const style = getComputedStyle(el);
-	return names.map((name) => {
-		probe.clearRect(0, 0, 1, 1);
-		probe.fillStyle = style.color;
-		probe.fillStyle = style.getPropertyValue(name).trim() || style.color;
-		probe.fillRect(0, 0, 1, 1);
-		const [r = 0, g = 0, b = 0] = probe.getImageData(0, 0, 1, 1).data;
-		return [r, g, b];
-	});
-}
-
 function lerp(colors: Rgb[], amount: number): string {
 	const last = colors.length - 1;
 	if (last < 1) {
@@ -84,7 +69,6 @@ export function mountAscii(
 	const probe = document
 		.createElement("canvas")
 		.getContext("2d", { willReadFrequently: true });
-	const reduced = matchMedia("(prefers-reduced-motion: reduce)");
 	let options = initial;
 	let image: HTMLImageElement | null = null;
 	let loaded = false;
@@ -100,7 +84,6 @@ export function mountAscii(
 	let palette: string[] = [];
 	let bands = new Map<number, number>();
 	const pointer = { x: 0, y: 0, tx: 0, ty: 0, active: false };
-	let visible = true;
 	let frame = 0;
 	let timer = 0;
 	// Late callbacks (fonts.ready, image load) must not restart a torn-down engine.
@@ -108,12 +91,7 @@ export function mountAscii(
 	let last = 0;
 	let time = 0;
 
-	const running = () =>
-		visible &&
-		!document.hidden &&
-		!reduced.matches &&
-		options.speed > 0 &&
-		options.variant !== "image";
+	const running = () => surface.live() && options.speed > 0 && options.variant !== "image";
 
 	const load = () => {
 		loaded = false;
@@ -216,7 +194,7 @@ export function mountAscii(
 		if (!ctx) return;
 		ctx.clearRect(0, 0, width, height);
 		if (!pixels) return;
-		const flow = options.variant === "flow" && !reduced.matches;
+		const flow = options.variant === "flow" && !surface.reducedMotion();
 		const chars = options.chars;
 		const glyphs = chars.length - 1;
 		ctx.font = font;
@@ -314,39 +292,27 @@ export function mountAscii(
 		wake();
 	};
 
-	const onMove = (event: PointerEvent) => {
-		if (options.variant !== "flow") return;
-		const box = container.getBoundingClientRect();
-		pointer.tx = event.clientX - box.left;
-		pointer.ty = event.clientY - box.top;
-		if (!pointer.active) {
-			pointer.x = pointer.tx;
-			pointer.y = pointer.ty;
-		}
-		pointer.active = true;
-	};
-	const onLeave = () => {
-		pointer.active = false;
-	};
-
-	container.addEventListener("pointermove", onMove);
-	container.addEventListener("pointerleave", onLeave);
-	container.addEventListener("pointercancel", onLeave);
-	const resize = new ResizeObserver(reset);
-	resize.observe(container);
-	// Theme switches change the ramp and the surface brightness; resample both.
-	const theme = new MutationObserver(reset);
-	theme.observe(document.documentElement, {
-		attributes: true,
-		attributeFilter: ["class", "style", "data-theme"],
+	const surface = watchSurface(container, {
+		resize: reset,
+		// Theme switches change the ramp and the surface brightness; resample both.
+		theme: reset,
+		wake,
+		pointer: {
+			move(x, y) {
+				if (options.variant !== "flow") return;
+				pointer.tx = x;
+				pointer.ty = y;
+				if (!pointer.active) {
+					pointer.x = pointer.tx;
+					pointer.y = pointer.ty;
+				}
+				pointer.active = true;
+			},
+			leave() {
+				pointer.active = false;
+			},
+		},
 	});
-	const intersection = new IntersectionObserver(([entry]) => {
-		visible = entry?.isIntersecting ?? false;
-		wake();
-	});
-	intersection.observe(container);
-	document.addEventListener("visibilitychange", wake);
-	reduced.addEventListener("change", wake);
 	document.fonts?.ready.then(reset);
 	load();
 
@@ -366,14 +332,7 @@ export function mountAscii(
 			window.clearTimeout(timer);
 			if (image) image.onload = null;
 			image = null;
-			container.removeEventListener("pointermove", onMove);
-			container.removeEventListener("pointerleave", onLeave);
-			container.removeEventListener("pointercancel", onLeave);
-			resize.disconnect();
-			theme.disconnect();
-			intersection.disconnect();
-			document.removeEventListener("visibilitychange", wake);
-			reduced.removeEventListener("change", wake);
+			surface.destroy();
 		},
 	};
 }

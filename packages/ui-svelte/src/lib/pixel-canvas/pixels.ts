@@ -1,3 +1,4 @@
+import { readColors, watchSurface } from "../lib/surface";
 import type { PixelCanvasTone, PixelCanvasVariant } from "./variants";
 
 export type PixelOptions = {
@@ -22,22 +23,6 @@ const RAMPS: Record<PixelCanvasTone, string[]> = {
 
 const GRID_ALPHA = 0.1;
 const LIGHT_UP = 0.3;
-
-function readColors(
-	el: HTMLElement,
-	names: string[],
-	probe: CanvasRenderingContext2D,
-): Rgb[] {
-	const style = getComputedStyle(el);
-	return names.map((name) => {
-		probe.clearRect(0, 0, 1, 1);
-		probe.fillStyle = style.color;
-		probe.fillStyle = style.getPropertyValue(name).trim() || style.color;
-		probe.fillRect(0, 0, 1, 1);
-		const [r = 0, g = 0, b = 0] = probe.getImageData(0, 0, 1, 1).data;
-		return [r, g, b];
-	});
-}
 
 function ramp(colors: Rgb[], amount: number): string {
 	const last = colors.length - 1;
@@ -64,7 +49,6 @@ export function mountPixels(
 	const probe = document
 		.createElement("canvas")
 		.getContext("2d", { willReadFrequently: true });
-	const reduced = matchMedia("(prefers-reduced-motion: reduce)");
 	let options = initial;
 	let colors: Rgb[] = [];
 	let cols = 0;
@@ -74,7 +58,6 @@ export function mountPixels(
 	let intensity = new Float32Array(0);
 	let phase = new Float32Array(0);
 	let pointer: { x: number; y: number } | null = null;
-	let visible = true;
 	let frame = 0;
 	let last = 0;
 
@@ -110,11 +93,9 @@ export function mountPixels(
 		}
 	};
 
-	const running = () => visible && !document.hidden && !reduced.matches;
-
 	const step = (delta: number) => {
 		const size = pitch();
-		const snap = reduced.matches;
+		const snap = surface.reducedMotion();
 		let changed = false;
 		for (let x = 0; x < cols; x++) {
 			for (let y = 0; y < rows; y++) {
@@ -180,7 +161,7 @@ export function mountPixels(
 		const changed = step(last ? Math.min(now - last, 50) : 16);
 		last = now;
 		draw();
-		if (running() && changed) frame = requestAnimationFrame(tick);
+		if (surface.live() && changed) frame = requestAnimationFrame(tick);
 		else last = 0;
 	};
 
@@ -193,34 +174,22 @@ export function mountPixels(
 		wake();
 	};
 
-	const onMove = (event: PointerEvent) => {
-		const box = container.getBoundingClientRect();
-		pointer = { x: event.clientX - box.left, y: event.clientY - box.top };
-		wake();
-	};
-	const onLeave = () => {
-		pointer = null;
-		wake();
-	};
-
-	container.addEventListener("pointermove", onMove);
-	container.addEventListener("pointerleave", onLeave);
-	container.addEventListener("pointercancel", onLeave);
-	const resize = new ResizeObserver(reset);
-	resize.observe(container);
-	// Theme switches change the grid and ramp tokens; resample them.
-	const theme = new MutationObserver(reset);
-	theme.observe(document.documentElement, {
-		attributes: true,
-		attributeFilter: ["class", "style", "data-theme"],
+	const surface = watchSurface(container, {
+		resize: reset,
+		// Theme switches change the grid and ramp tokens; resample them.
+		theme: reset,
+		wake,
+		pointer: {
+			move(x, y) {
+				pointer = { x, y };
+				wake();
+			},
+			leave() {
+				pointer = null;
+				wake();
+			},
+		},
 	});
-	const intersection = new IntersectionObserver(([entry]) => {
-		visible = entry?.isIntersecting ?? false;
-		wake();
-	});
-	intersection.observe(container);
-	document.addEventListener("visibilitychange", wake);
-	reduced.addEventListener("change", wake);
 
 	return {
 		update(next) {
@@ -229,14 +198,7 @@ export function mountPixels(
 		},
 		destroy() {
 			cancelAnimationFrame(frame);
-			container.removeEventListener("pointermove", onMove);
-			container.removeEventListener("pointerleave", onLeave);
-			container.removeEventListener("pointercancel", onLeave);
-			resize.disconnect();
-			theme.disconnect();
-			intersection.disconnect();
-			document.removeEventListener("visibilitychange", wake);
-			reduced.removeEventListener("change", wake);
+			surface.destroy();
 		},
 	};
 }
