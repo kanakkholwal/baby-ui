@@ -1,4 +1,4 @@
-import { defineComponent } from "../index";
+import { defineComponent } from "../index.ts";
 
 const ROWS = ["3", "5", "7"];
 

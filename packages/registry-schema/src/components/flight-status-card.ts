@@ -1,4 +1,4 @@
-import { defineComponent } from "../index";
+import { defineComponent } from "../index.ts";
 
 const STATUSES = ["scheduled", "boarding", "departed", "delayed", "landed", "cancelled"];
 const TONES = ["neutral", "info", "success", "warning", "destructive"];

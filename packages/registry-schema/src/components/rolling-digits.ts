@@ -1,4 +1,4 @@
-import { defineComponent } from "../index";
+import { defineComponent } from "../index.ts";
 
 const DIRECTIONS = ["dynamic", "up", "down"];
 const SIZES = ["inherit", "sm", "md", "lg"];

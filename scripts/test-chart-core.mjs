@@ -50,7 +50,7 @@ test("every chart family's shared .ts files are byte-identical across ports", as
 	let compared = 0;
 	for (const dir of dirs) {
 		for (const file of await readdir(`packages/ui-react/src/${dir}`)) {
-			if (!file.endsWith(".ts")) continue;
+			if (!file.endsWith(".ts") || file === "index.ts") continue;
 			const svelte = await readFile(
 				`packages/ui-svelte/src/lib/${dir}/${file}`,
 				"utf8",

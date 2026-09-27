@@ -1,4 +1,4 @@
-import { defineComponent } from "../index";
+import { defineComponent } from "../index.ts";
 
 const SHAPES = ["dot", "square", "plus"];
 const SIZES = ["sm", "md", "lg"];

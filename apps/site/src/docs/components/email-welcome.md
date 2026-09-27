@@ -10,6 +10,8 @@ Built from the [Email Kit](/emails/email-kit), so it uses your theme tokens (con
 since inboxes can't read CSS variables) and switches to your dark palette when the inbox does.
 Keep `steps` to two or four items. More than that reads as a manual, not a welcome.
 
+`design` picks the look: `stacked` (the default) splits it into cards with a centred, image-led opener (pass `heroImageUrl` and `heroImageAlt`); `classic` is one card.
+
 ## Send it
 
 Render to HTML and plain text on the server, then send both parts. The examples use

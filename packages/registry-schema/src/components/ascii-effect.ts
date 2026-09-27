@@ -1,4 +1,4 @@
-import { defineComponent } from "../index";
+import { defineComponent } from "../index.ts";
 
 const VARIANTS = ["image", "flow", "glitch"];
 const TONES = ["mono", "spectrum", "cool", "warm", "source"];

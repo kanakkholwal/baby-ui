@@ -1,4 +1,4 @@
-import { defineComponent } from "../index";
+import { defineComponent } from "../index.ts";
 
 const SIZES = ["sm", "md", "lg"];
 const MOTIONS = ["slide", "flip"];

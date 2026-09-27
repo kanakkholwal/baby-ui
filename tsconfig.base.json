@@ -5,6 +5,8 @@
 		"lib": ["ES2023", "DOM", "DOM.Iterable"],
 		"module": "ESNext",
 		"moduleResolution": "bundler",
+		// Relative imports carry .ts so Node can run workspace TypeScript sources directly.
+		"rewriteRelativeImportExtensions": true,
 		"moduleDetection": "force",
 		"resolveJsonModule": true,
 		"isolatedModules": true,

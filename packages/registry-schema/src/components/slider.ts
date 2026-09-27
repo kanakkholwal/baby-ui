@@ -1,4 +1,4 @@
-import { defineComponent } from "../index";
+import { defineComponent } from "../index.ts";
 
 const VARIANTS = ["default", "track", "inline", "bubble", "fluid", "wave", "ruler"];
 

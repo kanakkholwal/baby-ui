@@ -1,6 +1,7 @@
 import { defaultProps } from "@baby-ui/registry-schema";
 import { pixelBasedPreset, Renderer } from "@better-svelte-email/server";
 import { error, json } from "@sveltejs/kit";
+import { proEmailSample, proEmailTemplates } from "$lib/pro";
 import { MAX_PROPS, safeUrls, sameOrigin } from "$lib/server/preview-guard";
 import { findSpec } from "$lib/server/registry";
 import {
@@ -19,20 +20,8 @@ const loader = templateLoader({
 	...import.meta.glob<TemplateModule>(
 		"../../../../../../../packages/ui-svelte/src/lib/email-*/email-*.svelte",
 	),
-	// pro/ is the private Pro submodule; in a public checkout this glob matches nothing.
-	...(__SHOW_PRO__
-		? import.meta.glob<TemplateModule>(
-				"../../../../../../../pro/packages/svelte/src/lib/email-*/email-*.svelte",
-			)
-		: {}),
+	...proEmailTemplates,
 });
-
-// Eager so samples resolve synchronously; empty in a public checkout.
-const proSamples = import.meta.glob<{
-	EMAIL_SAMPLES: Record<string, Record<string, unknown>>;
-}>("../../../../../../../pro/packages/demos/src/data/email-samples.ts", { eager: true });
-const proSample = (slug: string) =>
-	__SHOW_PRO__ ? Object.values(proSamples)[0]?.EMAIL_SAMPLES[slug] : undefined;
 
 const renderer = new Renderer({
 	tailwindConfig: { ...emailTailwindConfig, presets: [pixelBasedPreset] },
@@ -55,7 +44,7 @@ export const GET: RequestHandler = async ({ params, url, request }) => {
 	const props = previewProps(
 		params.slug,
 		{ ...defaultProps(spec), ...given },
-		proSample(params.slug),
+		await proEmailSample(params.slug),
 	);
 
 	const { default: Template } = await load();

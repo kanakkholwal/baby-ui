@@ -1,4 +1,4 @@
-import { defineComponent } from "../index";
+import { defineComponent } from "../index.ts";
 
 const TONES = ["chrome", "chart", "accent"];
 const SPEEDS = ["slow", "normal", "fast"];

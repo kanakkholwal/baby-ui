@@ -1,4 +1,10 @@
 {
 	"extends": "../../tsconfig.base.json",
+	"compilerOptions": {
+		// Node loads this source directly (Vite config, scripts), so relative imports need the
+		// .ts extension; nodenext makes an extensionless one a type error.
+		"module": "nodenext",
+		"moduleResolution": "nodenext"
+	},
 	"include": ["src"]
 }

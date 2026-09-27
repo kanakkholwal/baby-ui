@@ -1,4 +1,4 @@
-import { defineComponent } from "../index";
+import { defineComponent } from "../index.ts";
 
 const SURFACES = ["card", "plain"];
 const DENSITIES = ["comfortable", "compact"];

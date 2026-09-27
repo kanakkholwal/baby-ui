@@ -49,7 +49,14 @@ const templates = [
 ];
 const slugs = templates.map((t) => t.slug);
 
-async function bundle(entrySource, resolveDir, outfile, plugins = [], external = []) {
+async function bundle(
+	entrySource,
+	resolveDir,
+	outfile,
+	plugins = [],
+	external = [],
+	conditions = [],
+) {
 	await build({
 		stdin: { contents: entrySource, resolveDir, loader: "tsx" },
 		bundle: true,
@@ -59,6 +66,7 @@ async function bundle(entrySource, resolveDir, outfile, plugins = [], external =
 		outfile,
 		plugins,
 		external,
+		conditions,
 		logLevel: "error",
 	});
 	return import(`${pathToFileURL(outfile).href}?t=${Date.now()}`);
@@ -129,6 +137,8 @@ async function renderSvelte(props) {
 		join(SVELTE_CACHE, "render.mjs"),
 		[sveltePlugin],
 		external,
+		// Svelte packages export source under the `svelte` condition, as Vite resolves them.
+		["svelte"],
 	);
 	return mod.default(props);
 }

@@ -1,4 +1,4 @@
-import { defineComponent } from "../index";
+import { defineComponent } from "../index.ts";
 
 const SHAPES = ["square", "rounded"];
 const LAYOUTS = ["grid", "staggered"];

@@ -117,7 +117,7 @@ let { class: classProp, variant, ...rest }: Props = $props();
 <div data-slot="${slug}" data-variant={variant} class={cn(${camel}({ variant }), classProp)} {...rest}></div>
 `;
 
-const registrySchemaTemplate = () => `import { defineComponent } from "../index";
+const registrySchemaTemplate = () => `import { defineComponent } from "../index.ts";
 
 export const ${camel} = defineComponent({
 	slug: "${slug}",

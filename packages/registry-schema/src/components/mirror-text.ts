@@ -1,4 +1,4 @@
-import { defineComponent } from "../index";
+import { defineComponent } from "../index.ts";
 
 const DIRECTIONS = ["up", "down", "left", "right"];
 

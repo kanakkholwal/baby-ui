@@ -9,7 +9,8 @@ export const emailShell = tv({
 		container: "mx-auto w-full px-4",
 		// The card has no padding of its own, so a footer band inside it can run edge to edge.
 		card: "rounded-lg border border-border border-solid bg-background dark:border-border-dark dark:bg-background-dark",
-		content: "px-8 py-10",
+		// 24px, not 32: stacked padding otherwise overflows a 320px phone, and breakpoints are out.
+		content: "px-6 py-10",
 	},
 	variants: {
 		width: {
@@ -71,7 +72,7 @@ export const emailHeading = tv({
 
 export const emailHero = tv({
 	slots: {
-		root: "rounded-lg px-7 py-8",
+		root: "rounded-lg px-6 py-8",
 		eyebrow: "m-0 font-semibold text-[12px] leading-[18px] tracking-[0.04em]",
 		meta: "m-0 text-right text-[12px] leading-[18px]",
 		title: "m-0 mt-4 font-extrabold tracking-[-0.03em]",
@@ -122,7 +123,7 @@ export const emailHero = tv({
 });
 
 export const emailPanel = tv({
-	base: "rounded-lg px-6 py-5",
+	base: "rounded-lg px-5 py-5",
 	variants: {
 		tone: {
 			muted: "bg-card dark:bg-card-dark",
@@ -134,7 +135,7 @@ export const emailPanel = tv({
 });
 
 export const emailSection = tv({
-	base: "mb-4 rounded-lg border border-border border-solid bg-background px-8 py-8 dark:border-border-dark dark:bg-background-dark",
+	base: "mb-4 rounded-lg border border-border border-solid bg-background px-6 py-8 dark:border-border-dark dark:bg-background-dark",
 	variants: {
 		align: {
 			left: "text-left",
@@ -272,7 +273,7 @@ export const emailDivider = tv({
 
 export const emailFooter = tv({
 	slots: {
-		root: "mt-8 px-8",
+		root: "mt-8 px-6",
 		bar: "",
 		brand:
 			"m-0 font-extrabold text-[16px] text-foreground leading-[24px] tracking-[-0.01em] dark:text-foreground-dark",
@@ -290,17 +291,17 @@ export const emailFooter = tv({
 		layout: {
 			plain: {},
 			band: {
-				root: "mt-0 rounded-b-lg border-0 border-border border-t border-solid bg-card px-8 py-6 dark:border-border-dark dark:bg-card-dark",
+				root: "mt-0 rounded-b-lg border-0 border-border border-t border-solid bg-card px-6 py-6 dark:border-border-dark dark:bg-card-dark",
 			},
 			bar: {
-				root: "mt-0 px-8 pb-8",
-				bar: "rounded-lg bg-foreground px-6 py-5 dark:bg-foreground-dark",
+				root: "mt-0 px-6 pb-6",
+				bar: "rounded-lg bg-foreground px-5 py-5 dark:bg-foreground-dark",
 				brand: "text-background dark:text-background-dark",
 				link: "text-background underline dark:text-background-dark",
 				linkText: "text-background dark:text-background-dark",
 			},
 			row: {
-				root: "mt-0 border-0 border-border border-t border-solid px-8 py-5 dark:border-border-dark",
+				root: "mt-0 border-0 border-border border-t border-solid px-6 py-5 dark:border-border-dark",
 			},
 		},
 		align: {
@@ -354,7 +355,7 @@ export const emailFallbackLink = tv({
 export const emailStats = tv({
 	slots: {
 		cell: "align-top",
-		card: "rounded-lg border border-border border-solid bg-card px-4 py-4 dark:border-border-dark dark:bg-card-dark",
+		card: "rounded-lg border border-border border-solid bg-card px-3 py-4 dark:border-border-dark dark:bg-card-dark",
 		value:
 			"m-0 font-semibold text-[22px] text-foreground leading-[28px] tracking-[-0.01em] dark:text-foreground-dark",
 		label:
@@ -384,7 +385,7 @@ export const emailKeyValue = tv({
 		label:
 			"py-2 text-[14px] text-muted-foreground leading-[22px] dark:text-muted-foreground-dark",
 		value:
-			"py-2 text-right text-[14px] text-foreground leading-[22px] dark:text-foreground-dark",
+			"py-2 text-right text-[14px] text-foreground leading-[22px] break-all dark:text-foreground-dark",
 		total:
 			"border-0 border-border border-t border-solid pt-3 font-semibold text-foreground dark:border-border-dark dark:text-foreground-dark",
 	},

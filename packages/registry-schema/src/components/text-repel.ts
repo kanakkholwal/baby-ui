@@ -1,4 +1,4 @@
-import { defineComponent } from "../index";
+import { defineComponent } from "../index.ts";
 
 const MODES = ["repel", "attract"];
 const SIZES = ["inherit", "sm", "md", "lg"];

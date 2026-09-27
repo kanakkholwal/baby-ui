@@ -1,4 +1,4 @@
-import { defineComponent } from "../index";
+import { defineComponent } from "../index.ts";
 
 export const clickSpark = defineComponent({
 	slug: "click-spark",

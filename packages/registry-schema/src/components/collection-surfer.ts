@@ -1,4 +1,4 @@
-import { defineComponent } from "../index";
+import { defineComponent } from "../index.ts";
 
 const VARIANTS = ["magnetic", "uplift", "simple"];
 const SIZES = ["sm", "md", "lg"];

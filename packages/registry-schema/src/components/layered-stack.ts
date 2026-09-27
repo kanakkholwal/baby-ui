@@ -1,4 +1,4 @@
-import { defineComponent } from "../index";
+import { defineComponent } from "../index.ts";
 
 const COLUMNS = ["2", "3", "4"];
 const ASPECTS = ["portrait", "square", "landscape"];

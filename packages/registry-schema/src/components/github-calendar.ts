@@ -1,4 +1,4 @@
-import { defineComponent } from "../index";
+import { defineComponent } from "../index.ts";
 
 const VARIANTS = ["default", "glow", "minimal"];
 const SHAPES = ["square", "rounded", "circle"];

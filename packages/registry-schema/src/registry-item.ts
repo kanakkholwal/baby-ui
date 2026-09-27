@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { FileTypeSchema } from "./spec";
+import { FileTypeSchema } from "./spec.ts";
 
 /** shadcn and shadcn-svelte share this shape; only the $schema URL and paths differ. */
 export const RegistryItemSchema = z.object({

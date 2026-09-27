@@ -1,4 +1,4 @@
-import { defineComponent } from "../index";
+import { defineComponent } from "../index.ts";
 
 export const wheelCarousel = defineComponent({
 	slug: "wheel-carousel",

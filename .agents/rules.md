@@ -7,6 +7,11 @@ Any agent (Claude Code, Codex, Cursor, Copilot) should read this file first.
 ## Never
 
 - Never commit or push. The user commits.
+- **HARD RULE:** no hacks, tricks or workarounds to fix a bug or make something work (aliasing a
+  package to a private file, shims, copies, catch-all exports, deep paths into another
+  package). Use the standard API of the tool or package; if none fits, stop and ask.
+- **HARD RULE:** no absolute paths in imports, globs or config (no drive paths, no root
+  `"/src/..."`). Relative paths or a configured alias (`$lib`, `$pro`, `@baby-ui/*`) only.
 - Never use `.js` extensions in relative imports (`scripts/check-import-extensions.mjs`).
 - Never write custom CSS when Tailwind utilities and CSS variables can do it. Custom CSS is
   for keyframes, `::backdrop`, pseudo-element thumbs, scrollbars, and nothing else.

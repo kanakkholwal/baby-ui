@@ -1,4 +1,4 @@
-import { defineComponent } from "../index";
+import { defineComponent } from "../index.ts";
 
 export const cubeText = defineComponent({
 	slug: "cube-text",

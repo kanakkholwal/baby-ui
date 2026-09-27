@@ -1,4 +1,4 @@
-import { defineComponent } from "../index";
+import { defineComponent } from "../index.ts";
 
 const INDICATORS = ["bar", "spinner", "dots", "none"];
 const LOGO_MOTIONS = ["breathe", "none"];

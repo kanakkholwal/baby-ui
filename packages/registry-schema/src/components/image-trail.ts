@@ -1,4 +1,4 @@
-import { defineComponent } from "../index";
+import { defineComponent } from "../index.ts";
 
 const VARIANTS = ["fade", "fall", "shrink"];
 const SIZES = ["sm", "md", "lg"];

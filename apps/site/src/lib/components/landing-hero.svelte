@@ -1,15 +1,7 @@
 <script lang="ts">
-import { AuroraFlow, Button, DiaText, FillButton } from "@baby-ui/svelte";
+import { Button, DiaText, FillButton } from "@baby-ui/svelte";
 import IconArrowRight from "@tabler/icons-svelte/icons/arrow-right";
-import type { Component } from "svelte";
-
-// Prism is a Pro background. Deploys with the private repo checked out render it; public and
-// CI builds have no file here and fall back to a free background.
-const prism = Object.values(
-	import.meta.glob<{ default: Component<Record<string, unknown>> }>(
-		"../../../../../pro/packages/svelte/src/lib/prism-gradient/prism-gradient.svelte",
-	),
-)[0];
+import HeroPrism from "./hero-prism.svelte";
 
 const TAILS = [
 	"agent interfaces.",
@@ -26,13 +18,7 @@ const BG_CLASS =
 
 <!-- Pulled up under the fixed header, so the header stays transparent over the hero's background. -->
 <div class="relative isolate -mt-14 flex min-h-svh flex-col justify-center overflow-x-clip pt-14">
-	{#if prism}
-		{#await prism() then mod}
-			<mod.default tone="chart" speed="slow" class={BG_CLASS} />
-		{/await}
-	{:else}
-		<AuroraFlow tone="chart" speed="slow" class={BG_CLASS} />
-	{/if}
+	<HeroPrism class={BG_CLASS} />
 
 	<!-- Text protection that fades to nothing at its own edge, so no ring shows. -->
 	<div

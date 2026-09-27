@@ -1,4 +1,4 @@
-import { defineComponent } from "../index";
+import { defineComponent } from "../index.ts";
 
 const RINGS = ["none", "single", "echo"];
 const RADII = ["none", "md", "xl"];

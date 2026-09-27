@@ -1,4 +1,4 @@
-import { defineComponent } from "../index";
+import { defineComponent } from "../index.ts";
 
 const VARIANTS = ["realistic", "cartoon", "minimal", "cyber"];
 const SIZES = ["sm", "md", "lg"];

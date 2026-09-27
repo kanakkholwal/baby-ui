@@ -1,4 +1,4 @@
-import { defineComponent } from "../index";
+import { defineComponent } from "../index.ts";
 
 const VARIANTS = ["card", "plain"];
 const SIZES = ["sm", "md", "lg"];

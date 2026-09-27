@@ -1,4 +1,4 @@
-import { defineComponent } from "../index";
+import { defineComponent } from "../index.ts";
 
 const TONES = ["spectrum", "cool", "warm", "mono"];
 const MATRICES = ["bayer2", "bayer4", "bayer8"];

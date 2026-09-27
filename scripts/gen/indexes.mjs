@@ -59,10 +59,36 @@ function ordered(dir, files, ext) {
  * Explicit named re-exports, so a duplicate name is resolved here and never becomes an ambiguous
  * `export *`. The file that declares a name wins over files that only re-export it.
  */
+function reexports(modules, from, external = []) {
+	const owner = new Map();
+	for (const [index, mod] of modules.entries()) {
+		for (const n of mod.names) {
+			const current = owner.get(n.name);
+			const rank = n.declared ? (n.isDefault ? 1 : 2) : 0;
+			if (!current || rank > current.rank)
+				owner.set(n.name, { index, rank, declared: n.declared });
+		}
+	}
+	const collisions = [];
+	let text = external.map((line) => `${line}\n`).join("");
+	for (const [index, mod] of modules.entries()) {
+		const specs = mod.names
+			.filter((n) => owner.get(n.name)?.index === index)
+			.map((n) => n.spec);
+		for (const n of mod.names) {
+			const won = owner.get(n.name);
+			if (won?.index !== index && n.declared && won?.declared)
+				collisions.push(`${n.name}: ${from(mod)}`);
+		}
+		if (specs.length) text += `export { ${specs.join(", ")} } from "${from(mod)}";\n`;
+	}
+	return { text, collisions };
+}
+
+/** The package barrel plus one index per item folder, which `<pkg>/<item>` resolves to. */
 function uiIndex({ root, componentExts, defaults, external }) {
 	const modules = [];
 	for (const dir of dirs(root)) {
-		if (root === SVELTE && KIT_ONLY.has(dir)) continue;
 		const files = readdirSync(join(root, dir));
 		const pick = dir === "lib" ? (f) => LIB_PUBLIC.includes(f) : () => true;
 		if (defaults) {
@@ -76,7 +102,8 @@ function uiIndex({ root, componentExts, defaults, external }) {
 					...(EXTRA_DEFAULTS[`${dir}/${file}`] ?? []),
 				];
 				modules.push({
-					from: `./${dir}/${file}`,
+					dir,
+					file,
 					names: [
 						...aliases.map((name) => ({
 							name,
@@ -100,7 +127,8 @@ function uiIndex({ root, componentExts, defaults, external }) {
 		];
 		for (const file of sources) {
 			modules.push({
-				from: `./${dir}/${file.replace(/\.tsx?$/, "")}`,
+				dir,
+				file: file.replace(/\.tsx?$/, ""),
 				names: exportsOf(join(root, dir, file)).map((n) => ({
 					...n,
 					spec: n.type ? `type ${n.name}` : n.name,
@@ -109,29 +137,23 @@ function uiIndex({ root, componentExts, defaults, external }) {
 		}
 	}
 
-	const owner = new Map();
-	for (const [index, mod] of modules.entries()) {
-		for (const n of mod.names) {
-			const current = owner.get(n.name);
-			const rank = n.declared ? (n.isDefault ? 1 : 2) : 0;
-			if (!current || rank > current.rank)
-				owner.set(n.name, { index, rank, declared: n.declared });
-		}
+	const barrel = reexports(
+		modules.filter((m) => !(root === SVELTE && KIT_ONLY.has(m.dir))),
+		(m) => `./${m.dir}/${m.file}`,
+		external,
+	);
+	const folders = new Map();
+	for (const dir of new Set(modules.map((m) => m.dir))) {
+		if (dir === "lib") continue;
+		folders.set(
+			dir,
+			reexports(
+				modules.filter((m) => m.dir === dir),
+				(m) => `./${m.file}`,
+			).text,
+		);
 	}
-	const collisions = [];
-	let text = external.map((line) => `${line}\n`).join("");
-	for (const [index, mod] of modules.entries()) {
-		const specs = mod.names
-			.filter((n) => owner.get(n.name)?.index === index)
-			.map((n) => n.spec);
-		for (const n of mod.names) {
-			const won = owner.get(n.name);
-			if (won?.index !== index && n.declared && won?.declared)
-				collisions.push(`${n.name}: ${mod.from}`);
-		}
-		if (specs.length) text += `export { ${specs.join(", ")} } from "${mod.from}";\n`;
-	}
-	return { text, collisions };
+	return { ...barrel, folders };
 }
 
 export function indexes(output, report) {
@@ -141,6 +163,7 @@ export function indexes(output, report) {
 		external: EXTERNAL.react,
 	});
 	output.add(join(REACT, "index.ts"), react.text);
+	for (const [dir, text] of react.folders) output.add(join(REACT, dir, "index.ts"), text);
 	const svelte = uiIndex({
 		root: SVELTE,
 		componentExts: [],
@@ -148,6 +171,8 @@ export function indexes(output, report) {
 		external: EXTERNAL.svelte,
 	});
 	output.add(join(SVELTE, "index.ts"), svelte.text);
+	for (const [dir, text] of svelte.folders)
+		output.add(join(SVELTE, dir, "index.ts"), text);
 	report.collisions.push(
 		...react.collisions.map((c) => `react ${c}`),
 		...svelte.collisions.map((c) => `svelte ${c}`),
@@ -169,9 +194,9 @@ export function indexes(output, report) {
 	output.add(
 		join(SPECS, "index.ts"),
 		[
-			'import type { ComponentSpec } from "../index";',
+			'import type { ComponentSpec } from "../index.ts";',
 			...specNames.map(
-				([file, names]) => `import { ${names.join(", ")} } from "./${file}";`,
+				([file, names]) => `import { ${names.join(", ")} } from "./${file}.ts";`,
 			),
 			"",
 			"export const specs: ComponentSpec[] = [",

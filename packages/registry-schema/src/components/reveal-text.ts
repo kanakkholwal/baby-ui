@@ -1,4 +1,4 @@
-import { defineComponent } from "../index";
+import { defineComponent } from "../index.ts";
 
 const SIZES = ["inherit", "sm", "md", "lg"];
 const SPLITS = ["word", "char", "line"];

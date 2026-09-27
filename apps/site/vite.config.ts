@@ -10,10 +10,13 @@ import { defineConfig, loadEnv, type Plugin, searchForWorkspaceRoot } from "vite
 import { generate, watchRoots } from "../../scripts/generate.mjs";
 import docviaConfig from "./docvia.config.ts";
 
-// yaml (via @docvia/schema) resolves to CJS under the SSR node condition; Rolldown
-// wraps that in createRequire(import.meta.url), undefined in Workers. Use its ESM build.
 const require = createRequire(import.meta.url);
-const yamlEsm = join(dirname(require.resolve("yaml/package.json")), "browser/index.js");
+// The Worker's resolve settings, as Cloudflare's Vite plugin sets them: no `node` condition
+// (yaml picks ESM), and `browser` fields honoured (postcss maps path/url/fs to empty).
+const WORKER_RESOLVE = {
+	conditions: ["workerd", "worker", "module", "development|production"],
+	mainFields: ["browser", "module", "jsnext:main", "jsnext"],
+};
 
 // @docvia/renderer-svelte@0.2.4 points its `svelte` condition at ./src, which it never
 // publishes. Resolve dist via the /node subpath; ./package.json is not exported either.
@@ -46,17 +49,6 @@ function generatedFiles(): Plugin {
 	};
 }
 
-// postcss (the email renderer's CSS pass) is CJS and requires path/url/fs for source maps, which
-// the Worker never makes; Rolldown would wrap those requires in the same createRequire crash.
-const shim = (name: string) =>
-	fileURLToPath(new URL(`./src/lib/server/worker-shims/${name}.ts`, import.meta.url));
-const workerShims = [
-	// A file path, not the bare name: a bare replacement stays an external require.
-	{ find: /^path$/, replacement: join(dirname(require.resolve("pathe")), "index.mjs") },
-	{ find: /^url$/, replacement: shim("url") },
-	{ find: /^fs$/, replacement: shim("fs") },
-];
-
 export default defineConfig(({ command, mode }) => {
 	// The Pro feature flag: VITE_SHOW_PRO=true|false wins; unset, dev shows Pro and builds hide it.
 	const flag = loadEnv(mode, process.cwd(), "VITE_").VITE_SHOW_PRO;
@@ -64,12 +56,7 @@ export default defineConfig(({ command, mode }) => {
 	return {
 		define: { __SHOW_PRO__: JSON.stringify(showPro) },
 		resolve: {
-			alias: [
-				{ find: "yaml", replacement: yamlEsm },
-				{ find: "@docvia/renderer-svelte", replacement: rendererSvelte },
-				// Build only: dev SSR runs in Node, where the real modules are wanted.
-				...(command === "build" ? workerShims : []),
-			],
+			alias: [{ find: "@docvia/renderer-svelte", replacement: rendererSvelte }],
 			// The Pro submodule has its own node_modules. One copy of each shared dep keeps the Svelte
 			// runtime (and kernel context) single, and stops dev re-optimizing when a Pro page loads.
 			dedupe: ["svelte", "tailwind-variants", "d3-scale"],
@@ -119,7 +106,13 @@ export default defineConfig(({ command, mode }) => {
 			exclude: ["@tabler/icons-svelte"],
 		},
 		environments: {
-			ssr: { resolve: { noExternal: ["@docvia/renderer-svelte"] } },
+			ssr: {
+				resolve: {
+					noExternal: ["@docvia/renderer-svelte"],
+					// Build only: dev SSR runs in Node.
+					...(command === "build" && WORKER_RESOLVE),
+				},
+			},
 		},
 		plugins: [
 			generatedFiles(),
@@ -137,6 +130,8 @@ export default defineConfig(({ command, mode }) => {
 			// Resolves `docvia/registry` to the registry alone; docvia() only serves the full source.
 			docviaSourcePlugin(),
 			sveltekit({
+				// The optional private checkout; only $lib/pro.ts and $lib/server/pro.ts glob it.
+				alias: { $pro: "../../pro/packages" },
 				// The navbar and fullscreen-nav demos ship placeholder anchors like #product,
 				// which have no target on the page that previews them. Warn, do not fail.
 				prerender: { handleMissingId: "warn" },

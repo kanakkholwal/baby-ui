@@ -1,4 +1,4 @@
-import { defineComponent } from "../index";
+import { defineComponent } from "../index.ts";
 
 const TONES = ["surface", "pearl", "chart", "violet"];
 const SPEEDS = ["slow", "normal", "fast"];

@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { CATEGORIES, CATEGORY } from "./categories";
-import { PropSpecSchema } from "./control";
+import { CATEGORIES, CATEGORY } from "./categories.ts";
+import { PropSpecSchema } from "./control.ts";
 
 export const FRAMEWORKS = ["react", "svelte"] as const;
 

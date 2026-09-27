@@ -6,7 +6,8 @@
 	"type": "module",
 	"exports": {
 		".": "./src/index.ts",
-		"./*": "./src/index.ts"
+		"./lib/*": "./src/lib/*.ts",
+		"./*": "./src/*/index.ts"
 	},
 	"scripts": {
 		"check": "tsc --noEmit"

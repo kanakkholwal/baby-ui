@@ -16,21 +16,13 @@ import {
 	type SidebarGroup,
 	specHref,
 } from "$lib/registry";
-
-// pro/ is the private Pro submodule; in a public checkout this glob matches nothing.
-const pro = import.meta.glob<ComponentSpec[]>(
-	"../../../../../pro/packages/schema/src/index.ts",
-	{
-		eager: true,
-		import: "proSpecs",
-	},
-);
+import { proSpecs } from "$lib/server/pro";
 
 /** Public specs, plus Pro specs when the private submodule is checked out and Pro is shown.
  * Preview categories (emails) ride the same flag until they launch. */
 export const specs: readonly ComponentSpec[] = [
 	...publicSpecs.filter((s) => __SHOW_PRO__ || !PREVIEW_CATEGORIES.includes(s.category)),
-	...(__SHOW_PRO__ ? Object.values(pro).flat() : []),
+	...proSpecs,
 ];
 
 /** What the site lists: retired specs keep their page and registry item, nothing else. */

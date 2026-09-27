@@ -1,4 +1,4 @@
-import { defineComponent } from "../index";
+import { defineComponent } from "../index.ts";
 
 const MODES = ["light", "dark"];
 const TONES = ["neutral", "chart", "primary"];

@@ -1,4 +1,4 @@
-import { defineComponent } from "../index";
+import { defineComponent } from "../index.ts";
 
 const POSITIONS = ["left", "right", "bottom-left", "bottom-right"];
 

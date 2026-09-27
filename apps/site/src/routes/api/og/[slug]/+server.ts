@@ -3,6 +3,7 @@ import { error } from "@sveltejs/kit";
 import { render } from "svelte/server";
 import { googleFonts } from "takumi-js/helpers";
 import { ImageResponse } from "takumi-js/response";
+import { proOgSample, proOgTemplates } from "$lib/pro";
 import { MAX_PROPS, safeUrls, sameOrigin } from "$lib/server/preview-guard";
 import { findSpec } from "$lib/server/registry";
 import { type TemplateModule, templateLoader } from "$lib/server/templates";
@@ -13,23 +14,12 @@ import type { RequestHandler } from "./$types";
 // Props arrive as `?props=`, so this runs in the Worker instead of being prerendered.
 export const prerender = false;
 
-const publicTemplates = import.meta.glob<TemplateModule>(
-	"../../../../../../../packages/ui-svelte/src/lib/og-*/og-*.svelte",
-);
-// pro/ is the private Pro submodule; in a public checkout this glob matches nothing.
-const proTemplates = import.meta.glob<TemplateModule>(
-	"../../../../../../../pro/packages/svelte/src/lib/og-*/og-*.svelte",
-);
-const loader = templateLoader(
-	__SHOW_PRO__ ? { ...publicTemplates, ...proTemplates } : publicTemplates,
-);
-
-// Eager so samples resolve synchronously; empty in a public checkout.
-const proSamples = import.meta.glob<{
-	OG_SAMPLES: Record<string, Record<string, unknown>>;
-}>("../../../../../../../pro/packages/demos/src/data/og-samples.ts", { eager: true });
-const proSample = (slug: string) =>
-	__SHOW_PRO__ ? Object.values(proSamples)[0]?.OG_SAMPLES[slug] : undefined;
+const loader = templateLoader({
+	...import.meta.glob<TemplateModule>(
+		"../../../../../../../packages/ui-svelte/src/lib/og-*/og-*.svelte",
+	),
+	...proOgTemplates,
+});
 
 const fontsPromise = googleFonts({
 	families: [{ name: "Inter", weight: [400, 500, 600, 700] }],
@@ -51,7 +41,7 @@ export const GET: RequestHandler = async ({ params, url, request }) => {
 	// Spec defaults fill the controls, so a bare URL renders the demo card.
 	const spec = findSpec("og-images", params.slug);
 	const controls = { ...(spec ? defaultProps(spec) : {}), ...given };
-	const props = previewProps(params.slug, controls, proSample(params.slug));
+	const props = previewProps(params.slug, controls, await proOgSample(params.slug));
 
 	const { default: Template } = await load();
 	let markup: string;

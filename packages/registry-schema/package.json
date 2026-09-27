@@ -4,20 +4,11 @@
 	"private": true,
 	"type": "module",
 	"exports": {
-		".": {
-			"types": "./dist/index.d.ts",
-			"development": "./src/index.ts",
-			"default": "./dist/index.js"
-		},
+		".": "./src/index.ts",
 		"./components": "./src/components/index.ts",
 		"./categories": "./src/categories.ts"
 	},
-	"files": [
-		"src",
-		"dist"
-	],
 	"scripts": {
-		"build": "bun build ./src/index.ts ./src/components/index.ts --outdir dist --target node --format esm --root src --external zod && tsc -p tsconfig.build.json --emitDeclarationOnly",
 		"check": "tsc --noEmit"
 	},
 	"dependencies": {
