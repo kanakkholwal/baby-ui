@@ -11,6 +11,7 @@ import type {
 	SeriesConfig,
 	TooltipRow,
 } from "../chart/core";
+import { hoverThrottle } from "../chart/core";
 import { CHART_EASE, tween } from "../chart/motion";
 import {
 	type BarRect,
@@ -213,7 +214,7 @@ $effect.pre(() => {
 	shownTargets = new Map([...displayed].map(([key, d]) => [key, d.target]));
 });
 
-let pending: { index: number; frame: number } | null = null;
+const hover = hoverThrottle();
 function onpointermove(event: PointerEvent & { currentTarget: SVGSVGElement }) {
 	if (!interactive) return;
 	const bounds = event.currentTarget.getBoundingClientRect();
@@ -221,20 +222,12 @@ function onpointermove(event: PointerEvent & { currentTarget: SVGSVGElement }) {
 		? event.clientX - bounds.left - margin.left
 		: event.clientY - bounds.top - margin.top;
 	const index = nearestBand(band, categories, pos);
-	if (pending) {
-		pending.index = index;
-		return;
-	}
-	const raf = requestAnimationFrame(() => {
-		const next = pending?.index ?? index;
-		pending = null;
+	hover.move(index, (next) => {
 		if (next !== activeIndex) setActive(next, false);
 	});
-	pending = { index, frame: raf };
 }
 function onpointerleave() {
-	if (pending) cancelAnimationFrame(pending.frame);
-	pending = null;
+	hover.cancel();
 	if (activeIndex !== null) setActive(null, false);
 }
 

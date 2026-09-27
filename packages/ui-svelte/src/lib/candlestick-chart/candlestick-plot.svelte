@@ -9,6 +9,7 @@ import {
 	type Datum,
 	DEFAULT_MARGIN,
 	type Domain,
+	hoverThrottle,
 	type Margin,
 	nearestIndex,
 	type TooltipRow,
@@ -69,26 +70,18 @@ const yScale = $derived(scaleLinear().domain(domain).range([innerHeight, 0]));
 const x = $derived((d: Datum) => xScale(toDate(d[xKey])));
 const labels = $derived(data.map((d) => chart.format.tick(toDate(d[xKey]))));
 
-let pending: { index: number; frame: number } | null = null;
+const hover = hoverThrottle();
 function onpointermove(event: PointerEvent & { currentTarget: SVGSVGElement }) {
 	if (!interactive) return;
 	const bounds = event.currentTarget.getBoundingClientRect();
 	const time = xScale.invert(event.clientX - bounds.left - margin.left).getTime();
 	const index = nearestIndex(data, xKey, time);
-	if (pending) {
-		pending.index = index;
-		return;
-	}
-	const raf = requestAnimationFrame(() => {
-		const next = pending?.index ?? index;
-		pending = null;
+	hover.move(index, (next) => {
 		if (next !== activeIndex) setActive(next, false);
 	});
-	pending = { index, frame: raf };
 }
 function onpointerleave() {
-	if (pending) cancelAnimationFrame(pending.frame);
-	pending = null;
+	hover.cancel();
 	if (activeIndex !== null) setActive(null, false);
 }
 

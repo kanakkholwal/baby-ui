@@ -201,6 +201,40 @@ export function nearestIndex(data: Datum[], xKey: string, time: number): number 
 	return time - beforeTime > afterTime - time ? index : index - 1;
 }
 
+/** Screen-reader line for the active point, e.g. `Mar 3: Revenue 120, Cost 80`. */
+export function announceRows(
+	title: string,
+	rows: TooltipRow[],
+	number: (value: number) => string,
+): string {
+	return `${title}: ${rows.map((r) => `${r.label} ${r.value === null ? "" : number(r.value)}`).join(", ")}`;
+}
+
+/** Coalesces pointer moves into one active-index commit per animation frame. */
+export function hoverThrottle() {
+	let pending: { index: number; commit: (index: number) => void; frame: number } | null =
+		null;
+	return {
+		move(index: number, commit: (index: number) => void) {
+			if (pending) {
+				pending.index = index;
+				pending.commit = commit;
+				return;
+			}
+			const next = { index, commit, frame: 0 };
+			next.frame = requestAnimationFrame(() => {
+				pending = null;
+				next.commit(next.index);
+			});
+			pending = next;
+		},
+		cancel() {
+			if (pending) cancelAnimationFrame(pending.frame);
+			pending = null;
+		},
+	};
+}
+
 export type FadeEdges = boolean | "left" | "right";
 
 /** Opacity stops 0/15/85/100 across the plot width, matching bklit's series fade. */

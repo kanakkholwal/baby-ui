@@ -17,10 +17,12 @@ import {
 import { useChart } from "../chart/chart";
 import {
 	type ActivePoint,
+	announceRows,
 	type ChartPhase,
 	type ChartStatus,
 	type Datum,
 	DEFAULT_MARGIN,
+	hoverThrottle,
 	type Margin,
 	nearestIndex,
 	type TooltipRow,
@@ -144,9 +146,7 @@ export function CandlestickChart({
 	const activeDatum = activeIndex !== null && interactive ? data[activeIndex] : undefined;
 	const announcement =
 		activeDatum && instant
-			? `${title(activeDatum)}: ${rows(activeDatum)
-					.map((r) => `${r.label} ${r.value === null ? "" : format.number(r.value)}`)
-					.join(", ")}`
+			? announceRows(title(activeDatum), rows(activeDatum), format.number)
 			: "";
 	const closes = data.map((d) => readOhlc(d)?.close).filter((v) => v !== undefined);
 	const summary =
@@ -263,26 +263,18 @@ function CandlestickPlot({
 		[data, xKey, format],
 	);
 
-	const pending = useRef<{ index: number; frame: number } | null>(null);
+	const hover = useMemo(() => hoverThrottle(), []);
 	const onPointerMove = (event: PointerEvent<SVGSVGElement>) => {
 		if (!interactive) return;
 		const bounds = event.currentTarget.getBoundingClientRect();
 		const time = xScale.invert(event.clientX - bounds.left - margin.left).getTime();
 		const index = nearestIndex(data, xKey, time);
-		if (pending.current) {
-			pending.current.index = index;
-			return;
-		}
-		const raf = requestAnimationFrame(() => {
-			const next = pending.current?.index ?? index;
-			pending.current = null;
+		hover.move(index, (next) => {
 			if (next !== activeIndex) setActive(next, false);
 		});
-		pending.current = { index, frame: raf };
 	};
 	const onPointerLeave = () => {
-		if (pending.current) cancelAnimationFrame(pending.current.frame);
-		pending.current = null;
+		hover.cancel();
 		if (activeIndex !== null) setActive(null, false);
 	};
 

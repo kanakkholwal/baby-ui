@@ -18,6 +18,7 @@ import {
 import { useChart } from "../chart/chart";
 import {
 	type ActivePoint,
+	announceRows,
 	type ChartPhase,
 	type ChartStatus,
 	type Datum,
@@ -146,9 +147,7 @@ export function ScatterChart({
 	const activeDatum = activeIndex !== null && interactive ? data[activeIndex] : undefined;
 	const announcement =
 		activeDatum && instant
-			? `${title(activeDatum)}: ${rows(activeDatum)
-					.map((r) => `${r.label} ${r.value === null ? "" : format.number(r.value)}`)
-					.join(", ")}`
+			? announceRows(title(activeDatum), rows(activeDatum), format.number)
 			: "";
 
 	const onActiveChange = (index: number | null, fromKeyboard: boolean) => {

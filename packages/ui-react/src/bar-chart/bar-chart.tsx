@@ -21,6 +21,7 @@ import type {
 	SeriesConfig,
 	TooltipRow,
 } from "../chart/core";
+import { announceRows, hoverThrottle } from "../chart/core";
 import {
 	ActivePointProvider,
 	type CartesianContextValue,
@@ -190,9 +191,7 @@ export function BarChart({
 	const activeDatum = activeIndex !== null && interactive ? data[activeIndex] : undefined;
 	const announcement =
 		activeDatum && instant
-			? `${title(activeDatum)}: ${rows(activeDatum)
-					.map((r) => `${r.label} ${r.value === null ? "" : format.number(r.value)}`)
-					.join(", ")}`
+			? announceRows(title(activeDatum), rows(activeDatum), format.number)
 			: "";
 	const uid = useId().replace(/:/g, "");
 
@@ -440,7 +439,7 @@ function BarPlot({
 		shownTargets.current = new Map([...displayed].map(([key, d]) => [key, d.target]));
 	});
 
-	const pending = useRef<{ index: number; frame: number } | null>(null);
+	const hover = useMemo(() => hoverThrottle(), []);
 	const onPointerMove = (event: PointerEvent<SVGSVGElement>) => {
 		if (!interactive) return;
 		const bounds = event.currentTarget.getBoundingClientRect();
@@ -448,20 +447,12 @@ function BarPlot({
 			? event.clientX - bounds.left - margin.left
 			: event.clientY - bounds.top - margin.top;
 		const index = nearestBand(band, categories, pos);
-		if (pending.current) {
-			pending.current.index = index;
-			return;
-		}
-		const raf = requestAnimationFrame(() => {
-			const next = pending.current?.index ?? index;
-			pending.current = null;
+		hover.move(index, (next) => {
 			if (next !== activeIndex) setActive(next, false);
 		});
-		pending.current = { index, frame: raf };
 	};
 	const onPointerLeave = () => {
-		if (pending.current) cancelAnimationFrame(pending.current.frame);
-		pending.current = null;
+		hover.cancel();
 		if (activeIndex !== null) setActive(null, false);
 	};
 

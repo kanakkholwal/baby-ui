@@ -19,12 +19,14 @@ import {
 import { useChart } from "./chart";
 import {
 	type ActivePoint,
+	announceRows,
 	type ChartPhase,
 	type ChartSelection,
 	type ChartStatus,
 	type Datum,
 	DEFAULT_MARGIN,
 	type Domain,
+	hoverThrottle,
 	LOADING_DOMAIN,
 	lerpDomain,
 	type Margin,
@@ -383,9 +385,7 @@ export function TimeSeriesChart({
 					})
 					.join(", ")}`
 			: activeDatum && instant
-				? `${title(activeDatum)}: ${rows(activeDatum)
-						.map((r) => `${r.label} ${r.value === null ? "" : format.number(r.value)}`)
-						.join(", ")}`
+				? announceRows(title(activeDatum), rows(activeDatum), format.number)
 				: "";
 
 	return (
@@ -531,7 +531,7 @@ function TimeSeriesPlot({
 		[data, xKey, format],
 	);
 
-	const pending = useRef<{ index: number; frame: number } | null>(null);
+	const hover = useMemo(() => hoverThrottle(), []);
 	const drag = useRef<number | null>(null);
 	const indexAt = (event: PointerEvent<SVGSVGElement>) => {
 		const bounds = event.currentTarget.getBoundingClientRect();
@@ -557,21 +557,13 @@ function TimeSeriesPlot({
 			if (activeIndex !== null) setActive(null, false);
 			return;
 		}
-		if (pending.current) {
-			pending.current.index = index;
-			return;
-		}
-		const raf = requestAnimationFrame(() => {
-			const next = pending.current?.index ?? index;
-			pending.current = null;
+		hover.move(index, (next) => {
 			if (next !== activeIndex) setActive(next, false);
 		});
-		pending.current = { index, frame: raf };
 	};
 	const onPointerLeave = () => {
 		if (drag.current !== null) return;
-		if (pending.current) cancelAnimationFrame(pending.current.frame);
-		pending.current = null;
+		hover.cancel();
 		if (activeIndex !== null) setActive(null, false);
 	};
 

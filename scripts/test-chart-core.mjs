@@ -16,8 +16,10 @@ registerHooks({
 });
 
 import {
+	announceRows,
 	chartStyleCss,
 	evenTickIndices,
+	hoverThrottle,
 	interpolatePoints,
 	nearestIndex,
 	nextPhase,
@@ -438,4 +440,36 @@ test("small plots get fewer ticks, labels that would collide are dropped", async
 	);
 	assert.deepEqual(tight.get(0), [true, true], "the bigger node keeps both lines");
 	assert.deepEqual(tight.get(1), [false, false], "the smaller one yields");
+});
+
+test("announceRows reads the title then each row, blank for missing values", () => {
+	const rows = [
+		{ key: "a", label: "Revenue", color: "", value: 120 },
+		{ key: "b", label: "Cost", color: "", value: null },
+	];
+	assert.equal(
+		announceRows("Mar 3", rows, (v) => `$${v}`),
+		"Mar 3: Revenue $120, Cost ",
+	);
+});
+
+test("hoverThrottle commits once per frame with the latest index and commit", () => {
+	const frames = [];
+	globalThis.requestAnimationFrame = (fn) => frames.push(fn);
+	globalThis.cancelAnimationFrame = (id) => {
+		frames[id - 1] = null;
+	};
+	const hover = hoverThrottle();
+	const seen = [];
+	hover.move(1, (i) => seen.push(["first", i]));
+	hover.move(4, (i) => seen.push(["latest", i]));
+	assert.equal(frames.length, 1);
+	frames[0]();
+	assert.deepEqual(seen, [["latest", 4]]);
+	hover.move(2, (i) => seen.push(["cancelled", i]));
+	hover.cancel();
+	assert.equal(frames[1], null);
+	hover.move(3, (i) => seen.push(["after", i]));
+	frames[2]();
+	assert.deepEqual(seen.at(-1), ["after", 3]);
 });

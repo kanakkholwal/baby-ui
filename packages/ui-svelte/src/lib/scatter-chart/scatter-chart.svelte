@@ -3,6 +3,7 @@ import type { Snippet } from "svelte";
 import ChartFrame from "../chart/chart-frame.svelte";
 import { useChart } from "../chart/context";
 import {
+	announceRows,
 	type ChartStatus,
 	type Datum,
 	type Margin,
@@ -113,9 +114,7 @@ const activeDatum = $derived(
 );
 const announcement = $derived(
 	activeDatum && instant
-		? `${title(activeDatum)}: ${rows(activeDatum)
-				.map((r) => `${r.label} ${r.value === null ? "" : chart.format.number(r.value)}`)
-				.join(", ")}`
+		? announceRows(title(activeDatum), rows(activeDatum), chart.format.number)
 		: "",
 );
 const summary = $derived(

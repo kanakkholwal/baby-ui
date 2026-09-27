@@ -10,6 +10,7 @@ import {
 	type Datum,
 	DEFAULT_MARGIN,
 	type Domain,
+	hoverThrottle,
 	type Margin,
 	nearestIndex,
 	type SeriesConfig,
@@ -89,7 +90,7 @@ const yScale = $derived(scaleLinear().domain(domain).range([innerHeight, 0]));
 const x = $derived((d: Datum) => xScale(toDate(d[xKey])));
 const labels = $derived(data.map((d) => chart.format.tick(toDate(d[xKey]))));
 
-let pending: { index: number; frame: number } | null = null;
+const hover = hoverThrottle();
 type PlotPointer = PointerEvent & { currentTarget: SVGSVGElement };
 let drag: number | null = null;
 function indexAt(event: PlotPointer) {
@@ -116,21 +117,13 @@ function onpointermove(event: PlotPointer) {
 		if (activeIndex !== null) setActive(null, false);
 		return;
 	}
-	if (pending) {
-		pending.index = index;
-		return;
-	}
-	const raf = requestAnimationFrame(() => {
-		const next = pending?.index ?? index;
-		pending = null;
+	hover.move(index, (next) => {
 		if (next !== activeIndex) setActive(next, false);
 	});
-	pending = { index, frame: raf };
 }
 function onpointerleave() {
 	if (drag !== null) return;
-	if (pending) cancelAnimationFrame(pending.frame);
-	pending = null;
+	hover.cancel();
 	if (activeIndex !== null) setActive(null, false);
 }
 
