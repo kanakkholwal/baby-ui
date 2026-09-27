@@ -3,6 +3,7 @@
 	"files": [
 		"checkbox/variants.ts",
 		"lib/anchor.ts",
+		"lib/use-canvas-engine.ts",
 		"lib/use-is-mobile.ts",
 		"morphing-modal/use-morph.ts",
 		"sheet/variants.ts",

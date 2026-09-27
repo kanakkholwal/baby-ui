@@ -1,5 +1,6 @@
 <script lang="ts">
-import { type Snippet, untrack } from "svelte";
+import type { Snippet } from "svelte";
+import { canvasEngine } from "../lib/canvas-engine.svelte";
 import { cn } from "../lib/cn";
 import { type AuroraFlowOptions, mountAuroraFlow } from "./aurora";
 import {
@@ -39,9 +40,12 @@ let {
 
 let root: HTMLDivElement | undefined = $state();
 let canvas: HTMLCanvasElement | undefined = $state();
-let webgl = $state(false);
-let engine: ReturnType<typeof mountAuroraFlow> | undefined;
-const s = $derived(auroraFlow({ tone, speed, position, webgl }));
+const gl = canvasEngine(
+	mountAuroraFlow,
+	() => ({ root, canvas }),
+	() => options,
+);
+const s = $derived(auroraFlow({ tone, speed, position, webgl: gl.webgl }));
 const options: AuroraFlowOptions = $derived({
 	colors: AURORA_FLOW_COLORS[tone],
 	speed: AURORA_FLOW_SPEED[speed],
@@ -49,26 +53,6 @@ const options: AuroraFlowOptions = $derived({
 	grain,
 	direction,
 	interactive,
-});
-
-$effect(() => {
-	const el = root;
-	const surface = canvas;
-	if (!el || !surface) return;
-	const mounted = untrack(() =>
-		mountAuroraFlow(el, surface, options, (ok) => {
-			webgl = ok;
-		}),
-	);
-	engine = mounted;
-	return () => {
-		mounted.destroy();
-		engine = undefined;
-	};
-});
-
-$effect(() => {
-	engine?.update(options);
 });
 </script>
 

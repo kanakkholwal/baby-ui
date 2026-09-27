@@ -1,7 +1,8 @@
 "use client";
 
-import { type ReactNode, useEffect, useRef, useState } from "react";
+import type { ReactNode } from "react";
 import { cn } from "../lib/cn";
+import { useCanvasEngine } from "../lib/use-canvas-engine";
 import { mountWebglLiquid, type WebglLiquidOptions } from "./liquid";
 import {
 	WEBGL_LIQUID_COLORS,
@@ -39,11 +40,6 @@ export function WebglLiquid({
 	className,
 	children,
 }: WebglLiquidProps) {
-	const root = useRef<HTMLDivElement>(null);
-	const canvas = useRef<HTMLCanvasElement>(null);
-	const engine = useRef<ReturnType<typeof mountWebglLiquid>>(null);
-	const [webgl, setWebgl] = useState(false);
-	const s = webglLiquid({ tone, speed, position, webgl });
 	const options: WebglLiquidOptions = {
 		colors: WEBGL_LIQUID_COLORS[tone],
 		speed: WEBGL_LIQUID_SPEED[speed],
@@ -51,27 +47,14 @@ export function WebglLiquid({
 		grain,
 		reveal,
 	};
-	const latest = useRef(options);
-	latest.current = options;
-
-	useEffect(() => {
-		if (!root.current || !canvas.current) return;
-		const mounted = mountWebglLiquid(
-			root.current,
-			canvas.current,
-			latest.current,
-			setWebgl,
-		);
-		engine.current = mounted;
-		return () => {
-			mounted.destroy();
-			engine.current = null;
-		};
-	}, []);
-
-	useEffect(() => {
-		engine.current?.update(latest.current);
-	}, [tone, speed, flow, grain, reveal]);
+	const { root, canvas, webgl } = useCanvasEngine(mountWebglLiquid, options, [
+		tone,
+		speed,
+		flow,
+		grain,
+		reveal,
+	]);
+	const s = webglLiquid({ tone, speed, position, webgl });
 
 	return (
 		<div ref={root} data-slot="webgl-liquid" className={cn(s.root(), className)}>

@@ -1,7 +1,8 @@
 "use client";
 
-import { type ReactNode, useEffect, useRef, useState } from "react";
+import type { ReactNode } from "react";
 import { cn } from "../lib/cn";
+import { useCanvasEngine } from "../lib/use-canvas-engine";
 import { type AuroraFlowOptions, mountAuroraFlow } from "./aurora";
 import {
 	AURORA_FLOW_COLORS,
@@ -42,11 +43,6 @@ export function AuroraFlow({
 	className,
 	children,
 }: AuroraFlowProps) {
-	const root = useRef<HTMLDivElement>(null);
-	const canvas = useRef<HTMLCanvasElement>(null);
-	const engine = useRef<ReturnType<typeof mountAuroraFlow>>(null);
-	const [webgl, setWebgl] = useState(false);
-	const s = auroraFlow({ tone, speed, position, webgl });
 	const options: AuroraFlowOptions = {
 		colors: AURORA_FLOW_COLORS[tone],
 		speed: AURORA_FLOW_SPEED[speed],
@@ -55,27 +51,15 @@ export function AuroraFlow({
 		direction,
 		interactive,
 	};
-	const latest = useRef(options);
-	latest.current = options;
-
-	useEffect(() => {
-		if (!root.current || !canvas.current) return;
-		const mounted = mountAuroraFlow(
-			root.current,
-			canvas.current,
-			latest.current,
-			setWebgl,
-		);
-		engine.current = mounted;
-		return () => {
-			mounted.destroy();
-			engine.current = null;
-		};
-	}, []);
-
-	useEffect(() => {
-		engine.current?.update(latest.current);
-	}, [tone, speed, intensity, grain, direction, interactive]);
+	const { root, canvas, webgl } = useCanvasEngine(mountAuroraFlow, options, [
+		tone,
+		speed,
+		intensity,
+		grain,
+		direction,
+		interactive,
+	]);
+	const s = auroraFlow({ tone, speed, position, webgl });
 
 	return (
 		<div ref={root} data-slot="aurora-flow" className={cn(s.root(), className)}>

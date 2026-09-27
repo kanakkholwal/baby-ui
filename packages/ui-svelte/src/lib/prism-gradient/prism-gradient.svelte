@@ -1,5 +1,6 @@
 <script lang="ts">
-import { type Snippet, untrack } from "svelte";
+import type { Snippet } from "svelte";
+import { canvasEngine } from "../lib/canvas-engine.svelte";
 import { cn } from "../lib/cn";
 import { mountPrismGradient, type PrismGradientOptions } from "./prism";
 import {
@@ -30,33 +31,16 @@ let {
 
 let root: HTMLDivElement | undefined = $state();
 let canvas: HTMLCanvasElement | undefined = $state();
-let webgl = $state(false);
-let engine: ReturnType<typeof mountPrismGradient> | undefined;
-const s = $derived(prismGradient({ tone, speed, position, webgl }));
+const gl = canvasEngine(
+	mountPrismGradient,
+	() => ({ root, canvas }),
+	() => options,
+);
+const s = $derived(prismGradient({ tone, speed, position, webgl: gl.webgl }));
 const options: PrismGradientOptions = $derived({
 	colors: PRISM_GRADIENT_COLORS[tone],
 	speed: PRISM_GRADIENT_SPEED[speed],
 	grain,
-});
-
-$effect(() => {
-	const el = root;
-	const surface = canvas;
-	if (!el || !surface) return;
-	const mounted = untrack(() =>
-		mountPrismGradient(el, surface, options, (ok) => {
-			webgl = ok;
-		}),
-	);
-	engine = mounted;
-	return () => {
-		mounted.destroy();
-		engine = undefined;
-	};
-});
-
-$effect(() => {
-	engine?.update(options);
 });
 </script>
 

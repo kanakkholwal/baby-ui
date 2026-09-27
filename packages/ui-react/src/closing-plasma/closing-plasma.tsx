@@ -1,7 +1,8 @@
 "use client";
 
-import { type ReactNode, useEffect, useRef, useState } from "react";
+import type { ReactNode } from "react";
 import { cn } from "../lib/cn";
+import { useCanvasEngine } from "../lib/use-canvas-engine";
 import { type ClosingPlasmaOptions, mountClosingPlasma } from "./plasma";
 import {
 	CLOSING_PLASMA_COLORS,
@@ -42,11 +43,6 @@ export function ClosingPlasma({
 	className,
 	children,
 }: ClosingPlasmaProps) {
-	const root = useRef<HTMLDivElement>(null);
-	const canvas = useRef<HTMLCanvasElement>(null);
-	const engine = useRef<ReturnType<typeof mountClosingPlasma>>(null);
-	const [webgl, setWebgl] = useState(false);
-	const s = closingPlasma({ tone, speed, position, webgl });
 	const options: ClosingPlasmaOptions = {
 		colors: CLOSING_PLASMA_COLORS[tone],
 		speed: CLOSING_PLASMA_SPEED[speed],
@@ -55,27 +51,15 @@ export function ClosingPlasma({
 		grain,
 		interactive,
 	};
-	const latest = useRef(options);
-	latest.current = options;
-
-	useEffect(() => {
-		if (!root.current || !canvas.current) return;
-		const mounted = mountClosingPlasma(
-			root.current,
-			canvas.current,
-			latest.current,
-			setWebgl,
-		);
-		engine.current = mounted;
-		return () => {
-			mounted.destroy();
-			engine.current = null;
-		};
-	}, []);
-
-	useEffect(() => {
-		engine.current?.update(latest.current);
-	}, [tone, speed, turbulence, sparkle, grain, interactive]);
+	const { root, canvas, webgl } = useCanvasEngine(mountClosingPlasma, options, [
+		tone,
+		speed,
+		turbulence,
+		sparkle,
+		grain,
+		interactive,
+	]);
+	const s = closingPlasma({ tone, speed, position, webgl });
 
 	return (
 		<div ref={root} data-slot="closing-plasma" className={cn(s.root(), className)}>

@@ -1,5 +1,6 @@
 <script lang="ts">
-import { type Snippet, untrack } from "svelte";
+import type { Snippet } from "svelte";
+import { canvasEngine } from "../lib/canvas-engine.svelte";
 import { cn } from "../lib/cn";
 import { type ClosingPlasmaOptions, mountClosingPlasma } from "./plasma";
 import {
@@ -39,9 +40,12 @@ let {
 
 let root: HTMLDivElement | undefined = $state();
 let canvas: HTMLCanvasElement | undefined = $state();
-let webgl = $state(false);
-let engine: ReturnType<typeof mountClosingPlasma> | undefined;
-const s = $derived(closingPlasma({ tone, speed, position, webgl }));
+const gl = canvasEngine(
+	mountClosingPlasma,
+	() => ({ root, canvas }),
+	() => options,
+);
+const s = $derived(closingPlasma({ tone, speed, position, webgl: gl.webgl }));
 const options: ClosingPlasmaOptions = $derived({
 	colors: CLOSING_PLASMA_COLORS[tone],
 	speed: CLOSING_PLASMA_SPEED[speed],
@@ -49,26 +53,6 @@ const options: ClosingPlasmaOptions = $derived({
 	sparkle,
 	grain,
 	interactive,
-});
-
-$effect(() => {
-	const el = root;
-	const surface = canvas;
-	if (!el || !surface) return;
-	const mounted = untrack(() =>
-		mountClosingPlasma(el, surface, options, (ok) => {
-			webgl = ok;
-		}),
-	);
-	engine = mounted;
-	return () => {
-		mounted.destroy();
-		engine = undefined;
-	};
-});
-
-$effect(() => {
-	engine?.update(options);
 });
 </script>
 

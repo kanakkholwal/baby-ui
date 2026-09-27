@@ -1,7 +1,8 @@
 "use client";
 
-import { type ReactNode, useEffect, useRef, useState } from "react";
+import type { ReactNode } from "react";
 import { cn } from "../lib/cn";
+import { useCanvasEngine } from "../lib/use-canvas-engine";
 import { mountSpectralRibbon, type SpectralRibbonOptions } from "./ribbon";
 import {
 	SPECTRAL_RIBBON_COLORS,
@@ -39,11 +40,6 @@ export function SpectralRibbon({
 	className,
 	children,
 }: SpectralRibbonProps) {
-	const root = useRef<HTMLDivElement>(null);
-	const canvas = useRef<HTMLCanvasElement>(null);
-	const engine = useRef<ReturnType<typeof mountSpectralRibbon>>(null);
-	const [webgl, setWebgl] = useState(false);
-	const s = spectralRibbon({ tone, speed, position, webgl });
 	const options: SpectralRibbonOptions = {
 		colors: SPECTRAL_RIBBON_COLORS[tone],
 		speed: SPECTRAL_RIBBON_SPEED[speed],
@@ -51,27 +47,14 @@ export function SpectralRibbon({
 		thickness,
 		grain,
 	};
-	const latest = useRef(options);
-	latest.current = options;
-
-	useEffect(() => {
-		if (!root.current || !canvas.current) return;
-		const mounted = mountSpectralRibbon(
-			root.current,
-			canvas.current,
-			latest.current,
-			setWebgl,
-		);
-		engine.current = mounted;
-		return () => {
-			mounted.destroy();
-			engine.current = null;
-		};
-	}, []);
-
-	useEffect(() => {
-		engine.current?.update(latest.current);
-	}, [tone, speed, intensity, thickness, grain]);
+	const { root, canvas, webgl } = useCanvasEngine(mountSpectralRibbon, options, [
+		tone,
+		speed,
+		intensity,
+		thickness,
+		grain,
+	]);
+	const s = spectralRibbon({ tone, speed, position, webgl });
 
 	return (
 		<div ref={root} data-slot="spectral-ribbon" className={cn(s.root(), className)}>

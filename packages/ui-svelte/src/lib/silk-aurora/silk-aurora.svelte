@@ -1,5 +1,6 @@
 <script lang="ts">
-import { type Snippet, untrack } from "svelte";
+import type { Snippet } from "svelte";
+import { canvasEngine } from "../lib/canvas-engine.svelte";
 import { cn } from "../lib/cn";
 import { mountSilkAurora, type SilkAuroraOptions } from "./silk";
 import {
@@ -36,35 +37,18 @@ let {
 
 let root: HTMLDivElement | undefined = $state();
 let canvas: HTMLCanvasElement | undefined = $state();
-let webgl = $state(false);
-let engine: ReturnType<typeof mountSilkAurora> | undefined;
-const s = $derived(silkAurora({ tone, speed, position, webgl }));
+const gl = canvasEngine(
+	mountSilkAurora,
+	() => ({ root, canvas }),
+	() => options,
+);
+const s = $derived(silkAurora({ tone, speed, position, webgl: gl.webgl }));
 const options: SilkAuroraOptions = $derived({
 	colors: SILK_AURORA_COLORS[tone],
 	speed: SILK_AURORA_SPEED[speed],
 	intensity,
 	grain,
 	interactive,
-});
-
-$effect(() => {
-	const el = root;
-	const surface = canvas;
-	if (!el || !surface) return;
-	const mounted = untrack(() =>
-		mountSilkAurora(el, surface, options, (ok) => {
-			webgl = ok;
-		}),
-	);
-	engine = mounted;
-	return () => {
-		mounted.destroy();
-		engine = undefined;
-	};
-});
-
-$effect(() => {
-	engine?.update(options);
 });
 </script>
 

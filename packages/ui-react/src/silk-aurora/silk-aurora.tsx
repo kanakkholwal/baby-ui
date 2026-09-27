@@ -1,7 +1,8 @@
 "use client";
 
-import { type ReactNode, useEffect, useRef, useState } from "react";
+import type { ReactNode } from "react";
 import { cn } from "../lib/cn";
+import { useCanvasEngine } from "../lib/use-canvas-engine";
 import { mountSilkAurora, type SilkAuroraOptions } from "./silk";
 import {
 	SILK_AURORA_COLORS,
@@ -39,11 +40,6 @@ export function SilkAurora({
 	className,
 	children,
 }: SilkAuroraProps) {
-	const root = useRef<HTMLDivElement>(null);
-	const canvas = useRef<HTMLCanvasElement>(null);
-	const engine = useRef<ReturnType<typeof mountSilkAurora>>(null);
-	const [webgl, setWebgl] = useState(false);
-	const s = silkAurora({ tone, speed, position, webgl });
 	const options: SilkAuroraOptions = {
 		colors: SILK_AURORA_COLORS[tone],
 		speed: SILK_AURORA_SPEED[speed],
@@ -51,27 +47,14 @@ export function SilkAurora({
 		grain,
 		interactive,
 	};
-	const latest = useRef(options);
-	latest.current = options;
-
-	useEffect(() => {
-		if (!root.current || !canvas.current) return;
-		const mounted = mountSilkAurora(
-			root.current,
-			canvas.current,
-			latest.current,
-			setWebgl,
-		);
-		engine.current = mounted;
-		return () => {
-			mounted.destroy();
-			engine.current = null;
-		};
-	}, []);
-
-	useEffect(() => {
-		engine.current?.update(latest.current);
-	}, [tone, speed, intensity, grain, interactive]);
+	const { root, canvas, webgl } = useCanvasEngine(mountSilkAurora, options, [
+		tone,
+		speed,
+		intensity,
+		grain,
+		interactive,
+	]);
+	const s = silkAurora({ tone, speed, position, webgl });
 
 	return (
 		<div ref={root} data-slot="silk-aurora" className={cn(s.root(), className)}>

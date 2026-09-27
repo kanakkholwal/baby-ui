@@ -1,5 +1,6 @@
 <script lang="ts">
-import { type Snippet, untrack } from "svelte";
+import type { Snippet } from "svelte";
+import { canvasEngine } from "../lib/canvas-engine.svelte";
 import { cn } from "../lib/cn";
 import { type LiquidChromeOptions, mountLiquidChrome } from "./chrome";
 import {
@@ -33,34 +34,17 @@ let {
 
 let root: HTMLDivElement | undefined = $state();
 let canvas: HTMLCanvasElement | undefined = $state();
-let webgl = $state(false);
-let engine: ReturnType<typeof mountLiquidChrome> | undefined;
-const s = $derived(liquidChrome({ tone, speed, position, webgl }));
+const gl = canvasEngine(
+	mountLiquidChrome,
+	() => ({ root, canvas }),
+	() => options,
+);
+const s = $derived(liquidChrome({ tone, speed, position, webgl: gl.webgl }));
 const options: LiquidChromeOptions = $derived({
 	colors: LIQUID_CHROME_COLORS[tone],
 	speed: LIQUID_CHROME_SPEED[speed],
 	amplitude,
 	interactive,
-});
-
-$effect(() => {
-	const el = root;
-	const surface = canvas;
-	if (!el || !surface) return;
-	const mounted = untrack(() =>
-		mountLiquidChrome(el, surface, options, (ok) => {
-			webgl = ok;
-		}),
-	);
-	engine = mounted;
-	return () => {
-		mounted.destroy();
-		engine = undefined;
-	};
-});
-
-$effect(() => {
-	engine?.update(options);
 });
 </script>
 

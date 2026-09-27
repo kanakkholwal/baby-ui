@@ -1,5 +1,6 @@
 <script lang="ts">
-import { type Snippet, untrack } from "svelte";
+import type { Snippet } from "svelte";
+import { canvasEngine } from "../lib/canvas-engine.svelte";
 import { cn } from "../lib/cn";
 import { mountSpectralRibbon, type SpectralRibbonOptions } from "./ribbon";
 import {
@@ -36,35 +37,18 @@ let {
 
 let root: HTMLDivElement | undefined = $state();
 let canvas: HTMLCanvasElement | undefined = $state();
-let webgl = $state(false);
-let engine: ReturnType<typeof mountSpectralRibbon> | undefined;
-const s = $derived(spectralRibbon({ tone, speed, position, webgl }));
+const gl = canvasEngine(
+	mountSpectralRibbon,
+	() => ({ root, canvas }),
+	() => options,
+);
+const s = $derived(spectralRibbon({ tone, speed, position, webgl: gl.webgl }));
 const options: SpectralRibbonOptions = $derived({
 	colors: SPECTRAL_RIBBON_COLORS[tone],
 	speed: SPECTRAL_RIBBON_SPEED[speed],
 	intensity,
 	thickness,
 	grain,
-});
-
-$effect(() => {
-	const el = root;
-	const surface = canvas;
-	if (!el || !surface) return;
-	const mounted = untrack(() =>
-		mountSpectralRibbon(el, surface, options, (ok) => {
-			webgl = ok;
-		}),
-	);
-	engine = mounted;
-	return () => {
-		mounted.destroy();
-		engine = undefined;
-	};
-});
-
-$effect(() => {
-	engine?.update(options);
 });
 </script>
 

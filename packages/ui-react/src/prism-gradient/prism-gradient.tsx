@@ -1,7 +1,8 @@
 "use client";
 
-import { type ReactNode, useEffect, useRef, useState } from "react";
+import type { ReactNode } from "react";
 import { cn } from "../lib/cn";
+import { useCanvasEngine } from "../lib/use-canvas-engine";
 import { mountPrismGradient, type PrismGradientOptions } from "./prism";
 import {
 	PRISM_GRADIENT_COLORS,
@@ -33,37 +34,17 @@ export function PrismGradient({
 	className,
 	children,
 }: PrismGradientProps) {
-	const root = useRef<HTMLDivElement>(null);
-	const canvas = useRef<HTMLCanvasElement>(null);
-	const engine = useRef<ReturnType<typeof mountPrismGradient>>(null);
-	const [webgl, setWebgl] = useState(false);
-	const s = prismGradient({ tone, speed, position, webgl });
 	const options: PrismGradientOptions = {
 		colors: PRISM_GRADIENT_COLORS[tone],
 		speed: PRISM_GRADIENT_SPEED[speed],
 		grain,
 	};
-	const latest = useRef(options);
-	latest.current = options;
-
-	useEffect(() => {
-		if (!root.current || !canvas.current) return;
-		const mounted = mountPrismGradient(
-			root.current,
-			canvas.current,
-			latest.current,
-			setWebgl,
-		);
-		engine.current = mounted;
-		return () => {
-			mounted.destroy();
-			engine.current = null;
-		};
-	}, []);
-
-	useEffect(() => {
-		engine.current?.update(latest.current);
-	}, [tone, speed, grain]);
+	const { root, canvas, webgl } = useCanvasEngine(mountPrismGradient, options, [
+		tone,
+		speed,
+		grain,
+	]);
+	const s = prismGradient({ tone, speed, position, webgl });
 
 	return (
 		<div ref={root} data-slot="prism-gradient" className={cn(s.root(), className)}>

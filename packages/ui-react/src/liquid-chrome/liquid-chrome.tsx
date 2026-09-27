@@ -1,7 +1,8 @@
 "use client";
 
-import { type ReactNode, useEffect, useRef, useState } from "react";
+import type { ReactNode } from "react";
 import { cn } from "../lib/cn";
+import { useCanvasEngine } from "../lib/use-canvas-engine";
 import { type LiquidChromeOptions, mountLiquidChrome } from "./chrome";
 import {
 	LIQUID_CHROME_COLORS,
@@ -36,38 +37,19 @@ export function LiquidChrome({
 	className,
 	children,
 }: LiquidChromeProps) {
-	const root = useRef<HTMLDivElement>(null);
-	const canvas = useRef<HTMLCanvasElement>(null);
-	const engine = useRef<ReturnType<typeof mountLiquidChrome>>(null);
-	const [webgl, setWebgl] = useState(false);
-	const s = liquidChrome({ tone, speed, position, webgl });
 	const options: LiquidChromeOptions = {
 		colors: LIQUID_CHROME_COLORS[tone],
 		speed: LIQUID_CHROME_SPEED[speed],
 		amplitude,
 		interactive,
 	};
-	const latest = useRef(options);
-	latest.current = options;
-
-	useEffect(() => {
-		if (!root.current || !canvas.current) return;
-		const mounted = mountLiquidChrome(
-			root.current,
-			canvas.current,
-			latest.current,
-			setWebgl,
-		);
-		engine.current = mounted;
-		return () => {
-			mounted.destroy();
-			engine.current = null;
-		};
-	}, []);
-
-	useEffect(() => {
-		engine.current?.update(latest.current);
-	}, [tone, speed, amplitude, interactive]);
+	const { root, canvas, webgl } = useCanvasEngine(mountLiquidChrome, options, [
+		tone,
+		speed,
+		amplitude,
+		interactive,
+	]);
+	const s = liquidChrome({ tone, speed, position, webgl });
 
 	return (
 		<div ref={root} data-slot="liquid-chrome" className={cn(s.root(), className)}>
