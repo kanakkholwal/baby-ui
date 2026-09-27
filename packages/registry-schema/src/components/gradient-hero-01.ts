@@ -10,6 +10,7 @@ export const gradientHero01 = defineComponent({
 		"A centred hero with a pill, headline, copy and actions over a soft glow rising from the bottom edge.",
 	category: "blocks",
 	status: "stable",
+	demo: { mode: "auto", frame: "none" },
 	variants: { tone: TONES, size: SIZES },
 	props: [
 		{

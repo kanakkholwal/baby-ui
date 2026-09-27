@@ -34,7 +34,7 @@ let {
 
 const s = $derived(scrollVelocity({ layout, direction, size }));
 const rowCount = $derived(layout === "double" ? 2 : 1);
-const tracks: HTMLDivElement[] = [];
+let tracks: HTMLDivElement[] = $state([]);
 
 $effect(() => {
 	void rowCount;

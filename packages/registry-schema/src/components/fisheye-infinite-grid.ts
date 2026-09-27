@@ -10,6 +10,7 @@ export const fisheyeInfiniteGrid = defineComponent({
 		"An endless image grid seen through a fisheye lens; drag with inertia or pan with arrow keys.",
 	category: "animated",
 	status: "stable",
+	demo: { mode: "auto", frame: "lg" },
 	variants: { variant: VARIANTS, size: SIZES },
 	props: [
 		{

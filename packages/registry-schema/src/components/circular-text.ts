@@ -8,6 +8,7 @@ export const circularText = defineComponent({
 	description: "Text arranged in a rotating circular path.",
 	category: "text",
 	status: "stable",
+	demo: { mode: "auto", frame: "none" },
 	variants: { direction: DIRECTIONS },
 	props: [
 		{

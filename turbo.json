@@ -2,13 +2,16 @@
 	"$schema": "https://turborepo.com/schema.json",
 	"ui": "tui",
 	"tasks": {
+		"//#gen": {
+			"cache": false
+		},
 		"build": {
-			"dependsOn": ["^build", "^registry"],
+			"dependsOn": ["//#gen", "^build", "^registry"],
 			"env": ["VITE_POSTHOG_KEY", "BABY_UI_REGISTRY_URL", "BABY_UI_SITE_URL"],
 			"outputs": ["dist/**", ".svelte-kit/**", "build/**", ".docvia/**"]
 		},
 		"registry": {
-			"dependsOn": ["^build"],
+			"dependsOn": ["//#gen", "^build"],
 			"env": ["BABY_UI_REGISTRY_URL", "BABY_UI_SITE_URL", "BABY_UI_REGISTRY_OUT"],
 			"inputs": [
 				"src/**",
@@ -27,12 +30,12 @@
 			]
 		},
 		"check": {
-			"dependsOn": ["^build", "^registry"]
+			"dependsOn": ["//#gen", "^build", "^registry"]
 		},
 		"dev": {
 			"cache": false,
 			"persistent": true,
-			"dependsOn": ["^registry"]
+			"dependsOn": ["//#gen", "^registry"]
 		}
 	}
 }

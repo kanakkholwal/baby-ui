@@ -10,6 +10,7 @@ export const ogChangelog = defineComponent({
 		"A 1200x630 release card: a ticket stub with version pill and date, a headline and three marked highlights, rendered to PNG with takumi.",
 	category: "og-images",
 	status: "stable",
+	demo: { mode: "auto", frame: "og" },
 	variants: { mode: MODES, tone: TONES },
 	props: [
 		{

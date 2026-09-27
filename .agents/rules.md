@@ -108,6 +108,15 @@ Any agent (Claude Code, Codex, Cursor, Copilot) should read this file first.
   `tv()` variant render identically; no boolean prop is a no-op. If two values genuinely can't be
   told apart, collapse them into one value instead of shipping a dead option.
 - React and Svelte ports change together, same spec, same classes, same measured motion.
+- `pnpm gen` (`scripts/generate.mjs`) writes gitignored files; it runs on `prepare`, before turbo
+  check/registry/build, and live inside the site dev server. Edit sources, never its outputs:
+  - Shared non-component `.ts` (variants, engines, types, labels, `lib/`) has ONE source, the React
+    copy; Svelte copies are generated. Port-specific files go in `scripts/shared-exceptions.json`.
+  - All 5 index files (spec list, both UI `index.ts`, both demo maps) are generated from folders.
+  - Spec `demo: { mode: "auto", frame }` generates both demos from a typed samples export
+    (`packages/demos/src/data/samples.ts`, SCREAMING_SNAKE slug) and usage from required-prop
+    defaults. Hand-written demo or usage files always win.
+  - Tailwind skips gitignored files: generated files carry no classes of their own.
 - Motion is CSS-only: `--duration-*`, `--ease-*`, `--enter-scale`, `--press-scale`. Exits
   mirror entrances and use `--duration-exit`. Anchored surfaces grow from the trigger edge
   (`ANCHORED`); menus, selects and comboboxes unfold (`UNFOLD`) in `lib/anchor.ts`.

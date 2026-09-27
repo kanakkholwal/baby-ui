@@ -11,6 +11,7 @@ export const infiniteImageField = defineComponent({
 		"An endless field of images that drifts toward whichever side of the centre the pointer is on.",
 	category: "animated",
 	status: "stable",
+	demo: { mode: "auto", frame: "lg" },
 	variants: { shape: SHAPES, layout: LAYOUTS, size: SIZES },
 	props: [
 		{

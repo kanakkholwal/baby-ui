@@ -1,6 +1,6 @@
 import { tv, type VariantProps } from "tailwind-variants";
 
-/** `framed` wraps the body in the same inset rim as Dialog; `default` is the flat shadcn-svelte card. */
+/** `framed` wraps the body in the same inset rim as Dialog; `default` is the flat shadcn card. */
 export const cardFrame = tv({
 	slots: {
 		root: "rounded-2xl border border-border",

@@ -10,6 +10,7 @@ export const ogBlogPost = defineComponent({
 		"A 1200x630 blog post card: publication, category, title, excerpt and a byline, rendered to PNG with takumi.",
 	category: "og-images",
 	status: "stable",
+	demo: { mode: "auto", frame: "og" },
 	variants: { mode: MODES, tone: TONES },
 	props: [
 		{

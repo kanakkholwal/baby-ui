@@ -3,7 +3,7 @@
 <script lang="ts">
 import { cn } from "../lib/cn";
 import { useCartesian } from "./context";
-import { fitTickCount, Y_TICK_GAP } from "./core";
+import { fittedTicks, Y_TICK_GAP } from "./core";
 import {
 	CHART_DURATION,
 	CHART_EASE_CSS,
@@ -49,7 +49,7 @@ const shimmering = $derived(
 );
 const rowTicks = $derived(
 	horizontal && plot.rowScale
-		? plot.rowScale.ticks(fitTickCount(rows, plot.innerHeight, Y_TICK_GAP))
+		? fittedTicks(plot.rowScale, rows, plot.innerHeight, Y_TICK_GAP)
 		: [],
 );
 let gradient = $state<SVGLinearGradientElement | null>(null);

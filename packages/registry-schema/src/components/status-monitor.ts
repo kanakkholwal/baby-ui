@@ -7,6 +7,7 @@ export const statusMonitor = defineComponent({
 		"Uptime strip: one bar per day or hour, coloured by status, with a tooltip per period and the uptime share.",
 	category: "blocks",
 	status: "stable",
+	demo: { mode: "auto", frame: "none" },
 	props: [
 		{
 			name: "statuses",

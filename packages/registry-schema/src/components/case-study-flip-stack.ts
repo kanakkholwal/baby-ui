@@ -21,6 +21,7 @@ export const caseStudyFlipStack = defineComponent({
 		"A pile of case study cards; scrolling flips each one up and away to reveal the next.",
 	category: "animated",
 	status: "stable",
+	demo: { mode: "auto", frame: "none" },
 	variants: { tone: TONES, size: SIZES },
 	props: [
 		{

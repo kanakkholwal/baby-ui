@@ -7,6 +7,7 @@ export const collabCard = defineComponent({
 		"A Figma-style multiplayer canvas: wandering cursors, click bursts, live presence.",
 	category: "blocks",
 	status: "stable",
+	demo: { mode: "auto", frame: "md" },
 	props: [
 		{
 			name: "collaborators",

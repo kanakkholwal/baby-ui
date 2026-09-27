@@ -10,6 +10,7 @@ export const ogAuthorProfile = defineComponent({
 		"A 1200x630 author card: large avatar on a tone panel, name, role, bio, handle and a stat row, rendered to PNG with takumi.",
 	category: "og-images",
 	status: "stable",
+	demo: { mode: "auto", frame: "og" },
 	variants: { mode: MODES, tone: TONES },
 	props: [
 		{

@@ -1,15 +1,16 @@
 ---
 title: OG Newsletter Issue
-description: A 1200x630 editorial newsletter cover with a small publication name, one huge headline and an optional also-inside line, rendered to PNG with takumi.
+description: A 1200x630 editorial newsletter cover with a masthead, one large headline and up to three numbered stories, rendered to PNG with takumi.
 component: og-newsletter-issue
 category: og-images
 tags: [og, open graph, social card, newsletter]
 ---
 
 A fixed 1200x630 canvas built from flex layout and your theme tokens, so it renders the same in
-the browser and in [takumi](https://takumi.kane.tw). The headline is the focal point and clamps
-to three lines; the also-inside line clamps to one. `mode` picks a light or dark card; `tone` tints
-the field (`chart`, `primary`) or leaves it plain (`neutral`) and colours the issue line.
+the browser and in [takumi](https://takumi.kane.tw). A masthead sits over a single hairline rule,
+the headline is the only focal point (three lines, or two when the list shows), and `inside` lists up
+to three more stories, numbered. `mode` picks a light or dark card; `tone` colours only the issue
+label and the list numbers, so the canvas stays plain.
 
 ## Render it to PNG
 

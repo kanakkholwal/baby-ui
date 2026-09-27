@@ -8,16 +8,16 @@ import {
 export type { OgNewsletterIssueMode, OgNewsletterIssueTone };
 
 export interface OgNewsletterIssueProps {
-	/** Newsletter name, set small at the top. */
+	/** Newsletter name, set small in the masthead. */
 	publication: string;
-	/** Lead story headline, the focal point; clamps to three lines. */
+	/** Lead story headline, the focal point; clamps to three lines, two with a list. */
 	headline: string;
 	/** Pre-formatted issue label, e.g. "No. 42". */
 	issue?: string;
 	date?: string;
 	logo?: string;
-	/** One "also inside" headline under the lead. */
-	inside?: string;
+	/** Up to three other stories, numbered under the lead. */
+	inside?: string[];
 	insideLabel?: string;
 	mode?: OgNewsletterIssueMode;
 	tone?: OgNewsletterIssueTone;
@@ -31,13 +31,14 @@ export function OgNewsletterIssue({
 	issue,
 	date,
 	logo,
-	inside,
-	insideLabel = "Also inside",
+	inside = [],
+	insideLabel = "In this issue",
 	mode = "light",
-	tone = "chart",
+	tone = "neutral",
 	className,
 }: OgNewsletterIssueProps) {
-	const s = ogNewsletterIssue({ mode, tone });
+	const items = inside.filter(Boolean).slice(0, 3);
+	const s = ogNewsletterIssue({ mode, tone, list: items.length > 0 });
 	const issueLine = [issue, date].filter(Boolean).join(" · ");
 	return (
 		<div data-slot="og-newsletter-issue" className={cn(s.root(), className)}>
@@ -49,10 +50,17 @@ export function OgNewsletterIssue({
 				{issueLine ? <span className={s.issue()}>{issueLine}</span> : null}
 			</div>
 			<h1 className={s.headline()}>{headline}</h1>
-			{inside ? (
+			{items.length ? (
 				<div className={s.inside()}>
 					<span className={s.insideLabel()}>{insideLabel}</span>
-					<span className={s.insideText()}>{inside}</span>
+					<div className={s.list()}>
+						{items.map((item, i) => (
+							<div key={item} className={s.item()}>
+								<span className={s.number()}>{String(i + 1).padStart(2, "0")}</span>
+								<span className={s.itemText()}>{item}</span>
+							</div>
+						))}
+					</div>
 				</div>
 			) : null}
 		</div>

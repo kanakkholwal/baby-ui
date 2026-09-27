@@ -11,6 +11,7 @@ export const ogDocsPage = defineComponent({
 		"A 1200x630 documentation card: breadcrumb, page title, description and a code or terminal window, rendered to PNG with takumi.",
 	category: "og-images",
 	status: "stable",
+	demo: { mode: "auto", frame: "og" },
 	variants: { mode: MODES, tone: TONES, motif: MOTIFS },
 	props: [
 		{

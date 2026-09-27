@@ -11,6 +11,7 @@ export const ditheredLogo = defineComponent({
 		"A logo dithered into a dot grid in token colours; dots shy from the pointer and ripple on click.",
 	category: "backgrounds",
 	status: "stable",
+	demo: { mode: "auto", frame: "lg" },
 	variants: { variant: VARIANTS, tone: TONES, size: SIZES },
 	props: [
 		{

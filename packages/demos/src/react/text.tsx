@@ -2,10 +2,6 @@
 
 import {
 	AnimatedGradientText,
-	BoldCopy,
-	type BoldCopySize,
-	CircularText,
-	type CircularTextDirection,
 	Counter,
 	type CounterDirection,
 	type CounterSize,
@@ -24,8 +20,6 @@ import {
 	JumpingText,
 	type JumpingTextMode,
 	type JumpingTextSize,
-	MaskText,
-	type MaskTextSize,
 	MetisText,
 	type MetisTextDirection,
 	MirrorText,
@@ -34,30 +28,17 @@ import {
 	RollText,
 	type RollTextMotion,
 	type RollTextSize,
-	ScrollReveal,
-	type ScrollRevealSize,
-	SplitText,
-	type SplitTextSize,
 	StaggeredLetter,
 	type StaggeredLetterDirection,
-	SwapText,
-	type SwapTextMotion,
-	type SwapTextSize,
-	TextBorderAnimation,
-	type TextBorderAnimationSize,
 	TextExplodeIMessage,
 	type TextExplodeIMessageMode,
 	type TextExplodeIMessageSize,
-	TextFlip,
-	type TextFlipSize,
 	TextTransition,
 	type TextTransitionVariant,
 	Ticker,
 	type TickerSize,
 	TypingText,
 	type TypingTextSize,
-	UnderlineHoverText,
-	type UnderlineHoverTextTone,
 	WaveReveal,
 	type WaveRevealDirection,
 	type WaveRevealMode,
@@ -95,27 +76,6 @@ export function DoubleUnderlineDemo({ props }: { props: Props }) {
 	);
 }
 
-export function BoldCopyDemo({ props }: { props: Props }) {
-	return (
-		<BoldCopy
-			text={(props.text as string) || "baby ui"}
-			size={(props.size as BoldCopySize) ?? "xl"}
-			durationMs={Number(props.durationMs ?? 300)}
-		/>
-	);
-}
-
-export function CircularTextDemo({ props }: { props: Props }) {
-	return (
-		<CircularText
-			text={(props.text as string) || "CIRCULAR TEXT · CIRCULAR TEXT · "}
-			spinSeconds={Number(props.spinSeconds ?? 30)}
-			radius={Number(props.radius ?? 80)}
-			direction={(props.direction as CircularTextDirection) ?? "clockwise"}
-		/>
-	);
-}
-
 export function JitterTextDemo({ props }: { props: Props }) {
 	return (
 		<JitterText
@@ -137,18 +97,6 @@ export function JumpingTextDemo({ props }: { props: Props }) {
 			durationMs={Number(props.durationMs ?? 500)}
 			size={(props.size as JumpingTextSize) ?? "md"}
 			className="text-foreground"
-		/>
-	);
-}
-
-export function MaskTextDemo({ props }: { props: Props }) {
-	return (
-		<MaskText
-			revealText={(props.revealText as string) || "Hello there"}
-			baseText={(props.baseText as string) || "Move your cursor"}
-			revealSize={Number(props.revealSize ?? 240)}
-			durationMs={Number(props.durationMs ?? 500)}
-			size={(props.size as MaskTextSize) ?? "md"}
 		/>
 	);
 }
@@ -209,26 +157,6 @@ export function MetisTextDemo({ props }: { props: Props }) {
 	);
 }
 
-export function UnderlineHoverTextDemo({ props }: { props: Props }) {
-	return (
-		<UnderlineHoverText
-			text={(props.text as string) || "Underline hover"}
-			tone={(props.tone as UnderlineHoverTextTone) ?? "default"}
-			durationMs={Number(props.durationMs ?? 500)}
-		/>
-	);
-}
-
-export function TextBorderAnimationDemo({ props }: { props: Props }) {
-	return (
-		<TextBorderAnimation
-			text={(props.text as string) || "Programming"}
-			size={(props.size as TextBorderAnimationSize) ?? "lg"}
-			durationMs={Number(props.durationMs ?? 300)}
-		/>
-	);
-}
-
 export function RollTextDemo({ props }: { props: Props }) {
 	const groupHover = props.groupHover === true;
 	const roll = (
@@ -256,16 +184,6 @@ export function RollTextDemo({ props }: { props: Props }) {
 	);
 }
 
-export function SplitTextDemo({ props }: { props: Props }) {
-	return (
-		<SplitText
-			text={(props.text as string) || "BABY UI"}
-			size={(props.size as SplitTextSize) ?? "md"}
-			durationMs={Number(props.durationMs ?? 300)}
-		/>
-	);
-}
-
 export function StaggeredLetterDemo({ props }: { props: Props }) {
 	return (
 		<StaggeredLetter
@@ -275,36 +193,6 @@ export function StaggeredLetterDemo({ props }: { props: Props }) {
 			delayMs={Number(props.delayMs ?? 90)}
 			durationMs={Number(props.durationMs ?? 500)}
 			direction={(props.direction as StaggeredLetterDirection) ?? "drop"}
-		/>
-	);
-}
-
-export function SwapTextDemo({ props }: { props: Props }) {
-	return (
-		<SwapText
-			initialText={(props.initialText as string) || "Hover me"}
-			finalText={(props.finalText as string) || "Click me"}
-			defaultActive={props.defaultActive === true}
-			size={(props.size as SwapTextSize) ?? "lg"}
-			motion={(props.motion as SwapTextMotion) ?? "slide"}
-			staggerMs={Number(props.staggerMs ?? 44)}
-			supportsHover={props.supportsHover !== false}
-			disableClick={props.disableClick === true}
-			durationMs={Number(props.durationMs ?? 1000)}
-		/>
-	);
-}
-
-const FLIP_WORDS = ["fantastic", "love", "fire", "awesome"];
-
-export function TextFlipDemo({ props }: { props: Props }) {
-	return (
-		<TextFlip
-			label={(props.label as string) || "Coding is"}
-			words={FLIP_WORDS}
-			defaultIndex={Number(props.defaultIndex ?? 0)}
-			intervalMs={Number(props.intervalMs ?? 2000)}
-			size={(props.size as TextFlipSize) ?? "lg"}
 		/>
 	);
 }
@@ -408,20 +296,6 @@ export function TickerDemo({ props }: { props: Props }) {
 			value={(props.value as string) || (TICKER_VALUES[step] ?? "")}
 			durationMs={Number(props.durationMs ?? 500)}
 			size={(props.size as TickerSize) ?? "md"}
-		/>
-	);
-}
-
-export function ScrollRevealDemo({ props }: { props: Props }) {
-	return (
-		<ScrollReveal
-			text={
-				(props.text as string) ||
-				"Scroll inside this box to reveal each word of this sentence, one at a time, as you go."
-			}
-			minOpacity={Number(props.minOpacity ?? 0.5)}
-			blur={props.blur !== false}
-			size={(props.size as ScrollRevealSize) ?? "md"}
 		/>
 	);
 }

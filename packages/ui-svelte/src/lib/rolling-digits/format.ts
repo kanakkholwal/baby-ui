@@ -47,12 +47,17 @@ export function formatRollingDigits(
 export function rollingDigitCells(text: string): RollingDigitCell[] {
 	const chars = Array.from(text || "0");
 	let fromRight = 0;
+	// Adjacent separators ("US$", a symbol plus a no-break space) need their own index in the run.
+	let inRun = 0;
 	const keys = chars
 		.map((char, i) => ({ char, i }))
 		.reverse()
 		.map(({ char, i }) => {
-			if (isDigit(char)) return { i, key: `d${fromRight++}` };
-			return { i, key: `s${fromRight}` };
+			if (isDigit(char)) {
+				inRun = 0;
+				return { i, key: `d${fromRight++}` };
+			}
+			return { i, key: `s${fromRight}.${inRun++}` };
 		})
 		.reverse();
 	return chars.map((char, i) => ({

@@ -15,8 +15,6 @@ import type { RequestHandler } from "./$types";
 // Props arrive as `?props=`, so this runs in the Worker instead of being prerendered.
 export const prerender = false;
 
-const showPro = import.meta.env.DEV || import.meta.env.VITE_SHOW_PRO === "true";
-
 type Loader = () => Promise<{ default: Component<Record<string, unknown>> }>;
 const publicTemplates = import.meta.glob<{ default: Component<Record<string, unknown>> }>(
 	"../../../../../../../packages/ui-svelte/src/lib/og-*/og-*.svelte",
@@ -32,13 +30,13 @@ const proSamples = import.meta.glob<{
 }>("../../../../../../../pro/packages/demos/src/data/og-samples.ts", { eager: true });
 
 function sample(slug: string): Record<string, unknown> {
-	const pro = showPro ? Object.values(proSamples)[0]?.OG_SAMPLES : undefined;
+	const pro = __SHOW_PRO__ ? Object.values(proSamples)[0]?.OG_SAMPLES : undefined;
 	return OG_SAMPLES[slug] ?? pro?.[slug] ?? {};
 }
 
 function loaders(): Map<string, Loader> {
 	const entries = Object.entries(
-		showPro ? { ...publicTemplates, ...proTemplates } : publicTemplates,
+		__SHOW_PRO__ ? { ...publicTemplates, ...proTemplates } : publicTemplates,
 	);
 	return new Map(
 		entries.map(([path, load]) => [

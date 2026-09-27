@@ -47,9 +47,11 @@ export function ClickSpark({
 	});
 
 	return (
+		// biome-ignore lint/a11y/noAriaHiddenOnFocusable: a canvas without tabIndex is not focusable
 		<canvas
 			ref={canvasRef}
 			data-slot="click-spark"
+			aria-hidden="true"
 			className={cn(clickSpark({ tone, scope }), className)}
 		/>
 	);

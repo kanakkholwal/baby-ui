@@ -7,6 +7,7 @@ export const contextCards = defineComponent({
 		"Retrieved chunks in a stack, each with a source chip that confirms after the fact.",
 	category: "agents",
 	status: "stable",
+	demo: { mode: "auto", frame: "none" },
 	props: [
 		{
 			name: "chunks",

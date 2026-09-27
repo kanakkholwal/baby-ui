@@ -30,7 +30,7 @@ const s = $derived(textRepel({ mode, size }));
 const chars = $derived(Array.from(text));
 
 let root = $state<HTMLSpanElement>();
-const letters: HTMLSpanElement[] = [];
+let letters: HTMLSpanElement[] = $state([]);
 let origins: { x: number; y: number }[] = [];
 let reduced = false;
 

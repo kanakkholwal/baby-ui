@@ -10,6 +10,7 @@ export const circuitBoard = defineComponent({
 		"Nodes joined by right-angled SVG traces that draw in, then carry glowing pulses along each connection.",
 	category: "animated",
 	status: "stable",
+	demo: { mode: "auto", frame: "lg" },
 	variants: { tone: TONES, speed: SPEEDS },
 	props: [
 		{

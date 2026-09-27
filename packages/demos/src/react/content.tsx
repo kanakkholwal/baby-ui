@@ -30,8 +30,6 @@ import { type ComponentProps, useEffect, useState } from "react";
 type Props = Record<string, unknown>;
 type MarkdownSize = NonNullable<ComponentProps<typeof Markdown>["size"]>;
 
-const SAMPLE_CODE =
-	"export function cn(...inputs: ClassValue[]) {\n\treturn twMerge(clsx(inputs));\n}";
 const SAMPLE_MD =
 	"## Installing\nComponents are copied into your project rather than installed.\n\n- You own the source\n- Nothing is imported at runtime\n- Updates are a diff, not a version bump\n\n```\nnpx shadcn add button\n```";
 
@@ -45,20 +43,6 @@ export function CopyButtonDemo({ props }: { props: Props }) {
 				label={(props.label as string) || "Copy"}
 				copiedLabel={(props.copiedLabel as string) || "Copied"}
 				iconOnly={props.iconOnly !== false}
-			/>
-		</div>
-	);
-}
-
-export function CodeBlockDemo({ props }: { props: Props }) {
-	return (
-		<div className="w-full max-w-md">
-			<CodeBlock
-				code={SAMPLE_CODE}
-				language={(props.language as string) || "ts"}
-				filename={(props.filename as string) || "lib/cn.ts"}
-				showLineNumbers={Boolean(props.showLineNumbers)}
-				maxHeight={(props.maxHeight as string) || "24rem"}
 			/>
 		</div>
 	);

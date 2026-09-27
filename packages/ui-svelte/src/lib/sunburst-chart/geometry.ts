@@ -405,9 +405,10 @@ export function labelRotation(angle: number): number {
 	return deg;
 }
 
-/** Labels run along the radius: the text must fit the ring's depth, its line the arc's length. */
+/** Labels run along the radius: the text must fit the ring's depth, its line the arc's length.
+ * 18px of arc holds an 11px label and its outline with room, so neighbours never touch. */
 export const labelFits = (g: ArcGeometry, text: string) =>
-	(g.a1 - g.a0) * ((g.innerR + g.outerR) / 2) >= 14 &&
+	(g.a1 - g.a0) * ((g.innerR + g.outerR) / 2) >= 18 &&
 	g.outerR - g.innerR - 6 >= text.length * 6.6;
 
 /** Arcs the keyboard walks under a focus: depth-first, the order they were laid out. */

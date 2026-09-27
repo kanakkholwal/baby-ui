@@ -1,13 +1,15 @@
 import { defineComponent } from "../index";
 
+const VARIANTS = ["default", "track", "inline", "bubble", "fluid", "wave", "ruler"];
+
 export const slider = defineComponent({
 	slug: "slider",
 	name: "Slider",
 	description:
-		"Range input whose thumb and fill glide on a spring, with sizes, marks and a live value.",
+		"Range input on a spring glide, in seven looks from a classic thumb to a wave, a ruler and a thumbless pill.",
 	category: "base",
 	status: "stable",
-	variants: { size: ["sm", "md", "lg"] },
+	variants: { variant: VARIANTS, size: ["sm", "md", "lg"] },
 	props: [
 		{
 			name: "value",
@@ -46,6 +48,14 @@ export const slider = defineComponent({
 			control: { kind: "boolean" },
 		},
 		{
+			name: "variant",
+			type: VARIANTS.map((v) => `"${v}"`).join(" | "),
+			description:
+				"Look. `inline`, `fluid`, `wave` and `ruler` take one value (a range falls back to `track`); only `default` goes vertical.",
+			default: "default",
+			control: { kind: "select", options: VARIANTS },
+		},
+		{
 			name: "orientation",
 			type: '"horizontal" | "vertical"',
 			description: "Layout and which arrow keys move the thumb.",
@@ -55,7 +65,7 @@ export const slider = defineComponent({
 		{
 			name: "size",
 			type: '"sm" | "md" | "lg"',
-			description: "Thumb, track and hit-area scale.",
+			description: "Scale of the `default`, `track`, `inline`, `bubble` and `fluid` looks.",
 			default: "md",
 			control: { kind: "select", options: ["sm", "md", "lg"] },
 		},
@@ -69,7 +79,7 @@ export const slider = defineComponent({
 		{
 			name: "formatValue",
 			type: "(value: number) => string",
-			description: "Formats the header value.",
+			description: "Formats the value wherever it shows: header, inline text, bubble, ruler readout, and the announced value.",
 			control: { kind: "none" },
 		},
 		{
@@ -96,10 +106,14 @@ export const slider = defineComponent({
 	],
 	motion: {
 		springs: [],
-		reducedMotion: "Thumb and fill jump straight to the value; the thumb does not grow.",
+		reducedMotion:
+			"Thumb, fill and ruler jump straight to the value; the bubble only fades and the wave holds flat bars.",
 		behaviour: [
 			"The thumb and fill glide to each new value on iconiq's 180/26 spring, sampled into a CSS linear() easing over 611ms, so steps and key presses slide instead of jumping.",
 			"The thumb scales to 1.08 on hover and 1.15 while dragging; the track thickens by 2px on hover, over 140ms.",
+			"`track` and `inline` stretch their pill handle 1.35x while dragging; `inline` parts it into two dots where it crosses the label or value.",
+			"`bubble` pops a value bubble out of the thumb while it's dragged; `fluid` presses to 1.03 and inverts its text under the fill.",
+			"`wave` raises 32 bars into a Gaussian crest around the value, each bar delayed by its distance; `ruler` scrolls a scale under a fixed needle and settles onto the nearest step.",
 			"Vertical orientation needs an explicit height on an ancestor (percentage sizing has nothing to resolve against otherwise); the demo sets one directly since it's a one-off layout concern, not a design token.",
 		],
 	},
@@ -126,6 +140,7 @@ export const slider = defineComponent({
 			files: [
 				{ path: "slider/slider.tsx", type: "registry:ui" },
 				{ path: "slider/variants.ts", type: "registry:ui" },
+				{ path: "slider/core.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "@base-ui/react"],
@@ -135,10 +150,11 @@ export const slider = defineComponent({
 			files: [
 				{ path: "slider/slider.svelte", type: "registry:ui" },
 				{ path: "slider/variants.ts", type: "registry:ui" },
+				{ path: "slider/core.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "bits-ui"],
 		},
 	},
-	keywords: ["slider", "range", "form", "input"],
+	keywords: ["slider", "range", "form", "input", "ruler", "wave", "equalizer"],
 });

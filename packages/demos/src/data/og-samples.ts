@@ -76,6 +76,14 @@ export const OG_AUTHOR_PROFILE = {
 	],
 };
 
+export const OG_NEWSLETTER_ISSUE = {
+	inside: [
+		"Springs that settle in under 300ms",
+		"The case against one-off colour tokens",
+		"Reader mail: dark mode without a second palette",
+	],
+};
+
 /** Data props the OG demos and `/api/og/<slug>` share; spec defaults cover the controls. */
 /** Sample props that follow a control value, so the PNG endpoint matches the demo. */
 export const OG_SAMPLE_BY_PROPS: Record<
@@ -94,4 +102,5 @@ export const OG_SAMPLES: Record<string, Record<string, unknown>> = {
 	"og-changelog": OG_CHANGELOG,
 	"og-docs-page": OG_DOCS_PAGE,
 	"og-github-repo": OG_GITHUB_REPO,
+	"og-newsletter-issue": OG_NEWSLETTER_ISSUE,
 };

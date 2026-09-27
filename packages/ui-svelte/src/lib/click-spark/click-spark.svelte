@@ -46,5 +46,6 @@ $effect(() => {
 <canvas
 	bind:this={canvas}
 	data-slot="click-spark"
+	aria-hidden="true"
 	class={cn(clickSpark({ tone, scope }), classProp)}
 ></canvas>

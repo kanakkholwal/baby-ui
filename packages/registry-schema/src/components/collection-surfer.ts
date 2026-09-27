@@ -18,6 +18,7 @@ export const collectionSurfer = defineComponent({
 		"An endless diagonal line of 3D image cards that glides toward you as you scroll.",
 	category: "animated",
 	status: "stable",
+	demo: { mode: "auto", frame: "none" },
 	variants: { variant: VARIANTS, size: SIZES },
 	props: [
 		{

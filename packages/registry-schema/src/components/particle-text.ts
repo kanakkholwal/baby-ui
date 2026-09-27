@@ -10,6 +10,7 @@ export const particleText = defineComponent({
 		"Text drawn as canvas particles that scatter from the pointer and spring back into place.",
 	category: "text",
 	status: "stable",
+	demo: { mode: "auto", frame: "lg" },
 	variants: { shape: SHAPES, size: SIZES },
 	props: [
 		{

@@ -7,6 +7,7 @@ export const codeBlock = defineComponent({
 		"Scrollable code surface with optional line numbers, filename bar and copy.",
 	category: "base",
 	status: "stable",
+	demo: { mode: "auto", frame: "md" },
 	props: [
 		{
 			name: "code",

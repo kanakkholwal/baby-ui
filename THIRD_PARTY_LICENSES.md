@@ -22,7 +22,7 @@ notices are reproduced here as those licenses require.
 
 ## componentry
 
-- Source: https://componentry.dev
+- Source: https://github.com/harshjadhav/componentry
 - License: MIT
 
 ## iconiq

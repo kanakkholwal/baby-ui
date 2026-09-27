@@ -4,7 +4,7 @@ export const radar = tv({
 	slots: {
 		ring: "fill-none stroke-border-strong",
 		axis: "stroke-border-strong",
-		level: "fill-muted-foreground text-[9px] tabular-nums",
+		level: "fill-muted-foreground text-[11px] tabular-nums",
 		label: "fill-muted-foreground font-medium text-[11px]",
 		area: "cursor-pointer transition-opacity duration-150 ease-[cubic-bezier(0,0,0.58,1)]",
 		shape:

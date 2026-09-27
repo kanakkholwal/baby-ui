@@ -9,6 +9,7 @@ export const textFlip = defineComponent({
 		"A fixed label with a word stack that flips to the next word on an interval.",
 	category: "text",
 	status: "stable",
+	demo: { mode: "auto", frame: "none" },
 	variants: { size: SIZES },
 	props: [
 		{

@@ -8,6 +8,7 @@ export const maskText = defineComponent({
 	description: "A cursor-following circular mask reveals a second copy of the text.",
 	category: "text",
 	status: "stable",
+	demo: { mode: "auto", frame: "none" },
 	variants: { size: SIZES },
 	props: [
 		{

@@ -1,9 +1,20 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { generate } from "./generate.mjs";
 
 const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const CATEGORIES = ["base", "blocks", "advanced", "animated", "agents", "text", "charts"];
+const CATEGORIES = [
+	"base",
+	"blocks",
+	"advanced",
+	"animated",
+	"agents",
+	"text",
+	"backgrounds",
+	"charts",
+	"og-images",
+];
 const RESERVED = new Set([
 	"switch",
 	"delete",
@@ -59,89 +70,6 @@ async function write(path, content) {
 
 /** Inserts before the first re-export statement whose dir sorts after `slug`; tracks each
  * statement's start line so a multi-line block inserts before its opening brace, not mid-block. */
-function insertByDirGroup(content, newSlug, newLines) {
-	const lines = content.split("\n");
-	let insertAt = lines.length;
-	let statementStart = null;
-	for (let i = 0; i < lines.length; i++) {
-		if (statementStart === null && /^export (type )?\{/.test(lines[i]))
-			statementStart = i;
-		const m = lines[i].match(/from ["']\.\/([a-z0-9-]+)\//);
-		if (m) {
-			if (m[1] > newSlug) {
-				insertAt = statementStart ?? i;
-				break;
-			}
-			statementStart = null;
-		}
-	}
-	lines.splice(insertAt, 0, ...newLines);
-	return lines.join("\n");
-}
-
-/** Inserts an import line alphabetically among the leading contiguous `import` lines. */
-function insertAlphaImport(content, key, newLine, extractKey) {
-	const lines = content.split("\n");
-	let insertAt = null;
-	let lastImport = -1;
-	for (let i = 0; i < lines.length; i++) {
-		if (!lines[i].startsWith("import ")) continue;
-		lastImport = i;
-		if (insertAt === null) {
-			const k = extractKey(lines[i]);
-			if (k && k > key) insertAt = i;
-		}
-	}
-	lines.splice(insertAt ?? lastImport + 1, 0, newLine);
-	return lines.join("\n");
-}
-
-/** Finds the last line of the leading contiguous import region, tracking brace depth so a
- * multi-line `import { ... } from "x"` counts as one statement, not just its first line. */
-function lastImportLine(lines) {
-	let depth = 0;
-	let last = -1;
-	for (let i = 0; i < lines.length; i++) {
-		const line = lines[i];
-		if (depth === 0) {
-			if (line.trim() === "") continue;
-			if (!line.startsWith("import ")) break;
-		}
-		depth += (line.match(/\{/g) || []).length - (line.match(/\}/g) || []).length;
-		if (depth <= 0) {
-			last = i;
-			depth = 0;
-		}
-	}
-	return last;
-}
-
-/** Appends a line just before the closing `];`/`};` of the array/object started at `startLine`. */
-function appendBeforeClose(content, startLine, entryLine) {
-	const lines = content.split("\n");
-	const start = lines.findIndex((l) => l.includes(startLine));
-	if (start === -1) throw new Error(`marker not found: ${startLine}`);
-	let close = -1;
-	for (let i = start + 1; i < lines.length; i++) {
-		if (/^\s*[\]}];?\s*$/.test(lines[i])) {
-			close = i;
-			break;
-		}
-	}
-	if (close === -1) throw new Error(`no closing line found after: ${startLine}`);
-	lines.splice(close, 0, entryLine);
-	return lines.join("\n");
-}
-
-async function patch(path, fn) {
-	const full = resolve(REPO_ROOT, path);
-	const before = await readFile(full, "utf8");
-	const after = fn(before);
-	if (after === before) throw new Error(`no change produced for ${path}`);
-	await writeFile(full, after);
-	console.log(`  patched ${path}`);
-}
-
 const variantsTemplate = () => `import { tv, type VariantProps } from "tailwind-variants";
 
 export const ${camel} = tv({
@@ -200,6 +128,7 @@ export const ${camel} = defineComponent({
 	description: "TODO: one sentence describing ${title}.",
 	category: "${category}",
 	status: "experimental",
+	demo: { mode: "auto" },
 	variants: { variant: ["default"] },
 	props: [
 		{
@@ -238,40 +167,6 @@ export const ${camel} = defineComponent({
 });
 `;
 
-const reactUsageTemplate = () => `import { ${pascal} } from "@baby-ui/react";
-
-export function Example() {
-	return <${pascal} />;
-}
-`;
-
-const svelteUsageTemplate = () => `<script lang="ts">
-import { ${pascal} } from "@baby-ui/svelte";
-</script>
-
-<${pascal} />
-`;
-
-const reactDemoTemplate = () => `"use client";
-
-import { ${pascal}, type ${pascal}Variant } from "@baby-ui/react";
-
-type Props = Record<string, unknown>;
-
-export function ${pascal}Demo({ props }: { props: Props }) {
-	return <${pascal} variant={(props.variant as ${pascal}Variant) ?? "default"} />;
-}
-`;
-
-const svelteDemoTemplate = () => `<script lang="ts">
-import { ${pascal}, type ${pascal}Variant } from "@baby-ui/svelte";
-
-let { props = {} }: { props?: Record<string, unknown> } = $props();
-</script>
-
-<${pascal} variant={(props.variant as ${pascal}Variant) ?? "default"} />
-`;
-
 const docsTemplate = () => `---
 title: ${title}
 description: "TODO: one sentence describing ${title}."
@@ -295,94 +190,31 @@ async function main() {
 
 	await write(resolve(reactDir, "variants.ts"), variantsTemplate());
 	await write(resolve(reactDir, `${slug}.tsx`), reactComponentTemplate());
-	await write(resolve(svelteDir, "variants.ts"), variantsTemplate());
 	await write(resolve(svelteDir, `${slug}.svelte`), svelteComponentTemplate());
 	await write(
 		resolve(REPO_ROOT, `packages/registry-schema/src/components/${slug}.ts`),
 		registrySchemaTemplate(),
 	);
 	await write(
-		resolve(REPO_ROOT, `packages/demos/src/usage/react/${slug}.tsx`),
-		reactUsageTemplate(),
-	);
-	await write(
-		resolve(REPO_ROOT, `packages/demos/src/usage/svelte/${slug}.svelte`),
-		svelteUsageTemplate(),
-	);
-	await write(
-		resolve(REPO_ROOT, `packages/demos/src/react/${slug}.tsx`),
-		reactDemoTemplate(),
-	);
-	await write(
-		resolve(REPO_ROOT, `packages/demos/src/svelte/${slug}-demo.svelte`),
-		svelteDemoTemplate(),
-	);
-	await write(
 		resolve(REPO_ROOT, `apps/site/src/docs/components/${slug}.md`),
 		docsTemplate(),
 	);
 
-	await patch("packages/ui-react/src/index.ts", (c) =>
-		insertByDirGroup(c, slug, [
-			`export { ${pascal}, type ${pascal}Props } from "./${slug}/${slug}";`,
-			`export type { ${pascal}Variant } from "./${slug}/variants";`,
-		]),
-	);
-	await patch("packages/ui-svelte/src/lib/index.ts", (c) =>
-		insertByDirGroup(c, slug, [
-			`export { default as ${pascal} } from "./${slug}/${slug}.svelte";`,
-			`export type { ${pascal}Variant } from "./${slug}/variants";`,
-		]),
-	);
-
-	await patch("packages/registry-schema/src/components/index.ts", (c) => {
-		const withImport = insertAlphaImport(
-			c,
-			slug,
-			`import { ${camel} } from "./${slug}";`,
-			(line) => line.match(/from ["']\.\/([a-z0-9-]+)["']/)?.[1] ?? null,
-		);
-		return appendBeforeClose(
-			withImport,
-			"export const specs: ComponentSpec[] = [",
-			`\t${camel},`,
-		);
-	});
-
-	await patch("packages/demos/src/react/index.tsx", (c) => {
-		const lines = c.split("\n");
-		lines.splice(
-			lastImportLine(lines) + 1,
-			0,
-			`import { ${pascal}Demo } from "./${slug}";`,
-		);
-		const withImport = lines.join("\n");
-		return appendBeforeClose(
-			withImport,
-			"export const demos: Record<string, (p: { props: Props }) => React.ReactElement> = {",
-			`\t"${slug}": ${pascal}Demo,`,
-		);
-	});
-
-	await patch("packages/demos/src/svelte/index.ts", (c) => {
-		return appendBeforeClose(
-			c,
-			"export const demos: Record<string, DemoLoader> = {",
-			`\t"${slug}": () => import("./${slug}-demo.svelte"),`,
-		);
-	});
+	// Svelte variants.ts, both demos, both usage snippets and every index are generated.
+	generate({ quiet: true });
 
 	console.log(`
 Scaffolded "${slug}". This is a minimal starting point (a div with one "default" variant);
 you still need to:
   - Design the real markup/primitive (Base UI for React, bits-ui for Svelte, per the base-
-    components hard rule) and variant set in both variants.ts files.
+    components hard rule) and variant set in the React variants.ts
+    (the Svelte copy is generated by pnpm gen).
   - Write real props/a11y/motion notes in registry-schema/src/components/${slug}.ts.
   - Add licenseOrigin only if the code is ported, naming the real source and copyright.
-  - Build a real demo (both ports) and usage snippet (both ports).
+  - Demos and usage are generated (spec demo: auto). Add object/array sample props as an
+    export named ${slug.toUpperCase().replaceAll("-", "_")} in packages/demos/src/data/samples.ts; write hand demos
+    only when the preview needs state or composition (a hand-written file always wins).
   - Write the docs prose in apps/site/src/docs/components/${slug}.md.
-  - Reposition the new specs/demos entries into the right category grouping if it matters
-    for nav order (they were appended at the end for now).
   - Run the gate suite: node scripts/check-comments.mjs --all, biome check --write .,
     tsc --noEmit (ui-react), svelte-check (ui-svelte/demos/site), pnpm turbo check.
 `);

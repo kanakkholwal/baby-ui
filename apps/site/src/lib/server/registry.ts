@@ -21,13 +21,10 @@ const pro = import.meta.glob<ComponentSpec[]>(
 	},
 );
 
-// Pro stays out of production builds until payments exist; VITE_SHOW_PRO=true opts in at build.
-const showPro = import.meta.env.DEV || import.meta.env.VITE_SHOW_PRO === "true";
-
 /** Public specs, plus Pro specs when the private submodule is checked out and Pro is shown. */
 export const specs: readonly ComponentSpec[] = [
 	...publicSpecs,
-	...(showPro ? Object.values(pro).flat() : []),
+	...(__SHOW_PRO__ ? Object.values(pro).flat() : []),
 ];
 
 /** Categories with at least one component, in schema order. */

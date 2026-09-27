@@ -6,6 +6,7 @@ export const filterTable = defineComponent({
 	description: "Status chips directly filter a task table, rows collapsing in place.",
 	category: "advanced",
 	status: "stable",
+	demo: { mode: "auto", frame: "none" },
 	props: [
 		{
 			name: "rows",

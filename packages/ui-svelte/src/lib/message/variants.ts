@@ -7,7 +7,7 @@ export const message = tv({
 			start: "origin-bottom-left flex-row",
 			end: "origin-bottom-right flex-row-reverse",
 		},
-		// Data-only: the entrance is a plain class swap in message.svelte, not a tv() class,
+		// Data-only: the entrance is a plain class swap in the message component, not a tv() class,
 		// same engine TextTransition uses. This purely derives the prop's type.
 		motion: {
 			spring: "",

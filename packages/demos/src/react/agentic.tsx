@@ -31,6 +31,7 @@ import {
 	ResponseStream,
 	Slider,
 	type SliderSize,
+	type SliderVariant,
 	Tabs,
 	TabsContent,
 	TabsList,
@@ -40,6 +41,7 @@ import {
 	type TaskStepsSize,
 } from "@baby-ui/react";
 import { type ComponentProps, useEffect, useState } from "react";
+import { SLIDER_MARKS, SLIDER_PRESETS } from "../data/slider";
 
 type Props = Record<string, unknown>;
 type ResponseStreamSize = NonNullable<ComponentProps<typeof ResponseStream>["size"]>;
@@ -102,16 +104,13 @@ export function RadioGroupDemo({ props }: { props: Props }) {
 	);
 }
 
-const SLIDER_MARKS = [
-	{ value: 0, label: "0" },
-	{ value: 25, label: "25" },
-	{ value: 50, label: "50" },
-	{ value: 75, label: "75" },
-	{ value: 100, label: "100" },
-];
-
 export function SliderDemo({ props }: { props: Props }) {
-	const orientation = (props.orientation as "horizontal" | "vertical") ?? "horizontal";
+	const variant = (props.variant as SliderVariant) ?? "default";
+	const preset = SLIDER_PRESETS[variant] ?? SLIDER_PRESETS.default;
+	const orientation =
+		variant === "default"
+			? ((props.orientation as "horizontal" | "vertical") ?? "horizontal")
+			: "horizontal";
 	const range = Boolean(props.range);
 	const [value, setValue] = useState<number | number[]>(50);
 	useEffect(() => {
@@ -119,19 +118,25 @@ export function SliderDemo({ props }: { props: Props }) {
 	}, [range, props.value]);
 
 	return (
-		<div className={orientation === "vertical" ? "flex h-56" : "w-72"}>
+		<div
+			className={
+				orientation === "vertical" ? "flex h-56" : variant === "default" ? "w-72" : "w-full max-w-sm"
+			}
+		>
 			<Slider
 				value={value}
 				onValueChange={setValue}
+				variant={variant}
 				orientation={orientation}
 				min={Number(props.min ?? 0)}
 				max={Number(props.max ?? 100)}
 				step={Number(props.step ?? 1)}
 				disabled={Boolean(props.disabled)}
-				label="Volume"
+				label={preset?.label}
+				formatValue={preset?.format}
 				size={(props.size as SliderSize) ?? "md"}
 				showValue={props.showValue === true}
-				marks={SLIDER_MARKS}
+				marks={variant === "default" ? SLIDER_MARKS : undefined}
 			/>
 		</div>
 	);

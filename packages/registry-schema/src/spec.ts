@@ -92,6 +92,17 @@ export const ComponentSpecSchema = z.object({
 		.object({ react: ImplSchema.optional(), svelte: ImplSchema.optional() })
 		.refine((v) => v.react || v.svelte, "at least one implementation required"),
 
+	/**
+	 * `auto`: `pnpm gen` writes both demos, rendering `impl.*.entry` with the typed sample export
+	 * named after the slug (OG_BLOG_POST) plus control values; `frame` sizes the preview.
+	 */
+	demo: z
+		.object({
+			mode: z.literal("auto"),
+			frame: z.enum(["og", "none", "sm", "md", "lg", "xl", "full"]).default("none"),
+		})
+		.optional(),
+
 	motion: MotionSpecSchema.optional(),
 	a11y: A11ySchema.default({ keyboard: [], notes: [] }),
 	licenseOrigin: LicenseOriginSchema.optional(),

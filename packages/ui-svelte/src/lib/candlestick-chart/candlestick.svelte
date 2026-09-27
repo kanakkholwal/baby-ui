@@ -42,9 +42,9 @@ const visible = $derived(
 	plot.phase === "ready" || plot.phase === "revealing" || plot.phase === "concealing",
 );
 
-const enterEls: (SVGGElement | null)[] = [];
-const wickEls: (SVGPathElement | null)[] = [];
-const bodyEls: (SVGRectElement | null)[] = [];
+let enterEls: (SVGGElement | null)[] = $state([]);
+let wickEls: (SVGPathElement | null)[] = $state([]);
+let bodyEls: (SVGRectElement | null)[] = $state([]);
 
 const scaleAbout = (cy: number, s: number) =>
 	`translate(0 ${cy}) scale(1 ${s}) translate(0 ${-cy})`;

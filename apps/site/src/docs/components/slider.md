@@ -1,18 +1,27 @@
 ---
 title: Slider
-description: Range input with a filled track and a thumb that grows on interaction.
+description: Range input on a spring glide, in seven looks from a classic thumb to a wave, a ruler and a thumbless pill.
 component: slider
 category: base
-tags: [slider, range, form]
+tags: [slider, range, form, ruler, wave]
 ---
 
-A real `<input type="range">` sits on top at full size and zero opacity. Every key the
-platform gives you -- arrows, Page Up and Page Down, Home and End -- works without being
-reimplemented, and so does touch.
+Built on Base UI (React) and bits-ui (Svelte), so arrows, Page Up and Page Down, Home, End
+and touch all work in every look without being reimplemented.
 
-## What animates and what must not
+## Variants
 
-The thumb scales on hover and while dragging, over 140ms. The *fill* has no transition
-at all. A filled track that eases toward the pointer lags behind your thumb, and the
-control immediately feels broken. Decoration can ease; the thing tracking your finger
-cannot.
+- `default`: a thin track and a round thumb. The only look that supports `orientation="vertical"`.
+- `track`: an inset fill under a thin pill handle that stretches while you drag.
+- `inline`: `track` with the label and value inside it. The handle parts into two dots
+  where it crosses the text, so the text stays readable.
+- `bubble`: a value bubble pops out of the thumb while you drag it.
+- `fluid`: no thumb. The whole pill is the control, and its text inverts under the fill.
+- `wave`: equalizer bars rise into a crest around the value.
+- `ruler`: a scale scrolls under a fixed needle. Drag the scale, not a handle.
+
+`inline`, `fluid`, `wave` and `ruler` take a single value. Pass an array and they fall
+back to `track`, which draws a range. `formatValue` sets the text in every look and the
+value screen readers announce.
+
+The `track` to `ruler` looks are adapted from [beUI](https://beui.dev) (MIT).

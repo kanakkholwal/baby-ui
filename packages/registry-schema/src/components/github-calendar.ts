@@ -12,6 +12,7 @@ export const githubCalendar = defineComponent({
 		"A contribution heatmap: one cell per day in week columns, with a tooltip per day and a colour legend.",
 	category: "blocks",
 	status: "stable",
+	demo: { mode: "auto", frame: "none" },
 	variants: { variant: VARIANTS, shape: SHAPES, size: SIZES, tone: TONES },
 	props: [
 		{

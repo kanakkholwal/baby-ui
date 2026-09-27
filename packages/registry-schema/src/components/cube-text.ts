@@ -7,6 +7,7 @@ export const cubeText = defineComponent({
 		"Each letter is a cube face that rolls down onto the next, in a wave across the text.",
 	category: "text",
 	status: "stable",
+	demo: { mode: "auto", frame: "none" },
 	variants: { size: ["sm", "md", "lg"], stagger: ["wave", "together"] },
 	props: [
 		{

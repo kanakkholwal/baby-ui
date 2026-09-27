@@ -355,6 +355,23 @@ export function fitTickCount(requested: number, span: number, minGap: number): n
 	return Math.max(2, Math.min(10, requested, room));
 }
 
+/** Ticks at least `minGap` px apart. d3 treats the count as a hint and can return more
+ * ("nice" steps), so the hint drops until the real ticks fit. */
+export function fittedTicks<T>(
+	scale: { ticks: (count: number) => T[] },
+	requested: number,
+	span: number,
+	minGap: number,
+): T[] {
+	let count = fitTickCount(requested, span, minGap);
+	let ticks = scale.ticks(count);
+	while (count > 2 && ticks.length > 1 && span / (ticks.length - 1) < minGap) {
+		count -= 1;
+		ticks = scale.ticks(count);
+	}
+	return ticks;
+}
+
 /** Plain-language description read before the data table; `describe` overrides it. */
 export function summarize(options: {
 	data: Datum[];

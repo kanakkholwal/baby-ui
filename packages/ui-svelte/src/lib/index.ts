@@ -4,11 +4,11 @@ export { default as AccordionContent } from "./accordion/accordion-content.svelt
 export { default as AccordionItem } from "./accordion/accordion-item.svelte";
 export { default as AccordionTrigger } from "./accordion/accordion-trigger.svelte";
 export { default as AgentScreen } from "./agent-screen/agent-screen.svelte";
-export type { AgentScreenSize } from "./agent-screen/variants";
+export { agentScreen, type AgentScreenSize } from "./agent-screen/variants";
 export { default as Alert } from "./alert/alert.svelte";
 export { default as AlertDescription } from "./alert/alert-description.svelte";
 export { default as AlertTitle } from "./alert/alert-title.svelte";
-export { ALERT_ICON, type AlertVariant } from "./alert/variants";
+export { alert, type AlertVariant, ALERT_ROLE, ALERT_ICON } from "./alert/variants";
 export { default as AlertDialog } from "./alert-dialog/alert-dialog.svelte";
 export { default as AlertDialogAction } from "./alert-dialog/alert-dialog-action.svelte";
 export { default as AlertDialogCancel } from "./alert-dialog/alert-dialog-cancel.svelte";
@@ -18,59 +18,55 @@ export { default as AlertDialogFooter } from "./alert-dialog/alert-dialog-footer
 export { default as AlertDialogHeader } from "./alert-dialog/alert-dialog-header.svelte";
 export { default as AlertDialogTitle } from "./alert-dialog/alert-dialog-title.svelte";
 export { default as AlertDialogTrigger } from "./alert-dialog/alert-dialog-trigger.svelte";
+export { type AlertDialogContext } from "./alert-dialog/context";
 export { default as AnimatedGradient } from "./animated-gradient/animated-gradient.svelte";
-export type {
-	AnimatedGradientPosition,
-	AnimatedGradientTone,
-} from "./animated-gradient/variants";
+export { animatedGradient, type AnimatedGradientTone, type AnimatedGradientPosition } from "./animated-gradient/variants";
 export { default as AnimatedGradientText } from "./animated-gradient-text/animated-gradient-text.svelte";
-export type { GradientTextTone } from "./animated-gradient-text/variants";
-export { default as Area } from "./area-chart/area.svelte";
+export { gradientText, type GradientTextTone } from "./animated-gradient-text/variants";
 export { default as AreaChart } from "./area-chart/area-chart.svelte";
-export type { AreaVariant } from "./area-chart/variants";
+export { default as Area } from "./area-chart/area.svelte";
+export { type StackContextValue, setStack, useStack } from "./area-chart/context";
+export { type Band, stackBase, bandPoints, stackMax, areaPath, bandSignature } from "./area-chart/geometry";
+export { area, type AreaVariant } from "./area-chart/variants";
 export { default as ArtGallery } from "./art-gallery/art-gallery.svelte";
-export type { ArtGalleryItem } from "./art-gallery/gallery";
-export type { ArtGalleryLabels } from "./art-gallery/labels";
-export type { ArtGalleryLens } from "./art-gallery/variants";
+export { type ArtGalleryItem, type GalleryOptions, createGallery } from "./art-gallery/gallery";
+export { type ArtGalleryLabels, ART_GALLERY_LABELS } from "./art-gallery/labels";
+export { artGallery, type ArtGalleryLens, LENS_STRENGTH } from "./art-gallery/variants";
 export { default as AsciiEffect } from "./ascii-effect/ascii-effect.svelte";
-export type {
-	AsciiEffectDither,
-	AsciiEffectFit,
-	AsciiEffectPosition,
-	AsciiEffectTone,
-	AsciiEffectVariant,
-} from "./ascii-effect/variants";
+export { type AsciiOptions, mountAscii } from "./ascii-effect/ascii";
+export { asciiEffect, type AsciiEffectVariant, type AsciiEffectTone, type AsciiEffectDither, type AsciiEffectFit, type AsciiEffectPosition } from "./ascii-effect/variants";
 export { default as Attachment } from "./attachment/attachment.svelte";
-export type { AttachmentLabels } from "./attachment/labels";
-export type { AttachmentStatus } from "./attachment/variants";
+export { type AttachmentLabels, ATTACHMENT_LABELS } from "./attachment/labels";
+export { attachment, type AttachmentStatus, ATTACHMENT_ICON } from "./attachment/variants";
 export { default as AuroraFlow } from "./aurora-flow/aurora-flow.svelte";
-export type {
-	AuroraFlowPosition,
-	AuroraFlowSpeed,
-	AuroraFlowTone,
-} from "./aurora-flow/variants";
+export { type AuroraFlowOptions, mountAuroraFlow } from "./aurora-flow/aurora";
+export { auroraFlow, type AuroraFlowTone, type AuroraFlowSpeed, type AuroraFlowPosition, AURORA_FLOW_COLORS, AURORA_FLOW_SPEED } from "./aurora-flow/variants";
 export { default as Avatar } from "./avatar/avatar.svelte";
 export { default as AvatarFallback } from "./avatar/avatar-fallback.svelte";
 export { default as AvatarImage } from "./avatar/avatar-image.svelte";
+export { type AvatarContext } from "./avatar/context";
+export { avatar, type AvatarSize, type AvatarShape } from "./avatar/variants";
 export { default as Badge } from "./badge/badge.svelte";
-export type { BadgeSize, BadgeVariant } from "./badge/variants";
-export { default as Bar } from "./bar-chart/bar.svelte";
+export { badge, type BadgeVariant, type BadgeSize } from "./badge/variants";
 export { default as BarChart } from "./bar-chart/bar-chart.svelte";
+export { default as BarAxis } from "./bar-chart/bar-axis.svelte";
+export { default as BarDepth } from "./bar-chart/bar-depth.svelte";
+export { default as BarPlot } from "./bar-chart/bar-plot.svelte";
+export { default as BarPulse } from "./bar-chart/bar-pulse.svelte";
+export { default as BarSkeleton } from "./bar-chart/bar-skeleton.svelte";
+export { default as BarSquares } from "./bar-chart/bar-squares.svelte";
 export { default as BarTooltip } from "./bar-chart/bar-tooltip.svelte";
 export { default as BarXAxis } from "./bar-chart/bar-x-axis.svelte";
 export { default as BarYAxis } from "./bar-chart/bar-y-axis.svelte";
-export { type BarContextValue, useBarChart } from "./bar-chart/context";
-export type {
-	BarEntrance,
-	BarLineCap,
-	BarOrientationVariant,
-	BarVariant,
-} from "./bar-chart/variants";
-export { default as BentoCell } from "./bento-grid/bento-cell.svelte";
+export { default as Bar } from "./bar-chart/bar.svelte";
+export { type Rect, type BarRect, ENTER_MS, UPDATE_MS, STAGGER_SHARE, SQUARE_GAP, PULSE_MS, SWEEP_MS, EASE_IN_OUT, categoryOf, barDomain, barLayout, collapsed, lerpRect, staggerDelay, enterSpan, squareColumn, squareDelay, type DepthFaces, depthFaces, pulseRect, skeletonHeights, SWEEP_STOPS, nearestBand, summarizeBars } from "./bar-chart/bar-core";
+export { type DisplayedBar, type BarContextValue, setBarChart, useBarChart } from "./bar-chart/context";
+export { barChart, type BarOrientationVariant, type BarVariant, type BarLineCap, type BarEntrance } from "./bar-chart/variants";
 export { default as BentoGrid } from "./bento-grid/bento-grid.svelte";
-export type { BentoSpan } from "./bento-grid/variants";
+export { default as BentoCell } from "./bento-grid/bento-cell.svelte";
+export { bentoCell, type BentoSpan } from "./bento-grid/variants";
 export { default as BoldCopy } from "./bold-copy/bold-copy.svelte";
-export type { BoldCopySize } from "./bold-copy/variants";
+export { boldCopy, type BoldCopySize } from "./bold-copy/variants";
 export { default as Breadcrumb } from "./breadcrumb/breadcrumb.svelte";
 export { default as BreadcrumbEllipsis } from "./breadcrumb/breadcrumb-ellipsis.svelte";
 export { default as BreadcrumbItem } from "./breadcrumb/breadcrumb-item.svelte";
@@ -79,11 +75,13 @@ export { default as BreadcrumbList } from "./breadcrumb/breadcrumb-list.svelte";
 export { default as BreadcrumbPage } from "./breadcrumb/breadcrumb-page.svelte";
 export { default as BreadcrumbSeparator } from "./breadcrumb/breadcrumb-separator.svelte";
 export { default as Button } from "./button/button.svelte";
-export type { ButtonSize, ButtonVariant } from "./button/variants";
-export { default as Candlestick } from "./candlestick-chart/candlestick.svelte";
+export { button, type ButtonVariant, type ButtonSize, isIconSize } from "./button/variants";
 export { default as CandlestickChart } from "./candlestick-chart/candlestick-chart.svelte";
-export type { CandlestickLabels } from "./candlestick-chart/context";
-export type { CandlestickSize } from "./candlestick-chart/variants";
+export { default as CandlestickPlot } from "./candlestick-chart/candlestick-plot.svelte";
+export { default as Candlestick } from "./candlestick-chart/candlestick.svelte";
+export { type CandleRootValue, type CandlestickLabels, DEFAULT_LABELS, setCandleRoot, useCandleRoot } from "./candlestick-chart/context";
+export { type Ohlc, type CandleGeometry, CANDLE_SPRING, CANDLE_FADE, CANDLE_CONCEAL, readOhlc, ohlcDomain, candleGeometry, candleStagger, candleColor } from "./candlestick-chart/geometry";
+export { candlestick, type CandlestickSize, CANDLE_BODY } from "./candlestick-chart/variants";
 export { default as Card } from "./card/card.svelte";
 export { default as CardAction } from "./card/card-action.svelte";
 export { default as CardContent } from "./card/card-content.svelte";
@@ -91,170 +89,114 @@ export { default as CardDescription } from "./card/card-description.svelte";
 export { default as CardFooter } from "./card/card-footer.svelte";
 export { default as CardHeader } from "./card/card-header.svelte";
 export { default as CardTitle } from "./card/card-title.svelte";
-export type { CardVariant } from "./card/variants";
+export { cardFrame, type CardVariant } from "./card/variants";
 export { default as CaseStudyFlipStack } from "./case-study-flip-stack/case-study-flip-stack.svelte";
-export type { CaseStudyFlipItem } from "./case-study-flip-stack/types";
-export type {
-	CaseStudyFlipStackSize,
-	CaseStudyFlipStackTone,
-} from "./case-study-flip-stack/variants";
+export { type CaseStudyFlipItem, flipCardOffsets, activeFlipCard } from "./case-study-flip-stack/types";
+export { caseStudyFlipStack, type CaseStudyFlipStackSize, type CaseStudyFlipStackTone } from "./case-study-flip-stack/variants";
 export { default as Background } from "./chart/background.svelte";
 export { default as CartesianGrid } from "./chart/cartesian-grid.svelte";
 export { default as ChartContainer } from "./chart/chart-container.svelte";
+export { default as ChartDatePill } from "./chart/chart-date-pill.svelte";
 export { default as ChartFrame } from "./chart/chart-frame.svelte";
-export { default as ChartLegend } from "./chart/chart-legend.svelte";
 export { default as ChartLegendContent } from "./chart/chart-legend-content.svelte";
+export { default as ChartLegend } from "./chart/chart-legend.svelte";
 export { default as ChartStyle } from "./chart/chart-style.svelte";
-export { default as ChartTooltip } from "./chart/chart-tooltip.svelte";
 export { default as ChartTooltipContent } from "./chart/chart-tooltip-content.svelte";
+export { default as ChartTooltipDot } from "./chart/chart-tooltip-dot.svelte";
 export { default as ChartTooltipPanel } from "./chart/chart-tooltip-panel.svelte";
-export {
-	type ActiveContextValue,
-	type CartesianContextValue,
-	type ChartConfig,
-	type ChartContextValue,
-	type PlotContextValue,
-	portal,
-	setActivePoint,
-	setCartesian,
-	type TickScale,
-	useActivePoint,
-	useCartesian,
-	useChart,
-	usePlot,
-} from "./chart/context";
-export type {
-	ActivePoint,
-	ChartPhase,
-	ChartSelection,
-	ChartStatus,
-	Datum,
-	Domain,
-	FadeEdges,
-	Margin,
-	SeriesConfig,
-	TooltipRow,
-} from "./chart/core";
-export {
-	createAnimatedDomain,
-	createChartPhase,
-	createRevealClip,
-	createSeriesRegistry,
-} from "./chart/lifecycle.svelte";
+export { default as ChartTooltip } from "./chart/chart-tooltip.svelte";
 export { default as ReferenceArea } from "./chart/reference-area.svelte";
 export { default as SelectionArea } from "./chart/selection-area.svelte";
-export {
-	type ChartExtent,
-	default as TimeSeriesChart,
-	useExtentRegistry,
-} from "./chart/time-series-chart.svelte";
-export type {
-	ChartAspect,
-	ChartBackgroundVariant,
-	ChartGridVariant,
-	ChartLegendAlign,
-	ChartReferenceTone,
-	ChartSelectionEdge,
-	ChartTooltipIndicator,
-} from "./chart/variants";
+export { default as TimeSeriesChart, type ChartExtent, useExtentRegistry } from "./chart/time-series-chart.svelte";
+export { default as TimeSeriesPlot } from "./chart/time-series-plot.svelte";
 export { default as XAxis } from "./chart/x-axis.svelte";
 export { default as YAxis } from "./chart/y-axis.svelte";
+export { type ChartConfig, type TickScale, type ChartContextValue, type CartesianContextValue, type PlotContextValue, type ActiveContextValue, setChart, useChart, setCartesian, useCartesian, setPlot, usePlot, setActivePoint, useActivePoint, portal } from "./chart/context";
+export { type Datum, type Domain, type Margin, type ChartConfigEntry, type ChartConfigShape, type SeriesConfig, type ActivePoint, type TooltipRow, type ChartSelection, selectionBetween, type ChartStatus, type ChartPhase, DEFAULT_MARGIN, LOADING_DOMAIN, chartStyleCss, seriesColor, toDate, resolveDomain, niceDomain, shouldTweenDomain, lerpDomain, type PathPoint, seriesPoints, interpolatePoints, linePath, nearestIndex, type FadeEdges, fadeStops, type Formatters, createFormatters, evenTickIndices, Y_TICK_GAP, X_TICK_GAP, fitTickCount, fittedTicks, summarize, nextPhase, isLoadingPhase, seriesVisibleInPhase } from "./chart/core";
+export { follow } from "./chart/follow.svelte";
+export { CLIP_PAD, createSeriesRegistry, createChartPhase, createAnimatedDomain, createRevealClip } from "./chart/lifecycle.svelte";
+export { type Ease, type SpringConfig, type Playback, cubicBezier, CHART_EASE, CHART_EASE_CSS, EASE_OUT, CHART_DURATION, CHART_SPRING, prefersReducedMotion, tween, Spring } from "./chart/motion";
+export { chart, type ChartAspect, chartGrid, type ChartGridVariant, chartAxis, chartTooltip, type ChartTooltipIndicator, chartLegend, type ChartLegendAlign, chartReferenceArea, type ChartReferenceTone, chartBackground, type ChartBackgroundVariant, chartSelection, type ChartSelectionEdge } from "./chart/variants";
 export { default as ChartBrush } from "./chart-brush/chart-brush.svelte";
-export type { ChartBrushVariant } from "./chart-brush/variants";
-export { default as ChartMarkerTooltip } from "./chart-markers/chart-marker-tooltip.svelte";
+export { type IndexRange, type BrushMode, HANDLE_HIT, HANDLE_WIDTH, HANDLE_HEIGHT, clampRange, moveRange, resizeRange, sameRange, keyRange } from "./chart-brush/geometry";
+export { chartBrush, type ChartBrushVariant } from "./chart-brush/variants";
 export { default as ChartMarkers } from "./chart-markers/chart-markers.svelte";
-export type { ChartMarker } from "./chart-markers/types";
-export type { ChartMarkerAppearance, ChartMarkerSize } from "./chart-markers/variants";
+export { default as ChartMarkerDisc } from "./chart-markers/chart-marker-disc.svelte";
+export { default as ChartMarkerFanItem } from "./chart-markers/chart-marker-fan-item.svelte";
+export { default as ChartMarkerGroup } from "./chart-markers/chart-marker-group.svelte";
+export { default as ChartMarkerLayer } from "./chart-markers/chart-marker-layer.svelte";
+export { default as ChartMarkerTooltip } from "./chart-markers/chart-marker-tooltip.svelte";
+export { type ChartMarkerBase, type MarkerGroup, FAN_RADIUS, FAN_ANGLE, MARKER_OFFSET, GROUP_STAGGER, FAN_STAGGER, ENTER_SCALE, FANNED_SCALE, GUIDE_TRANSITION, MARKER_SPRING, dayKey, groupMarkers, fanPosition, discStyle, popStyle } from "./chart-markers/geometry";
+export { type ChartMarker, actionable, assign, spring } from "./chart-markers/types";
+export { chartMarkers, type ChartMarkerSize, type ChartMarkerAppearance, MARKER_PX } from "./chart-markers/variants";
 export { default as DashTail } from "./chart-series/dash-tail.svelte";
 export { default as HighlightBand } from "./chart-series/highlight-band.svelte";
 export { default as LoadingPulse } from "./chart-series/loading-pulse.svelte";
 export { default as LoadingSweep } from "./chart-series/loading-sweep.svelte";
 export { default as SeriesMarkers } from "./chart-series/series-markers.svelte";
 export { default as TerminalMarker } from "./chart-series/terminal-marker.svelte";
-export type { SeriesLoadingStyle, SeriesMarkerAppearance } from "./chart-series/variants";
+export { PULSE_CLIP_PAD, PULSE_CYCLE, PULSE_PAUSE, SWEEP_CYCLE, SWEEP_EXIT, MARKER_ENTER, REVEAL_DURATION, hashFract, pulseSkeleton, pulseClip, pulseExitPlan, sweepStops, highlightBounds, type SignedSegment, splitAtBaseline } from "./chart-series/core";
+export { createLoadingMode, silhouette } from "./chart-series/loading-mode.svelte";
+export { seriesMarker, type SeriesMarkerAppearance, seriesLoading, type SeriesLoadingStyle } from "./chart-series/variants";
 export { default as ChatComposer } from "./chat-composer/chat-composer.svelte";
-export type {
-	ChatComposerLabels,
-	ChatMessage,
-	ChatStatus,
-	ChatTopic,
-} from "./chat-composer/types";
-export type { ChatComposerSize, ChatComposerVariant } from "./chat-composer/variants";
+export { type ChatMessage, type ChatTopic, type ChatStatus, type ChatComposerLabels, CHAT_COMPOSER_LABELS, promptHistory, resolvingIndex } from "./chat-composer/types";
+export { chatComposer, type ChatComposerVariant, type ChatComposerSize } from "./chat-composer/variants";
 export { default as Checkbox } from "./checkbox/checkbox.svelte";
-export {
-	type ChoroplethLabels,
-	default as ChoroplethChart,
-} from "./choropleth-chart/choropleth-chart.svelte";
-export type { GeoCollection, GeoFeature, ZoomState } from "./choropleth-chart/geometry";
-export type { ChoroplethProjection } from "./choropleth-chart/variants";
+export { checkbox, type CheckboxSize } from "./checkbox/variants";
+export { default as ChoroplethChart, type ChoroplethLabels } from "./choropleth-chart/choropleth-chart.svelte";
+export { default as ChoroplethLegend } from "./choropleth-chart/choropleth-legend.svelte";
+export { default as ChoroplethPlot } from "./choropleth-chart/choropleth-plot.svelte";
+export { type GeoFeature, type GeoCollection, type ZoomState, IDENTITY_ZOOM, SCALE_STEPS, WHEEL_STEP, KEY_ZOOM_STEP, KEY_PAN_STEP, DIM_TRANSITION, ZOOM_TRANSITION, type MapFeature, type MapLayout, featureKey, featureLabel, quantize, scaleFill, layoutMap, walkOrder, clampZoom, zoomAt, zoomTransform } from "./choropleth-chart/geometry";
+export { choroplethChart, type ChoroplethProjection } from "./choropleth-chart/variants";
 export { default as CircuitBoard } from "./circuit-board/circuit-board.svelte";
-export type { CircuitConnection, CircuitNode } from "./circuit-board/geometry";
-export type {
-	CircuitBoardSpeed,
-	CircuitBoardTone,
-	CircuitNodeStatus,
-} from "./circuit-board/variants";
+export { type CircuitNode, type CircuitConnection, type CircuitTrace, tracePath, buildTraces, circuitDelay } from "./circuit-board/geometry";
+export { circuitBoard, circuitNode, type CircuitBoardTone, type CircuitBoardSpeed, type CircuitNodeStatus } from "./circuit-board/variants";
 export { default as CircularText } from "./circular-text/circular-text.svelte";
-export type { CircularTextDirection } from "./circular-text/variants";
+export { circularText, type CircularTextDirection } from "./circular-text/variants";
 export { default as ClickSpark } from "./click-spark/click-spark.svelte";
-export type { ClickSparkScope, ClickSparkTone } from "./click-spark/variants";
+export { type SparkOptions, createSparks } from "./click-spark/sparks";
+export { clickSpark, type ClickSparkTone, type ClickSparkScope } from "./click-spark/variants";
 export { default as ClosingPlasma } from "./closing-plasma/closing-plasma.svelte";
-export type {
-	ClosingPlasmaPosition,
-	ClosingPlasmaSpeed,
-	ClosingPlasmaTone,
-} from "./closing-plasma/variants";
+export { type ClosingPlasmaOptions, mountClosingPlasma } from "./closing-plasma/plasma";
+export { closingPlasma, type ClosingPlasmaTone, type ClosingPlasmaSpeed, type ClosingPlasmaPosition, CLOSING_PLASMA_COLORS, CLOSING_PLASMA_SPEED } from "./closing-plasma/variants";
 export { default as CodeBlock } from "./code-block/code-block.svelte";
 export { default as CollabCard } from "./collab-card/collab-card.svelte";
-export type { CollabCardCollaborator } from "./collab-card/types";
-export type { CollabCardTone } from "./collab-card/variants";
+export { type CollabCardCollaborator } from "./collab-card/types";
+export { collabCard, type CollabCardTone } from "./collab-card/variants";
 export { default as Collapsible } from "./collapsible/collapsible.svelte";
 export { default as CollapsibleContent } from "./collapsible/collapsible-content.svelte";
 export { default as CollapsibleTrigger } from "./collapsible/collapsible-trigger.svelte";
 export { default as CollectionSurfer } from "./collection-surfer/collection-surfer.svelte";
-export type { CollectionSurferItem } from "./collection-surfer/types";
-export type {
-	CollectionSurferSize,
-	CollectionSurferVariant,
-} from "./collection-surfer/variants";
-export { default as ColorPicker } from "./color-picker/color-picker.svelte";
+export { type CollectionSurferItem, SURF_REACH, wrapSurfScroll, surfShift, surfNearness } from "./collection-surfer/types";
+export { collectionSurfer, type CollectionSurferVariant, type CollectionSurferSize } from "./collection-surfer/variants";
+export { default as ColorPicker, type ColorFormat } from "./color-picker/color-picker.svelte";
 export { default as Combobox } from "./combobox/combobox.svelte";
 export { default as ComboboxContent } from "./combobox/combobox-content.svelte";
 export { default as ComboboxTrigger } from "./combobox/combobox-trigger.svelte";
-export type { ComboboxSize } from "./combobox/variants";
+export { combobox, type ComboboxSize } from "./combobox/variants";
 export { default as Command } from "./command/command.svelte";
 export { default as CommandDialog } from "./command/command-dialog.svelte";
-export {
-	default as ComboboxEmpty,
-	default as CommandEmpty,
-} from "./command/command-empty.svelte";
-export {
-	default as ComboboxGroup,
-	default as CommandGroup,
-} from "./command/command-group.svelte";
+export { default as CommandEmpty, default as ComboboxEmpty } from "./command/command-empty.svelte";
+export { default as CommandGroup, default as ComboboxGroup } from "./command/command-group.svelte";
 export { default as CommandHeader } from "./command/command-header.svelte";
-export {
-	default as ComboboxInput,
-	default as CommandInput,
-} from "./command/command-input.svelte";
-export {
-	default as ComboboxItem,
-	default as CommandItem,
-} from "./command/command-item.svelte";
-export {
-	default as ComboboxList,
-	default as CommandList,
-} from "./command/command-list.svelte";
+export { default as CommandInput, default as ComboboxInput } from "./command/command-input.svelte";
+export { default as CommandItem, default as ComboboxItem } from "./command/command-item.svelte";
+export { default as CommandList, default as ComboboxList } from "./command/command-list.svelte";
 export { default as CommandSeparator } from "./command/command-separator.svelte";
 export { default as CommandShortcut } from "./command/command-shortcut.svelte";
+export { type CommandContext, type CommandDialogState, COMMAND_PANEL, COMMAND_MARKER } from "./command/context";
+export { commandFrame } from "./command/variants";
 export { default as ComposedChart } from "./composed-chart/composed-chart.svelte";
 export { default as SeriesBar } from "./composed-chart/series-bar.svelte";
-export type { SeriesBarVariant } from "./composed-chart/variants";
+export { type BarLayoutValue, setBarLayout, useBarLayout } from "./composed-chart/context";
+export { seriesBarWidth, seriesBarOffset, seriesBarDelay, localProgress } from "./composed-chart/geometry";
+export { seriesBar, type SeriesBarVariant } from "./composed-chart/variants";
 export { default as Composer } from "./composer/composer.svelte";
-export type { ComposerAction, ComposerModel } from "./composer/types";
-export type { ComposerSize } from "./composer/variants";
+export { type ComposerModel, type ComposerAction } from "./composer/types";
+export { composer, type ComposerSize, COMPOSER_LINE_HEIGHT } from "./composer/variants";
 export { default as ContextCards } from "./context-cards/context-cards.svelte";
-export type { ContextChunk, ContextChunkTone } from "./context-cards/types";
+export { type ContextChunk } from "./context-cards/types";
+export { contextChunkBadge, type ContextChunkTone } from "./context-cards/variants";
 export { default as ContextMenu } from "./context-menu/context-menu.svelte";
 export { default as ContextMenuCheckboxItem } from "./context-menu/context-menu-checkbox-item.svelte";
 export { default as ContextMenuContent } from "./context-menu/context-menu-content.svelte";
@@ -265,24 +207,24 @@ export { default as ContextMenuRadioGroup } from "./context-menu/context-menu-ra
 export { default as ContextMenuRadioItem } from "./context-menu/context-menu-radio-item.svelte";
 export { default as ContextMenuSeparator } from "./context-menu/context-menu-separator.svelte";
 export { default as ContextMenuShortcut } from "./context-menu/context-menu-shortcut.svelte";
-export { default as ContextMenuSub } from "./context-menu/context-menu-sub.svelte";
 export { default as ContextMenuSubContent } from "./context-menu/context-menu-sub-content.svelte";
 export { default as ContextMenuSubTrigger } from "./context-menu/context-menu-sub-trigger.svelte";
+export { default as ContextMenuSub } from "./context-menu/context-menu-sub.svelte";
 export { default as ContextMenuTrigger } from "./context-menu/context-menu-trigger.svelte";
 export { default as Conversation } from "./conversation/conversation.svelte";
 export { default as ConversationContent } from "./conversation/conversation-content.svelte";
 export { default as ConversationEmpty } from "./conversation/conversation-empty.svelte";
 export { default as ConversationScrollButton } from "./conversation/conversation-scroll-button.svelte";
+export { type ConversationContext } from "./conversation/context";
 export { default as CopyButton } from "./copy-button/copy-button.svelte";
 export { default as Counter } from "./counter/counter.svelte";
-export type { CounterDirection, CounterSize } from "./counter/variants";
+export { counter, type CounterSize, type CounterDirection } from "./counter/variants";
 export { default as CubeText } from "./cube-text/cube-text.svelte";
-export type { CubeTextSize, CubeTextStagger } from "./cube-text/variants";
+export { cubeText, type CubeTextSize, type CubeTextStagger, type CubeGlyph, cubeWords } from "./cube-text/variants";
 export { default as CycleText } from "./cycle-text/cycle-text.svelte";
-export type { CycleTextSize } from "./cycle-text/variants";
+export { cycleText, type CycleTextSize } from "./cycle-text/variants";
 export { default as DiaText } from "./dia-text/dia-text.svelte";
-export type { DiaTextSize } from "./dia-text/variants";
-export type { DialogSize, DialogVariant } from "./dialog/context";
+export { diaText, type DiaTextSize, DIA_TEXT_COLORS, diaGradient } from "./dia-text/variants";
 export { default as Dialog } from "./dialog/dialog.svelte";
 export { default as DialogClose } from "./dialog/dialog-close.svelte";
 export { default as DialogContent } from "./dialog/dialog-content.svelte";
@@ -291,32 +233,26 @@ export { default as DialogFooter } from "./dialog/dialog-footer.svelte";
 export { default as DialogHeader } from "./dialog/dialog-header.svelte";
 export { default as DialogTitle } from "./dialog/dialog-title.svelte";
 export { default as DialogTrigger } from "./dialog/dialog-trigger.svelte";
+export { type DialogContext, DIALOG_BACKDROP, DIALOG_PANEL } from "./dialog/context";
+export { dialogFrame, type DialogVariant, dialogWidth, type DialogSize } from "./dialog/variants";
 export { default as DiffTable } from "./diff-table/diff-table.svelte";
-export type { DiffRow } from "./diff-table/types";
-export type { DiffRowChange } from "./diff-table/variants";
+export { type DiffRow } from "./diff-table/types";
+export { diffRow, type DiffRowChange } from "./diff-table/variants";
 export { default as DitherGradient } from "./dither-gradient/dither-gradient.svelte";
-export type {
-	DitherGradientMatrix,
-	DitherGradientPosition,
-	DitherGradientTone,
-} from "./dither-gradient/variants";
+export { type DitherOptions, mountDither } from "./dither-gradient/dither";
+export { ditherGradient, type DitherGradientTone, type DitherGradientMatrix, type DitherGradientPosition } from "./dither-gradient/variants";
 export { default as DitheredLogo } from "./dithered-logo/dithered-logo.svelte";
-export type {
-	DitheredLogoSize,
-	DitheredLogoTone,
-	DitheredLogoVariant,
-} from "./dithered-logo/variants";
+export { ditheredLogo, type DitheredLogoVariant, type DitheredLogoTone, type DitheredLogoSize } from "./dithered-logo/variants";
 export { default as DocsNav } from "./docs-nav/docs-nav.svelte";
-export type { DocsNavItem, DocsNavSection } from "./docs-nav/types";
-export type { DocsNavConnector } from "./docs-nav/variants";
+export { default as DocsNavList } from "./docs-nav/docs-nav-list.svelte";
+export { revealCurrent } from "./docs-nav/scroll";
+export { type DocsNavItem, type DocsNavSection } from "./docs-nav/types";
+export { docsNav, type DocsNavConnector, type DocsNavRowState, markerWidth, rowState } from "./docs-nav/variants";
 export { default as DoubleUnderline } from "./double-underline/double-underline.svelte";
-export type { DoubleUnderlineTrigger } from "./double-underline/variants";
+export { doubleUnderline, type DoubleUnderlineTrigger } from "./double-underline/variants";
 export { default as DraggableMarquee } from "./draggable-marquee/draggable-marquee.svelte";
-export type {
-	DraggableMarqueeDirection,
-	DraggableMarqueeGap,
-} from "./draggable-marquee/variants";
-export type { DrawerDirection } from "./drawer/context";
+export { type MarqueeOptions, createMarquee } from "./draggable-marquee/marquee";
+export { draggableMarquee, type DraggableMarqueeGap, type DraggableMarqueeDirection } from "./draggable-marquee/variants";
 export { default as Drawer } from "./drawer/drawer.svelte";
 export { default as DrawerClose } from "./drawer/drawer-close.svelte";
 export { default as DrawerContent } from "./drawer/drawer-content.svelte";
@@ -325,189 +261,138 @@ export { default as DrawerFooter } from "./drawer/drawer-footer.svelte";
 export { default as DrawerHeader } from "./drawer/drawer-header.svelte";
 export { default as DrawerTitle } from "./drawer/drawer-title.svelte";
 export { default as DrawerTrigger } from "./drawer/drawer-trigger.svelte";
-export type { DrawerVariant } from "./drawer/variants";
+export { type DrawerDirection, type DrawerContext, DRAWER_CONTENT, HANDLE_SIDES, HANDLE_BAR_SIDES } from "./drawer/context";
+export { drawerFrame, type DrawerVariant } from "./drawer/variants";
 export { default as DropdownMenu } from "./dropdown-menu/dropdown-menu.svelte";
 export { default as DropdownMenuContent } from "./dropdown-menu/dropdown-menu-content.svelte";
 export { default as DropdownMenuItem } from "./dropdown-menu/dropdown-menu-item.svelte";
 export { default as DropdownMenuLabel } from "./dropdown-menu/dropdown-menu-label.svelte";
 export { default as DropdownMenuSeparator } from "./dropdown-menu/dropdown-menu-separator.svelte";
 export { default as DropdownMenuShortcut } from "./dropdown-menu/dropdown-menu-shortcut.svelte";
-export { default as DropdownMenuSub } from "./dropdown-menu/dropdown-menu-sub.svelte";
 export { default as DropdownMenuSubContent } from "./dropdown-menu/dropdown-menu-sub-content.svelte";
 export { default as DropdownMenuSubTrigger } from "./dropdown-menu/dropdown-menu-sub-trigger.svelte";
+export { default as DropdownMenuSub } from "./dropdown-menu/dropdown-menu-sub.svelte";
 export { default as DropdownMenuTrigger } from "./dropdown-menu/dropdown-menu-trigger.svelte";
 export { default as EyeTracking } from "./eye-tracking/eye-tracking.svelte";
-export type { EyeTrackingSize, EyeTrackingVariant } from "./eye-tracking/variants";
-export { type DiffLine, default as FileDiff } from "./file-diff/file-diff.svelte";
+export { type EyeTrackingOptions, mountEyeTracking } from "./eye-tracking/eyes";
+export { eyeTracking, type EyeTrackingVariant, type EyeTrackingSize } from "./eye-tracking/variants";
+export { default as FileDiff, type DiffLine } from "./file-diff/file-diff.svelte";
+export { type DiffLineKind } from "./file-diff/variants";
 export { default as FileTree } from "./file-tree/file-tree.svelte";
-export type { FileTreeNode } from "./file-tree/types";
-export type { FileTreeSize } from "./file-tree/variants";
+export { type FileTreeNode, type FlatRow, flatten } from "./file-tree/types";
+export { fileTree, type FileTreeSize, ROW_INSET } from "./file-tree/variants";
 export { default as FillButton } from "./fill-button/fill-button.svelte";
-export type { FillButtonSize, FillButtonTone } from "./fill-button/variants";
+export { fillButton, type FillButtonTone, type FillButtonSize } from "./fill-button/variants";
 export { default as FilterTable } from "./filter-table/filter-table.svelte";
-export type {
-	FilterRow,
-	FilterRowStatus,
-	FilterTableLabels,
-} from "./filter-table/types";
+export { type FilterRowStatus, type FilterRow, type FilterTableLabels } from "./filter-table/types";
 export { default as FineTuneCard } from "./fine-tune-card/fine-tune-card.svelte";
-export type {
-	FineTuneCardLabels,
-	FineTuneField,
-	FineTuneState,
-} from "./fine-tune-card/types";
-export type { FineTuneCardSize } from "./fine-tune-card/variants";
-export type { FisheyeGridItem } from "./fisheye-infinite-grid/fisheye";
+export { type FineTuneField, type FineTuneCardLabels, type FineTuneState } from "./fine-tune-card/types";
+export { fineTuneCard, type FineTuneCardSize } from "./fine-tune-card/variants";
 export { default as FisheyeInfiniteGrid } from "./fisheye-infinite-grid/fisheye-infinite-grid.svelte";
-export type { FisheyeInfiniteGridLabels } from "./fisheye-infinite-grid/labels";
-export type {
-	FisheyeInfiniteGridSize,
-	FisheyeInfiniteGridVariant,
-} from "./fisheye-infinite-grid/variants";
+export { type FisheyeGridItem, type FisheyeOptions, mountFisheye } from "./fisheye-infinite-grid/fisheye";
+export { type FisheyeInfiniteGridLabels, FISHEYE_INFINITE_GRID_LABELS } from "./fisheye-infinite-grid/labels";
+export { fisheyeInfiniteGrid, type FisheyeInfiniteGridVariant, type FisheyeInfiniteGridSize } from "./fisheye-infinite-grid/variants";
 export { default as FlightStatusCard } from "./flight-status-card/flight-status-card.svelte";
-export type { FlightStatus, FlightStatusLabels } from "./flight-status-card/types";
-export type {
-	FlightStatusDisplay,
-	FlightStatusTone,
-} from "./flight-status-card/variants";
+export { type FlightStatus, type FlightStatusLabels, FLIGHT_STATUS_LABELS, MATRIX_COLS, MATRIX_ROWS, MATRIX_DOT, MATRIX_GAP, MATRIX_WIDTH, MATRIX_HEIGHT, type MatrixDot, matrixDots, clampProgress } from "./flight-status-card/types";
+export { flightStatusCard, type FlightStatusTone, type FlightStatusDisplay, FLIGHT_STATUS_TONE, FLIGHT_TONE_BADGE } from "./flight-status-card/variants";
 export { default as Flowchart } from "./flowchart/flowchart.svelte";
-export type {
-	FlowchartConditionRow,
-	FlowchartEdge,
-	FlowchartOption,
-	StepNode,
-} from "./flowchart/types";
-export type { FlowchartBackground } from "./flowchart/variants";
+export { default as ConditionChip } from "./flowchart/condition-chip.svelte";
+export { type FlowchartOption, type FlowchartConditionRow, type StepNode, type FlowchartEdge } from "./flowchart/types";
+export { flowchartCanvas, type FlowchartBackground } from "./flowchart/variants";
 export { default as Footer } from "./footer/footer.svelte";
-export type { FooterColumn, FooterLink, FooterSocialLink } from "./footer/types";
-export type { FooterLayout } from "./footer/variants";
-export {
-	default as FullscreenNav,
-	type NavLink,
-} from "./fullscreen-nav/fullscreen-nav.svelte";
-export type {
-	FullscreenNavAlign,
-	FullscreenNavSize,
-	FullscreenNavVariant,
-} from "./fullscreen-nav/variants";
+export { type FooterLink, type FooterColumn, type FooterSocialLink } from "./footer/types";
+export { footer, type FooterLayout } from "./footer/variants";
+export { default as FullscreenNav, type NavLink } from "./fullscreen-nav/fullscreen-nav.svelte";
+export { fullscreenNav, type FullscreenNavVariant, type FullscreenNavAlign, type FullscreenNavSize, linkIndex, linkDelay, panelDelay } from "./fullscreen-nav/variants";
 export { default as FunnelChart } from "./funnel-chart/funnel-chart.svelte";
-export type { FunnelStage } from "./funnel-chart/geometry";
-export type {
-	FunnelEdges,
-	FunnelLabelLayout,
-	FunnelOrientation,
-	FunnelPattern,
-} from "./funnel-chart/variants";
+export { default as FunnelPlot } from "./funnel-chart/funnel-plot.svelte";
+export { type FunnelStage, type FunnelRing, STAGE_STAGGER, LABEL_DELAY, LABEL_FADE, ringStyle, segmentPath, type FunnelCell, funnelCells, stageColor } from "./funnel-chart/geometry";
+export { funnelChart, type FunnelOrientation, type FunnelLabelLayout, type FunnelPattern, FUNNEL_PATTERN_TILE, funnelEdges, type FunnelEdges } from "./funnel-chart/variants";
 export { default as Gauge } from "./gauge/gauge.svelte";
-export type { GaugeTone } from "./gauge/variants";
+export { gaugeIndicator, type GaugeTone } from "./gauge/variants";
 export { default as GaugeChart } from "./gauge-chart/gauge-chart.svelte";
-export type { GaugeChartLayout, GaugeChartTone } from "./gauge-chart/variants";
+export { default as GaugeNotch } from "./gauge-chart/gauge-notch.svelte";
+export { type Notch, NOTCH_SPRING, NOTCH_TIMING, LINEAR_HEIGHT, clampStagger, activeCount, arcNotches, linearNotches } from "./gauge-chart/geometry";
+export { gaugeChart, type GaugeChartLayout, type GaugeChartTone } from "./gauge-chart/variants";
 export { default as GibberishText } from "./gibberish-text/gibberish-text.svelte";
-export type { GibberishTextSize } from "./gibberish-text/variants";
-export type {
-	GithubCalendarDay,
-	GithubCalendarLabels,
-	GithubCalendarLevel,
-	GithubCalendarWeekStart,
-} from "./github-calendar/calendar";
+export { gibberishText, type GibberishTextSize } from "./gibberish-text/variants";
 export { default as GithubCalendar } from "./github-calendar/github-calendar.svelte";
-export type {
-	GithubCalendarShape,
-	GithubCalendarSize,
-	GithubCalendarTone,
-	GithubCalendarVariant,
-} from "./github-calendar/variants";
+export { type GithubCalendarLevel, type GithubCalendarDay, type GithubCalendarLabels, GITHUB_CALENDAR_LABELS, type GithubCalendarWeekStart, type CalendarCell, type CalendarGrid, levelOf, buildGrid, moveIndex } from "./github-calendar/calendar";
+export { githubCalendar, type GithubCalendarVariant, type GithubCalendarShape, type GithubCalendarSize, type GithubCalendarTone, TONE_FILL } from "./github-calendar/variants";
 export { default as GlitchText } from "./glitch-text/glitch-text.svelte";
-export type { GlitchTextBlendMode, GlitchTextSize } from "./glitch-text/variants";
+export { glitchText, type GlitchTextSize, type GlitchTextBlendMode } from "./glitch-text/variants";
 export { default as GradientHero01 } from "./gradient-hero-01/gradient-hero-01.svelte";
-export type { GradientHero01Action } from "./gradient-hero-01/types";
-export type { GradientHero01Size, GradientHero01Tone } from "./gradient-hero-01/variants";
+export { type GradientHero01Action } from "./gradient-hero-01/types";
+export { gradientHero01, type GradientHero01Tone, type GradientHero01Size } from "./gradient-hero-01/variants";
 export { default as GrainGradient } from "./grain-gradient/grain-gradient.svelte";
-export type { GrainGradientPosition, GrainGradientTone } from "./grain-gradient/variants";
-export {
-	type HeatmapLevel,
-	type HeatmapWeekStart,
-	heatmapLevelKey,
-} from "./heatmap-chart/calendar";
+export { grainGradient, type GrainGradientTone, type GrainGradientPosition, grainTexture } from "./grain-gradient/variants";
 export { default as HeatmapChart } from "./heatmap-chart/heatmap-chart.svelte";
 export { default as HeatmapLegend } from "./heatmap-chart/heatmap-legend.svelte";
-export type { HeatmapLegendAlign, HeatmapShape } from "./heatmap-chart/variants";
+export { default as HeatmapPlot } from "./heatmap-chart/heatmap-plot.svelte";
+export { default as PatternDefs } from "./heatmap-chart/pattern-defs.svelte";
+export { type HeatmapLevel, HEATMAP_LEVELS, type HeatmapCell, type HeatmapCalendar, localeWeekStart, buildCalendar, seeded, cellSeed, HEATMAP_TIMING, enterDelay, type HeatmapPhase, heatmapNext, LEVEL_PATTERN, type HeatmapWeekStart, heatmapLevelKey, HEATMAP_MARGIN } from "./heatmap-chart/calendar";
+export { runShimmer } from "./heatmap-chart/shimmer";
+export { heatmapChart, type HeatmapShape, type HeatmapLegendAlign, SHAPE_RADIUS, levelFill } from "./heatmap-chart/variants";
 export { default as HeroStage } from "./hero-stage/hero-stage.svelte";
 export { default as HeroStageSlot } from "./hero-stage/hero-stage-slot.svelte";
-export type { HeroStageMotion } from "./hero-stage/variants";
+export { heroStage, type HeroStageMotion } from "./hero-stage/variants";
 export { default as HoverCard } from "./hover-card/hover-card.svelte";
 export { default as HoverCardContent } from "./hover-card/hover-card-content.svelte";
 export { default as HoverCardTrigger } from "./hover-card/hover-card-trigger.svelte";
 export { default as HoverTransition } from "./hover-transition/hover-transition.svelte";
-export type {
-	HoverTransitionDirection,
-	HoverTransitionEffect,
-} from "./hover-transition/variants";
+export { type HoverVars, type HoverLayer, movesDefault, baseVars, hoverLayers, styleString } from "./hover-transition/effects";
+export { hoverTransition, type HoverTransitionEffect, type HoverTransitionDirection } from "./hover-transition/variants";
 export { default as ImageTrail } from "./image-trail/image-trail.svelte";
-export type { ImageTrailSize, ImageTrailVariant } from "./image-trail/trail";
+export { imageTrail, type ImageTrailVariant, type ImageTrailSize, type ImageTrailOptions, mountImageTrail } from "./image-trail/trail";
 export { default as InfiniteImageField } from "./infinite-image-field/infinite-image-field.svelte";
-export type { InfiniteImageFieldLabels } from "./infinite-image-field/labels";
-export type {
-	InfiniteImageFieldLayout,
-	InfiniteImageFieldShape,
-	InfiniteImageFieldSize,
-} from "./infinite-image-field/variants";
+export { type FieldOptions, mountField } from "./infinite-image-field/field";
+export { type InfiniteImageFieldLabels, INFINITE_IMAGE_FIELD_LABELS } from "./infinite-image-field/labels";
+export { infiniteImageField, type InfiniteImageFieldShape, type InfiniteImageFieldLayout, type InfiniteImageFieldSize } from "./infinite-image-field/variants";
 export { default as Input } from "./input/input.svelte";
-export type { InputSize } from "./input/variants";
+export { input, type InputSize } from "./input/variants";
 export { default as JitterText } from "./jitter-text/jitter-text.svelte";
-export type { JitterTextSize } from "./jitter-text/variants";
+export { jitterText, type JitterTextSize } from "./jitter-text/variants";
 export { default as JumpingText } from "./jumping-text/jumping-text.svelte";
-export type { JumpingTextMode, JumpingTextSize } from "./jumping-text/variants";
+export { jumpingText, type JumpingTextSize, type JumpingTextMode } from "./jumping-text/variants";
 export { default as Label } from "./label/label.svelte";
 export { default as LayeredStack } from "./layered-stack/layered-stack.svelte";
-export type {
-	LayeredStackAspect,
-	LayeredStackColumns,
-	LayeredStackItem,
-} from "./layered-stack/variants";
+export { layeredStack, type LayeredStackColumns, type LayeredStackAspect, type LayeredStackItem, stackRotation, stackOffsets, spreadDelay, nextIndex } from "./layered-stack/variants";
 export { cn } from "./lib/cn";
-export { default as Line } from "./line-chart/line.svelte";
 export { default as LineChart } from "./line-chart/line-chart.svelte";
+export { default as Line } from "./line-chart/line.svelte";
 export { default as ProfitLossLine } from "./line-chart/profit-loss-line.svelte";
-export type { LineCurve, LineVariant, ProfitLossEncoding } from "./line-chart/variants";
+export { line, type LineCurve, type LineVariant, LINE_CURVES, profitLoss, type ProfitLossEncoding } from "./line-chart/variants";
 export { default as LiquidChrome } from "./liquid-chrome/liquid-chrome.svelte";
-export type {
-	LiquidChromePosition,
-	LiquidChromeSpeed,
-	LiquidChromeTone,
-} from "./liquid-chrome/variants";
-export { type LiveContextValue, useLive } from "./live-line-chart/context";
-export type { LiveFrame, LivePoint, Momentum } from "./live-line-chart/live";
-export { default as LiveLine } from "./live-line-chart/live-line.svelte";
+export { type LiquidChromeOptions, mountLiquidChrome } from "./liquid-chrome/chrome";
+export { liquidChrome, type LiquidChromeTone, type LiquidChromeSpeed, type LiquidChromePosition, LIQUID_CHROME_COLORS, LIQUID_CHROME_SPEED } from "./liquid-chrome/variants";
 export { default as LiveLineChart } from "./live-line-chart/live-line-chart.svelte";
+export { default as LiveLine } from "./live-line-chart/live-line.svelte";
+export { default as LivePlot } from "./live-line-chart/live-plot.svelte";
+export { default as LiveTimePill } from "./live-line-chart/live-time-pill.svelte";
 export { default as LiveXAxis } from "./live-line-chart/live-x-axis.svelte";
 export { default as LiveYAxis } from "./live-line-chart/live-y-axis.svelte";
-export type {
-	LiveAxisPosition,
-	LiveLineCurve,
-	LiveLineTint,
-	LiveMomentum,
-} from "./live-line-chart/variants";
+export { default as LiveYTick } from "./live-line-chart/live-y-tick.svelte";
+export { type LiveContextValue, setLive, useLive, defaultFormatTime } from "./live-line-chart/context";
+export { type LivePoint, type LiveFrame, type Momentum, smoothingFactor, smoothingTau, targetRange, nextFrame, settled, interpolateAt, nearestPointIndex, liveRecords, detectMomentum, niceInterval, tickValues, edgeOpacity, LIVE_TICKER_CLEARANCE, crosshairFade } from "./live-line-chart/live";
+export { liveLine, type LiveLineCurve, type LiveMomentum, type LiveLineTint, liveAxis, type LiveAxisPosition } from "./live-line-chart/variants";
 export { default as LoadingScreen } from "./loading-screen/loading-screen.svelte";
-export type {
-	LoadingScreenIndicator,
-	LoadingScreenLogoMotion,
-	LoadingScreenPosition,
-} from "./loading-screen/variants";
+export { loadingScreen, type LoadingScreenPosition, type LoadingScreenLogoMotion, type LoadingScreenIndicator, statusLabel } from "./loading-screen/variants";
 export { default as LoadingState } from "./loading-state/loading-state.svelte";
-export type { LoadingStateVariant } from "./loading-state/types";
+export { type LoadingStateVariant } from "./loading-state/types";
 export { default as LogoCarousel } from "./logo-carousel/logo-carousel.svelte";
+export { default as LogoColumn } from "./logo-carousel/logo-column.svelte";
 export { default as MagnetLines } from "./magnet-lines/magnet-lines.svelte";
-export type { MagnetLinesSize, MagnetLinesTone } from "./magnet-lines/variants";
+export { type MagnetLinesOptions, mountMagnetLines } from "./magnet-lines/magnet";
+export { magnetLines, type MagnetLinesSize, type MagnetLinesTone } from "./magnet-lines/variants";
 export { default as Markdown } from "./markdown/markdown.svelte";
-export type { MarkdownSize } from "./markdown/variants";
+export { markdown, type MarkdownSize } from "./markdown/variants";
 export { default as Marker } from "./marker/marker.svelte";
-export type { MarkerTone, MarkerVariant } from "./marker/variants";
+export { marker, type MarkerVariant, type MarkerTone, type MarkerShape, MARKER_SHAPES, MARKER_STAGGER_MS } from "./marker/variants";
 export { default as MaskText } from "./mask-text/mask-text.svelte";
-export type { MaskTextSize } from "./mask-text/variants";
+export { maskText, type MaskTextSize } from "./mask-text/variants";
 export { default as MegaNavbar } from "./mega-navbar/mega-navbar.svelte";
-export type { MegaMenuGroup, MegaMenuItem, MegaNavLink } from "./mega-navbar/types";
-export type { MegaNavbarVariant } from "./mega-navbar/variants";
+export { type MegaNavLink, type MegaMenuItem, type MegaMenuGroup } from "./mega-navbar/types";
+export { megaNavbar, type MegaNavbarVariant } from "./mega-navbar/variants";
 export { default as Message } from "./message/message.svelte";
 export { default as MessageAvatar } from "./message/message-avatar.svelte";
 export { default as MessageBubble } from "./message/message-bubble.svelte";
@@ -516,60 +401,37 @@ export { default as MessageFooter } from "./message/message-footer.svelte";
 export { default as MessageGroup } from "./message/message-group.svelte";
 export { default as MessageHeader } from "./message/message-header.svelte";
 export { default as MessageTyping } from "./message/message-typing.svelte";
-export type {
-	MessageAlign,
-	MessageBubbleVariant,
-	MessageMotion,
-} from "./message/variants";
+export { message, type MessageAlign, type MessageMotion, messageBubble, type MessageBubbleVariant } from "./message/variants";
 export { default as MetisText } from "./metis-text/metis-text.svelte";
-export type { MetisTextDirection } from "./metis-text/variants";
+export { metisText, type MetisTextDirection } from "./metis-text/variants";
 export { default as MirrorText } from "./mirror-text/mirror-text.svelte";
-export type { MirrorTextDirection } from "./mirror-text/variants";
+export { mirrorText, type MirrorTextDirection } from "./mirror-text/variants";
 export { default as MorphText } from "./morph-text/morph-text.svelte";
-export type { MorphTextSize } from "./morph-text/variants";
-export type { MorphSpring } from "./morphing-modal/morph";
+export { morphText, type MorphTextSize } from "./morph-text/variants";
 export { default as MorphingModal } from "./morphing-modal/morphing-modal.svelte";
-export type { MorphingModalSize } from "./morphing-modal/variants";
+export { type MorphSpring, MORPH_MS, MORPH_EASE, invert } from "./morphing-modal/morph";
+export { morphingModal, type MorphingModalSize } from "./morphing-modal/variants";
 export { default as MusicPlayer } from "./music-player/music-player.svelte";
-export type { MusicPlayerLabels } from "./music-player/types";
-export type { MusicPlayerLayout } from "./music-player/variants";
+export { type MusicPlayerLabels, MUSIC_PLAYER_LABELS, formatTime, clampUnit, SEEK_TOLERANCE } from "./music-player/types";
+export { musicPlayer, type MusicPlayerLayout } from "./music-player/variants";
 export { default as Navbar } from "./navbar/navbar.svelte";
-export type { NavbarVariant } from "./navbar/variants";
+export { navbar, type NavbarVariant } from "./navbar/variants";
 export { default as OgAuthorProfile } from "./og-author-profile/og-author-profile.svelte";
-export type {
-	OgAuthorProfileMode,
-	OgAuthorProfileTone,
-} from "./og-author-profile/variants";
+export { ogAuthorProfile, type OgAuthorProfileMode, type OgAuthorProfileTone } from "./og-author-profile/variants";
 export { default as OgBlogPost } from "./og-blog-post/og-blog-post.svelte";
-export type { OgBlogPostMode, OgBlogPostTone } from "./og-blog-post/variants";
+export { ogBlogPost, type OgBlogPostMode, type OgBlogPostTone } from "./og-blog-post/variants";
 export { default as OgChangelog } from "./og-changelog/og-changelog.svelte";
-export type {
-	OgChangelogKind,
-	OgChangelogMode,
-	OgChangelogTone,
-} from "./og-changelog/variants";
+export { ogChangelog, ogChangelogMarker, OG_CHANGELOG_ICONS, type OgChangelogMode, type OgChangelogTone, type OgChangelogKind } from "./og-changelog/variants";
 export { default as OgDocsPage } from "./og-docs-page/og-docs-page.svelte";
-export type {
-	OgDocsPageMode,
-	OgDocsPageMotif,
-	OgDocsPageTone,
-} from "./og-docs-page/variants";
+export { ogDocsPage, OG_DOCS_PAGE_BONES, type OgDocsPageMode, type OgDocsPageTone, type OgDocsPageMotif } from "./og-docs-page/variants";
 export { default as OgGithubRepo } from "./og-github-repo/og-github-repo.svelte";
-export type { OgGithubRepoMode, OgGithubRepoTone } from "./og-github-repo/variants";
+export { ogGithubRepo, ogGithubRepoCell, type OgGithubRepoMode, type OgGithubRepoTone, type OgGithubRepoLevel, OG_GITHUB_REPO_WEEKS, OG_GITHUB_REPO_ICONS } from "./og-github-repo/variants";
 export { default as OgNewsletterIssue } from "./og-newsletter-issue/og-newsletter-issue.svelte";
-export type {
-	OgNewsletterIssueMode,
-	OgNewsletterIssueTone,
-} from "./og-newsletter-issue/variants";
+export { ogNewsletterIssue, type OgNewsletterIssueMode, type OgNewsletterIssueTone } from "./og-newsletter-issue/variants";
 export { default as OrbitCardStack } from "./orbit-card-stack/orbit-card-stack.svelte";
-export type {
-	OrbitCardStackLabels,
-	OrbitCardStackLayout,
-	OrbitCardStackSize,
-	OrbitStackItem,
-} from "./orbit-card-stack/variants";
+export { orbitCardStack, type OrbitCardStackSize, type OrbitCardStackLayout, type OrbitStackItem, type OrbitCardStackLabels, DEFAULT_ORBIT_LABELS, initialsFor, clampIndex, orbitTransform } from "./orbit-card-stack/variants";
 export { default as OverviewCard } from "./overview-card/overview-card.svelte";
-export type { OverviewCardChart, OverviewCardSize } from "./overview-card/variants";
+export { overviewCard, type OverviewCardSize, type OverviewCardChart } from "./overview-card/variants";
 export { default as Pagination } from "./pagination/pagination.svelte";
 export { default as PaginationContent } from "./pagination/pagination-content.svelte";
 export { default as PaginationEllipsis } from "./pagination/pagination-ellipsis.svelte";
@@ -579,104 +441,74 @@ export { default as PaginationNext } from "./pagination/pagination-next.svelte";
 export { default as PaginationPrevious } from "./pagination/pagination-previous.svelte";
 export { paginationRange } from "./pagination/range";
 export { default as ParticleText } from "./particle-text/particle-text.svelte";
-export type { ParticleTextShape, ParticleTextSize } from "./particle-text/particles";
+export { particleText, type ParticleTextShape, type ParticleTextSize, type ParticleOptions, mountParticles } from "./particle-text/particles";
 export { default as PieChart } from "./pie-chart/pie-chart.svelte";
-export type { PieHover, PieVariant } from "./pie-chart/variants";
+export { default as PiePlot } from "./pie-chart/pie-plot.svelte";
+export { type PieSlice, type PieRow, POP_SPRING, PIE_START, PIE_END, sliceDelay, LABEL_MIN_SPAN, pieRows, pieSlices, arcPath, bisector } from "./pie-chart/geometry";
+export { pieChart, type PieVariant, type PieHover, PIE_INNER_RATIO } from "./pie-chart/variants";
 export { default as PixelCanvas } from "./pixel-canvas/pixel-canvas.svelte";
-export type {
-	PixelCanvasPosition,
-	PixelCanvasTone,
-	PixelCanvasVariant,
-} from "./pixel-canvas/variants";
+export { type PixelOptions, mountPixels } from "./pixel-canvas/pixels";
+export { pixelCanvas, type PixelCanvasVariant, type PixelCanvasTone, type PixelCanvasPosition } from "./pixel-canvas/variants";
 export { default as PixelImageTrail } from "./pixel-image-trail/pixel-image-trail.svelte";
-export type {
-	PixelImageTrailSize,
-	PixelImageTrailVariant,
-} from "./pixel-image-trail/pixel-trail";
+export { pixelImageTrail, type PixelImageTrailVariant, type PixelImageTrailSize, type PixelTrailOptions, mountPixelTrail } from "./pixel-image-trail/pixel-trail";
 export { default as Popover } from "./popover/popover.svelte";
 export { default as PopoverContent } from "./popover/popover-content.svelte";
 export { default as PopoverTrigger } from "./popover/popover-trigger.svelte";
 export { default as Pricing01 } from "./pricing-01/pricing-01.svelte";
-export type { Pricing01Labels, Pricing01Period, Pricing01Plan } from "./pricing-01/types";
-export type { Pricing01Variant } from "./pricing-01/variants";
+export { type Pricing01Period, type Pricing01Plan, type Pricing01Labels, PRICING_01_LABELS } from "./pricing-01/types";
+export { pricing01, type Pricing01Variant } from "./pricing-01/variants";
 export { default as Pricing02 } from "./pricing-02/pricing-02.svelte";
-export type { Pricing02Labels, Pricing02Period, Pricing02Plan } from "./pricing-02/types";
-export type { Pricing02Variant } from "./pricing-02/variants";
+export { type Pricing02Period, type Pricing02Plan, type Pricing02Labels, PRICING_02_LABELS, digitDelay } from "./pricing-02/types";
+export { pricing02, type Pricing02Variant } from "./pricing-02/variants";
 export { default as PrismGradient } from "./prism-gradient/prism-gradient.svelte";
-export type {
-	PrismGradientPosition,
-	PrismGradientSpeed,
-	PrismGradientTone,
-} from "./prism-gradient/variants";
+export { type PrismGradientOptions, mountPrismGradient } from "./prism-gradient/prism";
+export { prismGradient, type PrismGradientTone, type PrismGradientSpeed, type PrismGradientPosition, PRISM_GRADIENT_COLORS, PRISM_GRADIENT_SPEED } from "./prism-gradient/variants";
 export { default as Progress } from "./progress/progress.svelte";
-export type { ProgressSize, ProgressTone, ProgressVariant } from "./progress/variants";
-export {
-	buildProjection,
-	type ProjectionMethod,
-	type ProjectionMode,
-	type ProjectionPoint,
-} from "./projection-line/geometry";
+export { progress, type ProgressSize, type ProgressTone, type ProgressVariant, PROGRESS_RING, progressPercent } from "./progress/variants";
 export { default as ProjectionLine } from "./projection-line/projection-line.svelte";
-export type {
-	ProjectionLineCurve,
-	ProjectionLineVariant,
-} from "./projection-line/variants";
+export { type ProjectionPoint, type ProjectionMode, type ProjectionMethod, buildProjection, bezierPath, projectionExtent, visibleEndX } from "./projection-line/geometry";
+export { projectionLine, type ProjectionLineVariant, type ProjectionLineCurve } from "./projection-line/variants";
 export { default as Question } from "./question/question.svelte";
-export type {
-	QuestionAnswer,
-	QuestionAnswers,
-	QuestionItem,
-	QuestionOption,
-} from "./question/types";
-export type { QuestionLayout } from "./question/variants";
-export type { RadarMetric, RadarSeries } from "./radar-chart/geometry";
+export { default as QuestionOptions } from "./question/question-options.svelte";
+export { type QuestionOption, type QuestionItem, type QuestionAnswer, type QuestionAnswers } from "./question/types";
+export { question, type QuestionLayout } from "./question/variants";
+export { default as RadarChart } from "./radar-chart/radar-chart.svelte";
 export { default as RadarArea } from "./radar-chart/radar-area.svelte";
 export { default as RadarAxis } from "./radar-chart/radar-axis.svelte";
-export { default as RadarChart } from "./radar-chart/radar-chart.svelte";
 export { default as RadarGrid } from "./radar-chart/radar-grid.svelte";
 export { default as RadarLabels } from "./radar-chart/radar-labels.svelte";
+export { default as RadarPlot } from "./radar-chart/radar-plot.svelte";
 export { default as RadarTooltip } from "./radar-chart/radar-tooltip.svelte";
-export type { RadarGridShape, RadarVariant } from "./radar-chart/variants";
+export { type RadarContextValue, setRadar, useRadar } from "./radar-chart/context";
+export { enterSpring, enterTween } from "./radar-chart/enter.svelte";
+export { type RadarMetric, type RadarSeries, type Point, RADAR_TIMING, RADAR_SPRING, SERIES_DASH, seriesKey, seriesDash, angleAt, pointAt, polygonPath, ringPath, niceMax, markerPath } from "./radar-chart/geometry";
+export { radar, type RadarGridShape, type RadarVariant } from "./radar-chart/variants";
 export { default as RadioGroup } from "./radio-group/radio-group.svelte";
 export { default as RadioGroupItem } from "./radio-group/radio-group-item.svelte";
-export type { RadioOrientation, RadioSize, RadioVariant } from "./radio-group/variants";
+export { type RadioGroupItemContext } from "./radio-group/context";
+export { radioGroup, type RadioVariant, type RadioSize, type RadioOrientation } from "./radio-group/variants";
 export { default as Reasoning } from "./reasoning/reasoning.svelte";
-export { default as ReasoningStep } from "./reasoning/reasoning-step.svelte";
 export { default as ReasoningStepDetails } from "./reasoning/reasoning-step-details.svelte";
 export { default as ReasoningStepImage } from "./reasoning/reasoning-step-image.svelte";
 export { default as ReasoningStepSource } from "./reasoning/reasoning-step-source.svelte";
 export { default as ReasoningStepSources } from "./reasoning/reasoning-step-sources.svelte";
+export { default as ReasoningStep } from "./reasoning/reasoning-step.svelte";
 export { default as ReasoningSteps } from "./reasoning/reasoning-steps.svelte";
-export type { ReasoningStepStatus, ReasoningVariant } from "./reasoning/variants";
+export { type ActiveStep, setReasoningContext, useReasoning } from "./reasoning/context";
+export { reasoning, type ReasoningVariant, reasoningStep, type ReasoningStepStatus, reasoningExtras } from "./reasoning/variants";
 export { default as RecommendationCard } from "./recommendation-card/recommendation-card.svelte";
-export type {
-	RecommendationLabels,
-	RecommendationOption,
-} from "./recommendation-card/types";
+export { type RecommendationOption, type RecommendationLabels } from "./recommendation-card/types";
 export { default as RecordsTable } from "./records-table/records-table.svelte";
-export type {
-	ColumnKey,
-	RecordRow,
-	RecordSort,
-	RecordSortKey,
-	RecordsColumnConfig,
-	RecordsColumnMeta,
-	RecordsColumnSettings,
-	RecordsColumnType,
-	RecordsPrompt,
-	RecordsTableConfig,
-	RecordsTableLabels,
-	RecordsToolKind,
-} from "./records-table/types";
-export type { RecordStrength, RecordsDensity } from "./records-table/variants";
-export {
-	default as ReorderList,
-	type ReorderItem,
-} from "./reorder-list/reorder-list.svelte";
-export type { ReorderListVariant } from "./reorder-list/variants";
+export { default as ConfigPopover } from "./records-table/config-popover.svelte";
+export { default as GlyphIcon } from "./records-table/glyph-icon.svelte";
+export { default as TagList } from "./records-table/tag-list.svelte";
+export { COLUMN_ORDER, INPUT_COLUMNS, ACTIONS_WIDTH, COLUMN_WIDTHS, NEW_PROPERTY_TYPES, RECORDS_TABLE_LABELS, resolveColumn, updateColumn, strengthRank, strengthLabel, sortRows, nextSort, toggleIn, pinOffsets, TYPE_GLYPHS } from "./records-table/model";
+export { type RecordSortKey, type RecordSort, type RecordsToolKind, type ColumnKey, type RecordsColumnType, type RecordsPrompt, type RecordsColumnMeta, type RecordsColumnSettings, type RecordsColumnConfig, type RecordsTableConfig, type ResolvedColumn, type RecordRow, type RecordsTableLabels, type Glyph } from "./records-table/types";
+export { recordsTable, type RecordsDensity, strengthDot, type RecordStrength, tagToneClass } from "./records-table/variants";
+export { default as ReorderList, type ReorderItem } from "./reorder-list/reorder-list.svelte";
+export { reorderList, type ReorderListVariant } from "./reorder-list/variants";
 export { default as ResponseStream } from "./response-stream/response-stream.svelte";
-export type { ResponseStreamSize } from "./response-stream/variants";
-export type { ResponsiveDialogVariant } from "./responsive-dialog/context";
+export { responseStream, type ResponseStreamSize } from "./response-stream/variants";
 export { default as ResponsiveDialog } from "./responsive-dialog/responsive-dialog.svelte";
 export { default as ResponsiveDialogClose } from "./responsive-dialog/responsive-dialog-close.svelte";
 export { default as ResponsiveDialogContent } from "./responsive-dialog/responsive-dialog-content.svelte";
@@ -685,78 +517,52 @@ export { default as ResponsiveDialogFooter } from "./responsive-dialog/responsiv
 export { default as ResponsiveDialogHeader } from "./responsive-dialog/responsive-dialog-header.svelte";
 export { default as ResponsiveDialogTitle } from "./responsive-dialog/responsive-dialog-title.svelte";
 export { default as ResponsiveDialogTrigger } from "./responsive-dialog/responsive-dialog-trigger.svelte";
+export { type ResponsiveDialogVariant, type ResponsiveDialogContext } from "./responsive-dialog/context";
 export { default as RevealText } from "./reveal-text/reveal-text.svelte";
-export type {
-	RevealTextDirection,
-	RevealTextSize,
-	RevealTextSplit,
-	RevealTextStaggerFrom,
-	RevealTextTrigger,
-} from "./reveal-text/variants";
+export { revealText, type RevealTextSplit, type RevealTextTrigger, type RevealTextDirection, type RevealTextStaggerFrom, type RevealTextSize, type RevealUnit, staggerRank, revealUnits } from "./reveal-text/variants";
 export { default as RingChart } from "./ring-chart/ring-chart.svelte";
-export type { RingCap } from "./ring-chart/variants";
-export type { RippleTransitionImage } from "./ripple-transition/ripple";
+export { default as RingPlot } from "./ring-chart/ring-plot.svelte";
+export { default as Ring } from "./ring-chart/ring.svelte";
+export { type RingRow, type RingLayout, RING_START, RING_END, expandDelay, sweepDelay, EXPAND_FROM, ringRows, ringLayout } from "./ring-chart/geometry";
+export { ringChart, type RingCap } from "./ring-chart/variants";
 export { default as RippleTransition } from "./ripple-transition/ripple-transition.svelte";
-export type {
-	RippleTransitionRadius,
-	RippleTransitionRings,
-} from "./ripple-transition/variants";
+export { type RippleTransitionImage, type RipplePoint, placeRipple, layerState, wrapIndex } from "./ripple-transition/ripple";
+export { rippleTransition, type RippleTransitionRings, type RippleTransitionRadius, type RippleTransitionState, RIPPLE_TRANSITION_RING_COUNT } from "./ripple-transition/variants";
 export { default as RollText } from "./roll-text/roll-text.svelte";
-export type { RollStagger, RollTextMotion, RollTextSize } from "./roll-text/variants";
-export type { RollingDigitsLocale } from "./rolling-digits/format";
+export { rollText, type RollTextSize, type RollTextMotion, ROLL_DONE, type RollStagger } from "./roll-text/variants";
 export { default as RollingDigits } from "./rolling-digits/rolling-digits.svelte";
-export type {
-	RollingDigitsDirection,
-	RollingDigitsSize,
-} from "./rolling-digits/variants";
-export type {
-	SankeyData,
-	SankeyLinkInput,
-	SankeyNodeInput,
-	SankeyText,
-} from "./sankey-chart/layout";
+export { default as RollingDigit } from "./rolling-digits/rolling-digit.svelte";
+export { type RollingDigitsLocale, type RollingDigitCell, formatRollingDigits, rollingDigitCells, rollsUp } from "./rolling-digits/format";
+export { rollingDigits, type RollingDigitsDirection, type RollingDigitsSize } from "./rolling-digits/variants";
 export { default as SankeyChart } from "./sankey-chart/sankey-chart.svelte";
-export type { SankeyLinkColor, SankeyOrientation } from "./sankey-chart/variants";
-export { default as Scatter } from "./scatter-chart/scatter.svelte";
+export { default as SankeyPlot } from "./sankey-chart/sankey-plot.svelte";
+export { type SankeyNodeInput, type SankeyLinkInput, type SankeyData, type SankeyFlow, type LaidNode, type LaidLink, nodeColor, layoutSankey, SANKEY_TIMING, LINK_OPACITY, NODE_FADED, LABEL_OFFSET, VALUE_GAP, type LabelPlacement, labelPlacement, visibleLabels, type SankeyText, SANKEY_TEXT, SANKEY_MARGIN } from "./sankey-chart/layout";
+export { sankeyChart, type SankeyOrientation, type SankeyLinkColor } from "./sankey-chart/variants";
 export { default as ScatterChart } from "./scatter-chart/scatter-chart.svelte";
-export type { ScatterShape, ScatterSize } from "./scatter-chart/variants";
+export { default as ScatterPlot } from "./scatter-chart/scatter-plot.svelte";
+export { default as Scatter } from "./scatter-chart/scatter.svelte";
+export { type ScatterRootValue, setScatterRoot, useScatterRoot } from "./scatter-chart/context";
+export { POINT_ENTER, POINT_BLUR, POINT_CONCEAL, scatterDomain, type NearestHit, nearestPoint, shapePath } from "./scatter-chart/geometry";
+export { scatterPoint, type ScatterSize, type ScatterShape, SCATTER_RADIUS, SCATTER_SHAPES } from "./scatter-chart/variants";
 export { default as ScoreCard } from "./score-card/score-card.svelte";
-export type { ScoreCardSize } from "./score-card/variants";
+export { scoreCard, type ScoreCardSize } from "./score-card/variants";
 export { default as ScrollArea } from "./scroll-area/scroll-area.svelte";
 export { default as ScrollChoreography } from "./scroll-choreography/scroll-choreography.svelte";
-export type {
-	ScrollChoreographyImage,
-	ScrollChoreographyImages,
-} from "./scroll-choreography/types";
-export type {
-	ScrollChoreographySize,
-	ScrollChoreographyVariant,
-} from "./scroll-choreography/variants";
+export { type ScrollChoreographyImage, type ScrollChoreographyImages, CHOREOGRAPHY_SLOTS } from "./scroll-choreography/types";
+export { scrollChoreography, type ScrollChoreographySize, type ScrollChoreographyVariant } from "./scroll-choreography/variants";
 export { default as ScrollProgress } from "./scroll-progress/scroll-progress.svelte";
-export type { ScrollProgressPosition } from "./scroll-progress/variants";
+export { scrollProgress, type ScrollProgressPosition, scrollPercent } from "./scroll-progress/variants";
 export { default as ScrollReveal } from "./scroll-reveal/scroll-reveal.svelte";
-export type { ScrollRevealSize } from "./scroll-reveal/variants";
+export { scrollReveal, type ScrollRevealSize } from "./scroll-reveal/variants";
 export { default as ScrollSplitCard } from "./scroll-split-card/scroll-split-card.svelte";
-export type { ScrollSplitCardItem } from "./scroll-split-card/types";
-export type {
-	ScrollSplitCardSize,
-	ScrollSplitCardTone,
-} from "./scroll-split-card/variants";
+export { type ScrollSplitCardItem, SPLIT_POSITIONS } from "./scroll-split-card/types";
+export { scrollSplitCard, type ScrollSplitCardSize, type ScrollSplitCardTone, type ScrollSplitCardPosition } from "./scroll-split-card/variants";
 export { default as ScrollTiltedGrid } from "./scroll-tilted-grid/scroll-tilted-grid.svelte";
-export type {
-	ScrollTiltedGridAspect,
-	ScrollTiltedGridImage,
-	ScrollTiltedGridRadius,
-	ScrollTiltedGridSize,
-} from "./scroll-tilted-grid/variants";
+export { scrollTiltedGrid, type ScrollTiltedGridSize, type ScrollTiltedGridAspect, type ScrollTiltedGridRadius, type ScrollTiltedGridImage, scrollPort, scrubTiles } from "./scroll-tilted-grid/variants";
 export { default as ScrollVelocity } from "./scroll-velocity/scroll-velocity.svelte";
-export type {
-	ScrollVelocityDirection,
-	ScrollVelocityLayout,
-	ScrollVelocitySize,
-} from "./scroll-velocity/variants";
+export { scrollVelocity, type ScrollVelocityLayout, type ScrollVelocityDirection, type ScrollVelocitySize, velocityRate, followScroll } from "./scroll-velocity/variants";
 export { default as ScrubField } from "./scrub-field/scrub-field.svelte";
-export type { ScrubFieldSize, ScrubFieldTone } from "./scrub-field/variants";
+export { scrubField, type ScrubFieldSize, type ScrubFieldTone } from "./scrub-field/variants";
 export { default as Select } from "./select/select.svelte";
 export { default as SelectContent } from "./select/select-content.svelte";
 export { default as SelectGroup } from "./select/select-group.svelte";
@@ -773,79 +579,62 @@ export { default as SheetFooter } from "./sheet/sheet-footer.svelte";
 export { default as SheetHeader } from "./sheet/sheet-header.svelte";
 export { default as SheetTitle } from "./sheet/sheet-title.svelte";
 export { default as SheetTrigger } from "./sheet/sheet-trigger.svelte";
-export type { SheetSide } from "./sheet/variants";
+export { sheetPanel, type SheetSide } from "./sheet/variants";
 export { default as ShimmerText } from "./shimmer-text/shimmer-text.svelte";
-export type { ShimmerTextSize } from "./shimmer-text/variants";
+export { shimmerText, type ShimmerTextSize } from "./shimmer-text/variants";
 export { default as Shortcut } from "./shortcut/shortcut.svelte";
-export type { ShortcutSize, ShortcutVariant } from "./shortcut/variants";
+export { shortcutCap, type ShortcutVariant, type ShortcutSize } from "./shortcut/variants";
 export { default as ShowMore } from "./show-more/show-more.svelte";
 export { default as ShowcaseGrid } from "./showcase-grid/showcase-grid.svelte";
 export { default as ShowcasePanel } from "./showcase-grid/showcase-panel.svelte";
-export type { ShowcaseFrame, ShowcaseSpan } from "./showcase-grid/variants";
-export type { SidebarNavLabels } from "./sidebar-nav/labels";
+export { showcaseGrid, showcasePanel, type ShowcaseFrame, type ShowcaseSpan, DOT_CORNERS, RULE_MARKS, HATCH_MARKS } from "./showcase-grid/variants";
 export { default as SidebarNav } from "./sidebar-nav/sidebar-nav.svelte";
-export type {
-	SidebarNavItem,
-	SidebarRecent,
-	SidebarWorkspace,
-	SidebarWorkspaceAction,
-} from "./sidebar-nav/types";
-export type { SidebarNavSize } from "./sidebar-nav/variants";
+export { type SidebarNavLabels, SIDEBAR_NAV_LABELS } from "./sidebar-nav/labels";
+export { type SidebarNavItem, type SidebarRecent, type SidebarWorkspace, type SidebarWorkspaceAction } from "./sidebar-nav/types";
+export { sidebarNav, type SidebarNavSize } from "./sidebar-nav/variants";
 export { default as Signature } from "./signature/signature.svelte";
-export type { SignatureVariant } from "./signature/variants";
+export { signature, type SignatureVariant, signatureTiming } from "./signature/variants";
 export { default as SilkAurora } from "./silk-aurora/silk-aurora.svelte";
-export type {
-	SilkAuroraPosition,
-	SilkAuroraSpeed,
-	SilkAuroraTone,
-} from "./silk-aurora/variants";
+export { type SilkAuroraOptions, mountSilkAurora } from "./silk-aurora/silk";
+export { silkAurora, type SilkAuroraTone, type SilkAuroraSpeed, type SilkAuroraPosition, SILK_AURORA_COLORS, SILK_AURORA_SPEED } from "./silk-aurora/variants";
 export { default as Skeleton } from "./skeleton/skeleton.svelte";
-export type { SkeletonShape } from "./skeleton/variants";
+export { skeleton, type SkeletonShape } from "./skeleton/variants";
 export { default as Slider } from "./slider/slider.svelte";
-export type { SliderMark, SliderSize } from "./slider/variants";
+export { SLIDER_SINGLE_THUMB_VARIANTS, sliderLayout, SLIDER_WAVE_BARS, type SliderWaveBar, sliderWaveBars, sliderThumbCenter, sliderInlineSplit, SLIDER_RULER_GAP, SLIDER_RULER_MAJOR_EVERY, type SliderRulerTick, sliderRulerTicks, sliderRulerOffset, sliderRulerValueAt } from "./slider/core";
+export { slider, type SliderSize, type SliderVariant, type SliderMark, sliderPercent } from "./slider/variants";
 export { default as SpectralRibbon } from "./spectral-ribbon/spectral-ribbon.svelte";
-export type {
-	SpectralRibbonPosition,
-	SpectralRibbonSpeed,
-	SpectralRibbonTone,
-} from "./spectral-ribbon/variants";
+export { type SpectralRibbonOptions, mountSpectralRibbon } from "./spectral-ribbon/ribbon";
+export { spectralRibbon, type SpectralRibbonTone, type SpectralRibbonSpeed, type SpectralRibbonPosition, SPECTRAL_RIBBON_COLORS, SPECTRAL_RIBBON_SPEED } from "./spectral-ribbon/variants";
 export { default as Spinner } from "./spinner/spinner.svelte";
+export { spinnerIcon, type SpinnerSize } from "./spinner/variants";
 export { default as SplitFlapDisplay } from "./split-flap-display/split-flap-display.svelte";
-export type {
-	SplitFlapIndicator,
-	SplitFlapSize,
-	SplitFlapVariant,
-} from "./split-flap-display/variants";
+export { default as SplitFlapCell } from "./split-flap-display/split-flap-cell.svelte";
+export { SPLIT_FLAP_CHARACTERS, flapSteps, flapColumns, flapRows } from "./split-flap-display/flap";
+export { splitFlap, type SplitFlapVariant, type SplitFlapSize, type SplitFlapIndicator } from "./split-flap-display/variants";
 export { default as SplitText } from "./split-text/split-text.svelte";
-export type { SplitTextSize } from "./split-text/variants";
+export { splitText, type SplitTextSize } from "./split-text/variants";
 export { default as StaggeredLetter } from "./staggered-letter/staggered-letter.svelte";
-export type { StaggeredLetterDirection } from "./staggered-letter/variants";
+export { staggeredLetter, type StaggeredLetterDirection } from "./staggered-letter/variants";
 export { default as StatCard } from "./stat-card/stat-card.svelte";
-export type { StatCardChartKind, StatCardSize } from "./stat-card/variants";
+export { statCard, type StatCardSize, type StatCardChartKind, periodTrend } from "./stat-card/variants";
 export { default as StatCardMap } from "./stat-card-map/stat-card-map.svelte";
-export type { StatCardMapSize } from "./stat-card-map/variants";
+export { statCardMap, type StatCardMapSize } from "./stat-card-map/variants";
 export { default as StatusMonitor } from "./status-monitor/status-monitor.svelte";
-export type {
-	StatusMonitorItem,
-	StatusMonitorLabels,
-	StatusMonitorUnit,
-} from "./status-monitor/timeline";
-export type { StatusMonitorSize, StatusMonitorStatus } from "./status-monitor/variants";
+export { type StatusMonitorItem, type StatusMonitorUnit, type StatusMonitorLabels, STATUS_MONITOR_LABELS, STATUS_ICON, BAR_WIDTH, timelineWidth, slotsForWidth, uptimePercent, visibleItems, formatTimestamp } from "./status-monitor/timeline";
+export { statusMonitor, statusTone, type StatusMonitorSize, type StatusMonitorStatus } from "./status-monitor/variants";
 export { default as StickyScrollCards } from "./sticky-scroll-cards/sticky-scroll-cards.svelte";
-export type {
-	StickyScrollCardItem,
-	StickyScrollCardsSize,
-	StickyScrollCardsVariant,
-} from "./sticky-scroll-cards/variants";
+export { stickyScrollCards, type StickyScrollCardsSize, type StickyScrollCardsVariant, type StickyScrollCardItem, cardLayout, scrubStack } from "./sticky-scroll-cards/variants";
 export { default as StreamingText } from "./streaming-text/streaming-text.svelte";
-export type { StreamingSource, StreamingToken } from "./streaming-text/types";
-export type { StreamingTextLayout } from "./streaming-text/variants";
-export type { SunburstNode } from "./sunburst-chart/geometry";
+export { type StreamingToken, type StreamingSource } from "./streaming-text/types";
+export { streamingText, type StreamingTextLayout } from "./streaming-text/variants";
 export { default as SunburstChart } from "./sunburst-chart/sunburst-chart.svelte";
-export type { SunburstVariant } from "./sunburst-chart/variants";
+export { default as SunburstPlot } from "./sunburst-chart/sunburst-plot.svelte";
+export { type SunburstNode, type ArcDatum, type Focus, type ArcGeometry, type SunburstLayout, ID_SEP, SUNBURST_CURVE, ZOOM_MS, GROW_MS, FADE_MS, DEFAULT_HOVER_POP, sumValues, buildLayout, ringOptions, isDescendant, isOnPath, geometryFor, lerpGeometry, transitionGeometry, hubRadius, clockwiseFraction, enterDelays, relativeOpacity, maxHoverThickness, hoverGrowTargets, growPadding, applyHoverGrow, centroid, labelRotation, labelFits, visibleArcs, focusTrail, arcColor } from "./sunburst-chart/geometry";
+export { sunburstChart, type SunburstVariant, SUNBURST_HUB } from "./sunburst-chart/variants";
 export { default as SwapText } from "./swap-text/swap-text.svelte";
-export type { SwapTextMotion, SwapTextSize } from "./swap-text/variants";
+export { swapText, type SwapTextSize, type SwapTextMotion, swapTextSlide, swapTextFlip, swapChars, flipTiming } from "./swap-text/variants";
 export { default as Switch } from "./switch/switch.svelte";
+export { switchTrack, switchThumb, type SwitchSize } from "./switch/variants";
 export { default as Table } from "./table/table.svelte";
 export { default as TableBody } from "./table/table-body.svelte";
 export { default as TableCaption } from "./table/table-caption.svelte";
@@ -854,108 +643,91 @@ export { default as TableFooter } from "./table/table-footer.svelte";
 export { default as TableHead } from "./table/table-head.svelte";
 export { default as TableHeader } from "./table/table-header.svelte";
 export { default as TableRow } from "./table/table-row.svelte";
-export type { TableDensity } from "./table/variants";
+export { setDensity, getDensity } from "./table/context";
+export { table, type TableDensity } from "./table/variants";
 export { default as TableOfContents } from "./table-of-contents/table-of-contents.svelte";
-export type { TocDepth, TocItem } from "./table-of-contents/toc-core";
-export type { TableOfContentsVariant } from "./table-of-contents/variants";
-export type { TabsSize, TabsVariant } from "./tabs/context";
+export { type TocDepth, type TocItem, type TocRange, type TocRow, type TocTrack, railX, itemPad, buildTrack, itemRail, activeRange, movedUp, rangeFromIds, idsInRange, thumbStyle } from "./table-of-contents/toc-core";
+export { tableOfContents, type TableOfContentsVariant } from "./table-of-contents/variants";
 export { default as Tabs } from "./tabs/tabs.svelte";
 export { default as TabsContent } from "./tabs/tabs-content.svelte";
 export { default as TabsList } from "./tabs/tabs-list.svelte";
 export { default as TabsTrigger } from "./tabs/tabs-trigger.svelte";
+export { type TabsContext } from "./tabs/context";
+export { tabsFrame, type TabsVariant, type TabsSize } from "./tabs/variants";
 export { default as TagInput } from "./tag-input/tag-input.svelte";
 export { default as TaskRows } from "./task-rows/task-rows.svelte";
-export type {
-	TaskDetail,
-	TaskRow,
-	TaskRowStatus,
-	TaskRowsLabels,
-} from "./task-rows/types";
-export type { TaskRowsVariant } from "./task-rows/variants";
+export { type TaskDetail, type TaskRowStatus, type TaskRow, type TaskRowsLabels } from "./task-rows/types";
+export { taskRows, type TaskRowsVariant, type TaskRowsTone } from "./task-rows/variants";
 export { default as TaskSteps, type TaskStatus } from "./task-steps/task-steps.svelte";
-export type { TaskStepsSize } from "./task-steps/variants";
+export { taskSteps, type TaskStepsSize, TASK_STEP_LABELS } from "./task-steps/variants";
 export { default as TextBorderAnimation } from "./text-border-animation/text-border-animation.svelte";
-export type { TextBorderAnimationSize } from "./text-border-animation/variants";
+export { textBorderAnimation, type TextBorderAnimationSize } from "./text-border-animation/variants";
 export { default as TextExplodeIMessage } from "./text-explode-imessage/text-explode-imessage.svelte";
-export type {
-	TextExplodeIMessageMode,
-	TextExplodeIMessageSize,
-} from "./text-explode-imessage/variants";
+export { textExplodeIMessage, type TextExplodeIMessageSize, type TextExplodeIMessageMode } from "./text-explode-imessage/variants";
 export { default as TextFlip } from "./text-flip/text-flip.svelte";
-export type { TextFlipSize } from "./text-flip/variants";
+export { textFlip, type TextFlipSize, flipStep } from "./text-flip/variants";
 export { default as TextInertia } from "./text-inertia/text-inertia.svelte";
-export type { TextInertiaSize } from "./text-inertia/variants";
+export { default as TextInertiaWord } from "./text-inertia/text-inertia-word.svelte";
+export { textInertia, type TextInertiaSize, type InertiaKick, inertiaKick } from "./text-inertia/variants";
 export { default as TextLoop } from "./text-loop/text-loop.svelte";
-export type { TextLoopDirection, TextLoopSize } from "./text-loop/variants";
+export { textLoop, type TextLoopDirection, type TextLoopSize } from "./text-loop/variants";
 export { default as TextReel } from "./text-reel/text-reel.svelte";
-export type { TextReelSize } from "./text-reel/variants";
+export { type ReelOptions, createReel } from "./text-reel/reel";
+export { textReel, type TextReelSize } from "./text-reel/variants";
 export { default as TextRepel } from "./text-repel/text-repel.svelte";
-export type { TextRepelMode, TextRepelSize } from "./text-repel/variants";
-export type {
-	TextTransitionPreset,
-	TextTransitionTarget,
-} from "./text-transition/presets";
+export { textRepel, type TextRepelMode, type TextRepelSize, type RepelOffset, repelOffset, applyOffset, letterOrigins, repelAll } from "./text-repel/variants";
 export { default as TextTransition } from "./text-transition/text-transition.svelte";
-export type { TextTransitionVariant } from "./text-transition/variants";
+export { type TextTransitionTarget, type TextTransitionPreset, TEXT_TRANSITION_PRESETS, TEXT_TRANSITION_VARIANTS } from "./text-transition/presets";
+export { textTransition, type TextTransitionVariant } from "./text-transition/variants";
 export { default as Textarea } from "./textarea/textarea.svelte";
+export { textarea, type TextareaSize, type TextareaVariant } from "./textarea/variants";
 export { default as ThemeToggle } from "./theme-toggle/theme-toggle.svelte";
-export type {
-	ThemeToggleStart,
-	ThemeToggleValue,
-	ThemeToggleVariant,
-} from "./theme-toggle/variants";
+export { RECT_FROM, CIRCLE_ORIGIN, ensureRevealStyle, supportsViewTransition, runThemeReveal } from "./theme-toggle/reveal";
+export { themeToggle, type ThemeToggleVariant, type ThemeToggleStart, type ThemeToggleValue } from "./theme-toggle/variants";
 export { default as ThinkingState } from "./thinking-state/thinking-state.svelte";
-export type { ThinkingRow } from "./thinking-state/types";
-export type { ThinkingStateVariant } from "./thinking-state/variants";
+export { type ThinkingRow } from "./thinking-state/types";
+export { thinkingState, type ThinkingStateVariant } from "./thinking-state/variants";
 export { default as Ticker } from "./ticker/ticker.svelte";
-export type { TickerSize } from "./ticker/variants";
+export { ticker, type TickerSize } from "./ticker/variants";
 export { default as Toaster } from "./toast/toaster.svelte";
 export { default as Toggle } from "./toggle/toggle.svelte";
+export { toggleButton, type ToggleSize } from "./toggle/variants";
 export { default as ToggleGroup } from "./toggle-group/toggle-group.svelte";
 export { default as ToggleGroupItem } from "./toggle-group/toggle-group-item.svelte";
+export { type ToggleGroupContext } from "./toggle-group/context";
+export { toggleGroupItem, type ToggleGroupSize } from "./toggle-group/variants";
 export { default as Tool } from "./tool/tool.svelte";
-export type { ToolLabels, ToolState } from "./tool/variants";
+export { tool, type ToolState, type ToolLabels, TOOL_LABELS } from "./tool/variants";
 export { default as ToolChips } from "./tool-chips/tool-chips.svelte";
-export type {
-	ToolChipsLabels,
-	ToolDetailLine,
-	ToolDiff,
-	ToolDiffLine,
-	ToolStep,
-} from "./tool-chips/types";
-export type { ToolChipsSize } from "./tool-chips/variants";
+export { type ToolDetailLine, type ToolStep, type ToolDiffLine, type ToolDiff, type ToolChipsLabels } from "./tool-chips/types";
+export { toolChips, type ToolChipsSize } from "./tool-chips/variants";
 export { default as Tooltip } from "./tooltip/tooltip.svelte";
 export { default as TooltipContent } from "./tooltip/tooltip-content.svelte";
 export { default as TooltipProvider } from "./tooltip/tooltip-provider.svelte";
 export { default as TooltipTrigger } from "./tooltip/tooltip-trigger.svelte";
 export { default as Typewriter } from "./typewriter/typewriter.svelte";
-export type { TypewriterCursor } from "./typewriter/variants";
+export { typewriter, type TypewriterCursor, type TypewriterStep, typewriterSteps } from "./typewriter/variants";
 export { default as TypingText } from "./typing-text/typing-text.svelte";
-export type { TypingTextSize } from "./typing-text/variants";
+export { typingText, type TypingTextSize } from "./typing-text/variants";
 export { default as Typography } from "./typography/typography.svelte";
-export type { TypographyVariant } from "./typography/variants";
+export { typography, type TypographyVariant, TYPOGRAPHY_TAG } from "./typography/variants";
 export { default as UnderlineHoverText } from "./underline-hover-text/underline-hover-text.svelte";
-export type { UnderlineHoverTextTone } from "./underline-hover-text/variants";
+export { underlineHoverText, type UnderlineHoverTextTone } from "./underline-hover-text/variants";
 export { default as UsageCard } from "./usage-card/usage-card.svelte";
-export type { UsageCardLayout } from "./usage-card/variants";
-export type { WaveRevealDirection, WaveRevealMode } from "./wave-reveal/variants";
+export { usageCard, type UsageCardLayout } from "./usage-card/variants";
 export { default as WaveReveal } from "./wave-reveal/wave-reveal.svelte";
-export type {
-	WebglLiquidPosition,
-	WebglLiquidSpeed,
-	WebglLiquidTone,
-} from "./webgl-liquid/variants";
+export { waveReveal, type WaveRevealDirection, type WaveRevealMode, waveAnimationClass } from "./wave-reveal/variants";
 export { default as WebglLiquid } from "./webgl-liquid/webgl-liquid.svelte";
-export type { WeekStartsOn } from "./week-calendar/dates";
-export type { WeekCalendarLabels, WeekCalendarVariant } from "./week-calendar/variants";
+export { type WebglLiquidOptions, mountWebglLiquid } from "./webgl-liquid/liquid";
+export { webglLiquid, type WebglLiquidTone, type WebglLiquidSpeed, type WebglLiquidPosition, WEBGL_LIQUID_COLORS, WEBGL_LIQUID_SPEED } from "./webgl-liquid/variants";
 export { default as WeekCalendar } from "./week-calendar/week-calendar.svelte";
-export type { WheelCarouselItem } from "./wheel-carousel/types";
-export type {
-	WheelCarouselAspect,
-	WheelCarouselPhotoSide,
-	WheelCarouselSize,
-} from "./wheel-carousel/variants";
+export { type WeekStartsOn, WEEK_LENGTH, startOfDay, addDays, addMonths, startOfWeek, sameDay, sameMonth, monthWeeks, arrowTarget } from "./week-calendar/dates";
+export { weekCalendar, type WeekCalendarVariant, type WeekCalendarDayTone, type WeekCalendarLabels, WEEK_CALENDAR_LABELS, SWIPE, ROW_STAGGER_MS, HANDLE_DRAG_PX } from "./week-calendar/variants";
 export { default as WheelCarousel } from "./wheel-carousel/wheel-carousel.svelte";
-export type { WheelPickerOption, WheelPickerRows } from "./wheel-picker/variants";
+export { type WheelCarouselItem } from "./wheel-carousel/types";
+export { wheelCarousel, type WheelCarouselPhotoSide, type WheelCarouselAspect, type WheelCarouselSize } from "./wheel-carousel/variants";
+export { type WheelOptions, createWheel } from "./wheel-carousel/wheel";
 export { default as WheelPicker } from "./wheel-picker/wheel-picker.svelte";
 export { default as WheelPickerColumn } from "./wheel-picker/wheel-picker-column.svelte";
+export { type WheelContext, setWheelContext, useWheel } from "./wheel-picker/context";
+export { wheelPicker, type WheelPickerRows, type WheelPickerOption, type NormalizedWheelOption, normalizeWheelOption, nearestEnabled, WHEEL_FLICK } from "./wheel-picker/variants";

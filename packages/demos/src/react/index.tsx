@@ -1,162 +1,56 @@
-import type {
-	ButtonSize,
-	ButtonVariant,
-	FileTreeNode,
-	FileTreeSize,
-	MorphingModalSize,
-	MorphSpring,
-	NavbarVariant,
-} from "@baby-ui/react";
-import {
-	BentoCell,
-	BentoGrid,
-	Button,
-	FileTree,
-	MorphingModal,
-	Navbar,
-} from "@baby-ui/react";
-import { AgentScreenDemo } from "./agent-screen";
-import {
-	BreadcrumbDemo,
-	MessageDemo,
-	RadioGroupDemo,
-	ReasoningDemo,
-	ResponseStreamDemo,
-	SliderDemo,
-	TabsDemo,
-	TaskStepsDemo,
-} from "./agentic";
+import { BreadcrumbDemo, MessageDemo, RadioGroupDemo, ReasoningDemo, ResponseStreamDemo, SliderDemo, TabsDemo, TaskStepsDemo } from "./agentic";
 import { AnimatedGradientDemo } from "./animated-gradient";
 import { AreaChartDemo } from "./area-chart";
 import { AsciiEffectDemo } from "./ascii-effect";
 import { AuroraFlowDemo } from "./aurora-flow";
 import { BarChartDemo } from "./bar-chart";
 import { CandlestickChartDemo } from "./candlestick-chart";
-import { CaseStudyFlipStackDemo } from "./case-study-flip-stack";
 import { ChartBrushDemo } from "./chart-brush";
 import { ChartMarkersDemo } from "./chart-markers";
 import { ChartSeriesDemo } from "./chart-series";
 import { ChartDemo, LineChartDemo } from "./charts";
 import { ChatComposerDemo } from "./chat-composer";
 import { ChoroplethChartDemo } from "./choropleth-chart";
-import { CircuitBoardDemo } from "./circuit-board";
 import { ClosingPlasmaDemo } from "./closing-plasma";
-import { CollabCardDemo } from "./collab-card";
-import { CollectionSurferDemo } from "./collection-surfer";
 import { ComposedChartDemo } from "./composed-chart";
-import {
-	AttachmentDemo,
-	CodeBlockDemo,
-	ColorPickerDemo,
-	ComposerDemo,
-	ConversationDemo,
-	CopyButtonDemo,
-	FileDiffDemo,
-	MarkdownDemo,
-	QuestionDemo,
-	ReorderListDemo,
-	TagInputDemo,
-	ToolDemo,
-} from "./content";
-import { ContextCardsDemo } from "./context-cards";
-import {
-	AlertDialogDemo,
-	CommandDemo,
-	DialogDemo,
-	DrawerDemo,
-	FullscreenNavDemo,
-	SheetDemo,
-	ToastDemo,
-} from "./dialogs";
+import { AttachmentDemo, ColorPickerDemo, ComposerDemo, ConversationDemo, CopyButtonDemo, FileDiffDemo, MarkdownDemo, QuestionDemo, ReorderListDemo, TagInputDemo, ToolDemo } from "./content";
+import { AlertDialogDemo, CommandDemo, DialogDemo, DrawerDemo, FullscreenNavDemo, SheetDemo, ToastDemo } from "./dialogs";
 import { DiffTableDemo } from "./diff-table";
 import { DitherGradientDemo } from "./dither-gradient";
-import { DitheredLogoDemo } from "./dithered-logo";
 import { DocsNavDemo } from "./docs-nav";
-import { EyeTrackingDemo } from "./eye-tracking";
 import { FillButtonDemo } from "./fill-button";
-import { FilterTableDemo } from "./filter-table";
 import { FineTuneCardDemo } from "./fine-tune-card";
-import { FisheyeInfiniteGridDemo } from "./fisheye-infinite-grid";
 import { FlightStatusCardDemo } from "./flight-status-card";
 import { FlowchartDemo } from "./flowchart";
 import { FooterDemo } from "./footer";
+import { BentoGridDemo, ButtonDemo, FileTreeDemo, MorphingModalDemo, NavbarDemo } from "./foundations";
 import { FunnelChartDemo } from "./funnel-chart";
 import { GaugeChartDemo } from "./gauge-chart";
-import { GithubCalendarDemo } from "./github-calendar";
-import { GradientHero01Demo } from "./gradient-hero-01";
 import { GrainGradientDemo } from "./grain-gradient";
 import { HeatmapChartDemo } from "./heatmap-chart";
 import { HeroStageDemo } from "./hero-stage";
 import { HoverTransitionDemo } from "./hover-transition";
 import { ImageTrailDemo } from "./image-trail";
-import { InfiniteImageFieldDemo } from "./infinite-image-field";
 import { LayeredStackDemo } from "./layered-stack";
 import { LiquidChromeDemo } from "./liquid-chrome";
 import { LiveLineChartDemo } from "./live-line-chart";
 import { LoadingScreenDemo } from "./loading-screen";
 import { LoadingStateDemo } from "./loading-state";
 import { LogoCarouselDemo } from "./logo-carousel";
-import { MagnetLinesDemo } from "./magnet-lines";
 import { MarkerDemo } from "./marker";
 import { MegaNavbarDemo } from "./mega-navbar";
 import { MusicPlayerDemo } from "./music-player";
-import {
-	ArtGalleryDemo,
-	ClickSparkDemo,
-	CubeTextDemo,
-	DraggableMarqueeDemo,
-	TextReelDemo,
-} from "./obsidian";
-import { OgAuthorProfileDemo } from "./og-author-profile";
-import { OgBlogPostDemo } from "./og-blog-post";
-import { OgChangelogDemo } from "./og-changelog";
-import { OgDocsPageDemo } from "./og-docs-page";
-import { OgGithubRepoDemo } from "./og-github-repo";
+import { ClickSparkDemo, DraggableMarqueeDemo, TextReelDemo } from "./obsidian";
 import { OgNewsletterIssueDemo } from "./og-newsletter-issue";
-import { OrbitCardStackDemo } from "./orbit-card-stack";
-import {
-	ComboboxDemo,
-	ContextMenuDemo,
-	DropdownMenuDemo,
-	HoverCardDemo,
-	PopoverDemo,
-	SelectDemo,
-	TooltipDemo,
-} from "./overlays";
+import { ComboboxDemo, ContextMenuDemo, DropdownMenuDemo, HoverCardDemo, PopoverDemo, SelectDemo, TooltipDemo } from "./overlays";
 import { OverviewCardDemo } from "./overview-card";
-import { ParticleTextDemo } from "./particle-text";
 import { PieChartDemo } from "./pie-chart";
 import { PixelCanvasDemo } from "./pixel-canvas";
 import { PixelImageTrailDemo } from "./pixel-image-trail";
 import { Pricing01Demo } from "./pricing-01";
 import { Pricing02Demo } from "./pricing-02";
-import {
-	AccordionDemo,
-	AlertDemo,
-	AvatarDemo,
-	BadgeDemo,
-	CardDemo,
-	CheckboxDemo,
-	InputDemo,
-	LabelDemo,
-	ProgressDemo,
-	SkeletonDemo,
-	SwitchDemo,
-	TextareaDemo,
-} from "./primitives";
-import {
-	CollapsibleDemo,
-	GaugeDemo,
-	PaginationDemo,
-	ScrollAreaDemo,
-	ScrubFieldDemo,
-	ShortcutDemo,
-	ShowMoreDemo,
-	SpinnerDemo,
-	ToggleDemo,
-	ToggleGroupDemo,
-	TypographyDemo,
-} from "./primitives2";
+import { AccordionDemo, AlertDemo, AvatarDemo, BadgeDemo, CardDemo, CheckboxDemo, InputDemo, LabelDemo, ProgressDemo, SkeletonDemo, SwitchDemo, TextareaDemo } from "./primitives";
+import { CollapsibleDemo, GaugeDemo, PaginationDemo, ScrollAreaDemo, ScrubFieldDemo, ShortcutDemo, ShowMoreDemo, SpinnerDemo, ToggleDemo, ToggleGroupDemo, TypographyDemo } from "./primitives2";
 import { PrismGradientDemo } from "./prism-gradient";
 import { ProjectionLineDemo } from "./projection-line";
 import { RadarChartDemo } from "./radar-chart";
@@ -168,9 +62,7 @@ import { RippleTransitionDemo } from "./ripple-transition";
 import { SankeyChartDemo } from "./sankey-chart";
 import { ScatterChartDemo } from "./scatter-chart";
 import { ScoreCardDemo } from "./score-card";
-import { ScrollChoreographyDemo } from "./scroll-choreography";
 import { ScrollProgressDemo } from "./scroll-progress";
-import { ScrollSplitCardDemo } from "./scroll-split-card";
 import { ScrollTiltedGridDemo } from "./scroll-tilted-grid";
 import { ScrollVelocityDemo } from "./scroll-velocity";
 import { ShowcaseGridDemo } from "./showcase-grid";
@@ -179,431 +71,271 @@ import { SignatureDemo } from "./signature";
 import { SilkAuroraDemo } from "./silk-aurora";
 import { SpectralRibbonDemo } from "./spectral-ribbon";
 import { SplitFlapDisplayDemo } from "./split-flap-display";
-import { StatCardDemo, StatCardMapDemo } from "./stat-card";
-import { StatusMonitorDemo } from "./status-monitor";
 import { StickyScrollCardsDemo } from "./sticky-scroll-cards";
 import { StreamingTextDemo } from "./streaming-text";
 import { SunburstChartDemo } from "./sunburst-chart";
-import { TableDemo } from "./table";
 import { TableOfContentsDemo } from "./table-of-contents";
+import { TableDemo } from "./table";
 import { TaskRowsDemo } from "./task-rows";
-import {
-	AnimatedGradientTextDemo,
-	BoldCopyDemo,
-	CircularTextDemo,
-	CounterDemo,
-	CycleTextDemo,
-	DoubleUnderlineDemo,
-	GibberishTextDemo,
-	GlitchTextDemo,
-	JitterTextDemo,
-	JumpingTextDemo,
-	MaskTextDemo,
-	MetisTextDemo,
-	MirrorTextDemo,
-	RollTextDemo,
-	ScrollRevealDemo,
-	SplitTextDemo,
-	StaggeredLetterDemo,
-	SwapTextDemo,
-	TextBorderAnimationDemo,
-	TextExplodeIMessageDemo,
-	TextFlipDemo,
-	TextTransitionDemo,
-	TickerDemo,
-	TypingTextDemo,
-	UnderlineHoverTextDemo,
-	WaveRevealDemo,
-} from "./text";
-import {
-	DiaTextDemo,
-	MorphTextDemo,
-	RevealTextDemo,
-	RollingDigitsDemo,
-	ShimmerTextDemo,
-	TextInertiaDemo,
-	TextLoopDemo,
-	TypewriterDemo,
-} from "./text-motion";
+import { DiaTextDemo, MorphTextDemo, RevealTextDemo, RollingDigitsDemo, ShimmerTextDemo, TextInertiaDemo, TextLoopDemo, TypewriterDemo } from "./text-motion";
 import { TextRepelDemo } from "./text-repel";
+import { AnimatedGradientTextDemo, CounterDemo, CycleTextDemo, DoubleUnderlineDemo, GibberishTextDemo, GlitchTextDemo, JitterTextDemo, JumpingTextDemo, MetisTextDemo, MirrorTextDemo, RollTextDemo, StaggeredLetterDemo, TextExplodeIMessageDemo, TextTransitionDemo, TickerDemo, TypingTextDemo, WaveRevealDemo } from "./text";
 import { ThemeToggleDemo } from "./theme-toggle";
 import { ThinkingStateDemo } from "./thinking-state";
 import { ToolChipsDemo } from "./tool-chips";
-import { UsageCardDemo } from "./usage-card";
 import { WebglLiquidDemo } from "./webgl-liquid";
 import { WeekCalendarDemo } from "./week-calendar";
 import { WheelCarouselDemo } from "./wheel-carousel";
 import { WheelPickerDemo } from "./wheel-picker";
+import { AgentScreenDemo } from "./auto/agent-screen";
+import { ArtGalleryDemo } from "./auto/art-gallery";
+import { BoldCopyDemo } from "./auto/bold-copy";
+import { CaseStudyFlipStackDemo } from "./auto/case-study-flip-stack";
+import { CircuitBoardDemo } from "./auto/circuit-board";
+import { CircularTextDemo } from "./auto/circular-text";
+import { CodeBlockDemo } from "./auto/code-block";
+import { CollabCardDemo } from "./auto/collab-card";
+import { CollectionSurferDemo } from "./auto/collection-surfer";
+import { ContextCardsDemo } from "./auto/context-cards";
+import { CubeTextDemo } from "./auto/cube-text";
+import { DitheredLogoDemo } from "./auto/dithered-logo";
+import { EyeTrackingDemo } from "./auto/eye-tracking";
+import { FilterTableDemo } from "./auto/filter-table";
+import { FisheyeInfiniteGridDemo } from "./auto/fisheye-infinite-grid";
+import { GithubCalendarDemo } from "./auto/github-calendar";
+import { GradientHero01Demo } from "./auto/gradient-hero-01";
+import { InfiniteImageFieldDemo } from "./auto/infinite-image-field";
+import { MagnetLinesDemo } from "./auto/magnet-lines";
+import { MaskTextDemo } from "./auto/mask-text";
+import { OgAuthorProfileDemo } from "./auto/og-author-profile";
+import { OgBlogPostDemo } from "./auto/og-blog-post";
+import { OgChangelogDemo } from "./auto/og-changelog";
+import { OgDocsPageDemo } from "./auto/og-docs-page";
+import { OgGithubRepoDemo } from "./auto/og-github-repo";
+import { OrbitCardStackDemo } from "./auto/orbit-card-stack";
+import { ParticleTextDemo } from "./auto/particle-text";
+import { ScrollChoreographyDemo } from "./auto/scroll-choreography";
+import { ScrollRevealDemo } from "./auto/scroll-reveal";
+import { ScrollSplitCardDemo } from "./auto/scroll-split-card";
+import { SplitTextDemo } from "./auto/split-text";
+import { StatCardDemo } from "./auto/stat-card";
+import { StatCardMapDemo } from "./auto/stat-card-map";
+import { StatusMonitorDemo } from "./auto/status-monitor";
+import { SwapTextDemo } from "./auto/swap-text";
+import { TextBorderAnimationDemo } from "./auto/text-border-animation";
+import { TextFlipDemo } from "./auto/text-flip";
+import { UnderlineHoverTextDemo } from "./auto/underline-hover-text";
+import { UsageCardDemo } from "./auto/usage-card";
 
 type Props = Record<string, unknown>;
 
-function ButtonDemo({ props }: { props: Props }) {
-	const size = (props.size as ButtonSize) ?? "md";
-	return (
-		<Button
-			variant={(props.variant as ButtonVariant) ?? "default"}
-			size={size}
-			href={(props.href as string) || undefined}
-			loading={Boolean(props.loading)}
-			loadingLabel={(props.loadingLabel as string) || "Loading…"}
-			disabled={Boolean(props.disabled)}
-		>
-			{size === "icon" ? (
-				<svg viewBox="0 0 16 16" fill="none" aria-hidden>
-					<path
-						d="M8 3.5v9M3.5 8h9"
-						stroke="currentColor"
-						strokeWidth="1.6"
-						strokeLinecap="round"
-					/>
-				</svg>
-			) : (
-				"Deploy project"
-			)}
-		</Button>
-	);
-}
-
-const SAMPLE_TREE: FileTreeNode[] = [
-	{
-		name: "src",
-		children: [
-			{
-				name: "routes",
-				children: [{ name: "+layout.svelte" }, { name: "+page.svelte" }],
-			},
-			{ name: "lib", children: [{ name: "cn.ts" }, { name: "tokens.css" }] },
-			{ name: "app.html" },
-		],
-	},
-	{ name: "package.json" },
-	{ name: "vite.config.ts" },
-];
-
-const CELLS = [
-	{
-		span: "2x1" as const,
-		title: "Registry",
-		body: "shadcn and shadcn-svelte, one spec.",
-		image: "https://picsum.photos/id/1036/800/300",
-	},
-	{
-		span: "1x1" as const,
-		title: "Tokens",
-		body: "Shared colour and motion.",
-		image: "https://picsum.photos/id/1050/400/300",
-	},
-	{
-		span: "1x1" as const,
-		title: "Agents",
-		body: "llms.txt and specs.json.",
-		image: "https://picsum.photos/id/1057/400/300",
-	},
-	{
-		span: "1x1" as const,
-		title: "Playground",
-		body: "Both renders, side by side.",
-		image: "https://picsum.photos/id/1067/400/300",
-	},
-];
-
-const NAV_LINKS = [
-	{ href: "#product", label: "Product" },
-	{ href: "#pricing", label: "Pricing" },
-	{ href: "#docs", label: "Docs" },
-];
-
-function BentoGridDemo({ props }: { props: Props }) {
-	return (
-		<BentoGrid
-			columns={Number(props.columns ?? 3)}
-			gap={Number(props.gap ?? 16)}
-			rowHeight={Number(props.rowHeight ?? 160)}
-			className="w-full max-w-2xl"
-		>
-			{CELLS.map((cell) => (
-				<BentoCell
-					key={cell.title}
-					span={cell.span}
-					title={cell.title}
-					description={cell.body}
-				>
-					<img
-						src={cell.image}
-						alt=""
-						loading="lazy"
-						className="mt-3 size-full rounded-lg object-cover"
-					/>
-				</BentoCell>
-			))}
-		</BentoGrid>
-	);
-}
-
-function FileTreeDemo({ props }: { props: Props }) {
-	return (
-		<FileTree
-			tree={SAMPLE_TREE}
-			indent={Number(props.indent ?? 14)}
-			showGuides={props.showGuides !== false}
-			defaultExpanded={props.defaultExpanded !== false}
-			size={(props.size as FileTreeSize) ?? "md"}
-			className="w-64"
-		/>
-	);
-}
-
-function NavbarDemo({ props }: { props: Props }) {
-	const variant = (props.variant as NavbarVariant) ?? "solid";
-	return (
-		<div className="w-full max-w-3xl overflow-hidden rounded-xl border border-border">
-			<Navbar
-				links={NAV_LINKS}
-				active="#product"
-				sticky={false}
-				blur={props.blur !== false}
-				variant={variant}
-				className={variant === "solid" ? "border-border border-b bg-card" : undefined}
-				brand={<span className="font-semibold text-sm tracking-tight">Acme</span>}
-				actions={
-					<span className="hidden rounded-full bg-primary px-3 py-1.5 font-medium text-primary-foreground text-xs sm:inline-flex">
-						Sign up
-					</span>
-				}
-			/>
-			<div className="h-24 bg-background" />
-		</div>
-	);
-}
-
-function MorphingModalDemo({ props }: { props: Props }) {
-	return (
-		<MorphingModal
-			title="Deploy to production"
-			spring={(props.spring as MorphSpring) ?? "gentle"}
-			size={(props.size as MorphingModalSize) ?? "md"}
-			dismissOnBackdrop={props.dismissOnBackdrop !== false}
-			backdropBlur={Number(props.backdropBlur ?? 8)}
-			trigger={
-				<div className="w-56 rounded-2xl border border-border bg-card p-4">
-					<p className="font-medium text-foreground text-sm">Deploy to production</p>
-					<p className="mt-1 text-muted-foreground text-xs">Click to expand</p>
-				</div>
-			}
-		>
-			This dialog grew out of the card&apos;s own box. Closing runs the same path in
-			reverse, a little faster.
-		</MorphingModal>
-	);
-}
-
 export const demos: Record<string, (p: { props: Props }) => React.ReactElement> = {
 	accordion: AccordionDemo,
+	"agent-screen": AgentScreenDemo,
 	alert: AlertDemo,
+	"alert-dialog": AlertDialogDemo,
+	"animated-gradient": AnimatedGradientDemo,
+	"animated-gradient-text": AnimatedGradientTextDemo,
+	"area-chart": AreaChartDemo,
+	"art-gallery": ArtGalleryDemo,
+	"ascii-effect": AsciiEffectDemo,
+	attachment: AttachmentDemo,
+	"aurora-flow": AuroraFlowDemo,
 	avatar: AvatarDemo,
 	badge: BadgeDemo,
-	button: ButtonDemo,
-	card: CardDemo,
-	checkbox: CheckboxDemo,
-	input: InputDemo,
-	label: LabelDemo,
-	progress: ProgressDemo,
-	skeleton: SkeletonDemo,
-	switch: SwitchDemo,
-	table: TableDemo,
-	textarea: TextareaDemo,
-	"theme-toggle": ThemeToggleDemo,
-	navbar: NavbarDemo,
-	"mega-navbar": MegaNavbarDemo,
-	footer: FooterDemo,
+	"bar-chart": BarChartDemo,
 	"bento-grid": BentoGridDemo,
-	"file-tree": FileTreeDemo,
-	"morphing-modal": MorphingModalDemo,
-	"copy-button": CopyButtonDemo,
-	"fill-button": FillButtonDemo,
-	"loading-screen": LoadingScreenDemo,
-	"text-repel": TextRepelDemo,
-	"particle-text": ParticleTextDemo,
-	"og-blog-post": OgBlogPostDemo,
-	"og-docs-page": OgDocsPageDemo,
-	"og-changelog": OgChangelogDemo,
-	"og-github-repo": OgGithubRepoDemo,
-	"og-author-profile": OgAuthorProfileDemo,
-	"og-newsletter-issue": OgNewsletterIssueDemo,
-	"image-trail": ImageTrailDemo,
-	"pixel-image-trail": PixelImageTrailDemo,
-	"animated-gradient": AnimatedGradientDemo,
-	"ascii-effect": AsciiEffectDemo,
-	"dither-gradient": DitherGradientDemo,
-	"grain-gradient": GrainGradientDemo,
-	"pixel-canvas": PixelCanvasDemo,
-	"aurora-flow": AuroraFlowDemo,
-	"closing-plasma": ClosingPlasmaDemo,
-	"silk-aurora": SilkAuroraDemo,
-	"spectral-ribbon": SpectralRibbonDemo,
-	"webgl-liquid": WebglLiquidDemo,
-	"liquid-chrome": LiquidChromeDemo,
-	"dithered-logo": DitheredLogoDemo,
-	"fisheye-infinite-grid": FisheyeInfiniteGridDemo,
-	"flight-status-card": FlightStatusCardDemo,
-	"music-player": MusicPlayerDemo,
-	"circuit-board": CircuitBoardDemo,
-	signature: SignatureDemo,
-	"infinite-image-field": InfiniteImageFieldDemo,
-	"scroll-velocity": ScrollVelocityDemo,
-	"code-block": CodeBlockDemo,
-	markdown: MarkdownDemo,
-	"file-diff": FileDiffDemo,
-	"tag-input": TagInputDemo,
-	"color-picker": ColorPickerDemo,
-	"reorder-list": ReorderListDemo,
-	attachment: AttachmentDemo,
-	composer: ComposerDemo,
-	conversation: ConversationDemo,
-	tool: ToolDemo,
-	question: QuestionDemo,
-	spinner: SpinnerDemo,
-	toggle: ToggleDemo,
-	"toggle-group": ToggleGroupDemo,
-	collapsible: CollapsibleDemo,
-	"show-more": ShowMoreDemo,
-	shortcut: ShortcutDemo,
-	typography: TypographyDemo,
-	gauge: GaugeDemo,
-	pagination: PaginationDemo,
-	"scroll-area": ScrollAreaDemo,
-	"scrub-field": ScrubFieldDemo,
-	dialog: DialogDemo,
-	drawer: DrawerDemo,
-	"alert-dialog": AlertDialogDemo,
-	sheet: SheetDemo,
-	toast: ToastDemo,
-	command: CommandDemo,
-	"fullscreen-nav": FullscreenNavDemo,
-	popover: PopoverDemo,
-	tooltip: TooltipDemo,
-	"dropdown-menu": DropdownMenuDemo,
-	"context-menu": ContextMenuDemo,
-	"hover-card": HoverCardDemo,
-	select: SelectDemo,
-	combobox: ComboboxDemo,
+	"bold-copy": BoldCopyDemo,
 	breadcrumb: BreadcrumbDemo,
-	"radio-group": RadioGroupDemo,
-	slider: SliderDemo,
-	tabs: TabsDemo,
-	message: MessageDemo,
-	"response-stream": ResponseStreamDemo,
-	reasoning: ReasoningDemo,
-	"task-steps": TaskStepsDemo,
-	"responsive-dialog": ResponsiveDialogDemo,
-	"context-cards": ContextCardsDemo,
-	"collab-card": CollabCardDemo,
+	button: ButtonDemo,
+	"candlestick-chart": CandlestickChartDemo,
+	card: CardDemo,
+	"case-study-flip-stack": CaseStudyFlipStackDemo,
 	chart: ChartDemo,
 	"chart-brush": ChartBrushDemo,
 	"chart-markers": ChartMarkersDemo,
-	"choropleth-chart": ChoroplethChartDemo,
-	"projection-line": ProjectionLineDemo,
 	"chart-series": ChartSeriesDemo,
-	"line-chart": LineChartDemo,
-	"area-chart": AreaChartDemo,
-	"composed-chart": ComposedChartDemo,
-	"live-line-chart": LiveLineChartDemo,
-	"scatter-chart": ScatterChartDemo,
-	"candlestick-chart": CandlestickChartDemo,
-	"bar-chart": BarChartDemo,
-	"pie-chart": PieChartDemo,
-	"heatmap-chart": HeatmapChartDemo,
-	"sankey-chart": SankeyChartDemo,
-	"ring-chart": RingChartDemo,
-	"magnet-lines": MagnetLinesDemo,
-	"ripple-transition": RippleTransitionDemo,
-	"eye-tracking": EyeTrackingDemo,
-	"prism-gradient": PrismGradientDemo,
-	"radar-chart": RadarChartDemo,
-	"gauge-chart": GaugeChartDemo,
-	"sunburst-chart": SunburstChartDemo,
-	"funnel-chart": FunnelChartDemo,
-	"filter-table": FilterTableDemo,
-	"diff-table": DiffTableDemo,
-	"docs-nav": DocsNavDemo,
-	"records-table": RecordsTableDemo,
-	"fine-tune-card": FineTuneCardDemo,
-	flowchart: FlowchartDemo,
-	"loading-state": LoadingStateDemo,
-	"hero-stage": HeroStageDemo,
-	"showcase-grid": ShowcaseGridDemo,
-	"status-monitor": StatusMonitorDemo,
-	"logo-carousel": LogoCarouselDemo,
-	"recommendation-card": RecommendationCardDemo,
 	"chat-composer": ChatComposerDemo,
-	"thinking-state": ThinkingStateDemo,
-	"task-rows": TaskRowsDemo,
-	"streaming-text": StreamingTextDemo,
-	"agent-screen": AgentScreenDemo,
-	"tool-chips": ToolChipsDemo,
-	"sidebar-nav": SidebarNavDemo,
-	"github-calendar": GithubCalendarDemo,
-	"pricing-01": Pricing01Demo,
-	"pricing-02": Pricing02Demo,
-	"gradient-hero-01": GradientHero01Demo,
-	"animated-gradient-text": AnimatedGradientTextDemo,
-	"double-underline": DoubleUnderlineDemo,
-	"bold-copy": BoldCopyDemo,
-	"mirror-text": MirrorTextDemo,
-	"gibberish-text": GibberishTextDemo,
-	"glitch-text": GlitchTextDemo,
-	"metis-text": MetisTextDemo,
-	"underline-hover-text": UnderlineHoverTextDemo,
-	"text-border-animation": TextBorderAnimationDemo,
-	"roll-text": RollTextDemo,
-	"split-text": SplitTextDemo,
-	"swap-text": SwapTextDemo,
-	"text-flip": TextFlipDemo,
-	"wave-reveal": WaveRevealDemo,
-	"typing-text": TypingTextDemo,
-	"text-transition": TextTransitionDemo,
+	checkbox: CheckboxDemo,
+	"choropleth-chart": ChoroplethChartDemo,
+	"circuit-board": CircuitBoardDemo,
 	"circular-text": CircularTextDemo,
-	"cube-text": CubeTextDemo,
-	"text-reel": TextReelDemo,
-	"draggable-marquee": DraggableMarqueeDemo,
 	"click-spark": ClickSparkDemo,
-	"art-gallery": ArtGalleryDemo,
+	"closing-plasma": ClosingPlasmaDemo,
+	"code-block": CodeBlockDemo,
+	"collab-card": CollabCardDemo,
+	collapsible: CollapsibleDemo,
+	"collection-surfer": CollectionSurferDemo,
+	"color-picker": ColorPickerDemo,
+	combobox: ComboboxDemo,
+	command: CommandDemo,
+	"composed-chart": ComposedChartDemo,
+	composer: ComposerDemo,
+	"context-cards": ContextCardsDemo,
+	"context-menu": ContextMenuDemo,
+	conversation: ConversationDemo,
+	"copy-button": CopyButtonDemo,
+	counter: CounterDemo,
+	"cube-text": CubeTextDemo,
+	"cycle-text": CycleTextDemo,
+	"dia-text": DiaTextDemo,
+	dialog: DialogDemo,
+	"diff-table": DiffTableDemo,
+	"dither-gradient": DitherGradientDemo,
+	"dithered-logo": DitheredLogoDemo,
+	"docs-nav": DocsNavDemo,
+	"double-underline": DoubleUnderlineDemo,
+	"draggable-marquee": DraggableMarqueeDemo,
+	drawer: DrawerDemo,
+	"dropdown-menu": DropdownMenuDemo,
+	"eye-tracking": EyeTrackingDemo,
+	"file-diff": FileDiffDemo,
+	"file-tree": FileTreeDemo,
+	"fill-button": FillButtonDemo,
+	"filter-table": FilterTableDemo,
+	"fine-tune-card": FineTuneCardDemo,
+	"fisheye-infinite-grid": FisheyeInfiniteGridDemo,
+	"flight-status-card": FlightStatusCardDemo,
+	flowchart: FlowchartDemo,
+	footer: FooterDemo,
+	"fullscreen-nav": FullscreenNavDemo,
+	"funnel-chart": FunnelChartDemo,
+	gauge: GaugeDemo,
+	"gauge-chart": GaugeChartDemo,
+	"gibberish-text": GibberishTextDemo,
+	"github-calendar": GithubCalendarDemo,
+	"glitch-text": GlitchTextDemo,
+	"gradient-hero-01": GradientHero01Demo,
+	"grain-gradient": GrainGradientDemo,
+	"heatmap-chart": HeatmapChartDemo,
+	"hero-stage": HeroStageDemo,
+	"hover-card": HoverCardDemo,
+	"hover-transition": HoverTransitionDemo,
+	"image-trail": ImageTrailDemo,
+	"infinite-image-field": InfiniteImageFieldDemo,
+	input: InputDemo,
 	"jitter-text": JitterTextDemo,
 	"jumping-text": JumpingTextDemo,
+	label: LabelDemo,
+	"layered-stack": LayeredStackDemo,
+	"line-chart": LineChartDemo,
+	"liquid-chrome": LiquidChromeDemo,
+	"live-line-chart": LiveLineChartDemo,
+	"loading-screen": LoadingScreenDemo,
+	"loading-state": LoadingStateDemo,
+	"logo-carousel": LogoCarouselDemo,
+	"magnet-lines": MagnetLinesDemo,
+	markdown: MarkdownDemo,
+	marker: MarkerDemo,
 	"mask-text": MaskTextDemo,
+	"mega-navbar": MegaNavbarDemo,
+	message: MessageDemo,
+	"metis-text": MetisTextDemo,
+	"mirror-text": MirrorTextDemo,
+	"morph-text": MorphTextDemo,
+	"morphing-modal": MorphingModalDemo,
+	"music-player": MusicPlayerDemo,
+	navbar: NavbarDemo,
+	"og-author-profile": OgAuthorProfileDemo,
+	"og-blog-post": OgBlogPostDemo,
+	"og-changelog": OgChangelogDemo,
+	"og-docs-page": OgDocsPageDemo,
+	"og-github-repo": OgGithubRepoDemo,
+	"og-newsletter-issue": OgNewsletterIssueDemo,
+	"orbit-card-stack": OrbitCardStackDemo,
+	"overview-card": OverviewCardDemo,
+	pagination: PaginationDemo,
+	"particle-text": ParticleTextDemo,
+	"pie-chart": PieChartDemo,
+	"pixel-canvas": PixelCanvasDemo,
+	"pixel-image-trail": PixelImageTrailDemo,
+	popover: PopoverDemo,
+	"pricing-01": Pricing01Demo,
+	"pricing-02": Pricing02Demo,
+	"prism-gradient": PrismGradientDemo,
+	progress: ProgressDemo,
+	"projection-line": ProjectionLineDemo,
+	question: QuestionDemo,
+	"radar-chart": RadarChartDemo,
+	"radio-group": RadioGroupDemo,
+	reasoning: ReasoningDemo,
+	"recommendation-card": RecommendationCardDemo,
+	"records-table": RecordsTableDemo,
+	"reorder-list": ReorderListDemo,
+	"response-stream": ResponseStreamDemo,
+	"responsive-dialog": ResponsiveDialogDemo,
+	"reveal-text": RevealTextDemo,
+	"ring-chart": RingChartDemo,
+	"ripple-transition": RippleTransitionDemo,
+	"roll-text": RollTextDemo,
+	"rolling-digits": RollingDigitsDemo,
+	"sankey-chart": SankeyChartDemo,
+	"scatter-chart": ScatterChartDemo,
+	"score-card": ScoreCardDemo,
+	"scroll-area": ScrollAreaDemo,
+	"scroll-choreography": ScrollChoreographyDemo,
+	"scroll-progress": ScrollProgressDemo,
+	"scroll-reveal": ScrollRevealDemo,
+	"scroll-split-card": ScrollSplitCardDemo,
+	"scroll-tilted-grid": ScrollTiltedGridDemo,
+	"scroll-velocity": ScrollVelocityDemo,
+	"scrub-field": ScrubFieldDemo,
+	select: SelectDemo,
+	sheet: SheetDemo,
+	"shimmer-text": ShimmerTextDemo,
+	shortcut: ShortcutDemo,
+	"show-more": ShowMoreDemo,
+	"showcase-grid": ShowcaseGridDemo,
+	"sidebar-nav": SidebarNavDemo,
+	signature: SignatureDemo,
+	"silk-aurora": SilkAuroraDemo,
+	skeleton: SkeletonDemo,
+	slider: SliderDemo,
+	"spectral-ribbon": SpectralRibbonDemo,
+	spinner: SpinnerDemo,
+	"split-flap-display": SplitFlapDisplayDemo,
+	"split-text": SplitTextDemo,
 	"staggered-letter": StaggeredLetterDemo,
 	"stat-card": StatCardDemo,
 	"stat-card-map": StatCardMapDemo,
-	"cycle-text": CycleTextDemo,
-	counter: CounterDemo,
-	ticker: TickerDemo,
-	"scroll-reveal": ScrollRevealDemo,
+	"status-monitor": StatusMonitorDemo,
+	"sticky-scroll-cards": StickyScrollCardsDemo,
+	"streaming-text": StreamingTextDemo,
+	"sunburst-chart": SunburstChartDemo,
+	"swap-text": SwapTextDemo,
+	switch: SwitchDemo,
+	table: TableDemo,
+	"table-of-contents": TableOfContentsDemo,
+	tabs: TabsDemo,
+	"tag-input": TagInputDemo,
+	"task-rows": TaskRowsDemo,
+	"task-steps": TaskStepsDemo,
+	"text-border-animation": TextBorderAnimationDemo,
 	"text-explode-imessage": TextExplodeIMessageDemo,
-	"dia-text": DiaTextDemo,
-	"morph-text": MorphTextDemo,
-	"reveal-text": RevealTextDemo,
-	"scroll-progress": ScrollProgressDemo,
-	"shimmer-text": ShimmerTextDemo,
+	"text-flip": TextFlipDemo,
 	"text-inertia": TextInertiaDemo,
 	"text-loop": TextLoopDemo,
+	"text-reel": TextReelDemo,
+	"text-repel": TextRepelDemo,
+	"text-transition": TextTransitionDemo,
+	textarea: TextareaDemo,
+	"theme-toggle": ThemeToggleDemo,
+	"thinking-state": ThinkingStateDemo,
+	ticker: TickerDemo,
+	toast: ToastDemo,
+	toggle: ToggleDemo,
+	"toggle-group": ToggleGroupDemo,
+	tool: ToolDemo,
+	"tool-chips": ToolChipsDemo,
+	tooltip: TooltipDemo,
 	typewriter: TypewriterDemo,
+	"typing-text": TypingTextDemo,
+	typography: TypographyDemo,
+	"underline-hover-text": UnderlineHoverTextDemo,
+	"usage-card": UsageCardDemo,
+	"wave-reveal": WaveRevealDemo,
+	"webgl-liquid": WebglLiquidDemo,
 	"week-calendar": WeekCalendarDemo,
-	"rolling-digits": RollingDigitsDemo,
-	marker: MarkerDemo,
-	"split-flap-display": SplitFlapDisplayDemo,
-	"hover-transition": HoverTransitionDemo,
 	"wheel-carousel": WheelCarouselDemo,
 	"wheel-picker": WheelPickerDemo,
-	"overview-card": OverviewCardDemo,
-	"usage-card": UsageCardDemo,
-	"score-card": ScoreCardDemo,
-	"scroll-tilted-grid": ScrollTiltedGridDemo,
-	"sticky-scroll-cards": StickyScrollCardsDemo,
-	"layered-stack": LayeredStackDemo,
-	"orbit-card-stack": OrbitCardStackDemo,
-	"case-study-flip-stack": CaseStudyFlipStackDemo,
-	"collection-surfer": CollectionSurferDemo,
-	"scroll-choreography": ScrollChoreographyDemo,
-	"scroll-split-card": ScrollSplitCardDemo,
-	"table-of-contents": TableOfContentsDemo,
 };

@@ -21,6 +21,7 @@ export const scrollChoreography = defineComponent({
 		"Four images swap corners, stack in the centre, then one grows to fill the frame as you scroll.",
 	category: "animated",
 	status: "stable",
+	demo: { mode: "auto", frame: "none" },
 	variants: { variant: VARIANTS, size: SIZES },
 	props: [
 		{

@@ -9,6 +9,7 @@ export const splitText = defineComponent({
 		"Each letter splits top/bottom around the hovered one, fanning out its neighbours.",
 	category: "text",
 	status: "stable",
+	demo: { mode: "auto", frame: "none" },
 	variants: { size: SIZES },
 	props: [
 		{

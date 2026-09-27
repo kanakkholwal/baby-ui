@@ -1,11 +1,33 @@
 "use client";
 
 import { Slider as SliderPrimitive } from "@base-ui/react/slider";
-import { type ComponentProps, useState } from "react";
+import {
+	type ComponentProps,
+	type CSSProperties,
+	type PointerEvent,
+	useEffect,
+	useRef,
+	useState,
+} from "react";
 import { cn } from "../lib/cn";
-import { type SliderMark, type SliderSize, slider, sliderPercent } from "./variants";
+import {
+	sliderInlineSplit,
+	sliderRulerOffset,
+	sliderRulerTicks,
+	sliderRulerValueAt,
+	sliderLayout,
+	sliderThumbCenter,
+	sliderWaveBars,
+} from "./core";
+import {
+	type SliderMark,
+	type SliderSize,
+	type SliderVariant,
+	slider,
+	sliderPercent,
+} from "./variants";
 
-export type { SliderMark, SliderSize };
+export type { SliderMark, SliderSize, SliderVariant };
 
 export interface SliderProps
 	extends Omit<
@@ -20,7 +42,10 @@ export interface SliderProps
 	onValueCommit?: (value: number | number[]) => void;
 	/** Accessible name; also the header title when `showValue` is on. */
 	label?: string;
+	/** Only `default` supports vertical; the other variants render horizontal. */
 	orientation?: "horizontal" | "vertical";
+	/** `inline`, `fluid`, `wave` and `ruler` are single-thumb; a range falls back to `track`. */
+	variant?: SliderVariant;
 	size?: SliderSize;
 	/** Header with the label and the live value. */
 	showValue?: boolean;
@@ -29,14 +54,18 @@ export interface SliderProps
 	marks?: SliderMark[];
 }
 
+const THUMB_WIDTH = 20;
+
 export function Slider({
 	className,
 	value: valueProp,
 	defaultValue,
 	min = 0,
 	max = 100,
-	orientation = "horizontal",
+	step = 1,
+	orientation: orientationProp = "horizontal",
 	label,
+	variant: variantProp = "default",
 	size = "md",
 	showValue = false,
 	formatValue = (v) => String(v),
@@ -50,7 +79,10 @@ export function Slider({
 	const value = valueProp ?? internal;
 	const isRange = Array.isArray(value);
 	const values = isRange ? value : [value];
-	const styles = slider({ size });
+	const { variant, orientation } = sliderLayout(variantProp, orientationProp, isRange);
+	const styles = slider({ variant, size });
+	const first = values[0] ?? min;
+	const percent = sliderPercent(first, min, max);
 
 	const emit = (next: number[]) => {
 		const out = isRange ? next : (next[0] ?? min);
@@ -67,12 +99,97 @@ export function Slider({
 		emit(values.map((v, i) => (i === nearest ? target : v)));
 	};
 
+	// Base UI marks dragging on the DOM only; the wave crest needs it in render.
+	const [dragging, setDragging] = useState(false);
+	useEffect(() => {
+		if (!dragging) return;
+		const stop = () => setDragging(false);
+		window.addEventListener("pointerup", stop);
+		window.addEventListener("pointercancel", stop);
+		return () => {
+			window.removeEventListener("pointerup", stop);
+			window.removeEventListener("pointercancel", stop);
+		};
+	}, [dragging]);
+
+	// Inline: the handle parts where it crosses the label or the value.
+	const controlRef = useRef<HTMLDivElement>(null);
+	const labelRef = useRef<HTMLSpanElement>(null);
+	const valueRef = useRef<HTMLSpanElement>(null);
+	const [boxes, setBoxes] = useState({ width: 0, label: [0, 0], value: [0, 0] });
+	useEffect(() => {
+		if (variant !== "inline") return;
+		const control = controlRef.current;
+		if (!control) return;
+		const measure = () => {
+			const origin = control.getBoundingClientRect().left;
+			const span = (el: HTMLElement | null) => {
+				const r = el?.getBoundingClientRect();
+				return r ? [r.left - origin, r.right - origin] : [0, 0];
+			};
+			setBoxes({
+				width: control.offsetWidth,
+				label: span(labelRef.current),
+				value: span(valueRef.current),
+			});
+		};
+		measure();
+		const observer = new ResizeObserver(measure);
+		for (const el of [control, labelRef.current, valueRef.current]) if (el) observer.observe(el);
+		return () => observer.disconnect();
+	}, [variant]);
+	const split =
+		variant === "inline" && boxes.width
+			? sliderInlineSplit(sliderThumbCenter(percent, boxes.width, THUMB_WIDTH), [
+					{ start: boxes.label[0] ?? 0, end: boxes.label[1] ?? 0 },
+					{ start: boxes.value[0] ?? 0, end: boxes.value[1] ?? 0 },
+				])
+			: 0;
+
+	// Ruler: the strip follows the pointer in px; the value snaps to the nearest step.
+	const drag = useRef<{ id: number; x: number; offset: number } | null>(null);
+	const [stripOffset, setStripOffset] = useState<number | null>(null);
+	const onRulerDown = (event: PointerEvent<HTMLDivElement>) => {
+		if (disabled || event.button !== 0) return;
+		event.currentTarget.setPointerCapture(event.pointerId);
+		drag.current = { id: event.pointerId, x: event.clientX, offset: sliderRulerOffset(first, min, step) };
+		event.currentTarget.parentElement?.querySelector<HTMLElement>("input")?.focus({ preventScroll: true });
+	};
+	const onRulerMove = (event: PointerEvent<HTMLDivElement>) => {
+		const active = drag.current;
+		if (!active || active.id !== event.pointerId) return;
+		const lowest = sliderRulerOffset(max, min, step);
+		const offset = Math.min(0, Math.max(lowest, active.offset + event.clientX - active.x));
+		setStripOffset(offset);
+		const next = sliderRulerValueAt(offset, min, max, step);
+		if (next !== first) emit([next]);
+	};
+	const onRulerUp = (event: PointerEvent<HTMLDivElement>) => {
+		if (drag.current?.id !== event.pointerId) return;
+		drag.current = null;
+		setStripOffset(null);
+		onValueCommit?.(first);
+	};
+
+	const overlayText = (
+		<>
+			<span ref={labelRef} className={styles.inlineLabel()}>
+				{label}
+			</span>
+			<span ref={valueRef} className={styles.inlineValue()}>
+				{formatValue(first)}
+			</span>
+		</>
+	);
+
 	return (
 		<SliderPrimitive.Root
 			data-slot="slider"
+			data-variant={variant}
 			value={values}
 			min={min}
 			max={max}
+			step={step}
 			orientation={orientation}
 			disabled={disabled}
 			thumbAlignment="edge"
@@ -84,30 +201,91 @@ export function Slider({
 			className={cn(styles.root(), className)}
 			{...props}
 		>
-			{showValue ? (
+			{showValue && variant !== "inline" && variant !== "fluid" && variant !== "ruler" ? (
 				<div className={styles.header()}>
 					<span className={styles.title()}>{label}</span>
 					<span className={styles.value()}>{values.map(formatValue).join(" - ")}</span>
 				</div>
 			) : null}
-			<SliderPrimitive.Control className={styles.control()}>
+			{variant === "ruler" ? (
+				<div
+					aria-hidden="true"
+					className={styles.ruler()}
+					onPointerDown={onRulerDown}
+					onPointerMove={onRulerMove}
+					onPointerUp={onRulerUp}
+					onPointerCancel={onRulerUp}
+				>
+					<div className={styles.rulerReadout()}>{formatValue(first)}</div>
+					<div className={styles.rulerWindow()}>
+						<div
+							data-settling={stripOffset === null || undefined}
+							className={styles.rulerStrip()}
+							style={{
+								transform: `translateX(${stripOffset ?? sliderRulerOffset(first, min, step)}px)`,
+							}}
+						>
+							{sliderRulerTicks(min, max, step).map((tick) => (
+								<span key={tick.value} className={styles.rulerTick()} style={{ left: tick.offset }}>
+									<span data-major={tick.major || undefined} className={styles.rulerTickLine()} />
+									{tick.major ? <span className={styles.rulerTickLabel()}>{tick.value}</span> : null}
+								</span>
+							))}
+						</div>
+						<span className={styles.rulerNeedle()} />
+					</div>
+				</div>
+			) : null}
+			<SliderPrimitive.Control
+				ref={controlRef}
+				className={styles.control()}
+				onPointerDown={() => setDragging(true)}
+			>
 				<SliderPrimitive.Track data-slot="slider-track" className={styles.track()}>
-					<SliderPrimitive.Indicator
-						data-slot="slider-range"
-						className={styles.range()}
-					/>
+					<SliderPrimitive.Indicator data-slot="slider-range" className={styles.range()} />
 				</SliderPrimitive.Track>
-				{values.map((_, index) => (
+				{variant === "inline" || variant === "fluid" ? (
+					<div aria-hidden="true" className={styles.overlay()}>
+						{overlayText}
+					</div>
+				) : null}
+				{variant === "wave" ? (
+					<div aria-hidden="true" className={styles.overlay()}>
+						{sliderWaveBars(percent, dragging).map((bar, i) => (
+							<span
+								// biome-ignore lint/suspicious/noArrayIndexKey: bars never reorder
+								key={i}
+								data-filled={bar.filled || undefined}
+								className={styles.bar()}
+								style={
+									{
+										"--bar-scale": bar.scale,
+										transitionDelay: `${bar.delayMs}ms`,
+									} as CSSProperties
+								}
+							/>
+						))}
+					</div>
+				) : null}
+				{values.map((v, index) => (
 					<SliderPrimitive.Thumb
 						key={index}
 						index={index}
 						getAriaLabel={label ? () => label : undefined}
+						getAriaValueText={(formatted, raw) => (formatValue ? formatValue(raw) : formatted)}
 						data-slot="slider-thumb"
 						className={styles.thumb()}
-					/>
+						style={variant === "inline" ? ({ "--slider-split": split } as CSSProperties) : undefined}
+					>
+						{variant === "bubble" ? (
+							<span aria-hidden="true" className={styles.bubble()}>
+								{formatValue(v)}
+							</span>
+						) : null}
+					</SliderPrimitive.Thumb>
 				))}
 			</SliderPrimitive.Control>
-			{marks.length > 0 && orientation === "horizontal" ? (
+			{marks.length > 0 && orientation === "horizontal" && variant !== "ruler" ? (
 				<div className={styles.marks()}>
 					{marks.map((mark) => (
 						<span

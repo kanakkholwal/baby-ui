@@ -2,6 +2,10 @@
 @import "@fontsource-variable/jetbrains-mono";
 @import "@baby-ui/tokens/theme.css";
 @source "../../../../packages/ui-svelte/src/lib";
+/* Shared .ts files (variants, cores) are generated into ui-svelte and gitignored there, which
+   Tailwind honours; scan the React sources they are copied from instead. */
+@source "../../../../packages/ui-react/src/**/*.ts";
+@source "../../../../pro/packages/react/src/**/*.ts";
 /* Only what the site renders: React demos and usage snippets appear as code, never as markup. */
 @source "../../../../packages/demos/src/svelte";
 @source "../../../../packages/demos/src/controls";
@@ -9,6 +13,7 @@
 /* The private Pro submodule; Tailwind skips these paths when it is not checked out. */
 @source "../../../../pro/packages/svelte/src";
 @source "../../../../pro/packages/demos/src/svelte";
+@source "../../../../pro/packages/demos/src/screens";
 
 @layer base {
 	* {

@@ -9,6 +9,7 @@ export const swapText = defineComponent({
 	description: "Swaps between two texts on click or hover.",
 	category: "text",
 	status: "stable",
+	demo: { mode: "auto", frame: "none" },
 	variants: { size: SIZES, motion: MOTIONS },
 	props: [
 		{

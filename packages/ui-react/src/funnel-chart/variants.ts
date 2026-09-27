@@ -10,7 +10,7 @@ export const funnelChart = tv({
 		value: "whitespace-nowrap font-semibold text-foreground text-sm tabular-nums",
 		percent:
 			"rounded-full bg-foreground px-2.5 py-0.5 font-bold text-[11px] text-background tabular-nums shadow-sm",
-		name: "whitespace-nowrap font-medium text-muted-foreground text-xs",
+		name: "line-clamp-2 max-w-full text-center font-medium text-muted-foreground text-xs [overflow-wrap:anywhere]",
 		mark: "",
 	},
 	variants: {

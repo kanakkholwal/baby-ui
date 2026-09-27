@@ -81,7 +81,7 @@ function active(match: string) {
 				<span class="font-semibold font-display">Baby UI</span>
 			</a>
 
-			<nav class="hidden items-center gap-0.5 md:flex">
+			<nav aria-label="Main" class="hidden items-center gap-0.5 md:flex">
 				{#each NAV as item (item.href)}
 					<a
 						href={item.href}
@@ -99,7 +99,7 @@ function active(match: string) {
 			</nav>
 		</div>
 
-		<nav class="flex items-center gap-2">
+		<nav aria-label="Site tools" class="flex items-center gap-2">
 			<SiteSearch />
 
 			<ThemeToggle

@@ -8,6 +8,7 @@ export const textBorderAnimation = defineComponent({
 	description: "A bar slides in under the text on hover, and slides back out on exit.",
 	category: "text",
 	status: "stable",
+	demo: { mode: "auto", frame: "none" },
 	variants: { size: SIZES },
 	props: [
 		{

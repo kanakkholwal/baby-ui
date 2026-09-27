@@ -8,6 +8,7 @@ export const scrollReveal = defineComponent({
 	description: "Reveals text word by word as an inner container scrolls.",
 	category: "text",
 	status: "stable",
+	demo: { mode: "auto", frame: "none" },
 	variants: { size: SIZES },
 	props: [
 		{

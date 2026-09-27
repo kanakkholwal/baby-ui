@@ -2,7 +2,7 @@ import { tv } from "tailwind-variants";
 
 export type { DialogVariant } from "../dialog/variants";
 
-/** Command's flat mode is edge-to-edge (matches shadcn/ui's cmdk convention), unlike
+/** Command's flat mode is edge-to-edge (matches shadcn's cmdk convention), unlike
  * Dialog's padded flat surface, so it keeps its own panel/body padding. */
 export const commandFrame = tv({
 	slots: {

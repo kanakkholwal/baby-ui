@@ -85,6 +85,7 @@ export function siteNav(
 			.filter((c) => c.category === "agents" || TOP_LEVEL.includes(c.category))
 			.map((c) => ({ href: c.href, label: c.label, match: c.href })),
 		{ href: "/docs", label: "Docs", match: "/docs" },
+		...(__SHOW_PRO__ ? [{ href: "/pricing", label: "Pricing", match: "/pricing" }] : []),
 	];
 }
 

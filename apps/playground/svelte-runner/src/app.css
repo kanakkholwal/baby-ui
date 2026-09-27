@@ -1,5 +1,7 @@
 @import "@baby-ui/tokens/theme.css";
 @source "../../../../packages/ui-svelte/src/lib";
+/* Generated ui-svelte .ts copies are gitignored, so Tailwind skips them; scan their React sources. */
+@source "../../../../packages/ui-react/src/**/*.ts";
 @source "../../../../packages/demos/src";
 
 html,

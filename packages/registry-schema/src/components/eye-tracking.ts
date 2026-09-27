@@ -10,6 +10,7 @@ export const eyeTracking = defineComponent({
 	description: "A row of eyes whose irises follow the pointer and blink now and then.",
 	category: "animated",
 	status: "stable",
+	demo: { mode: "auto", frame: "none" },
 	variants: { variant: VARIANTS, size: SIZES },
 	props: [
 		{

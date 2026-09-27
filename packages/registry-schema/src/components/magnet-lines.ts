@@ -10,6 +10,7 @@ export const magnetLines = defineComponent({
 	description: "A grid of short lines that turn to face the pointer.",
 	category: "animated",
 	status: "stable",
+	demo: { mode: "auto", frame: "none" },
 	variants: { size: SIZES, tone: TONES },
 	props: [
 		{

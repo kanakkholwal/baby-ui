@@ -248,7 +248,7 @@ setActivePoint({
 			<span class={styles.percent()}>{chart.format.percent(cell.ratio)}</span>
 		{/if}
 		{#if showLabels}
-			<span class={styles.name()}>{cell.stage.label}</span>
+			<span class={styles.name()} title={cell.stage.label}>{cell.stage.label}</span>
 		{/if}
 	</div>
 {/each}

@@ -14,6 +14,9 @@ declare global {
 		// interface Platform {}
 	}
 
+	/** The Pro feature flag, a build-time literal from vite.config.ts so Pro-only globs fold away. */
+	const __SHOW_PRO__: boolean;
+
 	interface ImportMetaEnv {
 		readonly VITE_POSTHOG_KEY?: string;
 		readonly VITE_SHOW_PRO?: string;

@@ -10,6 +10,7 @@ export const orbitCardStack = defineComponent({
 		"Profile cards piled in a stack that fan out on hover or focus and raise the active card.",
 	category: "animated",
 	status: "stable",
+	demo: { mode: "auto", frame: "none" },
 	variants: { size: SIZES, layout: LAYOUTS },
 	props: [
 		{

@@ -9,6 +9,7 @@ export const underlineHoverText = defineComponent({
 		"A muted baseline, and a bold stroke that sweeps outward from the centre on hover.",
 	category: "text",
 	status: "stable",
+	demo: { mode: "auto", frame: "none" },
 	variants: { tone: TONES },
 	props: [
 		{

@@ -10,6 +10,7 @@ export const ogGithubRepo = defineComponent({
 		"A 1200x630 repository card: owner and name, description, language, star/fork/issue counts, a contributor stack and an activity grid, rendered to PNG with takumi.",
 	category: "og-images",
 	status: "stable",
+	demo: { mode: "auto", frame: "og" },
 	variants: { mode: MODES, tone: TONES },
 	props: [
 		{

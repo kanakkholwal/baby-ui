@@ -2,7 +2,7 @@
 
 <script lang="ts">
 import { useChart, usePlot } from "./context";
-import { fitTickCount, Y_TICK_GAP } from "./core";
+import { fittedTicks, Y_TICK_GAP } from "./core";
 import { CHART_DURATION, CHART_EASE_CSS } from "./motion";
 import { chartAxis } from "./variants";
 
@@ -26,9 +26,7 @@ const plot = usePlot();
 const slide = `transform ${CHART_DURATION.update}ms ${CHART_EASE_CSS}`;
 const styles = $derived(chartAxis({ tickLine }));
 const left = $derived(orientation === "left");
-const ticks = $derived(
-	plot.yScale.ticks(fitTickCount(tickCount, plot.innerHeight, Y_TICK_GAP)),
-);
+const ticks = $derived(fittedTicks(plot.yScale, tickCount, plot.innerHeight, Y_TICK_GAP));
 </script>
 
 <g data-slot="chart-y-axis" class={className}>

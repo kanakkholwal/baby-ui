@@ -1,7 +1,7 @@
 "use client";
 
 import { useChart } from "../chart/chart";
-import { fitTickCount, X_TICK_GAP, Y_TICK_GAP } from "../chart/core";
+import { fittedTicks, X_TICK_GAP, Y_TICK_GAP } from "../chart/core";
 import { CHART_DURATION, CHART_EASE_CSS } from "../chart/motion";
 import { cn } from "../lib/cn";
 import { useBarChart } from "./bar-chart";
@@ -103,14 +103,15 @@ function ValueTicks({
 	const { format } = useChart();
 	const styles = barChart({ orientation: chart.orientation });
 	const [r0 = 0, r1 = 0] = chart.value.range();
-	const count = fitTickCount(
+	const ticks = fittedTicks(
+		chart.value,
 		tickCount,
 		Math.abs(r1 - r0),
 		side === "y" ? Y_TICK_GAP : X_TICK_GAP,
 	);
 	return (
 		<g data-slot={side === "x" ? "bar-x-axis" : "bar-y-axis"} className={className}>
-			{chart.value.ticks(count).map((tick) => {
+			{ticks.map((tick) => {
 				const pos = chart.value(tick);
 				return (
 					<text

@@ -18,6 +18,7 @@ export const scrollSplitCard = defineComponent({
 		"One image splits into three panels that separate, then flip over to reveal cards as you scroll.",
 	category: "animated",
 	status: "stable",
+	demo: { mode: "auto", frame: "none" },
 	variants: { tone: TONES, size: SIZES },
 	props: [
 		{

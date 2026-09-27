@@ -7,6 +7,7 @@ export const artGallery = defineComponent({
 		"An endless grid of framed images seen through a lens; drag to pan and it pulls back while you move.",
 	category: "advanced",
 	status: "stable",
+	demo: { mode: "auto", frame: "none" },
 	variants: { lens: ["flat", "barrel"] },
 	props: [
 		{

@@ -14,6 +14,7 @@ export const statCard = defineComponent({
 		"A KPI card whose headline, caption and trend follow the point under the chart.",
 	category: "blocks",
 	status: "stable",
+	demo: { mode: "auto", frame: "sm" },
 	props: [
 		{
 			name: "data",
@@ -126,6 +127,7 @@ export const statCardMap = defineComponent({
 		"A KPI card over a choropleth; the headline follows the region under the pointer.",
 	category: "blocks",
 	status: "stable",
+	demo: { mode: "auto", frame: "lg" },
 	props: [
 		{
 			name: "geo",

@@ -1,13 +1,13 @@
 import { defineComponent } from "../index";
 
 const MODES = ["light", "dark"];
-const TONES = ["chart", "primary", "neutral"];
+const TONES = ["neutral", "chart", "primary"];
 
 export const ogNewsletterIssue = defineComponent({
 	slug: "og-newsletter-issue",
 	name: "OG Newsletter Issue",
 	description:
-		"A 1200x630 editorial newsletter cover: small publication name, one huge headline and an optional also-inside line, rendered to PNG with takumi.",
+		"A 1200x630 editorial newsletter cover: a masthead over a hairline rule, one large headline and up to three numbered stories, rendered to PNG with takumi.",
 	category: "og-images",
 	status: "stable",
 	variants: { mode: MODES, tone: TONES },
@@ -15,7 +15,7 @@ export const ogNewsletterIssue = defineComponent({
 		{
 			name: "publication",
 			type: "string",
-			description: "Newsletter name, set small at the top.",
+			description: "Newsletter name, set small in the masthead.",
 			required: true,
 			default: "The Render Loop",
 			control: { kind: "text" },
@@ -23,7 +23,8 @@ export const ogNewsletterIssue = defineComponent({
 		{
 			name: "headline",
 			type: "string",
-			description: "Lead story headline, the focal point; clamps to three lines.",
+			description:
+				"Lead story headline, the focal point; clamps to three lines, or two when the list shows.",
 			required: true,
 			default: "Why every design system eventually rebuilds its tokens",
 			control: { kind: "text" },
@@ -44,16 +45,16 @@ export const ogNewsletterIssue = defineComponent({
 		},
 		{
 			name: "inside",
-			type: "string",
-			description: "One also-inside headline at the bottom; clamps to one line.",
-			default: "Springs that settle in under 300ms",
-			control: { kind: "text" },
+			type: "string[]",
+			description:
+				"Up to three other stories, numbered under the lead; each clamps to one line.",
+			control: { kind: "none" },
 		},
 		{
 			name: "insideLabel",
 			type: "string",
-			description: "Label before the also-inside headline.",
-			default: "Also inside",
+			description: "Small label above the numbered list.",
+			default: "In this issue",
 			control: { kind: "text" },
 		},
 		{
@@ -73,8 +74,8 @@ export const ogNewsletterIssue = defineComponent({
 			name: "tone",
 			type: TONES.map((v) => `"${v}"`).join(" | "),
 			description:
-				"`chart` and `primary` tint the whole field; `neutral` stays plain. Also colours the issue line.",
-			default: "chart",
+				"Accent for the issue label and list numbers only; the canvas stays plain in every tone.",
+			default: "neutral",
 			control: { kind: "select", options: TONES },
 		},
 	],

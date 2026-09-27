@@ -1,35 +1,17 @@
 "use client";
 
 import {
-	ArtGallery,
-	type ArtGalleryLens,
 	ClickSpark,
 	type ClickSparkTone,
-	CubeText,
-	type CubeTextSize,
-	type CubeTextStagger,
 	DraggableMarquee,
 	type DraggableMarqueeDirection,
 	type DraggableMarqueeGap,
 	TextReel,
 	type TextReelSize,
 } from "@baby-ui/react";
-import { GALLERY_ITEMS, MARQUEE_TILES, REEL_ITEMS } from "../data/obsidian";
+import { MARQUEE_TILES, REEL_ITEMS } from "../data/obsidian";
 
 type Props = Record<string, unknown>;
-
-export function CubeTextDemo({ props }: { props: Props }) {
-	return (
-		<CubeText
-			text={(props.text as string) || "Baby UI"}
-			durationMs={Number(props.durationMs ?? 2200)}
-			delayMs={Number(props.delayMs ?? 0)}
-			loop={(props.loop as boolean) ?? true}
-			stagger={(props.stagger as CubeTextStagger) ?? "wave"}
-			size={(props.size as CubeTextSize) ?? "md"}
-		/>
-	);
-}
 
 export function TextReelDemo({ props }: { props: Props }) {
 	return (
@@ -83,17 +65,5 @@ export function ClickSparkDemo({ props }: { props: Props }) {
 				durationMs={Number(props.durationMs ?? 400)}
 			/>
 		</div>
-	);
-}
-
-export function ArtGalleryDemo({ props }: { props: Props }) {
-	return (
-		<ArtGallery
-			items={GALLERY_ITEMS}
-			lens={(props.lens as ArtGalleryLens) ?? "barrel"}
-			cellSize={Number(props.cellSize ?? 0.75)}
-			dragZoom={Number(props.dragZoom ?? 1.25)}
-			showHint={(props.showHint as boolean) ?? true}
-		/>
 	);
 }

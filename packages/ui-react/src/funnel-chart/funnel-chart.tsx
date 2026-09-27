@@ -392,7 +392,9 @@ function FunnelPlot({
 							<span className={styles.percent()}>{format.percent(cell.ratio)}</span>
 						) : null}
 						{showLabels ? (
-							<span className={styles.name()}>{cell.stage.label}</span>
+							<span className={styles.name()} title={cell.stage.label}>
+								{cell.stage.label}
+							</span>
 						) : null}
 					</div>
 				);
