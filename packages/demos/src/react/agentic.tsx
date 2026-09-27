@@ -120,7 +120,11 @@ export function SliderDemo({ props }: { props: Props }) {
 	return (
 		<div
 			className={
-				orientation === "vertical" ? "flex h-56" : variant === "default" ? "w-72" : "w-full max-w-sm"
+				orientation === "vertical"
+					? "flex h-56"
+					: variant === "default"
+						? "w-72"
+						: "w-full max-w-sm"
 			}
 		>
 			<Slider

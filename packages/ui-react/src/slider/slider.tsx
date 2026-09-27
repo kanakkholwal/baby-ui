@@ -12,10 +12,10 @@ import {
 import { cn } from "../lib/cn";
 import {
 	sliderInlineSplit,
+	sliderLayout,
 	sliderRulerOffset,
 	sliderRulerTicks,
 	sliderRulerValueAt,
-	sliderLayout,
 	sliderThumbCenter,
 	sliderWaveBars,
 } from "./core";
@@ -135,7 +135,8 @@ export function Slider({
 		};
 		measure();
 		const observer = new ResizeObserver(measure);
-		for (const el of [control, labelRef.current, valueRef.current]) if (el) observer.observe(el);
+		for (const el of [control, labelRef.current, valueRef.current])
+			if (el) observer.observe(el);
 		return () => observer.disconnect();
 	}, [variant]);
 	const split =
@@ -152,14 +153,23 @@ export function Slider({
 	const onRulerDown = (event: PointerEvent<HTMLDivElement>) => {
 		if (disabled || event.button !== 0) return;
 		event.currentTarget.setPointerCapture(event.pointerId);
-		drag.current = { id: event.pointerId, x: event.clientX, offset: sliderRulerOffset(first, min, step) };
-		event.currentTarget.parentElement?.querySelector<HTMLElement>("input")?.focus({ preventScroll: true });
+		drag.current = {
+			id: event.pointerId,
+			x: event.clientX,
+			offset: sliderRulerOffset(first, min, step),
+		};
+		event.currentTarget.parentElement
+			?.querySelector<HTMLElement>("input")
+			?.focus({ preventScroll: true });
 	};
 	const onRulerMove = (event: PointerEvent<HTMLDivElement>) => {
 		const active = drag.current;
 		if (!active || active.id !== event.pointerId) return;
 		const lowest = sliderRulerOffset(max, min, step);
-		const offset = Math.min(0, Math.max(lowest, active.offset + event.clientX - active.x));
+		const offset = Math.min(
+			0,
+			Math.max(lowest, active.offset + event.clientX - active.x),
+		);
 		setStripOffset(offset);
 		const next = sliderRulerValueAt(offset, min, max, step);
 		if (next !== first) emit([next]);
@@ -226,9 +236,18 @@ export function Slider({
 							}}
 						>
 							{sliderRulerTicks(min, max, step).map((tick) => (
-								<span key={tick.value} className={styles.rulerTick()} style={{ left: tick.offset }}>
-									<span data-major={tick.major || undefined} className={styles.rulerTickLine()} />
-									{tick.major ? <span className={styles.rulerTickLabel()}>{tick.value}</span> : null}
+								<span
+									key={tick.value}
+									className={styles.rulerTick()}
+									style={{ left: tick.offset }}
+								>
+									<span
+										data-major={tick.major || undefined}
+										className={styles.rulerTickLine()}
+									/>
+									{tick.major ? (
+										<span className={styles.rulerTickLabel()}>{tick.value}</span>
+									) : null}
 								</span>
 							))}
 						</div>
@@ -241,10 +260,22 @@ export function Slider({
 				className={styles.control()}
 				onPointerDown={() => setDragging(true)}
 			>
+				{variant === "fluid" ? (
+					<div aria-hidden="true" className={styles.overlay()}>
+						{overlayText}
+					</div>
+				) : null}
 				<SliderPrimitive.Track data-slot="slider-track" className={styles.track()}>
-					<SliderPrimitive.Indicator data-slot="slider-range" className={styles.range()} />
+					<SliderPrimitive.Indicator data-slot="slider-range" className={styles.range()}>
+						{variant === "fluid" ? (
+							<span aria-hidden="true" className={styles.fillText()}>
+								<span className={styles.inlineLabel()}>{label}</span>
+								<span className={styles.inlineValue()}>{formatValue(first)}</span>
+							</span>
+						) : null}
+					</SliderPrimitive.Indicator>
 				</SliderPrimitive.Track>
-				{variant === "inline" || variant === "fluid" ? (
+				{variant === "inline" ? (
 					<div aria-hidden="true" className={styles.overlay()}>
 						{overlayText}
 					</div>
@@ -253,7 +284,6 @@ export function Slider({
 					<div aria-hidden="true" className={styles.overlay()}>
 						{sliderWaveBars(percent, dragging).map((bar, i) => (
 							<span
-								// biome-ignore lint/suspicious/noArrayIndexKey: bars never reorder
 								key={i}
 								data-filled={bar.filled || undefined}
 								className={styles.bar()}
@@ -272,10 +302,16 @@ export function Slider({
 						key={index}
 						index={index}
 						getAriaLabel={label ? () => label : undefined}
-						getAriaValueText={(formatted, raw) => (formatValue ? formatValue(raw) : formatted)}
+						getAriaValueText={(formatted, raw) =>
+							formatValue ? formatValue(raw) : formatted
+						}
 						data-slot="slider-thumb"
 						className={styles.thumb()}
-						style={variant === "inline" ? ({ "--slider-split": split } as CSSProperties) : undefined}
+						style={
+							variant === "inline"
+								? ({ "--slider-split": split } as CSSProperties)
+								: undefined
+						}
 					>
 						{variant === "bubble" ? (
 							<span aria-hidden="true" className={styles.bubble()}>

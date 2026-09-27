@@ -20,6 +20,7 @@ export const slider = tv({
 		markButton:
 			"rounded-sm outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring",
 		overlay: "pointer-events-none absolute inset-0 hidden",
+		fillText: "hidden",
 		inlineLabel: "hidden",
 		inlineValue: "hidden",
 		bubble: "hidden",
@@ -29,7 +30,8 @@ export const slider = tv({
 		rulerWindow: "hidden",
 		rulerStrip: "hidden",
 		rulerTick: "absolute bottom-0 flex -translate-x-1/2 flex-col items-center pb-[18px]",
-		rulerTickLine: "w-px rounded-full bg-foreground/45 data-major:h-7 data-major:bg-foreground/70 h-3.5",
+		rulerTickLine:
+			"w-px rounded-full bg-foreground/45 data-major:h-7 data-major:bg-foreground/70 h-3.5",
 		rulerTickLabel: "absolute bottom-0 text-[10px] text-muted-foreground tabular-nums",
 		rulerNeedle: "hidden",
 	},
@@ -84,16 +86,18 @@ export const slider = tv({
 					"motion-reduce:translate-y-0 motion-reduce:scale-80 motion-reduce:transition-opacity",
 				],
 			},
-			// Thumbless: the whole pill is the control and its text inverts under the fill.
+			// Thumbless: the whole pill is the control; a second copy of its text rides in the fill.
 			fluid: {
 				control:
-					"overflow-hidden rounded-full bg-muted transition-[scale] duration-(--duration-press) ease-(--ease-out) has-focus-visible:ring-4 has-focus-visible:ring-foreground/40 has-focus-visible:ring-inset has-data-[active]:scale-[1.03] has-data-[dragging]:scale-[1.03] motion-reduce:transition-none",
+					"@container overflow-hidden rounded-full bg-muted transition-[scale] duration-(--duration-press) ease-(--ease-out) has-focus-visible:ring-4 has-focus-visible:ring-foreground/40 has-focus-visible:ring-inset has-data-[active]:scale-[1.03] has-data-[dragging]:scale-[1.03] motion-reduce:transition-none",
 				track: "absolute inset-0 h-full rounded-none bg-transparent",
-				range: "rounded-none rounded-r-full bg-foreground",
+				range: "overflow-hidden rounded-none rounded-r-full bg-foreground",
 				thumb:
 					"h-full w-0 border-0 opacity-0 shadow-none hover:scale-100 active:scale-100 data-[active]:scale-100 data-[dragging]:scale-100",
 				overlay:
-					"flex items-center justify-between gap-3 px-5 font-medium text-sm text-white mix-blend-difference",
+					"flex items-center justify-between gap-3 px-5 font-medium text-foreground text-sm",
+				fillText:
+					"pointer-events-none absolute inset-y-0 left-0 flex w-[100cqw] items-center justify-between gap-3 px-5 font-medium text-background text-sm",
 				inlineLabel: "block truncate",
 				inlineValue: "block shrink-0 tabular-nums",
 			},
@@ -114,13 +118,14 @@ export const slider = tv({
 			ruler: {
 				root: "rounded-2xl has-focus-visible:ring-4 has-focus-visible:ring-foreground/30",
 				control: "sr-only",
-				ruler: "relative block w-full cursor-grab touch-none select-none overflow-hidden active:cursor-grabbing",
+				ruler:
+					"relative block w-full cursor-grab touch-none select-none overflow-hidden active:cursor-grabbing",
 				rulerReadout:
 					"pointer-events-none flex items-baseline justify-center gap-1 pt-1 pb-3 font-semibold text-3xl text-foreground tabular-nums",
 				rulerWindow:
 					"relative block h-12 [mask-image:linear-gradient(to_right,transparent,black_18%,black_82%,transparent)]",
 				rulerStrip:
-					"absolute inset-y-0 left-1/2 block data-[settling]:transition-transform data-[settling]:duration-500 data-[settling]:ease-[linear(0,0.25,0.62,0.9,1.04,1.06,1.03,1,0.99,1)] motion-reduce:transition-none",
+					"absolute inset-y-0 left-1/2 block data-[settling]:transition-transform data-[settling]:duration-500 data-[settling]:ease-[linear(0,0.25,0.62,0.9,1.04,1.06,1.03,1,0.99,1)] motion-reduce:data-[settling]:transition-none",
 				rulerNeedle:
 					"pointer-events-none absolute bottom-5 left-1/2 block h-9 w-[3px] -translate-x-1/2 rounded-full bg-foreground",
 			},

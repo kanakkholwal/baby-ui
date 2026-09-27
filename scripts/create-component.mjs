@@ -1,20 +1,16 @@
+import { readFileSync } from "node:fs";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { generate } from "./generate.mjs";
 
 const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+// Read from the schema so a new category never needs a second edit here.
 const CATEGORIES = [
-	"base",
-	"blocks",
-	"advanced",
-	"animated",
-	"agents",
-	"text",
-	"backgrounds",
-	"charts",
-	"og-images",
-];
+	...readFileSync(resolve(REPO_ROOT, "packages/registry-schema/src/spec.ts"), "utf8")
+		.match(/CATEGORIES = \[([^\]]*)\]/)[1]
+		.matchAll(/"([a-z-]+)"/g),
+].map((m) => m[1]);
 const RESERVED = new Set([
 	"switch",
 	"delete",
@@ -68,8 +64,6 @@ async function write(path, content) {
 	);
 }
 
-/** Inserts before the first re-export statement whose dir sorts after `slug`; tracks each
- * statement's start line so a multi-line block inserts before its opening brace, not mid-block. */
 const variantsTemplate = () => `import { tv, type VariantProps } from "tailwind-variants";
 
 export const ${camel} = tv({

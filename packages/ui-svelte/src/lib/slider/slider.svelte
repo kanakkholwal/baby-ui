@@ -3,10 +3,10 @@ import { Slider as SliderPrimitive } from "bits-ui";
 import { cn } from "../lib/cn";
 import {
 	sliderInlineSplit,
+	sliderLayout,
 	sliderRulerOffset,
 	sliderRulerTicks,
 	sliderRulerValueAt,
-	sliderLayout,
 	sliderThumbCenter,
 	sliderWaveBars,
 } from "./core";
@@ -37,7 +37,14 @@ let {
 	...rest
 }: Omit<
 	SliderPrimitive.RootProps,
-	"type" | "value" | "min" | "max" | "step" | "onValueChange" | "onValueCommit" | "orientation"
+	| "type"
+	| "value"
+	| "min"
+	| "max"
+	| "step"
+	| "onValueChange"
+	| "onValueCommit"
+	| "orientation"
 > & {
 	/** Bindable value; an array renders one thumb per entry. */
 	value?: number | number[];
@@ -145,7 +152,11 @@ function onRulerDown(event: PointerEvent) {
 	event.stopPropagation();
 	const target = event.currentTarget as HTMLElement;
 	target.setPointerCapture(event.pointerId);
-	drag = { id: event.pointerId, x: event.clientX, offset: sliderRulerOffset(first, min, step) };
+	drag = {
+		id: event.pointerId,
+		x: event.clientX,
+		offset: sliderRulerOffset(first, min, step),
+	};
 	target.parentElement
 		?.querySelector<HTMLElement>('[data-slot="slider-thumb"]')
 		?.focus({ preventScroll: true });
@@ -207,10 +218,23 @@ function onRulerUp(event: PointerEvent) {
 		class={styles.control()}
 		onpointerdown={() => (dragging = true)}
 	>
+		{#if variant === "fluid"}
+			<div aria-hidden="true" class={styles.overlay()}>
+				<span class={styles.inlineLabel()}>{label}</span>
+				<span class={styles.inlineValue()}>{formatValue(first)}</span>
+			</div>
+		{/if}
 		<span data-slot="slider-track" data-orientation={orientation} class={styles.track()}>
-			<SliderPrimitive.Range data-slot="slider-range" class={styles.range()} />
+			<SliderPrimitive.Range data-slot="slider-range" class={styles.range()}>
+				{#if variant === "fluid"}
+					<span aria-hidden="true" class={styles.fillText()}>
+						<span class={styles.inlineLabel()}>{label}</span>
+						<span class={styles.inlineValue()}>{formatValue(first)}</span>
+					</span>
+				{/if}
+			</SliderPrimitive.Range>
 		</span>
-		{#if variant === "inline" || variant === "fluid"}
+		{#if variant === "inline"}
 			<div aria-hidden="true" class={styles.overlay()}>
 				<span bind:this={labelEl} class={styles.inlineLabel()}>{label}</span>
 				<span bind:this={valueEl} class={styles.inlineValue()}>{formatValue(first)}</span>

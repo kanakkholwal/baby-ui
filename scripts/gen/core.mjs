@@ -19,10 +19,13 @@ export class Output {
 		this.roots = roots.map((root) => join(ROOT, root));
 		this.files = new Map();
 		this.keep = new Set();
+		this.yielding = new Set();
 	}
 
-	add(path, content) {
+	/** `yieldToHand`: a hand-written file at this path wins (usage). Every other path the generator owns. */
+	add(path, content, { yieldToHand = false } = {}) {
 		this.files.set(path, content);
+		if (yieldToHand) this.yielding.add(path);
 	}
 
 	/** A path that must survive even though this run no longer generates it (port-specific files). */
@@ -76,7 +79,14 @@ export function flush(output, { check }) {
 		for (const path of paths) {
 			const content = output.files.get(path);
 			const current = read(path);
-			if (current !== null && current !== content && !before.has(path)) {
+			// A fresh checkout has no manifest, so owned paths are always rewritten; only yielding ones
+			// (usage) back off from a file they cannot prove they wrote.
+			if (
+				current !== null &&
+				current !== content &&
+				!before.has(path) &&
+				output.yielding.has(path)
+			) {
 				conflicts.push(`${rel(path)} exists and was not generated; not overwriting it`);
 				continue;
 			}

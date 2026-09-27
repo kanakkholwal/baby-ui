@@ -78,7 +78,7 @@ function active(match: string) {
 				class="group flex items-center gap-2.5 font-semibold text-foreground text-sm tracking-tight"
 			>
 				<Logo class="size-6 text-foreground" />
-				<span class="font-semibold font-display">Baby UI</span>
+				<span class="font-semibold font-display whitespace-nowrap">Baby UI</span>
 			</a>
 
 			<nav aria-label="Main" class="hidden items-center gap-0.5 md:flex">

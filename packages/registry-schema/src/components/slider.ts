@@ -65,7 +65,8 @@ export const slider = defineComponent({
 		{
 			name: "size",
 			type: '"sm" | "md" | "lg"',
-			description: "Scale of the `default`, `track`, `inline`, `bubble` and `fluid` looks.",
+			description:
+				"Scale of the `default`, `track`, `inline`, `bubble` and `fluid` looks.",
 			default: "md",
 			control: { kind: "select", options: ["sm", "md", "lg"] },
 		},
@@ -79,7 +80,8 @@ export const slider = defineComponent({
 		{
 			name: "formatValue",
 			type: "(value: number) => string",
-			description: "Formats the value wherever it shows: header, inline text, bubble, ruler readout, and the announced value.",
+			description:
+				"Formats the value wherever it shows: header, inline text, bubble, ruler readout, and the announced value.",
 			control: { kind: "none" },
 		},
 		{

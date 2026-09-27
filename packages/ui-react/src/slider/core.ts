@@ -14,7 +14,8 @@ export function sliderLayout(
 	orientation: "horizontal" | "vertical",
 	isRange: boolean,
 ): { variant: SliderVariant; orientation: "horizontal" | "vertical" } {
-	const resolved = isRange && SLIDER_SINGLE_THUMB_VARIANTS.includes(variant) ? "track" : variant;
+	const resolved =
+		isRange && SLIDER_SINGLE_THUMB_VARIANTS.includes(variant) ? "track" : variant;
 	return {
 		variant: resolved,
 		orientation: resolved === "default" ? orientation : "horizontal",
@@ -28,7 +29,11 @@ const WAVE_SPREAD = 2.6;
 export type SliderWaveBar = { scale: number; filled: boolean; delayMs: number };
 
 /** Gaussian crest centred on `percent`; bars rise further while dragging. */
-export function sliderWaveBars(percent: number, dragging: boolean, bars = SLIDER_WAVE_BARS): SliderWaveBar[] {
+export function sliderWaveBars(
+	percent: number,
+	dragging: boolean,
+	bars = SLIDER_WAVE_BARS,
+): SliderWaveBar[] {
 	const head = (percent / 100) * (bars - 1);
 	return Array.from({ length: bars }, (_, i) => {
 		const distance = Math.abs(i - head);
@@ -42,15 +47,25 @@ export function sliderWaveBars(percent: number, dragging: boolean, bars = SLIDER
 }
 
 /** Where a contained thumb's centre sits, in px from the control's start edge. */
-export function sliderThumbCenter(percent: number, controlSize: number, thumbSize: number): number {
+export function sliderThumbCenter(
+	percent: number,
+	controlSize: number,
+	thumbSize: number,
+): number {
 	return thumbSize / 2 + ((controlSize - thumbSize) * percent) / 100;
 }
 
 /** 0 to 1: how far the inline handle has parted, easing over 6px at each text edge. */
-export function sliderInlineSplit(x: number, boxes: { start: number; end: number }[]): number {
+export function sliderInlineSplit(
+	x: number,
+	boxes: { start: number; end: number }[],
+): number {
 	return boxes.reduce(
 		(most, box) =>
-			Math.max(most, Math.max(0, Math.min(1, (x + 2 - box.start) / 6, (box.end + 2 - x) / 6))),
+			Math.max(
+				most,
+				Math.max(0, Math.min(1, (x + 2 - box.start) / 6, (box.end + 2 - x) / 6)),
+			),
 		0,
 	);
 }
@@ -63,7 +78,11 @@ const RULER_MAX_TICKS = 400;
 export type SliderRulerTick = { value: number; offset: number; major: boolean };
 
 /** Tick per step (thinned past 400), plus `max` when the step doesn't divide the range. */
-export function sliderRulerTicks(min: number, max: number, step: number): SliderRulerTick[] {
+export function sliderRulerTicks(
+	min: number,
+	max: number,
+	step: number,
+): SliderRulerTick[] {
 	const span = Number(((max - min) / step).toFixed(6));
 	const whole = Math.floor(span);
 	const stride = Math.max(1, Math.ceil(whole / RULER_MAX_TICKS));
@@ -75,7 +94,8 @@ export function sliderRulerTicks(min: number, max: number, step: number): Slider
 			major: i % (SLIDER_RULER_MAJOR_EVERY * stride) === 0,
 		});
 	}
-	if (span > whole) ticks.push({ value: max, offset: span * SLIDER_RULER_GAP, major: true });
+	if (span > whole)
+		ticks.push({ value: max, offset: span * SLIDER_RULER_GAP, major: true });
 	return ticks;
 }
 
@@ -85,7 +105,12 @@ export function sliderRulerOffset(value: number, min: number, step: number): num
 }
 
 /** Nearest step to a strip offset, clamped to the bounds. */
-export function sliderRulerValueAt(offset: number, min: number, max: number, step: number): number {
+export function sliderRulerValueAt(
+	offset: number,
+	min: number,
+	max: number,
+	step: number,
+): number {
 	const raw = min + (-offset / SLIDER_RULER_GAP) * step;
 	const snapped = min + Math.round((raw - min) / step) * step;
 	const clamped = Math.min(max, Math.max(min, snapped));

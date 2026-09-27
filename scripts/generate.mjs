@@ -84,7 +84,8 @@ if (isMain) {
 		const result = generate({ check: true });
 		if (result.stale.length > 0 || result.conflicts.length > 0) process.exit(1);
 	} else {
-		if (generate().conflicts.length > 0) process.exitCode = 1;
+		// Conflicts are reported, never fatal here: `prepare` must not fail an install. --check fails.
+		generate();
 		if (args.has("--watch")) {
 			let timer;
 			for (const dir of watchRoots()) {

@@ -97,8 +97,14 @@ export function usageFiles(output, report) {
 			],
 		];
 		for (const [path, content] of files) {
-			if (existsSync(path) && !generated.has(path)) continue;
-			output.add(path, content);
+			// Identical content is ours even without a manifest (fresh checkout); anything else is hand-written.
+			if (
+				existsSync(path) &&
+				!generated.has(path) &&
+				readFileSync(path, "utf8") !== content
+			)
+				continue;
+			output.add(path, content, { yieldToHand: true });
 		}
 	}
 }

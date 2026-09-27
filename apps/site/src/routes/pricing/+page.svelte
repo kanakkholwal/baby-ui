@@ -5,7 +5,12 @@ import { breadcrumbLd, type JsonLd, SITE_NAME } from "$lib/seo";
 
 let { data } = $props();
 
-type Plan = { id: string; name: string; description: string; prices: { lifetime?: number } };
+type Plan = {
+	id: string;
+	name: string;
+	description: string;
+	prices: { lifetime?: number };
+};
 
 let loadingPlanId = $state<string | null>(null);
 
@@ -30,11 +35,13 @@ const jsonLd = $derived<JsonLd[]>([
 	},
 	{
 		"@type": "FAQPage",
-		mainEntity: data.sample.PRICING_FAQS.map((f: { question: string; answer: string }) => ({
-			"@type": "Question",
-			name: f.question,
-			acceptedAnswer: { "@type": "Answer", text: f.answer },
-		})),
+		mainEntity: data.sample.PRICING_FAQS.map(
+			(f: { question: string; answer: string }) => ({
+				"@type": "Question",
+				name: f.question,
+				acceptedAnswer: { "@type": "Answer", text: f.answer },
+			}),
+		),
 	},
 	breadcrumbLd([{ name: "Pricing", path: "/pricing" }]),
 ]);
