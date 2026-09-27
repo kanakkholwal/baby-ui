@@ -1,5 +1,6 @@
 import { createRequire } from "node:module";
 import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { docvia, docviaSourcePlugin } from "@docvia/plugin-vite";
 import adapter from "@sveltejs/adapter-cloudflare";
 import { sveltekit } from "@sveltejs/kit/vite";
@@ -45,14 +46,30 @@ function generatedFiles(): Plugin {
 	};
 }
 
-export default defineConfig(({ mode }) => {
+// postcss (the email renderer's CSS pass) is CJS and requires path/url/fs for source maps, which
+// the Worker never makes; Rolldown would wrap those requires in the same createRequire crash.
+const shim = (name: string) =>
+	fileURLToPath(new URL(`./src/lib/server/worker-shims/${name}.ts`, import.meta.url));
+const workerShims = [
+	// A file path, not the bare name: a bare replacement stays an external require.
+	{ find: /^path$/, replacement: join(dirname(require.resolve("pathe")), "index.mjs") },
+	{ find: /^url$/, replacement: shim("url") },
+	{ find: /^fs$/, replacement: shim("fs") },
+];
+
+export default defineConfig(({ command, mode }) => {
 	// The Pro feature flag: VITE_SHOW_PRO=true|false wins; unset, dev shows Pro and builds hide it.
 	const flag = loadEnv(mode, process.cwd(), "VITE_").VITE_SHOW_PRO;
 	const showPro = flag === undefined ? mode === "development" : flag === "true";
 	return {
 		define: { __SHOW_PRO__: JSON.stringify(showPro) },
 		resolve: {
-			alias: { yaml: yamlEsm, "@docvia/renderer-svelte": rendererSvelte },
+			alias: [
+				{ find: "yaml", replacement: yamlEsm },
+				{ find: "@docvia/renderer-svelte", replacement: rendererSvelte },
+				// Build only: dev SSR runs in Node, where the real modules are wanted.
+				...(command === "build" ? workerShims : []),
+			],
 			// The Pro submodule has its own node_modules. One copy of each shared dep keeps the Svelte
 			// runtime (and kernel context) single, and stops dev re-optimizing when a Pro page loads.
 			dedupe: ["svelte", "tailwind-variants", "d3-scale"],
