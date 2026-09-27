@@ -15,6 +15,7 @@ import DemoPreview from "$lib/components/demo-preview.svelte";
 import EmailFrame from "$lib/components/email-frame.svelte";
 import InstallBlock from "$lib/components/install-block.svelte";
 import MobileNavDrawer from "$lib/components/mobile-nav-drawer.svelte";
+import OgPngStage from "$lib/components/og-png-stage.svelte";
 import OutlineToggle from "$lib/components/outline-toggle.svelte";
 import PageMenu from "$lib/components/page-menu.svelte";
 import PreviewToolbar from "$lib/components/preview-toolbar.svelte";
@@ -27,6 +28,7 @@ import { demos } from "$lib/demos";
 import type { Heading } from "$lib/docs-nodes";
 import { OUTLINE_PANEL, outlineSidebar } from "$lib/docs-sidebar.svelte";
 import { prefs } from "$lib/preferences.svelte";
+import { EmailPreview, OgPngPreview, PREVIEW_VIEWS } from "$lib/preview-modes.svelte";
 import {
 	CATEGORY_LABEL,
 	categoryHref,
@@ -62,64 +64,27 @@ const framework = $derived(prefs.framework);
 const dialect = $derived(prefs.dialect);
 let values = $state<Record<string, unknown>>({});
 
-const isOg = $derived(data.spec.category === "og-images");
-let ogView = $state<"live" | "png">("live");
-// PNG view: fetch once typing settles, keep the last image on screen until the next one decodes.
-let pngShown = $state("");
-let pngPending = $state(false);
+// Extra preview views (OG PNG, email HTML/text); their fetch state lives in preview-modes.
+const views = $derived(PREVIEW_VIEWS[data.spec.category] ?? []);
+let view = $state("");
 $effect(() => {
-	if (!isOg || ogView !== "png") return;
-	const url = `/api/og/${data.spec.slug}?props=${encodeURIComponent(JSON.stringify(values))}`;
-	if (url === pngShown) return;
-	let cancelled = false;
-	const timer = setTimeout(() => {
-		pngPending = true;
-		const next = new Image();
-		next.onload = next.onerror = () => {
-			if (cancelled) return;
-			pngPending = false;
-			if (next.naturalWidth) pngShown = url;
-		};
-		next.src = url;
-	}, 450);
-	return () => {
-		cancelled = true;
-		clearTimeout(timer);
-	};
+	if (!views.some((v) => v.id === view)) view = views[0]?.id ?? "";
 });
-const isEmail = $derived(data.email !== null);
-let emailView = $state<"html" | "text">("html");
-let liveEmail = $state<{ html: string; text: string; bytes: number } | null>(null);
-let emailPending = $state(false);
-// Defaults show the build-time render of the chosen port; changed controls re-render via Svelte.
-$effect(() => {
-	const email = data.email;
-	if (!email) return;
-	const changed = JSON.stringify(values) !== JSON.stringify(defaultProps(data.spec));
-	if (!changed || email.slug !== data.spec.slug) {
-		liveEmail = null;
-		return;
-	}
-	const url = `/api/email/${email.slug}?props=${encodeURIComponent(JSON.stringify(values))}`;
-	const controller = new AbortController();
-	const timer = setTimeout(async () => {
-		emailPending = true;
-		try {
-			const res = await fetch(url, { signal: controller.signal });
-			if (res.ok) liveEmail = await res.json();
-		} catch {
-			// Aborted by the next keystroke, or offline: keep the last render.
-		}
-		if (!controller.signal.aborted) emailPending = false;
-	}, 350);
-	return () => {
-		clearTimeout(timer);
-		controller.abort();
-	};
-});
-const shownEmail = $derived(
-	liveEmail ??
-		(data.email ? data.email[framework === "react" ? "react" : "svelte"] : null),
+const png = new OgPngPreview(() =>
+	view === "og_png"
+		? `/api/og/${data.spec.slug}?props=${encodeURIComponent(JSON.stringify(values))}`
+		: null,
+);
+const email = new EmailPreview(() => ({
+	renders: data.email,
+	changed:
+		data.email?.slug === data.spec.slug &&
+		JSON.stringify(values) !== JSON.stringify(defaultProps(data.spec)),
+	values,
+	framework: framework === "react" ? "react" : "svelte",
+}));
+const stage = $derived(
+	data.email ? emailStage : view === "og_png" ? pngStage : undefined,
 );
 
 // Viewport sizes are a fullscreen tool; leaving fullscreen restores the full-width frame.
@@ -481,11 +446,7 @@ const categoryTrail = $derived(
 					slug={data.spec.slug}
 					demo={demos[data.spec.slug]}
 					props={values}
-					content={isEmail
-						? (emailStage as Snippet)
-						: isOg && ogView === "png"
-							? (pngView as Snippet)
-							: undefined}
+					content={stage as Snippet | undefined}
 					class={fill ? "h-full flex-1" : undefined}
 				/>
 			{/key}
@@ -493,10 +454,8 @@ const categoryTrail = $derived(
 				<PreviewToolbar
 					bind:viewport
 					bind:fullscreen
-					bind:ogView
-					og={isOg}
-					bind:emailView
-					email={isEmail}
+					bind:view
+					{views}
 					onReload={() => reloadKey++}
 				/>
 			</div>
@@ -505,37 +464,20 @@ const categoryTrail = $derived(
 {/snippet}
 
 {#snippet emailStage()}
-	{#if shownEmail}
+	{#if email.shown}
 		<EmailFrame
-			html={shownEmail.html}
-			text={shownEmail.text}
-			bytes={shownEmail.bytes}
-			view={emailView}
-			pending={emailPending}
+			html={email.shown.html}
+			text={email.shown.text}
+			bytes={email.shown.bytes}
+			view={view === "email_text" ? "text" : "html"}
+			pending={email.pending}
 			title="{data.spec.name} preview"
 		/>
 	{/if}
 {/snippet}
 
-{#snippet pngView()}
-	<figure class="relative w-full max-w-3xl">
-		{#if pngShown}
-			<img
-				src={pngShown}
-				alt="Rendered 1200x630 PNG of {data.spec.name}"
-				width="1200"
-				height="630"
-				class={["h-auto w-full rounded-xl border border-border shadow-sm transition-opacity", pngPending && "opacity-60"]}
-			/>
-		{:else}
-			<div class="grid aspect-[1200/630] w-full place-items-center rounded-xl border border-border bg-card text-muted-foreground text-sm">
-				Rendering…
-			</div>
-		{/if}
-		<figcaption class="mt-2 text-center text-muted-foreground text-xs">
-			Rendered with takumi at 1200x630: exactly what social networks receive.
-		</figcaption>
-	</figure>
+{#snippet pngStage()}
+	<OgPngStage preview={png} name={data.spec.name} />
 {/snippet}
 
 {#if fullscreen}

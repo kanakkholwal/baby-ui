@@ -9,31 +9,23 @@ import type { Icon } from "@tabler/icons-svelte";
 import IconArrowsMaximize from "@tabler/icons-svelte/icons/arrows-maximize";
 import IconDeviceDesktop from "@tabler/icons-svelte/icons/device-desktop";
 import IconDeviceMobile from "@tabler/icons-svelte/icons/device-mobile";
-import IconFileText from "@tabler/icons-svelte/icons/file-text";
-import IconMail from "@tabler/icons-svelte/icons/mail";
-import IconPhoto from "@tabler/icons-svelte/icons/photo";
-import IconPlayerPlay from "@tabler/icons-svelte/icons/player-play";
 import IconRefresh from "@tabler/icons-svelte/icons/refresh";
 import IconX from "@tabler/icons-svelte/icons/x";
 import { track } from "$lib/analytics";
+import type { PreviewView } from "$lib/preview-modes.svelte";
 
 let {
 	viewport = $bindable(),
 	fullscreen = $bindable(),
-	ogView = $bindable(),
-	og = false,
-	emailView = $bindable(),
-	email = false,
+	view = $bindable(),
+	views = [],
 	onReload,
 }: {
 	viewport: "desktop" | "mobile";
 	fullscreen: boolean;
-	ogView?: "live" | "png";
-	/** OG templates add a Live / PNG switch. */
-	og?: boolean;
-	emailView?: "html" | "text";
-	/** Email templates add an HTML / plain-text switch. */
-	email?: boolean;
+	view?: string;
+	/** Extra views a category offers, e.g. OG's Live / PNG; see PREVIEW_VIEWS. */
+	views?: PreviewView[];
 	onReload: () => void;
 } = $props();
 
@@ -49,46 +41,7 @@ type Action = {
 // Viewport sizes only mean something in fullscreen, so they only appear there.
 const groups = $derived<Action[][]>(
 	[
-		og
-			? [
-					{
-						id: "og_live",
-						label: "Live preview",
-						hint: "Live card, updates as you type",
-						icon: IconPlayerPlay,
-						pressed: ogView === "live",
-						run: () => (ogView = "live"),
-					},
-					{
-						id: "og_png",
-						label: "Rendered PNG",
-						hint: "The 1200x630 PNG social networks receive",
-						icon: IconPhoto,
-						pressed: ogView === "png",
-						run: () => (ogView = "png"),
-					},
-				]
-			: [],
-		email
-			? [
-					{
-						id: "email_html",
-						label: "HTML email",
-						hint: "Rendered HTML, following the site theme",
-						icon: IconMail,
-						pressed: emailView === "html",
-						run: () => (emailView = "html"),
-					},
-					{
-						id: "email_text",
-						label: "Plain text",
-						hint: "The plain-text part sent alongside the HTML",
-						icon: IconFileText,
-						pressed: emailView === "text",
-						run: () => (emailView = "text"),
-					},
-				]
-			: [],
+		views.map((v) => ({ ...v, pressed: view === v.id, run: () => (view = v.id) })),
 		fullscreen
 			? [
 					{
