@@ -146,15 +146,5 @@ export type SidebarGroup = {
 
 export type AdjacentComponent = { name: string; href: string };
 
-/** Initial control values, from each prop's declared default. */
-export function defaultProps(
-	spec: Pick<ComponentSpec, "props">,
-): Record<string, unknown> {
-	const out: Record<string, unknown> = {};
-	for (const prop of spec.props) {
-		if (prop.control.kind === "none") continue;
-		out[prop.name] =
-			prop.default ?? (prop.control.kind === "boolean" ? false : undefined);
-	}
-	return out;
-}
+// Lives in the schema so endpoints, auto demos and `pnpm emails` share one rule.
+export { defaultProps } from "@baby-ui/registry-schema";

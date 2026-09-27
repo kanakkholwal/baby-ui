@@ -91,7 +91,8 @@ export function mountAscii(
 	let last = 0;
 	let time = 0;
 
-	const running = () => surface.live() && options.speed > 0 && options.variant !== "image";
+	const running = () =>
+		surface.live() && options.speed > 0 && options.variant !== "image";
 
 	const load = () => {
 		loaded = false;

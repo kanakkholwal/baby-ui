@@ -153,6 +153,19 @@ export function docsPath(spec: Pick<ComponentSpec, "category" | "slug">): string
 		: `/components/${spec.category}/${spec.slug}`;
 }
 
+/** Initial control values, from each prop's declared default; booleans default to false. */
+export function defaultProps(
+	spec: Pick<ComponentSpec, "props">,
+): Record<string, unknown> {
+	const out: Record<string, unknown> = {};
+	for (const prop of spec.props) {
+		if (prop.control.kind === "none") continue;
+		out[prop.name] =
+			prop.default ?? (prop.control.kind === "boolean" ? false : undefined);
+	}
+	return out;
+}
+
 /** Authoring helper: validates at module load so a bad spec fails the build, not a request. */
 export function defineComponent(spec: ComponentSpecInput): ComponentSpec {
 	return ComponentSpecSchema.parse(spec);

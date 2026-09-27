@@ -8,7 +8,8 @@ import { build } from "esbuild";
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "../..");
 const REACT_SRC = join(ROOT, "packages/ui-react/src");
 const SVELTE_SRC = join(ROOT, "packages/ui-svelte/src/lib");
-const SAMPLES = join(ROOT, "packages/demos/src/data/email-samples.ts");
+const PREVIEW_PROPS = join(ROOT, "packages/demos/src/data/preview-props.ts");
+const TEMPLATES = join(ROOT, "apps/site/src/lib/server/templates.ts");
 const SPECS = join(ROOT, "packages/registry-schema/src/components/index.ts");
 const OUT = join(ROOT, "apps/site/src/lib/generated/emails");
 // Bundles land inside each port's node_modules so bare imports resolve to that port's deps.
@@ -145,37 +146,30 @@ function audit(slug, port, html, props) {
 	return fail.map((f) => `${slug} (${port}): ${f}`);
 }
 
-const { toPlainText } = await import(
-	pathToFileURL(join(ROOT, "node_modules/@better-svelte-email/server/dist/index.mjs"))
-		.href
-);
-// React Email's preview div lacks the id toPlainText skips, so drop the preview block from both.
-const plainText = (html) =>
-	toPlainText(
-		html.replace(/<div[^>]*data-skip-in-text="true"[^>]*>[\s\S]*?<\/div>\s*<\/div>/, ""),
-	);
-
 const normalise = (text) =>
 	text
 		.replace(/[\u00a0\u200b-\u200f\u2028\u2029\ufeff\u00ad]|\u034f/g, " ")
 		.replace(/\s+/g, " ")
 		.trim();
 
-// Same merge as the site's live endpoint: sample data, then the spec's control defaults.
-const data = await bundle(
+// The site's own modules, so props and plain text match the live endpoint exactly.
+const shared = await bundle(
 	[
-		`export { EMAIL_SAMPLES } from ${str(posix(SAMPLES))};`,
+		`export { previewProps } from ${str(posix(PREVIEW_PROPS))};`,
+		`export { defaultProps } from ${str(posix(join(ROOT, "packages/registry-schema/src/spec.ts")))};`,
 		`export { getSpec } from ${str(posix(SPECS))};`,
+		`export { emailPlainText } from ${str(posix(TEMPLATES))};`,
 	].join("\n"),
 	ROOT,
-	join(REACT_CACHE, "data.mjs"),
+	join(REACT_CACHE, "shared.mjs"),
+	[],
+	["@better-svelte-email/server"],
 );
+const plainText = shared.emailPlainText;
 const props = Object.fromEntries(
 	slugs.map((slug) => {
-		const controls = (data.getSpec(slug)?.props ?? [])
-			.filter((p) => p.control.kind !== "none" && p.default !== undefined)
-			.map((p) => [p.name, p.default]);
-		return [slug, { ...data.EMAIL_SAMPLES[slug], ...Object.fromEntries(controls) }];
+		const spec = shared.getSpec(slug);
+		return [slug, shared.previewProps(slug, spec ? shared.defaultProps(spec) : {})];
 	}),
 );
 
