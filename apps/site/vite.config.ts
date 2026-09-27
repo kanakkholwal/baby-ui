@@ -10,11 +10,12 @@ import { generate, watchRoots } from "../../scripts/generate.mjs";
 import docviaConfig from "./docvia.config.ts";
 
 const require = createRequire(import.meta.url);
-// The Worker's resolve settings, as Cloudflare's Vite plugin sets them: no `node` condition
-// (yaml picks ESM), and `browser` fields honoured (postcss maps path/url/fs to empty).
+// The Worker's resolve settings: no `node` condition (yaml picks ESM); only `node:` ids are
+// builtins (nodejs_compat), so `browser` field maps apply to bare ones (postcss drops fs/path/url).
 const WORKER_RESOLVE = {
 	conditions: ["workerd", "worker", "module", "development|production"],
 	mainFields: ["browser", "module", "jsnext:main", "jsnext"],
+	builtins: [/^node:/],
 };
 
 // @docvia/renderer-svelte@0.2.4 points its `svelte` condition at ./src, which it never
