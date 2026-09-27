@@ -5,7 +5,7 @@ export interface Serializer<T> {
 	deserialize: (raw: string) => T;
 }
 
-export type PersistedErrorContext = "read" | "deserialize" | "write" | "remove";
+export type PersistedErrorContext = "read" | "deserialize" | "write";
 
 export interface PersistedStateOptions<T> {
 	/** Which web storage to back onto. Defaults to `"local"`. */
@@ -110,24 +110,6 @@ export class PersistedState<T> {
 		this.#write(next);
 	}
 
-	/** Clears the key and reverts `current` to the initial value. */
-	reset() {
-		this.current = this.#initialValue;
-		if (!isBrowser) return;
-		try {
-			area(this.#areaKind).removeItem(this.#key);
-		} catch (error) {
-			this.#onError?.(error, "remove", this.#key);
-		}
-	}
-
-	/** Stops listening for cross-tab/same-document updates. */
-	dispose() {
-		if (!isBrowser || !this.#synced) return;
-		window.removeEventListener("storage", this.#onStorage);
-		window.removeEventListener(SAME_DOC_EVENT, this.#onSameDoc as EventListener);
-	}
-
 	#read(): T {
 		if (!isBrowser) return this.#initialValue;
 		let raw: string | null;
@@ -187,61 +169,3 @@ export function persisted<T>(
 ): PersistedState<T> {
 	return new PersistedState(key, initialValue, options);
 }
-
-interface SafeStorageOptions<T> {
-	storage?: StorageArea;
-	serializer?: Serializer<T>;
-	onError?: (error: unknown, context: PersistedErrorContext, key: string) => void;
-}
-
-/**
- * Non-reactive twin of `PersistedState` for one-shot reads/writes that don't
- * need a reactive rune or cross-tab listeners. Same null/parse/quota guarantees.
- */
-export const safeStorage = {
-	get<T>(key: string, fallback: T, options: SafeStorageOptions<T> = {}): T {
-		if (!isBrowser) return fallback;
-		const storage = options.storage ?? "local";
-		const serializer = options.serializer ?? inferSerializer(fallback);
-
-		let raw: string | null;
-		try {
-			raw = area(storage).getItem(key);
-		} catch (error) {
-			options.onError?.(error, "read", key);
-			return fallback;
-		}
-		if (raw === null) return fallback;
-
-		try {
-			return serializer.deserialize(raw);
-		} catch (error) {
-			options.onError?.(error, "deserialize", key);
-			return fallback;
-		}
-	},
-
-	set<T>(key: string, value: T, options: SafeStorageOptions<T> = {}): void {
-		if (!isBrowser) return;
-		const storage = options.storage ?? "local";
-		const serializer = options.serializer ?? inferSerializer(value);
-		try {
-			area(storage).setItem(key, serializer.serialize(value));
-		} catch (error) {
-			options.onError?.(error, "write", key);
-		}
-	},
-
-	remove(
-		key: string,
-		options: Pick<SafeStorageOptions<unknown>, "storage" | "onError"> = {},
-	): void {
-		if (!isBrowser) return;
-		const storage = options.storage ?? "local";
-		try {
-			area(storage).removeItem(key);
-		} catch (error) {
-			options.onError?.(error, "remove", key);
-		}
-	},
-};

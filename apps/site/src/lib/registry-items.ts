@@ -1,6 +1,7 @@
 import type { Framework } from "@baby-ui/registry-schema";
 
-export type SourceFile = {
+/** One file as registry-build writes it to generated/sources, before highlighting. */
+export type GeneratedSourceFile = {
 	path: string;
 	target: string;
 	ts: string;
@@ -8,7 +9,7 @@ export type SourceFile = {
 	jsPath: string | null;
 };
 
-type SourcesModule = { default: Partial<Record<Framework, SourceFile[]>> };
+type SourcesModule = { default: Partial<Record<Framework, GeneratedSourceFile[]>> };
 type CssModule = { default: Partial<Record<Framework, string>> };
 
 // One module per component instead of one combined import: a request for a single slug
@@ -19,7 +20,7 @@ const cssModules = import.meta.glob<CssModule>("./generated/css/*.json");
 export async function sourceFiles(
 	slug: string,
 	framework: Framework,
-): Promise<SourceFile[]> {
+): Promise<GeneratedSourceFile[]> {
 	const load = sourcesModules[`./generated/sources/${slug}.json`];
 	if (!load) return [];
 	const mod = await load();

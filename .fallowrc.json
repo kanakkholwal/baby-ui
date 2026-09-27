@@ -1,0 +1,50 @@
+{
+	"$schema": "https://fallow.tools/schema.json",
+	"entry": [
+		"packages/ui-react/src/*/*.{ts,tsx}",
+		"packages/ui-svelte/src/lib/*/*.{ts,svelte}",
+		"packages/registry-schema/src/components/*.ts",
+		"packages/demos/src/**/*.{ts,tsx,svelte}",
+		"scripts/**/*.mjs",
+		"**/svelte.config.js"
+	],
+	"dynamicallyLoaded": [
+		"apps/site/src/lib/generated/**",
+		"apps/site/src/lib/components/code-group.svelte",
+		"pro/**"
+	],
+	"ignoreDependencies": [
+		"@baby-ui/registry-build",
+		"@docvia/plugin-shiki",
+		"@docvia/renderer-core",
+		"d3-geo",
+		"d3-sankey",
+		"docvia",
+		"takumi-js"
+	],
+	"ignoreUnresolvedImports": ["docvia/*", "virtual:*"],
+	"ignoreExportsUsedInFile": true,
+	"ignoreExports": [
+		{
+			"file": "apps/site/src/routes/**/+server.ts",
+			"exports": ["prerender", "entries"]
+		}
+	],
+	"overrides": [
+		{
+			"files": ["packages/ui-svelte/src/lib/chart/time-series-chart.svelte"],
+			"rules": {
+				"unprovided-inject": "off"
+			}
+		},
+		{
+			"files": [
+				"packages/demos/src/svelte/**",
+				"packages/ui-svelte/src/lib/scroll-progress/scroll-progress.svelte"
+			],
+			"rules": {
+				"unused-component-prop": "off"
+			}
+		}
+	]
+}
