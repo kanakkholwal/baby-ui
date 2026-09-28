@@ -5,6 +5,10 @@
 		"//#gen": {
 			"cache": false
 		},
+		"//#fonts": {
+			"inputs": ["scripts/sync-fonts.mjs", "packages/tokens/fonts/**"],
+			"outputs": ["apps/*/static/fonts/**", "apps/playground/*/public/fonts/**"]
+		},
 		"//#emails": {
 			"dependsOn": ["//#gen"],
 			"inputs": [
@@ -23,7 +27,7 @@
 			]
 		},
 		"build": {
-			"dependsOn": ["//#gen", "//#emails", "^build", "^registry"],
+			"dependsOn": ["//#gen", "//#fonts", "//#emails", "^build", "^registry"],
 			"env": ["VITE_POSTHOG_KEY", "BABY_UI_REGISTRY_URL", "BABY_UI_SITE_URL"],
 			"outputs": ["dist/**", ".svelte-kit/**", "build/**", ".docvia/**"]
 		},
@@ -57,7 +61,7 @@
 		"dev": {
 			"cache": false,
 			"persistent": true,
-			"dependsOn": ["//#gen", "//#emails", "^registry"]
+			"dependsOn": ["//#gen", "//#fonts", "//#emails", "^registry"]
 		}
 	}
 }
