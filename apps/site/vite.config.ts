@@ -131,7 +131,7 @@ export default defineConfig(({ command, mode }) => {
 			sveltekit({
 				// The optional private checkout; only $lib/pro.ts and $lib/server/pro.ts glob it.
 				alias: { $pro: "../../pro/packages" },
-				// The navbar and fullscreen-nav demos ship placeholder anchors like #product,
+				// The fullscreen-nav demo ships placeholder anchors like #product,
 				// which have no target on the page that previews them. Warn, do not fail.
 				prerender: { handleMissingId: "warn" },
 				// Per-component sheets inline (each link is a blocking round trip); the 370KB Tailwind

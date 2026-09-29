@@ -28,7 +28,7 @@ import { FlightStatusCardDemo } from "./flight-status-card";
 import { FlowchartDemo } from "./flowchart";
 import { FooterDemo } from "./footer";
 import { FieldDemo, InputGroupDemo, NativeSelectDemo, SeparatorDemo } from "./forms";
-import { BentoGridDemo, ButtonDemo, FileTreeDemo, MorphingModalDemo, NavbarDemo } from "./foundations";
+import { BentoGridDemo, ButtonDemo, FileTreeDemo, MorphingModalDemo } from "./foundations";
 import { FunnelChartDemo } from "./funnel-chart";
 import { GaugeChartDemo } from "./gauge-chart";
 import { GrainGradientDemo } from "./grain-gradient";
@@ -53,7 +53,7 @@ import { ClickSparkDemo, DraggableMarqueeDemo, TextReelDemo } from "./obsidian";
 import { OgNewsletterIssueDemo } from "./og-newsletter-issue";
 import { ComboboxDemo, ContextMenuDemo, DropdownMenuDemo, HoverCardDemo, PopoverDemo, SelectDemo, TooltipDemo } from "./overlays";
 import { OverviewCardDemo } from "./overview-card";
-import { DatePickerDemo, DateRangePickerDemo, TimePickerDemo } from "./pickers";
+import { DateFieldDemo, DatePickerDemo, DateRangePickerDemo, TimePickerDemo } from "./pickers";
 import { PieChartDemo } from "./pie-chart";
 import { PixelCanvasDemo } from "./pixel-canvas";
 import { PixelImageTrailDemo } from "./pixel-image-trail";
@@ -194,6 +194,7 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"cube-text": CubeTextDemo,
 	"currency-input": CurrencyInputDemo,
 	"cycle-text": CycleTextDemo,
+	"date-field": DateFieldDemo,
 	"date-picker": DatePickerDemo,
 	"date-range-picker": DateRangePickerDemo,
 	"dia-text": DiaTextDemo,
@@ -262,7 +263,6 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"multi-select": MultiSelectDemo,
 	"music-player": MusicPlayerDemo,
 	"native-select": NativeSelectDemo,
-	navbar: NavbarDemo,
 	"navigation-menu": NavigationMenuDemo,
 	"notched-shelf": NotchedShelfDemo,
 	"number-input": NumberInputDemo,

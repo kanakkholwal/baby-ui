@@ -1,3 +1,5 @@
+import { DATE_FIELD_LABELS, type DateFieldLabels } from "../date-field/core";
+
 /** A calendar day without a time or zone: React converts to `Date`, Svelte to `CalendarDate`. */
 export type RangeDateParts = { year: number; month: number; day: number };
 export type DateRangeParts = { from: RangeDateParts; to: RangeDateParts };
@@ -8,15 +10,23 @@ export type DateRangePreset = {
 	range: (today: RangeDateParts) => DateRangeParts;
 };
 
-export interface DateRangePickerLabels {
-	placeholder: string;
+export interface DateRangePickerLabels extends DateFieldLabels {
+	start: string;
+	end: string;
+	choose: string;
+	reversed: string;
 	presets: string;
 	apply: string;
 	cancel: string;
 }
 
 export const DATE_RANGE_PICKER_LABELS: DateRangePickerLabels = {
-	placeholder: "Pick a date range",
+	...DATE_FIELD_LABELS,
+	group: "Date range",
+	start: "Start date",
+	end: "End date",
+	choose: "Choose dates",
+	reversed: "The end date comes before the start date.",
 	presets: "Quick ranges",
 	apply: "Apply",
 	cancel: "Cancel",
@@ -39,14 +49,6 @@ export const DEFAULT_RANGE_PRESETS: DateRangePreset[] = [
 
 export function todayParts(now: Date = new Date()): RangeDateParts {
 	return { year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate() };
-}
-
-const toDate = (p: RangeDateParts) => new Date(p.year, p.month - 1, p.day);
-
-/** "Mar 3 to 12" in the locale's own range style; one date when both ends match. */
-export function formatDateRange(range: DateRangeParts, locale?: string): string {
-	const format = new Intl.DateTimeFormat(locale, { month: "short", day: "numeric" });
-	return format.formatRange(toDate(range.from), toDate(range.to));
 }
 
 export function sameRange(

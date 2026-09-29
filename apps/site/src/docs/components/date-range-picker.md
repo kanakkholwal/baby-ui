@@ -1,13 +1,14 @@
 ---
 title: Date Range Picker
-description: Range trigger with a two-month calendar, a presets rail and optional Apply.
+description: Segmented start and end dates with a two-month calendar, a presets rail and optional Apply.
 component: date-range-picker
 category: base
 tags: [date range picker, range, presets, report filter, booking, form]
 ---
 
-Built for report filters and bookings. The trigger shows the range in the locale's own
-format; the popover pairs a presets rail with Range Calendar.
+Built for report filters and bookings. Start and end are two Date Field segment sets in one
+field, and focus runs from one into the other. The calendar button opens a presets rail
+beside Range Calendar. An end date before the start marks both invalid and says why.
 
 ## Presets
 

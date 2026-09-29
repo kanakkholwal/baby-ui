@@ -1,14 +1,7 @@
 "use client";
 
 import type { FileTreeNode } from "@baby-ui/react";
-import {
-	BentoCell,
-	BentoGrid,
-	Button,
-	FileTree,
-	MorphingModal,
-	Navbar,
-} from "@baby-ui/react";
+import { BentoCell, BentoGrid, Button, FileTree, MorphingModal } from "@baby-ui/react";
 import type { ComponentProps } from "react";
 import { controlProps } from "../data/preview-props";
 
@@ -84,12 +77,6 @@ const CELLS = [
 	},
 ];
 
-const NAV_LINKS = [
-	{ href: "#product", label: "Product" },
-	{ href: "#pricing", label: "Pricing" },
-	{ href: "#docs", label: "Docs" },
-];
-
 export function BentoGridDemo({ props }: { props: Props }) {
 	return (
 		<BentoGrid
@@ -128,30 +115,6 @@ export function FileTreeDemo({ props }: { props: Props }) {
 			size={p.size ?? "md"}
 			className="w-64"
 		/>
-	);
-}
-
-export function NavbarDemo({ props }: { props: Props }) {
-	const p = controlProps<ComponentProps<typeof Navbar>>(props);
-	const variant = p.variant ?? "solid";
-	return (
-		<div className="w-full max-w-3xl overflow-hidden rounded-xl border border-border">
-			<Navbar
-				links={NAV_LINKS}
-				active="#product"
-				sticky={false}
-				blur={props.blur !== false}
-				variant={variant}
-				className={variant === "solid" ? "border-border border-b bg-card" : undefined}
-				brand={<span className="font-semibold text-sm tracking-tight">Acme</span>}
-				actions={
-					<span className="hidden rounded-full bg-primary px-3 py-1.5 font-medium text-primary-foreground text-xs sm:inline-flex">
-						Sign up
-					</span>
-				}
-			/>
-			<div className="h-24 bg-background" />
-		</div>
 	);
 }
 

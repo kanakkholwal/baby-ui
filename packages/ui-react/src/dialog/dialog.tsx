@@ -90,7 +90,10 @@ export function DialogContent({
 
 	return (
 		<DialogPrimitive.Portal>
-			<DialogPrimitive.Backdrop data-slot="dialog-backdrop" className={styles.backdrop()} />
+			<DialogPrimitive.Backdrop
+				data-slot="dialog-backdrop"
+				className={styles.backdrop()}
+			/>
 			<DialogPrimitive.Popup
 				data-slot="dialog-content"
 				data-variant={dialog.variant}
@@ -105,9 +108,7 @@ export function DialogContent({
 				{dialog.variant === "framed" ? (
 					<>
 						{/* Inset frame: the body sits on a lighter surface, the footer in the rim below it. */}
-						<div className={cn(styles.body(), "p-5")}>
-							{children}
-						</div>
+						<div className={cn(styles.body(), "p-5")}>{children}</div>
 						<div ref={dialog.setFooterEl} className="empty:hidden" />
 					</>
 				) : (
@@ -173,9 +174,6 @@ export function DialogDescription({
 	);
 }
 
-const DIALOG_CLOSE_ICON_ONLY =
-	"absolute top-3 right-3 grid size-8 place-items-center rounded-md text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring";
-
 export function DialogClose({
 	className,
 	children,
@@ -185,7 +183,7 @@ export function DialogClose({
 		<DialogPrimitive.Close
 			data-slot="dialog-close"
 			aria-label={children ? undefined : "Close"}
-			className={cn(!children && DIALOG_CLOSE_ICON_ONLY, className)}
+			className={cn(!children && dialogFrame().close(), className)}
 			{...props}
 		>
 			{children ?? (

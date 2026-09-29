@@ -134,11 +134,15 @@ export { type CurrencyParts, currencyParts, formatMinor, formatEditing, toMinor,
 export { currencyInput, type CurrencyInputSize, type CurrencyInputAffix } from "./currency-input/variants";
 export { type CycleTextProps, CycleText } from "./cycle-text/cycle-text";
 export { cycleText, type CycleTextSize } from "./cycle-text/variants";
+export { type DateFieldProps, DateField } from "./date-field/date-field";
+export { useFieldDraft, type DateSegmentsProps, DateSegments } from "./date-field/segments";
+export { type SegmentPart, type FieldLayout, type Draft, type DateParts, type DateFieldLabels, DATE_FIELD_LABELS, fieldLayout, localeHourCycle, periodText, segmentRange, stepMinute, stepSegment, typeDigit, clearSegment, segmentText, dateToDraft, draftToDate, timeToDraft, draftToTime, compareDateParts, isOutsideRange, toDateParts, fromDateParts, isoDate } from "./date-field/core";
+export { dateField, type DateFieldSize } from "./date-field/variants";
 export { type DatePickerProps, DatePicker } from "./date-picker/date-picker";
-export { type DateParts, type DatePickerLabels, DATE_PICKER_LABELS, dateOrder, parseDateInput, formatDateParts, compareDateParts, isOutsideRange, invalidDateMessage } from "./date-picker/core";
-export { datePicker, type DatePickerSize } from "./date-picker/variants";
+export { type DatePickerLabels, DATE_PICKER_LABELS } from "./date-picker/core";
+export { type DatePickerSize } from "./date-picker/variants";
 export { type DateRange, type DateRangePickerProps, DateRangePicker } from "./date-range-picker/date-range-picker";
-export { type RangeDateParts, type DateRangeParts, type DateRangePreset, type DateRangePickerLabels, DATE_RANGE_PICKER_LABELS, addDays, DEFAULT_RANGE_PRESETS, todayParts, formatDateRange } from "./date-range-picker/core";
+export { type RangeDateParts, type DateRangeParts, type DateRangePreset, type DateRangePickerLabels, DATE_RANGE_PICKER_LABELS, addDays, DEFAULT_RANGE_PRESETS, todayParts } from "./date-range-picker/core";
 export { dateRangePicker, type DateRangePickerSize } from "./date-range-picker/variants";
 export { type DiaTextProps, DiaText } from "./dia-text/dia-text";
 export { diaText, type DiaTextSize, DIA_TEXT_COLORS, diaGradient } from "./dia-text/variants";
@@ -309,8 +313,6 @@ export { type MusicPlayerLabels, MUSIC_PLAYER_LABELS, formatTime, clampUnit, SEE
 export { musicPlayer, type MusicPlayerLayout } from "./music-player/variants";
 export { NativeSelect, NativeSelectOption, NativeSelectOptGroup } from "./native-select/native-select";
 export { nativeSelect, type NativeSelectSize } from "./native-select/variants";
-export { type NavbarLink, type NavbarProps, Navbar } from "./navbar/navbar";
-export { navbar, type NavbarVariant } from "./navbar/variants";
 export { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuTrigger, NavigationMenuContent, NavigationMenuViewport, NavigationMenuLink, NavigationMenuIndicator } from "./navigation-menu/navigation-menu";
 export { navigationMenuTriggerStyle, type NavigationMenuSize, navigationMenu } from "./navigation-menu/variants";
 export { type NotchedShelfProps, NotchedShelf } from "./notched-shelf/notched-shelf";
@@ -521,8 +523,8 @@ export { thinkingState, type ThinkingStateVariant } from "./thinking-state/varia
 export { type TickerProps, Ticker } from "./ticker/ticker";
 export { ticker, type TickerSize } from "./ticker/variants";
 export { type TimePickerProps, TimePicker } from "./time-picker/time-picker";
-export { type TimeValue, type TimePickerLabels, TIME_PICKER_LABELS, type TimeParts, parseTime, stepHour, stepMinute, togglePeriod, displayHour, typedHour, periodLabel, localeHourCycle } from "./time-picker/core";
-export { timePicker, type TimePickerSize } from "./time-picker/variants";
+export { type TimeValue, type TimePickerLabels, TIME_PICKER_LABELS, type TimeParts, parseTime } from "./time-picker/core";
+export { type TimePickerSize } from "./time-picker/variants";
 export { type ToasterProps, toast, Toaster } from "./toast/toaster";
 export { type ToggleProps, Toggle } from "./toggle/toggle";
 export { toggleButton, type ToggleSize } from "./toggle/variants";

@@ -1,90 +1,57 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useId, useMemo, useState } from "react";
 import type { Matcher } from "react-day-picker";
 import { button } from "../button/variants";
 import { Calendar, type CalendarProps } from "../calendar/calendar";
+import {
+	type DateParts,
+	type Draft,
+	dateToDraft,
+	draftToDate,
+	fieldLayout,
+	fromDateParts,
+	isOutsideRange,
+	isoDate,
+	toDateParts,
+} from "../date-field/core";
+import { DateSegments, useFieldDraft } from "../date-field/segments";
+import { dateField } from "../date-field/variants";
 import { FieldError } from "../field/field";
-import { InputGroup, InputGroupAddon, InputGroupInput } from "../input-group/input-group";
-import { inputGroup } from "../input-group/variants";
 import { cn } from "../lib/cn";
 import { Popover, PopoverContent, PopoverTrigger } from "../popover/popover";
-import {
-	DATE_PICKER_LABELS,
-	type DateParts,
-	type DatePickerLabels,
-	formatDateParts,
-	invalidDateMessage,
-	isOutsideRange,
-	parseDateInput,
-} from "./core";
-import { type DatePickerSize, datePicker } from "./variants";
+import { DATE_PICKER_LABELS, type DatePickerLabels } from "./core";
+import type { DatePickerSize } from "./variants";
 
 export type { DatePickerLabels, DatePickerSize };
 
 export interface DatePickerProps {
-	/** Controlled date; `null` when empty. */
+	/** Controlled date; `null` while empty or half typed. */
 	value: Date | null;
 	onValueChange: (value: Date | null) => void;
-	/** BCP 47 locale for parsing typed dates and formatting the field. */
+	/** BCP 47 locale; sets the segment order and the calendar. */
 	locale?: string;
 	min?: Date;
 	max?: Date;
 	/** Extra react-day-picker matchers, e.g. `{ dayOfWeek: [0, 6] }` for weekends. */
 	disabledDates?: Matcher | Matcher[];
 	disabled?: boolean;
+	/** Marks the field invalid from outside, e.g. a form error. */
+	invalid?: boolean;
 	open?: boolean;
 	onOpenChange?: (open: boolean) => void;
 	captionLayout?: CalendarProps["captionLayout"];
 	size?: DatePickerSize;
 	labels?: Partial<DatePickerLabels>;
 	id?: string;
+	/** Submits the date as ISO `yyyy-mm-dd`. */
 	name?: string;
 	"aria-label"?: string;
 	"aria-describedby"?: string;
 	className?: string;
 }
 
-const toParts = (date: Date): DateParts => ({
-	year: date.getFullYear(),
-	month: date.getMonth() + 1,
-	day: date.getDate(),
-});
-const toDate = (p: DateParts) => new Date(p.year, p.month - 1, p.day);
-
-function CalendarIcon() {
-	return (
-		<svg
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth={2}
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			aria-hidden="true"
-		>
-			<path d="M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zM16 3v4M8 3v4M4 11h16" />
-		</svg>
-	);
-}
-
-function ClearIcon() {
-	return (
-		<svg
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth={2}
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			aria-hidden="true"
-		>
-			<path d="M18 6 6 18M6 6l12 12" />
-		</svg>
-	);
-}
-
-/** A typed date field with a calendar popover. Typing parses on blur in the locale's order. */
+/** A segmented date field with a calendar popover on the button at its end. */
 export function DatePicker({
 	value,
 	onValueChange,
@@ -93,22 +60,22 @@ export function DatePicker({
 	max,
 	disabledDates,
 	disabled = false,
+	invalid = false,
 	open: openProp,
 	onOpenChange,
 	captionLayout = "dropdown",
 	size = "md",
 	labels: labelsProp,
-	id: idProp,
+	id,
 	name,
 	"aria-label": ariaLabel,
 	"aria-describedby": describedBy,
 	className,
 }: DatePickerProps) {
 	const labels = { ...DATE_PICKER_LABELS, ...labelsProp };
-	const uid = useId();
-	const id = idProp ?? `${uid}-input`;
-	const errorId = `${uid}-error`;
-	const s = datePicker({ size });
+	const s = dateField({ size });
+	const errorId = `${useId()}-error`;
+	const layout = useMemo(() => fieldLayout("date", locale), [locale]);
 
 	const [internalOpen, setInternalOpen] = useState(false);
 	const open = openProp ?? internalOpen;
@@ -117,34 +84,17 @@ export function DatePicker({
 		onOpenChange?.(next);
 	};
 
-	const formatted = value ? formatDateParts(toParts(value), locale) : "";
-	const [text, setText] = useState(formatted);
-	const editing = useRef(false);
-	const [error, setError] = useState<string | null>(null);
-
-	// Only a change to `value` rewrites the field; an invalid entry stays for the user to fix.
-	useEffect(() => {
-		if (!editing.current) setText(formatted);
-	}, [formatted]);
-
-	const minParts = min ? toParts(min) : undefined;
-	const maxParts = max ? toParts(max) : undefined;
-
-	function commit() {
-		editing.current = false;
-		if (!text.trim()) {
-			setError(null);
-			if (value) onValueChange(null);
-			return;
-		}
-		if (text === formatted) return;
-		const parts = parseDateInput(text, locale);
-		if (!parts) return setError(invalidDateMessage(labels, locale));
-		if (isOutsideRange(parts, minParts, maxParts)) return setError(labels.outOfRange);
-		setError(null);
-		onValueChange(toDate(parts));
-		setText(formatDateParts(parts, locale));
-	}
+	const [draft, setDraft] = useFieldDraft<DateParts, Draft>(
+		value ? toDateParts(value) : null,
+		isoDate,
+		dateToDraft,
+		draftToDate,
+		(parts) => onValueChange(parts ? fromDateParts(parts) : null),
+	);
+	const parts = value ? toDateParts(value) : null;
+	const outside =
+		parts !== null &&
+		isOutsideRange(parts, min && toDateParts(min), max && toDateParts(max));
 
 	const matchers: Matcher[] = [
 		...(min ? [{ before: min }] : []),
@@ -154,80 +104,78 @@ export function DatePicker({
 
 	return (
 		<div data-slot="date-picker" className={cn(s.root(), className)}>
-			<InputGroup size={size} data-disabled={disabled || undefined}>
-				<InputGroupInput
-					id={id}
-					name={name}
-					value={text}
-					disabled={disabled}
-					placeholder={labels.placeholder}
-					aria-label={ariaLabel}
-					aria-invalid={error ? true : undefined}
-					aria-describedby={
-						[describedBy, error ? errorId : undefined].filter(Boolean).join(" ") ||
-						undefined
+			<fieldset
+				id={id}
+				aria-label={ariaLabel ?? labels.group}
+				aria-describedby={
+					[describedBy, outside ? errorId : undefined].filter(Boolean).join(" ") ||
+					undefined
+				}
+				aria-disabled={disabled || undefined}
+				data-slot="date-picker-group"
+				className={s.group()}
+				onKeyDown={(e) => {
+					if (e.key === "ArrowDown" && e.altKey) {
+						e.preventDefault();
+						setOpen(true);
 					}
-					autoComplete="off"
-					onChange={(e) => {
-						editing.current = true;
-						setText(e.currentTarget.value);
-					}}
-					onBlur={commit}
-					onKeyDown={(e) => {
-						if (e.key === "Enter") commit();
-						if (e.key === "ArrowDown" && e.altKey) setOpen(true);
-					}}
+				}}
+			>
+				<DateSegments
+					layout={layout}
+					draft={draft}
+					onDraftChange={setDraft}
+					labels={{ ...labels, hour: "", minute: "", dayPeriod: "" }}
+					placeholders={{ ...labels.placeholders, hour: "", minute: "", dayPeriod: "" }}
+					locale={locale}
+					disabled={disabled}
+					invalid={invalid || outside}
+					className={s.input()}
+					segmentClassName={s.segment()}
 				/>
-				<InputGroupAddon align="inline-end">
-					{value && !disabled ? (
-						<button
-							type="button"
-							aria-label={labels.clear}
-							onClick={() => {
-								setError(null);
-								setText("");
-								onValueChange(null);
+				<Popover open={open} onOpenChange={setOpen}>
+					<PopoverTrigger
+						disabled={disabled}
+						aria-label={labels.choose}
+						className={cn(button({ variant: "ghost", size: "icon-xs" }), s.trigger())}
+					>
+						<svg
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							strokeWidth={2}
+							strokeLinecap="round"
+							strokeLinejoin="round"
+							aria-hidden="true"
+						>
+							<path d="M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zM16 3v4M8 3v4M4 11h16" />
+						</svg>
+					</PopoverTrigger>
+					<PopoverContent align="end" className={s.content()}>
+						<Calendar
+							mode="single"
+							selected={value ?? undefined}
+							defaultMonth={value ?? min ?? undefined}
+							onSelect={(date) => {
+								onValueChange(date ?? null);
+								setOpen(false);
 							}}
-							className={cn(
-								button({ variant: "ghost", size: "icon-xs" }),
-								inputGroup().button(),
-							)}
-						>
-							<ClearIcon />
-						</button>
-					) : null}
-					<Popover open={open} onOpenChange={setOpen}>
-						<PopoverTrigger
-							disabled={disabled}
-							aria-label={labels.choose}
-							className={cn(
-								button({ variant: "ghost", size: "icon-xs" }),
-								inputGroup().button(),
-							)}
-						>
-							<CalendarIcon />
-						</PopoverTrigger>
-						<PopoverContent align="end" className={s.content()}>
-							<Calendar
-								mode="single"
-								selected={value ?? undefined}
-								defaultMonth={value ?? min ?? undefined}
-								onSelect={(date) => {
-									setError(null);
-									onValueChange(date ?? null);
-									setOpen(false);
-								}}
-								disabled={matchers}
-								startMonth={min}
-								endMonth={max}
-								captionLayout={captionLayout}
-								autoFocus
-							/>
-						</PopoverContent>
-					</Popover>
-				</InputGroupAddon>
-			</InputGroup>
-			<FieldError id={errorId} errors={error ? [{ message: error }] : undefined} />
+							disabled={matchers}
+							startMonth={min}
+							endMonth={max}
+							captionLayout={captionLayout}
+							autoFocus
+						/>
+					</PopoverContent>
+				</Popover>
+			</fieldset>
+			{name ? (
+				<input type="hidden" name={name} value={parts ? isoDate(parts) : ""} />
+			) : null}
+			<FieldError
+				id={errorId}
+				errors={outside ? [{ message: labels.outOfRange }] : undefined}
+			/>
 		</div>
 	);
 }

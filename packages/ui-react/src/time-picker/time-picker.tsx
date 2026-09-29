@@ -1,28 +1,29 @@
 "use client";
 
-import { type KeyboardEvent, useRef, useState } from "react";
+import { useMemo } from "react";
+import {
+	type Draft,
+	draftToTime,
+	fieldLayout,
+	localeHourCycle,
+	timeToDraft,
+} from "../date-field/core";
+import { DateSegments, useFieldDraft } from "../date-field/segments";
+import { dateField } from "../date-field/variants";
 import { cn } from "../lib/cn";
 import {
-	displayHour,
 	formatTime,
-	localeHourCycle,
 	parseTime,
-	periodLabel,
-	stepHour,
-	stepMinute,
 	TIME_PICKER_LABELS,
-	type TimeParts,
 	type TimePickerLabels,
 	type TimeValue,
-	togglePeriod,
-	typedHour,
 } from "./core";
-import { type TimePickerSize, timePicker } from "./variants";
+import type { TimePickerSize } from "./variants";
 
 export type { TimePickerLabels, TimePickerSize, TimeValue };
 
 export interface TimePickerProps {
-	/** 24-hour "HH:mm", or `null` when empty. */
+	/** 24-hour "HH:mm", or `null` while empty or half typed. */
 	value: TimeValue | null;
 	onValueChange: (value: TimeValue | null) => void;
 	/** Defaults to the locale's own clock. */
@@ -31,16 +32,19 @@ export interface TimePickerProps {
 	step?: number;
 	locale?: string;
 	disabled?: boolean;
+	/** Marks the field invalid from outside, e.g. a form error. */
+	invalid?: boolean;
 	size?: TimePickerSize;
 	labels?: Partial<TimePickerLabels>;
 	id?: string;
+	/** Submits the time as "HH:mm". */
+	name?: string;
 	"aria-label"?: string;
+	"aria-describedby"?: string;
 	className?: string;
 }
 
-type Segment = "hour" | "minute" | "period";
-
-/** Hour and minute spinbuttons (plus AM/PM on a 12-hour clock), stepped by keyboard or typed. */
+/** Segmented hour and minute (plus AM/PM on a 12-hour clock), typed or stepped with the arrows. */
 export function TimePicker({
 	value,
 	onValueChange,
@@ -48,163 +52,84 @@ export function TimePicker({
 	step = 1,
 	locale,
 	disabled = false,
+	invalid = false,
 	size = "md",
 	labels: labelsProp,
 	id,
+	name,
 	"aria-label": ariaLabel,
+	"aria-describedby": describedBy,
 	className,
 }: TimePickerProps) {
 	const labels = { ...TIME_PICKER_LABELS, ...labelsProp };
 	const hourCycle = hourCycleProp ?? localeHourCycle(locale);
-	const s = timePicker({ size });
-	const parts = parseTime(value);
-	const refs = useRef<Record<Segment, HTMLSpanElement | null>>({
-		hour: null,
-		minute: null,
-		period: null,
-	});
-	// The first typed digit of a segment waits here for the second.
-	const [pending, setPending] = useState<{ segment: Segment; digit: number } | null>(
-		null,
+	const s = dateField({ size });
+	const layout = useMemo(
+		() => fieldLayout("time", locale, hourCycle),
+		[locale, hourCycle],
 	);
-
-	const segments: Segment[] =
-		hourCycle === 12 ? ["hour", "minute", "period"] : ["hour", "minute"];
-	const focus = (segment: Segment | undefined) =>
-		segment && refs.current[segment]?.focus();
-	const neighbour = (segment: Segment, delta: number) =>
-		segments[segments.indexOf(segment) + delta];
-
-	const base = (): TimeParts => {
-		if (parts) return parts;
-		const now = new Date();
-		return { hour: now.getHours(), minute: now.getMinutes() };
-	};
-	const emit = (next: TimeParts) => onValueChange(formatTime(next));
-
-	function onKeyDown(segment: Segment, event: KeyboardEvent<HTMLSpanElement>) {
-		if (disabled) return;
-		const key = event.key;
-		const move = (delta: number) =>
-			emit(
-				segment === "hour"
-					? stepHour(base(), delta)
-					: segment === "minute"
-						? stepMinute(base(), delta, step)
-						: togglePeriod(base()),
-			);
-		if (key === "ArrowUp" || key === "ArrowDown") {
-			event.preventDefault();
-			setPending(null);
-			move(key === "ArrowUp" ? 1 : -1);
-		} else if (key === "ArrowLeft" || key === "ArrowRight") {
-			event.preventDefault();
-			setPending(null);
-			focus(neighbour(segment, key === "ArrowLeft" ? -1 : 1));
-		} else if (key === "Backspace" || key === "Delete") {
-			event.preventDefault();
-			setPending(null);
-			onValueChange(null);
-		} else if (segment === "period" && /^[ap]$/i.test(key)) {
-			event.preventDefault();
-			const current = base();
-			const pm = key.toLowerCase() === "p";
-			if (pm !== current.hour >= 12) emit(togglePeriod(current));
-		} else if (/^\d$/.test(key) && segment !== "period") {
-			event.preventDefault();
-			typeDigit(segment, Number(key));
-		}
-	}
-
-	function typeDigit(segment: "hour" | "minute", digit: number) {
-		const current = base();
-		const first = pending?.segment === segment ? pending.digit : null;
-		const typed = first === null ? digit : first * 10 + digit;
-		const limit = segment === "hour" ? (hourCycle === 12 ? 1 : 2) : 5;
-		const next =
-			segment === "hour"
-				? typedHour(current, typed, hourCycle)
-				: { ...current, minute: Math.min(typed, 59) };
-		emit(next);
-		// A second digit, or a first digit that can't start a two-digit value, completes the segment.
-		if (first !== null || digit > limit) {
-			setPending(null);
-			focus(neighbour(segment, 1));
-		} else {
-			setPending({ segment, digit });
-		}
-	}
-
-	const text = (segment: Segment) => {
-		if (!parts) return labels.empty;
-		if (segment === "hour")
-			return String(displayHour(parts.hour, hourCycle)).padStart(2, "0");
-		if (segment === "minute") return String(parts.minute).padStart(2, "0");
-		return periodLabel(parts.hour, locale);
-	};
-
-	const spin = (segment: Segment) => {
-		const max =
-			segment === "hour" ? (hourCycle === 12 ? 12 : 23) : segment === "minute" ? 59 : 1;
-		const min = segment === "hour" && hourCycle === 12 ? 1 : 0;
-		const now =
-			parts &&
-			(segment === "hour"
-				? displayHour(parts.hour, hourCycle)
-				: segment === "minute"
-					? parts.minute
-					: parts.hour >= 12
-						? 1
-						: 0);
-		return (
-			<span
-				key={segment}
-				ref={(el) => {
-					refs.current[segment] = el;
-				}}
-				role="spinbutton"
-				tabIndex={disabled ? -1 : 0}
-				aria-label={labels[segment]}
-				aria-valuemin={min}
-				aria-valuemax={max}
-				aria-valuenow={now ?? undefined}
-				aria-valuetext={parts ? text(segment) : labels.empty}
-				aria-disabled={disabled || undefined}
-				data-empty={parts ? undefined : ""}
-				onKeyDown={(e) => onKeyDown(segment, e)}
-				onBlur={() => setPending(null)}
-				className={cn(s.segment(), segment === "period" && s.period())}
-			>
-				{text(segment)}
-			</span>
-		);
-	};
+	const [draft, setDraft] = useFieldDraft<TimeValue, Draft>(
+		parseTime(value) ? value : null,
+		(time) => time,
+		(time) => timeToDraft(parseTime(time), hourCycle),
+		(next) => {
+			const time = draftToTime(next, hourCycle);
+			return time ? formatTime(time) : null;
+		},
+		onValueChange,
+	);
 
 	return (
 		<fieldset
 			id={id}
 			aria-label={ariaLabel ?? labels.group}
+			aria-describedby={describedBy}
 			aria-disabled={disabled || undefined}
 			data-slot="time-picker"
-			className={cn(s.root(), className)}
+			className={cn(s.group(), "w-fit", className)}
 		>
-			<svg
-				viewBox="0 0 24 24"
-				fill="none"
-				stroke="currentColor"
-				strokeWidth={2}
-				strokeLinecap="round"
-				strokeLinejoin="round"
-				aria-hidden="true"
-			>
-				<path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0M12 7v5l3 3" />
-			</svg>
-			{spin("hour")}
-			<span aria-hidden="true" className={s.separator()}>
-				:
+			<span className={s.icon()}>
+				<svg
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					strokeWidth={2}
+					strokeLinecap="round"
+					strokeLinejoin="round"
+					aria-hidden="true"
+				>
+					<path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0M12 7v5l3 3" />
+				</svg>
 			</span>
-			{spin("minute")}
-			{hourCycle === 12 ? spin("period") : null}
+			<DateSegments
+				layout={layout}
+				draft={draft}
+				onDraftChange={setDraft}
+				labels={{
+					year: "",
+					month: "",
+					day: "",
+					hour: labels.hour,
+					minute: labels.minute,
+					dayPeriod: labels.period,
+				}}
+				placeholders={{
+					year: "",
+					month: "",
+					day: "",
+					hour: labels.empty,
+					minute: labels.empty,
+					dayPeriod: "",
+				}}
+				hourCycle={hourCycle}
+				step={step}
+				locale={locale}
+				disabled={disabled}
+				invalid={invalid}
+				className={s.input()}
+				segmentClassName={s.segment()}
+			/>
+			{name ? <input type="hidden" name={name} value={value ?? ""} /> : null}
 		</fieldset>
 	);
 }

@@ -9,33 +9,37 @@ const PORTS = [
 ];
 </script>
 
-<!-- Baby UI's own idea as the cover: one spec on the left feeds two identical ports on the right. -->
+<!-- Baby UI's own idea as the cover: one spec feeds two identical ports. -->
 <section
 	aria-label="Baby UI: one spec, two frameworks, source you own"
-	class="not-prose relative isolate grid min-h-80 gap-8 overflow-hidden rounded-2xl border border-border bg-card p-6 sm:p-10 lg:grid-cols-[1fr_auto]"
+	class="not-prose relative isolate flex flex-col gap-8 overflow-hidden rounded-2xl border border-border bg-card p-6 sm:p-8"
 >
 	<div
 		aria-hidden="true"
-		class="absolute inset-0 -z-10 bg-[radial-gradient(var(--border-strong)_1px,transparent_1px)] bg-size-[18px_18px] [mask-image:linear-gradient(to_right,black,transparent_70%)]"
+		class="absolute inset-0 -z-10 bg-[radial-gradient(var(--border-strong)_1px,transparent_1px)] bg-size-[18px_18px] [mask-image:linear-gradient(to_bottom,black,transparent_85%)]"
 	></div>
 
-	<div class="flex flex-col justify-end gap-4 self-end">
+	<div class="flex flex-col gap-2">
 		<span
-			class="flex items-center gap-3 font-display font-semibold text-5xl text-foreground tracking-tight"
+			class="flex items-center gap-3 whitespace-nowrap font-display font-semibold text-4xl text-foreground tracking-tight sm:text-5xl"
 		>
-			<Logo class="size-12" />
+			<Logo class="size-10 shrink-0 sm:size-12" />
 			Baby UI
 		</span>
-		<span class="max-w-md text-foreground text-xl sm:text-2xl">
+		<span class="text-lg text-muted-foreground sm:text-xl">
 			One spec. Two frameworks. Source you own.
 		</span>
 	</div>
 
-	<div aria-hidden="true" inert class="hidden items-center gap-5 self-center sm:flex">
+	<div
+		aria-hidden="true"
+		inert
+		class="hidden grid-cols-[minmax(0,1fr)_2.5rem_minmax(0,1.25fr)] items-center gap-3 sm:grid"
+	>
 		<div
-			class="w-52 rounded-xl border border-border bg-background p-3 font-mono text-[11px] leading-relaxed shadow-sm"
+			class="min-w-0 rounded-xl border border-border bg-background p-4 font-mono text-xs leading-relaxed shadow-sm"
 		>
-			<p class="mb-1 text-muted-foreground">button.ts</p>
+			<p class="mb-1.5 text-muted-foreground">button.ts</p>
 			<p><span class="text-primary">defineComponent</span>({"{"}</p>
 			<p class="ps-3">slug: <span class="text-success">"button"</span>,</p>
 			<p class="ps-3">variant: [<span class="text-success">"default"</span>, …],</p>
@@ -45,7 +49,7 @@ const PORTS = [
 			<p>{"}"})</p>
 		</div>
 
-		<svg viewBox="0 0 40 120" class="h-32 w-10 shrink-0 text-border-strong" fill="none">
+		<svg viewBox="0 0 40 120" class="h-28 w-10 text-border-strong" fill="none">
 			<path
 				d="M0 60 C20 60 20 20 40 20 M0 60 C20 60 20 100 40 100"
 				stroke="currentColor"
@@ -54,19 +58,19 @@ const PORTS = [
 			/>
 		</svg>
 
-		<div class="flex flex-col gap-3">
+		<div class="flex min-w-0 flex-col gap-3">
 			{#each PORTS as port (port.name)}
 				{@const Glyph = port.icon}
 				<div
-					class="flex w-56 flex-col gap-3 rounded-xl border border-border bg-background p-3 shadow-sm"
+					class="flex min-w-0 flex-col gap-3 rounded-xl border border-border bg-background p-3 shadow-sm"
 				>
-					<div class="flex items-center justify-between">
-						<span class="flex items-center gap-1.5 text-muted-foreground text-xs">
+					<div class="flex items-center justify-between gap-2">
+						<span class="flex min-w-0 items-center gap-1.5 truncate text-muted-foreground text-xs">
 							<Glyph size={13} />{port.file}
 						</span>
 						<Badge size="sm" variant="secondary">{port.name}</Badge>
 					</div>
-					<div class="flex items-center gap-2">
+					<div class="flex flex-wrap items-center gap-2">
 						<Button size="sm">Deploy</Button>
 						<Button size="sm" variant="outline">Preview</Button>
 						<Switch checked size="sm" aria-label="Auto deploy" class="ms-auto" />

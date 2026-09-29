@@ -15,8 +15,7 @@ export const table = defineComponent({
 		{
 			name: "variant",
 			type: VARIANTS.map((v) => `"${v}"`).join(" | "),
-			description:
-				"Bordered grid, or a card rim around a rounded inset body.",
+			description: "Bordered grid, or a card rim around a rounded inset body.",
 			default: "default",
 			control: { kind: "select", options: VARIANTS },
 		},

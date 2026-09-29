@@ -52,7 +52,7 @@ import { creditCardInput } from "./credit-card-input.ts";
 import { cubeText } from "./cube-text.ts";
 import { currencyInput } from "./currency-input.ts";
 import { cycleText } from "./cycle-text.ts";
-import { datePicker, dateRangePicker, timePicker } from "./date-picker.ts";
+import { dateField, datePicker, dateRangePicker, timePicker } from "./date-picker.ts";
 import { diaText } from "./dia-text.ts";
 import { dialog } from "./dialog.ts";
 import { diffTable } from "./diff-table.ts";
@@ -126,7 +126,6 @@ import { morphingModal } from "./morphing-modal.ts";
 import { multiSelect } from "./multi-select.ts";
 import { musicPlayer } from "./music-player.ts";
 import { nativeSelect } from "./native-select.ts";
-import { navbar } from "./navbar.ts";
 import { navigationMenu } from "./navigation-menu.ts";
 import { notchedShelf } from "./notched-shelf.ts";
 import { numberInput } from "./number-input.ts";
@@ -291,6 +290,7 @@ export const specs: ComponentSpec[] = [
 	cubeText,
 	currencyInput,
 	cycleText,
+	dateField,
 	datePicker,
 	dateRangePicker,
 	timePicker,
@@ -367,7 +367,6 @@ export const specs: ComponentSpec[] = [
 	multiSelect,
 	musicPlayer,
 	nativeSelect,
-	navbar,
 	navigationMenu,
 	notchedShelf,
 	numberInput,

@@ -1,8 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useId, useMemo, useState } from "react";
 import type { DateRange, Matcher } from "react-day-picker";
 import { Button } from "../button/button";
+import { button } from "../button/variants";
+import {
+	compareDateParts,
+	type Draft,
+	dateToDraft,
+	draftToDate,
+	fieldLayout,
+	fromDateParts,
+	isOutsideRange,
+	toDateParts,
+} from "../date-field/core";
+import { DateSegments, useFieldDraft } from "../date-field/segments";
+import { dateField } from "../date-field/variants";
+import { FieldError } from "../field/field";
 import { cn } from "../lib/cn";
 import { Popover, PopoverContent, PopoverTrigger } from "../popover/popover";
 import { RangeCalendar } from "../range-calendar/range-calendar";
@@ -12,8 +26,6 @@ import {
 	type DateRangePickerLabels,
 	type DateRangePreset,
 	DEFAULT_RANGE_PRESETS,
-	formatDateRange,
-	type RangeDateParts,
 	sameRange,
 	todayParts,
 } from "./core";
@@ -25,6 +37,7 @@ export interface DateRangePickerProps {
 	/** Controlled range; `to` may be missing while the second day is being picked. */
 	value: DateRange | undefined;
 	onValueChange: (value: DateRange | undefined) => void;
+	/** BCP 47 locale; sets the segment order and the calendar. */
 	locale?: string;
 	presets?: DateRangePreset[];
 	/** Hold the pick in a draft until Apply, instead of committing each click. */
@@ -33,23 +46,23 @@ export interface DateRangePickerProps {
 	max?: Date;
 	disabledDates?: Matcher | Matcher[];
 	disabled?: boolean;
+	/** Marks the field invalid from outside, e.g. a form error. */
+	invalid?: boolean;
 	open?: boolean;
 	onOpenChange?: (open: boolean) => void;
 	size?: DateRangePickerSize;
 	labels?: Partial<DateRangePickerLabels>;
 	id?: string;
 	"aria-label"?: string;
+	"aria-describedby"?: string;
 	className?: string;
 }
 
-const toParts = (d: Date): RangeDateParts => ({
-	year: d.getFullYear(),
-	month: d.getMonth() + 1,
-	day: d.getDate(),
-});
-const toDate = (p: RangeDateParts) => new Date(p.year, p.month - 1, p.day);
+type RangeDraft = { start: Draft; end: Draft };
+
 const rangeParts = (r: DateRange | undefined): DateRangeParts | null =>
-	r?.from && r.to ? { from: toParts(r.from), to: toParts(r.to) } : null;
+	r?.from && r.to ? { from: toDateParts(r.from), to: toDateParts(r.to) } : null;
+const rangeKey = (r: DateRange) => `${r.from?.getTime() ?? ""}|${r.to?.getTime() ?? ""}`;
 
 function useWideScreen() {
 	const [wide, setWide] = useState(false);
@@ -63,7 +76,7 @@ function useWideScreen() {
 	return wide;
 }
 
-/** A range trigger with a two-month calendar (one on phones) and a presets rail. */
+/** Segmented start and end dates, with a two-month calendar (one on phones) and presets. */
 export function DateRangePicker({
 	value,
 	onValueChange,
@@ -74,119 +87,201 @@ export function DateRangePicker({
 	max,
 	disabledDates,
 	disabled = false,
+	invalid = false,
 	open: openProp,
 	onOpenChange,
 	size = "md",
 	labels: labelsProp,
 	id,
 	"aria-label": ariaLabel,
+	"aria-describedby": describedBy,
 	className,
 }: DateRangePickerProps) {
 	const labels = { ...DATE_RANGE_PICKER_LABELS, ...labelsProp };
-	const s = dateRangePicker({ size });
+	const field = dateField({ size });
+	const s = dateRangePicker();
 	const wide = useWideScreen();
+	const errorId = `${useId()}-error`;
+	const layout = useMemo(() => fieldLayout("date", locale), [locale]);
 
 	const [internalOpen, setInternalOpen] = useState(false);
 	const open = openProp ?? internalOpen;
-	const [draft, setDraft] = useState<DateRange | undefined>(value);
+	const [pending, setPending] = useState<DateRange | undefined>(value);
 	const [month, setMonth] = useState<Date | undefined>(value?.from ?? min);
 	const setOpen = (next: boolean) => {
 		if (next) {
-			setDraft(value);
+			setPending(value);
 			setMonth(value?.from ?? min);
 		}
 		if (openProp === undefined) setInternalOpen(next);
 		onOpenChange?.(next);
 	};
 
-	const shown = confirm ? draft : value;
+	const shown = confirm ? pending : value;
 	const pick = (next: DateRange | undefined) =>
-		confirm ? setDraft(next) : onValueChange(next);
+		confirm ? setPending(next) : onValueChange(next);
+
+	const [draft, setDraft] = useFieldDraft<DateRange, RangeDraft>(
+		value?.from || value?.to ? value : null,
+		rangeKey,
+		(range) => ({
+			start: dateToDraft(range?.from ? toDateParts(range.from) : null),
+			end: dateToDraft(range?.to ? toDateParts(range.to) : null),
+		}),
+		({ start, end }) => {
+			const from = draftToDate(start);
+			const to = draftToDate(end);
+			if (!from && !to) return null;
+			return {
+				from: from ? fromDateParts(from) : undefined,
+				to: to ? fromDateParts(to) : undefined,
+			};
+		},
+		(range) => onValueChange(range ?? undefined),
+	);
 
 	const committed = rangeParts(value);
-	const label = committed ? formatDateRange(committed, locale) : labels.placeholder;
+	const minParts = min && toDateParts(min);
+	const maxParts = max && toDateParts(max);
+	const reversed =
+		committed !== null && compareDateParts(committed.from, committed.to) > 0;
+	const outside =
+		committed !== null &&
+		(isOutsideRange(committed.from, minParts, maxParts) ||
+			isOutsideRange(committed.to, minParts, maxParts));
+	const error = reversed ? labels.reversed : outside ? labels.outOfRange : null;
+
 	const today = todayParts();
 	const matchers: Matcher[] = [
 		...(min ? [{ before: min }] : []),
 		...(max ? [{ after: max }] : []),
 		...(disabledDates ? ([] as Matcher[]).concat(disabledDates) : []),
 	];
+	const segments = (end: boolean) => (
+		<DateSegments
+			layout={layout}
+			draft={end ? draft.end : draft.start}
+			onDraftChange={(next) =>
+				setDraft(end ? { ...draft, end: next } : { ...draft, start: next })
+			}
+			labels={{
+				year: `${end ? labels.end : labels.start}, ${labels.year}`,
+				month: `${end ? labels.end : labels.start}, ${labels.month}`,
+				day: `${end ? labels.end : labels.start}, ${labels.day}`,
+				hour: "",
+				minute: "",
+				dayPeriod: "",
+			}}
+			placeholders={{ ...labels.placeholders, hour: "", minute: "", dayPeriod: "" }}
+			locale={locale}
+			disabled={disabled}
+			invalid={invalid || error !== null}
+			className={field.input()}
+			segmentClassName={field.segment()}
+		/>
+	);
 
 	return (
-		<Popover open={open} onOpenChange={setOpen}>
-			<PopoverTrigger
+		<div data-slot="date-range-picker" className={cn(field.root(), className)}>
+			<fieldset
 				id={id}
-				disabled={disabled}
-				aria-label={ariaLabel ? `${ariaLabel}: ${label}` : undefined}
-				data-placeholder={committed ? undefined : ""}
-				className={cn(s.trigger(), className)}
+				aria-label={ariaLabel ?? labels.group}
+				aria-describedby={
+					[describedBy, error ? errorId : undefined].filter(Boolean).join(" ") ||
+					undefined
+				}
+				aria-disabled={disabled || undefined}
+				data-slot="date-range-picker-group"
+				className={field.group()}
+				onKeyDown={(e) => {
+					if (e.key === "ArrowDown" && e.altKey) {
+						e.preventDefault();
+						setOpen(true);
+					}
+				}}
 			>
-				<svg
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					strokeWidth={2}
-					strokeLinecap="round"
-					strokeLinejoin="round"
-					aria-hidden="true"
-				>
-					<path d="M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zM16 3v4M8 3v4M4 11h16" />
-				</svg>
-				<span className={s.value()}>{label}</span>
-			</PopoverTrigger>
-			<PopoverContent align="start" className={s.content()}>
-				{presets.length ? (
-					<fieldset aria-label={labels.presets} className={s.rail()}>
-						{presets.map((preset) => {
-							const range = preset.range(today);
-							return (
-								<button
-									key={preset.label}
-									type="button"
-									aria-pressed={sameRange(rangeParts(shown), range)}
-									onClick={() => {
-										pick({ from: toDate(range.from), to: toDate(range.to) });
-										// Show where the range starts, so a preset never lands off screen.
-										setMonth(toDate(range.from));
-									}}
-									className={s.preset()}
-								>
-									{preset.label}
-								</button>
-							);
-						})}
-					</fieldset>
-				) : null}
-				<div className={s.main()}>
-					<RangeCalendar
-						selected={shown}
-						onSelect={pick}
-						numberOfMonths={wide ? 2 : 1}
-						month={month}
-						onMonthChange={setMonth}
-						disabled={matchers}
-						startMonth={min}
-						endMonth={max}
-						autoFocus
-					/>
-					{confirm ? (
-						<div className={s.footer()}>
-							<Button variant="ghost" size="sm" onClick={() => setOpen(false)}>
-								{labels.cancel}
-							</Button>
-							<Button
-								size="sm"
-								onClick={() => {
-									onValueChange(draft);
-									setOpen(false);
-								}}
-							>
-								{labels.apply}
-							</Button>
+				{segments(false)}
+				<span aria-hidden="true" className={field.separator()}>
+					–
+				</span>
+				{segments(true)}
+				<Popover open={open} onOpenChange={setOpen}>
+					<PopoverTrigger
+						disabled={disabled}
+						aria-label={labels.choose}
+						className={cn(button({ variant: "ghost", size: "icon-xs" }), field.trigger())}
+					>
+						<svg
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							strokeWidth={2}
+							strokeLinecap="round"
+							strokeLinejoin="round"
+							aria-hidden="true"
+						>
+							<path d="M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zM16 3v4M8 3v4M4 11h16" />
+						</svg>
+					</PopoverTrigger>
+					<PopoverContent align="end" className={s.content()}>
+						{presets.length ? (
+							<fieldset aria-label={labels.presets} className={s.rail()}>
+								{presets.map((preset) => {
+									const range = preset.range(today);
+									return (
+										<button
+											key={preset.label}
+											type="button"
+											aria-pressed={sameRange(rangeParts(shown), range)}
+											onClick={() => {
+												pick({
+													from: fromDateParts(range.from),
+													to: fromDateParts(range.to),
+												});
+												// Show where the range starts, so a preset never lands off screen.
+												setMonth(fromDateParts(range.from));
+											}}
+											className={s.preset()}
+										>
+											{preset.label}
+										</button>
+									);
+								})}
+							</fieldset>
+						) : null}
+						<div className={s.main()}>
+							<RangeCalendar
+								selected={shown}
+								onSelect={pick}
+								numberOfMonths={wide ? 2 : 1}
+								month={month}
+								onMonthChange={setMonth}
+								disabled={matchers}
+								startMonth={min}
+								endMonth={max}
+								autoFocus
+							/>
+							{confirm ? (
+								<div className={s.footer()}>
+									<Button variant="ghost" size="sm" onClick={() => setOpen(false)}>
+										{labels.cancel}
+									</Button>
+									<Button
+										size="sm"
+										onClick={() => {
+											onValueChange(pending);
+											setOpen(false);
+										}}
+									>
+										{labels.apply}
+									</Button>
+								</div>
+							) : null}
 						</div>
-					) : null}
-				</div>
-			</PopoverContent>
-		</Popover>
+					</PopoverContent>
+				</Popover>
+			</fieldset>
+			<FieldError id={errorId} errors={error ? [{ message: error }] : undefined} />
+		</div>
 	);
 }

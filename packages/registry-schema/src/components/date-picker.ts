@@ -3,18 +3,52 @@ import { defineComponent } from "../index.ts";
 const sizeProp = {
 	name: "size",
 	type: '"sm" | "md" | "lg"',
-	description: "Field height and width.",
+	description: "Field height.",
 	default: "md",
 	control: { kind: "select" as const, options: ["sm", "md", "lg"] },
+};
+
+const localeProp = {
+	name: "locale",
+	type: "string",
+	description: "BCP 47 locale; sets the segment order, separators and calendar.",
+	control: { kind: "select" as const, options: ["en-US", "en-GB", "de-DE", "ja-JP"] },
+};
+
+const invalidProp = {
+	name: "invalid",
+	type: "boolean",
+	description: "Marks the field invalid from outside, e.g. a form error.",
+	default: "false",
+	control: { kind: "boolean" as const },
+};
+
+const segmentMotion = {
+	springs: [],
+	reducedMotion: "Nothing animates.",
+	behaviour: [
+		"The focused segment takes a soft primary tint over 100ms; the group rings while any segment has focus.",
+	],
 };
 
 const popoverMotion = {
 	springs: [],
 	reducedMotion: "The popover appears and leaves without scaling.",
 	behaviour: [
-		"The popover grows from its trigger on the shared anchored contract: 200ms in, 120ms out.",
+		...segmentMotion.behaviour,
+		"The calendar opens on the shared anchored contract: zoom from 0.9 and a 4px lean, 150ms in, 100ms out.",
 	],
 };
+
+const segmentKeys = [
+	"ArrowUp and ArrowDown step the focused segment; an empty one starts from today",
+	"ArrowLeft and ArrowRight move between segments",
+	"Digits type a value and jump to the next segment when complete",
+	"Backspace clears the segment, then moves back",
+];
+
+const segmentNote =
+	"Each segment is a labelled spinbutton with its range and a spoken value; empty ones read as Empty.";
 
 const shadcn = {
 	source: "shadcn/ui",
@@ -23,11 +57,92 @@ const shadcn = {
 	copyright: "Copyright (c) 2023 shadcn",
 };
 
+const svelteDeps = [
+	"clsx",
+	"tailwind-merge",
+	"tailwind-variants",
+	"bits-ui",
+	"@internationalized/date",
+];
+
+export const dateField = defineComponent({
+	slug: "date-field",
+	name: "Date Field",
+	description:
+		"Segmented month, day and year in the locale's order, typed or stepped with the arrow keys.",
+	category: "base",
+	status: "beta",
+	props: [
+		{
+			name: "value",
+			type: "Date | null (React) · DateValue | undefined (Svelte)",
+			description:
+				"The day, or empty while any segment is. Svelte takes an `@internationalized/date` value, bindable.",
+			control: { kind: "none" },
+		},
+		{
+			name: "onValueChange",
+			type: "(value) => void",
+			description: "Called when the segments complete to a new day, or empty out.",
+			control: { kind: "none" },
+		},
+		localeProp,
+		{
+			name: "min / max",
+			type: "Date (React) · DateValue (Svelte)",
+			description:
+				"Earliest and latest valid day; a date outside marks the field invalid.",
+			control: { kind: "none" },
+		},
+		invalidProp,
+		sizeProp,
+		{
+			name: "labels",
+			type: "Partial<DateFieldLabels>",
+			description: "Group and segment names, placeholders (React) and the range error.",
+			control: { kind: "none" },
+		},
+	],
+	motion: segmentMotion,
+	a11y: {
+		keyboard: segmentKeys,
+		notes: [
+			segmentNote,
+			"An out-of-range date is announced through the field's error, linked by aria-describedby.",
+		],
+	},
+	impl: {
+		react: {
+			entry: "DateField",
+			files: [
+				{ path: "date-field/date-field.tsx", type: "registry:ui" },
+				{ path: "date-field/segments.tsx", type: "registry:ui" },
+				{ path: "date-field/core.ts", type: "registry:ui" },
+				{ path: "date-field/variants.ts", type: "registry:ui" },
+				{ path: "lib/cn.ts", type: "registry:lib" },
+			],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			registryDependencies: ["field"],
+		},
+		svelte: {
+			entry: "DateField",
+			files: [
+				{ path: "date-field/date-field.svelte", type: "registry:ui" },
+				{ path: "date-field/core.ts", type: "registry:ui" },
+				{ path: "date-field/variants.ts", type: "registry:ui" },
+				{ path: "lib/cn.ts", type: "registry:lib" },
+			],
+			dependencies: svelteDeps,
+			registryDependencies: ["field"],
+		},
+	},
+	keywords: ["date field", "date input", "segmented date", "birthday", "form"],
+});
+
 export const datePicker = defineComponent({
 	slug: "date-picker",
 	name: "Date Picker",
-	description:
-		"Typed date field with a calendar popover: parses what you type on blur, in the locale's order.",
+	description: "A segmented date field with a calendar popover on the button at its end.",
 	category: "base",
 	status: "beta",
 	props: [
@@ -41,20 +156,15 @@ export const datePicker = defineComponent({
 		{
 			name: "onValueChange",
 			type: "(value) => void",
-			description: "Called with the new day, or empty when cleared.",
+			description: "Called with the new day, or empty when a segment is cleared.",
 			control: { kind: "none" },
 		},
-		{
-			name: "locale",
-			type: "string",
-			description: "BCP 47 locale for parsing typed dates and formatting the field.",
-			control: { kind: "select", options: ["en-US", "en-GB", "de-DE", "ja-JP"] },
-		},
+		localeProp,
 		{
 			name: "min / max",
 			type: "Date (React) · DateValue (Svelte)",
 			description:
-				"Earliest and latest selectable day; typed dates outside show an error.",
+				"Earliest and latest selectable day; a typed date outside shows an error.",
 			control: { kind: "none" },
 		},
 		{
@@ -73,23 +183,24 @@ export const datePicker = defineComponent({
 				options: ["label", "dropdown", "dropdown-months", "dropdown-years"],
 			},
 		},
+		invalidProp,
 		sizeProp,
 		{
 			name: "labels",
 			type: "Partial<DatePickerLabels>",
-			description: "Placeholder, button names and error copy.",
+			description: "DateField's labels plus the calendar button's name.",
 			control: { kind: "none" },
 		},
 	],
 	motion: popoverMotion,
 	a11y: {
 		keyboard: [
-			"Type a date and press Enter or Tab to commit it",
+			...segmentKeys,
 			"Alt+ArrowDown opens the calendar; Escape closes it and returns focus to its button",
 			"Arrow keys move by day in the calendar; Enter selects",
 		],
 		notes: [
-			"An invalid or out-of-range date is announced through the field's error, linked by aria-describedby.",
+			segmentNote,
 			"The calendar button has aria-haspopup and aria-expanded from the popover primitive.",
 		],
 	},
@@ -104,7 +215,7 @@ export const datePicker = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "react-day-picker"],
-			registryDependencies: ["calendar", "popover", "input-group", "field", "button"],
+			registryDependencies: ["date-field", "calendar", "popover", "field", "button"],
 		},
 		svelte: {
 			entry: "DatePicker",
@@ -114,14 +225,8 @@ export const datePicker = defineComponent({
 				{ path: "date-picker/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: [
-				"clsx",
-				"tailwind-merge",
-				"tailwind-variants",
-				"bits-ui",
-				"@internationalized/date",
-			],
-			registryDependencies: ["calendar", "popover", "input-group", "field", "button"],
+			dependencies: svelteDeps,
+			registryDependencies: ["date-field", "calendar", "popover", "field", "button"],
 		},
 	},
 	keywords: ["date picker", "datepicker", "calendar popover", "date input", "form"],
@@ -131,7 +236,7 @@ export const dateRangePicker = defineComponent({
 	slug: "date-range-picker",
 	name: "Date Range Picker",
 	description:
-		"Range trigger with a two-month calendar, a presets rail and optional Apply, for reports and bookings.",
+		"Segmented start and end dates with a two-month calendar, a presets rail and optional Apply.",
 	category: "base",
 	status: "beta",
 	props: [
@@ -157,28 +262,27 @@ export const dateRangePicker = defineComponent({
 			default: "false",
 			control: { kind: "boolean" },
 		},
-		{
-			name: "locale",
-			type: "string",
-			description: "BCP 47 locale for the trigger's range label.",
-			control: { kind: "select", options: ["en-US", "en-GB", "de-DE", "ja-JP"] },
-		},
+		localeProp,
+		invalidProp,
 		sizeProp,
 		{
 			name: "labels",
 			type: "Partial<DateRangePickerLabels>",
-			description: "Placeholder, presets group name, Apply and Cancel.",
+			description:
+				"Start and end names, the reversed-range error, presets, Apply and Cancel.",
 			control: { kind: "none" },
 		},
 	],
 	motion: popoverMotion,
 	a11y: {
 		keyboard: [
-			"Enter or Space on the trigger opens the popover; Escape closes it and returns focus",
-			"Tab moves from the presets to the calendar; arrow keys move by day",
+			...segmentKeys,
+			"Focus runs from the start date's segments into the end date's",
+			"Alt+ArrowDown opens the calendar; Tab moves from the presets to the calendar",
 		],
 		notes: [
-			"Presets are toggle buttons in a labelled group; the one matching the range reports aria-pressed.",
+			segmentNote,
+			"An end date before the start date marks both invalid and explains why.",
 			"Two months show from 640px up, one below, so the popover never overflows a phone.",
 		],
 	},
@@ -193,7 +297,13 @@ export const dateRangePicker = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "react-day-picker"],
-			registryDependencies: ["range-calendar", "popover", "button"],
+			registryDependencies: [
+				"date-field",
+				"range-calendar",
+				"popover",
+				"field",
+				"button",
+			],
 		},
 		svelte: {
 			entry: "DateRangePicker",
@@ -203,14 +313,14 @@ export const dateRangePicker = defineComponent({
 				{ path: "date-range-picker/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: [
-				"clsx",
-				"tailwind-merge",
-				"tailwind-variants",
-				"bits-ui",
-				"@internationalized/date",
+			dependencies: svelteDeps,
+			registryDependencies: [
+				"date-field",
+				"range-calendar",
+				"popover",
+				"field",
+				"button",
 			],
-			registryDependencies: ["range-calendar", "popover", "button"],
 		},
 	},
 	keywords: ["date range picker", "range", "presets", "report filter", "booking", "form"],
@@ -220,7 +330,7 @@ export const timePicker = defineComponent({
 	slug: "time-picker",
 	name: "Time Picker",
 	description:
-		"Hour and minute segments with AM/PM on a 12-hour clock, stepped by arrow keys or typed.",
+		"Segmented hour and minute, with AM/PM on a 12-hour clock, typed or stepped with the arrows.",
 	category: "base",
 	status: "beta",
 	props: [
@@ -228,7 +338,7 @@ export const timePicker = defineComponent({
 			name: "value",
 			type: "string | null",
 			description:
-				'24-hour "HH:mm", the same string `<input type="time">` uses. Bindable in Svelte.',
+				'24-hour "HH:mm", the same string `<input type="time">` uses; empty while half typed. Bindable in Svelte.',
 			control: { kind: "none" },
 		},
 		{
@@ -250,25 +360,13 @@ export const timePicker = defineComponent({
 			description: "BCP 47 locale for the AM/PM label and the default clock.",
 			control: { kind: "none" },
 		},
+		invalidProp,
 		sizeProp,
 	],
-	motion: {
-		springs: [],
-		reducedMotion: "Nothing animates.",
-		behaviour: [
-			"Segments change in place; stepping a time repeats too fast for motion to help.",
-		],
-	},
+	motion: segmentMotion,
 	a11y: {
-		keyboard: [
-			"ArrowUp and ArrowDown step the focused segment; minutes move by `step`",
-			"ArrowLeft and ArrowRight move between segments",
-			"Digits type a value and jump to the next segment when complete",
-			"A or P sets the period; Backspace clears the time",
-		],
-		notes: [
-			"Each segment is a labelled spinbutton with its range and a spoken value, inside a named group.",
-		],
+		keyboard: [...segmentKeys, "A or P sets the period"],
+		notes: [segmentNote],
 	},
 	impl: {
 		react: {
@@ -280,6 +378,7 @@ export const timePicker = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			registryDependencies: ["date-field"],
 		},
 		svelte: {
 			entry: "TimePicker",
@@ -289,8 +388,9 @@ export const timePicker = defineComponent({
 				{ path: "time-picker/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			dependencies: svelteDeps,
+			registryDependencies: ["date-field"],
 		},
 	},
-	keywords: ["time picker", "time input", "clock", "booking", "form"],
+	keywords: ["time picker", "time field", "time input", "clock", "booking", "form"],
 });

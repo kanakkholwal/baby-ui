@@ -132,9 +132,6 @@ export function DrawerDescription({
 	);
 }
 
-const ICON_ONLY =
-	"absolute top-3 right-3 grid size-8 place-items-center rounded-md text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring";
-
 export function DrawerClose({
 	className,
 	children,
@@ -144,7 +141,7 @@ export function DrawerClose({
 		<Vaul.Close
 			data-slot="drawer-close"
 			aria-label={children ? undefined : "Close"}
-			className={cn(!children && ICON_ONLY, className)}
+			className={cn(!children && drawerFrame().close(), className)}
 			{...props}
 		>
 			{children ?? (

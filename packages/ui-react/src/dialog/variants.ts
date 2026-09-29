@@ -26,6 +26,9 @@ export const dialogFrame = tv({
 			"motion-reduce:transition-none",
 		],
 		panel: "rounded-2xl border border-border bg-background shadow-2xl",
+		// The icon-only close in the corner; a close with children styles itself.
+		close:
+			"absolute top-3 right-3 grid size-8 place-items-center rounded-md text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring",
 		footer: "flex items-center justify-end gap-2",
 		body: "relative overflow-hidden",
 	},

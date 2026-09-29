@@ -1,14 +1,9 @@
 import { tv, type VariantProps } from "tailwind-variants";
+import type { dateField } from "../date-field/variants";
 
+/** The popover's layout; the field itself is DateField's `dateField` contract. */
 export const dateRangePicker = tv({
 	slots: {
-		trigger: [
-			"inline-flex w-full min-w-0 items-center gap-2 rounded-lg border border-input bg-background px-3 text-left text-sm",
-			"outline-none transition-[box-shadow,border-color] duration-[var(--duration-press)] ease-[var(--ease-out)]",
-			"focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none",
-			"data-[placeholder]:text-muted-foreground [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground",
-		],
-		value: "min-w-0 flex-1 truncate tabular-nums",
 		content: "flex w-auto max-w-[calc(100vw-2rem)] flex-col p-0 sm:flex-row",
 		rail: "flex min-w-0 gap-1 overflow-x-auto border-border border-b p-2 sm:w-36 sm:flex-col sm:overflow-visible sm:border-e sm:border-b-0",
 		preset: [
@@ -19,16 +14,6 @@ export const dateRangePicker = tv({
 		main: "flex min-w-0 flex-col",
 		footer: "flex justify-end gap-2 border-border border-t p-2",
 	},
-	variants: {
-		size: {
-			sm: { trigger: "h-8 text-xs" },
-			md: { trigger: "h-9" },
-			lg: { trigger: "h-10" },
-		},
-	},
-	defaultVariants: { size: "md" },
 });
 
-export type DateRangePickerSize = NonNullable<
-	VariantProps<typeof dateRangePicker>["size"]
->;
+export type DateRangePickerSize = NonNullable<VariantProps<typeof dateField>["size"]>;

@@ -1,28 +1,17 @@
 <script lang="ts">
-import { CalendarDate, type DateValue } from "@internationalized/date";
-import { untrack } from "svelte";
+import type { DateValue } from "@internationalized/date";
+import { DateField } from "bits-ui";
 import { button } from "../button/variants";
 import Calendar from "../calendar/calendar.svelte";
 import type { CalendarCaptionLayout } from "../calendar/variants";
+import { dateField } from "../date-field/variants";
 import FieldError from "../field/field-error.svelte";
-import InputGroup from "../input-group/input-group.svelte";
-import InputGroupAddon from "../input-group/input-group-addon.svelte";
-import InputGroupInput from "../input-group/input-group-input.svelte";
-import { inputGroup } from "../input-group/variants";
 import { cn } from "../lib/cn";
 import Popover from "../popover/popover.svelte";
 import PopoverContent from "../popover/popover-content.svelte";
 import PopoverTrigger from "../popover/popover-trigger.svelte";
-import {
-	DATE_PICKER_LABELS,
-	type DateParts,
-	type DatePickerLabels,
-	formatDateParts,
-	invalidDateMessage,
-	isOutsideRange,
-	parseDateInput,
-} from "./core";
-import { type DatePickerSize, datePicker } from "./variants";
+import { DATE_PICKER_LABELS, type DatePickerLabels } from "./core";
+import type { DatePickerSize } from "./variants";
 
 let {
 	value = $bindable(),
@@ -32,27 +21,30 @@ let {
 	max,
 	isDateDisabled,
 	disabled = false,
+	invalid = false,
 	open = $bindable(false),
 	onOpenChange,
 	captionLayout = "dropdown",
 	size = "md",
 	labels: labelsProp,
-	id: idProp,
+	id,
 	name,
 	"aria-label": ariaLabel,
 	"aria-describedby": describedBy,
 	class: classProp,
 }: {
-	/** Bindable; `undefined` when empty, as bits-ui's calendar does. */
+	/** Bindable; `undefined` while empty or half typed. */
 	value?: DateValue;
 	onValueChange?: (value: DateValue | undefined) => void;
-	/** BCP 47 locale for parsing typed dates and formatting the field. */
+	/** BCP 47 locale; sets the segment order and the calendar. */
 	locale?: string;
 	min?: DateValue;
 	max?: DateValue;
 	/** Extra rule for unavailable days, e.g. weekends. */
 	isDateDisabled?: (date: DateValue) => boolean;
 	disabled?: boolean;
+	/** Marks the field invalid from outside, e.g. a form error. */
+	invalid?: boolean;
 	/** Bindable. */
 	open?: boolean;
 	onOpenChange?: (open: boolean) => void;
@@ -60,6 +52,7 @@ let {
 	size?: DatePickerSize;
 	labels?: Partial<DatePickerLabels>;
 	id?: string;
+	/** Submits the date as ISO `yyyy-mm-dd`. */
 	name?: string;
 	"aria-label"?: string;
 	"aria-describedby"?: string;
@@ -67,102 +60,63 @@ let {
 } = $props();
 
 const labels = $derived({ ...DATE_PICKER_LABELS, ...labelsProp });
+const s = $derived(dateField({ size }));
 const uid = $props.id();
-const id = $derived(idProp ?? `${uid}-input`);
 const errorId = `${uid}-error`;
-const s = $derived(datePicker({ size }));
-
-const toParts = (d: DateValue): DateParts => ({
-	year: d.year,
-	month: d.month,
-	day: d.day,
-});
-const formatted = $derived(value ? formatDateParts(toParts(value), locale) : "");
-
-let text = $state("");
-let editing = false;
-let error = $state<string | null>(null);
-
-// Only a change to `value` rewrites the field; an invalid entry stays for the user to fix.
-$effect(() => {
-	const next = formatted;
-	untrack(() => {
-		if (!editing) text = next;
-	});
-});
+const outside = $derived(
+	value !== undefined &&
+		((min !== undefined && value.compare(min) < 0) ||
+			(max !== undefined && value.compare(max) > 0)),
+);
 
 function set(next: DateValue | undefined) {
 	value = next;
 	onValueChange?.(next);
 }
 
-function commit() {
-	editing = false;
-	if (!text.trim()) {
-		error = null;
-		if (value) set(undefined);
-		return;
-	}
-	if (text === formatted) return;
-	const parts = parseDateInput(text, locale);
-	if (!parts) {
-		error = invalidDateMessage(labels, locale);
-		return;
-	}
-	if (isOutsideRange(parts, min && toParts(min), max && toParts(max))) {
-		error = labels.outOfRange;
-		return;
-	}
-	error = null;
-	set(new CalendarDate(parts.year, parts.month, parts.day));
-	text = formatDateParts(parts, locale);
+function setOpen(next: boolean) {
+	open = next;
+	onOpenChange?.(next);
 }
-
-const iconButton = cn(
-	button({ variant: "ghost", size: "icon-xs" }),
-	inputGroup().button(),
-);
 </script>
 
 <div data-slot="date-picker" class={cn(s.root(), classProp)}>
-	<InputGroup {size} data-disabled={disabled || undefined}>
-		<InputGroupInput
-			{id}
-			{name}
-			bind:value={text}
-			{disabled}
-			placeholder={labels.placeholder}
-			aria-label={ariaLabel}
-			aria-invalid={error ? true : undefined}
-			aria-describedby={[describedBy, error ? errorId : undefined].filter(Boolean).join(" ") ||
-				undefined}
-			autocomplete="off"
-			oninput={() => (editing = true)}
-			onblur={commit}
-			onkeydown={(e: KeyboardEvent) => {
-				if (e.key === "Enter") commit();
-				if (e.key === "ArrowDown" && e.altKey) open = true;
-			}}
-		/>
-		<InputGroupAddon align="inline-end">
-			{#if value && !disabled}
-				<button
-					type="button"
-					aria-label={labels.clear}
-					class={iconButton}
-					onclick={() => {
-						error = null;
-						text = "";
-						set(undefined);
-					}}
+	<DateField.Root
+		bind:value={() => value, set}
+		minValue={min}
+		maxValue={max}
+		{locale}
+		{disabled}
+		granularity="day"
+		validate={invalid ? () => labels.group : undefined}
+	>
+		<div data-slot="date-picker-group" data-disabled={disabled || undefined} class={s.group()}>
+			<DateField.Input
+				{id}
+				{name}
+				aria-label={ariaLabel ?? labels.group}
+				aria-describedby={[describedBy, outside ? errorId : undefined].filter(Boolean).join(" ") ||
+					undefined}
+				class={s.input()}
+				onkeydown={(e: KeyboardEvent) => {
+					if (e.key === "ArrowDown" && e.altKey) {
+						e.preventDefault();
+						setOpen(true);
+					}
+				}}
+			>
+				{#snippet children({ segments })}
+					{#each segments as { part, value: text }, i (i)}
+						<DateField.Segment {part} class={s.segment()}>{text}</DateField.Segment>
+					{/each}
+				{/snippet}
+			</DateField.Input>
+			<Popover bind:open={() => open, setOpen}>
+				<PopoverTrigger
+					{disabled}
+					aria-label={labels.choose}
+					class={cn(button({ variant: "ghost", size: "icon-xs" }), s.trigger())}
 				>
-					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-						<path d="M18 6 6 18M6 6l12 12" />
-					</svg>
-				</button>
-			{/if}
-			<Popover bind:open onOpenChange={(next) => onOpenChange?.(next)}>
-				<PopoverTrigger {disabled} aria-label={labels.choose} class={iconButton}>
 					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 						<path d="M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zM16 3v4M8 3v4M4 11h16" />
 					</svg>
@@ -172,10 +126,8 @@ const iconButton = cn(
 						type="single"
 						{value}
 						onValueChange={(next: DateValue | undefined) => {
-							error = null;
 							set(next);
-							open = false;
-							onOpenChange?.(false);
+							setOpen(false);
 						}}
 						minValue={min}
 						maxValue={max}
@@ -186,7 +138,7 @@ const iconButton = cn(
 					/>
 				</PopoverContent>
 			</Popover>
-		</InputGroupAddon>
-	</InputGroup>
-	<FieldError id={errorId} errors={error ? [{ message: error }] : undefined} />
+		</div>
+	</DateField.Root>
+	<FieldError id={errorId} errors={outside ? [{ message: labels.outOfRange }] : undefined} />
 </div>

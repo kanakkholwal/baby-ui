@@ -69,7 +69,10 @@ export function CommandDialog({
 			<DialogPrimitive.Portal>
 				<DialogPrimitive.Backdrop
 					data-slot="command-dialog-backdrop"
-					className={cn(dialogFrame().backdrop(), "backdrop-blur-md backdrop-saturate-150")}
+					className={cn(
+						dialogFrame().backdrop(),
+						"backdrop-blur-md backdrop-saturate-150",
+					)}
 				/>
 				<DialogPrimitive.Popup
 					data-slot="command-dialog"

@@ -33,6 +33,9 @@ export const drawerFrame = tv({
 			"group-data-[vaul-drawer-direction=right]/drawer:absolute group-data-[vaul-drawer-direction=right]/drawer:top-1/2 group-data-[vaul-drawer-direction=right]/drawer:left-2 group-data-[vaul-drawer-direction=right]/drawer:-translate-y-1/2 group-data-[vaul-drawer-direction=right]/drawer:block group-data-[vaul-drawer-direction=right]/drawer:h-24 group-data-[vaul-drawer-direction=right]/drawer:w-2",
 		],
 		surface: "relative flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain",
+		// The icon-only close in the corner; a close with children styles itself.
+		close:
+			"absolute top-3 right-3 grid size-8 place-items-center rounded-md text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring",
 	},
 	variants: {
 		variant: {

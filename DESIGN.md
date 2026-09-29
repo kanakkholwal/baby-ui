@@ -38,7 +38,7 @@ Motion is CSS-only. Exits undercut entrances; reduced motion keeps opacity and d
 | `ANCHORED` (`lib/anchor.ts`) | Popover, Tooltip, HoverCard, DropdownMenu, ContextMenu, Select, Combobox, NavigationMenu, DatePicker, ColorField | opacity + scale 0.9 to 1, 4px lean from the trigger, 150ms | to scale 0.95, 100ms | `ease` |
 | `dialogFrame` popup | Dialog, AlertDialog | opacity + scale 1.05 to 1, 250ms | to scale 0.95, 100ms | `--ease-out-quad` |
 | `dialogFrame` backdrop | Dialog, AlertDialog, Command | opacity, 150ms | 100ms | `--ease-out` |
-| `sheet` panel and backdrop | Sheet, Navbar mobile sheet | translate from the edge, 250ms | 200ms | `--ease-drawer` |
+| `sheet` panel and backdrop | Sheet | translate from the edge, 250ms | 200ms | `--ease-drawer` |
 | vaul | Drawer | vaul's drag physics, 500ms | gesture-driven | `--ease-drawer` |
 | Command popup | Command | instant (opened from the keyboard) | fade, 100ms | `--ease-out` |
 | Collapse | Accordion, Collapsible, FileTree | grid-template-rows, 200ms | 150ms | `--ease-out-quad` |
