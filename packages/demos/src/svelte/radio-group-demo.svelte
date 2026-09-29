@@ -1,17 +1,20 @@
 <script lang="ts">
 import { RadioGroup, RadioGroupItem } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof RadioGroup>>(props));
 
 let value = $state("weekly");
 </script>
 
 <RadioGroup
 	bind:value
-	orientation={(props.orientation as "vertical" | "horizontal") ?? "vertical"}
-	variant={(props.variant as "default" | "card") ?? "default"}
-	size={(props.size as "sm" | "md" | "lg" | "xl") ?? "md"}
-	disabled={Boolean(props.disabled)}
+	orientation={p.orientation ?? "vertical"}
+	variant={p.variant ?? "default"}
+	size={p.size ?? "md"}
+	disabled={p.disabled ?? false}
 	name="demo-radio"
 >
 	<RadioGroupItem value="daily" label="Daily digest" />

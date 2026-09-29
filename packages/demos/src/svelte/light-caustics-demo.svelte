@@ -1,18 +1,17 @@
 <script lang="ts">
-import {
-	LightCaustics,
-	type LightCausticsSpeed,
-	type LightCausticsTone,
-} from "@baby-ui/svelte";
+import { LightCaustics } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof LightCaustics>>(props));
 </script>
 
 <div class="relative h-80 w-full max-w-2xl overflow-hidden rounded-xl border border-border">
 	<LightCaustics
 		position="absolute"
-		tone={(props.tone as LightCausticsTone) ?? "ocean"}
-		speed={(props.speed as LightCausticsSpeed) ?? "normal"}
+		tone={p.tone ?? "ocean"}
+		speed={p.speed ?? "normal"}
 		intensity={Number(props.intensity ?? 1)}
 		grain={Number(props.grain ?? 0)}
 	>

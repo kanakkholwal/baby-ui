@@ -1,11 +1,10 @@
 <script lang="ts">
-import {
-	RippleTransition,
-	type RippleTransitionRadius,
-	type RippleTransitionRings,
-} from "@baby-ui/svelte";
+import { RippleTransition } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof RippleTransition>>(props));
 
 const IMAGES = [
 	{
@@ -20,8 +19,8 @@ const IMAGES = [
 <RippleTransition
 	images={IMAGES}
 	duration={Number(props.duration ?? 1200)}
-	rings={(props.rings as RippleTransitionRings) ?? "single"}
-	radius={(props.radius as RippleTransitionRadius) ?? "xl"}
-	label={(props.label as string) ?? "Show next image"}
+	rings={p.rings ?? "single"}
+	radius={p.radius ?? "xl"}
+	label={p.label ?? "Show next image"}
 	class="max-w-xl"
 />

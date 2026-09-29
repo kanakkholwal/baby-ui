@@ -1,12 +1,14 @@
 "use client";
 
-import { TableOfContents, type TableOfContentsVariant } from "@baby-ui/react";
-import { useState } from "react";
+import { TableOfContents } from "@baby-ui/react";
+import { type ComponentProps, useState } from "react";
+import { controlProps } from "../data/preview-props";
 import { TOC_ARTICLE, TOC_ITEMS } from "../data/table-of-contents";
 
 type Props = Record<string, unknown>;
 
 export function TableOfContentsDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof TableOfContents>>(props);
 	const [scroller, setScroller] = useState<HTMLElement | null>(null);
 	return (
 		<div className="flex w-full max-w-2xl gap-6">
@@ -46,7 +48,7 @@ export function TableOfContentsDemo({ props }: { props: Props }) {
 				items={TOC_ITEMS}
 				root={scroller}
 				scrollOffset={0}
-				variant={(props.variant as TableOfContentsVariant) ?? "curve"}
+				variant={p.variant ?? "curve"}
 				indicator={props.indicator !== false}
 				className="w-44 shrink-0"
 			/>

@@ -1,14 +1,16 @@
 <script lang="ts">
+import {
+	IconArrowLeft,
+	IconArrowRight,
+	IconArrowUpRight,
+	IconBrandReact,
+	IconBrandSvelte,
+	IconChevronRight,
+	IconList,
+} from "@baby-ui/icons";
 import type { Framework } from "@baby-ui/registry-schema";
 import { Alert, AlertDescription, AlertTitle } from "@baby-ui/svelte";
 import { Renderer } from "@docvia/renderer-svelte";
-import IconArrowLeft from "@tabler/icons-svelte/icons/arrow-left";
-import IconArrowRight from "@tabler/icons-svelte/icons/arrow-right";
-import IconArrowUpRight from "@tabler/icons-svelte/icons/arrow-up-right";
-import IconBrandReact from "@tabler/icons-svelte/icons/brand-react";
-import IconBrandSvelte from "@tabler/icons-svelte/icons/brand-svelte";
-import IconChevronRight from "@tabler/icons-svelte/icons/chevron-right";
-import IconList from "@tabler/icons-svelte/icons/list";
 import { registry } from "docvia/registry";
 import type { Snippet } from "svelte";
 import { page } from "$app/state";
@@ -27,7 +29,9 @@ import PreviewToolbar from "$lib/components/preview-toolbar.svelte";
 import ProInstallGate from "$lib/components/pro-install-gate.svelte";
 import PropsRail from "$lib/components/props-rail.svelte";
 import PropsTable from "$lib/components/props-table.svelte";
-import SegmentControl from "$lib/components/segment-control.svelte";
+import SegmentControl, {
+	type SegmentOption,
+} from "$lib/components/segment-control.svelte";
 import Seo from "$lib/components/seo.svelte";
 import Tabs from "$lib/components/tabs.svelte";
 import { demos } from "$lib/demos";
@@ -135,7 +139,7 @@ const tabs = $derived(
 $effect(() => {
 	if (!tabs.some((t) => t.id === tab)) tab = tabs[0]?.id ?? "usage";
 });
-const FRAMEWORKS = [
+const FRAMEWORKS: SegmentOption<Framework>[] = [
 	{ id: "svelte", label: "Svelte", icon: IconBrandSvelte },
 	{ id: "react", label: "React", icon: IconBrandReact },
 ];
@@ -212,7 +216,7 @@ const categoryTrail = $derived(
 />
 
 <main class="@container min-w-0 pt-8 pb-16 md:pt-12">
-	<div id="overview" class="scroll-mt-24">
+	<div id="overview" class="scroll-mt-[calc(var(--header-h)+1.5rem)]">
 		<nav aria-label="Breadcrumb" class="flex items-center gap-1.5 text-sm">
 			<a
 				href={categoryHref(data.spec.category)}
@@ -220,7 +224,7 @@ const categoryTrail = $derived(
 			>
 				{CATEGORY_LABEL[data.spec.category]}
 			</a>
-			<IconChevronRight size={14} stroke={1.6} class="text-muted-foreground" />
+			<IconChevronRight size={14} class="text-muted-foreground" />
 			<span class="font-medium text-foreground">{data.spec.name}</span>
 		</nav>
 
@@ -264,7 +268,7 @@ const categoryTrail = $derived(
 
 		<div class={["mt-5", !split && "xl:hidden"]}>
 			<MobileNavDrawer label="On this page" title="On this page">
-				{#snippet icon()}<IconList size={14} stroke={1.6} />{/snippet}
+				{#snippet icon()}<IconList size={14} />{/snippet}
 				{#snippet children()}
 					<div class="mx-auto w-full max-w-md">
 						<PropsRail slug={data.spec.slug} {outline} heading={false} promo={false} />
@@ -274,7 +278,7 @@ const categoryTrail = $derived(
 		</div>
 	</div>
 
-	<section id="preview" class="mt-10 scroll-mt-24">
+	<section id="preview" class="mt-10 scroll-mt-[calc(var(--header-h)+1.5rem)]">
 		<div class="flex flex-wrap items-center justify-between gap-3">
 			<Tabs
 				{tabs}
@@ -313,13 +317,13 @@ const categoryTrail = $derived(
 		</div>
 	</section>
 
-	<section id="installation" class="mt-16 scroll-mt-24">
+	<section id="installation" class="mt-16 scroll-mt-[calc(var(--header-h)+1.5rem)]">
 		<div class="flex flex-wrap items-center justify-between gap-3">
 			<h2 class="font-semibold text-foreground text-xl tracking-tight">Installation</h2>
 			<SegmentControl
 				options={FRAMEWORKS}
 				current={framework}
-				onPick={(id) => prefs.set("framework", id as Framework)}
+				onPick={(id) => prefs.set("framework", id)}
 			/>
 		</div>
 		<div class="mt-4">
@@ -338,13 +342,13 @@ const categoryTrail = $derived(
 	</section>
 
 	{#if data.prose}
-		<section class="mt-16 scroll-mt-24">
+		<section class="mt-16 scroll-mt-[calc(var(--header-h)+1.5rem)]">
 			<article class="prose-baby max-w-2xl"><Renderer nodes={data.prose} {registry} /></article>
 		</section>
 	{/if}
 
 	{#if data.spec.motion}
-		<section id="behaviour" class="mt-16 scroll-mt-24">
+		<section id="behaviour" class="mt-16 scroll-mt-[calc(var(--header-h)+1.5rem)]">
 			<h2 class="font-semibold text-foreground text-xl tracking-tight">Behaviour contract</h2>
 			<p class="mt-2 max-w-2xl text-[0.9375rem] text-muted-foreground leading-7">
 				What both implementations must observably do, for an agent reading this page as well
@@ -362,7 +366,7 @@ const categoryTrail = $derived(
 	{/if}
 
 	{#if hasA11y}
-		<section id="accessibility" class="mt-16 scroll-mt-24">
+		<section id="accessibility" class="mt-16 scroll-mt-[calc(var(--header-h)+1.5rem)]">
 			<h2 class="font-semibold text-foreground text-xl tracking-tight">Accessibility</h2>
 			<p class="mt-2 max-w-2xl text-[0.9375rem] text-muted-foreground leading-7">
 				Keyboard support and assistive-technology guarantees both ports share.
@@ -389,14 +393,14 @@ const categoryTrail = $derived(
 	{/if}
 
 	{#if data.spec.props.length}
-		<section id="api-reference" class="mt-16 scroll-mt-24">
+		<section id="api-reference" class="mt-16 scroll-mt-[calc(var(--header-h)+1.5rem)]">
 			<h2 class="font-semibold text-foreground text-xl tracking-tight">API Reference</h2>
 			<div class="mt-4"><PropsTable props={data.spec.props} /></div>
 		</section>
 	{/if}
 
 	{#if related.length}
-		<section id="related" class="mt-16 scroll-mt-24">
+		<section id="related" class="mt-16 scroll-mt-[calc(var(--header-h)+1.5rem)]">
 			<h2 class="font-semibold text-foreground text-xl tracking-tight">Related components</h2>
 			<p class="mt-2 text-[0.9375rem] text-muted-foreground leading-7">
 				More from {CATEGORY_LABEL[data.spec.category]}.
@@ -416,7 +420,7 @@ const categoryTrail = $derived(
 					href={adjacent.prev.href}
 					class="inline-flex items-center gap-1.5 rounded-full border border-border bg-card/20 py-2 pr-4 pl-3 font-medium text-foreground text-sm transition-colors hover:bg-foreground/[0.06]"
 				>
-					<IconArrowLeft size={15} stroke={1.6} class="shrink-0 text-muted-foreground" />
+					<IconArrowLeft size={15} class="shrink-0 text-muted-foreground" />
 					{adjacent.prev.name}
 				</a>
 			{:else}
@@ -428,7 +432,7 @@ const categoryTrail = $derived(
 					class="inline-flex items-center gap-1.5 rounded-full border border-border bg-card/20 py-2 pr-3 pl-4 font-medium text-foreground text-sm transition-colors hover:bg-foreground/[0.06]"
 				>
 					{adjacent.next.name}
-					<IconArrowRight size={15} stroke={1.6} class="shrink-0 text-muted-foreground" />
+					<IconArrowRight size={15} class="shrink-0 text-muted-foreground" />
 				</a>
 			{/if}
 		</nav>
@@ -441,7 +445,7 @@ const categoryTrail = $derived(
 			class="inline-flex items-center gap-1 transition-colors hover:text-foreground"
 		>
 			Also from Nexonauts: <span class="text-foreground">{product.name}</span>, {product.headline}
-			<IconArrowUpRight size={12} stroke={1.8} />
+			<IconArrowUpRight size={12} />
 		</a>
 		<!-- A real link, not only the menu item: crawlers and agents follow it to the markdown twin. -->
 		<a href="{specHref(data.spec)}.md" class="underline decoration-border underline-offset-4 transition-colors hover:text-foreground">
@@ -513,7 +517,7 @@ const categoryTrail = $derived(
 
 {#if split}
 	<aside aria-label="Live preview" class="hidden min-w-0 xl:block">
-		<div class="sticky top-14 flex h-[calc(100dvh-3.5rem)] flex-col gap-3 py-8">
+		<div class="sticky top-(--header-h) flex h-[calc(100dvh-var(--header-h))] flex-col gap-3 py-8">
 			<div class="flex items-center justify-between gap-3">
 				<p class="font-medium text-foreground text-sm">Preview</p>
 			</div>
@@ -527,7 +531,7 @@ const categoryTrail = $derived(
 		<div
 			id="outline-sidebar"
 			inert={!outlineSidebar.current}
-			class={["scrollbar-hide fixed top-24 right-8 z-10 max-h-[calc(100dvh-8rem)] w-(--right-sidebar-width) overflow-y-auto pb-1", OUTLINE_PANEL]}
+			class={["scrollbar-hide fixed top-[calc(var(--header-h)+2.5rem)] right-8 z-10 max-h-[calc(100dvh-var(--header-h)-4.5rem)] w-(--right-sidebar-width) overflow-y-auto pb-1", OUTLINE_PANEL]}
 		>
 			<PropsRail slug={data.spec.slug} {outline} promo={false} />
 		</div>

@@ -5,16 +5,18 @@ import {
 	InputOTPGroup,
 	InputOTPSeparator,
 	InputOTPSlot,
-	type InputOtpSize,
 } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof InputOTP>>(props));
 
 // The code a real backend would have emailed; demo only.
 const SAMPLE_CODE = "418206";
 
 let value = $state("");
-const size = $derived((props.size as InputOtpSize) ?? "md");
+const size = $derived(p.size ?? "md");
 const status = $derived(
 	value.length < 6 ? "idle" : value === SAMPLE_CODE ? "verified" : "wrong",
 );

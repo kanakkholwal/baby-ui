@@ -96,7 +96,7 @@ function active(match: string[]) {
 			id="docs-sidebar"
 			inert={!docsSidebar.current}
 			class={[
-				"scrollbar-hide fixed top-14 bottom-0 w-60 overflow-y-auto bg-background py-6 pr-4",
+				"scrollbar-hide fixed top-(--header-h) bottom-0 w-60 overflow-y-auto bg-background py-6 pr-4",
 				"ease-[var(--ease-drawer)] in-data-[ready]:transition-[translate] motion-reduce:transition-none",
 				"translate-x-0 duration-[var(--duration-drawer)] [[data-left-rail=closed]_&]:-translate-x-[17rem] [[data-left-rail=closed]_&]:duration-[var(--duration-overlay)]",
 			]}

@@ -1,9 +1,12 @@
 <script lang="ts">
-import { type CalendarSize, RangeCalendar } from "@baby-ui/svelte";
+import { RangeCalendar } from "@baby-ui/svelte";
 import { getLocalTimeZone, today } from "@internationalized/date";
+import type { ComponentProps } from "svelte";
 import { MediaQuery } from "svelte/reactivity";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof RangeCalendar>>(props));
 
 const start = today(getLocalTimeZone());
 let value = $state({ start, end: start.add({ days: 5 }) });
@@ -14,6 +17,6 @@ const wide = new MediaQuery("min-width: 768px");
 <RangeCalendar
 	bind:value
 	numberOfMonths={wide.current ? 2 : 1}
-	size={(props.size as CalendarSize) ?? "md"}
+	size={p.size ?? "md"}
 	class="rounded-lg border border-border"
 />

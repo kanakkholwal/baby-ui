@@ -1,12 +1,8 @@
 "use client";
 
-import {
-	ThemeToggle,
-	type ThemeToggleStart,
-	type ThemeToggleValue,
-	type ThemeToggleVariant,
-} from "@baby-ui/react";
-import { useEffect, useState } from "react";
+import { ThemeToggle, type ThemeToggleValue } from "@baby-ui/react";
+import { type ComponentProps, useEffect, useState } from "react";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
@@ -17,6 +13,7 @@ function applyTheme(next: ThemeToggleValue) {
 }
 
 export function ThemeToggleDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof ThemeToggle>>(props);
 	const [theme, setTheme] = useState<ThemeToggleValue>("light");
 
 	useEffect(() => {
@@ -32,8 +29,8 @@ export function ThemeToggleDemo({ props }: { props: Props }) {
 		<ThemeToggle
 			theme={theme}
 			onThemeChange={onThemeChange}
-			variant={(props.variant as ThemeToggleVariant) ?? "rectangle"}
-			start={(props.start as ThemeToggleStart) ?? "bottom-up"}
+			variant={p.variant ?? "rectangle"}
+			start={p.start ?? "bottom-up"}
 			className="rounded-xl border border-border bg-background p-2.5"
 			iconClassName="size-5"
 		/>

@@ -1,7 +1,10 @@
 <script lang="ts">
 import { Question, type QuestionAnswers, type QuestionItem } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof Question>>(props));
 
 let submitted = $state<QuestionAnswers | null>(null);
 
@@ -39,7 +42,7 @@ const QUESTIONS: QuestionItem[] = [
 	},
 ];
 
-const layout = $derived((props.layout as "card" | "inline") ?? "card");
+const layout = $derived(p.layout ?? "card");
 </script>
 
 <div class="w-full max-w-sm">

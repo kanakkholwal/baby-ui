@@ -7,7 +7,6 @@ import {
 	FieldGroup,
 	FieldLabel,
 	FieldLegend,
-	type FieldOrientation,
 	FieldSet,
 	Input,
 	InputGroup,
@@ -17,7 +16,7 @@ import {
 	NativeSelect,
 	NativeSelectOption,
 } from "@baby-ui/svelte";
-import { tick } from "svelte";
+import { type ComponentProps, tick } from "svelte";
 import {
 	SIGNUP_ORDER,
 	SIGNUP_ROLES,
@@ -25,10 +24,12 @@ import {
 	type SignupValues,
 	validateSignup,
 } from "../data/forms";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof Field>>(props));
 
-const orientation = $derived((props.orientation as FieldOrientation) ?? "vertical");
+const orientation = $derived(p.orientation ?? "vertical");
 
 let values = $state<SignupValues>({ name: "", email: "", password: "", role: "" });
 let errors = $state<SignupErrors>({});

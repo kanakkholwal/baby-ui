@@ -1,16 +1,19 @@
 "use client";
 
-import { WebglLiquid, type WebglLiquidSpeed, type WebglLiquidTone } from "@baby-ui/react";
+import { WebglLiquid } from "@baby-ui/react";
+import type { ComponentProps } from "react";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
 export function WebglLiquidDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof WebglLiquid>>(props);
 	return (
 		<div className="relative h-80 w-full max-w-2xl overflow-hidden rounded-xl border border-border">
 			<WebglLiquid
 				position="absolute"
-				tone={(props.tone as WebglLiquidTone) ?? "ocean"}
-				speed={(props.speed as WebglLiquidSpeed) ?? "normal"}
+				tone={p.tone ?? "ocean"}
+				speed={p.speed ?? "normal"}
 				flow={Number(props.flow ?? 1)}
 				grain={Number(props.grain ?? 0.05)}
 				reveal={props.reveal !== false}

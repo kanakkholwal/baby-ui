@@ -1,15 +1,16 @@
 <script lang="ts">
-import { Slider, type SliderSize, type SliderVariant } from "@baby-ui/svelte";
+import { Slider } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 import { SLIDER_MARKS, SLIDER_PRESETS } from "../data/slider";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof Slider>>(props));
 
-let variant = $derived((props.variant as SliderVariant) ?? "default");
+let variant = $derived(p.variant ?? "default");
 let preset = $derived(SLIDER_PRESETS[variant] ?? SLIDER_PRESETS.default);
 let orientation = $derived(
-	variant === "default"
-		? ((props.orientation as "horizontal" | "vertical") ?? "horizontal")
-		: "horizontal",
+	variant === "default" ? (p.orientation ?? "horizontal") : "horizontal",
 );
 let range = $derived(Boolean(props.range));
 let value = $state<number | number[]>(50);
@@ -33,11 +34,11 @@ $effect(() => {
 		min={Number(props.min ?? 0)}
 		max={Number(props.max ?? 100)}
 		step={Number(props.step ?? 1)}
-		disabled={Boolean(props.disabled)}
+		disabled={p.disabled ?? false}
 		label={preset?.label}
 		formatValue={preset?.format}
-		size={(props.size as SliderSize) ?? "md"}
-		showValue={props.showValue === true}
+		size={p.size ?? "md"}
+		showValue={p.showValue ?? false}
 		marks={variant === "default" ? SLIDER_MARKS : undefined}
 	/>
 </div>

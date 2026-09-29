@@ -103,7 +103,6 @@ export default defineConfig(({ command, mode }) => {
 				"@baby-ui/svelte > vaul-svelte",
 				"@baby-ui/registry-schema > zod",
 			],
-			exclude: ["@tabler/icons-svelte"],
 		},
 		environments: {
 			ssr: {

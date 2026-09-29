@@ -19,7 +19,7 @@ const USER_BUBBLE = "rounded-xl bg-input text-foreground px-4 py-2.5";
 
 <div
 	class="w-full max-w-96 rounded-xl border border-border bg-card/40 p-2"
-	style="height: {(props.maxHeight as string) || '22rem'}"
+	style="height: {typeof props.maxHeight === 'string' && props.maxHeight ? props.maxHeight : '22rem'}"
 >
 	<Conversation class="h-full">
 		<ConversationContent>

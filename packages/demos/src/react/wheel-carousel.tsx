@@ -1,28 +1,26 @@
 "use client";
 
-import {
-	WheelCarousel,
-	type WheelCarouselAspect,
-	type WheelCarouselPhotoSide,
-	type WheelCarouselSize,
-} from "@baby-ui/react";
+import { WheelCarousel } from "@baby-ui/react";
+import type { ComponentProps } from "react";
+import { controlProps } from "../data/preview-props";
 import { WHEEL_ITEMS } from "../data/wheel";
 
 type Props = Record<string, unknown>;
 
 export function WheelCarouselDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof WheelCarousel>>(props);
 	return (
 		<WheelCarousel
 			items={WHEEL_ITEMS}
-			photoSide={(props.photoSide as WheelCarouselPhotoSide) ?? "left"}
-			aspect={(props.aspect as WheelCarouselAspect) ?? "3/4"}
-			size={(props.size as WheelCarouselSize) ?? "md"}
+			photoSide={p.photoSide ?? "left"}
+			aspect={p.aspect ?? "3/4"}
+			size={p.size ?? "md"}
 			visibleItems={Number(props.visibleItems ?? 7)}
 			spacing={Number(props.spacing ?? 14)}
 			radius={Number(props.radius ?? 320)}
-			snap={(props.snap as boolean) ?? true}
-			momentum={(props.momentum as boolean) ?? true}
-			showMarker={(props.showMarker as boolean) ?? true}
+			snap={p.snap ?? true}
+			momentum={p.momentum ?? true}
+			showMarker={p.showMarker ?? true}
 			photoWidth={32}
 			className="h-[420px]"
 		/>

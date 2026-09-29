@@ -6,14 +6,15 @@ import {
 	RadarAxis,
 	RadarChart,
 	RadarGrid,
-	type RadarGridShape,
 	RadarLabels,
 	RadarTooltip,
-	type RadarVariant,
 } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 import { RADAR_CONFIG, RADAR_METRICS, RADAR_SERIES } from "../data/radar";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof RadarChart>>(props));
 </script>
 
 <div class="w-full max-w-md">
@@ -21,8 +22,8 @@ let { props = {} }: { props?: Record<string, unknown> } = $props();
 		<RadarChart
 			data={RADAR_SERIES}
 			metrics={RADAR_METRICS}
-			grid={(props.grid as RadarGridShape) ?? "polygon"}
-			variant={(props.variant as RadarVariant) ?? "filled"}
+			grid={p.grid ?? "polygon"}
+			variant={p.variant ?? "filled"}
 			levels={Number(props.levels ?? 5)}
 		>
 			<RadarGrid />

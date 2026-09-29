@@ -1,7 +1,10 @@
 <script lang="ts">
-import { MorphText, type MorphTextSize } from "@baby-ui/svelte";
+import { MorphText } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof MorphText>>(props));
 
 const words = ["fast", "fluid", "alive"];
 </script>
@@ -11,8 +14,8 @@ const words = ["fast", "fluid", "alive"];
 		{words}
 		defaultIndex={Number(props.defaultIndex ?? 0)}
 		intervalMs={Number(props.intervalMs ?? 3000)}
-		subtext={(props.subtext as string) || undefined}
-		size={(props.size as MorphTextSize) ?? "inherit"}
+		subtext={p.subtext || undefined}
+		size={p.size ?? "inherit"}
 		class="font-semibold"
 	/>
 </p>

@@ -5,8 +5,11 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof Accordion>>(props));
 
 const FAQ = [
 	{
@@ -28,7 +31,7 @@ const FAQ = [
 	},
 ];
 
-const type = $derived((props.type as "single" | "multiple") ?? "single");
+const type = $derived(p.type ?? "single");
 let value = $state<string | string[]>("install");
 
 // Switching modes changes the value's shape, so it is reseeded rather than coerced.
@@ -38,7 +41,7 @@ $effect(() => {
 </script>
 
 <div class="w-full max-w-96">
-	<Accordion {type} collapsible={props.collapsible !== false} bind:value>
+	<Accordion {type} collapsible={p.collapsible !== false} bind:value>
 		{#each FAQ as item (item.id)}
 			<AccordionItem value={item.id}>
 				<AccordionTrigger>{item.title}</AccordionTrigger>

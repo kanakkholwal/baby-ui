@@ -1,7 +1,8 @@
 "use client";
 
-import { type TaskRow, TaskRows, type TaskRowsVariant } from "@baby-ui/react";
-import { useEffect, useState } from "react";
+import { type TaskRow, TaskRows } from "@baby-ui/react";
+import { type ComponentProps, useEffect, useState } from "react";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
@@ -41,6 +42,7 @@ const INITIAL_ROWS: TaskRow[] = [
 ];
 
 export function TaskRowsDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof TaskRows>>(props);
 	const [rows, setRows] = useState(INITIAL_ROWS);
 
 	useEffect(() => {
@@ -58,11 +60,5 @@ export function TaskRowsDemo({ props }: { props: Props }) {
 		);
 	}
 
-	return (
-		<TaskRows
-			variant={(props.variant as TaskRowsVariant) ?? "capsules"}
-			rows={rows}
-			onRetry={retry}
-		/>
-	);
+	return <TaskRows variant={p.variant ?? "capsules"} rows={rows} onRetry={retry} />;
 }

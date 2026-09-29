@@ -1,9 +1,11 @@
 <script lang="ts">
-import { Navbar, type NavbarVariant } from "@baby-ui/svelte";
+import { Navbar } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
-
-const variant = $derived((props.variant as NavbarVariant) ?? "solid");
+const p = $derived(controlProps<ComponentProps<typeof Navbar>>(props));
+const variant = $derived(p.variant ?? "solid");
 
 const links = [
 	{ href: "#product", label: "Product" },

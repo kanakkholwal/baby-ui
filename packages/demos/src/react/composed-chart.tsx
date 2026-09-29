@@ -5,15 +5,15 @@ import {
 	type ChartConfig,
 	ChartContainer,
 	ChartLegend,
-	type ChartStatus,
 	ChartTooltip,
 	ComposedChart,
 	Line,
 	SeriesBar,
-	type SeriesBarVariant,
 	XAxis,
 	YAxis,
 } from "@baby-ui/react";
+import type { ComponentProps } from "react";
+import { controlProps } from "../data/preview-props";
 import { REVENUE, REVENUE_CONFIG } from "../data/revenue";
 
 type Props = Record<string, unknown>;
@@ -21,20 +21,22 @@ type Props = Record<string, unknown>;
 const config = REVENUE_CONFIG satisfies ChartConfig;
 
 export function ComposedChartDemo({ props }: { props: Props }) {
-	const barSize = Number(props.barSize ?? 0);
+	const p = controlProps<ComponentProps<typeof ComposedChart>>(props);
+	const pBar = controlProps<ComponentProps<typeof SeriesBar>>(props);
+	const barSize = p.barSize ?? 0;
 	const bar = {
-		variant: (props.variant as SeriesBarVariant) ?? "solid",
-		radius: Number(props.radius ?? 3),
+		variant: pBar.variant ?? "solid",
+		radius: pBar.radius ?? 3,
 	};
 	return (
 		<div className="w-full max-w-3xl">
 			<ChartContainer config={config} title="Daily sales">
 				<ComposedChart
 					data={REVENUE}
-					stacked={props.stacked === true}
+					stacked={p.stacked ?? false}
 					barSize={barSize > 0 ? barSize : undefined}
-					barGap={Number(props.barGap ?? 4)}
-					status={(props.status as ChartStatus) ?? "ready"}
+					barGap={p.barGap ?? 4}
+					status={p.status ?? "ready"}
 				>
 					<CartesianGrid />
 					<YAxis />

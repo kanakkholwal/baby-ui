@@ -1,7 +1,10 @@
 <script lang="ts">
 import { Checkbox } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof Checkbox>>(props));
 
 const SCOPES = ["Read repositories", "Write issues", "Manage webhooks"];
 
@@ -9,7 +12,7 @@ let checked = $state(false);
 let scopes = $state([true, false, false]);
 
 $effect(() => {
-	checked = Boolean(props.checked);
+	checked = p.checked ?? false;
 });
 
 const granted = $derived(scopes.filter(Boolean).length);
@@ -30,10 +33,10 @@ const granted = $derived(scopes.filter(Boolean).length);
 	</div>
 	<Checkbox
 		bind:checked
-		disabled={Boolean(props.disabled)}
-		indeterminate={Boolean(props.indeterminate)}
-		size={(props.size as "sm" | "md" | "lg" | "xl") ?? "md"}
-		label={(props.label as string) || "Remember this grant"}
-		description={(props.description as string) || "Skips the prompt for the next 30 days."}
+		disabled={p.disabled ?? false}
+		indeterminate={p.indeterminate ?? false}
+		size={p.size ?? "md"}
+		label={p.label || "Remember this grant"}
+		description={p.description || "Skips the prompt for the next 30 days."}
 	/>
 </div>

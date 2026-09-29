@@ -1,9 +1,12 @@
 <script lang="ts">
-import { Separator, type SeparatorVariant } from "@baby-ui/svelte";
+import { Separator } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof Separator>>(props));
 
-const variant = $derived((props.variant as SeparatorVariant) ?? "solid");
+const variant = $derived(p.variant ?? "solid");
 </script>
 
 <div class="w-full max-w-sm">

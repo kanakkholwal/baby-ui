@@ -1,8 +1,11 @@
 <script lang="ts">
-import { SearchInput, type SearchInputSize } from "@baby-ui/svelte";
+import { SearchInput } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 import { SEARCHABLE } from "../data/utility-inputs";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof SearchInput>>(props));
 
 let query = $state("");
 let results = $state(SEARCHABLE);
@@ -27,7 +30,7 @@ function search(q: string) {
 		shortcut="/"
 		placeholder="Search components…"
 		loading={loading || Boolean(props.loading)}
-		size={(props.size as SearchInputSize) ?? "md"}
+		size={p.size ?? "md"}
 		onSearch={search}
 	/>
 	<ul class="flex flex-col gap-1 text-muted-foreground text-sm">

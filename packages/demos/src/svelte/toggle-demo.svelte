@@ -1,7 +1,10 @@
 <script lang="ts">
 import { Toggle } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof Toggle>>(props));
 
 const MARKS = [
 	{
@@ -21,10 +24,10 @@ let pressed = $state(false);
 let on = $state<Record<string, boolean>>({ italic: false, underline: false });
 
 $effect(() => {
-	pressed = Boolean(props.pressed);
+	pressed = p.pressed ?? false;
 });
 
-const size = $derived((props.size as "sm" | "md" | "lg" | "xl") ?? "md");
+const size = $derived(p.size ?? "md");
 </script>
 
 <div class="inline-flex items-center gap-1 rounded-xl border border-border p-1">
@@ -32,7 +35,7 @@ const size = $derived((props.size as "sm" | "md" | "lg" | "xl") ?? "md");
 		<Toggle
 			size={mark.id === "bold" ? size : "md"}
 			label={mark.label}
-			disabled={mark.id === "bold" && Boolean(props.disabled)}
+			disabled={mark.id === "bold" && (p.disabled ?? false)}
 			bind:pressed={
 				() => (mark.id === "bold" ? pressed : Boolean(on[mark.id])),
 				(next) => (mark.id === "bold" ? (pressed = next) : (on[mark.id] = next))

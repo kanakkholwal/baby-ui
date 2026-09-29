@@ -1,20 +1,17 @@
 <script lang="ts">
-import {
-	NativeSelect,
-	NativeSelectOptGroup,
-	NativeSelectOption,
-	type NativeSelectSize,
-} from "@baby-ui/svelte";
+import { NativeSelect, NativeSelectOptGroup, NativeSelectOption } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof NativeSelect>>(props));
 
-const size = $derived((props.size as NativeSelectSize) ?? "md");
 let region = $state("fra");
 </script>
 
 <div class="flex w-full max-w-60 flex-col gap-1.5">
 	<label for="region" class="font-medium text-sm">Region</label>
-	<NativeSelect id="region" class="w-full" {size} bind:value={region} disabled={Boolean(props.disabled)}>
+	<NativeSelect id="region" class="w-full" size={p.size ?? "md"} bind:value={region} disabled={p.disabled ?? false}>
 		<NativeSelectOptGroup label="Europe">
 			<NativeSelectOption value="fra">Frankfurt</NativeSelectOption>
 			<NativeSelectOption value="lhr">London</NativeSelectOption>

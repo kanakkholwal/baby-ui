@@ -2,18 +2,19 @@
 import {
 	CartesianGrid,
 	ChartContainer,
-	type ChartStatus,
 	ChartTooltip,
 	Line,
 	LineChart,
-	type SeriesLoadingStyle,
-	type SeriesMarkerAppearance,
 	XAxis,
 	YAxis,
 } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 import { VISITORS, VISITORS_CONFIG } from "../data/visitors";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof Line>>(props));
+const pLine = $derived(controlProps<ComponentProps<typeof LineChart>>(props));
 
 const config = { desktop: VISITORS_CONFIG.desktop };
 const data = VISITORS.slice(-12);
@@ -21,7 +22,7 @@ const data = VISITORS.slice(-12);
 
 <div class="w-full max-w-3xl">
 	<ChartContainer {config} title="Daily visitors">
-		<LineChart {data} status={(props.status as ChartStatus) ?? "loading"}>
+		<LineChart {data} status={pLine.status ?? "loading"}>
 			<CartesianGrid />
 			<YAxis />
 			<XAxis />
@@ -31,8 +32,8 @@ const data = VISITORS.slice(-12);
 				showMarkers
 				terminalMarker
 				dashFromIndex={9}
-				markerAppearance={(props.markerAppearance as SeriesMarkerAppearance) ?? "ring"}
-				loadingStyle={(props.loadingStyle as SeriesLoadingStyle) ?? "pulse"}
+				markerAppearance={p.markerAppearance ?? "ring"}
+				loadingStyle={p.loadingStyle ?? "pulse"}
 			/>
 			<ChartTooltip />
 		</LineChart>

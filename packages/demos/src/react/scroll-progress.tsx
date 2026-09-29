@@ -1,13 +1,15 @@
 "use client";
 
-import { ScrollProgress, type ScrollProgressPosition } from "@baby-ui/react";
-import { useRef } from "react";
+import { ScrollProgress } from "@baby-ui/react";
+import { type ComponentProps, useRef } from "react";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
 const SECTIONS = ["Overview", "Install", "Usage", "Props", "Motion", "Accessibility"];
 
 export function ScrollProgressDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof ScrollProgress>>(props);
 	const box = useRef<HTMLDivElement>(null);
 	return (
 		<div className="relative h-80 w-full max-w-md overflow-hidden rounded-xl border bg-card">
@@ -25,11 +27,11 @@ export function ScrollProgressDemo({ props }: { props: Props }) {
 			</div>
 			<ScrollProgress
 				container={box}
-				position={(props.position as ScrollProgressPosition) ?? "right"}
-				tickCount={Number(props.tickCount ?? 40)}
-				height={Number(props.height ?? 160)}
-				width={Number(props.width ?? 14)}
-				showLabel={props.showLabel !== false}
+				position={p.position ?? "right"}
+				tickCount={Number(p.tickCount ?? 40)}
+				height={Number(p.height ?? 160)}
+				width={Number(p.width ?? 14)}
+				showLabel={p.showLabel !== false}
 			/>
 		</div>
 	);

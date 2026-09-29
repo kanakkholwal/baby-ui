@@ -9,13 +9,10 @@ import {
 	Alert,
 	AlertDescription,
 	AlertTitle,
-	type AlertVariant,
 	Avatar,
 	AvatarFallback,
 	AvatarImage,
 	Badge,
-	type BadgeSize,
-	type BadgeVariant,
 	Button,
 	Card,
 	CardAction,
@@ -24,20 +21,16 @@ import {
 	CardFooter,
 	CardHeader,
 	CardTitle,
-	type CardVariant,
 	Checkbox,
 	Input,
-	type InputSize,
 	Label,
 	Progress,
-	type ProgressSize,
-	type ProgressTone,
-	type ProgressVariant,
 	Skeleton,
 	Switch,
 	Textarea,
 } from "@baby-ui/react";
-import { useEffect, useId, useState } from "react";
+import { type ComponentProps, useEffect, useId, useState } from "react";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
@@ -47,16 +40,13 @@ const SERVICES = [
 ] as const;
 
 export function BadgeDemo({ props }: { props: Props }) {
-	const size = (props.size as BadgeSize) ?? "md";
+	const p = controlProps<ComponentProps<typeof Badge>>(props);
+	const size = p.size ?? "md";
 	return (
 		<div className="flex w-full max-w-72 flex-col gap-3 text-sm">
 			<div className="flex items-center justify-between gap-4">
 				<span className="text-muted-foreground">api-gateway</span>
-				<Badge
-					variant={(props.variant as BadgeVariant) ?? "success"}
-					size={size}
-					dot={props.dot !== false}
-				>
+				<Badge variant={p.variant ?? "success"} size={size} dot={p.dot !== false}>
 					Healthy
 				</Badge>
 			</div>
@@ -73,7 +63,9 @@ export function BadgeDemo({ props }: { props: Props }) {
 }
 
 export function AvatarDemo({ props }: { props: Props }) {
-	const name = (props.name as string) || "Kanak Kholwal";
+	const p = controlProps<ComponentProps<typeof Avatar>>(props);
+	const pImage = controlProps<ComponentProps<typeof AvatarImage>>(props);
+	const name = typeof props.name === "string" ? props.name : "Kanak Kholwal";
 	const initials = name
 		.trim()
 		.split(/\s+/)
@@ -83,13 +75,10 @@ export function AvatarDemo({ props }: { props: Props }) {
 		.toUpperCase();
 	return (
 		<div className="flex items-center gap-3">
-			<Avatar
-				size={(props.size as "sm" | "md" | "lg" | "xl") ?? "md"}
-				shape={(props.shape as "circle" | "square") ?? "circle"}
-			>
+			<Avatar size={p.size ?? "md"} shape={p.shape ?? "circle"}>
 				<AvatarFallback>{initials}</AvatarFallback>
 				<AvatarImage
-					src={(props.src as string) || "https://github.com/kanakkholwal.png"}
+					src={pImage.src || "https://github.com/kanakkholwal.png"}
 					alt={name}
 				/>
 			</Avatar>
@@ -104,10 +93,11 @@ export function AvatarDemo({ props }: { props: Props }) {
 }
 
 export function CardDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof Card>>(props);
 	return (
 		<Card
-			interactive={props.interactive !== false}
-			variant={(props.variant as CardVariant) ?? "default"}
+			interactive={p.interactive !== false}
+			variant={p.variant ?? "default"}
 			className="w-full max-w-md"
 		>
 			<CardHeader>
@@ -161,6 +151,7 @@ export function CardDemo({ props }: { props: Props }) {
 }
 
 export function InputDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof Input>>(props);
 	const id = useId();
 	const [value, setValue] = useState("");
 	return (
@@ -172,12 +163,12 @@ export function InputDemo({ props }: { props: Props }) {
 				id={id}
 				value={value}
 				onChange={(e) => setValue(e.currentTarget.value)}
-				size={(props.size as InputSize) ?? "md"}
-				invalid={Boolean(props.invalid)}
-				disabled={Boolean(props.disabled)}
-				placeholder={(props.placeholder as string) || "Enter a value"}
+				size={p.size ?? "md"}
+				invalid={p.invalid ?? false}
+				disabled={p.disabled ?? false}
+				placeholder={p.placeholder || "Enter a value"}
 			/>
-			{props.invalid ? (
+			{p.invalid ? (
 				<p className="text-[var(--destructive)] text-xs">That name is already taken.</p>
 			) : null}
 		</div>
@@ -201,6 +192,7 @@ export function LabelDemo({ props }: { props: Props }) {
 }
 
 export function TextareaDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof Textarea>>(props);
 	const [value, setValue] = useState(
 		"Same field tokens as Input, so labels and focus rings stay consistent.",
 	);
@@ -209,16 +201,16 @@ export function TextareaDemo({ props }: { props: Props }) {
 			<Textarea
 				value={value}
 				onChange={(e) => setValue(e.currentTarget.value)}
-				label={(props.label as string) ?? "Message"}
-				description={props.description as string}
-				size={(props.size as "sm" | "md" | "lg" | "xl") ?? "md"}
-				variant={(props.variant as "outline" | "soft") ?? "outline"}
-				rows={Number(props.rows ?? 4)}
-				autoGrow={Boolean(props.autoGrow)}
-				maxRows={Number(props.maxRows ?? 10)}
-				showCount={Boolean(props.showCount)}
-				invalid={Boolean(props.invalid)}
-				disabled={Boolean(props.disabled)}
+				label={p.label ?? "Message"}
+				description={p.description}
+				size={p.size ?? "md"}
+				variant={p.variant ?? "outline"}
+				rows={p.rows ?? 4}
+				autoGrow={p.autoGrow ?? false}
+				maxRows={p.maxRows ?? 10}
+				showCount={p.showCount ?? false}
+				invalid={p.invalid ?? false}
+				disabled={p.disabled ?? false}
 			/>
 		</div>
 	);
@@ -227,6 +219,7 @@ export function TextareaDemo({ props }: { props: Props }) {
 const SCOPES = ["Read repositories", "Write issues", "Manage webhooks"];
 
 export function CheckboxDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof Checkbox>>(props);
 	const [checked, setChecked] = useState(false);
 	const [scopes, setScopes] = useState([true, false, false]);
 	useEffect(() => setChecked(Boolean(props.checked)), [props.checked]);
@@ -255,13 +248,11 @@ export function CheckboxDemo({ props }: { props: Props }) {
 			<Checkbox
 				checked={checked}
 				onCheckedChange={setChecked}
-				disabled={Boolean(props.disabled)}
-				indeterminate={Boolean(props.indeterminate)}
-				size={(props.size as "sm" | "md" | "lg" | "xl") ?? "md"}
-				label={(props.label as string) || "Remember this grant"}
-				description={
-					(props.description as string) || "Skips the prompt for the next 30 days."
-				}
+				disabled={p.disabled ?? false}
+				indeterminate={p.indeterminate ?? false}
+				size={p.size ?? "md"}
+				label={p.label || "Remember this grant"}
+				description={p.description || "Skips the prompt for the next 30 days."}
 			/>
 		</div>
 	);
@@ -271,10 +262,11 @@ export function CheckboxDemo({ props }: { props: Props }) {
 const SWITCH_ROW = "flex w-full flex-row-reverse items-center justify-between gap-6";
 
 export function SwitchDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof Switch>>(props);
 	const [checked, setChecked] = useState(false);
 	const [digest, setDigest] = useState(true);
 	useEffect(() => setChecked(Boolean(props.checked)), [props.checked]);
-	const size = (props.size as "sm" | "md" | "lg" | "xl") ?? "md";
+	const size = p.size ?? "md";
 
 	return (
 		<div className="flex w-full max-w-72 flex-col divide-y divide-border rounded-xl border border-border">
@@ -282,9 +274,9 @@ export function SwitchDemo({ props }: { props: Props }) {
 				<Switch
 					checked={checked}
 					onCheckedChange={setChecked}
-					disabled={Boolean(props.disabled)}
+					disabled={p.disabled ?? false}
 					size={size}
-					label={(props.label as string) || "Push notifications"}
+					label={p.label || "Push notifications"}
 					className={SWITCH_ROW}
 				/>
 			</div>
@@ -304,19 +296,20 @@ export function SwitchDemo({ props }: { props: Props }) {
 }
 
 export function ProgressDemo({ props }: { props: Props }) {
-	const value = Number(props.value ?? 68);
-	const indeterminate = Boolean(props.indeterminate);
+	const p = controlProps<ComponentProps<typeof Progress>>(props);
+	const value = Number(p.value ?? 68);
+	const indeterminate = p.indeterminate ?? false;
 	return (
 		<div className="flex w-full max-w-72 flex-col items-center gap-2">
 			<Progress
 				value={value}
 				indeterminate={indeterminate}
-				size={(props.size as ProgressSize) ?? "md"}
-				tone={(props.tone as ProgressTone) ?? "default"}
-				variant={(props.variant as ProgressVariant) ?? "linear"}
-				showValue={props.showValue === true}
-				label={(props.label as string) || "design-system.zip"}
-				helper={(props.helper as string) || "12.4 MB of 18.2 MB, 6s remaining"}
+				size={p.size ?? "md"}
+				tone={p.tone ?? "default"}
+				variant={p.variant ?? "linear"}
+				showValue={p.showValue === true}
+				label={p.label || "design-system.zip"}
+				helper={p.helper || "12.4 MB of 18.2 MB, 6s remaining"}
 				indeterminateLabel="Preparing"
 			/>
 		</div>
@@ -324,16 +317,13 @@ export function ProgressDemo({ props }: { props: Props }) {
 }
 
 export function SkeletonDemo({ props }: { props: Props }) {
-	const shape = (props.shape as "line" | "circle" | "block") ?? "line";
+	const p = controlProps<ComponentProps<typeof Skeleton>>(props);
+	const shape = p.shape ?? "line";
 	return (
 		<div className="flex w-full max-w-72 items-center gap-3">
 			<Skeleton width="2.5rem" height="2.5rem" shape="circle" />
 			<div className="flex flex-1 flex-col gap-2">
-				<Skeleton
-					width={(props.width as string) || "100%"}
-					height={(props.height as string) || "1rem"}
-					shape={shape}
-				/>
+				<Skeleton width={p.width || "100%"} height={p.height || "1rem"} shape={shape} />
 				<Skeleton width="60%" height="0.75rem" />
 			</div>
 		</div>
@@ -341,13 +331,14 @@ export function SkeletonDemo({ props }: { props: Props }) {
 }
 
 export function AlertDemo({ props }: { props: Props }) {
-	const variant = (props.variant as AlertVariant) ?? "info";
+	const p = controlProps<ComponentProps<typeof Alert>>(props);
+	const variant = p.variant ?? "info";
 	return (
 		<div className="w-full max-w-md">
 			<Alert
-				key={`${variant}-${String(props.dismissible)}`}
+				key={`${variant}-${String(p.dismissible)}`}
 				variant={variant}
-				dismissible={Boolean(props.dismissible)}
+				dismissible={p.dismissible ?? false}
 			>
 				<svg viewBox="0 0 16 16" fill="none" aria-hidden>
 					<circle cx="8" cy="8" r="6.4" stroke="currentColor" strokeWidth="1.3" />
@@ -389,7 +380,8 @@ const ACCORDION_ITEMS = [
 ];
 
 export function AccordionDemo({ props }: { props: Props }) {
-	const type = (props.type as "single" | "multiple") ?? "single";
+	const p = controlProps<ComponentProps<typeof Accordion>>(props);
+	const type = p.type ?? "single";
 	const [value, setValue] = useState<string | string[]>("install");
 	// Switching modes changes the value's shape, so it is reseeded rather than coerced.
 	useEffect(() => setValue(type === "multiple" ? ["install"] : "install"), [type]);
@@ -397,7 +389,7 @@ export function AccordionDemo({ props }: { props: Props }) {
 		<div className="w-full max-w-md">
 			<Accordion
 				type={type}
-				collapsible={props.collapsible !== false}
+				collapsible={p.collapsible !== false}
 				value={value}
 				onValueChange={setValue}
 			>

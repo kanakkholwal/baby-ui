@@ -1,14 +1,15 @@
 <script lang="ts">
 import { Button, Shortcut } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof Shortcut>>(props));
 
-const variant = $derived(
-	(props.variant as "default" | "ghost" | "solid" | "outline") ?? "default",
-);
-const size = $derived((props.size as "sm" | "md" | "lg" | "xl") ?? "md");
-const joined = $derived(Boolean(props.joined));
-const combo = $derived((props.shortcut as string) || "cmd+n");
+const variant = $derived(p.variant ?? "default");
+const size = $derived(p.size ?? "md");
+const joined = $derived(p.joined ?? false);
+const combo = $derived(p.shortcut || "cmd+n");
 
 const ROWS: [string, string][] = [
 	["Search", "cmd+k"],

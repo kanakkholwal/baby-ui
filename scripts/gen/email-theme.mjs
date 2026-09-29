@@ -37,6 +37,15 @@ function block(css, selector) {
 	return out;
 }
 
+function sharedBlock(css) {
+	// Find rule where selector contains both :root and .dark (handles `:root,\n.dark` formatting).
+	const match = css.match(/(?::root\s*,\s*\.dark|\.dark\s*,\s*:root)\s*\{([\s\S]*?)\n\}/);
+	if (!match) return {};
+	const out = {};
+	for (const m of match[1].matchAll(/--([\w-]+):\s*([^;]+);/g)) out[m[1]] = m[2].trim();
+	return out;
+}
+
 const toHex = (n) =>
 	Math.round(Math.min(255, Math.max(0, n)))
 		.toString(16)
@@ -106,7 +115,8 @@ function palette(vars) {
 /** Writes `lib/email-theme.ts` into both ports (a generated React file is not on disk yet). */
 export function emailTheme(output) {
 	const css = readFileSync(join(ROOT, "packages/tokens/src/tokens.css"), "utf8");
-	const root = block(css, ":root");
+	const shared = sharedBlock(css);
+	const root = { ...block(css, ":root"), ...shared };
 	const light = palette(root);
 	const dark = palette({ ...root, ...block(css, ".dark") });
 	const colors = {

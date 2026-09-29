@@ -8,24 +8,20 @@ import {
 	FieldGroup,
 	FieldLabel,
 	FieldLegend,
-	type FieldOrientation,
 	FieldSet,
 	Input,
 	InputGroup,
 	InputGroupAddon,
 	InputGroupButton,
 	InputGroupInput,
-	type InputGroupSize,
 	InputGroupText,
 	InputGroupTextarea,
 	NativeSelect,
 	NativeSelectOptGroup,
 	NativeSelectOption,
-	type NativeSelectSize,
 	Separator,
-	type SeparatorVariant,
 } from "@baby-ui/react";
-import { type FormEvent, useState } from "react";
+import { type ComponentProps, type FormEvent, useState } from "react";
 import {
 	SIGNUP_ORDER,
 	SIGNUP_ROLES,
@@ -33,11 +29,13 @@ import {
 	type SignupValues,
 	validateSignup,
 } from "../data/forms";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
 export function SeparatorDemo({ props }: { props: Props }) {
-	const variant = (props.variant as SeparatorVariant) ?? "solid";
+	const p = controlProps<ComponentProps<typeof Separator>>(props);
+	const variant = p.variant ?? "solid";
 	return (
 		<div className="w-full max-w-sm">
 			<div className="flex flex-col gap-1">
@@ -100,7 +98,8 @@ function EyeIcon({ off }: { off: boolean }) {
 }
 
 export function FieldDemo({ props }: { props: Props }) {
-	const orientation = (props.orientation as FieldOrientation) ?? "vertical";
+	const p = controlProps<ComponentProps<typeof Field>>(props);
+	const orientation = p.orientation ?? "vertical";
 	const [values, setValues] = useState<SignupValues>({
 		name: "",
 		email: "",
@@ -233,7 +232,8 @@ export function FieldDemo({ props }: { props: Props }) {
 }
 
 export function InputGroupDemo({ props }: { props: Props }) {
-	const size = (props.size as InputGroupSize) ?? "md";
+	const p = controlProps<ComponentProps<typeof InputGroup>>(props);
+	const size = p.size ?? "md";
 	const [domain, setDomain] = useState("");
 	const [note, setNote] = useState("");
 	const [copied, setCopied] = useState(false);
@@ -284,7 +284,8 @@ export function InputGroupDemo({ props }: { props: Props }) {
 }
 
 export function NativeSelectDemo({ props }: { props: Props }) {
-	const size = (props.size as NativeSelectSize) ?? "md";
+	const p = controlProps<ComponentProps<typeof NativeSelect>>(props);
+	const size = p.size ?? "md";
 	const [region, setRegion] = useState("fra");
 	return (
 		<div className="flex w-full max-w-60 flex-col gap-1.5">
@@ -297,7 +298,7 @@ export function NativeSelectDemo({ props }: { props: Props }) {
 				size={size}
 				value={region}
 				onChange={(e) => setRegion(e.currentTarget.value)}
-				disabled={Boolean(props.disabled)}
+				disabled={p.disabled ?? false}
 			>
 				<NativeSelectOptGroup label="Europe">
 					<NativeSelectOption value="fra">Frankfurt</NativeSelectOption>

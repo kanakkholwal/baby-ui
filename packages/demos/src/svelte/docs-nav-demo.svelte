@@ -1,8 +1,11 @@
 <script lang="ts">
-import { DocsNav, type DocsNavConnector } from "@baby-ui/svelte";
+import { DocsNav } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
 import { DOCS_SECTIONS } from "../data/docs-nav";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof DocsNav>>(props));
 
 let current = $state("#installation");
 </script>
@@ -11,7 +14,7 @@ let current = $state("#installation");
 	<DocsNav
 		sections={DOCS_SECTIONS}
 		{current}
-		connector={(props.connector as DocsNavConnector) ?? "tick"}
+		connector={p.connector ?? "tick"}
 		rungs={props.rungs === true}
 		onNavigate={(href, event) => {
 			event.preventDefault();

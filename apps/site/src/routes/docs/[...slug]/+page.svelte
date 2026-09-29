@@ -1,7 +1,8 @@
 <script lang="ts">
+import { IconList } from "@baby-ui/icons";
 import { Renderer } from "@docvia/renderer-svelte";
-import IconList from "@tabler/icons-svelte/icons/list";
 import { registry } from "docvia/registry";
+import DocsIntroCover from "$lib/components/docs-intro-cover.svelte";
 import MobileNavDrawer from "$lib/components/mobile-nav-drawer.svelte";
 import OutlineToggle from "$lib/components/outline-toggle.svelte";
 import PageMenu from "$lib/components/page-menu.svelte";
@@ -63,12 +64,15 @@ const path = $derived(data.slug === "index" ? "/docs" : `/docs/${data.slug}`);
 	{#if data.headings.length}
 		<div class="mt-4 xl:hidden">
 			<MobileNavDrawer label="On this page" title="On this page">
-				{#snippet icon()}<IconList size={14} stroke={1.6} />{/snippet}
+				{#snippet icon()}<IconList size={14} />{/snippet}
 				{#snippet children()}
 					<div class="mx-auto w-full max-w-md">{@render railContent(false)}</div>
 				{/snippet}
 			</MobileNavDrawer>
 		</div>
+	{/if}
+	{#if data.slug === "index"}
+		<div class="mt-8"><DocsIntroCover /></div>
 	{/if}
 	<article class="prose-baby mt-8"><Renderer nodes={data.page.content} {registry} /></article>
 	<p class="mt-10 text-muted-foreground text-xs">
@@ -83,7 +87,7 @@ const path = $derived(data.slug === "index" ? "/docs" : `/docs/${data.slug}`);
 	<div
 		id="outline-sidebar"
 		inert={!outlineSidebar.current}
-		class={["scrollbar-hide fixed top-24 right-8 z-10 max-h-[calc(100dvh-8rem)] w-(--right-sidebar-width) overflow-y-auto pb-1", OUTLINE_PANEL]}
+		class={["scrollbar-hide fixed top-[calc(var(--header-h)+2.5rem)] right-8 z-10 max-h-[calc(100dvh-var(--header-h)-4.5rem)] w-(--right-sidebar-width) overflow-y-auto pb-1", OUTLINE_PANEL]}
 	>
 		{@render railContent()}
 	</div>

@@ -1,25 +1,23 @@
 <script lang="ts">
-import {
-	type RollStagger,
-	RollText,
-	type RollTextMotion,
-	type RollTextSize,
-} from "@baby-ui/svelte";
+import { RollText } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof RollText>>(props));
 const groupHover = $derived(props.groupHover === true);
 </script>
 
 {#snippet roll()}
 	<RollText
-		text={(props.text as string) || "Roll on hover"}
+		text={p.text || "Roll on hover"}
 		{groupHover}
 		disabled={props.disabled === true}
-		stagger={(props.stagger as RollStagger) ?? "none"}
+		stagger={p.stagger ?? "none"}
 		staggerMs={Number(props.staggerMs ?? 32)}
 		durationMs={Number(props.durationMs ?? 450)}
-		size={(props.size as RollTextSize) ?? "lg"}
-		motion={(props.motion as RollTextMotion) ?? "slide"}
+		size={p.size ?? "lg"}
+		motion={p.motion ?? "slide"}
 		class="font-semibold text-foreground"
 	/>
 {/snippet}

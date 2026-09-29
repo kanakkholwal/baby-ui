@@ -1,17 +1,13 @@
 <script lang="ts">
-import {
-	ChartContainer,
-	FunnelChart,
-	type FunnelEdges,
-	type FunnelLabelLayout,
-	type FunnelOrientation,
-	type FunnelPattern,
-} from "@baby-ui/svelte";
+import { ChartContainer, FunnelChart } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 import { SIGNUP_FUNNEL } from "../data/revenue-tree";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof FunnelChart>>(props));
 
-const orientation = $derived((props.orientation as FunnelOrientation) ?? "horizontal");
+const orientation = $derived(p.orientation ?? "horizontal");
 </script>
 
 <div class={orientation === "vertical" ? "w-full max-w-sm" : "w-full max-w-3xl"}>
@@ -23,9 +19,9 @@ const orientation = $derived((props.orientation as FunnelOrientation) ?? "horizo
 		<FunnelChart
 			data={SIGNUP_FUNNEL}
 			{orientation}
-			edges={(props.edges as FunnelEdges) ?? "curved"}
-			labelLayout={(props.labelLayout as FunnelLabelLayout) ?? "spread"}
-			pattern={(props.pattern as FunnelPattern) ?? "none"}
+			edges={p.edges ?? "curved"}
+			labelLayout={p.labelLayout ?? "spread"}
+			pattern={p.pattern ?? "none"}
 			layers={Number(props.layers ?? 3)}
 			gap={Number(props.gap ?? 4)}
 			grid={props.grid === true}

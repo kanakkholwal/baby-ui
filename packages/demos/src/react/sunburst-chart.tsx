@@ -5,8 +5,9 @@ import {
 	ChartContainer,
 	ChartLegend,
 	SunburstChart,
-	type SunburstVariant,
 } from "@baby-ui/react";
+import type { ComponentProps } from "react";
+import { controlProps } from "../data/preview-props";
 import { REVENUE_TREE, REVENUE_TREE_CONFIG } from "../data/revenue-tree";
 
 type Props = Record<string, unknown>;
@@ -14,12 +15,13 @@ type Props = Record<string, unknown>;
 const config = REVENUE_TREE_CONFIG satisfies ChartConfig;
 
 export function SunburstChartDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof SunburstChart>>(props);
 	return (
 		<div className="w-full max-w-md">
 			<ChartContainer config={config} title="Revenue by region" aspect="square">
 				<SunburstChart
 					data={REVENUE_TREE}
-					variant={(props.variant as SunburstVariant) ?? "sunburst"}
+					variant={p.variant ?? "sunburst"}
 					labels={props.labels !== false}
 					breadcrumb={props.breadcrumb !== false}
 					hoverPop={Number(props.hoverPop ?? 8)}

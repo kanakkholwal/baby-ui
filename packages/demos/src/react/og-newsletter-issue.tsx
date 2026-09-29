@@ -1,30 +1,26 @@
 "use client";
 
-import {
-	OgNewsletterIssue,
-	type OgNewsletterIssueMode,
-	type OgNewsletterIssueTone,
-} from "@baby-ui/react";
+import { OgNewsletterIssue } from "@baby-ui/react";
+import type { ComponentProps } from "react";
 import { OG_NEWSLETTER_ISSUE } from "../data/og-samples";
+import { controlProps } from "../data/preview-props";
 import { OgFrame } from "./og-frame";
 
 type Props = Record<string, unknown>;
 
 export function OgNewsletterIssueDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof OgNewsletterIssue>>(props);
 	return (
 		<OgFrame>
 			<OgNewsletterIssue
-				publication={(props.publication as string) || "The Render Loop"}
-				headline={
-					(props.headline as string) ||
-					"Why every design system eventually rebuilds its tokens"
-				}
-				issue={(props.issue as string) ?? undefined}
-				date={(props.date as string) ?? undefined}
+				publication={p.publication || "The Render Loop"}
+				headline={p.headline || "Why every design system eventually rebuilds its tokens"}
+				issue={p.issue ?? undefined}
+				date={p.date ?? undefined}
 				inside={OG_NEWSLETTER_ISSUE.inside}
-				insideLabel={(props.insideLabel as string) || undefined}
-				mode={(props.mode as OgNewsletterIssueMode) ?? "light"}
-				tone={(props.tone as OgNewsletterIssueTone) ?? "neutral"}
+				insideLabel={p.insideLabel || undefined}
+				mode={p.mode ?? "light"}
+				tone={p.tone ?? "neutral"}
 			/>
 		</OgFrame>
 	);

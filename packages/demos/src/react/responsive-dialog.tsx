@@ -10,9 +10,9 @@ import {
 	ResponsiveDialogHeader,
 	ResponsiveDialogTitle,
 	ResponsiveDialogTrigger,
-	type ResponsiveDialogVariant,
 } from "@baby-ui/react";
-import { useState } from "react";
+import { type ComponentProps, useState } from "react";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
@@ -20,13 +20,14 @@ const BTN =
 	"inline-flex h-9 items-center rounded-lg border border-border bg-card px-3 font-medium text-foreground text-sm";
 
 export function ResponsiveDialogDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof ResponsiveDialog>>(props);
 	const [open, setOpen] = useState(false);
 	return (
 		<div className="flex flex-col items-center gap-3">
 			<ResponsiveDialog
 				open={open}
 				onOpenChange={setOpen}
-				variant={(props.variant as ResponsiveDialogVariant) ?? "default"}
+				variant={p.variant ?? "default"}
 			>
 				<ResponsiveDialogTrigger className={BTN}>Edit profile</ResponsiveDialogTrigger>
 				<ResponsiveDialogContent>

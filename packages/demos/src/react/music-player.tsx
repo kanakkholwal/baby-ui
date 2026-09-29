@@ -1,20 +1,22 @@
 "use client";
 
-import { MusicPlayer, type MusicPlayerLayout } from "@baby-ui/react";
-import { useEffect, useState } from "react";
+import { MusicPlayer } from "@baby-ui/react";
+import { type ComponentProps, useEffect, useState } from "react";
+import { controlProps } from "../data/preview-props";
 import { TRACKS } from "../data/tracks";
 
 type Props = Record<string, unknown>;
 
 export function MusicPlayerDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof MusicPlayer>>(props);
 	const [index, setIndex] = useState(0);
-	const [playing, setPlaying] = useState(Boolean(props.playing));
+	const [playing, setPlaying] = useState(p.playing ?? false);
 	const [position, setPosition] = useState(0);
 	const [volume, setVolume] = useState(Number(props.volume ?? 1));
 	const track = TRACKS[index % TRACKS.length] as (typeof TRACKS)[number];
 	const duration = track.duration;
 
-	useEffect(() => setPlaying(Boolean(props.playing)), [props.playing]);
+	useEffect(() => setPlaying(p.playing ?? false), [p.playing]);
 	useEffect(() => setVolume(Number(props.volume ?? 1)), [props.volume]);
 
 	// Stands in for real playback: the demo, not the component, advances the playhead.
@@ -37,7 +39,7 @@ export function MusicPlayerDemo({ props }: { props: Props }) {
 		<div className="w-full max-w-xl">
 			<MusicPlayer
 				{...track}
-				layout={(props.layout as MusicPlayerLayout) ?? "vinyl"}
+				layout={p.layout ?? "vinyl"}
 				playing={playing}
 				onPlayingChange={setPlaying}
 				position={position}

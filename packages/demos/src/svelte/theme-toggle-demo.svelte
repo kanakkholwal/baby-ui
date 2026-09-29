@@ -1,12 +1,10 @@
 <script lang="ts">
-import {
-	ThemeToggle,
-	type ThemeToggleStart,
-	type ThemeToggleValue,
-	type ThemeToggleVariant,
-} from "@baby-ui/svelte";
+import { ThemeToggle, type ThemeToggleValue } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof ThemeToggle>>(props));
 
 let theme = $state<ThemeToggleValue>("light");
 
@@ -25,8 +23,8 @@ function onThemeChange(next: ThemeToggleValue) {
 <ThemeToggle
 	{theme}
 	{onThemeChange}
-	variant={(props.variant as ThemeToggleVariant) ?? "rectangle"}
-	start={(props.start as ThemeToggleStart) ?? "bottom-up"}
+	variant={p.variant ?? "rectangle"}
+	start={p.start ?? "bottom-up"}
 	class="rounded-xl border border-border bg-background p-2.5"
 	iconClass="size-5"
 />

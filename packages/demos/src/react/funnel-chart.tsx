@@ -1,19 +1,15 @@
 "use client";
 
-import {
-	ChartContainer,
-	FunnelChart,
-	type FunnelEdges,
-	type FunnelLabelLayout,
-	type FunnelOrientation,
-	type FunnelPattern,
-} from "@baby-ui/react";
+import { ChartContainer, FunnelChart } from "@baby-ui/react";
+import type { ComponentProps } from "react";
+import { controlProps } from "../data/preview-props";
 import { SIGNUP_FUNNEL } from "../data/revenue-tree";
 
 type Props = Record<string, unknown>;
 
 export function FunnelChartDemo({ props }: { props: Props }) {
-	const orientation = (props.orientation as FunnelOrientation) ?? "horizontal";
+	const p = controlProps<ComponentProps<typeof FunnelChart>>(props);
+	const orientation = p.orientation ?? "horizontal";
 	return (
 		<div className={orientation === "vertical" ? "w-full max-w-sm" : "w-full max-w-3xl"}>
 			<ChartContainer
@@ -24,9 +20,9 @@ export function FunnelChartDemo({ props }: { props: Props }) {
 				<FunnelChart
 					data={SIGNUP_FUNNEL}
 					orientation={orientation}
-					edges={(props.edges as FunnelEdges) ?? "curved"}
-					labelLayout={(props.labelLayout as FunnelLabelLayout) ?? "spread"}
-					pattern={(props.pattern as FunnelPattern) ?? "none"}
+					edges={p.edges ?? "curved"}
+					labelLayout={p.labelLayout ?? "spread"}
+					pattern={p.pattern ?? "none"}
 					layers={Number(props.layers ?? 3)}
 					gap={Number(props.gap ?? 4)}
 					grid={props.grid === true}

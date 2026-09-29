@@ -1,15 +1,18 @@
 <script lang="ts">
-import { StaggeredLetter, type StaggeredLetterDirection } from "@baby-ui/svelte";
+import { StaggeredLetter } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof StaggeredLetter>>(props));
 </script>
 
 {#key String(props.delayMs ?? "") + String(props.durationMs ?? "")}
 	<StaggeredLetter
-		text={(props.text as string) || "Baby UI"}
-		applyMask={props.applyMask === true}
+		text={p.text || "Baby UI"}
+		applyMask={p.applyMask ?? false}
 		delayMs={Number(props.delayMs ?? 90)}
 		durationMs={Number(props.durationMs ?? 500)}
-		direction={(props.direction as StaggeredLetterDirection) ?? "drop"}
+		direction={p.direction ?? "drop"}
 	/>
 {/key}

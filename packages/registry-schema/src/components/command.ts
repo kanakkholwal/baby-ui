@@ -94,7 +94,7 @@ export const command = defineComponent({
 				"cmdk",
 				"@base-ui/react",
 			],
-			// Reuses Dialog's DIALOG_BACKDROP and DialogVariant type.
+			// Reuses Dialog's dialogFrame backdrop and DialogVariant type.
 			registryDependencies: ["dialog"],
 		},
 		svelte: {
@@ -116,7 +116,7 @@ export const command = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "bits-ui"],
-			// Reuses Dialog's DIALOG_BACKDROP and DialogVariant type.
+			// Reuses Dialog's dialogFrame backdrop and DialogVariant type.
 			registryDependencies: ["dialog"],
 		},
 	},

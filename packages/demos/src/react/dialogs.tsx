@@ -28,21 +28,15 @@ import {
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
-	type DialogVariant,
 	Drawer,
 	DrawerClose,
 	DrawerContent,
 	DrawerDescription,
-	type DrawerDirection,
 	DrawerFooter,
 	DrawerHeader,
 	DrawerTitle,
 	DrawerTrigger,
-	type DrawerVariant,
 	FullscreenNav,
-	type FullscreenNavAlign,
-	type FullscreenNavSize,
-	type FullscreenNavVariant,
 	Input,
 	Label,
 	Select,
@@ -59,10 +53,10 @@ import {
 	Shortcut,
 	Slider,
 	Toaster,
-	type ToasterProps,
 	toast,
 } from "@baby-ui/react";
-import { useId, useState } from "react";
+import { type ComponentProps, useId, useState } from "react";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
@@ -70,6 +64,7 @@ const BTN =
 	"inline-flex h-9 items-center rounded-lg border border-border bg-card px-3 font-medium text-foreground text-sm";
 
 export function DialogDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof Dialog>>(props);
 	const [open, setOpen] = useState(false);
 	const [domain, setDomain] = useState("");
 	const id = useId();
@@ -77,9 +72,9 @@ export function DialogDemo({ props }: { props: Props }) {
 		<Dialog
 			open={open}
 			onOpenChange={setOpen}
-			size={(props.size as "sm" | "md" | "lg" | "xl") ?? "md"}
-			variant={(props.variant as DialogVariant) ?? "default"}
-			dismissOnBackdrop={props.dismissOnBackdrop !== false}
+			size={p.size ?? "md"}
+			variant={p.variant ?? "default"}
+			dismissOnBackdrop={p.dismissOnBackdrop ?? true}
 		>
 			<DialogTrigger className={BTN}>Add domain</DialogTrigger>
 			<DialogContent>
@@ -128,10 +123,12 @@ export function DialogDemo({ props }: { props: Props }) {
 }
 
 export function AlertDialogDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof AlertDialog>>(props);
+	const pAction = controlProps<ComponentProps<typeof AlertDialogAction>>(props);
 	const [done, setDone] = useState(false);
 	return (
 		<div className="flex flex-col items-center gap-3">
-			<AlertDialog variant={(props.variant as DialogVariant) ?? "default"}>
+			<AlertDialog variant={p.variant ?? "default"}>
 				<AlertDialogTrigger className={BTN}>Delete project</AlertDialogTrigger>
 				<AlertDialogContent>
 					<AlertDialogHeader>
@@ -143,7 +140,7 @@ export function AlertDialogDemo({ props }: { props: Props }) {
 					<AlertDialogFooter>
 						<AlertDialogCancel>Cancel</AlertDialogCancel>
 						<AlertDialogAction
-							destructive={props.destructive !== false}
+							destructive={pAction.destructive ?? true}
 							onClick={() => setDone(true)}
 						>
 							Delete
@@ -163,12 +160,13 @@ const REGIONS = [
 ];
 
 export function SheetDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof SheetContent>>(props);
 	const [region, setRegion] = useState("fra");
 	const id = useId();
 	return (
 		<Sheet>
 			<SheetTrigger className={BTN}>Open sheet</SheetTrigger>
-			<SheetContent side={(props.side as "left" | "right" | "top" | "bottom") ?? "right"}>
+			<SheetContent side={p.side ?? "right"}>
 				<SheetHeader>
 					<SheetTitle>Filters</SheetTitle>
 					<SheetClose />
@@ -252,7 +250,8 @@ const TOAST_EXAMPLES: { label: string; run: () => unknown }[] = [
 ];
 
 export function ToastDemo({ props }: { props: Props }) {
-	const position = (props.position as ToasterProps["position"]) ?? "bottom-right";
+	const p = controlProps<ComponentProps<typeof Toaster>>(props);
+	const position = p.position ?? "bottom-right";
 	return (
 		<div className="flex flex-col items-center gap-4">
 			<div className="flex flex-wrap items-center justify-center gap-2">
@@ -282,8 +281,8 @@ export function ToastDemo({ props }: { props: Props }) {
 			</p>
 			<Toaster
 				position={position}
-				expand={props.expand !== false}
-				closeButton={props.closeButton !== false}
+				expand={p.expand ?? true}
+				closeButton={p.closeButton ?? true}
 			/>
 		</div>
 	);
@@ -309,6 +308,8 @@ function CommandIcon({ d }: { d: string }) {
 }
 
 export function CommandDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof CommandDialog>>(props);
+	const pInput = controlProps<ComponentProps<typeof CommandInput>>(props);
 	const [open, setOpen] = useState(false);
 	const [last, setLast] = useState("");
 
@@ -323,18 +324,14 @@ export function CommandDemo({ props }: { props: Props }) {
 				Open palette
 			</button>
 			{last ? <p className="text-muted-foreground text-xs">Ran: {last}</p> : null}
-			<CommandDialog
-				open={open}
-				onOpenChange={setOpen}
-				variant={(props.variant as DialogVariant) ?? "default"}
-			>
+			<CommandDialog open={open} onOpenChange={setOpen} variant={p.variant ?? "default"}>
 				<Command>
 					<CommandHeader>Command</CommandHeader>
-					<CommandInput
-						placeholder={(props.placeholder as string) || "Type a command or search…"}
-					/>
+					<CommandInput placeholder={pInput.placeholder || "Type a command or search…"} />
 					<CommandList>
-						<CommandEmpty>{(props.emptyLabel as string) || "No results"}</CommandEmpty>
+						<CommandEmpty>
+							{typeof props.emptyLabel === "string" ? props.emptyLabel : "No results"}
+						</CommandEmpty>
 						<CommandGroup heading="Actions">
 							<CommandItem value="New project" onClick={() => run("new")}>
 								<span className="flex min-w-0 items-center gap-2">
@@ -403,6 +400,7 @@ const FULLSCREEN_LINKS = [
 ];
 
 export function FullscreenNavDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof FullscreenNav>>(props);
 	const [open, setOpen] = useState(false);
 	return (
 		<>
@@ -414,11 +412,11 @@ export function FullscreenNavDemo({ props }: { props: Props }) {
 				open={open}
 				onOpenChange={setOpen}
 				current="#product"
-				title={(props.title as string) || "Menu"}
-				variant={(props.variant as FullscreenNavVariant) ?? "fade"}
-				align={(props.align as FullscreenNavAlign) ?? "start"}
-				size={(props.size as FullscreenNavSize) ?? "md"}
-				numbered={props.numbered === true}
+				title={p.title || "Menu"}
+				variant={p.variant ?? "fade"}
+				align={p.align ?? "start"}
+				size={p.size ?? "md"}
+				numbered={p.numbered ?? false}
 				footer={<span>hello@example.com</span>}
 			/>
 		</>
@@ -426,17 +424,19 @@ export function FullscreenNavDemo({ props }: { props: Props }) {
 }
 
 export function DrawerDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof Drawer>>(props);
+	const pContent = controlProps<ComponentProps<typeof DrawerContent>>(props);
 	const [open, setOpen] = useState(false);
 	const [budget, setBudget] = useState(60);
 	return (
 		<Drawer
 			open={open}
 			onOpenChange={setOpen}
-			direction={(props.direction as DrawerDirection) ?? "bottom"}
-			dismissible={props.dismissible !== false}
+			direction={p.direction ?? "bottom"}
+			dismissible={p.dismissible ?? true}
 		>
 			<DrawerTrigger className={BTN}>Set a budget</DrawerTrigger>
-			<DrawerContent variant={(props.variant as DrawerVariant) ?? "default"}>
+			<DrawerContent variant={pContent.variant ?? "default"}>
 				<DrawerHeader>
 					<DrawerTitle>Monthly budget</DrawerTitle>
 					<DrawerDescription>

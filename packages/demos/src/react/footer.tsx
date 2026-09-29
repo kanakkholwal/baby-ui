@@ -4,10 +4,11 @@ import {
 	Button,
 	Footer,
 	type FooterColumn,
-	type FooterLayout,
 	type FooterLink,
 	type FooterSocialLink,
 } from "@baby-ui/react";
+import type { ComponentProps } from "react";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
@@ -140,10 +141,11 @@ const LEGAL: FooterLink[] = [
 ];
 
 export function FooterDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof Footer>>(props);
 	return (
 		<Footer
-			wordmark={(props.wordmark as string) ?? "Recast"}
-			layout={(props.layout as FooterLayout) ?? "split"}
+			wordmark={p.wordmark ?? "Recast"}
+			layout={p.layout ?? "split"}
 			brand={
 				<>
 					<span className="grid size-8 place-items-center rounded-lg bg-foreground p-1">
@@ -153,7 +155,7 @@ export function FooterDemo({ props }: { props: Props }) {
 				</>
 			}
 			description={
-				(props.description as string) ||
+				p.description ||
 				"Turns a raw screen capture into a polished, shareable demo while you record."
 			}
 			columns={COLUMNS}
@@ -170,7 +172,7 @@ export function FooterDemo({ props }: { props: Props }) {
 				</Button>
 			}
 			topHref="#top"
-			topLabel={(props.topLabel as string) || "Back to top"}
+			topLabel={p.topLabel || "Back to top"}
 		/>
 	);
 }

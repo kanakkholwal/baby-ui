@@ -2,9 +2,8 @@
 
 import { Dialog as SheetPrimitive } from "@base-ui/react/dialog";
 import type { ComponentProps } from "react";
-import { DIALOG_BACKDROP } from "../dialog/dialog";
 import { cn } from "../lib/cn";
-import { type SheetSide, sheetPanel } from "./variants";
+import { type SheetSide, sheet } from "./variants";
 
 export type { SheetSide };
 
@@ -28,13 +27,14 @@ export function SheetContent({
 	side = "right",
 	...props
 }: ComponentProps<typeof SheetPrimitive.Popup> & { side?: SheetSide }) {
+	const styles = sheet({ side });
 	return (
 		<SheetPrimitive.Portal>
-			<SheetPrimitive.Backdrop data-slot="sheet-backdrop" className={DIALOG_BACKDROP} />
+			<SheetPrimitive.Backdrop data-slot="sheet-backdrop" className={styles.backdrop()} />
 			<SheetPrimitive.Popup
 				data-slot="sheet-content"
 				data-side={side}
-				className={cn(sheetPanel({ side }), className)}
+				className={cn(styles.panel(), className)}
 				{...props}
 			/>
 		</SheetPrimitive.Portal>

@@ -5,7 +5,6 @@ import type { ComponentProps, ReactNode } from "react";
 import { createContext, useContext, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { type ButtonVariant, button } from "../button/variants";
-import { DIALOG_BACKDROP, DIALOG_PANEL } from "../dialog/dialog";
 import { type DialogVariant, dialogFrame } from "../dialog/variants";
 import { cn } from "../lib/cn";
 
@@ -78,27 +77,28 @@ export function AlertDialogContent({
 	children,
 }: ComponentProps<typeof AlertDialogPrimitive.Popup>) {
 	const dialog = useAlertDialog();
+	const styles = dialogFrame({ variant: dialog.variant });
 
 	return (
 		<AlertDialogPrimitive.Portal>
 			<AlertDialogPrimitive.Backdrop
 				data-slot="alert-dialog-backdrop"
-				className={DIALOG_BACKDROP}
+				className={styles.backdrop()}
 			/>
 			<AlertDialogPrimitive.Popup
 				data-slot="alert-dialog-content"
 				data-variant={dialog.variant}
 				initialFocus={dialog.cancelRef}
 				className={cn(
-					DIALOG_PANEL,
-					dialogFrame({ variant: dialog.variant }).panel(),
+					styles.popup(),
+					styles.panel(),
 					"w-[min(26rem,calc(100vw-2rem))]",
 					className,
 				)}
 			>
 				{dialog.variant === "framed" ? (
 					<>
-						<div className={cn(dialogFrame({ variant: dialog.variant }).body(), "p-5")}>
+						<div className={cn(styles.body(), "p-5")}>
 							{children}
 						</div>
 						<div ref={dialog.setFooterEl} className="empty:hidden" />

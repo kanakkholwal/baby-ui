@@ -1,8 +1,11 @@
 <script lang="ts">
-import { MusicPlayer, type MusicPlayerLayout } from "@baby-ui/svelte";
+import { MusicPlayer } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 import { TRACKS } from "../data/tracks";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof MusicPlayer>>(props));
 
 let index = $state(0);
 let playing = $state(false);
@@ -39,7 +42,7 @@ function go(step: number) {
 	<div class="w-full max-w-xl">
 		<MusicPlayer
 			{...track}
-			layout={(props.layout as MusicPlayerLayout) ?? "vinyl"}
+			layout={p.layout ?? "vinyl"}
 			bind:playing
 			bind:position
 			bind:volume

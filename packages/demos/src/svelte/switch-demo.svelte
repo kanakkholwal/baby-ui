@@ -1,16 +1,19 @@
 <script lang="ts">
 import { Switch } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof Switch>>(props));
 
 let checked = $state(false);
 let digest = $state(true);
 
 $effect(() => {
-	checked = Boolean(props.checked);
+	checked = p.checked ?? false;
 });
 
-const size = $derived((props.size as "sm" | "md" | "lg" | "xl") ?? "md");
+const size = $derived(p.size ?? "md");
 
 // Switch renders its own label; reversing the row puts the text first without a second one.
 const ROW = "flex w-full flex-row-reverse items-center justify-between gap-6";
@@ -21,8 +24,8 @@ const ROW = "flex w-full flex-row-reverse items-center justify-between gap-6";
 		<Switch
 			bind:checked
 			{size}
-			disabled={Boolean(props.disabled)}
-			label={(props.label as string) || "Push notifications"}
+			disabled={p.disabled ?? false}
+			label={p.label || "Push notifications"}
 			class={ROW}
 		/>
 	</div>

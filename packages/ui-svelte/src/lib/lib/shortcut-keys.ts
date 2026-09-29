@@ -65,6 +65,23 @@ const NAMED: Record<string, string> = {
 	delete: "delete",
 };
 
+/** Caps Windows and Linux print as words; Apple keeps the glyphs above. */
+const WORDS: Record<string, string> = {
+	ctrl: "Ctrl",
+	control: "Ctrl",
+	shift: "Shift",
+	alt: "Alt",
+	option: "Alt",
+	meta: "Win",
+};
+
+/** True on macOS and iOS, where shortcuts read ⌘ and use the Command key. */
+export function isApplePlatform(): boolean {
+	return (
+		typeof navigator !== "undefined" && /mac|iphone|ipad|ipod/i.test(navigator.userAgent)
+	);
+}
+
 export type ParsedShortcut = {
 	meta: boolean;
 	ctrl: boolean;
@@ -75,11 +92,15 @@ export type ParsedShortcut = {
 	spoken: string;
 };
 
-/** Parses `"cmd+shift+k"` into modifier flags, the key to match and the caps to render. */
-export function parseShortcut(value: string): ParsedShortcut | undefined {
+/**
+ * Parses `"cmd+shift+k"` into modifier flags, the key to match and the caps to render. `mod` is
+ * Command on Apple and Ctrl elsewhere, where modifiers also print as words ("Ctrl", not "⌃").
+ */
+export function parseShortcut(value: string, apple = true): ParsedShortcut | undefined {
 	const tokens = value
 		.split("+")
 		.map((t) => t.trim().toLowerCase())
+		.map((t) => (t === "mod" ? (apple ? "cmd" : "ctrl") : t))
 		.filter(Boolean);
 	if (!tokens.length) return undefined;
 	const out: ParsedShortcut = {
@@ -96,7 +117,7 @@ export function parseShortcut(value: string): ParsedShortcut | undefined {
 		const modifier = MODIFIERS[token];
 		if (modifier) {
 			out[modifier] = true;
-			out.caps.push(GLYPHS[token] ?? token);
+			out.caps.push((apple ? GLYPHS[token] : WORDS[MODIFIERS[token] ?? ""]) ?? token);
 			words.push(SPOKEN[token] ?? token);
 			continue;
 		}

@@ -1,13 +1,8 @@
 "use client";
 
-import {
-	ChatComposer,
-	type ChatComposerSize,
-	type ChatComposerVariant,
-	type ChatMessage,
-	type ChatStatus,
-} from "@baby-ui/react";
-import { useEffect, useRef, useState } from "react";
+import { ChatComposer, type ChatMessage, type ChatStatus } from "@baby-ui/react";
+import { type ComponentProps, useEffect, useRef, useState } from "react";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
@@ -64,6 +59,7 @@ const SEED: Record<string, ChatMessage[]> = {
 };
 
 export function ChatComposerDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof ChatComposer>>(props);
 	const [topic, setTopic] = useState("flavors");
 	const [threads, setThreads] = useState(SEED);
 	const [status, setStatus] = useState<ChatStatus>("idle");
@@ -101,8 +97,8 @@ export function ChatComposerDemo({ props }: { props: Props }) {
 			onSend={onSend}
 			onNew={() => setThreads((all) => ({ ...all, [topic]: [] }))}
 			status={status}
-			variant={(props.variant as ChatComposerVariant) ?? "framed"}
-			size={(props.size as ChatComposerSize) ?? "sm"}
+			variant={p.variant ?? "framed"}
+			size={p.size ?? "sm"}
 			labels={{ placeholder: "Prompt or tag a flavor with @" }}
 		/>
 	);

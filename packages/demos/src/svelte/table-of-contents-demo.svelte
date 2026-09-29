@@ -1,8 +1,11 @@
 <script lang="ts">
-import { TableOfContents, type TableOfContentsVariant } from "@baby-ui/svelte";
+import { TableOfContents } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 import { TOC_ARTICLE, TOC_ITEMS } from "../data/table-of-contents";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof TableOfContents>>(props));
 
 let scroller = $state<HTMLElement | null>(null);
 </script>
@@ -37,7 +40,7 @@ let scroller = $state<HTMLElement | null>(null);
 		items={TOC_ITEMS}
 		root={scroller}
 		scrollOffset={0}
-		variant={(props.variant as TableOfContentsVariant) ?? "curve"}
+		variant={p.variant ?? "curve"}
 		indicator={props.indicator !== false}
 		class="w-44 shrink-0"
 	/>

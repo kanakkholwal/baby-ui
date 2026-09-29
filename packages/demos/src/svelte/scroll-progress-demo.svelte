@@ -1,7 +1,10 @@
 <script lang="ts">
-import { ScrollProgress, type ScrollProgressPosition } from "@baby-ui/svelte";
+import { ScrollProgress } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof ScrollProgress>>(props));
 
 const sections = ["Overview", "Install", "Usage", "Props", "Motion", "Accessibility"];
 let box = $state<HTMLDivElement | null>(null);
@@ -23,7 +26,7 @@ let box = $state<HTMLDivElement | null>(null);
 	{#if box}
 		<ScrollProgress
 			container={box}
-			position={(props.position as ScrollProgressPosition) ?? "right"}
+			position={p.position ?? "right"}
 			tickCount={Number(props.tickCount ?? 40)}
 			height={Number(props.height ?? 160)}
 			width={Number(props.width ?? 14)}

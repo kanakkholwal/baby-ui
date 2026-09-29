@@ -27,8 +27,8 @@ export const sheet = defineComponent({
 		springs: [],
 		reducedMotion: "The panel appears in place without travelling.",
 		behaviour: [
-			"The panel slides in from its own edge, driven by a CSS variable set per side, so all four directions share one keyframe.",
-			"Uses the drawer easing rather than the standard ease-out, because a large surface travelling a long way needs the slower settle.",
+			"The panel slides in from its own edge over 250ms and back out over 200ms on the drawer easing.",
+			"The backdrop fades on the same curve and timing, so panel and backdrop finish together.",
 		],
 	},
 	a11y: {
@@ -55,8 +55,6 @@ export const sheet = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "@base-ui/react"],
-			// Reuses Dialog's DIALOG_BACKDROP.
-			registryDependencies: ["dialog"],
 		},
 		svelte: {
 			entry: "Sheet",
@@ -73,8 +71,6 @@ export const sheet = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "bits-ui"],
-			// Reuses Dialog's DIALOG_BACKDROP.
-			registryDependencies: ["dialog"],
 		},
 	},
 	keywords: ["sheet"],

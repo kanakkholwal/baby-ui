@@ -4,8 +4,11 @@ import {
 	StreamingText,
 	type StreamingToken,
 } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof StreamingText>>(props));
 
 const SOURCE_IMAGES = {
 	scoop:
@@ -52,7 +55,7 @@ const FOLLOW_UPS = [
 	"Compare gelato and soft serve margins",
 ];
 
-const layout = $derived((props.layout as "inline" | "card") ?? "inline");
+const layout = $derived(p.layout ?? "inline");
 </script>
 
 {#key layout}

@@ -1,26 +1,42 @@
-<script lang="ts">
-import type { Icon } from "@tabler/icons-svelte";
+<script lang="ts" module>
+import type { Icon } from "@baby-ui/icons";
 
-export type SegmentOption = { id: string; label: string; icon: Icon };
+export type SegmentOption<T extends string = string> = {
+	id: T;
+	label: string;
+	icon: Icon;
+};
+</script>
+
+<script lang="ts" generics="T extends string">
+import { ToggleGroup, ToggleGroupItem } from "@baby-ui/svelte";
 
 let {
 	options,
 	current,
 	onPick,
-}: { options: SegmentOption[]; current: string; onPick: (id: string) => void } = $props();
+	label = "Options",
+}: {
+	options: SegmentOption<T>[];
+	current: T;
+	onPick: (id: T) => void;
+	label?: string;
+} = $props();
+
+// Resolving through `options` narrows the group's string back to T without a cast.
+function pick(next: string | string[]) {
+	const hit = options.find((option) => option.id === next);
+	if (hit) onPick(hit.id);
+}
 </script>
 
-<div class="inline-flex items-center gap-0.5 rounded-lg bg-card p-0.5">
+<!-- Clicking the pressed item clears a single group; a segment always keeps one choice. -->
+<ToggleGroup bind:value={() => current, pick} {label}>
 	{#each options as option (option.id)}
 		{@const Glyph = option.icon}
-		<button
-			type="button"
-			onclick={() => onPick(option.id)}
-			aria-pressed={current === option.id}
-			class="inline-flex h-7 items-center gap-1.5 rounded-md px-2 pointer-coarse:h-10 pointer-coarse:px-3 text-muted-foreground text-xs transition-colors hover:text-foreground aria-pressed:bg-background aria-pressed:font-medium aria-pressed:text-foreground aria-pressed:shadow-sm"
-		>
-			<Glyph size={14} stroke={1.6} />
+		<ToggleGroupItem value={option.id} class="pointer-coarse:h-8">
+			<Glyph />
 			{option.label}
-		</button>
+		</ToggleGroupItem>
 	{/each}
-</div>
+</ToggleGroup>

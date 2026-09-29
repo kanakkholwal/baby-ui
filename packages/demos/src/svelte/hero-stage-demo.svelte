@@ -7,16 +7,18 @@ import {
 	CardTitle,
 	Gauge,
 	HeroStage,
-	type HeroStageMotion,
 	HeroStageSlot,
 	Progress,
 } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof HeroStage>>(props));
 </script>
 
 <div class="w-full max-w-md py-6">
-	<HeroStage motion={(props.motion as HeroStageMotion) ?? "scroll"}>
+	<HeroStage motion={p.motion ?? "scroll"}>
 		<div class="grid grid-cols-2 gap-3">
 			<HeroStageSlot index={0} x={-40} y={24} rotate={-6} class="col-span-2">
 				<Card class="gap-1 py-4">

@@ -1,68 +1,74 @@
 "use client";
 
-import { type ComponentProps, createContext, useContext } from "react";
+import { type ComponentProps, createContext, useContext, useMemo } from "react";
 import { cn } from "../lib/cn";
-import { type TableDensity, table } from "./variants";
+import { type TableDensity, type TableVariant, table } from "./variants";
 
-const DensityContext = createContext<TableDensity>("comfortable");
+const TableContext = createContext<{ variant: TableVariant; density: TableDensity }>({
+	variant: "default",
+	density: "comfortable",
+});
 
 export interface TableProps extends ComponentProps<"table"> {
+	variant?: TableVariant;
 	density?: TableDensity;
 	containerClassName?: string;
 }
 
 export function Table({
+	variant = "default",
 	density = "comfortable",
 	className,
 	containerClassName,
 	...props
 }: TableProps) {
-	const { container, root } = table({ density });
+	const { container, root } = table({ variant, density });
+	const style = useMemo(() => ({ variant, density }), [variant, density]);
 	return (
-		<DensityContext.Provider value={density}>
+		<TableContext.Provider value={style}>
 			<div data-slot="table-container" className={cn(container(), containerClassName)}>
 				<table data-slot="table" className={cn(root(), className)} {...props} />
 			</div>
-		</DensityContext.Provider>
+		</TableContext.Provider>
 	);
 }
 
 export function TableHeader({ className, ...props }: ComponentProps<"thead">) {
-	const { header } = table({ density: useContext(DensityContext) });
+	const { header } = table(useContext(TableContext));
 	return (
 		<thead data-slot="table-header" className={cn(header(), className)} {...props} />
 	);
 }
 
 export function TableBody({ className, ...props }: ComponentProps<"tbody">) {
-	const { body } = table({ density: useContext(DensityContext) });
+	const { body } = table(useContext(TableContext));
 	return <tbody data-slot="table-body" className={cn(body(), className)} {...props} />;
 }
 
 export function TableFooter({ className, ...props }: ComponentProps<"tfoot">) {
-	const { footer } = table({ density: useContext(DensityContext) });
+	const { footer } = table(useContext(TableContext));
 	return (
 		<tfoot data-slot="table-footer" className={cn(footer(), className)} {...props} />
 	);
 }
 
 export function TableRow({ className, ...props }: ComponentProps<"tr">) {
-	const { row } = table({ density: useContext(DensityContext) });
+	const { row } = table(useContext(TableContext));
 	return <tr data-slot="table-row" className={cn(row(), className)} {...props} />;
 }
 
 export function TableHead({ className, ...props }: ComponentProps<"th">) {
-	const { head } = table({ density: useContext(DensityContext) });
+	const { head } = table(useContext(TableContext));
 	return <th data-slot="table-head" className={cn(head(), className)} {...props} />;
 }
 
 export function TableCell({ className, ...props }: ComponentProps<"td">) {
-	const { cell } = table({ density: useContext(DensityContext) });
+	const { cell } = table(useContext(TableContext));
 	return <td data-slot="table-cell" className={cn(cell(), className)} {...props} />;
 }
 
 export function TableCaption({ className, ...props }: ComponentProps<"caption">) {
-	const { caption } = table({ density: useContext(DensityContext) });
+	const { caption } = table(useContext(TableContext));
 	return (
 		<caption data-slot="table-caption" className={cn(caption(), className)} {...props} />
 	);

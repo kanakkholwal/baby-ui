@@ -1,13 +1,10 @@
 <script lang="ts">
-import {
-	SidebarNav,
-	type SidebarNavItem,
-	type SidebarNavSize,
-	type SidebarRecent,
-} from "@baby-ui/svelte";
-import type { Snippet } from "svelte";
+import { SidebarNav, type SidebarNavItem, type SidebarRecent } from "@baby-ui/svelte";
+import type { ComponentProps, Snippet } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof SidebarNav>>(props));
 
 const NAV_ITEMS: SidebarNavItem[] = [
 	{ key: "home", label: "Home" },
@@ -80,7 +77,7 @@ $effect.pre(() => {
 	footerLabel="Invite users"
 	onFooterClick={() => (nav = "invite")}
 	onSignOut={() => {}}
-	size={(props.size as SidebarNavSize) ?? "md"}
+	size={p.size ?? "md"}
 	bind:collapsed
 	fill
 	class="max-h-[420px]"

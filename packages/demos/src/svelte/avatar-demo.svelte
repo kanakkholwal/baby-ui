@@ -1,9 +1,13 @@
 <script lang="ts">
 import { Avatar, AvatarFallback, AvatarImage } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof Avatar>>(props));
+const pImage = $derived(controlProps<ComponentProps<typeof AvatarImage>>(props));
 
-const name = $derived((props.name as string) || "Kanak Kholwal");
+const name = $derived(typeof props.name === "string" ? props.name : "Kanak Kholwal");
 const initials = $derived(
 	name
 		.trim()
@@ -16,12 +20,9 @@ const initials = $derived(
 </script>
 
 <div class="flex items-center gap-3">
-	<Avatar
-		size={(props.size as "sm" | "md" | "lg" | "xl") ?? "md"}
-		shape={(props.shape as "circle" | "square") ?? "circle"}
-	>
+	<Avatar size={p.size ?? "md"} shape={p.shape ?? "circle"}>
 		<AvatarFallback>{initials}</AvatarFallback>
-		<AvatarImage src={(props.src as string) || "https://github.com/kanakkholwal.png"} alt={name} />
+		<AvatarImage src={pImage.src || "https://github.com/kanakkholwal.png"} alt={name} />
 	</Avatar>
 	<div class="text-sm">
 		<p class="font-medium text-foreground">{name}</p>

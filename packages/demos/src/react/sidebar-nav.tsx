@@ -1,12 +1,8 @@
 "use client";
 
-import {
-	SidebarNav,
-	type SidebarNavItem,
-	type SidebarNavSize,
-	type SidebarRecent,
-} from "@baby-ui/react";
-import { useEffect, useState } from "react";
+import { SidebarNav, type SidebarNavItem, type SidebarRecent } from "@baby-ui/react";
+import { type ComponentProps, useEffect, useState } from "react";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
@@ -73,6 +69,7 @@ const RECENTS: SidebarRecent[] = [
 ];
 
 export function SidebarNavDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof SidebarNav>>(props);
 	const [collapsed, setCollapsed] = useState(props.collapsed === true);
 	const [nav, setNav] = useState("home");
 
@@ -98,7 +95,7 @@ export function SidebarNavDemo({ props }: { props: Props }) {
 			footerLabel="Invite users"
 			onFooterClick={() => setNav("invite")}
 			onSignOut={() => {}}
-			size={(props.size as SidebarNavSize) ?? "md"}
+			size={p.size ?? "md"}
 			collapsed={collapsed}
 			onCollapsedChange={setCollapsed}
 			fill

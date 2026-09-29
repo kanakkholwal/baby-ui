@@ -2,6 +2,7 @@
 
 import { NavigationMenu as NavigationMenuPrimitive } from "@base-ui/react/navigation-menu";
 import type { ComponentProps } from "react";
+import { ANCHORED } from "../lib/anchor";
 import { cn } from "../lib/cn";
 import {
 	type NavigationMenuSize,
@@ -136,12 +137,13 @@ export function NavigationMenuViewport({
 			>
 				<NavigationMenuPrimitive.Popup
 					data-slot="navigation-menu-viewport"
+					// Popover's motion contract; width and height also ease as the panel resizes.
 					className={cn(
+						ANCHORED,
+						"static",
 						styles.viewport(),
-						"relative h-(--popup-height) w-(--popup-width) origin-(--transform-origin) outline-none",
-						"transition-[opacity,scale,width,height] duration-[var(--duration-overlay)] ease-[var(--ease-out)] motion-reduce:transition-none",
-						"data-[starting-style]:scale-90 data-[starting-style]:opacity-0",
-						"data-[ending-style]:scale-90 data-[ending-style]:opacity-0 data-[ending-style]:duration-[var(--duration-exit)]",
+						"relative h-(--popup-height) w-(--popup-width) outline-none",
+						"transition-[opacity,scale,translate,width,height]",
 					)}
 				>
 					<NavigationMenuPrimitive.Viewport className="relative size-full overflow-hidden" />

@@ -1,10 +1,10 @@
 <script lang="ts">
 import { Markdown } from "@baby-ui/svelte";
 import type { ComponentProps } from "svelte";
-
-type MarkdownSize = NonNullable<ComponentProps<typeof Markdown>["size"]>;
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof Markdown>>(props));
 
 const SAMPLE = [
 	"## Installing",
@@ -19,7 +19,7 @@ const SAMPLE = [
 	"```",
 ].join("\n");
 
-const content = $derived((props.content as string) || SAMPLE);
+const content = $derived(p.content || SAMPLE);
 </script>
 
-<div class="w-full max-w-96"><Markdown {content} size={(props.size as MarkdownSize) ?? "md"} /></div>
+<div class="w-full max-w-96"><Markdown {content} size={p.size ?? "md"} /></div>

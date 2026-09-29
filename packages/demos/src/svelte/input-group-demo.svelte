@@ -4,14 +4,16 @@ import {
 	InputGroupAddon,
 	InputGroupButton,
 	InputGroupInput,
-	type InputGroupSize,
 	InputGroupText,
 	InputGroupTextarea,
 } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof InputGroup>>(props));
 
-const size = $derived((props.size as InputGroupSize) ?? "md");
+const size = $derived(p.size ?? "md");
 let domain = $state("");
 let note = $state("");
 let copied = $state(false);

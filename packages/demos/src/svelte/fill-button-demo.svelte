@@ -1,12 +1,12 @@
 <script lang="ts">
-import { FillButton, type FillButtonSize, type FillButtonTone } from "@baby-ui/svelte";
+import { FillButton } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof FillButton>>(props));
 </script>
 
-<FillButton
-	tone={(props.tone as FillButtonTone) ?? "soft"}
-	size={(props.size as FillButtonSize) ?? "md"}
->
+<FillButton tone={p.tone ?? "soft"} size={p.size ?? "md"}>
 	Get started
 </FillButton>

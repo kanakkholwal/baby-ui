@@ -1,0 +1,36 @@
+{
+	"name": "@baby-ui/icons",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"sideEffects": false,
+	"svelte": "./src/index.ts",
+	"exports": {
+		".": {
+			"svelte": "./src/index.ts",
+			"types": "./src/index.ts"
+		},
+		"./icons/*": {
+			"svelte": "./src/icons/*.svelte",
+			"types": "./src/icons/*.svelte"
+		}
+	},
+	"files": [
+		"src"
+	],
+	"scripts": {
+		"generate": "node scripts/generate.mjs",
+		"check": "node scripts/generate.mjs --check && svelte-check --tsconfig ./tsconfig.json"
+	},
+	"peerDependencies": {
+		"svelte": "catalog:"
+	},
+	"devDependencies": {
+		"@iconify-json/solar": "catalog:",
+		"@sveltejs/vite-plugin-svelte": "catalog:",
+		"svelte": "catalog:",
+		"svelte-check": "catalog:",
+		"simple-icons": "catalog:",
+		"typescript": "catalog:"
+	}
+}

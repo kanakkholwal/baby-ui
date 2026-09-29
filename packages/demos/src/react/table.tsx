@@ -5,12 +5,13 @@ import {
 	TableBody,
 	TableCaption,
 	TableCell,
-	type TableDensity,
 	TableFooter,
 	TableHead,
 	TableHeader,
 	TableRow,
 } from "@baby-ui/react";
+import type { ComponentProps } from "react";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
@@ -22,8 +23,9 @@ const INVOICES = [
 ];
 
 export function TableDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof Table>>(props);
 	return (
-		<Table density={props.density as TableDensity | undefined}>
+		<Table variant={p.variant} density={p.density}>
 			<TableCaption>A list of recent invoices.</TableCaption>
 			<TableHeader>
 				<TableRow>

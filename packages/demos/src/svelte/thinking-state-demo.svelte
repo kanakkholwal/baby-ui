@@ -4,8 +4,11 @@ import {
 	ThinkingState,
 	type ThinkingStateVariant,
 } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof ThinkingState>>(props));
 
 const CONTENT: Record<
 	ThinkingStateVariant,
@@ -66,7 +69,7 @@ const CONTENT: Record<
 	},
 };
 
-const variant = $derived((props.variant as ThinkingStateVariant) ?? "steps");
+const variant = $derived(p.variant ?? "steps");
 const content = $derived(CONTENT[variant]);
 
 let thinking = $state(true);

@@ -21,6 +21,13 @@ export const toggleGroup = defineComponent({
 			control: { kind: "select", options: ["single", "multiple"] },
 		},
 		{
+			name: "variant",
+			type: '"default" | "outline"',
+			description: "Filled track with a raised pressed item, or a bordered row.",
+			default: "default",
+			control: { kind: "select", options: ["default", "outline"] },
+		},
+		{
 			name: "size",
 			type: '"sm" | "md" | "lg" | "xl"',
 			description: "Item size.",

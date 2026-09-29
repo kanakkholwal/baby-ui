@@ -1,6 +1,6 @@
 <script lang="ts">
+import { IconChevronDown } from "@baby-ui/icons";
 import type { PropSpec } from "@baby-ui/registry-schema";
-import IconChevronDown from "@tabler/icons-svelte/icons/chevron-down";
 import { prefersReducedMotion } from "svelte/motion";
 import { slide } from "svelte/transition";
 
@@ -47,7 +47,6 @@ const duration = $derived(prefersReducedMotion.current ? 0 : 200);
 								<span class="flex justify-center px-2 text-muted-foreground">
 									<IconChevronDown
 										size={16}
-										stroke={1.6}
 										class="transition-[transform,scale,translate] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none"
 										style={expanded ? "transform: rotate(180deg)" : undefined}
 									/>

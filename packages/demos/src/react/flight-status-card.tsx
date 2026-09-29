@@ -1,25 +1,23 @@
-import {
-	type FlightStatus,
-	FlightStatusCard,
-	type FlightStatusDisplay,
-	type FlightStatusTone,
-} from "@baby-ui/react";
+import { FlightStatusCard } from "@baby-ui/react";
+import type { ComponentProps } from "react";
 import { FLIGHT, flightRemaining } from "../data/flight";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
 export function FlightStatusCardDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof FlightStatusCard>>(props);
 	const progress = Number(props.progress ?? 45);
 	return (
 		<FlightStatusCard
 			{...FLIGHT}
-			departureCode={(props.departureCode as string) || "YYZ"}
-			arrivalCode={(props.arrivalCode as string) || "HND"}
-			status={(props.status as FlightStatus) ?? "departed"}
+			departureCode={p.departureCode || "YYZ"}
+			arrivalCode={p.arrivalCode || "HND"}
+			status={p.status ?? "departed"}
 			progress={progress}
 			remaining={flightRemaining(progress)}
-			tone={(props.tone as FlightStatusTone) || undefined}
-			display={(props.display as FlightStatusDisplay) ?? "matrix"}
+			tone={p.tone || undefined}
+			display={p.display ?? "matrix"}
 		/>
 	);
 }

@@ -1,14 +1,10 @@
 <script lang="ts">
-import {
-	defaultPasswordRules,
-	Field,
-	FieldLabel,
-	PasswordInput,
-	type PasswordInputFeedback,
-	type PasswordInputSize,
-} from "@baby-ui/svelte";
+import { defaultPasswordRules, Field, FieldLabel, PasswordInput } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof PasswordInput>>(props));
 
 const rules = defaultPasswordRules(10);
 let password = $state("");
@@ -20,7 +16,7 @@ let password = $state("");
 		id="demo-new-password"
 		bind:value={password}
 		{rules}
-		feedback={(props.feedback as PasswordInputFeedback) ?? "both"}
-		size={(props.size as PasswordInputSize) ?? "md"}
+		feedback={p.feedback ?? "both"}
+		size={p.size ?? "md"}
 	/>
 </Field>

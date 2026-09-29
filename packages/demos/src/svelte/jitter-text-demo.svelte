@@ -1,12 +1,15 @@
 <script lang="ts">
-import { JitterText, type JitterTextSize } from "@baby-ui/svelte";
+import { JitterText } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof JitterText>>(props));
 </script>
 
 <JitterText
-	text={(props.text as string) || "Jitter"}
+	text={p.text || "Jitter"}
 	durationSeconds={Number(props.durationSeconds ?? 0.6)}
-	size={(props.size as JitterTextSize) ?? "lg"}
+	size={p.size ?? "lg"}
 	class="text-foreground"
 />

@@ -1,13 +1,16 @@
 <script lang="ts">
-import { GrainGradient, type GrainGradientTone } from "@baby-ui/svelte";
+import { GrainGradient } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof GrainGradient>>(props));
 </script>
 
 <div class="relative h-80 w-full max-w-2xl overflow-hidden rounded-xl border border-border">
 	<GrainGradient
 		position="absolute"
-		tone={(props.tone as GrainGradientTone) ?? "spectrum"}
+		tone={p.tone ?? "spectrum"}
 		angle={Number(props.angle ?? 0)}
 		grain={Number(props.grain ?? 0.35)}
 		grainSize={Number(props.grainSize ?? 1)}

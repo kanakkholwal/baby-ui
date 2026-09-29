@@ -6,8 +6,12 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const pValue = $derived(controlProps<ComponentProps<typeof SelectValue>>(props));
+const pContent = $derived(controlProps<ComponentProps<typeof SelectContent>>(props));
 
 let value = $state("edge");
 
@@ -22,9 +26,9 @@ const RUNTIMES = [
 <div class="w-64">
 	<Select bind:value items={RUNTIMES}>
 		<SelectTrigger aria-label="Runtime">
-			<SelectValue placeholder={(props.placeholder as string) || "Select an option"} />
+			<SelectValue placeholder={pValue.placeholder || "Select an option"} />
 		</SelectTrigger>
-		<SelectContent side={(props.side as never) ?? "bottom"}>
+		<SelectContent side={pContent.side ?? "bottom"}>
 			<SelectItem value="edge" label="Edge runtime">Edge runtime</SelectItem>
 			<SelectItem value="node" label="Node runtime">Node runtime</SelectItem>
 			<SelectItem value="static" label="Static export">Static export</SelectItem>

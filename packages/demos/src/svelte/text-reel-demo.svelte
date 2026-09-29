@@ -1,15 +1,18 @@
 <script lang="ts">
-import { TextReel, type TextReelSize } from "@baby-ui/svelte";
+import { TextReel } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
 import { REEL_ITEMS } from "../data/obsidian";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof TextReel>>(props));
 </script>
 
 <TextReel
 	items={REEL_ITEMS}
-	prefix={(props.prefix as string) || "We"}
+	prefix={p.prefix || "We"}
 	speed={Number(props.speed ?? 0.6)}
-	paused={(props.paused as boolean) ?? false}
-	size={(props.size as TextReelSize) ?? "md"}
+	paused={p.paused ?? false}
+	size={p.size ?? "md"}
 	class="w-full"
 />

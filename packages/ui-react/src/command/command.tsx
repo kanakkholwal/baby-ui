@@ -4,21 +4,10 @@ import { Dialog as DialogPrimitive } from "@base-ui/react/dialog";
 import { Command as CommandPrimitive, defaultFilter, useCommandState } from "cmdk";
 import type { ComponentProps, ReactNode } from "react";
 import { createContext, useContext, useEffect, useRef, useState } from "react";
-import { DIALOG_BACKDROP } from "../dialog/dialog";
+import { dialogFrame } from "../dialog/variants";
 import { cn } from "../lib/cn";
 import { rankCommandMatch } from "./score";
 import { commandFrame, type DialogVariant } from "./variants";
-
-/** Opened from the keyboard many times a day, so it appears at once; only closing fades. */
-const COMMAND_PANEL = [
-	"transition-opacity duration-0",
-	"data-[closed]:opacity-0 data-[closed]:duration-[var(--duration-exit)] data-[closed]:ease-[var(--ease-out)]",
-	"motion-reduce:transition-none",
-].join(" ");
-
-/** One marker for the active row. It snaps: arrow keys repeat too fast for motion to help. */
-const COMMAND_MARKER =
-	"pointer-events-none absolute top-0 left-0 rounded-md bg-foreground/[0.06]";
 
 type CommandHeaderContent = { children?: ReactNode; className?: string } | null;
 
@@ -73,24 +62,19 @@ export function CommandDialog({
 	onOpenChange: (open: boolean) => void;
 }) {
 	const [header, setHeader] = useState<CommandHeaderContent>(null);
+	const styles = commandFrame({ variant });
 
 	return (
 		<DialogPrimitive.Root open={open} onOpenChange={(next) => onOpenChange(next)}>
 			<DialogPrimitive.Portal>
 				<DialogPrimitive.Backdrop
 					data-slot="command-dialog-backdrop"
-					className={cn(DIALOG_BACKDROP, "backdrop-blur-md backdrop-saturate-150")}
+					className={cn(dialogFrame().backdrop(), "backdrop-blur-md backdrop-saturate-150")}
 				/>
 				<DialogPrimitive.Popup
 					data-slot="command-dialog"
 					data-variant={variant}
-					className={cn(
-						"fixed top-[14vh] left-1/2 z-50 -translate-x-1/2 outline-none",
-						COMMAND_PANEL,
-						commandFrame({ variant }).panel(),
-						"flex max-h-[min(30rem,70dvh)] w-[min(36rem,calc(100vw-2rem))] flex-col overflow-hidden",
-						className,
-					)}
+					className={cn(styles.popup(), styles.panel(), className)}
 				>
 					{/* Matches shadcn's own CommandDialog: a real Title/Description carries the
 					accessible name/description, sr-only since the search input is the visible label. */}
@@ -101,7 +85,7 @@ export function CommandDialog({
 					{variant === "framed" && header ? (
 						<div
 							data-slot="command-header"
-							className={cn(commandFrame({ variant }).header(), header.className)}
+							className={cn(styles.header(), header.className)}
 						>
 							<p className="font-medium text-foreground text-sm">{header.children}</p>
 							<span className="flex shrink-0 items-center gap-1.5 text-muted-foreground text-xs">
@@ -215,7 +199,7 @@ export function CommandList({
 			{box ? (
 				<span
 					aria-hidden
-					className={COMMAND_MARKER}
+					className={commandFrame().marker()}
 					style={{
 						translate: `${box.x}px ${box.y}px`,
 						width: box.w,

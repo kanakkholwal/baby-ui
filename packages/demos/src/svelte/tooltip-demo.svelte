@@ -5,8 +5,11 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof TooltipContent>>(props));
 
 const ACTIONS = [
 	{
@@ -26,7 +29,7 @@ const ACTIONS = [
 	},
 ];
 
-const side = $derived((props.side as never) ?? "top");
+const side = $derived(p.side ?? "top");
 const delay = $derived(Number(props.delay ?? 400));
 </script>
 
@@ -48,7 +51,9 @@ const delay = $derived(Number(props.delay ?? 400));
 					</svg>
 				</TooltipTrigger>
 				<TooltipContent {side}>
-					{action.id === "copy" ? (props.label as string) || action.hint : action.hint}
+					{action.id === "copy"
+						? (typeof props.label === "string" ? props.label : "") || action.hint
+						: action.hint}
 				</TooltipContent>
 			</Tooltip>
 		{/each}

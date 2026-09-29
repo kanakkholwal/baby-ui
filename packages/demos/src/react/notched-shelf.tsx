@@ -1,21 +1,16 @@
 "use client";
 
-import {
-	cn,
-	NotchedShelf,
-	type NotchedShelfAlign,
-	type NotchedShelfLayout,
-	type NotchedShelfShape,
-	type NotchedShelfSize,
-	type NotchedShelfVariant,
-} from "@baby-ui/react";
+import { cn, NotchedShelf } from "@baby-ui/react";
+import type { ComponentProps } from "react";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
 export function NotchedShelfDemo({ props }: { props: Props }) {
-	const variant = (props.variant as NotchedShelfVariant) ?? "solid";
-	const layout = (props.layout as NotchedShelfLayout) ?? "hanging";
-	const size = (props.size as NotchedShelfSize) ?? "md";
+	const p = controlProps<ComponentProps<typeof NotchedShelf>>(props);
+	const variant = p.variant ?? "solid";
+	const layout = p.layout ?? "hanging";
+	const size = p.size ?? "md";
 	return (
 		// Muted matches the card, so it bridges into a page-coloured surface instead.
 		<div
@@ -29,9 +24,9 @@ export function NotchedShelfDemo({ props }: { props: Props }) {
 				variant={variant}
 				layout={layout}
 				size={size}
-				shape={(props.shape as NotchedShelfShape) ?? "smooth"}
-				align={(props.align as NotchedShelfAlign) ?? "center"}
-				edge={props.edge === true}
+				shape={p.shape ?? "smooth"}
+				align={p.align ?? "center"}
+				edge={p.edge === true}
 			>
 				<a
 					href="#top"

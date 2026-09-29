@@ -9,7 +9,9 @@
 	--border: oklch(15% 0 0 / 0.06);
 
 	--border-strong: oklch(15% 0 0 / 0.12);
-	--accent-fg: oklch(15% 0 0);
+	/* The Blue theme's ramp: white text 4.93:1, 4.53:1 as a ring on --card. */
+	--accent: oklch(55% 0.18 255);
+	--accent-fg: oklch(99% 0 0);
 	--neon: oklch(80% 0.22 145);
 	--violet: oklch(68% 0.22 295);
 	/* Used as text too, so the light values sit at 4.5:1 on --background. */
@@ -25,23 +27,15 @@
 		oklch(72% 0.18 195) 0%,
 		oklch(68% 0.22 295) 100%
 	);
-
-	--card-foreground: var(--foreground);
-	--popover: var(--card);
-	--popover-foreground: var(--foreground);
-	--primary: var(--foreground);
-	--primary-foreground: var(--background);
-	--secondary: var(--card);
-	--secondary-foreground: var(--foreground);
-	--muted: var(--card);
-	--accent: oklch(72% 0.18 195);
-	--accent-foreground: var(--accent-fg);
-	--destructive: var(--danger);
 	--destructive-foreground: oklch(99% 0 0);
-	--input: var(--border);
-	/* Derived, so focus reads as the brand colour in every theme without a second knob. */
-	/* Solid: at 50% alpha the ring fell under 3:1 on 19 of 20 theme and mode pairs. */
-	--ring: var(--primary);
+
+	--surface-shadow:
+		0 2px 4px 0 rgb(0 0 0 / 0.04), 0 1px 2px 0 rgb(0 0 0 / 0.06), 0 0 1px 0 rgb(0 0 0 / 0.06);
+	--overlay-shadow:
+		0 2px 8px 0 rgb(0 0 0 / 0.06), 0 -6px 12px 0 rgb(0 0 0 / 0.03), 0 14px 28px 0 rgb(0 0 0 / 0.08);
+	--field-shadow: none;
+	--thumb-shadow:
+		0 0 5px 0 rgb(0 0 0 / 0.02), 0 2px 10px 0 rgb(0 0 0 / 0.06), 0 0 1px 0 rgb(0 0 0 / 0.3);
 
 	/* Series order is the colour-blind safety mechanism; never cycle or reorder. Sub-3:1
 	   light slots are relieved by the legend and the data table every chart ships. */
@@ -58,6 +52,7 @@
 	--chart-positive: #2a78d6;
 	--chart-negative: #e34948;
 
+	/* One knob: controls and fields use it as is, cards +6px, dialogs +10px. */
 	--radius: 0.625rem;
 
 	/* All three are self-hosted: Inter and JetBrains Mono via fontsource, Satoshi vendored. */
@@ -74,7 +69,7 @@
 	--border: rgb(255 255 255 / 0.05);
 
 	--border-strong: rgb(255 255 255 / 0.1);
-	--accent: oklch(80% 0.18 195);
+	--accent: oklch(70% 0.15 255);
 	--accent-fg: #151515;
 	--danger: oklch(69% 0.2 25);
 	/* Dark text, like the other status fills: white on this red is 2.96:1. */
@@ -85,6 +80,11 @@
 	--glass-bg: rgb(28 28 28 / 0.55);
 	--glass-border: rgb(255 255 255 / 0.08);
 	--gradient-bg: linear-gradient(135deg, oklch(19% 0 0) 0%, oklch(22% 0.008 210) 100%);
+	/* Shadows vanish on dark, so surfaces lift with a hairline instead. */
+	--surface-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.05);
+	--overlay-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.08), 0 14px 28px 0 rgb(0 0 0 / 0.4);
+	--thumb-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.4);
+
 	--chart-1: #3987e5;
 	--chart-2: #d95926;
 	--chart-3: #199e70;
@@ -103,6 +103,37 @@
 		oklch(80% 0.18 195) 0%,
 		oklch(72% 0.18 295) 100%
 	);
+}
+
+/* Aliases and derived tokens re-resolve wherever `.dark` sits, not only on the root. */
+:root,
+.dark {
+	--card-foreground: var(--foreground);
+	--popover: var(--card);
+	--popover-foreground: var(--foreground);
+	--primary: var(--accent);
+	--primary-foreground: var(--accent-fg);
+	--secondary: var(--card);
+	--secondary-foreground: var(--foreground);
+	--muted: var(--card);
+	--accent-foreground: var(--accent-fg);
+	--destructive: var(--danger);
+	--input: var(--border);
+	/* Focus rings and links; a theme whose fill is too light to clear 3:1 swaps in a darker ink. */
+	--accent-ink: var(--accent);
+	/* Solid: at 50% alpha the ring fell under 3:1 on 19 of 20 theme and mode pairs. */
+	--ring: var(--accent-ink);
+
+	/* Role names on the same palette: the hover fill every ghost control already used. */
+	--surface: var(--card);
+	--overlay: var(--popover);
+	--default: color-mix(in oklab, var(--foreground) 6%, transparent);
+	--default-hover: color-mix(in oklab, var(--foreground) 10%, transparent);
+	--segment: var(--background);
+
+	/* Toward --foreground, not the label colour: darker in light, lighter in dark, so text
+	   contrast rises on hover (white on a lightened blue fell to 4.05:1). */
+	--primary-hover: color-mix(in oklab, var(--primary) 90%, var(--foreground));
 }
 
 /* Tailwind v4 preflight gives buttons `cursor: default`; every interactive control

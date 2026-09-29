@@ -4,22 +4,22 @@ import {
 	CartesianGrid,
 	ChartContainer,
 	ChartTooltip,
-	type LiveAxisPosition,
 	LiveLine,
 	LiveLineChart,
-	type LiveLineCurve,
-	type LiveLineTint,
 	type LivePoint,
 	LiveXAxis,
 	LiveYAxis,
 } from "@baby-ui/react";
-import { useEffect, useRef, useState } from "react";
+import { type ComponentProps, useEffect, useRef, useState } from "react";
 import { createLiveFeed, LIVE_CONFIG, LIVE_TICK_MS, numberProp } from "../data/live";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 const KEEP_SECONDS = 120;
 
 export function LiveLineChartDemo({ props }: { props: Props }) {
+	const pAxis = controlProps<ComponentProps<typeof LiveYAxis>>(props);
+	const pLine = controlProps<ComponentProps<typeof LiveLine>>(props);
 	const feed = useRef(createLiveFeed());
 	const [data, setData] = useState<LivePoint[]>(() => feed.current.backfill(60));
 	const paused = props.paused === true;
@@ -49,12 +49,12 @@ export function LiveLineChartDemo({ props }: { props: Props }) {
 					lerpSpeed={numberProp(props.lerpSpeed, 0.08)}
 				>
 					<CartesianGrid />
-					<LiveYAxis position={(props.position as LiveAxisPosition) ?? "left"} />
+					<LiveYAxis position={pAxis.position ?? "left"} />
 					<LiveXAxis />
 					<LiveLine
 						dataKey="value"
-						curve={(props.curve as LiveLineCurve) ?? "monotone"}
-						tint={(props.tint as LiveLineTint) ?? "dot"}
+						curve={pLine.curve ?? "monotone"}
+						tint={pLine.tint ?? "dot"}
 						fill={props.fill !== false}
 						pulse={props.pulse !== false}
 						badge={props.badge !== false}

@@ -102,6 +102,9 @@ export { Collapsible, CollapsibleTrigger, CollapsibleContent } from "./collapsib
 export { type CollectionSurferProps, CollectionSurfer } from "./collection-surfer/collection-surfer";
 export { type CollectionSurferItem, SURF_REACH, wrapSurfScroll, surfShift, surfNearness } from "./collection-surfer/types";
 export { collectionSurfer, type CollectionSurferVariant, type CollectionSurferSize } from "./collection-surfer/variants";
+export { type ColorFieldProps, ColorField } from "./color-field/color-field";
+export { parseHex, stepHex, keyStep } from "./color-field/core";
+export { colorField, type ColorFieldSize } from "./color-field/variants";
 export { type ColorFormat, type ColorPickerProps, ColorPicker } from "./color-picker/color-picker";
 export { colorPicker, type ColorPickerVariant, pickScreenColor, hasEyeDropper } from "./color-picker/variants";
 export { Combobox, ComboboxTrigger, ComboboxContent, ComboboxEmpty, ComboboxGroup, ComboboxInput, ComboboxItem, ComboboxList } from "./combobox/combobox";
@@ -139,7 +142,7 @@ export { type RangeDateParts, type DateRangeParts, type DateRangePreset, type Da
 export { dateRangePicker, type DateRangePickerSize } from "./date-range-picker/variants";
 export { type DiaTextProps, DiaText } from "./dia-text/dia-text";
 export { diaText, type DiaTextSize, DIA_TEXT_COLORS, diaGradient } from "./dia-text/variants";
-export { DIALOG_BACKDROP, DIALOG_PANEL, Dialog, DialogTrigger, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription, DialogClose } from "./dialog/dialog";
+export { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription, DialogClose } from "./dialog/dialog";
 export { dialogFrame, type DialogVariant, dialogWidth, type DialogSize } from "./dialog/variants";
 export { type DiffRow, type DiffTableProps, DiffTable } from "./diff-table/diff-table";
 export { diffRow, type DiffRowChange } from "./diff-table/variants";
@@ -349,6 +352,7 @@ export { pixelCanvas, type PixelCanvasVariant, type PixelCanvasTone, type PixelC
 export { type PixelImageTrailProps, PixelImageTrail } from "./pixel-image-trail/pixel-image-trail";
 export { pixelImageTrail, type PixelImageTrailVariant, type PixelImageTrailSize, type PixelTrailOptions, mountPixelTrail } from "./pixel-image-trail/pixel-trail";
 export { Popover, PopoverTrigger, PopoverContent } from "./popover/popover";
+export { popover } from "./popover/variants";
 export { type Pricing01Props, Pricing01 } from "./pricing-01/pricing-01";
 export { type Pricing01Period, type Pricing01Plan, type Pricing01Labels, PRICING_01_LABELS } from "./pricing-01/types";
 export { pricing01, type Pricing01Variant } from "./pricing-01/variants";
@@ -426,7 +430,7 @@ export { Select, SelectValue, SelectTrigger, SelectContent, SelectItem, SelectGr
 export { type SeparatorProps, Separator } from "./separator/separator";
 export { separator, type SeparatorVariant } from "./separator/variants";
 export { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetFooter, SheetTitle, SheetDescription, SheetClose } from "./sheet/sheet";
-export { sheetPanel, type SheetSide } from "./sheet/variants";
+export { sheet, type SheetSide } from "./sheet/variants";
 export { type ShimmerTextProps, ShimmerText } from "./shimmer-text/shimmer-text";
 export { shimmerText, type ShimmerTextSize } from "./shimmer-text/variants";
 export { type ShortcutProps, Shortcut } from "./shortcut/shortcut";
@@ -478,7 +482,7 @@ export { swapText, type SwapTextSize, type SwapTextMotion, swapTextSlide, swapTe
 export { type SwitchProps, Switch } from "./switch/switch";
 export { switchTrack, switchThumb, type SwitchSize } from "./switch/variants";
 export { type TableProps, Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, TableCaption } from "./table/table";
-export { table, type TableDensity } from "./table/variants";
+export { table, type TableVariant, type TableDensity } from "./table/variants";
 export { type TableOfContentsProps, TableOfContents } from "./table-of-contents/table-of-contents";
 export { type TocDepth, type TocItem, type TocRange, type TocRow, type TocTrack, railX, itemPad, buildTrack, itemRail, activeRange, movedUp, rangeFromIds, idsInRange, thumbStyle } from "./table-of-contents/toc-core";
 export { tableOfContents, type TableOfContentsVariant } from "./table-of-contents/variants";
@@ -523,7 +527,7 @@ export { type ToasterProps, toast, Toaster } from "./toast/toaster";
 export { type ToggleProps, Toggle } from "./toggle/toggle";
 export { toggleButton, type ToggleSize } from "./toggle/variants";
 export { ToggleGroup, ToggleGroupItem } from "./toggle-group/toggle-group";
-export { toggleGroupItem, type ToggleGroupSize } from "./toggle-group/variants";
+export { toggleGroup, type ToggleGroupVariant, type ToggleGroupSize } from "./toggle-group/variants";
 export { type ToolProps, Tool } from "./tool/tool";
 export { tool, type ToolState, type ToolLabels, TOOL_LABELS } from "./tool/variants";
 export { type ToolDetailLine, type ToolStep, type ToolDiffLine, type ToolDiff, type ToolChipsLabels, type ToolChipsProps, ToolChips } from "./tool-chips/tool-chips";

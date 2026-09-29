@@ -1,8 +1,11 @@
 <script lang="ts">
-import { Calendar, type CalendarCaptionLayout, type CalendarSize } from "@baby-ui/svelte";
+import { Calendar } from "@baby-ui/svelte";
 import { type DateValue, getLocalTimeZone, today } from "@internationalized/date";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof Calendar>>(props));
 
 let value = $state<DateValue | undefined>(today(getLocalTimeZone()));
 </script>
@@ -10,7 +13,7 @@ let value = $state<DateValue | undefined>(today(getLocalTimeZone()));
 <Calendar
 	type="single"
 	bind:value
-	captionLayout={(props.captionLayout as CalendarCaptionLayout) ?? "dropdown"}
-	size={(props.size as CalendarSize) ?? "md"}
+	captionLayout={p.captionLayout ?? "dropdown"}
+	size={p.size ?? "md"}
 	class="rounded-lg border border-border"
 />

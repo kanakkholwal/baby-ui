@@ -1,4 +1,14 @@
 <script lang="ts">
+import type { Icon } from "@baby-ui/icons";
+import {
+	IconBrandJavascript,
+	IconBrandReact,
+	IconBrandSvelte,
+	IconBrandTypescript,
+	IconCheck,
+	IconLayoutColumns,
+	IconLayoutRows,
+} from "@baby-ui/icons";
 import type { Framework } from "@baby-ui/registry-schema";
 import {
 	Sheet,
@@ -6,16 +16,7 @@ import {
 	SheetContent,
 	SheetHeader,
 	SheetTitle,
-	Switch,
 } from "@baby-ui/svelte";
-import type { Icon } from "@tabler/icons-svelte";
-import IconBrandJavascript from "@tabler/icons-svelte/icons/brand-javascript";
-import IconBrandReact from "@tabler/icons-svelte/icons/brand-react";
-import IconBrandSvelte from "@tabler/icons-svelte/icons/brand-svelte";
-import IconBrandTypescript from "@tabler/icons-svelte/icons/brand-typescript";
-import IconCheck from "@tabler/icons-svelte/icons/check";
-import IconLayoutColumns from "@tabler/icons-svelte/icons/layout-columns";
-import IconLayoutRows from "@tabler/icons-svelte/icons/layout-rows";
 import { type Dialect, type PageLayout, prefs, THEMES } from "$lib/preferences.svelte";
 import SegmentControl from "./segment-control.svelte";
 
@@ -57,20 +58,11 @@ const LAYOUTS: { id: PageLayout; label: string; icon: Icon }[] = [
 							class="grid size-6 shrink-0 place-items-center rounded-full text-white ring-offset-2 ring-offset-background transition-[box-shadow,scale] hover:scale-110 aria-pressed:ring-2 aria-pressed:ring-foreground/40"
 						>
 							{#if prefs.theme === theme.id}
-								<IconCheck size={10} stroke={2.6} />
+								<IconCheck size={10} />
 							{/if}
 						</button>
 					{/each}
 				</div>
-			</div>
-
-			<div class="flex items-center justify-between gap-3 px-4 py-2.5">
-				<span class="text-foreground text-xs">Click sparks</span>
-				<Switch
-					size="sm"
-					aria-label="Click sparks"
-					bind:checked={() => prefs.clickSpark, (on) => prefs.set("sparks", on)}
-				/>
 			</div>
 
 			<div class="flex items-center justify-between gap-3 px-4 py-2.5">
@@ -81,7 +73,7 @@ const LAYOUTS: { id: PageLayout; label: string; icon: Icon }[] = [
 				<SegmentControl
 					options={LAYOUTS}
 					current={prefs.layout}
-					onPick={(id) => prefs.set("layout", id as PageLayout)}
+					onPick={(id) => prefs.set("layout", id)}
 				/>
 			</div>
 
@@ -90,7 +82,7 @@ const LAYOUTS: { id: PageLayout; label: string; icon: Icon }[] = [
 				<SegmentControl
 					options={FRAMEWORKS}
 					current={prefs.framework}
-					onPick={(id) => prefs.set("framework", id as Framework)}
+					onPick={(id) => prefs.set("framework", id)}
 				/>
 			</div>
 
@@ -99,7 +91,7 @@ const LAYOUTS: { id: PageLayout; label: string; icon: Icon }[] = [
 				<SegmentControl
 					options={DIALECTS}
 					current={prefs.dialect}
-					onPick={(id) => prefs.set("dialect", id as Dialect)}
+					onPick={(id) => prefs.set("dialect", id)}
 				/>
 			</div>
 		</div>

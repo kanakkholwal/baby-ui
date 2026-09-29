@@ -2,7 +2,7 @@
 
 import { Menu } from "@base-ui/react/menu";
 import type { ComponentProps } from "react";
-import { ANCHORED, stagger, UNFOLD, UNFOLD_ITEM } from "../lib/anchor";
+import { ANCHORED, stagger, UNFOLD_ITEM } from "../lib/anchor";
 import { cn } from "../lib/cn";
 import { MENU_SHORTCUT, MENU_SURFACE, type MenuItemVariant, menuItem } from "../lib/menu";
 
@@ -51,7 +51,7 @@ export function DropdownMenuContent({
 					ref={(node: HTMLDivElement | null) => {
 						if (node) stagger(node.querySelectorAll<HTMLElement>("[role='menuitem']"));
 					}}
-					className={cn(UNFOLD, "static", MENU_SURFACE, className)}
+					className={cn(ANCHORED, "static", MENU_SURFACE, className)}
 					{...props}
 				/>
 			</Menu.Positioner>

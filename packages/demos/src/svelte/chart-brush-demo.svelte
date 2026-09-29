@@ -2,7 +2,6 @@
 import {
 	CartesianGrid,
 	ChartBrush,
-	type ChartBrushVariant,
 	ChartContainer,
 	ChartTooltip,
 	Line,
@@ -10,9 +9,12 @@ import {
 	XAxis,
 	YAxis,
 } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 import { VISITORS, VISITORS_CONFIG } from "../data/visitors";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof ChartBrush>>(props));
 
 let range = $state<[Date, Date]>([
 	VISITORS[7]?.date ?? new Date(),
@@ -34,7 +36,7 @@ let range = $state<[Date, Date]>([
 			data={VISITORS}
 			dataKeys={["desktop", "mobile"]}
 			bind:range
-			variant={(props.variant as ChartBrushVariant) ?? "area"}
+			variant={p.variant ?? "area"}
 			height={Number(props.height ?? 64)}
 		/>
 	</ChartContainer>

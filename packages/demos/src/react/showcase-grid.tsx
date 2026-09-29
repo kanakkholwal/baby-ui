@@ -3,11 +3,12 @@
 import {
 	Badge,
 	Button,
-	type ShowcaseFrame,
 	ShowcaseGrid,
 	ShowcasePanel,
 	type ShowcaseSpan,
 } from "@baby-ui/react";
+import type { ComponentProps } from "react";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
@@ -19,9 +20,10 @@ const PANELS: { title: string; tag: string; span: ShowcaseSpan }[] = [
 ];
 
 export function ShowcaseGridDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof ShowcaseGrid>>(props);
 	return (
 		<div className="w-full max-w-3xl p-2 md:p-10">
-			<ShowcaseGrid frame={(props.frame as ShowcaseFrame) ?? "rulers"}>
+			<ShowcaseGrid frame={p.frame ?? "rulers"}>
 				{PANELS.map((panel) => (
 					<ShowcasePanel
 						key={panel.title}

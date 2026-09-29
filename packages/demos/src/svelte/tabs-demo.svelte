@@ -1,23 +1,16 @@
 <script lang="ts">
-import {
-	Tabs,
-	TabsContent,
-	TabsList,
-	TabsTrigger,
-	type TabsVariant,
-} from "@baby-ui/svelte";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof Tabs>>(props));
 
 let value = $state("overview");
 </script>
 
 <div class="w-full max-w-96">
-	<Tabs
-		bind:value
-		variant={(props.variant as TabsVariant) ?? "pill"}
-		size={(props.size as "sm" | "md" | "lg" | "xl") ?? "md"}
-	>
+	<Tabs bind:value variant={p.variant ?? "pill"} size={p.size ?? "md"}>
 		<TabsList>
 			<TabsTrigger value="overview">Overview</TabsTrigger>
 			<TabsTrigger value="activity">Activity</TabsTrigger>

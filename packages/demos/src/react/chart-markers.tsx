@@ -4,8 +4,6 @@ import {
 	CartesianGrid,
 	type ChartConfig,
 	ChartContainer,
-	type ChartMarkerAppearance,
-	type ChartMarkerSize,
 	ChartMarkers,
 	ChartMarkerTooltip,
 	ChartTooltip,
@@ -15,7 +13,9 @@ import {
 	XAxis,
 	YAxis,
 } from "@baby-ui/react";
+import type { ComponentProps } from "react";
 import { EVENTS } from "../data/events";
+import { controlProps } from "../data/preview-props";
 import { VISITORS, VISITORS_CONFIG } from "../data/visitors";
 
 type Props = Record<string, unknown>;
@@ -32,6 +32,7 @@ const markers = EVENTS.map((event, i) =>
 );
 
 export function ChartMarkersDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof ChartMarkers>>(props);
 	return (
 		<div className="w-full max-w-3xl pt-6">
 			<ChartContainer config={config} title="Daily visitors with release notes">
@@ -42,9 +43,9 @@ export function ChartMarkersDemo({ props }: { props: Props }) {
 					<Line dataKey="desktop" />
 					<ChartMarkers
 						items={markers}
-						size={(props.size as ChartMarkerSize) ?? "md"}
-						appearance={(props.appearance as ChartMarkerAppearance) ?? "solid"}
-						showLines={props.showLines !== false}
+						size={p.size ?? "md"}
+						appearance={p.appearance ?? "solid"}
+						showLines={p.showLines ?? true}
 					/>
 					<ChartTooltip
 						content={

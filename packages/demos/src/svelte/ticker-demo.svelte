@@ -1,7 +1,10 @@
 <script lang="ts">
-import { Ticker, type TickerSize } from "@baby-ui/svelte";
+import { Ticker } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof Ticker>>(props));
 
 const values = ["1,024", "1,387", "2,941", "2,108", "9,999", "10,240"];
 let step = $state(0);
@@ -13,7 +16,7 @@ $effect(() => {
 </script>
 
 <Ticker
-	value={(props.value as string) || (values[step] ?? "")}
+	value={p.value || (values[step] ?? "")}
 	durationMs={Number(props.durationMs ?? 500)}
-	size={(props.size as TickerSize) ?? "md"}
+	size={p.size ?? "md"}
 />

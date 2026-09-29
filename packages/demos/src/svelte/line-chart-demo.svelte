@@ -3,31 +3,31 @@ import {
 	CartesianGrid,
 	ChartContainer,
 	ChartLegend,
-	type ChartStatus,
 	ChartTooltip,
 	Line,
 	LineChart,
-	type LineCurve,
-	type LineVariant,
-	type ProfitLossEncoding,
 	ProfitLossLine,
-	type SeriesLoadingStyle,
 	XAxis,
 	YAxis,
 } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
 import { PNL, PNL_CONFIG } from "../data/pnl";
+import { controlProps } from "../data/preview-props";
 import { fadeProp, VISITORS, VISITORS_CONFIG } from "../data/visitors";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof LineChart>>(props));
+const pLine = $derived(controlProps<ComponentProps<typeof Line>>(props));
+const pProfitLoss = $derived(controlProps<ComponentProps<typeof ProfitLossLine>>(props));
 
-const status = $derived((props.status as ChartStatus) ?? "ready");
+const status = $derived(p.status ?? "ready");
 const dashFromIndex = $derived(Number(props.dashFromIndex ?? -1));
 const line = $derived({
-	curve: (props.curve as LineCurve) ?? "natural",
-	variant: (props.variant as LineVariant) ?? "solid",
+	curve: pLine.curve ?? "natural",
+	variant: pLine.variant ?? "solid",
 	strokeWidth: Number(props.strokeWidth ?? 2.5),
 	fadeEdges: fadeProp(props.fadeEdges),
-	loadingStyle: (props.loadingStyle as SeriesLoadingStyle) ?? "pulse",
+	loadingStyle: pLine.loadingStyle ?? "pulse",
 	showMarkers: props.showMarkers === true,
 	terminalMarker: props.terminalMarker === true,
 	showHighlight: props.showHighlight !== false,
@@ -45,7 +45,7 @@ const profitLoss = $derived(props.encoding === "dashed" || props.encoding === "d
 				<XAxis />
 				<ProfitLossLine
 					dataKey="pnl"
-					encoding={props.encoding as ProfitLossEncoding}
+					encoding={pProfitLoss.encoding}
 					curve={line.curve}
 					strokeWidth={line.strokeWidth}
 				/>

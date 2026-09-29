@@ -1,15 +1,18 @@
 <script lang="ts">
-import { NumberInput, type NumberInputSize } from "@baby-ui/svelte";
+import { NumberInput } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof NumberInput>>(props));
 
-const size = $derived((props.size as NumberInputSize) ?? "md");
+const size = $derived(p.size ?? "md");
 let seats = $state<number | null>(5);
 let budget = $state<number | null>(1200);
 </script>
 
 <div class="flex w-full max-w-60 flex-col gap-5">
-	<NumberInput label="Seats" bind:value={seats} min={1} max={50} {size} disabled={Boolean(props.disabled)} />
+	<NumberInput label="Seats" bind:value={seats} min={1} max={50} {size} disabled={p.disabled ?? false} />
 	<NumberInput
 		label="Monthly budget"
 		bind:value={budget}
@@ -18,6 +21,6 @@ let budget = $state<number | null>(1200);
 		largeStep={500}
 		formatOptions={{ style: "currency", currency: "USD", maximumFractionDigits: 0 }}
 		{size}
-		disabled={Boolean(props.disabled)}
+		disabled={p.disabled ?? false}
 	/>
 </div>

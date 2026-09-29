@@ -7,8 +7,11 @@ import {
 	HoverCardContent,
 	HoverCardTrigger,
 } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof HoverCardContent>>(props));
 </script>
 
 <HoverCard
@@ -23,7 +26,7 @@ let { props = {} }: { props?: Record<string, unknown> } = $props();
 			@kanakkholwal
 		</button>
 	</HoverCardTrigger>
-	<HoverCardContent side={(props.side as never) ?? "bottom"}>
+	<HoverCardContent side={p.side ?? "bottom"}>
 		<div class="flex items-start gap-3">
 			<Avatar size="sm"
 				><AvatarFallback>KK</AvatarFallback><AvatarImage src="https://github.com/kanakkholwal.png" alt="Kanak Kholwal" /></Avatar

@@ -1,9 +1,12 @@
 <script lang="ts">
-import { Typography, type TypographyVariant } from "@baby-ui/svelte";
+import { Typography } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof Typography>>(props));
 
-const variant = $derived((props.variant as TypographyVariant) ?? "body");
+const variant = $derived(p.variant ?? "body");
 </script>
 
 <div class="flex w-full max-w-80 flex-col gap-3">

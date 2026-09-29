@@ -1,7 +1,13 @@
 <script lang="ts">
-import { FineTuneCard, type FineTuneField } from "@baby-ui/svelte";
+import {
+	FineTuneCard,
+	type FineTuneCardLabels,
+	type FineTuneField,
+} from "@baby-ui/svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<FineTuneCardLabels>(props));
 
 type ElementKind = "button" | "card";
 
@@ -30,5 +36,5 @@ let element: ElementKind = $derived(props.element === "card" ? "card" : "button"
 	id={element}
 	fields={ELEMENTS[element]}
 	options={OPTIONS}
-	labels={{ title: (props.title as string) || undefined }}
+	labels={{ title: p.title || undefined }}
 />

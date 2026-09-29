@@ -19,7 +19,7 @@ let {
 	data-slot="select-item"
 	class={cn(
 		UNFOLD_ITEM,
-		"flex w-full items-center justify-between gap-2 rounded-md px-2.5 py-1.5 text-left text-foreground text-sm outline-none transition-colors",
+		"flex w-full items-center justify-between gap-2 rounded-md px-2.5 py-1.5 text-left text-foreground text-sm outline-none",
 		"data-highlighted:bg-foreground/[0.06]",
 		"data-disabled:pointer-events-none data-disabled:opacity-50",
 		classProp,

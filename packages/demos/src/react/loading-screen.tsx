@@ -1,10 +1,8 @@
 "use client";
 
-import {
-	LoadingScreen,
-	type LoadingScreenIndicator,
-	type LoadingScreenLogoMotion,
-} from "@baby-ui/react";
+import { LoadingScreen } from "@baby-ui/react";
+import type { ComponentProps } from "react";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
@@ -20,15 +18,16 @@ function Mark() {
 }
 
 export function LoadingScreenDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof LoadingScreen>>(props);
 	return (
 		<div className="relative h-72 w-full max-w-md overflow-hidden rounded-xl border border-border">
 			<LoadingScreen
 				position="absolute"
 				logo={<Mark />}
 				open={props.open !== false}
-				indicator={(props.indicator as LoadingScreenIndicator) ?? "bar"}
-				logoMotion={(props.logoMotion as LoadingScreenLogoMotion) ?? "breathe"}
-				label={(props.label as string) || "Loading"}
+				indicator={p.indicator ?? "bar"}
+				logoMotion={p.logoMotion ?? "breathe"}
+				label={p.label || "Loading"}
 			/>
 		</div>
 	);

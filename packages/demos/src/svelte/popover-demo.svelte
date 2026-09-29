@@ -7,8 +7,11 @@ import {
 	PopoverTrigger,
 	Switch,
 } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof PopoverContent>>(props));
 
 let autoDeploy = $state(true);
 let comments = $state(false);
@@ -25,9 +28,9 @@ const ROW = "flex w-full flex-row-reverse items-center justify-between gap-4";
 	</PopoverTrigger>
 	<PopoverContent
 		class="w-72"
-		side={(props.side as never) ?? "bottom"}
+		side={p.side ?? "bottom"}
 		sideOffset={Number(props.sideOffset ?? 4)}
-		align={(props.align as never) ?? "center"}
+		align={p.align ?? "center"}
 	>
 		<div class="flex flex-col gap-3">
 			<Label>Preview branches</Label>

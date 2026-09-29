@@ -1,5 +1,7 @@
 <script lang="ts">
+import { IconSearch } from "@baby-ui/icons";
 import {
+	Button,
 	Command,
 	CommandDialog,
 	CommandEmpty,
@@ -8,8 +10,8 @@ import {
 	CommandInput,
 	CommandItem,
 	CommandList,
+	Shortcut,
 } from "@baby-ui/svelte";
-import IconSearch from "@tabler/icons-svelte/icons/search";
 import { goto } from "$app/navigation";
 import { track } from "$lib/analytics";
 import { type DocsHit, searchDocs } from "$lib/docs-search";
@@ -57,14 +59,6 @@ const groups = $derived.by(() => {
 
 $effect(() => {
 	mac = navigator.platform.toLowerCase().includes("mac");
-	const onKey = (e: KeyboardEvent) => {
-		if (e.key.toLowerCase() === "k" && (e.metaKey || e.ctrlKey)) {
-			e.preventDefault();
-			open = !open;
-		}
-	};
-	window.addEventListener("keydown", onKey);
-	return () => window.removeEventListener("keydown", onKey);
 });
 
 // Full-text hits from docvia, beside the command filter's matches on names and descriptions.
@@ -96,16 +90,19 @@ function go(href: string) {
 }
 </script>
 
-<button
-	type="button"
+<Button
+	variant="ghost"
+	size="icon"
 	onclick={() => (open = true)}
 	aria-label="Search"
 	aria-keyshortcuts={mac ? "Meta+K" : "Control+K"}
 	title="Search ({mac ? "⌘K" : "Ctrl K"})"
-	class="grid size-9 shrink-0 place-items-center rounded-xl text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground"
+	class="shrink-0 rounded-xl text-foreground/75 hover:text-foreground"
 >
-	<IconSearch size={17} stroke={1.6} />
-</button>
+	<IconSearch size={17} />
+	<!-- Owns Ctrl/⌘+K; hidden, since the title already names the shortcut. -->
+	<Shortcut shortcut="mod+k" ontrigger={() => (open = !open)} class="hidden" />
+</Button>
 
 <CommandDialog bind:open variant="framed">
 	<Command>

@@ -5,15 +5,17 @@ import {
 	NavigationMenuItem,
 	NavigationMenuLink,
 	NavigationMenuList,
-	type NavigationMenuSize,
 	NavigationMenuTrigger,
 	navigationMenuTriggerStyle,
 } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
 import { NAV_MENU_LINKS, NAV_MENU_SAMPLE } from "../data/navigation-menu";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof NavigationMenuTrigger>>(props));
 
-const size = $derived((props.size as NavigationMenuSize) ?? "md");
+const size = $derived(p.size ?? "md");
 </script>
 
 <div class="flex min-h-72 w-full justify-center pt-2">

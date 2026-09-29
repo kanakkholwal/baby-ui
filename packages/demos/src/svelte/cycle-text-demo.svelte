@@ -1,7 +1,10 @@
 <script lang="ts">
-import { CycleText, type CycleTextSize } from "@baby-ui/svelte";
+import { CycleText } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof CycleText>>(props));
 
 const words = ["designers", "developers", "founders", "teams"];
 </script>
@@ -13,7 +16,7 @@ const words = ["designers", "developers", "founders", "teams"];
 		defaultIndex={Number(props.defaultIndex ?? 0)}
 		intervalMs={Number(props.intervalMs ?? 1300)}
 		durationMs={Number(props.durationMs ?? 260)}
-		size={(props.size as CycleTextSize) ?? "lg"}
+		size={p.size ?? "lg"}
 		class="font-semibold text-primary"
 	/>
 </p>

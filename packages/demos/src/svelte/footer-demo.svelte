@@ -3,13 +3,14 @@ import {
 	Button,
 	Footer,
 	type FooterColumn,
-	type FooterLayout,
 	type FooterLink,
 	type FooterSocialLink,
 } from "@baby-ui/svelte";
-import type { Snippet } from "svelte";
+import type { ComponentProps, Snippet } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof Footer>>(props));
 
 const COLUMNS: FooterColumn[] = [
 	{
@@ -82,9 +83,9 @@ const LEGAL: FooterLink[] = [
 {/snippet}
 
 <Footer
-	wordmark={(props.wordmark as string) ?? "Recast"}
-	layout={(props.layout as FooterLayout) ?? "split"}
-	description={(props.description as string) || "Turns a raw screen capture into a polished, shareable demo while you record."}
+	wordmark={p.wordmark ?? "Recast"}
+	layout={p.layout ?? "split"}
+	description={p.description || "Turns a raw screen capture into a polished, shareable demo while you record."}
 	columns={COLUMNS}
 	socials={[
 		{ icon: githubIcon, href: "https://github.com/kanakkholwal/recast", label: "GitHub" },
@@ -94,7 +95,7 @@ const LEGAL: FooterLink[] = [
 	copyright={copyright as unknown as Snippet}
 	legal={LEGAL}
 	topHref="#top"
-	topLabel={(props.topLabel as string) || "Back to top"}
+	topLabel={p.topLabel || "Back to top"}
 >
 	{#snippet actions()}
 		<Button href="https://github.com/kanakkholwal/recast/releases" size="sm" variant="ghost">Releases</Button>

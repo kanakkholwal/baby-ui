@@ -1,18 +1,21 @@
 "use client";
 
-import { TextRepel, type TextRepelMode, type TextRepelSize } from "@baby-ui/react";
+import { TextRepel } from "@baby-ui/react";
+import type { ComponentProps } from "react";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
 export function TextRepelDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof TextRepel>>(props);
 	return (
 		<div className="px-6 py-10 font-semibold text-3xl text-foreground tracking-tight">
 			<TextRepel
-				text={(props.text as string) || "Move your cursor here"}
-				mode={(props.mode as TextRepelMode) ?? "repel"}
+				text={p.text || "Move your cursor here"}
+				mode={p.mode ?? "repel"}
 				radius={Number(props.radius ?? 120)}
 				strength={Number(props.strength ?? 45)}
-				size={(props.size as TextRepelSize) ?? "inherit"}
+				size={p.size ?? "inherit"}
 			/>
 		</div>
 	);

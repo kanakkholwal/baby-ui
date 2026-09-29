@@ -1,9 +1,11 @@
 <script lang="ts">
 import { Button, Toaster, type ToasterProps, toast } from "@baby-ui/svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ToasterProps>(props));
 
-const position = $derived((props.position as ToasterProps["position"]) ?? "bottom-right");
+const position = $derived(p.position ?? "bottom-right");
 
 // The same set beUI's preview opens, plus the tones it lacks.
 const EXAMPLES = [
@@ -78,4 +80,4 @@ const EXAMPLES = [
 	</p>
 </div>
 
-<Toaster {position} expand={props.expand !== false} closeButton={props.closeButton !== false} />
+<Toaster {position} expand={p.expand !== false} closeButton={p.closeButton !== false} />

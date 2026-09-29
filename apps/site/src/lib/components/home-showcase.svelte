@@ -1,6 +1,6 @@
 <script lang="ts">
+import { IconArrowRight } from "@baby-ui/icons";
 import { Button, ShowcaseGrid, type ShowcaseSpan } from "@baby-ui/svelte";
-import IconArrowRight from "@tabler/icons-svelte/icons/arrow-right";
 import type { CardItem } from "$lib/registry";
 import ShowcasePanel from "./showcase-panel.svelte";
 
@@ -49,7 +49,6 @@ const CELLS: Cell[] = [
 		<Button href="/components" variant="outline" size="lg" class="group">
 			Browse all components
 			<IconArrowRight
-				stroke={1.7}
 				class="transition-transform duration-150 group-hover:translate-x-0.5 motion-reduce:transition-none"
 			/>
 		</Button>

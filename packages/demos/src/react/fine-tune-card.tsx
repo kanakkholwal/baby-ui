@@ -25,12 +25,13 @@ const OPTIONS = ["Primary", "Secondary", "Ghost"];
 /** `id`/`element` swap proves uncontrolled edits reset on a new subject, not carry over. */
 export function FineTuneCardDemo({ props }: { props: Props }) {
 	const element: ElementKind = props.element === "card" ? "card" : "button";
+	const title = typeof props.title === "string" ? props.title : "";
 	return (
 		<FineTuneCard
 			id={element}
 			fields={ELEMENTS[element]}
 			options={OPTIONS}
-			labels={{ title: (props.title as string) || undefined }}
+			labels={{ title: title || undefined }}
 		/>
 	);
 }

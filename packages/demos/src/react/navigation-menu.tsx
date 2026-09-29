@@ -6,14 +6,16 @@ import {
 	NavigationMenuItem,
 	NavigationMenuLink,
 	NavigationMenuList,
-	type NavigationMenuSize,
 	NavigationMenuTrigger,
 	navigationMenuTriggerStyle,
 } from "@baby-ui/react";
+import type { ComponentProps } from "react";
 import { NAV_MENU_LINKS, NAV_MENU_SAMPLE } from "../data/navigation-menu";
+import { controlProps } from "../data/preview-props";
 
 export function NavigationMenuDemo({ props = {} }: { props?: Record<string, unknown> }) {
-	const size = (props.size as NavigationMenuSize) ?? "md";
+	const p = controlProps<ComponentProps<typeof NavigationMenuTrigger>>(props);
+	const size = p.size ?? "md";
 	return (
 		<div className="flex min-h-72 w-full justify-center pt-2">
 			<NavigationMenu>

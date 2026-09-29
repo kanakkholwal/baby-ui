@@ -1,6 +1,6 @@
 <script lang="ts">
+import { IconAlignLeft } from "@baby-ui/icons";
 import { TableOfContents } from "@baby-ui/svelte";
-import IconAlignLeft from "@tabler/icons-svelte/icons/align-left";
 import type { Heading } from "$lib/docs-nodes";
 import { productFor } from "$lib/products";
 import PromoCard from "./promo-card.svelte";
@@ -25,7 +25,7 @@ let {
 		<div>
 			{#if heading}
 				<p class="mb-3 inline-flex items-center gap-1.5 text-muted-foreground text-sm">
-					<IconAlignLeft size={16} stroke={1.6} />
+					<IconAlignLeft size={16} />
 					On this page
 				</p>
 			{/if}

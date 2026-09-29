@@ -1,21 +1,20 @@
 "use client";
 
-import {
-	HoverTransition,
-	type HoverTransitionDirection,
-	type HoverTransitionEffect,
-} from "@baby-ui/react";
+import { HoverTransition } from "@baby-ui/react";
+import type { ComponentProps } from "react";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
 export function HoverTransitionDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof HoverTransition>>(props);
 	return (
 		<HoverTransition
-			effect={(props.effect as HoverTransitionEffect) ?? "wipe"}
-			direction={(props.direction as HoverTransitionDirection) ?? "right"}
+			effect={p.effect ?? "wipe"}
+			direction={p.direction ?? "right"}
 			durationMs={Number(props.durationMs ?? 720)}
-			tilt={(props.tilt as boolean) ?? true}
-			label={(props.label as string) || "Hover to reveal more"}
+			tilt={p.tilt ?? true}
+			label={p.label || "Hover to reveal more"}
 			className="aspect-4/5 w-full max-w-xs rounded-3xl border border-border"
 			hoverContent={
 				<div className="flex size-full flex-col justify-between bg-primary p-6 text-primary-foreground">

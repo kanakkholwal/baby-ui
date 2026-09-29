@@ -1,12 +1,9 @@
 "use client";
 
-import {
-	OverviewCard,
-	type OverviewCardChart,
-	type OverviewCardSize,
-} from "@baby-ui/react";
-import { useState } from "react";
+import { OverviewCard } from "@baby-ui/react";
+import { type ComponentProps, useState } from "react";
 import { REVENUE_BY_PERIOD, REVENUE_PERIODS } from "../data/overview";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
@@ -17,6 +14,7 @@ const currency = new Intl.NumberFormat("en-US", {
 }).format;
 
 export function OverviewCardDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof OverviewCard>>(props);
 	const [period, setPeriod] = useState("30d");
 	const reading = REVENUE_BY_PERIOD[period as keyof typeof REVENUE_BY_PERIOD];
 
@@ -32,8 +30,8 @@ export function OverviewCardDemo({ props }: { props: Props }) {
 				periods={REVENUE_PERIODS}
 				period={period}
 				onPeriodChange={setPeriod}
-				chart={(props.chart as OverviewCardChart) ?? "area"}
-				size={(props.size as OverviewCardSize) ?? "md"}
+				chart={p.chart ?? "area"}
+				size={p.size ?? "md"}
 				formatValue={currency}
 			/>
 		</div>

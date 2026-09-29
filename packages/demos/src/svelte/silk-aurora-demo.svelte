@@ -1,14 +1,17 @@
 <script lang="ts">
-import { SilkAurora, type SilkAuroraSpeed, type SilkAuroraTone } from "@baby-ui/svelte";
+import { SilkAurora } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof SilkAurora>>(props));
 </script>
 
 <div class="relative h-80 w-full max-w-2xl overflow-hidden rounded-xl border border-border">
 	<SilkAurora
 		position="absolute"
-		tone={(props.tone as SilkAuroraTone) ?? "pearl"}
-		speed={(props.speed as SilkAuroraSpeed) ?? "normal"}
+		tone={p.tone ?? "pearl"}
+		speed={p.speed ?? "normal"}
 		intensity={Number(props.intensity ?? 1)}
 		grain={Number(props.grain ?? 0.85)}
 		interactive={props.interactive !== false}

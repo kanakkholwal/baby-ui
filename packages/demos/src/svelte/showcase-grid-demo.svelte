@@ -2,13 +2,15 @@
 import {
 	Badge,
 	Button,
-	type ShowcaseFrame,
 	ShowcaseGrid,
 	ShowcasePanel,
 	type ShowcaseSpan,
 } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof ShowcaseGrid>>(props));
 
 const panels: { title: string; tag: string; span: ShowcaseSpan }[] = [
 	{ title: "Charts", tag: "d3 + SVG", span: 7 },
@@ -19,7 +21,7 @@ const panels: { title: string; tag: string; span: ShowcaseSpan }[] = [
 </script>
 
 <div class="w-full max-w-3xl p-2 md:p-10">
-	<ShowcaseGrid frame={(props.frame as ShowcaseFrame) ?? "rulers"}>
+	<ShowcaseGrid frame={p.frame ?? "rulers"}>
 		{#each panels as panel (panel.title)}
 			<ShowcasePanel span={panel.span} class="min-h-36 md:min-h-44">
 				{#snippet actions()}

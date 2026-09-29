@@ -1,6 +1,6 @@
 <script lang="ts">
+import { IconArrowRight } from "@baby-ui/icons";
 import { Button, DiaText, FillButton } from "@baby-ui/svelte";
-import IconArrowRight from "@tabler/icons-svelte/icons/arrow-right";
 import HeroPrism from "./hero-prism.svelte";
 
 const TAILS = [
@@ -36,7 +36,6 @@ const BG_CLASS =
 			Charts you can read by keyboard
 			<IconArrowRight
 				size={13}
-				stroke={1.8}
 				aria-hidden="true"
 				class="transition-transform duration-150 group-hover:translate-x-0.5 motion-reduce:transition-none"
 			/>

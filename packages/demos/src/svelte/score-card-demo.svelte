@@ -1,12 +1,10 @@
 <script lang="ts">
-import {
-	type GaugeChartLayout,
-	type GaugeChartTone,
-	ScoreCard,
-	type ScoreCardSize,
-} from "@baby-ui/svelte";
+import { ScoreCard } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof ScoreCard>>(props));
 </script>
 
 <div class="w-full max-w-xs">
@@ -17,8 +15,8 @@ let { props = {} }: { props?: Record<string, unknown> } = $props();
 		min={Number(props.min ?? 0)}
 		max={Number(props.max ?? 100)}
 		trend={4}
-		tone={(props.tone as GaugeChartTone) ?? "primary"}
-		layout={(props.layout as GaugeChartLayout) ?? "arc"}
-		size={(props.size as ScoreCardSize) ?? "md"}
+		tone={p.tone ?? "primary"}
+		layout={p.layout ?? "arc"}
+		size={p.size ?? "md"}
 	/>
 </div>

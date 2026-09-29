@@ -9,10 +9,13 @@ import {
 	CommandItem,
 	CommandList,
 	CommandShortcut,
-	type DialogVariant,
 } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof CommandDialog>>(props));
+const pInput = $derived(controlProps<ComponentProps<typeof CommandInput>>(props));
 
 let open = $state(false);
 let last = $state("");
@@ -34,12 +37,12 @@ function run(id: string) {
 	{#if last}<p class="text-muted-foreground text-xs">Ran: {last}</p>{/if}
 </div>
 
-<CommandDialog bind:open variant={(props.variant as DialogVariant) ?? "default"}>
+<CommandDialog bind:open variant={p.variant ?? "default"}>
 	<Command>
 		<CommandHeader>Command</CommandHeader>
-		<CommandInput placeholder={(props.placeholder as string) || "Type a command or search…"} />
+		<CommandInput placeholder={pInput.placeholder || "Type a command or search…"} />
 		<CommandList>
-			<CommandEmpty>{(props.emptyLabel as string) || "No results"}</CommandEmpty>
+			<CommandEmpty>{typeof props.emptyLabel === "string" ? props.emptyLabel : "No results"}</CommandEmpty>
 			<CommandGroup heading="Actions">
 				<CommandItem value="New project" onclick={() => run("new")}>
 					<span class="flex min-w-0 items-center gap-2">

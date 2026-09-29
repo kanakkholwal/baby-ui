@@ -2,25 +2,27 @@
 import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 import { cn } from "../lib/cn";
-import { setDensity } from "./context";
-import { type TableDensity, table } from "./variants";
+import { setTableStyle } from "./context";
+import { type TableDensity, type TableVariant, table } from "./variants";
 
 let {
 	children,
 	class: className,
 	containerClass,
+	variant = "default",
 	density = "comfortable",
 	...rest
 }: {
 	children?: Snippet;
 	class?: string;
 	containerClass?: string;
+	variant?: TableVariant;
 	density?: TableDensity;
 } & HTMLAttributes<HTMLTableElement> = $props();
 
-setDensity(() => density);
+setTableStyle(() => ({ variant, density }));
 
-const classes = $derived(table({ density }));
+const classes = $derived(table({ variant, density }));
 </script>
 
 <div data-slot="table-container" class={cn(classes.container(), containerClass)}>

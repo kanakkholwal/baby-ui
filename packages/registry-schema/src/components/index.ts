@@ -37,6 +37,7 @@ import { codeBlock } from "./code-block.ts";
 import { collabCard } from "./collab-card.ts";
 import { collapsible } from "./collapsible.ts";
 import { collectionSurfer } from "./collection-surfer.ts";
+import { colorField } from "./color-field.ts";
 import { colorPicker } from "./color-picker.ts";
 import { combobox } from "./combobox.ts";
 import { command } from "./command.ts";
@@ -275,6 +276,7 @@ export const specs: ComponentSpec[] = [
 	collabCard,
 	collapsible,
 	collectionSurfer,
+	colorField,
 	colorPicker,
 	combobox,
 	command,

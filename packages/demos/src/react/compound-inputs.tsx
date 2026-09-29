@@ -4,28 +4,23 @@ import {
 	type CardValidity,
 	type CardValue,
 	CreditCardInput,
-	type CreditCardInputLayout,
 	CurrencyInput,
-	type CurrencyInputAffix,
-	type CurrencyInputSize,
 	defaultPasswordRules,
 	Field,
 	FieldDescription,
 	FieldLabel,
-	type InputGroupSize,
 	PasswordInput,
-	type PasswordInputFeedback,
-	type PasswordInputSize,
 	PhoneInput,
-	type PhoneInputSize,
 } from "@baby-ui/react";
-import { useEffect, useState } from "react";
+import { type ComponentProps, useEffect, useState } from "react";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
 const RULES = defaultPasswordRules(10);
 
 export function PasswordInputDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof PasswordInput>>(props);
 	const [password, setPassword] = useState("");
 	return (
 		<Field className="w-full max-w-sm">
@@ -35,14 +30,15 @@ export function PasswordInputDemo({ props }: { props: Props }) {
 				value={password}
 				onValueChange={setPassword}
 				rules={RULES}
-				feedback={(props.feedback as PasswordInputFeedback) ?? "both"}
-				size={(props.size as PasswordInputSize) ?? "md"}
+				feedback={p.feedback ?? "both"}
+				size={p.size ?? "md"}
 			/>
 		</Field>
 	);
 }
 
 export function CreditCardInputDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof CreditCardInput>>(props);
 	const [card, setCard] = useState<CardValue>({ number: "", expiry: "", cvc: "" });
 	const [validity, setValidity] = useState<CardValidity | null>(null);
 	return (
@@ -53,8 +49,8 @@ export function CreditCardInputDemo({ props }: { props: Props }) {
 					setCard(next);
 					setValidity(v);
 				}}
-				layout={(props.layout as CreditCardInputLayout) ?? "stacked"}
-				size={(props.size as InputGroupSize) ?? "md"}
+				layout={p.layout ?? "stacked"}
+				size={p.size ?? "md"}
 			/>
 			<p className="text-muted-foreground text-xs">
 				Try 4242 4242 4242 4242 with any future expiry.{" "}
@@ -65,6 +61,7 @@ export function CreditCardInputDemo({ props }: { props: Props }) {
 }
 
 export function PhoneInputDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof PhoneInput>>(props);
 	const [phone, setPhone] = useState("");
 	const [country, setCountry] = useState("US");
 	// The controls panel picks the country; the picker inside the field can change it too.
@@ -80,7 +77,7 @@ export function PhoneInputDemo({ props }: { props: Props }) {
 				onValueChange={(next) => setPhone(next)}
 				country={country}
 				onCountryChange={setCountry}
-				size={(props.size as PhoneInputSize) ?? "md"}
+				size={p.size ?? "md"}
 			/>
 			<FieldDescription>
 				Stored as <span className="font-mono">{phone || "…"}</span>
@@ -90,8 +87,9 @@ export function PhoneInputDemo({ props }: { props: Props }) {
 }
 
 export function CurrencyInputDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof CurrencyInput>>(props);
 	const [amount, setAmount] = useState<number | null>(250000);
-	const currency = (props.currency as string) ?? "USD";
+	const currency = p.currency ?? "USD";
 	return (
 		<Field className="w-full max-w-xs">
 			<FieldLabel htmlFor="demo-amount">Monthly budget</FieldLabel>
@@ -100,10 +98,10 @@ export function CurrencyInputDemo({ props }: { props: Props }) {
 				value={amount}
 				onValueChange={setAmount}
 				currency={currency}
-				locale={(props.locale as string) ?? "en-US"}
+				locale={p.locale ?? "en-US"}
 				max={10_000_000}
-				affix={(props.affix as CurrencyInputAffix) ?? "both"}
-				size={(props.size as CurrencyInputSize) ?? "md"}
+				affix={p.affix ?? "both"}
+				size={p.size ?? "md"}
 			/>
 			<FieldDescription>
 				Value in minor units:{" "}

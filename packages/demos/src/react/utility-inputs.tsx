@@ -1,15 +1,12 @@
 import {
 	FileUpload,
-	type FileUploadSize,
 	MultiSelect,
-	type MultiSelectSize,
 	NumberInput,
-	type NumberInputSize,
 	SearchInput,
-	type SearchInputSize,
 	type UploadFile,
 } from "@baby-ui/react";
-import { useEffect, useRef, useState } from "react";
+import { type ComponentProps, useEffect, useRef, useState } from "react";
+import { controlProps } from "../data/preview-props";
 import {
 	AVATAR_MAX_BYTES,
 	SEARCHABLE,
@@ -20,6 +17,7 @@ import {
 type Props = Record<string, unknown>;
 
 export function FileUploadDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof FileUpload>>(props);
 	const [files, setFiles] = useState<UploadFile[]>([]);
 	const timers = useRef(new Map<string, ReturnType<typeof setInterval>>());
 	const retried = useRef(new Set<string>());
@@ -63,8 +61,8 @@ export function FileUploadDemo({ props }: { props: Props }) {
 				accept="image/*,.pdf"
 				maxSize={AVATAR_MAX_BYTES}
 				maxFiles={4}
-				size={(props.size as FileUploadSize) ?? "md"}
-				disabled={Boolean(props.disabled)}
+				size={p.size ?? "md"}
+				disabled={p.disabled ?? false}
 				onFilesAdded={(added) => {
 					const next = added.map((file) => ({
 						id: crypto.randomUUID(),
@@ -89,7 +87,8 @@ export function FileUploadDemo({ props }: { props: Props }) {
 }
 
 export function NumberInputDemo({ props }: { props: Props }) {
-	const size = (props.size as NumberInputSize) ?? "md";
+	const p = controlProps<ComponentProps<typeof NumberInput>>(props);
+	const size = p.size ?? "md";
 	const [seats, setSeats] = useState<number | null>(5);
 	const [budget, setBudget] = useState<number | null>(1200);
 	return (
@@ -101,7 +100,7 @@ export function NumberInputDemo({ props }: { props: Props }) {
 				min={1}
 				max={50}
 				size={size}
-				disabled={Boolean(props.disabled)}
+				disabled={p.disabled ?? false}
 			/>
 			<NumberInput
 				label="Monthly budget"
@@ -112,13 +111,14 @@ export function NumberInputDemo({ props }: { props: Props }) {
 				largeStep={500}
 				formatOptions={{ style: "currency", currency: "USD", maximumFractionDigits: 0 }}
 				size={size}
-				disabled={Boolean(props.disabled)}
+				disabled={p.disabled ?? false}
 			/>
 		</div>
 	);
 }
 
 export function SearchInputDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof SearchInput>>(props);
 	const [query, setQuery] = useState("");
 	const [results, setResults] = useState(SEARCHABLE);
 	const [loading, setLoading] = useState(false);
@@ -132,8 +132,8 @@ export function SearchInputDemo({ props }: { props: Props }) {
 				onValueChange={setQuery}
 				shortcut="/"
 				placeholder="Search components…"
-				loading={loading || Boolean(props.loading)}
-				size={(props.size as SearchInputSize) ?? "md"}
+				loading={loading || (p.loading ?? false)}
+				size={p.size ?? "md"}
 				onSearch={(q) => {
 					// Stands in for a request to your search endpoint.
 					setLoading(true);
@@ -157,6 +157,7 @@ export function SearchInputDemo({ props }: { props: Props }) {
 }
 
 export function MultiSelectDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof MultiSelect>>(props);
 	const [value, setValue] = useState(["ana", "dev"]);
 	return (
 		<div className="flex w-full max-w-sm flex-col gap-1.5">
@@ -169,8 +170,8 @@ export function MultiSelectDemo({ props }: { props: Props }) {
 				value={value}
 				onValueChange={setValue}
 				maxChips={Number(props.maxChips ?? 3)}
-				size={(props.size as MultiSelectSize) ?? "md"}
-				disabled={Boolean(props.disabled)}
+				size={p.size ?? "md"}
+				disabled={p.disabled ?? false}
 				labels={{ placeholder: "Add reviewers…", search: "Search people…" }}
 			/>
 		</div>

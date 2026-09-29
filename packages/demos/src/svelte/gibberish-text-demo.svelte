@@ -1,15 +1,18 @@
 <script lang="ts">
-import { GibberishText, type GibberishTextSize } from "@baby-ui/svelte";
+import { GibberishText } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
-let text = $derived((props.text as string) || "Gibberish");
+const p = $derived(controlProps<ComponentProps<typeof GibberishText>>(props));
+let text = $derived(p.text || "Gibberish");
 </script>
 
 {#key text}
 	<GibberishText
 		{text}
 		speedMs={Number(props.speedMs ?? 24)}
-		size={(props.size as GibberishTextSize) ?? "lg"}
+		size={p.size ?? "lg"}
 		class="text-foreground"
 	/>
 {/key}

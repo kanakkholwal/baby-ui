@@ -1,7 +1,10 @@
 <script lang="ts">
-import { DiaText, type DiaTextSize } from "@baby-ui/svelte";
+import { DiaText } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof DiaText>>(props));
 
 const words = ["fast.", "focused.", "effortlessly smooth."];
 </script>
@@ -13,7 +16,7 @@ const words = ["fast.", "focused.", "effortlessly smooth."];
 		durationMs={Number(props.durationMs ?? 1500)}
 		delayMs={Number(props.delayMs ?? 0)}
 		repeatDelayMs={Number(props.repeatDelayMs ?? 500)}
-		fixedWidth={Boolean(props.fixedWidth ?? false)}
-		size={(props.size as DiaTextSize) ?? "inherit"}
+		fixedWidth={p.fixedWidth ?? false}
+		size={p.size ?? "inherit"}
 	/>
 </p>

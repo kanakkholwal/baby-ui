@@ -1,12 +1,10 @@
 <script lang="ts">
-import {
-	Progress,
-	type ProgressSize,
-	type ProgressTone,
-	type ProgressVariant,
-} from "@baby-ui/svelte";
+import { Progress } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof Progress>>(props));
 
 const value = $derived(Number(props.value ?? 68));
 const indeterminate = $derived(Boolean(props.indeterminate));
@@ -16,12 +14,12 @@ const indeterminate = $derived(Boolean(props.indeterminate));
 	<Progress
 		{value}
 		{indeterminate}
-		size={(props.size as ProgressSize) ?? "md"}
-		tone={(props.tone as ProgressTone) ?? "default"}
-		variant={(props.variant as ProgressVariant) ?? "linear"}
+		size={p.size ?? "md"}
+		tone={p.tone ?? "default"}
+		variant={p.variant ?? "linear"}
 		showValue={props.showValue === true}
-		label={(props.label as string) || "design-system.zip"}
-		helper={(props.helper as string) || "12.4 MB of 18.2 MB, 6s remaining"}
+		label={p.label || "design-system.zip"}
+		helper={p.helper || "12.4 MB of 18.2 MB, 6s remaining"}
 		indeterminateLabel="Preparing"
 	/>
 </div>

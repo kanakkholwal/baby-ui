@@ -1,14 +1,17 @@
 <script lang="ts">
 import { Attachment } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof Attachment>>(props));
 </script>
 
 <div class="flex w-full max-w-80 flex-col gap-2">
 	<Attachment
-		name={(props.name as string) || "spec-draft.md"}
-		size={(props.size as string) || "18 KB"}
-		status={(props.status as "uploading" | "ready" | "error") ?? "ready"}
+		name={p.name || "spec-draft.md"}
+		size={p.size || "18 KB"}
+		status={p.status ?? "ready"}
 		progress={Number(props.progress ?? 40)}
 		onremove={() => {}}
 	/>

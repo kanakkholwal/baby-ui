@@ -3,16 +3,15 @@
 import {
 	Button,
 	Calendar,
-	type CalendarSize,
 	type DateRange,
 	InputOTP,
 	InputOTPGroup,
 	InputOTPSeparator,
 	InputOTPSlot,
-	type InputOtpSize,
 	RangeCalendar,
 } from "@baby-ui/react";
-import { useEffect, useState } from "react";
+import { type ComponentProps, useEffect, useState } from "react";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
@@ -20,9 +19,10 @@ type Props = Record<string, unknown>;
 const SAMPLE_CODE = "418206";
 
 export function InputOTPDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof InputOTP>>(props);
 	const [value, setValue] = useState("");
 	const [status, setStatus] = useState<"idle" | "verified" | "wrong">("idle");
-	const size = (props.size as InputOtpSize) ?? "md";
+	const size = p.size ?? "md";
 
 	useEffect(() => {
 		if (value.length < 6) return setStatus("idle");
@@ -70,22 +70,23 @@ export function InputOTPDemo({ props }: { props: Props }) {
 }
 
 export function CalendarDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof Calendar>>(props);
 	const [date, setDate] = useState<Date | undefined>(() => new Date());
-	const layout = (props.captionLayout as "label" | "dropdown") ?? "dropdown";
 
 	return (
 		<Calendar
 			mode="single"
 			selected={date}
 			onSelect={setDate}
-			captionLayout={layout}
-			size={(props.size as CalendarSize) ?? "md"}
+			captionLayout={p.captionLayout ?? "dropdown"}
+			size={p.size ?? "md"}
 			className="rounded-lg border border-border"
 		/>
 	);
 }
 
 export function RangeCalendarDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof RangeCalendar>>(props);
 	const [range, setRange] = useState<DateRange | undefined>(() => {
 		const from = new Date();
 		return { from, to: new Date(from.getTime() + 5 * 86_400_000) };
@@ -106,7 +107,7 @@ export function RangeCalendarDemo({ props }: { props: Props }) {
 			selected={range}
 			onSelect={setRange}
 			numberOfMonths={months}
-			size={(props.size as CalendarSize) ?? "md"}
+			size={p.size ?? "md"}
 			className="rounded-lg border border-border"
 		/>
 	);

@@ -4,6 +4,7 @@ import { Popover as PopoverPrimitive } from "@base-ui/react/popover";
 import type { ComponentProps } from "react";
 import { ANCHORED } from "../lib/anchor";
 import { cn } from "../lib/cn";
+import { popover } from "./variants";
 
 export const Popover = PopoverPrimitive.Root;
 
@@ -48,7 +49,9 @@ export function PopoverContent({
 					data-slot="popover-content"
 					className={cn(
 						ANCHORED,
-						"static w-72 rounded-xl border border-border bg-popover p-3 text-sm shadow-2xl",
+						"static",
+						popover().surface(),
+						popover().content(),
 						className,
 					)}
 					{...props}

@@ -1,5 +1,5 @@
 <script lang="ts">
-import IconArrowUpRight from "@tabler/icons-svelte/icons/arrow-up-right";
+import { IconArrowUpRight } from "@baby-ui/icons";
 import type { Product } from "$lib/products";
 
 let { product }: { product: Product } = $props();
@@ -28,7 +28,7 @@ let { product }: { product: Product } = $props();
 			class="mt-3 inline-flex h-8 w-full items-center justify-center gap-1 rounded-lg border border-border bg-background font-medium text-foreground text-xs transition-colors hover:bg-foreground/[0.06]"
 		>
 			Explore {product.name}
-			<IconArrowUpRight size={13} stroke={2} />
+			<IconArrowUpRight size={13} />
 		</a>
 		<p class="mt-2 text-[10px] text-muted-foreground">From nexonauts.com</p>
 	</div>

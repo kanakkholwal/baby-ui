@@ -15,7 +15,9 @@ const s = $derived(inputOtp({ size: getInputOtpSize() }));
 </script>
 
 <InputOTPPrimitive.Cell {cell} bind:ref data-slot="input-otp-slot" class={cn(s.slot(), classProp)} {...rest}>
-	{cell.char}
+	{#if cell.char}
+		{#key cell.char}<span class={s.value()}>{cell.char}</span>{/key}
+	{/if}
 	{#if cell.hasFakeCaret}
 		<div class={s.caret()}>
 			<div class={s.caretLine()}></div>

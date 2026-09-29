@@ -9,11 +9,11 @@ import {
 	Line,
 	LineChart,
 	ProjectionLine,
-	type ProjectionLineCurve,
-	type ProjectionLineVariant,
 	XAxis,
 	YAxis,
 } from "@baby-ui/react";
+import type { ComponentProps } from "react";
+import { controlProps } from "../data/preview-props";
 import { VISITORS, VISITORS_CONFIG } from "../data/visitors";
 
 type Props = Record<string, unknown>;
@@ -21,6 +21,7 @@ type Props = Record<string, unknown>;
 const config = VISITORS_CONFIG satisfies ChartConfig;
 
 export function ProjectionLineDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof ProjectionLine>>(props);
 	const projection = buildProjection({
 		data: VISITORS,
 		dataKey: "desktop",
@@ -36,9 +37,9 @@ export function ProjectionLineDemo({ props }: { props: Props }) {
 					<Line dataKey="desktop" fadeEdges="left" />
 					<ProjectionLine
 						data={projection}
-						variant={(props.variant as ProjectionLineVariant) ?? "dashed"}
-						curve={(props.curve as ProjectionLineCurve) ?? "linear"}
-						endMarker={props.endMarker !== false}
+						variant={p.variant ?? "dashed"}
+						curve={p.curve ?? "linear"}
+						endMarker={p.endMarker !== false}
 					/>
 					<ChartTooltip />
 				</LineChart>

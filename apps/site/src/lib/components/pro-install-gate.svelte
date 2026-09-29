@@ -1,6 +1,6 @@
 <script lang="ts">
+import { IconLock } from "@baby-ui/icons";
 import { Button } from "@baby-ui/svelte";
-import IconLock from "@tabler/icons-svelte/icons/lock";
 import { page } from "$app/state";
 
 let { name }: { name: string } = $props();
@@ -9,7 +9,7 @@ let { name }: { name: string } = $props();
 <!-- Pro source ships from the private registry, behind sign-in. -->
 <div class="flex flex-col items-start gap-4 rounded-xl border border-border bg-card p-6">
 	<span class="grid size-9 place-items-center rounded-lg border border-border text-muted-foreground">
-		<IconLock size={17} stroke={1.6} />
+		<IconLock size={17} />
 	</span>
 	<div>
 		<p class="font-medium text-foreground text-sm">{name} is a Pro component</p>

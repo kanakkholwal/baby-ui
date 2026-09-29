@@ -3,7 +3,6 @@
 import {
 	CartesianGrid,
 	ChartBrush,
-	type ChartBrushVariant,
 	type ChartConfig,
 	ChartContainer,
 	ChartTooltip,
@@ -12,7 +11,8 @@ import {
 	XAxis,
 	YAxis,
 } from "@baby-ui/react";
-import { useState } from "react";
+import { type ComponentProps, useState } from "react";
+import { controlProps } from "../data/preview-props";
 import { VISITORS, VISITORS_CONFIG } from "../data/visitors";
 
 type Props = Record<string, unknown>;
@@ -22,6 +22,7 @@ const first = VISITORS[7]?.date ?? new Date();
 const last = VISITORS[21]?.date ?? new Date();
 
 export function ChartBrushDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof ChartBrush>>(props);
 	const [range, setRange] = useState<[Date, Date]>([first, last]);
 	return (
 		<div className="w-full max-w-3xl">
@@ -44,8 +45,8 @@ export function ChartBrushDemo({ props }: { props: Props }) {
 					dataKeys={["desktop", "mobile"]}
 					range={range}
 					onRangeChange={setRange}
-					variant={(props.variant as ChartBrushVariant) ?? "area"}
-					height={Number(props.height ?? 64)}
+					variant={p.variant ?? "area"}
+					height={p.height ?? 64}
 				/>
 			</ChartContainer>
 		</div>

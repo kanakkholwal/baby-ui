@@ -1,7 +1,10 @@
 <script lang="ts">
-import { Flowchart, type FlowchartBackground, type StepNode } from "@baby-ui/svelte";
+import { Flowchart, type StepNode } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof Flowchart>>(props));
 
 const PURPLE = "#9a5cff";
 const AMBER = "#f09a2f";
@@ -84,6 +87,6 @@ function handleConditionChange(
 <Flowchart
 	{steps}
 	edges={EDGES}
-	background={(props.background as FlowchartBackground) || undefined}
+	background={p.background || undefined}
 	onConditionChange={handleConditionChange}
 />

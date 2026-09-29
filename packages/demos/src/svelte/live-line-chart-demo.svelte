@@ -3,18 +3,19 @@ import {
 	CartesianGrid,
 	ChartContainer,
 	ChartTooltip,
-	type LiveAxisPosition,
 	LiveLine,
 	LiveLineChart,
-	type LiveLineCurve,
-	type LiveLineTint,
 	type LivePoint,
 	LiveXAxis,
 	LiveYAxis,
 } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
 import { createLiveFeed, LIVE_CONFIG, LIVE_TICK_MS, numberProp } from "../data/live";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const pYAxis = $derived(controlProps<ComponentProps<typeof LiveYAxis>>(props));
+const pLine = $derived(controlProps<ComponentProps<typeof LiveLine>>(props));
 
 const KEEP_SECONDS = 120;
 const feed = createLiveFeed();
@@ -46,12 +47,12 @@ $effect(() => {
 			lerpSpeed={numberProp(props.lerpSpeed, 0.08)}
 		>
 			<CartesianGrid />
-			<LiveYAxis position={(props.position as LiveAxisPosition) ?? "left"} />
+			<LiveYAxis position={pYAxis.position ?? "left"} />
 			<LiveXAxis />
 			<LiveLine
 				dataKey="value"
-				curve={(props.curve as LiveLineCurve) ?? "monotone"}
-				tint={(props.tint as LiveLineTint) ?? "dot"}
+				curve={pLine.curve ?? "monotone"}
+				tint={pLine.tint ?? "dot"}
 				fill={props.fill !== false}
 				pulse={props.pulse !== false}
 				badge={props.badge !== false}

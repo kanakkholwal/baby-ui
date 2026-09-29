@@ -1,6 +1,6 @@
 "use client";
 
-import { type ComponentProps, useEffect, useRef } from "react";
+import { type ComponentProps, createContext, useContext, useEffect, useRef } from "react";
 import {
 	type DayButton,
 	DayPicker,
@@ -46,6 +46,9 @@ function Chevron({
 	);
 }
 
+// The month each grid shows, so the grid re-keys and replays `calendar-weeks-in` on change.
+const MonthKey = createContext("");
+
 /** A date grid on react-day-picker, as shadcn's: `mode="single" | "multiple" | "range"`. */
 export function Calendar({
 	className,
@@ -83,7 +86,7 @@ export function Calendar({
 				button_next: cn(navButton, defaults.button_next),
 				month_caption: cn(s.header(), defaults.month_caption),
 				dropdowns: cn(
-					"flex w-full items-center justify-center gap-1.5",
+					"flex w-full items-center justify-start gap-0.5",
 					defaults.dropdowns,
 				),
 				dropdown_root: cn(s.dropdown(), defaults.dropdown_root),
@@ -115,6 +118,12 @@ export function Calendar({
 					<div data-slot="calendar" ref={rootRef} className={className} {...rest} />
 				),
 				Chevron,
+				Month: ({ calendarMonth, displayIndex: _displayIndex, ...rest }) => (
+					<MonthKey.Provider value={calendarMonth.date.toISOString()}>
+						<div {...rest} />
+					</MonthKey.Provider>
+				),
+				MonthGrid: (gridProps) => <KeyedGrid {...gridProps} />,
 				DayButton: (dayProps) => <CalendarDayButton size={size} {...dayProps} />,
 				WeekNumber: ({ children, ...rest }) => (
 					<td {...rest}>
@@ -128,6 +137,10 @@ export function Calendar({
 			{...props}
 		/>
 	);
+}
+
+function KeyedGrid(props: ComponentProps<"table">) {
+	return <table key={useContext(MonthKey)} {...props} />;
 }
 
 /** One day. Carries the same data attributes as bits-ui's day, so both ports share classes. */

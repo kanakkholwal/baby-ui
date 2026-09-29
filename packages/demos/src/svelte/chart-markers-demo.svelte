@@ -2,8 +2,6 @@
 import {
 	CartesianGrid,
 	ChartContainer,
-	type ChartMarkerAppearance,
-	type ChartMarkerSize,
 	ChartMarkers,
 	ChartMarkerTooltip,
 	ChartTooltip,
@@ -13,10 +11,13 @@ import {
 	XAxis,
 	YAxis,
 } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
 import { EVENTS } from "../data/events";
+import { controlProps } from "../data/preview-props";
 import { VISITORS, VISITORS_CONFIG } from "../data/visitors";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof ChartMarkers>>(props));
 
 const markers = EVENTS.map((event, i) =>
 	i === 0
@@ -38,8 +39,8 @@ const markers = EVENTS.map((event, i) =>
 			<Line dataKey="desktop" />
 			<ChartMarkers
 				items={markers}
-				size={(props.size as ChartMarkerSize) ?? "md"}
-				appearance={(props.appearance as ChartMarkerAppearance) ?? "solid"}
+				size={p.size ?? "md"}
+				appearance={p.appearance ?? "solid"}
 				showLines={props.showLines !== false}
 			/>
 			<ChartTooltip>

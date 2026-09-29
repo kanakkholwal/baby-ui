@@ -3,19 +3,11 @@ import {
 	Background,
 	Badge,
 	CartesianGrid,
-	type ChartAspect,
-	type ChartBackgroundVariant,
 	ChartContainer,
-	type ChartGridVariant,
 	ChartLegend,
-	type ChartLegendAlign,
 	ChartLegendContent,
-	type ChartReferenceTone,
-	type ChartSelectionEdge,
-	type ChartStatus,
 	ChartTooltip,
 	ChartTooltipContent,
-	type ChartTooltipIndicator,
 	Line,
 	LineChart,
 	ReferenceArea,
@@ -23,9 +15,23 @@ import {
 	XAxis,
 	YAxis,
 } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 import { localeProp, VISITORS, VISITORS_CONFIG } from "../data/visitors";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof ChartContainer>>(props));
+const pLine = $derived(controlProps<ComponentProps<typeof LineChart>>(props));
+const pBg = $derived(controlProps<ComponentProps<typeof Background>>(props));
+const pGrid = $derived(controlProps<ComponentProps<typeof CartesianGrid>>(props));
+const pRef = $derived(controlProps<ComponentProps<typeof ReferenceArea>>(props));
+const pSel = $derived(controlProps<ComponentProps<typeof SelectionArea>>(props));
+const pTooltipContent = $derived(
+	controlProps<ComponentProps<typeof ChartTooltipContent>>(props),
+);
+const pLegendContent = $derived(
+	controlProps<ComponentProps<typeof ChartLegendContent>>(props),
+);
 
 const BASE_PARTS = ["Grid", "Axes", "Tooltip", "Legend"];
 </script>
@@ -39,31 +45,31 @@ const BASE_PARTS = ["Grid", "Axes", "Tooltip", "Legend"];
 	<ChartContainer
 		config={VISITORS_CONFIG}
 		title="Chart base"
-		aspect={(props.aspect as ChartAspect) ?? "video"}
+		aspect={p.aspect ?? "video"}
 		locale={localeProp(props.locale)}
 	>
-		<LineChart data={VISITORS} status={(props.status as ChartStatus) ?? "ready"}>
+		<LineChart data={VISITORS} status={pLine.status ?? "ready"}>
 			{#if props.background && props.background !== "none"}
-				<Background variant={props.background as ChartBackgroundVariant} />
+				<Background variant={pBg.variant} />
 			{/if}
-			<CartesianGrid variant={(props.variant as ChartGridVariant) ?? "dashed"} />
+			<CartesianGrid variant={pGrid.variant ?? "dashed"} />
 			{#if props.tone && props.tone !== "none"}
-				<ReferenceArea y1={2400} y2={3000} label="Target" tone={props.tone as ChartReferenceTone} />
+				<ReferenceArea y1={2400} y2={3000} label="Target" tone={pRef.tone} />
 			{/if}
 			<YAxis />
 			<XAxis />
-			<SelectionArea edge={(props.edge as ChartSelectionEdge) ?? "dashed"} />
+			<SelectionArea edge={pSel.edge ?? "dashed"} />
 			<Line dataKey="desktop" />
 			<Line dataKey="mobile" />
 			<ChartTooltip datePill={props.datePill !== false}>
 				{#snippet content()}
-					<ChartTooltipContent indicator={(props.indicator as ChartTooltipIndicator) ?? "dot"} />
+					<ChartTooltipContent indicator={pTooltipContent.indicator ?? "dot"} />
 				{/snippet}
 			</ChartTooltip>
 		</LineChart>
 		<ChartLegend>
 			{#snippet content()}
-				<ChartLegendContent align={(props.align as ChartLegendAlign) ?? "center"} />
+				<ChartLegendContent align={pLegendContent.align ?? "center"} />
 			{/snippet}
 		</ChartLegend>
 	</ChartContainer>

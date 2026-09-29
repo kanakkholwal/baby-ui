@@ -92,6 +92,7 @@ export function Button(props: ButtonProps) {
 		const anchor = rest as AnchorHTMLAttributes<HTMLAnchorElement>;
 		return (
 			<a
+				data-slot="button"
 				{...anchor}
 				href={loading ? undefined : anchor.href}
 				role={loading ? "link" : undefined}
@@ -122,6 +123,7 @@ export function Button(props: ButtonProps) {
 	const btn = rest as ButtonHTMLAttributes<HTMLButtonElement>;
 	return (
 		<button
+			data-slot="button"
 			{...btn}
 			type={btn.type ?? "button"}
 			className={classes}

@@ -1,12 +1,15 @@
 <script lang="ts">
-import { TypingText, type TypingTextSize } from "@baby-ui/svelte";
+import { TypingText } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof TypingText>>(props));
 </script>
 
 {#key String(props.smooth ?? "")}
 	<TypingText
-		text={(props.text as string) || "Creates a typing effect for given text"}
+		text={p.text || "Creates a typing effect for given text"}
 		delay={Number(props.delay ?? 32)}
 		repeat={props.repeat !== false}
 		waitMs={Number(props.waitMs ?? 1000)}
@@ -14,7 +17,7 @@ let { props = {} }: { props?: Record<string, unknown> } = $props();
 		fadeDurationMs={Number(props.fadeDurationMs ?? 300)}
 		grow={props.grow === true}
 		hideCursorOnComplete={props.hideCursorOnComplete === true}
-		size={(props.size as TypingTextSize) ?? "md"}
+		size={p.size ?? "md"}
 		class="text-foreground"
 	/>
 {/key}

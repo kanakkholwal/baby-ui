@@ -1,7 +1,8 @@
 "use client";
 
-import { type RecordRow, type RecordsDensity, RecordsTable } from "@baby-ui/react";
-import { useEffect, useState } from "react";
+import { type RecordRow, RecordsTable } from "@baby-ui/react";
+import { type ComponentProps, useEffect, useState } from "react";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
@@ -59,6 +60,7 @@ const ROWS: RecordRow[] = [
 const MODEL_OPTIONS = ["GPT-5", "Claude Sonnet 5", "Gemini 2.5 Pro"];
 
 export function RecordsTableDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof RecordsTable>>(props);
 	const [calculatingColumn, setCalculatingColumn] = useState<string | null>(null);
 	const [resolvedCount, setResolvedCount] = useState(0);
 	const [showAi, setShowAi] = useState(false);
@@ -79,8 +81,8 @@ export function RecordsTableDemo({ props }: { props: Props }) {
 		<RecordsTable
 			rows={ROWS}
 			modelOptions={MODEL_OPTIONS}
-			fill={props.fill as boolean | undefined}
-			density={props.density as RecordsDensity | undefined}
+			fill={p.fill}
+			density={p.density}
 			showAiColumn={showAi}
 			onShowAiColumnChange={setShowAi}
 			calculatingColumn={calculatingColumn}

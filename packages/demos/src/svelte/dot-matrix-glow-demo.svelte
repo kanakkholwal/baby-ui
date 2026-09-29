@@ -1,21 +1,18 @@
 <script lang="ts">
-import {
-	Button,
-	DotMatrixGlow,
-	type DotMatrixGlowShape,
-	type DotMatrixGlowSize,
-	type DotMatrixGlowTone,
-} from "@baby-ui/svelte";
+import { Button, DotMatrixGlow } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof DotMatrixGlow>>(props));
 </script>
 
 <div class="relative h-96 w-full max-w-3xl overflow-hidden rounded-xl border border-border">
 	<DotMatrixGlow
 		position="absolute"
-		shape={(props.shape as DotMatrixGlowShape) ?? "dot"}
-		size={(props.size as DotMatrixGlowSize) ?? "md"}
-		tone={(props.tone as DotMatrixGlowTone) ?? "primary"}
+		shape={p.shape ?? "dot"}
+		size={p.size ?? "md"}
+		tone={p.tone ?? "primary"}
 		glowRadius={Number(props.glowRadius ?? 160)}
 		ripple={props.ripple !== false}
 		ambient={props.ambient === true}

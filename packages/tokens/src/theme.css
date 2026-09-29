@@ -39,10 +39,25 @@
 	--color-chart-positive: var(--chart-positive);
 	--color-chart-negative: var(--chart-negative);
 
+	--color-surface: var(--surface);
+	--color-overlay: var(--overlay);
+	--color-default: var(--default);
+	--color-default-hover: var(--default-hover);
+	--color-segment: var(--segment);
+	--color-accent-ink: var(--accent-ink);
+	--color-primary-hover: var(--primary-hover);
+
+	--shadow-surface: var(--surface-shadow);
+	--shadow-overlay: var(--overlay-shadow);
+	--shadow-field: var(--field-shadow);
+	--shadow-thumb: var(--thumb-shadow);
+
 	--radius-sm: calc(var(--radius) - 4px);
 	--radius-md: calc(var(--radius) - 2px);
 	--radius-lg: var(--radius);
 	--radius-xl: calc(var(--radius) + 4px);
+	--radius-2xl: calc(var(--radius) + 6px);
+	--radius-3xl: calc(var(--radius) + 10px);
 
 	--font-sans: var(--font-body);
 	--font-heading: var(--font-heading);

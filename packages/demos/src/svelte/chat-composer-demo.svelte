@@ -1,14 +1,10 @@
 <script lang="ts">
-import {
-	ChatComposer,
-	type ChatComposerSize,
-	type ChatComposerVariant,
-	type ChatMessage,
-	type ChatStatus,
-} from "@baby-ui/svelte";
-import { onDestroy } from "svelte";
+import { ChatComposer, type ChatMessage, type ChatStatus } from "@baby-ui/svelte";
+import { type ComponentProps, onDestroy } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof ChatComposer>>(props));
 
 const TOPICS = [
 	{ key: "flavors", label: "Flavors" },
@@ -94,7 +90,7 @@ function onSend(text: string, key = topic) {
 	{onSend}
 	onNew={() => (threads = { ...threads, [topic]: [] })}
 	{status}
-	variant={(props.variant as ChatComposerVariant) ?? "framed"}
-	size={(props.size as ChatComposerSize) ?? "sm"}
+	variant={p.variant ?? "framed"}
+	size={p.size ?? "sm"}
 	labels={{ placeholder: "Prompt or tag a flavor with @" }}
 />

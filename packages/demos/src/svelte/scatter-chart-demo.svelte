@@ -3,28 +3,27 @@ import {
 	CartesianGrid,
 	ChartContainer,
 	ChartLegend,
-	type ChartStatus,
 	ChartTooltip,
 	Scatter,
 	ScatterChart,
-	type ScatterShape,
-	type ScatterSize,
 	XAxis,
 	YAxis,
 } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 import { READINGS, READINGS_CONFIG } from "../data/prices";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof Scatter>>(props));
+const pChart = $derived(controlProps<ComponentProps<typeof ScatterChart>>(props));
 
-const size = $derived((props.size as ScatterSize) ?? "md");
-const shape = $derived(
-	props.shape && props.shape !== "auto" ? (props.shape as ScatterShape) : undefined,
-);
+const size = $derived(p.size ?? "md");
+const shape = $derived(props.shape && props.shape !== "auto" ? p.shape : undefined);
 </script>
 
 <div class="w-full max-w-3xl">
 	<ChartContainer config={READINGS_CONFIG} title="Sensor readings">
-		<ScatterChart data={READINGS} status={(props.status as ChartStatus) ?? "ready"}>
+		<ScatterChart data={READINGS} status={pChart.status ?? "ready"}>
 			<CartesianGrid />
 			<YAxis />
 			<XAxis />

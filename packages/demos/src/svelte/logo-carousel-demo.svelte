@@ -1,9 +1,11 @@
 <script lang="ts">
 import { LogoCarousel } from "@baby-ui/svelte";
-import type { Snippet } from "svelte";
+import type { ComponentProps, Snippet } from "svelte";
 import { BRANDS } from "../data/media";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof LogoCarousel>>(props));
 </script>
 
 {#snippet logo(item: unknown)}
@@ -23,6 +25,6 @@ let { props = {} }: { props?: Record<string, unknown> } = $props();
 	items={BRANDS}
 	logo={logo as Snippet<[unknown]>}
 	columnCount={Number(props.columnCount ?? 4)}
-	direction={(props.direction as "ltr" | "rtl") ?? "ltr"}
+	direction={p.direction ?? "ltr"}
 	class="w-full max-w-lg gap-3"
 />

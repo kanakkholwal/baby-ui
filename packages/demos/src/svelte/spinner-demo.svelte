@@ -1,10 +1,13 @@
 <script lang="ts">
 import { Button, Spinner } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof Spinner>>(props));
 
-const size = $derived((props.size as "sm" | "md" | "lg" | "xl") ?? "md");
-const label = $derived((props.label as string) || "Checking availability");
+const size = $derived(p.size ?? "md");
+const label = $derived(p.label || "Checking availability");
 </script>
 
 <div class="flex w-64 flex-col items-center gap-4">

@@ -92,6 +92,8 @@ const monthFormat = $derived(
 							{monthIndex}
 						/>
 					</RangeCalendarHeader>
+					<!-- Re-keyed per month so the weeks replay calendar-weeks-in instead of snapping. -->
+					{#key month.value.toString()}
 					<RangeCalendarGrid>
 						<RangeCalendarGridHead>
 							<RangeCalendarGridRow class="select-none">
@@ -116,6 +118,7 @@ const monthFormat = $derived(
 							{/each}
 						</RangeCalendarGridBody>
 					</RangeCalendarGrid>
+					{/key}
 				</RangeCalendarMonth>
 			{/each}
 		</RangeCalendarMonths>

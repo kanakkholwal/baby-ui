@@ -16,8 +16,9 @@ Any agent (Claude Code, Codex, Cursor, Copilot) should read this file first.
 - Never write custom CSS when Tailwind utilities and CSS variables can do it. Custom CSS is
   for keyframes, `::backdrop`, pseudo-element thumbs, scrollbars, and nothing else.
 - Never add site-only CSS to `packages/tokens`; it goes in `apps/site/src/routes/layout.css`.
-- Never use Lucide. Site chrome uses `@tabler/icons-svelte`; registry components hand-draw Tabler
-  glyphs as inline `<svg>` (viewBox 0 0 24 24, stroke 2), no icon package import.
+- Never use Lucide or Tabler in the site. Site chrome uses `@baby-ui/icons` (Solar line-duotone/linear,
+  generated from `packages/icons/icons.json`; add an icon there, run `pnpm --filter
+  @baby-ui/icons generate`). Registry components hand-draw inline `<svg>`, no icon package import.
 - Never use `--accent` as a hover surface. Hovers are `bg-foreground/[0.06]`.
 - Never leave a comment over 2 lines or a file-header comment (`scripts/check-comments.mjs --all`).
 - Never print licence/copyright credits on any component page, base or ported — per-component
@@ -122,9 +123,15 @@ Any agent (Claude Code, Codex, Cursor, Copilot) should read this file first.
     (`packages/demos/src/data/samples.ts`, SCREAMING_SNAKE slug) and usage from required-prop
     defaults. Hand-written demo or usage files always win.
   - Tailwind skips gitignored files: generated files carry no classes of their own.
+- `DESIGN.md` is the look-and-motion contract; update it with any token or contract change.
+- Class contracts are `tv()` objects with one slot per part (`backdrop`, `popup`, `panel`),
+  never UPPER_CASE class-string constants (user, 2026-09-30).
+- Never name another UI library (e.g. the one a design was studied from) in code, comments or
+  docs; describe the behaviour itself (user, 2026-09-30).
 - Motion is CSS-only: `--duration-*`, `--ease-*`, `--enter-scale`, `--press-scale`. Exits
-  mirror entrances and use `--duration-exit`. Anchored surfaces grow from the trigger edge
-  (`ANCHORED`); menus, selects and comboboxes unfold (`UNFOLD`) in `lib/anchor.ts`.
+  mirror entrances and use `--duration-exit`. Every anchored surface (popover, tooltip,
+  dropdown, select, combobox) uses `ANCHORED` in `lib/anchor.ts`: a zoom from 0.9 plus a
+  4px slide from the trigger, 150ms in and 100ms out to 0.95 on `ease` (user, 2026-09-29).
 - **HARD RULE:** any component whose own content changes size or row count at runtime
   (expanding a tree, filtering a list, collapsing a section) animates that change the same
   way Collapsible does: `grid-template-rows` (`0fr` ↔ `1fr`) with an `overflow-hidden` wrapper

@@ -1,4 +1,5 @@
 <script lang="ts">
+import { IconArrowRight, IconRefresh } from "@baby-ui/icons";
 import {
 	Badge,
 	Button,
@@ -6,8 +7,6 @@ import {
 	ShowcaseGrid,
 	ShowcasePanel,
 } from "@baby-ui/svelte";
-import IconArrowRight from "@tabler/icons-svelte/icons/arrow-right";
-import IconRefresh from "@tabler/icons-svelte/icons/refresh";
 import { page } from "$app/state";
 import { type CatalogItem, loadCatalog } from "$lib/registry";
 
@@ -90,7 +89,6 @@ const message = $derived(
 									</span>
 									<IconArrowRight
 										size={14}
-										stroke={1.6}
 										class="shrink-0 text-muted-foreground transition-transform duration-150 group-hover:translate-x-0.5 motion-reduce:transition-none"
 									/>
 								</a>
@@ -105,7 +103,7 @@ const message = $derived(
 			<div class="flex w-full flex-wrap items-center justify-center gap-3">
 				{#if !notFound}
 					<Button onclick={() => location.reload()}>
-						<IconRefresh stroke={1.7} />
+						<IconRefresh />
 						Try again
 					</Button>
 				{/if}

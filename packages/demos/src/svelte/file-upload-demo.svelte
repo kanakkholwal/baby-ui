@@ -1,8 +1,11 @@
 <script lang="ts">
-import { FileUpload, type FileUploadSize, type UploadFile } from "@baby-ui/svelte";
+import { FileUpload, type UploadFile } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 import { AVATAR_MAX_BYTES, UPLOAD_TICK_MS } from "../data/utility-inputs";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof FileUpload>>(props));
 
 let files = $state<UploadFile[]>([]);
 const timers = new Map<string, ReturnType<typeof setInterval>>();
@@ -42,8 +45,8 @@ function upload(id: string) {
 		accept="image/*,.pdf"
 		maxSize={AVATAR_MAX_BYTES}
 		maxFiles={4}
-		size={(props.size as FileUploadSize) ?? "md"}
-		disabled={Boolean(props.disabled)}
+		size={p.size ?? "md"}
+		disabled={p.disabled ?? false}
 		onFilesAdded={(added) => {
 			const next = added.map((file) => ({
 				id: crypto.randomUUID(),

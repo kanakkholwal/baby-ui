@@ -1,6 +1,6 @@
 <script lang="ts">
+import { IconBrandGithub } from "@baby-ui/icons";
 import { Button } from "@baby-ui/svelte";
-import IconBrandGithub from "@tabler/icons-svelte/icons/brand-github";
 import { page } from "$app/state";
 import Logo from "$lib/components/logo.svelte";
 import ShowcaseDots from "./showcase-dots.svelte";
@@ -37,7 +37,7 @@ const CELL = "border-border border-r border-b p-6 md:p-8";
 							size="sm"
 							variant="outline"
 						>
-							<IconBrandGithub stroke={1.6} />
+							<IconBrandGithub />
 							Star on GitHub
 						</Button>
 					</div>

@@ -1,8 +1,10 @@
 <script lang="ts">
-import { DateRangePicker, type DateRangePickerSize } from "@baby-ui/svelte";
+import { DateRangePicker } from "@baby-ui/svelte";
 import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof DateRangePicker>>(props));
 
 // A report filter: empty until the reader picks a range or a preset.
 let range = $state<ComponentProps<typeof DateRangePicker>["value"]>();
@@ -12,8 +14,8 @@ let range = $state<ComponentProps<typeof DateRangePicker>["value"]>();
 	<DateRangePicker
 		bind:value={range}
 		aria-label="Report period"
-		confirm={props.confirm === true}
-		locale={(props.locale as string) || undefined}
-		size={(props.size as DateRangePickerSize) ?? "md"}
+		confirm={p.confirm ?? false}
+		locale={p.locale || undefined}
+		size={p.size ?? "md"}
 	/>
 </div>

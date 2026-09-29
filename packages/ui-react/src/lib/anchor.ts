@@ -4,7 +4,8 @@ import { tv } from "tailwind-variants";
 // `static`, or it can't measure it.
 const ANCHORED_BASE = [
 	"fixed top-0 left-0 z-50 pointer-events-none opacity-0",
-	"duration-[var(--duration-exit)] ease-[var(--ease-out)]",
+	// Plain `ease`: 150ms in, 100ms out.
+	"duration-[var(--duration-exit)] ease-[var(--ease-smooth)]",
 	// `data-state` is bits-ui's own attribute; `data-open`/`data-closed` (presence, not a
 	// value) and `data-starting-style` are Base UI's equivalents.
 	"data-[state=open]:pointer-events-auto data-[state=open]:opacity-100",
@@ -24,7 +25,7 @@ const ANCHORED_BASE = [
 export const ANCHORED = tv({
 	base: [
 		...ANCHORED_BASE,
-		"origin-(--transform-origin) scale-[var(--enter-scale)] transition-[opacity,scale,translate]",
+		"origin-(--transform-origin) scale-[var(--popover-exit-scale)] transition-[opacity,scale,translate]",
 		// The closed state leans toward its trigger, so opening reads as unfolding from it.
 		// `side` is Radix/bits-ui/Base UI's own popper attribute.
 		"data-[state=closed]:data-[placement^=bottom]:-translate-y-1",
@@ -35,20 +36,23 @@ export const ANCHORED = tv({
 		"data-[closed]:data-[side=top]:translate-y-1",
 		"data-[state=open]:scale-100",
 		"data-[open]:scale-100",
-		"starting:data-[state=open]:scale-[var(--enter-scale)]",
+		"starting:data-[state=open]:scale-[var(--popover-enter-scale)]",
 		"starting:data-[state=open]:data-[placement^=bottom]:-translate-y-1",
 		"starting:data-[state=open]:data-[placement^=top]:translate-y-1",
 		"starting:data-[state=open]:data-[side=bottom]:-translate-y-1",
 		"starting:data-[state=open]:data-[side=top]:translate-y-1",
-		"data-[starting-style]:scale-[var(--enter-scale)]",
+		"data-[starting-style]:scale-[var(--popover-enter-scale)]",
 		"data-[starting-style]:data-[side=bottom]:-translate-y-1",
-		"data-[starting-style]:data-[side=top]:-translate-y-1",
+		"data-[starting-style]:data-[side=top]:translate-y-1",
+		// Side placements lean toward the trigger too.
+		"data-[closed]:data-[side=left]:translate-x-1 data-[closed]:data-[side=right]:-translate-x-1",
+		"data-[starting-style]:data-[side=left]:translate-x-1 data-[starting-style]:data-[side=right]:-translate-x-1",
 	],
 })();
 
 /**
- * Menus and selects unfold from the trigger edge instead of scaling. Combobox is a plain
- * Popover (`ANCHORED`), not a list-of-options surface in the same sense.
+ * Unfolds a surface from its trigger edge instead of scaling. Base menus and selects use
+ * `ANCHORED` (the zoom) since 2026-09-29; this stays for surfaces that opt in.
  */
 export const UNFOLD = tv({
 	base: [
@@ -88,9 +92,10 @@ export const UNFOLD = tv({
 /** Rows inside an `UNFOLD` surface settle in one after another; `stagger()` numbers them. */
 export const UNFOLD_ITEM = tv({
 	base: [
-		"transition-[color,background-color,opacity,translate] duration-[var(--duration-tooltip)] ease-[var(--ease-out)]",
+		"transition-[color,background-color,opacity,translate,scale] duration-[var(--duration-tooltip)] ease-[var(--ease-out)]",
 		// Only the first three rows stagger, so a long menu still settles in 240ms.
-		"[--stagger:calc(min(var(--i,0),2)*var(--stagger-step))] [transition-delay:0s,0s,var(--stagger),var(--stagger)]",
+		"[--stagger:calc(min(var(--i,0),2)*var(--stagger-step))] [transition-delay:0s,0s,var(--stagger),var(--stagger),0s]",
+		"active:scale-[var(--press-scale-row)]",
 		"group-data-[state=closed]/surface:opacity-0 group-data-[state=closed]/surface:-translate-y-1.5",
 		"group-data-[state=closed]/surface:[--stagger:0s] group-data-[state=closed]/surface:duration-[var(--duration-exit)]",
 		"group-data-[closed]/surface:opacity-0 group-data-[closed]/surface:-translate-y-1.5",

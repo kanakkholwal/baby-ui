@@ -5,21 +5,23 @@ import {
 	DrawerClose,
 	DrawerContent,
 	DrawerDescription,
-	type DrawerDirection,
 	DrawerFooter,
 	DrawerHeader,
 	DrawerTitle,
 	DrawerTrigger,
-	type DrawerVariant,
 	Slider,
 } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof Drawer>>(props));
+const pContent = $derived(controlProps<ComponentProps<typeof DrawerContent>>(props));
 
 let open = $state(false);
 let budget = $state(60);
-const direction = $derived((props.direction as DrawerDirection) ?? "bottom");
-const variant = $derived((props.variant as DrawerVariant) ?? "default");
+const direction = $derived(p.direction ?? "bottom");
+const variant = $derived(pContent.variant ?? "default");
 </script>
 
 <Drawer bind:open {direction} dismissible={props.dismissible !== false}>

@@ -1,6 +1,8 @@
 "use client";
 
 import { type StreamingSource, StreamingText, type StreamingToken } from "@baby-ui/react";
+import type { ComponentProps } from "react";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
@@ -50,11 +52,12 @@ const FOLLOW_UPS = [
 ];
 
 export function StreamingTextDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof StreamingText>>(props);
 	return (
 		<div className="w-full max-w-96">
 			<StreamingText
 				key={String(props.layout)}
-				layout={(props.layout as "inline" | "card") ?? "inline"}
+				layout={p.layout ?? "inline"}
 				content={CONTENT}
 				sources={SOURCES}
 				followUps={FOLLOW_UPS}

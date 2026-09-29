@@ -5,15 +5,14 @@ import {
 	type ChartConfig,
 	ChartContainer,
 	ChartLegend,
-	type ChartStatus,
 	ChartTooltip,
 	Scatter,
 	ScatterChart,
-	type ScatterShape,
-	type ScatterSize,
 	XAxis,
 	YAxis,
 } from "@baby-ui/react";
+import type { ComponentProps } from "react";
+import { controlProps } from "../data/preview-props";
 import { READINGS, READINGS_CONFIG } from "../data/prices";
 
 type Props = Record<string, unknown>;
@@ -21,13 +20,14 @@ type Props = Record<string, unknown>;
 const config = READINGS_CONFIG satisfies ChartConfig;
 
 export function ScatterChartDemo({ props }: { props: Props }) {
-	const size = (props.size as ScatterSize) ?? "md";
-	const shape =
-		props.shape && props.shape !== "auto" ? (props.shape as ScatterShape) : undefined;
+	const p = controlProps<ComponentProps<typeof Scatter>>(props);
+	const pChart = controlProps<ComponentProps<typeof ScatterChart>>(props);
+	const size = p.size ?? "md";
+	const shape = props.shape && props.shape !== "auto" ? p.shape : undefined;
 	return (
 		<div className="w-full max-w-3xl">
 			<ChartContainer config={config} title="Sensor readings">
-				<ScatterChart data={READINGS} status={(props.status as ChartStatus) ?? "ready"}>
+				<ScatterChart data={READINGS} status={pChart.status ?? "ready"}>
 					<CartesianGrid />
 					<YAxis />
 					<XAxis />

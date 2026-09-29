@@ -23,9 +23,9 @@ import {
 	ToggleGroup,
 	ToggleGroupItem,
 	Typography,
-	type TypographyVariant,
 } from "@baby-ui/react";
-import { useEffect, useState } from "react";
+import { type ComponentProps, useEffect, useState } from "react";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
@@ -33,11 +33,12 @@ const LOREM =
 	"Components here are copied into your project rather than installed, which means you own the source and can change anything. The registry only decides what the first version looks like. Every port satisfies the same ComponentSpec, so the React and Svelte builds behave identically even though neither is generated from the other.";
 
 export function SpinnerDemo({ props }: { props: Props }) {
-	const label = (props.label as string) || "Checking availability";
+	const p = controlProps<ComponentProps<typeof Spinner>>(props);
+	const label = p.label || "Checking availability";
 	return (
 		<div className="flex w-64 flex-col items-center gap-4">
 			<div className="flex items-center gap-2.5 text-muted-foreground">
-				<Spinner size={(props.size as "sm" | "md" | "lg" | "xl") ?? "md"} label={label} />
+				<Spinner size={p.size ?? "md"} label={label} />
 				<span className="text-sm">{label}</span>
 			</div>
 			<Button loading loadingLabel="Reserving…" className="w-full">
@@ -62,10 +63,11 @@ const MARKS = [
 ];
 
 export function ToggleDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof Toggle>>(props);
 	const [pressed, setPressed] = useState(false);
 	const [on, setOn] = useState<Record<string, boolean>>({});
 	useEffect(() => setPressed(Boolean(props.pressed)), [props.pressed]);
-	const size = (props.size as "sm" | "md" | "lg" | "xl") ?? "md";
+	const size = p.size ?? "md";
 
 	return (
 		<div className="inline-flex items-center gap-1 rounded-xl border border-border p-1">
@@ -74,7 +76,7 @@ export function ToggleDemo({ props }: { props: Props }) {
 					key={mark.id}
 					size={mark.id === "bold" ? size : "md"}
 					label={mark.label}
-					disabled={mark.id === "bold" && Boolean(props.disabled)}
+					disabled={mark.id === "bold" && (p.disabled ?? false)}
 					pressed={mark.id === "bold" ? pressed : Boolean(on[mark.id])}
 					onPressedChange={(next) =>
 						mark.id === "bold"
@@ -104,7 +106,8 @@ const VIEWS = [
 ];
 
 export function ToggleGroupDemo({ props }: { props: Props }) {
-	const type = (props.type as "single" | "multiple") ?? "single";
+	const p = controlProps<ComponentProps<typeof ToggleGroup>>(props);
+	const type = p.type ?? "single";
 	const [value, setValue] = useState<string | string[]>(
 		type === "multiple" ? ["grid"] : "grid",
 	);
@@ -114,8 +117,9 @@ export function ToggleGroupDemo({ props }: { props: Props }) {
 			value={value}
 			onValueChange={setValue}
 			type={type}
-			size={(props.size as "sm" | "md" | "lg" | "xl") ?? "md"}
-			disabled={Boolean(props.disabled)}
+			variant={p.variant ?? "default"}
+			size={p.size ?? "md"}
+			disabled={p.disabled ?? false}
 			label="View"
 		>
 			{VIEWS.map((view) => (
@@ -128,9 +132,10 @@ export function ToggleGroupDemo({ props }: { props: Props }) {
 }
 
 export function CollapsibleDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof Collapsible>>(props);
 	return (
 		<div className="w-full max-w-80">
-			<Collapsible defaultOpen={Boolean(props.open)}>
+			<Collapsible defaultOpen={p.open ?? false}>
 				<CollapsibleTrigger>Advanced options</CollapsibleTrigger>
 				<CollapsibleContent>
 					Build command, install command and the output directory. Changing these rebuilds
@@ -142,13 +147,14 @@ export function CollapsibleDemo({ props }: { props: Props }) {
 }
 
 export function ShowMoreDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof ShowMore>>(props);
 	return (
 		<div className="w-full max-w-80">
 			<ShowMore
-				lines={Number(props.lines ?? 3)}
-				maxHeight={Number(props.maxHeight ?? 320)}
-				moreLabel={(props.moreLabel as string) || "Show more"}
-				lessLabel={(props.lessLabel as string) || "Show less"}
+				lines={Number(p.lines ?? 3)}
+				maxHeight={Number(p.maxHeight ?? 320)}
+				moreLabel={p.moreLabel || "Show more"}
+				lessLabel={p.lessLabel || "Show less"}
 			>
 				<p>{LOREM}</p>
 			</ShowMore>
@@ -163,9 +169,9 @@ const ROWS: [string, string][] = [
 ];
 
 export function ShortcutDemo({ props }: { props: Props }) {
-	const variant =
-		(props.variant as "default" | "ghost" | "solid" | "outline") ?? "default";
-	const size = (props.size as "sm" | "md" | "lg" | "xl") ?? "md";
+	const p = controlProps<ComponentProps<typeof Shortcut>>(props);
+	const variant = p.variant ?? "default";
+	const size = p.size ?? "md";
 	const [log, setLog] = useState<string[]>([]);
 	const note = (action: string) => setLog((prev) => [action, ...prev].slice(0, 3));
 	return (
@@ -174,10 +180,10 @@ export function ShortcutDemo({ props }: { props: Props }) {
 				<Button variant="outline" size="sm" onClick={() => note("New file")}>
 					New file
 					<Shortcut
-						shortcut={(props.shortcut as string) || "cmd+n"}
+						shortcut={p.shortcut || "cmd+n"}
 						variant={variant}
 						size={size}
-						joined={Boolean(props.joined)}
+						joined={p.joined ?? false}
 					/>
 				</Button>
 				<Button size="sm" onClick={() => note("Sent")}>
@@ -206,11 +212,12 @@ export function ShortcutDemo({ props }: { props: Props }) {
 }
 
 export function TypographyDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof Typography>>(props);
 	return (
 		<div className="flex w-full max-w-80 flex-col gap-3">
 			<Typography variant="h2">Release 0.4</Typography>
 			<Typography variant="muted">Shipped 20 September 2026</Typography>
-			<Typography variant={(props.variant as TypographyVariant) ?? "body"}>
+			<Typography variant={p.variant ?? "body"}>
 				Overlays now animate out as well as in, and every anchored surface grows from the
 				edge nearest its trigger.
 			</Typography>
@@ -219,13 +226,14 @@ export function TypographyDemo({ props }: { props: Props }) {
 }
 
 export function GaugeDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof Gauge>>(props);
 	return (
 		<div className="flex items-center gap-6">
 			<Gauge
-				value={Number(props.value ?? 68)}
-				size={Number(props.size ?? 96)}
-				thickness={Number(props.thickness ?? 8)}
-				tone={(props.tone as "default" | "success" | "warning" | "danger") ?? "default"}
+				value={Number(p.value ?? 68)}
+				size={Number(p.size ?? 96)}
+				thickness={Number(p.thickness ?? 8)}
+				tone={p.tone ?? "default"}
 				label="Performance score"
 			/>
 			<p className="max-w-40 text-muted-foreground text-xs">
@@ -287,31 +295,33 @@ const REGIONS = [
 ];
 
 export function ScrubFieldDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof ScrubField>>(props);
 	const [value, setValue] = useState(Number(props.defaultValue ?? 96));
 	useEffect(() => setValue(Number(props.defaultValue ?? 96)), [props.defaultValue]);
 	return (
 		<div className="w-32">
 			<ScrubField
-				label={(props.label as string) || "W"}
+				label={p.label || "W"}
 				value={value}
 				onValueChange={setValue}
-				min={Number(props.min ?? 0)}
-				max={Number(props.max ?? 999)}
-				step={Number(props.step ?? 1)}
-				largeStep={Number(props.largeStep ?? 10)}
-				suffix={(props.suffix as string) || undefined}
-				size={(props.size as "sm" | "md" | "lg") ?? "md"}
-				tone={(props.tone as "default" | "edited") ?? "default"}
-				disabled={Boolean(props.disabled)}
+				min={Number(p.min ?? 0)}
+				max={Number(p.max ?? 999)}
+				step={Number(p.step ?? 1)}
+				largeStep={Number(p.largeStep ?? 10)}
+				suffix={p.suffix || undefined}
+				size={p.size ?? "md"}
+				tone={p.tone ?? "default"}
+				disabled={p.disabled ?? false}
 			/>
 		</div>
 	);
 }
 
 export function ScrollAreaDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof ScrollArea>>(props);
 	return (
 		<div className="w-64 rounded-xl border border-border bg-card p-1">
-			<ScrollArea maxHeight={(props.maxHeight as string) || "12rem"}>
+			<ScrollArea maxHeight={p.maxHeight || "12rem"}>
 				<ul className="flex flex-col">
 					{REGIONS.map((region) => (
 						<li

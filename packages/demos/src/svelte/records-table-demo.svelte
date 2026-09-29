@@ -1,7 +1,10 @@
 <script lang="ts">
-import { type RecordRow, type RecordsDensity, RecordsTable } from "@baby-ui/svelte";
+import { type RecordRow, RecordsTable } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof RecordsTable>>(props));
 
 const ROWS: RecordRow[] = [
 	{
@@ -85,8 +88,8 @@ function handleCalculate(column: string) {
 <RecordsTable
 	rows={ROWS}
 	modelOptions={MODEL_OPTIONS}
-	fill={props.fill as boolean | undefined}
-	density={props.density as RecordsDensity | undefined}
+	fill={p.fill}
+	density={p.density}
 	bind:showAiColumn={showAi}
 	{calculatingColumn}
 	{resolvedCount}

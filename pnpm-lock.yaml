@@ -6,6 +6,12 @@ settings:
 
 catalogs:
   default:
+    '@base-ui/react':
+      specifier: ^1.8.0
+      version: 1.8.0
+    '@better-svelte-email/components':
+      specifier: ^2.3.0
+      version: 2.3.0
     '@better-svelte-email/server':
       specifier: ^2.3.0
       version: 2.3.0
@@ -15,6 +21,12 @@ catalogs:
     '@fontsource-variable/jetbrains-mono':
       specifier: ^5.3.0
       version: 5.3.0
+    '@iconify-json/solar':
+      specifier: ^1.2.13
+      version: 1.2.13
+    '@internationalized/date':
+      specifier: ^3.12.4
+      version: 3.12.4
     '@shikijs/langs':
       specifier: ^4.4.3
       version: 4.4.3
@@ -33,21 +45,102 @@ catalogs:
     '@tailwindcss/vite':
       specifier: ^4.3.3
       version: 4.3.3
+    '@types/d3-array':
+      specifier: ^3.2.2
+      version: 3.2.2
+    '@types/d3-geo':
+      specifier: ^3.1.1
+      version: 3.1.1
+    '@types/d3-sankey':
+      specifier: ^0.12.5
+      version: 0.12.5
+    '@types/d3-scale':
+      specifier: ^4.0.9
+      version: 4.0.9
+    '@types/d3-shape':
+      specifier: ^3.2.0
+      version: 3.2.0
+    '@types/geojson':
+      specifier: ^7946.0.16
+      version: 7946.0.16
+    '@types/node':
+      specifier: ^26.6.2
+      version: 26.6.2
+    '@types/react':
+      specifier: ^19.3.0
+      version: 19.3.0
+    '@types/react-dom':
+      specifier: ^19.3.0
+      version: 19.3.0
+    '@types/topojson-client':
+      specifier: ^3.1.5
+      version: 3.1.5
+    '@vitejs/plugin-react':
+      specifier: ^6.1.1
+      version: 6.1.1
+    bits-ui:
+      specifier: ^2.19.2
+      version: 2.19.2
     clsx:
       specifier: ^2.1.1
       version: 2.1.1
+    cmdk:
+      specifier: ^1.1.1
+      version: 1.1.1
+    d3-array:
+      specifier: ^3.2.4
+      version: 3.2.4
+    d3-geo:
+      specifier: ^3.1.1
+      version: 3.1.1
+    d3-sankey:
+      specifier: ^0.12.3
+      version: 0.12.3
     d3-scale:
       specifier: ^4.0.2
       version: 4.0.2
+    d3-shape:
+      specifier: ^3.2.0
+      version: 3.2.0
+    formsnap:
+      specifier: ^2.0.1
+      version: 2.0.1
+    input-otp:
+      specifier: ^1.4.2
+      version: 1.5.0
+    react:
+      specifier: ^19.3.0
+      version: 19.3.0
+    react-day-picker:
+      specifier: ^9.14.0
+      version: 9.14.0
+    react-dom:
+      specifier: ^19.3.0
+      version: 19.3.0
+    react-email:
+      specifier: ^6.11.0
+      version: 6.11.0
     shiki:
       specifier: ^4.4.3
       version: 4.4.3
+    simple-icons:
+      specifier: ^16.0.0
+      version: 16.33.0
+    sonner:
+      specifier: ^2.0.8
+      version: 2.0.8
     svelte:
       specifier: ^5.57.1
       version: 5.57.1
     svelte-check:
       specifier: ^4.7.6
       version: 4.7.6
+    svelte-sonner:
+      specifier: ^1.2.1
+      version: 1.2.1
+    sveltekit-superforms:
+      specifier: ^2.30.2
+      version: 2.30.2
     tailwind-merge:
       specifier: ^3.7.0
       version: 3.7.0
@@ -57,12 +150,27 @@ catalogs:
     tailwindcss:
       specifier: ^4.3.3
       version: 4.3.3
+    topojson-client:
+      specifier: ^3.1.0
+      version: 3.1.0
     typescript:
       specifier: ^6.0.3
       version: 6.0.3
+    vaul:
+      specifier: ^1.1.2
+      version: 1.1.2
+    vaul-svelte:
+      specifier: ^1.0.0-next.7
+      version: 1.0.0-next.7
     vite:
       specifier: ^8.3.0
       version: 8.3.0
+    world-atlas:
+      specifier: ^2.0.2
+      version: 2.0.2
+    zod:
+      specifier: ^4.6.5
+      version: 4.6.5
 
 importers:
 
@@ -228,6 +336,9 @@ importers:
       '@baby-ui/demos':
         specifier: workspace:*
         version: link:../../packages/demos
+      '@baby-ui/icons':
+        specifier: workspace:*
+        version: link:../../packages/icons
       '@baby-ui/registry-schema':
         specifier: workspace:*
         version: link:../../packages/registry-schema
@@ -264,9 +375,6 @@ importers:
       '@shikijs/themes':
         specifier: 'catalog:'
         version: 4.4.3
-      '@tabler/icons-svelte':
-        specifier: ^3.47.0
-        version: 3.47.0(svelte@5.57.1)
       clsx:
         specifier: 'catalog:'
         version: 2.1.1
@@ -278,7 +386,7 @@ importers:
         version: 1.1.0(svelte@5.57.1)
       posthog-js:
         specifier: ^1.434.12
-        version: 1.434.12
+        version: 1.434.12(@types/react@19.3.0)(react@19.3.0)
       shiki:
         specifier: 'catalog:'
         version: 4.4.3
@@ -287,7 +395,7 @@ importers:
         version: 3.7.0
       takumi-js:
         specifier: ^2.14.0
-        version: 2.14.0(preact@10.29.8)
+        version: 2.14.0(csstype@3.2.3)(preact@10.29.8)(react@19.3.0)
     devDependencies:
       '@baby-ui/registry-build':
         specifier: workspace:*
@@ -303,22 +411,22 @@ importers:
         version: 1.0.0(@docvia/source@0.4.0)
       '@sveltejs/adapter-cloudflare':
         specifier: 'catalog:'
-        version: 7.2.9(@sveltejs/kit@2.70.3(@sveltejs/vite-plugin-svelte@7.3.0(svelte@5.57.1)(vite@8.3.0(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(svelte@5.57.1)(typescript@6.0.3)(vite@8.3.0(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(wrangler@4.135.0)
+        version: 7.2.9(@sveltejs/kit@2.70.3(@sveltejs/vite-plugin-svelte@7.3.0(svelte@5.57.1)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)))(svelte@5.57.1)(typescript@6.0.3)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)))(wrangler@4.135.0(@types/node@26.6.2))
       '@sveltejs/kit':
         specifier: 'catalog:'
-        version: 2.70.3(@sveltejs/vite-plugin-svelte@7.3.0(svelte@5.57.1)(vite@8.3.0(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(svelte@5.57.1)(typescript@6.0.3)(vite@8.3.0(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
+        version: 2.70.3(@sveltejs/vite-plugin-svelte@7.3.0(svelte@5.57.1)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)))(svelte@5.57.1)(typescript@6.0.3)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
       '@sveltejs/vite-plugin-svelte':
         specifier: 'catalog:'
-        version: 7.3.0(svelte@5.57.1)(vite@8.3.0(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
+        version: 7.3.0(svelte@5.57.1)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
       '@tailwindcss/vite':
         specifier: 'catalog:'
-        version: 4.3.3(vite@8.3.0(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
+        version: 4.3.3(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
       d3-scale:
         specifier: 'catalog:'
         version: 4.0.2
       fontaine:
         specifier: ^1.0.0
-        version: 1.0.0(esbuild@0.28.1)(postcss@8.5.28)(rolldown@1.2.9)(vite@8.3.0(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
+        version: 1.0.0(esbuild@0.28.2)(postcss@8.5.28)(rolldown@1.2.9)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
       svelte:
         specifier: 'catalog:'
         version: 5.57.1
@@ -336,10 +444,10 @@ importers:
         version: 6.0.3
       vite:
         specifier: 'catalog:'
-        version: 8.3.0(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)
+        version: 8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)
       wrangler:
         specifier: ^4.135.0
-        version: 4.135.0
+        version: 4.135.0(@types/node@26.6.2)
       yaml:
         specifier: ^2.9.1
         version: 2.9.1
@@ -401,6 +509,27 @@ importers:
       vite:
         specifier: 'catalog:'
         version: 8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)
+
+  packages/icons:
+    devDependencies:
+      '@iconify-json/solar':
+        specifier: 'catalog:'
+        version: 1.2.13
+      '@sveltejs/vite-plugin-svelte':
+        specifier: 'catalog:'
+        version: 7.3.0(svelte@5.57.1)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
+      simple-icons:
+        specifier: 'catalog:'
+        version: 16.33.0
+      svelte:
+        specifier: 'catalog:'
+        version: 5.57.1
+      svelte-check:
+        specifier: 'catalog:'
+        version: 4.7.6(picomatch@4.0.7)(svelte@5.57.1)(typescript@6.0.3)
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
 
   packages/registry-build:
     dependencies:
@@ -1317,6 +1446,12 @@ packages:
   '@hapi/topo@5.1.0':
     resolution: {integrity: sha512-foQZKJig7Ob0BMAYBfcJk8d77QtOe7Wo4ox7ff1lQYoNNAb6jwcY1ncdoy2e9wQZzvNy7ODZCYJkK8kzmcAnAg==}
 
+  '@iconify-json/solar@1.2.13':
+    resolution: {integrity: sha512-/ZWb6xRib6pzxD/qTkKWYhuzSU2yu0bY+EN0spgtz1NM3d5f4eYueQZpL3PfCdsg5uVfm4Ldtt3cAyQL+YI8/Q==}
+
+  '@iconify/types@2.0.0':
+    resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
+
   '@img/colour@1.1.0':
     resolution: {integrity: sha512-Td76q7j57o/tLVdgS746cYARfSyxk8iEfRxewL9h4OMzYhbW4TAcppl0mT4eyqXddh6L/jwoM75mo7ixa/pCeQ==}
     engines: {node: '>=18'}
@@ -2004,14 +2139,6 @@ packages:
     resolution: {integrity: sha512-r5bClKrcIusDoo049dSL8CawnHR6mRdDwhlQuIgZRNty68q0x8k3Lf1BtPAMxRf/GgnHBnIO4ujd3+GQdLWzxQ==}
     engines: {node: '>=16.0.0'}
 
-  '@tabler/icons-svelte@3.47.0':
-    resolution: {integrity: sha512-LdUR4Ie3BclDyuWZgH10JwTwvn6KaQcKCCmhyoY0BBG3c/zaMzqkxCk0LST0Umd4qM2vH4Ke1KgfWB0fqa24ZA==}
-    peerDependencies:
-      svelte: '>=3 <6 || >=5.0.0-next.0'
-
-  '@tabler/icons@3.47.0':
-    resolution: {integrity: sha512-aCbSemVrGvSA3w0sJi8mka6QrnQCN8wCD1jKNXXIR/h6Q4ffov/yFPyzjTULDM8ETtK4DABUZhWdYlygqy3npA==}
-
   '@tailwindcss/node@4.3.3':
     resolution: {integrity: sha512-/T8IKEsf9VTU6tLjgC7+sv2mOPtQxzE2jMw7u4Tt40Tx+QSZxpzh95/H6cMKoja9XuW7iMdLJYBB0o9G1CaAgg==}
 
@@ -2271,9 +2398,6 @@ packages:
 
   '@types/ms@2.1.0':
     resolution: {integrity: sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA==}
-
-  '@types/node@26.6.1':
-    resolution: {integrity: sha512-VqGJBMCtdhqkBUCcBLvywI0NJ+KLuVzgNnlBUNFOQjqVxzo2lxLUNg1DSey8+u2u6ktswSAxg+s68QLzWHNOuA==}
 
   '@types/node@26.6.2':
     resolution: {integrity: sha512-X1P21scMv4zGKLYqjdGjaKa7COa0RKVYYZZN/NfvLQ1JegxFhdhpZG/Lyn8AXx6CDUavKAd11v6BvfpkDByK8g==}
@@ -3707,6 +3831,10 @@ packages:
     resolution: {integrity: sha512-Mb/GvXPHBAXdgGIcnfU5L3ldpn1XcxrGkPHwqgRx17/I2XRfqlFKk2vGkHWINn1kdXvzJZeuO3is6I9KLPFm0g==}
     engines: {node: '>=20'}
 
+  simple-icons@16.33.0:
+    resolution: {integrity: sha512-z14u6A8ngAg9mgERRsNO8YkjIMefehIpBk7A8Dz3Gd91945qFP19MLPSHgV4z8P5u/MRYd5e07OTzaDoB4d6qA==}
+    engines: {node: '>=0.12.18'}
+
   sirv@3.0.2:
     resolution: {integrity: sha512-2wcC/oGxHis/BoHkkPwldgiPSYcpZK3JU28WoMVv55yHJgcZ8rlXvuG9iZggz+sU1d4bRgIGASwyWqjxu3FM0g==}
     engines: {node: '>=18'}
@@ -4816,6 +4944,12 @@ snapshots:
       '@hapi/hoek': 9.3.0
     optional: true
 
+  '@iconify-json/solar@1.2.13':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify/types@2.0.0': {}
+
   '@img/colour@1.1.0': {}
 
   '@img/sharp-darwin-arm64@0.35.4':
@@ -5316,12 +5450,12 @@ snapshots:
     dependencies:
       acorn: 8.18.0
 
-  '@sveltejs/adapter-cloudflare@7.2.9(@sveltejs/kit@2.70.3(@sveltejs/vite-plugin-svelte@7.3.0(svelte@5.57.1)(vite@8.3.0(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(svelte@5.57.1)(typescript@6.0.3)(vite@8.3.0(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(wrangler@4.135.0)':
+  '@sveltejs/adapter-cloudflare@7.2.9(@sveltejs/kit@2.70.3(@sveltejs/vite-plugin-svelte@7.3.0(svelte@5.57.1)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)))(svelte@5.57.1)(typescript@6.0.3)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)))(wrangler@4.135.0(@types/node@26.6.2))':
     dependencies:
       '@cloudflare/workers-types': 4.20260702.1
-      '@sveltejs/kit': 2.70.3(@sveltejs/vite-plugin-svelte@7.3.0(svelte@5.57.1)(vite@8.3.0(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(svelte@5.57.1)(typescript@6.0.3)(vite@8.3.0(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
+      '@sveltejs/kit': 2.70.3(@sveltejs/vite-plugin-svelte@7.3.0(svelte@5.57.1)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)))(svelte@5.57.1)(typescript@6.0.3)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
       worktop: 0.8.0-next.18
-      wrangler: 4.135.0
+      wrangler: 4.135.0(@types/node@26.6.2)
 
   '@sveltejs/kit@2.70.3(@sveltejs/vite-plugin-svelte@7.3.0(svelte@5.57.1)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)))(svelte@5.57.1)(typescript@6.0.3)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))':
     dependencies:
@@ -5343,26 +5477,6 @@ snapshots:
     optionalDependencies:
       typescript: 6.0.3
 
-  '@sveltejs/kit@2.70.3(@sveltejs/vite-plugin-svelte@7.3.0(svelte@5.57.1)(vite@8.3.0(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(svelte@5.57.1)(typescript@6.0.3)(vite@8.3.0(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))':
-    dependencies:
-      '@standard-schema/spec': 1.1.0
-      '@sveltejs/acorn-typescript': 1.0.13(acorn@8.18.0)
-      '@sveltejs/vite-plugin-svelte': 7.3.0(svelte@5.57.1)(vite@8.3.0(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
-      '@types/cookie': 0.6.0
-      acorn: 8.18.0
-      cookie: 0.6.0
-      devalue: 5.9.4
-      esm-env: 1.2.2
-      kleur: 4.1.5
-      magic-string: 0.30.21
-      mrmime: 2.0.1
-      set-cookie-parser: 3.1.2
-      sirv: 3.0.2
-      svelte: 5.57.1
-      vite: 8.3.0(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)
-    optionalDependencies:
-      typescript: 6.0.3
-
   '@sveltejs/load-config@0.2.3': {}
 
   '@sveltejs/vite-plugin-svelte@7.3.0(svelte@5.57.1)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))':
@@ -5374,27 +5488,11 @@ snapshots:
       vite: 8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)
       vitefu: 1.1.3(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
 
-  '@sveltejs/vite-plugin-svelte@7.3.0(svelte@5.57.1)(vite@8.3.0(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))':
-    dependencies:
-      deepmerge: 4.3.1
-      magic-string: 1.4.1
-      obug: 2.2.1
-      svelte: 5.57.1
-      vite: 8.3.0(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)
-      vitefu: 1.1.3(vite@8.3.0(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
-
   '@swc/helpers@0.5.23':
     dependencies:
       tslib: 2.8.1
 
   '@tabby_ai/hijri-converter@1.0.5': {}
-
-  '@tabler/icons-svelte@3.47.0(svelte@5.57.1)':
-    dependencies:
-      '@tabler/icons': 3.47.0
-      svelte: 5.57.1
-
-  '@tabler/icons@3.47.0': {}
 
   '@tailwindcss/node@4.3.3':
     dependencies:
@@ -5464,13 +5562,6 @@ snapshots:
       tailwindcss: 4.3.3
       vite: 8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)
 
-  '@tailwindcss/vite@4.3.3(vite@8.3.0(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))':
-    dependencies:
-      '@tailwindcss/node': 4.3.3
-      '@tailwindcss/oxide': 4.3.3
-      tailwindcss: 4.3.3
-      vite: 8.3.0(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)
-
   '@takumi-rs/core-darwin-arm64@2.14.0':
     optional: true
 
@@ -5512,26 +5603,6 @@ snapshots:
       - preact
       - react
 
-  '@takumi-rs/core@2.14.0(preact@10.29.8)':
-    dependencies:
-      '@takumi-rs/helpers': 2.14.0(preact@10.29.8)
-    optionalDependencies:
-      '@takumi-rs/core-darwin-arm64': 2.14.0
-      '@takumi-rs/core-darwin-x64': 2.14.0
-      '@takumi-rs/core-linux-arm64-gnu': 2.14.0
-      '@takumi-rs/core-linux-arm64-musl': 2.14.0
-      '@takumi-rs/core-linux-x64-gnu': 2.14.0
-      '@takumi-rs/core-linux-x64-musl': 2.14.0
-      '@takumi-rs/core-win32-arm64-msvc': 2.14.0
-      '@takumi-rs/core-win32-x64-msvc': 2.14.0
-    transitivePeerDependencies:
-      - preact
-      - react
-
-  '@takumi-rs/helpers@2.14.0(preact@10.29.8)':
-    optionalDependencies:
-      preact: 10.29.8
-
   '@takumi-rs/helpers@2.14.0(preact@10.29.8)(react@19.3.0)':
     optionalDependencies:
       preact: 10.29.8
@@ -5542,13 +5613,6 @@ snapshots:
       '@takumi-rs/helpers': 2.14.0(preact@10.29.8)(react@19.3.0)
     optionalDependencies:
       csstype: 3.2.3
-    transitivePeerDependencies:
-      - preact
-      - react
-
-  '@takumi-rs/wasm@2.14.0(preact@10.29.8)':
-    dependencies:
-      '@takumi-rs/helpers': 2.14.0(preact@10.29.8)
     transitivePeerDependencies:
       - preact
       - react
@@ -5626,10 +5690,6 @@ snapshots:
       '@types/unist': 3.0.3
 
   '@types/ms@2.1.0': {}
-
-  '@types/node@26.6.1':
-    dependencies:
-      undici-types: 8.9.0
 
   '@types/node@26.6.2':
     dependencies:
@@ -5819,7 +5879,7 @@ snapshots:
 
   bun-types@1.4.2:
     dependencies:
-      '@types/node': 26.6.1
+      '@types/node': 26.6.2
 
   camelcase@8.0.0:
     optional: true
@@ -6197,12 +6257,12 @@ snapshots:
     dependencies:
       to-regex-range: 5.0.1
 
-  fontaine@1.0.0(esbuild@0.28.1)(postcss@8.5.28)(rolldown@1.2.9)(vite@8.3.0(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)):
+  fontaine@1.0.0(esbuild@0.28.2)(postcss@8.5.28)(rolldown@1.2.9)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)):
     dependencies:
       '@capsizecss/unpack': 4.0.1
       css-tree: 3.2.1
       magic-string: 1.4.1
-      unplugin: 3.4.0(esbuild@0.28.1)(rolldown@1.2.9)(vite@8.3.0(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
+      unplugin: 3.4.0(esbuild@0.28.2)(rolldown@1.2.9)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
     optionalDependencies:
       postcss: 8.5.28
     transitivePeerDependencies:
@@ -6916,19 +6976,6 @@ snapshots:
 
   mimic-function@5.0.1: {}
 
-  miniflare@5.20260918.0-alpha:
-    dependencies:
-      '@cspotcode/source-map-support': 0.8.1
-      sharp: 0.35.4
-      undici: 7.29.0
-      workerd: 1.20260918.1
-      ws: 8.21.0
-      youch: 4.1.0-beta.10
-    transitivePeerDependencies:
-      - '@types/node'
-      - bufferutil
-      - utf-8-validate
-
   miniflare@5.20260918.0-alpha(@types/node@26.6.2):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
@@ -7052,7 +7099,7 @@ snapshots:
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
-  posthog-js@1.434.12:
+  posthog-js@1.434.12(@types/react@19.3.0)(react@19.3.0):
     dependencies:
       '@posthog/browser-common': 0.9.0
       '@posthog/core': 1.55.2
@@ -7064,6 +7111,9 @@ snapshots:
       query-selector-shadow-dom: 1.0.1
       web-vitals: 6.2.2
       web-vitals-soft-navs: web-vitals@6.2.1
+    optionalDependencies:
+      '@types/react': 19.3.0
+      react: 19.3.0
     transitivePeerDependencies:
       - preact-render-to-string
 
@@ -7117,7 +7167,7 @@ snapshots:
       conf: 15.1.0
       css-tree: 3.2.1
       debounce: 2.2.0
-      esbuild: 0.28.1
+      esbuild: 0.28.2
       glob: 13.0.6
       jiti: 2.6.1
       log-symbols: 7.0.1
@@ -7312,38 +7362,6 @@ snapshots:
 
   set-cookie-parser@3.1.2: {}
 
-  sharp@0.35.4:
-    dependencies:
-      '@img/colour': 1.1.0
-      detect-libc: 2.1.2
-      semver: 7.8.5
-    optionalDependencies:
-      '@img/sharp-darwin-arm64': 0.35.4
-      '@img/sharp-darwin-x64': 0.35.4
-      '@img/sharp-freebsd-wasm32': 0.35.4
-      '@img/sharp-libvips-darwin-arm64': 1.3.3
-      '@img/sharp-libvips-darwin-x64': 1.3.3
-      '@img/sharp-libvips-linux-arm': 1.3.3
-      '@img/sharp-libvips-linux-arm64': 1.3.3
-      '@img/sharp-libvips-linux-ppc64': 1.3.3
-      '@img/sharp-libvips-linux-riscv64': 1.3.3
-      '@img/sharp-libvips-linux-s390x': 1.3.3
-      '@img/sharp-libvips-linux-x64': 1.3.3
-      '@img/sharp-libvips-linuxmusl-arm64': 1.3.3
-      '@img/sharp-libvips-linuxmusl-x64': 1.3.3
-      '@img/sharp-linux-arm': 0.35.4
-      '@img/sharp-linux-arm64': 0.35.4
-      '@img/sharp-linux-ppc64': 0.35.4
-      '@img/sharp-linux-riscv64': 0.35.4
-      '@img/sharp-linux-s390x': 0.35.4
-      '@img/sharp-linux-x64': 0.35.4
-      '@img/sharp-linuxmusl-arm64': 0.35.4
-      '@img/sharp-linuxmusl-x64': 0.35.4
-      '@img/sharp-webcontainers-wasm32': 0.35.4
-      '@img/sharp-win32-arm64': 0.35.4
-      '@img/sharp-win32-ia32': 0.35.4
-      '@img/sharp-win32-x64': 0.35.4
-
   sharp@0.35.4(@types/node@26.6.2):
     dependencies:
       '@img/colour': 1.1.0
@@ -7393,6 +7411,8 @@ snapshots:
       '@shikijs/types': 4.4.3
       '@shikijs/vscode-textmate': 10.0.2
       '@types/hast': 3.0.5
+
+  simple-icons@16.33.0: {}
 
   sirv@3.0.2:
     dependencies:
@@ -7595,16 +7615,6 @@ snapshots:
       - preact
       - react
 
-  takumi-js@2.14.0(preact@10.29.8):
-    dependencies:
-      '@takumi-rs/core': 2.14.0(preact@10.29.8)
-      '@takumi-rs/helpers': 2.14.0(preact@10.29.8)
-      '@takumi-rs/wasm': 2.14.0(preact@10.29.8)
-    transitivePeerDependencies:
-      - csstype
-      - preact
-      - react
-
   tapable@2.3.3: {}
 
   tiny-case@1.0.3:
@@ -7713,15 +7723,15 @@ snapshots:
       unist-util-is: 6.0.1
       unist-util-visit-parents: 6.0.2
 
-  unplugin@3.4.0(esbuild@0.28.1)(rolldown@1.2.9)(vite@8.3.0(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)):
+  unplugin@3.4.0(esbuild@0.28.2)(rolldown@1.2.9)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)):
     dependencies:
       '@jridgewell/remapping': 2.3.5
       picomatch: 4.0.7
       webpack-virtual-modules: 0.6.2
     optionalDependencies:
-      esbuild: 0.28.1
+      esbuild: 0.28.2
       rolldown: 1.2.9
-      vite: 8.3.0(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)
+      vite: 8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)
 
   update-browserslist-db@1.3.3(browserslist@4.29.0):
     dependencies:
@@ -7802,26 +7812,9 @@ snapshots:
       jiti: 2.7.0
       yaml: 2.9.1
 
-  vite@8.3.0(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1):
-    dependencies:
-      lightningcss: 1.33.0
-      picomatch: 4.0.7
-      postcss: 8.5.28
-      rolldown: 1.2.9
-      tinyglobby: 0.2.17
-    optionalDependencies:
-      esbuild: 0.28.1
-      fsevents: 2.3.3
-      jiti: 2.7.0
-      yaml: 2.9.1
-
   vitefu@1.1.3(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)):
     optionalDependencies:
       vite: 8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)
-
-  vitefu@1.1.3(vite@8.3.0(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)):
-    optionalDependencies:
-      vite: 8.3.0(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)
 
   web-namespaces@2.0.1: {}
 
@@ -7851,23 +7844,6 @@ snapshots:
       regexparam: 3.0.0
 
   world-atlas@2.0.2: {}
-
-  wrangler@4.135.0:
-    dependencies:
-      '@cloudflare/kv-asset-handler': 0.5.0
-      '@cloudflare/unenv-preset': 2.16.1(unenv@2.0.0-rc.24)(workerd@1.20260918.1)
-      blake3-wasm: 2.1.5
-      esbuild: 0.28.1
-      miniflare: 5.20260918.0-alpha
-      path-to-regexp: 6.3.0
-      unenv: 2.0.0-rc.24
-      workerd: 1.20260918.1
-    optionalDependencies:
-      fsevents: 2.3.3
-    transitivePeerDependencies:
-      - '@types/node'
-      - bufferutil
-      - utf-8-validate
 
   wrangler@4.135.0(@types/node@26.6.2):
     dependencies:

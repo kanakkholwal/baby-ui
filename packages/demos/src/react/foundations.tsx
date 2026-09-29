@@ -1,14 +1,6 @@
 "use client";
 
-import type {
-	ButtonSize,
-	ButtonVariant,
-	FileTreeNode,
-	FileTreeSize,
-	MorphingModalSize,
-	MorphSpring,
-	NavbarVariant,
-} from "@baby-ui/react";
+import type { FileTreeNode } from "@baby-ui/react";
 import {
 	BentoCell,
 	BentoGrid,
@@ -17,19 +9,21 @@ import {
 	MorphingModal,
 	Navbar,
 } from "@baby-ui/react";
+import type { ComponentProps } from "react";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
 export function ButtonDemo({ props }: { props: Props }) {
-	const size = (props.size as ButtonSize) ?? "md";
+	const p = controlProps<ComponentProps<typeof Button>>(props);
+	const size = p.size ?? "md";
 	return (
 		<Button
-			variant={(props.variant as ButtonVariant) ?? "default"}
+			variant={p.variant ?? "default"}
 			size={size}
-			href={(props.href as string) || undefined}
-			loading={Boolean(props.loading)}
-			loadingLabel={(props.loadingLabel as string) || "Loading…"}
-			disabled={Boolean(props.disabled)}
+			href={p.href || undefined}
+			loading={p.loading ?? false}
+			loadingLabel={p.loadingLabel || "Loading…"}
 		>
 			{size === "icon" ? (
 				<svg viewBox="0 0 16 16" fill="none" aria-hidden>
@@ -124,20 +118,22 @@ export function BentoGridDemo({ props }: { props: Props }) {
 }
 
 export function FileTreeDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof FileTree>>(props);
 	return (
 		<FileTree
 			tree={SAMPLE_TREE}
 			indent={Number(props.indent ?? 14)}
 			showGuides={props.showGuides !== false}
 			defaultExpanded={props.defaultExpanded !== false}
-			size={(props.size as FileTreeSize) ?? "md"}
+			size={p.size ?? "md"}
 			className="w-64"
 		/>
 	);
 }
 
 export function NavbarDemo({ props }: { props: Props }) {
-	const variant = (props.variant as NavbarVariant) ?? "solid";
+	const p = controlProps<ComponentProps<typeof Navbar>>(props);
+	const variant = p.variant ?? "solid";
 	return (
 		<div className="w-full max-w-3xl overflow-hidden rounded-xl border border-border">
 			<Navbar
@@ -160,11 +156,12 @@ export function NavbarDemo({ props }: { props: Props }) {
 }
 
 export function MorphingModalDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof MorphingModal>>(props);
 	return (
 		<MorphingModal
 			title="Deploy to production"
-			spring={(props.spring as MorphSpring) ?? "gentle"}
-			size={(props.size as MorphingModalSize) ?? "md"}
+			spring={p.spring ?? "gentle"}
+			size={p.size ?? "md"}
 			dismissOnBackdrop={props.dismissOnBackdrop !== false}
 			backdropBlur={Number(props.backdropBlur ?? 8)}
 			trigger={

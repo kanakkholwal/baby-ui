@@ -12,7 +12,6 @@ import {
 	ComboboxInput,
 	ComboboxItem,
 	ComboboxList,
-	type ComboboxSize,
 	ComboboxTrigger,
 	ContextMenu,
 	ContextMenuCheckboxItem,
@@ -54,7 +53,8 @@ import {
 	TooltipContent,
 	TooltipTrigger,
 } from "@baby-ui/react";
-import { useState } from "react";
+import { type ComponentProps, useState } from "react";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
@@ -65,6 +65,7 @@ const TRIGGER =
 const SWITCH_ROW = "flex w-full flex-row-reverse items-center justify-between gap-4";
 
 export function PopoverDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof PopoverContent>>(props);
 	const [autoDeploy, setAutoDeploy] = useState(true);
 	const [comments, setComments] = useState(false);
 
@@ -73,9 +74,9 @@ export function PopoverDemo({ props }: { props: Props }) {
 			<PopoverTrigger className={TRIGGER}>Deploy settings</PopoverTrigger>
 			<PopoverContent
 				className="w-72"
-				side={(props.side as never) ?? "bottom"}
-				sideOffset={Number(props.sideOffset ?? 4)}
-				align={(props.align as never) ?? "center"}
+				side={p.side ?? "bottom"}
+				sideOffset={Number(p.sideOffset ?? 4)}
+				align={p.align ?? "center"}
 			>
 				<div className="flex flex-col gap-3">
 					<Label>Preview branches</Label>
@@ -121,10 +122,13 @@ const ACTIONS = [
 ];
 
 export function TooltipDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof Tooltip>>(props);
+	const pContent = controlProps<ComponentProps<typeof TooltipContent>>(props);
+	const label = typeof props.label === "string" ? props.label : undefined;
 	return (
 		<div className="inline-flex items-center gap-1 rounded-xl border border-border p-1">
 			{ACTIONS.map((action) => (
-				<Tooltip key={action.id} delay={Number(props.delay ?? 400)}>
+				<Tooltip key={action.id} delay={Number(p.delay ?? 400)}>
 					<TooltipTrigger className="grid size-8 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground">
 						<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-4">
 							<path
@@ -136,8 +140,8 @@ export function TooltipDemo({ props }: { props: Props }) {
 							/>
 						</svg>
 					</TooltipTrigger>
-					<TooltipContent side={(props.side as never) ?? "top"}>
-						{action.id === "copy" ? (props.label as string) || action.hint : action.hint}
+					<TooltipContent side={pContent.side ?? "top"}>
+						{action.id === "copy" ? label || action.hint : action.hint}
 					</TooltipContent>
 				</Tooltip>
 			))}
@@ -146,15 +150,13 @@ export function TooltipDemo({ props }: { props: Props }) {
 }
 
 export function DropdownMenuDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof DropdownMenuContent>>(props);
 	const [last, setLast] = useState("");
 	return (
 		<div className="flex flex-col items-center gap-3">
 			<DropdownMenu>
 				<DropdownMenuTrigger className={TRIGGER}>Actions</DropdownMenuTrigger>
-				<DropdownMenuContent
-					side={(props.side as never) ?? "bottom"}
-					align={(props.align as never) ?? "start"}
-				>
+				<DropdownMenuContent side={p.side ?? "bottom"} align={p.align ?? "start"}>
 					<DropdownMenuLabel>This file</DropdownMenuLabel>
 					<DropdownMenuItem onClick={() => setLast("rename")}>
 						Rename
@@ -256,10 +258,12 @@ export function ContextMenuDemo(_: { props: Props }) {
 }
 
 export function HoverCardDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof HoverCard>>(props);
+	const pContent = controlProps<ComponentProps<typeof HoverCardContent>>(props);
 	return (
 		<HoverCard
-			openDelay={Number(props.openDelay ?? 300)}
-			closeDelay={Number(props.closeDelay ?? 150)}
+			openDelay={Number(p.openDelay ?? 300)}
+			closeDelay={Number(p.closeDelay ?? 150)}
 		>
 			<HoverCardTrigger>
 				<button
@@ -269,7 +273,7 @@ export function HoverCardDemo({ props }: { props: Props }) {
 					@kanakkholwal
 				</button>
 			</HoverCardTrigger>
-			<HoverCardContent side={(props.side as never) ?? "bottom"}>
+			<HoverCardContent side={pContent.side ?? "bottom"}>
 				<div className="flex items-start gap-3">
 					<Avatar size="sm">
 						<AvatarFallback>KK</AvatarFallback>
@@ -296,16 +300,16 @@ const RUNTIMES = [
 ];
 
 export function SelectDemo({ props }: { props: Props }) {
+	const pValue = controlProps<ComponentProps<typeof SelectValue>>(props);
+	const pContent = controlProps<ComponentProps<typeof SelectContent>>(props);
 	const [value, setValue] = useState("edge");
 	return (
 		<div className="w-64">
 			<Select value={value} onValueChange={setValue} items={RUNTIMES}>
 				<SelectTrigger aria-label="Runtime">
-					<SelectValue
-						placeholder={(props.placeholder as string) || "Select an option"}
-					/>
+					<SelectValue placeholder={pValue.placeholder || "Select an option"} />
 				</SelectTrigger>
-				<SelectContent side={(props.side as never) ?? "bottom"}>
+				<SelectContent side={pContent.side ?? "bottom"}>
 					{RUNTIMES.map((runtime) => (
 						<SelectItem
 							key={runtime.value}
@@ -331,10 +335,11 @@ const REGIONS = [
 ];
 
 export function ComboboxDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof ComboboxTrigger>>(props);
 	const [open, setOpen] = useState(false);
 	const [value, setValue] = useState("");
 	const selected = REGIONS.find((r) => r.value === value);
-	const size = (props.size as ComboboxSize) ?? "md";
+	const size = p.size ?? "md";
 
 	return (
 		<Combobox open={open} onOpenChange={setOpen}>

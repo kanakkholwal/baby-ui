@@ -7,14 +7,15 @@ import {
 	Line,
 	LineChart,
 	ProjectionLine,
-	type ProjectionLineCurve,
-	type ProjectionLineVariant,
 	XAxis,
 	YAxis,
 } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 import { VISITORS, VISITORS_CONFIG } from "../data/visitors";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof ProjectionLine>>(props));
 
 const projection = $derived(
 	buildProjection({
@@ -34,8 +35,8 @@ const projection = $derived(
 			<Line dataKey="desktop" fadeEdges="left" />
 			<ProjectionLine
 				data={projection}
-				variant={(props.variant as ProjectionLineVariant) ?? "dashed"}
-				curve={(props.curve as ProjectionLineCurve) ?? "linear"}
+				variant={p.variant ?? "dashed"}
+				curve={p.curve ?? "linear"}
 				endMarker={props.endMarker !== false}
 			/>
 			<ChartTooltip />

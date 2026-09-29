@@ -1,14 +1,12 @@
 <script lang="ts">
-import {
-	Button,
-	type MegaMenuGroup,
-	MegaNavbar,
-	type MegaNavbarVariant,
-} from "@baby-ui/svelte";
+import { Button, type MegaMenuGroup, MegaNavbar } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof MegaNavbar>>(props));
 
-const variant = $derived((props.variant as MegaNavbarVariant) ?? "solid");
+const variant = $derived(p.variant ?? "solid");
 
 const GROUPS: MegaMenuGroup[] = [
 	{
@@ -90,7 +88,7 @@ const links = [
 
 <div class="w-full max-w-4xl overflow-hidden rounded-xl border border-border">
 	<MegaNavbar
-		active={(props.active as string) || undefined}
+		active={p.active || undefined}
 		sticky={false}
 		blur={props.blur !== false}
 		{variant}

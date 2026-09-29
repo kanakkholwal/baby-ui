@@ -1,12 +1,15 @@
 <script lang="ts">
-import { WheelPicker, WheelPickerColumn, type WheelPickerRows } from "@baby-ui/svelte";
+import { WheelPicker, WheelPickerColumn } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof WheelPicker>>(props));
 
 const hours = Array.from({ length: 12 }, (_, i) => String(i + 1));
 const minutes = Array.from({ length: 60 }, (_, i) => String(i).padStart(2, "0"));
 const periods = ["AM", "PM"];
-const rows = $derived((props.rows as WheelPickerRows) ?? "5");
+const rows = $derived(p.rows ?? "5");
 const itemHeight = $derived(Number(props.itemHeight ?? 44));
 </script>
 

@@ -1,22 +1,20 @@
 "use client";
 
-import {
-	ScrollTiltedGrid,
-	type ScrollTiltedGridAspect,
-	type ScrollTiltedGridRadius,
-	type ScrollTiltedGridSize,
-} from "@baby-ui/react";
+import { ScrollTiltedGrid } from "@baby-ui/react";
+import type { ComponentProps } from "react";
+import { controlProps } from "../data/preview-props";
 import { TILTED_IMAGES } from "../data/stacks";
 
 type Props = Record<string, unknown>;
 
 export function ScrollTiltedGridDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof ScrollTiltedGrid>>(props);
 	return (
 		<ScrollTiltedGrid
 			images={TILTED_IMAGES}
-			size={(props.size as ScrollTiltedGridSize) ?? "md"}
-			aspect={(props.aspect as ScrollTiltedGridAspect) ?? "portrait"}
-			radius={(props.radius as ScrollTiltedGridRadius) ?? "sm"}
+			size={p.size ?? "md"}
+			aspect={p.aspect ?? "portrait"}
+			radius={p.radius ?? "sm"}
 			maxTilt={Number(props.maxTilt ?? 62)}
 			maxBlur={Number(props.maxBlur ?? 7)}
 			perspective={Number(props.perspective ?? 1000)}

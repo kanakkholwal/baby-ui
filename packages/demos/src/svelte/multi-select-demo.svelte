@@ -1,8 +1,11 @@
 <script lang="ts">
-import { MultiSelect, type MultiSelectSize } from "@baby-ui/svelte";
+import { MultiSelect } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 import { TEAM_MEMBERS } from "../data/utility-inputs";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof MultiSelect>>(props));
 
 let value = $state(["ana", "dev"]);
 </script>
@@ -14,8 +17,8 @@ let value = $state(["ana", "dev"]);
 		options={TEAM_MEMBERS}
 		bind:value
 		maxChips={Number(props.maxChips ?? 3)}
-		size={(props.size as MultiSelectSize) ?? "md"}
-		disabled={Boolean(props.disabled)}
+		size={p.size ?? "md"}
+		disabled={p.disabled ?? false}
 		labels={{ placeholder: "Add reviewers…", search: "Search people…" }}
 	/>
 </div>

@@ -1,18 +1,17 @@
 <script lang="ts">
-import {
-	IridescentFold,
-	type IridescentFoldSpeed,
-	type IridescentFoldTone,
-} from "@baby-ui/svelte";
+import { IridescentFold } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof IridescentFold>>(props));
 </script>
 
 <div class="relative h-80 w-full max-w-2xl overflow-hidden rounded-xl border border-border">
 	<IridescentFold
 		position="absolute"
-		tone={(props.tone as IridescentFoldTone) ?? "spectrum"}
-		speed={(props.speed as IridescentFoldSpeed) ?? "normal"}
+		tone={p.tone ?? "spectrum"}
+		speed={p.speed ?? "normal"}
 		intensity={Number(props.intensity ?? 1)}
 		grain={Number(props.grain ?? 0)}
 	>

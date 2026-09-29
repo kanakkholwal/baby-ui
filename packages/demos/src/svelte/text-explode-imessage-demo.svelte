@@ -1,18 +1,17 @@
 <script lang="ts">
-import {
-	TextExplodeIMessage,
-	type TextExplodeIMessageMode,
-	type TextExplodeIMessageSize,
-} from "@baby-ui/svelte";
+import { TextExplodeIMessage } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof TextExplodeIMessage>>(props));
 </script>
 
 {#key String(props.durationMs ?? "")}
 	<TextExplodeIMessage
-		text={(props.text as string) || "Big news"}
-		mode={(props.mode as TextExplodeIMessageMode) ?? "loop"}
+		text={p.text || "Big news"}
+		mode={p.mode ?? "loop"}
 		durationMs={Number(props.durationMs ?? 4000)}
-		size={(props.size as TextExplodeIMessageSize) ?? "lg"}
+		size={p.size ?? "lg"}
 	/>
 {/key}

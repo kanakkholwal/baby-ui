@@ -1,15 +1,17 @@
 <script lang="ts">
-import type { ButtonSize, ButtonVariant } from "@baby-ui/svelte";
 import { Button } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof Button>>(props));
 
-const variant = $derived((props.variant as ButtonVariant) ?? "default");
-const size = $derived((props.size as ButtonSize) ?? "md");
-const href = $derived((props.href as string) || undefined);
-const loading = $derived(Boolean(props.loading));
-const loadingLabel = $derived((props.loadingLabel as string) || "Loading…");
-const disabled = $derived(Boolean(props.disabled));
+const variant = $derived(p.variant ?? "default");
+const size = $derived(p.size ?? "md");
+const href = $derived(p.href || undefined);
+const loading = $derived(p.loading ?? false);
+const loadingLabel = $derived(p.loadingLabel || "Loading…");
+const disabled = $derived(p.disabled ?? false);
 </script>
 
 <Button {variant} {size} {href} {loading} {loadingLabel} {disabled}>

@@ -1,5 +1,5 @@
 <script lang="ts">
-import IconFileCode from "@tabler/icons-svelte/icons/file-code";
+import { IconFileCode } from "@baby-ui/icons";
 import type { TrackEvent } from "$lib/analytics";
 import { LANG_LABEL } from "$lib/highlight";
 import CodeFrame from "./code-frame.svelte";
@@ -66,7 +66,7 @@ const BODY =
 				{label(current.lang)}
 			</span>
 			{#if filename}
-				<IconFileCode size={14} stroke={1.5} class="shrink-0 text-muted-foreground" />
+				<IconFileCode size={14} class="shrink-0 text-muted-foreground" />
 				<span class="truncate font-mono text-muted-foreground"
 					>{#if dir}<span>{dir}/</span>{/if}<span class="font-medium text-foreground">{name}</span
 					></span

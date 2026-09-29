@@ -1,12 +1,10 @@
 <script lang="ts">
-import {
-	LoadingScreen,
-	type LoadingScreenIndicator,
-	type LoadingScreenLogoMotion,
-} from "@baby-ui/svelte";
-import type { Snippet } from "svelte";
+import { LoadingScreen } from "@baby-ui/svelte";
+import type { ComponentProps, Snippet } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof LoadingScreen>>(props));
 </script>
 
 {#snippet mark()}
@@ -23,8 +21,8 @@ let { props = {} }: { props?: Record<string, unknown> } = $props();
 		position="absolute"
 		logo={mark as unknown as Snippet}
 		open={props.open !== false}
-		indicator={(props.indicator as LoadingScreenIndicator) ?? "bar"}
-		logoMotion={(props.logoMotion as LoadingScreenLogoMotion) ?? "breathe"}
-		label={(props.label as string) || "Loading"}
+		indicator={p.indicator ?? "bar"}
+		logoMotion={p.logoMotion ?? "breathe"}
+		label={p.label || "Loading"}
 	/>
 </div>

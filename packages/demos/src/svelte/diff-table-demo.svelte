@@ -1,7 +1,10 @@
 <script lang="ts">
 import { type DiffRow, DiffTable } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof DiffTable>>(props));
 
 const ROWS: DiffRow[] = [
 	{
@@ -28,4 +31,4 @@ const ROWS: DiffRow[] = [
 ];
 </script>
 
-<DiffTable title={(props.title as string) || undefined} rows={ROWS} class="max-w-md" />
+<DiffTable title={p.title || undefined} rows={ROWS} class="max-w-md" />

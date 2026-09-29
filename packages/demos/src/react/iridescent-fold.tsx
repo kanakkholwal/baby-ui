@@ -1,20 +1,19 @@
 "use client";
 
-import {
-	IridescentFold,
-	type IridescentFoldSpeed,
-	type IridescentFoldTone,
-} from "@baby-ui/react";
+import { IridescentFold } from "@baby-ui/react";
+import type { ComponentProps } from "react";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
 export function IridescentFoldDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof IridescentFold>>(props);
 	return (
 		<div className="relative h-80 w-full max-w-2xl overflow-hidden rounded-xl border border-border">
 			<IridescentFold
 				position="absolute"
-				tone={(props.tone as IridescentFoldTone) ?? "spectrum"}
-				speed={(props.speed as IridescentFoldSpeed) ?? "normal"}
+				tone={p.tone ?? "spectrum"}
+				speed={p.speed ?? "normal"}
 				intensity={Number(props.intensity ?? 1)}
 				grain={Number(props.grain ?? 0)}
 			>

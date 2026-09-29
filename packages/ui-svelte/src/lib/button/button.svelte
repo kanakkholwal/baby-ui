@@ -79,6 +79,7 @@ function activate(event: MouseEvent) {
 {#if href !== undefined}
 	<a
 		bind:this={ref}
+		data-slot="button"
 		{...rest as HTMLAnchorAttributes}
 		href={loading ? undefined : href}
 		role={loading ? "link" : undefined}
@@ -101,6 +102,7 @@ function activate(event: MouseEvent) {
 {:else}
 	<button
 		bind:this={ref}
+		data-slot="button"
 		{...rest as HTMLButtonAttributes}
 		type={(rest as HTMLButtonAttributes).type ?? "button"}
 		class={classes}

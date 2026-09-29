@@ -3,18 +3,16 @@
 import {
 	Area,
 	AreaChart,
-	type AreaVariant,
 	CartesianGrid,
 	type ChartConfig,
 	ChartContainer,
 	ChartLegend,
-	type ChartStatus,
 	ChartTooltip,
-	type LineCurve,
-	type SeriesLoadingStyle,
 	XAxis,
 	YAxis,
 } from "@baby-ui/react";
+import type { ComponentProps } from "react";
+import { controlProps } from "../data/preview-props";
 import { fadeProp, VISITORS, VISITORS_CONFIG } from "../data/visitors";
 
 type Props = Record<string, unknown>;
@@ -22,22 +20,24 @@ type Props = Record<string, unknown>;
 const config = VISITORS_CONFIG satisfies ChartConfig;
 
 export function AreaChartDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof Area>>(props);
+	const pChart = controlProps<ComponentProps<typeof AreaChart>>(props);
 	const area = {
-		variant: (props.variant as AreaVariant) ?? "gradient",
-		curve: (props.curve as LineCurve) ?? "natural",
-		line: props.line !== false,
-		fillOpacity: Number(props.fillOpacity ?? 0.4),
+		variant: p.variant ?? "gradient",
+		curve: p.curve ?? "natural",
+		line: p.line ?? true,
+		fillOpacity: p.fillOpacity ?? 0.4,
 		fadeEdges: fadeProp(props.fadeEdges ?? "none"),
-		loadingStyle: (props.loadingStyle as SeriesLoadingStyle) ?? "pulse",
-		showMarkers: props.showMarkers === true,
+		loadingStyle: p.loadingStyle ?? "pulse",
+		showMarkers: p.showMarkers ?? false,
 	};
 	return (
 		<div className="w-full max-w-3xl">
 			<ChartContainer config={config} title="Daily visitors">
 				<AreaChart
 					data={VISITORS}
-					stacked={props.stacked === true}
-					status={(props.status as ChartStatus) ?? "ready"}
+					stacked={pChart.stacked ?? false}
+					status={pChart.status ?? "ready"}
 				>
 					<CartesianGrid />
 					<YAxis />

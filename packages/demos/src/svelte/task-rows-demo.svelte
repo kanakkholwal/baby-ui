@@ -1,7 +1,10 @@
 <script lang="ts">
-import { type TaskRow, TaskRows, type TaskRowsVariant } from "@baby-ui/svelte";
+import { type TaskRow, TaskRows } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof TaskRows>>(props));
 
 let rows = $state<TaskRow[]>([
 	{
@@ -49,7 +52,7 @@ function retry(key: string) {
 	rows = rows.map((r) => (r.key === key ? { ...r, status: "done" } : r));
 }
 
-const variant = $derived((props.variant as TaskRowsVariant) ?? "capsules");
+const variant = $derived(p.variant ?? "capsules");
 </script>
 
 <TaskRows {variant} {rows} onRetry={retry} />

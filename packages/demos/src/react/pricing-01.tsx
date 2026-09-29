@@ -1,12 +1,14 @@
 "use client";
 
-import { Pricing01, type Pricing01Variant } from "@baby-ui/react";
-import { useState } from "react";
+import { Pricing01 } from "@baby-ui/react";
+import { type ComponentProps, useState } from "react";
+import { controlProps } from "../data/preview-props";
 import { PRICING_PERIODS, PRICING_PLANS_01 } from "../data/pricing";
 
 type Props = Record<string, unknown>;
 
 export function Pricing01Demo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof Pricing01>>(props);
 	const [period, setPeriod] = useState("monthly");
 	const [chosen, setChosen] = useState<string | null>(null);
 
@@ -17,11 +19,11 @@ export function Pricing01Demo({ props }: { props: Props }) {
 				periods={PRICING_PERIODS}
 				period={period}
 				onPeriodChange={setPeriod}
-				onSelect={(id, p) => setChosen(`${id}, ${p}`)}
+				onSelect={(id, selectedPeriod) => setChosen(`${id}, ${selectedPeriod}`)}
 				eyebrow="Pricing"
 				title="A plan for every stage."
 				description="Start for free, then move up when your work needs more room. Every plan includes the essentials to ship something great."
-				variant={(props.variant as Pricing01Variant) ?? "default"}
+				variant={p.variant ?? "default"}
 			/>
 			<p aria-live="polite" className="text-center text-muted-foreground text-xs">
 				{chosen ? `Chose ${chosen}` : null}

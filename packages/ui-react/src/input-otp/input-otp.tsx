@@ -65,7 +65,11 @@ export function InputOTPSlot({
 			className={cn(s.slot(), className)}
 			{...props}
 		>
-			{char}
+			{char ? (
+				<span key={char} className={s.value()}>
+					{char}
+				</span>
+			) : null}
 			{hasFakeCaret ? (
 				<div className={s.caret()}>
 					<div className={s.caretLine()} />

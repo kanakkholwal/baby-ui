@@ -1,7 +1,10 @@
 <script lang="ts">
 import { FileDiff } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof FileDiff>>(props));
 
 const lines = [
 	{ kind: "context" as const, text: "export function Button(props: ButtonProps) {" },
@@ -17,7 +20,7 @@ const lines = [
 
 <div class="w-full max-w-lg">
 	<FileDiff
-		filename={(props.filename as string) || "src/button.tsx"}
+		filename={p.filename || "src/button.tsx"}
 		{lines}
 		showLineNumbers={props.showLineNumbers !== false}
 	/>

@@ -13,7 +13,7 @@ export const slider = tv({
 		range:
 			"slider-glide rounded-full bg-primary data-[orientation=horizontal]:h-full data-[orientation=vertical]:w-full",
 		thumb:
-			"slider-glide block shrink-0 rounded-full border-primary bg-background shadow-sm outline-none hover:scale-[1.08] focus-visible:shadow-[0_0_0_4px_var(--ring)] active:scale-[1.15] data-[active]:scale-[1.15] data-[dragging]:scale-[1.15]",
+			"slider-glide block shrink-0 cursor-grab rounded-full border-primary bg-background shadow-sm outline-none focus-visible:shadow-[0_0_0_4px_var(--ring)] active:cursor-grabbing active:scale-90 data-[active]:scale-90 data-[dragging]:scale-90",
 		marks: "relative mt-2 h-4 w-full",
 		mark: "absolute top-0 flex -translate-x-1/2 flex-col items-center gap-1 text-[11px] text-muted-foreground tabular-nums",
 		markDot: "size-1 rounded-full bg-muted-foreground/50",

@@ -1,19 +1,18 @@
 <script lang="ts">
-import {
-	DraggableMarquee,
-	type DraggableMarqueeDirection,
-	type DraggableMarqueeGap,
-} from "@baby-ui/svelte";
+import { DraggableMarquee } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
 import { MARQUEE_TILES } from "../data/obsidian";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof DraggableMarquee>>(props));
 </script>
 
 <DraggableMarquee
 	speed={Number(props.speed ?? 1)}
-	direction={(props.direction as DraggableMarqueeDirection) ?? "left"}
-	gap={(props.gap as DraggableMarqueeGap) ?? "md"}
-	pauseOnHover={(props.pauseOnHover as boolean) ?? false}
+	direction={p.direction ?? "left"}
+	gap={p.gap ?? "md"}
+	pauseOnHover={p.pauseOnHover ?? false}
 >
 	{#each MARQUEE_TILES as tile (tile.title)}
 		<figure class="w-56">

@@ -7,14 +7,16 @@ import {
 	ComboboxInput,
 	ComboboxItem,
 	ComboboxList,
-	type ComboboxSize,
 	ComboboxTrigger,
 } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
 let open = $state(false);
 let value = $state("");
-const size = $derived((props.size as ComboboxSize) ?? "md");
+const p = $derived(controlProps<ComponentProps<typeof ComboboxTrigger>>(props));
+const size = $derived(p.size ?? "md");
 
 const regions = [
 	{ value: "ams", label: "Amsterdam" },

@@ -73,9 +73,11 @@ export const navigationMenu = defineComponent({
 			files: [
 				{ path: "navigation-menu/navigation-menu.tsx", type: "registry:ui" },
 				{ path: "navigation-menu/variants.ts", type: "registry:ui" },
+				{ path: "lib/anchor.ts", type: "registry:lib" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "@base-ui/react"],
+			registryDependencies: ["popover"],
 		},
 		svelte: {
 			entry: "NavigationMenu",
@@ -92,6 +94,7 @@ export const navigationMenu = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "bits-ui"],
+			registryDependencies: ["popover"],
 		},
 	},
 	keywords: ["navigation", "menu", "navbar", "mega menu", "header", "site nav"],

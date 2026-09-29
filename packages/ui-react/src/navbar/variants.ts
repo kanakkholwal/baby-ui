@@ -12,10 +12,11 @@ export const navbar = tv({
 			"grid size-9 place-items-center rounded-md border border-border text-muted-foreground transition-colors hover:text-foreground md:hidden",
 		// Only the closed state carries motion, so opening and closing never compete.
 		layer:
-			"fixed inset-0 z-50 transition-[visibility] duration-0 data-[state=closed]:invisible data-[state=closed]:delay-[var(--duration-overlay)] md:hidden",
-		veil: "absolute inset-0 bg-black/40 transition-opacity duration-[var(--duration-overlay)] ease-[var(--ease-out)] starting:opacity-0 data-[state=closed]:opacity-0 data-[state=closed]:duration-[var(--duration-exit)] motion-reduce:transition-none",
+			"fixed inset-0 z-50 transition-[visibility] duration-0 data-[state=closed]:invisible data-[state=closed]:delay-[var(--duration-panel-exit)] md:hidden",
+		// Same contract as Sheet: 250ms in, 200ms out, veil and panel on one curve.
+		veil: "absolute inset-0 bg-black/40 transition-opacity duration-[var(--duration-overlay)] ease-[var(--ease-drawer)] starting:opacity-0 data-[state=closed]:opacity-0 data-[state=closed]:duration-[var(--duration-panel-exit)] motion-reduce:transition-none",
 		sheet:
-			"absolute inset-x-0 bottom-0 rounded-t-2xl border-border border-t bg-card p-4 transition-transform duration-[var(--duration-drawer)] ease-[var(--ease-drawer)] starting:translate-y-full data-[state=closed]:translate-y-full data-[state=closed]:duration-[var(--duration-overlay)] motion-reduce:transition-none",
+			"absolute inset-x-0 bottom-0 rounded-t-2xl border-border border-t bg-card p-4 transition-transform duration-[var(--duration-overlay)] ease-[var(--ease-drawer)] starting:translate-y-full data-[state=closed]:translate-y-full data-[state=closed]:duration-[var(--duration-panel-exit)] motion-reduce:transition-none",
 		sheetLink:
 			"block rounded-lg px-3 py-2.5 text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground aria-[current=page]:bg-foreground/[0.06] aria-[current=page]:text-foreground",
 	},

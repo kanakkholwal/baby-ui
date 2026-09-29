@@ -9,17 +9,20 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 	AlertDialogTrigger,
-	type DialogVariant,
 } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof AlertDialog>>(props));
+const pAction = $derived(controlProps<ComponentProps<typeof AlertDialogAction>>(props));
 
 let open = $state(false);
 let done = $state(false);
 </script>
 
 <div class="flex flex-col items-center gap-3">
-	<AlertDialog bind:open variant={(props.variant as DialogVariant) ?? "default"}>
+	<AlertDialog bind:open variant={p.variant ?? "default"}>
 		<AlertDialogTrigger class="inline-flex h-9 items-center rounded-lg border border-border bg-card px-3 font-medium text-foreground text-sm">Delete project</AlertDialogTrigger>
 		<AlertDialogContent>
 			<AlertDialogHeader>
@@ -31,7 +34,7 @@ let done = $state(false);
 			<AlertDialogFooter>
 				<AlertDialogCancel>Cancel</AlertDialogCancel>
 				<AlertDialogAction
-					destructive={props.destructive !== false}
+					destructive={pAction.destructive !== false}
 					onclick={() => {
 						done = true;
 						open = false;

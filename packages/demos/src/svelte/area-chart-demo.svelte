@@ -2,28 +2,28 @@
 import {
 	Area,
 	AreaChart,
-	type AreaVariant,
 	CartesianGrid,
 	ChartContainer,
 	ChartLegend,
-	type ChartStatus,
 	ChartTooltip,
-	type LineCurve,
-	type SeriesLoadingStyle,
 	XAxis,
 	YAxis,
 } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 import { fadeProp, VISITORS, VISITORS_CONFIG } from "../data/visitors";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof Area>>(props));
+const pChart = $derived(controlProps<ComponentProps<typeof AreaChart>>(props));
 
 const area = $derived({
-	variant: (props.variant as AreaVariant) ?? "gradient",
-	curve: (props.curve as LineCurve) ?? "natural",
+	variant: p.variant ?? "gradient",
+	curve: p.curve ?? "natural",
 	line: props.line !== false,
 	fillOpacity: Number(props.fillOpacity ?? 0.4),
 	fadeEdges: fadeProp(props.fadeEdges ?? "none"),
-	loadingStyle: (props.loadingStyle as SeriesLoadingStyle) ?? "pulse",
+	loadingStyle: p.loadingStyle ?? "pulse",
 	showMarkers: props.showMarkers === true,
 });
 </script>
@@ -33,7 +33,7 @@ const area = $derived({
 		<AreaChart
 			data={VISITORS}
 			stacked={props.stacked === true}
-			status={(props.status as ChartStatus) ?? "ready"}
+			status={pChart.status ?? "ready"}
 		>
 			<CartesianGrid />
 			<YAxis />

@@ -1,10 +1,8 @@
 "use client";
 
-import {
-	RippleTransition,
-	type RippleTransitionRadius,
-	type RippleTransitionRings,
-} from "@baby-ui/react";
+import { RippleTransition } from "@baby-ui/react";
+import type { ComponentProps } from "react";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
@@ -18,13 +16,14 @@ const IMAGES = [
 ];
 
 export function RippleTransitionDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof RippleTransition>>(props);
 	return (
 		<RippleTransition
 			images={IMAGES}
-			duration={Number(props.duration ?? 1200)}
-			rings={(props.rings as RippleTransitionRings) ?? "single"}
-			radius={(props.radius as RippleTransitionRadius) ?? "xl"}
-			label={(props.label as string) ?? "Show next image"}
+			duration={Number(p.duration ?? 1200)}
+			rings={p.rings ?? "single"}
+			radius={p.radius ?? "xl"}
+			label={p.label ?? "Show next image"}
 			className="max-w-xl"
 		/>
 	);

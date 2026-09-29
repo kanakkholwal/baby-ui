@@ -1,12 +1,8 @@
 "use client";
 
-import {
-	Button,
-	type MegaMenuGroup,
-	MegaNavbar,
-	type MegaNavbarVariant,
-} from "@baby-ui/react";
-import type { ReactNode } from "react";
+import { Button, type MegaMenuGroup, MegaNavbar } from "@baby-ui/react";
+import type { ComponentProps, ReactNode } from "react";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
@@ -160,11 +156,12 @@ const GROUPS: MegaMenuGroup[] = [
 ];
 
 export function MegaNavbarDemo({ props }: { props: Props }) {
-	const variant = (props.variant as MegaNavbarVariant) ?? "solid";
+	const p = controlProps<ComponentProps<typeof MegaNavbar>>(props);
+	const variant = p.variant ?? "solid";
 	return (
 		<div className="w-full max-w-4xl overflow-hidden rounded-xl border border-border">
 			<MegaNavbar
-				active={(props.active as string) || undefined}
+				active={p.active || undefined}
 				sticky={false}
 				blur={props.blur !== false}
 				variant={variant}

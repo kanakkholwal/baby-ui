@@ -9,8 +9,9 @@ export const timePicker = tv({
 			"aria-disabled:opacity-50 [&>svg]:me-1 [&>svg]:size-4 [&>svg]:text-muted-foreground",
 		],
 		segment: [
-			"min-w-[2ch] cursor-default select-none rounded px-0.5 text-center outline-none caret-transparent",
-			"focus:bg-primary focus:text-primary-foreground data-[empty]:text-muted-foreground",
+			"min-w-[2ch] cursor-default select-none rounded-md px-0.5 text-center outline-none caret-transparent",
+			"transition-colors duration-100 ease-[var(--ease-out)] motion-reduce:transition-none",
+			"focus:bg-primary/10 focus:text-primary data-[empty]:text-muted-foreground",
 		],
 		separator: "text-muted-foreground",
 		period: "ms-1",

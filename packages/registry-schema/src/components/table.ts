@@ -1,6 +1,7 @@
 import { defineComponent } from "../index.ts";
 
 const DENSITIES = ["comfortable", "compact"];
+const VARIANTS = ["default", "framed"];
 
 export const table = defineComponent({
 	slug: "table",
@@ -9,8 +10,16 @@ export const table = defineComponent({
 		"Styled semantic table primitives: Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, TableCaption.",
 	category: "base",
 	status: "stable",
-	variants: { density: DENSITIES },
+	variants: { variant: VARIANTS, density: DENSITIES },
 	props: [
+		{
+			name: "variant",
+			type: VARIANTS.map((v) => `"${v}"`).join(" | "),
+			description:
+				"Bordered grid, or a card rim around a rounded inset body.",
+			default: "default",
+			control: { kind: "select", options: VARIANTS },
+		},
 		{
 			name: "density",
 			type: DENSITIES.map((v) => `"${v}"`).join(" | "),

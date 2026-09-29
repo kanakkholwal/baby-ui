@@ -1,6 +1,8 @@
 "use client";
 
 import { type DiffRow, DiffTable } from "@baby-ui/react";
+import type { ComponentProps } from "react";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
@@ -29,11 +31,6 @@ const ROWS: DiffRow[] = [
 ];
 
 export function DiffTableDemo({ props }: { props: Props }) {
-	return (
-		<DiffTable
-			title={(props.title as string) || undefined}
-			rows={ROWS}
-			className="max-w-md"
-		/>
-	);
+	const p = controlProps<ComponentProps<typeof DiffTable>>(props);
+	return <DiffTable title={p.title || undefined} rows={ROWS} className="max-w-md" />;
 }

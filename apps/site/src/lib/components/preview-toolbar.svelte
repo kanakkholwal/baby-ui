@@ -1,16 +1,18 @@
 <script lang="ts">
+import type { Icon } from "@baby-ui/icons";
+import {
+	IconArrowsMaximize,
+	IconDeviceDesktop,
+	IconDeviceMobile,
+	IconRefresh,
+	IconX,
+} from "@baby-ui/icons";
 import {
 	Tooltip,
 	TooltipContent,
 	TooltipProvider,
 	TooltipTrigger,
 } from "@baby-ui/svelte";
-import type { Icon } from "@tabler/icons-svelte";
-import IconArrowsMaximize from "@tabler/icons-svelte/icons/arrows-maximize";
-import IconDeviceDesktop from "@tabler/icons-svelte/icons/device-desktop";
-import IconDeviceMobile from "@tabler/icons-svelte/icons/device-mobile";
-import IconRefresh from "@tabler/icons-svelte/icons/refresh";
-import IconX from "@tabler/icons-svelte/icons/x";
 import { track } from "$lib/analytics";
 import type { PreviewView } from "$lib/preview-modes.svelte";
 
@@ -106,7 +108,7 @@ const button =
 						}}
 						class={button}
 					>
-						<ActionIcon size={15} stroke={1.6} />
+						<ActionIcon size={15} />
 					</TooltipTrigger>
 					<TooltipContent side="top">{action.hint}</TooltipContent>
 				</Tooltip>

@@ -1,18 +1,17 @@
 <script lang="ts">
-import {
-	DitherGradient,
-	type DitherGradientMatrix,
-	type DitherGradientTone,
-} from "@baby-ui/svelte";
+import { DitherGradient } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof DitherGradient>>(props));
 </script>
 
 <div class="relative h-80 w-full max-w-2xl overflow-hidden rounded-xl border border-border">
 	<DitherGradient
 		position="absolute"
-		tone={(props.tone as DitherGradientTone) ?? "spectrum"}
-		matrix={(props.matrix as DitherGradientMatrix) ?? "bayer4"}
+		tone={p.tone ?? "spectrum"}
+		matrix={p.matrix ?? "bayer4"}
 		angle={Number(props.angle ?? 45)}
 		speed={Number(props.speed ?? 1)}
 		pixelSize={Number(props.pixelSize ?? 3)}

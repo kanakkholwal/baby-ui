@@ -1,15 +1,13 @@
 <script lang="ts">
-import {
-	ChartContainer,
-	SankeyChart,
-	type SankeyLinkColor,
-	type SankeyOrientation,
-} from "@baby-ui/svelte";
+import { ChartContainer, SankeyChart } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
 import { TRAFFIC_FLOWS } from "../data/flows";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof SankeyChart>>(props));
 
-const orientation = $derived((props.orientation as SankeyOrientation) ?? "horizontal");
+const orientation = $derived(p.orientation ?? "horizontal");
 </script>
 
 <div class="w-full max-w-3xl">
@@ -21,7 +19,7 @@ const orientation = $derived((props.orientation as SankeyOrientation) ?? "horizo
 		<SankeyChart
 			data={TRAFFIC_FLOWS}
 			{orientation}
-			linkColor={(props.linkColor as SankeyLinkColor) ?? "gradient"}
+			linkColor={p.linkColor ?? "gradient"}
 			labels={props.labels !== false}
 			nodeWidth={Number(props.nodeWidth ?? 16)}
 			nodePadding={Number(props.nodePadding ?? 24)}

@@ -1,16 +1,19 @@
 <script lang="ts">
-import { Counter, type CounterDirection, type CounterSize } from "@baby-ui/svelte";
+import { Counter } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof Counter>>(props));
 </script>
 
 {#key String(props.direction ?? "up") + String(props.durationMs ?? "")}
 	<Counter
 		value={Number(props.value ?? 12480)}
-		direction={(props.direction as CounterDirection) ?? "up"}
+		direction={p.direction ?? "up"}
 		durationMs={Number(props.durationMs ?? 1200)}
 		delayMs={Number(props.delayMs ?? 0)}
 		triggerOnView={props.triggerOnView === true}
-		size={(props.size as CounterSize) ?? "md"}
+		size={p.size ?? "md"}
 	/>
 {/key}

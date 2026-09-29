@@ -25,14 +25,3 @@ export const setCommandDialogState = (state: CommandDialogState) =>
 /** Undefined outside a CommandDialog. */
 export const getCommandDialogState = (): CommandDialogState | undefined =>
 	hasContext(DIALOG_STATE) ? getContext<CommandDialogState>(DIALOG_STATE) : undefined;
-
-/** Opened from the keyboard many times a day, so it appears at once; only closing fades. */
-export const COMMAND_PANEL = [
-	"transition-opacity duration-0",
-	"data-[state=closed]:opacity-0 data-[state=closed]:duration-[var(--duration-exit)] data-[state=closed]:ease-[var(--ease-out)]",
-	"motion-reduce:transition-none",
-].join(" ");
-
-/** One marker for the active row. It snaps: arrow keys repeat too fast for motion to help. */
-export const COMMAND_MARKER =
-	"pointer-events-none absolute top-0 left-0 rounded-md bg-foreground/[0.06]";

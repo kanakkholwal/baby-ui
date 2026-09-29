@@ -2,25 +2,24 @@
 import {
 	Bar,
 	BarChart,
-	type BarEntrance,
-	type BarLineCap,
-	type BarOrientationVariant,
 	BarTooltip,
-	type BarVariant,
 	BarXAxis,
 	BarYAxis,
 	CartesianGrid,
 	ChartContainer,
 	ChartLegend,
-	type ChartStatus,
 } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
 import { MONTHLY, MONTHLY_CONFIG } from "../data/monthly";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof Bar>>(props));
+const pChart = $derived(controlProps<ComponentProps<typeof BarChart>>(props));
 
-const orientation = $derived((props.orientation as BarOrientationVariant) ?? "vertical");
+const orientation = $derived(pChart.orientation ?? "vertical");
 const bar = $derived({
-	lineCap: (props.lineCap as BarLineCap) ?? "round",
+	lineCap: p.lineCap ?? "round",
 	texture: props.texture === true,
 });
 </script>
@@ -30,10 +29,10 @@ const bar = $derived({
 		<BarChart
 			data={MONTHLY}
 			{orientation}
-			variant={(props.variant as BarVariant) ?? "bar"}
-			entrance={(props.entrance as BarEntrance) ?? "grow"}
+			variant={pChart.variant ?? "bar"}
+			entrance={pChart.entrance ?? "grow"}
 			stacked={props.stacked === true}
-			status={(props.status as ChartStatus) ?? "ready"}
+			status={pChart.status ?? "ready"}
 			margin={orientation === "horizontal" ? { left: 48, bottom: 28 } : undefined}
 		>
 			<CartesianGrid />

@@ -1,24 +1,22 @@
 <script lang="ts">
-import {
-	type FlightStatus,
-	FlightStatusCard,
-	type FlightStatusDisplay,
-	type FlightStatusTone,
-} from "@baby-ui/svelte";
+import { FlightStatusCard } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
 import { FLIGHT, flightRemaining } from "../data/flight";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof FlightStatusCard>>(props));
 
 const progress = $derived(Number(props.progress ?? 45));
 </script>
 
 <FlightStatusCard
 	{...FLIGHT}
-	departureCode={(props.departureCode as string) || "YYZ"}
-	arrivalCode={(props.arrivalCode as string) || "HND"}
-	status={(props.status as FlightStatus) ?? "departed"}
+	departureCode={p.departureCode || "YYZ"}
+	arrivalCode={p.arrivalCode || "HND"}
+	status={p.status ?? "departed"}
 	{progress}
 	remaining={flightRemaining(progress)}
-	tone={(props.tone as FlightStatusTone) || undefined}
-	display={(props.display as FlightStatusDisplay) ?? "matrix"}
+	tone={p.tone || undefined}
+	display={p.display ?? "matrix"}
 />

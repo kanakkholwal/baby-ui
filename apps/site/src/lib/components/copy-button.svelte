@@ -1,6 +1,5 @@
 <script lang="ts">
-import IconCheck from "@tabler/icons-svelte/icons/check";
-import IconCopy from "@tabler/icons-svelte/icons/copy";
+import { IconCheck, IconCopy } from "@baby-ui/icons";
 import { type TrackEvent, track } from "$lib/analytics";
 
 let {
@@ -40,10 +39,10 @@ async function copy() {
 	]}
 >
 	{#if copied}
-		<IconCheck size={13} stroke={2} />
+		<IconCheck size={13} />
 		{#if !iconOnly}Copied{/if}
 	{:else}
-		<IconCopy size={13} stroke={1.7} />
+		<IconCopy size={13} />
 		{#if !iconOnly}Copy{/if}
 	{/if}
 </button>

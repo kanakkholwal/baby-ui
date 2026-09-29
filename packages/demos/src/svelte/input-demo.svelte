@@ -1,8 +1,10 @@
 <script lang="ts">
-import type { InputSize } from "@baby-ui/svelte";
 import { Input, Label } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof Input>>(props));
 
 let value = $state("");
 </script>
@@ -12,10 +14,10 @@ let value = $state("");
 	<Input
 		id="demo-input"
 		bind:value
-		size={(props.size as InputSize) ?? "md"}
-		invalid={Boolean(props.invalid)}
-		disabled={Boolean(props.disabled)}
-		placeholder={(props.placeholder as string) || "Enter a value"}
+		size={p.size ?? "md"}
+		invalid={p.invalid ?? false}
+		disabled={p.disabled ?? false}
+		placeholder={p.placeholder || "Enter a value"}
 	/>
 	{#if props.invalid}
 		<p class="text-[var(--destructive)] text-xs">That name is already taken.</p>

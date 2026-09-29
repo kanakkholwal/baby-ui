@@ -1,24 +1,22 @@
 "use client";
 
 import {
-	type CalendarProps,
 	DatePicker,
-	type DatePickerSize,
 	type DateRange,
 	DateRangePicker,
-	type DateRangePickerSize,
 	Field,
 	FieldDescription,
 	FieldLabel,
 	TimePicker,
-	type TimePickerSize,
 } from "@baby-ui/react";
-import { useState } from "react";
+import { type ComponentProps, useState } from "react";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
 // A booking form: nothing earlier than today can be picked or typed.
 export function DatePickerDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof DatePicker>>(props);
 	const [checkIn, setCheckIn] = useState<Date | null>(null);
 	const today = new Date();
 	today.setHours(0, 0, 0, 0);
@@ -34,11 +32,9 @@ export function DatePickerDemo({ props }: { props: Props }) {
 				onValueChange={setCheckIn}
 				min={today}
 				max={later}
-				locale={(props.locale as string) || undefined}
-				captionLayout={
-					(props.captionLayout as CalendarProps["captionLayout"]) ?? "dropdown"
-				}
-				size={(props.size as DatePickerSize) ?? "md"}
+				locale={p.locale || undefined}
+				captionLayout={p.captionLayout ?? "dropdown"}
+				size={p.size ?? "md"}
 				aria-describedby="demo-check-in-hint"
 			/>
 			<FieldDescription id="demo-check-in-hint">
@@ -50,6 +46,7 @@ export function DatePickerDemo({ props }: { props: Props }) {
 
 // A report filter: empty until the reader picks a range or a preset.
 export function DateRangePickerDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof DateRangePicker>>(props);
 	const [range, setRange] = useState<DateRange | undefined>();
 	return (
 		<div className="w-full max-w-64">
@@ -57,15 +54,16 @@ export function DateRangePickerDemo({ props }: { props: Props }) {
 				value={range}
 				onValueChange={setRange}
 				aria-label="Report period"
-				confirm={props.confirm === true}
-				locale={(props.locale as string) || undefined}
-				size={(props.size as DateRangePickerSize) ?? "md"}
+				confirm={p.confirm ?? false}
+				locale={p.locale || undefined}
+				size={p.size ?? "md"}
 			/>
 		</div>
 	);
 }
 
 export function TimePickerDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof TimePicker>>(props);
 	const [time, setTime] = useState<string | null>("09:30");
 	const cycle = props.hourCycle === "24" ? 24 : props.hourCycle === "12" ? 12 : undefined;
 	return (
@@ -76,8 +74,8 @@ export function TimePickerDemo({ props }: { props: Props }) {
 				onValueChange={setTime}
 				aria-label="Meeting starts"
 				hourCycle={cycle}
-				step={Number(props.step ?? 15)}
-				size={(props.size as TimePickerSize) ?? "md"}
+				step={p.step ?? 15}
+				size={p.size ?? "md"}
 			/>
 			<p className="text-muted-foreground text-xs tabular-nums">
 				Saved as {time ?? "no time"}

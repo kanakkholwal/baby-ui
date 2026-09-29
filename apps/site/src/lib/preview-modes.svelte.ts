@@ -1,9 +1,6 @@
+import type { Icon } from "@baby-ui/icons";
+import { IconFileText, IconMail, IconPhoto, IconPlayerPlay } from "@baby-ui/icons";
 import type { Category, Framework } from "@baby-ui/registry-schema";
-import type { Icon } from "@tabler/icons-svelte";
-import IconFileText from "@tabler/icons-svelte/icons/file-text";
-import IconMail from "@tabler/icons-svelte/icons/mail";
-import IconPhoto from "@tabler/icons-svelte/icons/photo";
-import IconPlayerPlay from "@tabler/icons-svelte/icons/player-play";
 
 /** A preview-toolbar switch; `id` doubles as the analytics action name. */
 export type PreviewView = { id: string; label: string; hint: string; icon: Icon };

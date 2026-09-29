@@ -7,10 +7,12 @@ import {
 	ReasoningStepSources,
 	type ReasoningStepStatus,
 	ReasoningSteps,
-	type ReasoningVariant,
 } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof Reasoning>>(props));
 
 const steps = [
 	{
@@ -46,8 +48,8 @@ function stepStatus(index: number): ReasoningStepStatus {
 		{thinking}
 		duration={thinking ? Math.round(step * 1.4) : Number(props.duration ?? 4)}
 		defaultOpen={Boolean(props.defaultOpen)}
-		variant={(props.variant as ReasoningVariant) ?? "outline"}
-		thinkingLabel={(props.thinkingLabel as string) || "Thinking"}
+		variant={p.variant ?? "outline"}
+		thinkingLabel={p.thinkingLabel || "Thinking"}
 	>
 		<ReasoningSteps>
 			{#each steps as s, i (s.label)}

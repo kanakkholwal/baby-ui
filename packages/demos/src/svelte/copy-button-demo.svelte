@@ -1,9 +1,12 @@
 <script lang="ts">
 import { CopyButton } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof CopyButton>>(props));
 
-const text = $derived((props.text as string) || "npx shadcn@latest add button");
+const text = $derived(p.text || "npx shadcn@latest add button");
 </script>
 
 <div
@@ -12,8 +15,8 @@ const text = $derived((props.text as string) || "npx shadcn@latest add button");
 	<code class="truncate font-mono text-foreground text-xs">{text}</code>
 	<CopyButton
 		{text}
-		label={(props.label as string) || "Copy"}
-		copiedLabel={(props.copiedLabel as string) || "Copied"}
-		iconOnly={props.iconOnly !== false}
+		label={p.label || "Copy"}
+		copiedLabel={p.copiedLabel || "Copied"}
+		iconOnly={p.iconOnly !== false}
 	/>
 </div>

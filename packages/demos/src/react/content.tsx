@@ -3,8 +3,8 @@
 import {
 	Attachment,
 	CodeBlock,
+	type ColorFormat,
 	ColorPicker,
-	type ColorPickerVariant,
 	Composer,
 	Conversation,
 	ConversationContent,
@@ -21,41 +21,38 @@ import {
 	Reasoning,
 	type ReorderItem,
 	ReorderList,
-	type ReorderListVariant,
 	TagInput,
 	Tool,
-	type ToolState,
 } from "@baby-ui/react";
 import { type ComponentProps, useEffect, useState } from "react";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
-type MarkdownSize = NonNullable<ComponentProps<typeof Markdown>["size"]>;
 
 const SAMPLE_MD =
 	"## Installing\nComponents are copied into your project rather than installed.\n\n- You own the source\n- Nothing is imported at runtime\n- Updates are a diff, not a version bump\n\n```\nnpx shadcn add button\n```";
 
 export function CopyButtonDemo({ props }: { props: Props }) {
-	const text = (props.text as string) || "npx shadcn@latest add button";
+	const p = controlProps<ComponentProps<typeof CopyButton>>(props);
+	const text = p.text || "npx shadcn@latest add button";
 	return (
 		<div className="flex w-full max-w-[22rem] items-center justify-between gap-3 rounded-xl border border-border bg-card px-3 py-2">
 			<code className="truncate font-mono text-foreground text-xs">{text}</code>
 			<CopyButton
 				text={text}
-				label={(props.label as string) || "Copy"}
-				copiedLabel={(props.copiedLabel as string) || "Copied"}
-				iconOnly={props.iconOnly !== false}
+				label={p.label || "Copy"}
+				copiedLabel={p.copiedLabel || "Copied"}
+				iconOnly={p.iconOnly ?? true}
 			/>
 		</div>
 	);
 }
 
 export function MarkdownDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof Markdown>>(props);
 	return (
 		<div className="w-full max-w-96">
-			<Markdown
-				content={(props.content as string) || SAMPLE_MD}
-				size={(props.size as MarkdownSize) ?? "md"}
-			/>
+			<Markdown content={p.content || SAMPLE_MD} size={p.size ?? "md"} />
 		</div>
 	);
 }
@@ -72,27 +69,29 @@ const DIFF = [
 ];
 
 export function FileDiffDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof FileDiff>>(props);
 	return (
 		<div className="w-full max-w-lg">
 			<FileDiff
-				filename={(props.filename as string) || "src/button.tsx"}
+				filename={p.filename || "src/button.tsx"}
 				lines={DIFF}
-				showLineNumbers={props.showLineNumbers !== false}
+				showLineNumbers={p.showLineNumbers ?? true}
 			/>
 		</div>
 	);
 }
 
 export function TagInputDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof TagInput>>(props);
 	const [tags, setTags] = useState(["svelte", "react"]);
 	return (
 		<div className="w-full max-w-80">
 			<TagInput
 				tags={tags}
 				onTagsChange={setTags}
-				placeholder={(props.placeholder as string) || "Add a tag…"}
-				max={Number(props.max ?? 6)}
-				disabled={Boolean(props.disabled)}
+				placeholder={p.placeholder || "Add a tag…"}
+				max={p.max ?? 6}
+				disabled={p.disabled ?? false}
 				label="Tags"
 			/>
 		</div>
@@ -100,15 +99,13 @@ export function TagInputDemo({ props }: { props: Props }) {
 }
 
 export function ColorPickerDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof ColorPicker>>(props);
 	const [value, setValue] = useState("#7dd3fc");
-	const [format, setFormat] = useState<"hsv" | "hsl" | "rgb">("hsv");
+	const [format, setFormat] = useState<ColorFormat>("hsv");
 	useEffect(() => {
-		if (typeof props.value === "string") setValue(props.value);
-	}, [props.value]);
-	useEffect(
-		() => setFormat((props.format as "hsv" | "hsl" | "rgb") ?? "hsv"),
-		[props.format],
-	);
+		if (p.value) setValue(p.value);
+	}, [p.value]);
+	useEffect(() => setFormat(p.format ?? "hsv"), [p.format]);
 	// Recents live in the parent; the popover adds the colour it closed on.
 	const [recent, setRecent] = useState<string[]>([]);
 	return (
@@ -117,13 +114,13 @@ export function ColorPickerDemo({ props }: { props: Props }) {
 			onValueChange={setValue}
 			format={format}
 			onFormatChange={setFormat}
-			variant={(props.variant as ColorPickerVariant) ?? "inline"}
+			variant={p.variant ?? "inline"}
 			recent={recent}
 			onOpenChange={(open) => {
 				if (!open)
 					setRecent((list) => [value, ...list.filter((c) => c !== value)].slice(0, 6));
 			}}
-			label={(props.label as string) || "Accent"}
+			label={p.label || "Accent"}
 		/>
 	);
 }
@@ -136,28 +133,30 @@ const STEPS: ReorderItem[] = [
 ];
 
 export function ReorderListDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof ReorderList>>(props);
 	const [items, setItems] = useState(STEPS);
 	return (
 		<div className="w-full max-w-80">
 			<ReorderList
 				items={items}
 				onItemsChange={setItems}
-				disabled={Boolean(props.disabled)}
-				label={(props.label as string) || "Build steps"}
-				variant={(props.variant as ReorderListVariant) ?? "card"}
+				disabled={p.disabled ?? false}
+				label={p.label || "Build steps"}
+				variant={p.variant ?? "card"}
 			/>
 		</div>
 	);
 }
 
 export function AttachmentDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof Attachment>>(props);
 	return (
 		<div className="flex w-full max-w-80 flex-col gap-2">
 			<Attachment
-				name={(props.name as string) || "spec-draft.md"}
-				size={(props.size as string) || "18 KB"}
-				status={(props.status as "uploading" | "ready" | "error") ?? "ready"}
-				progress={Number(props.progress ?? 40)}
+				name={p.name || "spec-draft.md"}
+				size={p.size || "18 KB"}
+				status={p.status ?? "ready"}
+				progress={p.progress ?? 40}
 				onRemove={() => {}}
 			/>
 			<Attachment
@@ -247,12 +246,13 @@ const COMPOSER_ACTIONS = [
 ];
 
 export function ComposerDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof Composer>>(props);
 	const [value, setValue] = useState("");
 	const [sent, setSent] = useState("");
 	const [model, setModel] = useState("fast");
-	const [loading, setLoading] = useState(Boolean(props.loading));
+	const [loading, setLoading] = useState(p.loading ?? false);
 
-	useEffect(() => setLoading(Boolean(props.loading)), [props.loading]);
+	useEffect(() => setLoading(p.loading ?? false), [p.loading]);
 
 	return (
 		<div className="flex w-full max-w-sm flex-col gap-2">
@@ -264,12 +264,12 @@ export function ComposerDemo({ props }: { props: Props }) {
 					setValue("");
 					setLoading(true);
 				}}
-				placeholder={(props.placeholder as string) || "Send a message…"}
-				size={(props.size as "sm" | "md" | "lg") ?? "md"}
+				placeholder={p.placeholder || "Send a message…"}
+				size={p.size ?? "md"}
 				loading={loading}
 				onStop={() => setLoading(false)}
-				disabled={Boolean(props.disabled)}
-				maxRows={Number(props.maxRows ?? 8)}
+				disabled={p.disabled ?? false}
+				maxRows={p.maxRows ?? 8}
 				models={COMPOSER_MODELS}
 				model={model}
 				onModelChange={setModel}
@@ -288,7 +288,7 @@ export function ConversationDemo({ props }: { props: Props }) {
 	return (
 		<div
 			className="w-full max-w-96 rounded-xl border border-border bg-card/40 p-2"
-			style={{ height: (props.maxHeight as string) || "22rem" }}
+			style={{ height: typeof props.maxHeight === "string" ? props.maxHeight : "22rem" }}
 		>
 			<Conversation className="h-full">
 				<ConversationContent>
@@ -350,14 +350,15 @@ export function ConversationDemo({ props }: { props: Props }) {
 }
 
 export function ToolDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof Tool>>(props);
 	return (
 		<div className="flex w-full max-w-sm flex-col gap-2">
 			<Tool
-				name={(props.name as string) || "search_docs"}
-				status={(props.status as ToolState) ?? "running"}
+				name={p.name || "search_docs"}
+				status={p.status ?? "running"}
 				input={'{ "query": "dock magnification" }'}
 				output={'{ "matches": 3 }'}
-				defaultOpen={Boolean(props.defaultOpen)}
+				defaultOpen={p.defaultOpen ?? false}
 			/>
 			<Tool
 				name="read_file"
@@ -404,12 +405,13 @@ const QUESTIONS: QuestionItem[] = [
 ];
 
 export function QuestionDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof Question>>(props);
 	const [submitted, setSubmitted] = useState<QuestionAnswers | null>(null);
 	return (
 		<div className="w-full max-w-sm">
 			<Question
 				key={String(props.layout)}
-				layout={(props.layout as "card" | "inline") ?? "card"}
+				layout={p.layout ?? "card"}
 				questions={QUESTIONS}
 				onSubmit={setSubmitted}
 			/>

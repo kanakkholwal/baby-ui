@@ -5,11 +5,11 @@ import { ToggleGroup as ToggleGroupPrimitive } from "@base-ui/react/toggle-group
 import type { ComponentProps } from "react";
 import { createContext, useContext, useMemo } from "react";
 import { cn } from "../lib/cn";
-import { type ToggleGroupSize, toggleGroupItem } from "./variants";
+import { type ToggleGroupSize, type ToggleGroupVariant, toggleGroup } from "./variants";
 
-export type { ToggleGroupSize };
+export type { ToggleGroupSize, ToggleGroupVariant };
 
-type Ctx = { size: ToggleGroupSize };
+type Ctx = { size: ToggleGroupSize; variant: ToggleGroupVariant };
 
 const ToggleGroupCtx = createContext<Ctx | null>(null);
 
@@ -23,6 +23,7 @@ export function ToggleGroup({
 	className,
 	value = "",
 	type = "single",
+	variant = "default",
 	size = "md",
 	disabled = false,
 	label = "Options",
@@ -35,6 +36,7 @@ export function ToggleGroup({
 > & {
 	value?: string | string[];
 	type?: "single" | "multiple";
+	variant?: ToggleGroupVariant;
 	size?: ToggleGroupSize;
 	disabled?: boolean;
 	label?: string;
@@ -46,7 +48,7 @@ export function ToggleGroup({
 		type === "multiple" ? (value as string[]) : value ? [value as string] : [];
 
 	return (
-		<ToggleGroupCtx.Provider value={useMemo(() => ({ size }), [size])}>
+		<ToggleGroupCtx.Provider value={useMemo(() => ({ size, variant }), [size, variant])}>
 			<ToggleGroupPrimitive
 				data-slot="toggle-group"
 				aria-label={label}
@@ -57,7 +59,7 @@ export function ToggleGroup({
 					onValueChange?.(type === "multiple" ? next : (next[0] ?? ""))
 				}
 				className={cn(
-					"inline-flex items-center gap-0.5 rounded-xl border border-border bg-card p-1",
+					toggleGroup({ variant, size }).root(),
 					disabled && "opacity-50",
 					className,
 				)}
@@ -74,13 +76,13 @@ export function ToggleGroupItem({
 	value,
 	...props
 }: ComponentProps<typeof TogglePrimitive> & { value: string }) {
-	const { size } = useToggleGroupCtx();
+	const { size, variant } = useToggleGroupCtx();
 
 	return (
 		<TogglePrimitive
 			data-slot="toggle-group-item"
 			value={value}
-			className={cn(toggleGroupItem({ size }), className)}
+			className={cn(toggleGroup({ variant, size }).item(), className)}
 			{...props}
 		/>
 	);

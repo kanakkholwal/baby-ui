@@ -106,6 +106,7 @@ import { CircularTextDemo } from "./auto/circular-text";
 import { CodeBlockDemo } from "./auto/code-block";
 import { CollabCardDemo } from "./auto/collab-card";
 import { CollectionSurferDemo } from "./auto/collection-surfer";
+import { ColorFieldDemo } from "./auto/color-field";
 import { ContextCardsDemo } from "./auto/context-cards";
 import { CubeTextDemo } from "./auto/cube-text";
 import { DitheredLogoDemo } from "./auto/dithered-logo";
@@ -178,6 +179,7 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"collab-card": CollabCardDemo,
 	collapsible: CollapsibleDemo,
 	"collection-surfer": CollectionSurferDemo,
+	"color-field": ColorFieldDemo,
 	"color-picker": ColorPickerDemo,
 	combobox: ComboboxDemo,
 	command: CommandDemo,

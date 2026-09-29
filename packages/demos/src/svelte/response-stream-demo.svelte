@@ -1,14 +1,13 @@
 <script lang="ts">
 import { ResponseStream } from "@baby-ui/svelte";
 import type { ComponentProps } from "svelte";
-
-type ResponseStreamSize = NonNullable<ComponentProps<typeof ResponseStream>["size"]>;
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof ResponseStream>>(props));
 
 const text = $derived(
-	(props.text as string) ||
-		"Streaming reveals text at a steady rate so the reader is never chasing it.",
+	p.text || "Streaming reveals text at a steady rate so the reader is never chasing it.",
 );
 </script>
 
@@ -18,7 +17,7 @@ const text = $derived(
 			{text}
 			speed={Number(props.speed ?? 60)}
 			streaming={props.streaming !== false}
-			size={(props.size as ResponseStreamSize) ?? "md"}
+			size={p.size ?? "md"}
 		/>
 	{/key}
 </div>

@@ -1,20 +1,19 @@
 <script lang="ts">
-import {
-	WaveReveal,
-	type WaveRevealDirection,
-	type WaveRevealMode,
-} from "@baby-ui/svelte";
+import { WaveReveal } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
-let direction = $derived((props.direction as WaveRevealDirection) ?? "down");
-let mode = $derived((props.mode as WaveRevealMode) ?? "letter");
+const p = $derived(controlProps<ComponentProps<typeof WaveReveal>>(props));
+let direction = $derived(p.direction ?? "down");
+let mode = $derived(p.mode ?? "letter");
 let blur = $derived(props.blur !== false);
 let staggerMs = $derived(Number(props.staggerMs ?? 50));
 </script>
 
 {#key `${direction}${blur}${mode}${staggerMs}`}
 	<WaveReveal
-		text={(props.text as string) || "Reveal letter or word one by one"}
+		text={p.text || "Reveal letter or word one by one"}
 		{direction}
 		{mode}
 		{blur}

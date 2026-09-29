@@ -1,25 +1,24 @@
 <script lang="ts">
-import {
-	OgNewsletterIssue,
-	type OgNewsletterIssueMode,
-	type OgNewsletterIssueTone,
-} from "@baby-ui/svelte";
+import { OgNewsletterIssue } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
 import { OG_NEWSLETTER_ISSUE } from "../data/og-samples";
+import { controlProps } from "../data/preview-props";
 import OgFrame from "./og-frame.svelte";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof OgNewsletterIssue>>(props));
 </script>
 
 <OgFrame>
 	<OgNewsletterIssue
-		publication={(props.publication as string) || "The Render Loop"}
-		headline={(props.headline as string) ||
+		publication={p.publication || "The Render Loop"}
+		headline={p.headline ||
 			"Why every design system eventually rebuilds its tokens"}
-		issue={(props.issue as string) ?? undefined}
-		date={(props.date as string) ?? undefined}
+		issue={p.issue ?? undefined}
+		date={p.date ?? undefined}
 		inside={OG_NEWSLETTER_ISSUE.inside}
-		insideLabel={(props.insideLabel as string) || undefined}
-		mode={(props.mode as OgNewsletterIssueMode) ?? "light"}
-		tone={(props.tone as OgNewsletterIssueTone) ?? "neutral"}
+		insideLabel={p.insideLabel || undefined}
+		mode={p.mode ?? "light"}
+		tone={p.tone ?? "neutral"}
 	/>
 </OgFrame>

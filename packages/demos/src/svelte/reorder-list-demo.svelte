@@ -1,7 +1,10 @@
 <script lang="ts">
-import { ReorderList, type ReorderListVariant } from "@baby-ui/svelte";
+import { ReorderList } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof ReorderList>>(props));
 
 let items = $state([
 	{ id: "spec", label: "Write the ComponentSpec" },
@@ -14,8 +17,8 @@ let items = $state([
 <div class="w-full max-w-80">
 	<ReorderList
 		bind:items
-		disabled={Boolean(props.disabled)}
-		label={(props.label as string) || "Build steps"}
-		variant={(props.variant as ReorderListVariant) ?? "card"}
+		disabled={p.disabled ?? false}
+		label={p.label || "Build steps"}
+		variant={p.variant ?? "card"}
 	/>
 </div>

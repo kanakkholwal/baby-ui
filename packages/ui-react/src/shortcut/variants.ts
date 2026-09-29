@@ -3,8 +3,9 @@ import { tv, type VariantProps } from "tailwind-variants";
 export const shortcutCap = tv({
 	base: [
 		"inline-flex items-center justify-center rounded font-medium font-sans",
-		// Inside a primary button the cap reads in the button's own foreground.
-		"[[data-variant=default]_&]:border-transparent [[data-variant=default]_&]:bg-primary-foreground/15 [[data-variant=default]_&]:text-primary-foreground",
+		// Inside a primary button the cap reads in the button's own foreground. Scoped to the
+		// button slot: Dialog and others carry data-variant=default too.
+		"[[data-slot=button][data-variant=default]_&]:border-transparent [[data-slot=button][data-variant=default]_&]:bg-primary-foreground/15 [[data-slot=button][data-variant=default]_&]:text-primary-foreground",
 	],
 	variants: {
 		variant: {

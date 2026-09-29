@@ -1,38 +1,34 @@
 "use client";
 
-import {
-	ClickSpark,
-	type ClickSparkTone,
-	DraggableMarquee,
-	type DraggableMarqueeDirection,
-	type DraggableMarqueeGap,
-	TextReel,
-	type TextReelSize,
-} from "@baby-ui/react";
+import { ClickSpark, DraggableMarquee, TextReel } from "@baby-ui/react";
+import type { ComponentProps } from "react";
 import { MARQUEE_TILES, REEL_ITEMS } from "../data/obsidian";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
 export function TextReelDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof TextReel>>(props);
 	return (
 		<TextReel
 			items={REEL_ITEMS}
-			prefix={(props.prefix as string) || "We"}
-			speed={Number(props.speed ?? 0.6)}
-			paused={(props.paused as boolean) ?? false}
-			size={(props.size as TextReelSize) ?? "md"}
+			prefix={p.prefix || "We"}
+			speed={Number(p.speed ?? 0.6)}
+			paused={p.paused ?? false}
+			size={p.size ?? "md"}
 			className="w-full"
 		/>
 	);
 }
 
 export function DraggableMarqueeDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof DraggableMarquee>>(props);
 	return (
 		<DraggableMarquee
-			speed={Number(props.speed ?? 1)}
-			direction={(props.direction as DraggableMarqueeDirection) ?? "left"}
-			gap={(props.gap as DraggableMarqueeGap) ?? "md"}
-			pauseOnHover={(props.pauseOnHover as boolean) ?? false}
+			speed={Number(p.speed ?? 1)}
+			direction={p.direction ?? "left"}
+			gap={p.gap ?? "md"}
+			pauseOnHover={p.pauseOnHover ?? false}
 		>
 			{MARQUEE_TILES.map((tile) => (
 				<figure key={tile.title} className="w-56">
@@ -53,16 +49,17 @@ export function DraggableMarqueeDemo({ props }: { props: Props }) {
 }
 
 export function ClickSparkDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof ClickSpark>>(props);
 	return (
 		<div className="relative grid h-56 w-full max-w-md place-items-center overflow-hidden rounded-2xl border border-border border-dashed text-muted-foreground text-sm">
 			Click anywhere in here
 			<ClickSpark
 				scope="parent"
-				tone={(props.tone as ClickSparkTone) ?? "foreground"}
-				count={Number(props.count ?? 8)}
-				size={Number(props.size ?? 10)}
-				radius={Number(props.radius ?? 15)}
-				durationMs={Number(props.durationMs ?? 400)}
+				tone={p.tone ?? "foreground"}
+				count={Number(p.count ?? 8)}
+				size={Number(p.size ?? 10)}
+				radius={Number(p.radius ?? 15)}
+				durationMs={Number(p.durationMs ?? 400)}
 			/>
 		</div>
 	);

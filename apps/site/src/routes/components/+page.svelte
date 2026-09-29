@@ -35,7 +35,7 @@ const DESCRIPTION = $derived(
 	</p>
 
 	{#each data.sections as group (group.category)}
-		<section id={group.category} class="mt-12 scroll-mt-20">
+		<section id={group.category} class="mt-12 scroll-mt-[calc(var(--header-h)+1.5rem)]">
 			<div class="flex items-baseline gap-2">
 				<h2 class="font-semibold text-foreground text-lg tracking-tight">
 					{CATEGORY_LABEL[group.category]}

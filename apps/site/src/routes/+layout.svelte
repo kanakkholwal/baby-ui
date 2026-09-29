@@ -1,6 +1,5 @@
 <script lang="ts">
 import "./layout.css";
-import { ClickSpark } from "@baby-ui/svelte";
 import { ModeWatcher } from "mode-watcher";
 import { onMount } from "svelte";
 import { afterNavigate, beforeNavigate } from "$app/navigation";
@@ -49,5 +48,7 @@ afterNavigate(({ from, to, type }) => {
 <NavProgress />
 <SiteHeader />
 <PreferencesPanel />
-{#if prefs.clickSpark}<ClickSpark />{/if}
-<div class="pt-14">{@render children()}</div>
+<!-- Matches SiteHeader's single 56px row; sticky rails and anchors offset by the same value. -->
+<div class="pt-(--header-h) [--header-h:3.5rem]">
+	{@render children()}
+</div>

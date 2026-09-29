@@ -3,30 +3,29 @@
 import {
 	Bar,
 	BarChart,
-	type BarEntrance,
-	type BarLineCap,
-	type BarOrientationVariant,
 	BarTooltip,
-	type BarVariant,
 	BarXAxis,
 	BarYAxis,
 	CartesianGrid,
 	type ChartConfig,
 	ChartContainer,
 	ChartLegend,
-	type ChartStatus,
 } from "@baby-ui/react";
+import type { ComponentProps } from "react";
 import { MONTHLY, MONTHLY_CONFIG } from "../data/monthly";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
 const config = MONTHLY_CONFIG satisfies ChartConfig;
 
 export function BarChartDemo({ props }: { props: Props }) {
-	const orientation = (props.orientation as BarOrientationVariant) ?? "vertical";
+	const p = controlProps<ComponentProps<typeof BarChart>>(props);
+	const pBar = controlProps<ComponentProps<typeof Bar>>(props);
+	const orientation = p.orientation ?? "vertical";
 	const bar = {
-		lineCap: (props.lineCap as BarLineCap) ?? "round",
-		texture: props.texture === true,
+		lineCap: pBar.lineCap ?? "round",
+		texture: pBar.texture ?? false,
 	};
 	return (
 		<div className="w-full max-w-3xl">
@@ -34,10 +33,10 @@ export function BarChartDemo({ props }: { props: Props }) {
 				<BarChart
 					data={MONTHLY}
 					orientation={orientation}
-					variant={(props.variant as BarVariant) ?? "bar"}
-					entrance={(props.entrance as BarEntrance) ?? "grow"}
-					stacked={props.stacked === true}
-					status={(props.status as ChartStatus) ?? "ready"}
+					variant={p.variant ?? "bar"}
+					entrance={p.entrance ?? "grow"}
+					stacked={p.stacked ?? false}
+					status={p.status ?? "ready"}
 					margin={orientation === "horizontal" ? { left: 48, bottom: 28 } : undefined}
 				>
 					<CartesianGrid />

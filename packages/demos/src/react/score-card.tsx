@@ -1,27 +1,25 @@
 "use client";
 
-import {
-	type GaugeChartLayout,
-	type GaugeChartTone,
-	ScoreCard,
-	type ScoreCardSize,
-} from "@baby-ui/react";
+import { ScoreCard } from "@baby-ui/react";
+import type { ComponentProps } from "react";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
 export function ScoreCardDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof ScoreCard>>(props);
 	return (
 		<div className="w-full max-w-xs">
 			<ScoreCard
 				title="Performance"
 				description="Lighthouse, last deploy"
 				value={87}
-				min={Number(props.min ?? 0)}
-				max={Number(props.max ?? 100)}
+				min={Number(p.min ?? 0)}
+				max={Number(p.max ?? 100)}
 				trend={4}
-				tone={(props.tone as GaugeChartTone) ?? "primary"}
-				layout={(props.layout as GaugeChartLayout) ?? "arc"}
-				size={(props.size as ScoreCardSize) ?? "md"}
+				tone={p.tone ?? "primary"}
+				layout={p.layout ?? "arc"}
+				size={p.size ?? "md"}
 			/>
 		</div>
 	);

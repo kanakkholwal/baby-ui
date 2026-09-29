@@ -7,7 +7,9 @@ export const MENU_SURFACE =
 export const menuItem = tv({
 	base: [
 		"relative flex w-full items-center justify-between gap-2 rounded-md px-2.5 py-1.5",
-		"text-left text-sm outline-none transition-colors",
+		// Same list as UNFOLD_ITEM: tailwind-merge keeps only the last `transition-*`.
+		"text-left text-sm outline-none transition-[color,background-color,opacity,translate,scale] duration-150 ease-[var(--ease-out)]",
+		"active:scale-[var(--press-scale-row)] motion-reduce:transition-none",
 		"data-[highlighted]:bg-foreground/[0.06]",
 		"data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
 		"data-[inset]:pl-8",

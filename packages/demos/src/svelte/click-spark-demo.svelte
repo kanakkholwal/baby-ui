@@ -1,7 +1,10 @@
 <script lang="ts">
-import { ClickSpark, type ClickSparkTone } from "@baby-ui/svelte";
+import { ClickSpark } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof ClickSpark>>(props));
 </script>
 
 <div
@@ -10,7 +13,7 @@ let { props = {} }: { props?: Record<string, unknown> } = $props();
 	Click anywhere in here
 	<ClickSpark
 		scope="parent"
-		tone={(props.tone as ClickSparkTone) ?? "foreground"}
+		tone={p.tone ?? "foreground"}
 		count={Number(props.count ?? 8)}
 		size={Number(props.size ?? 10)}
 		radius={Number(props.radius ?? 15)}

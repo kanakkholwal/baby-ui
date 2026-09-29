@@ -2,12 +2,14 @@
 import { ToggleGroup as ToggleGroupPrimitive } from "bits-ui";
 import type { Snippet } from "svelte";
 import { cn } from "../lib/cn";
-import { setToggleGroup, type ToggleGroupSize } from "./context";
+import { setToggleGroup, type ToggleGroupSize, type ToggleGroupVariant } from "./context";
+import { toggleGroup } from "./variants";
 
 let {
 	children,
 	value = $bindable<string | string[]>(""),
 	type = "single",
+	variant = "default",
 	size = "md",
 	disabled = false,
 	label = "Options",
@@ -17,6 +19,7 @@ let {
 	children?: Snippet;
 	value?: string | string[];
 	type?: "single" | "multiple";
+	variant?: ToggleGroupVariant;
 	size?: ToggleGroupSize;
 	disabled?: boolean;
 	label?: string;
@@ -27,14 +30,13 @@ setToggleGroup({
 	get size() {
 		return size;
 	},
+	get variant() {
+		return variant;
+	},
 });
 
 const rootClass = $derived(
-	cn(
-		"inline-flex items-center gap-0.5 rounded-xl border border-border bg-card p-1",
-		disabled && "opacity-50",
-		classProp,
-	),
+	cn(toggleGroup({ variant, size }).root(), disabled && "opacity-50", classProp),
 );
 </script>
 

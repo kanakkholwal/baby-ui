@@ -1,8 +1,11 @@
 <script lang="ts">
 import type { AlertVariant } from "@baby-ui/svelte";
 import { Alert, AlertDescription, AlertTitle } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof Alert>>(props));
 
 const ICON: Record<AlertVariant, string> = {
 	info: "M8 7.2v4M8 5.1h.01",
@@ -11,12 +14,12 @@ const ICON: Record<AlertVariant, string> = {
 	destructive: "M5.6 5.6l4.8 4.8M10.4 5.6l-4.8 4.8",
 };
 
-const variant = $derived((props.variant as AlertVariant) ?? "info");
+const variant = $derived(p.variant ?? "info");
 </script>
 
 <div class="w-full max-w-md">
-	{#key [variant, props.dismissible]}
-		<Alert {variant} dismissible={Boolean(props.dismissible)}>
+	{#key [variant, p.dismissible]}
+		<Alert {variant} dismissible={p.dismissible ?? false}>
 			<svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
 				<circle cx="8" cy="8" r="6.4" stroke="currentColor" stroke-width="1.3" />
 				<path d={ICON[variant]} stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />

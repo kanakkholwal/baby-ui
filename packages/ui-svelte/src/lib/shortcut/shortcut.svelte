@@ -1,6 +1,7 @@
 <script lang="ts">
 import { cn } from "../lib/cn";
 import {
+	isApplePlatform,
 	matchesShortcut,
 	parseShortcut,
 	shortcutBlocked,
@@ -16,7 +17,7 @@ let {
 	ontrigger,
 	class: classProp,
 }: {
-	/** Tokens joined by `+`, e.g. `"cmd+k"` or `"shift+enter"`. */
+	/** Tokens joined by `+`, e.g. `"mod+k"` (⌘ on Apple, Ctrl elsewhere) or `"shift+enter"`. */
 	shortcut: string;
 	size?: ShortcutSize;
 	variant?: ShortcutVariant;
@@ -28,7 +29,12 @@ let {
 } = $props();
 
 let el = $state<HTMLElement>();
-const parsed = $derived(parseShortcut(shortcut));
+// Apple glyphs on the server and first paint; the platform is only known in the browser.
+let apple = $state(true);
+$effect(() => {
+	apple = isApplePlatform();
+});
+const parsed = $derived(parseShortcut(shortcut, apple));
 const caps = $derived.by(() => {
 	const all = parsed?.caps ?? [shortcut];
 	return joined ? [all.join("")] : all;

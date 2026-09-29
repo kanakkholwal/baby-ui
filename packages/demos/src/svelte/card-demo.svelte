@@ -9,15 +9,17 @@ import {
 	CardFooter,
 	CardHeader,
 	CardTitle,
-	type CardVariant,
 } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof Card>>(props));
 </script>
 
 <Card
-	interactive={props.interactive !== false}
-	variant={(props.variant as CardVariant) ?? "default"}
+	interactive={p.interactive !== false}
+	variant={p.variant ?? "default"}
 	class="w-full max-w-md"
 >
 	<CardHeader>

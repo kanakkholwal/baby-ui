@@ -1,13 +1,11 @@
 <script lang="ts">
+import { IconCheck, IconChevronDown, IconCopy } from "@baby-ui/icons";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@baby-ui/svelte";
-import IconCheck from "@tabler/icons-svelte/icons/check";
-import IconChevronDown from "@tabler/icons-svelte/icons/chevron-down";
-import IconCopy from "@tabler/icons-svelte/icons/copy";
 
 let { markdownUrl, copyText }: { markdownUrl: string; copyText: string } = $props();
 
@@ -69,7 +67,7 @@ async function copyPage() {
 		onclick={copyPage}
 		class="inline-flex h-8 items-center gap-1.5 rounded-l-xl px-2.5 font-medium text-foreground text-xs transition-colors hover:bg-foreground/[0.06]"
 	>
-		{#if copied}<IconCheck size={14} stroke={1.6} />{:else}<IconCopy size={14} stroke={1.6} />{/if}
+		{#if copied}<IconCheck size={14} />{:else}<IconCopy size={14} />{/if}
 		{copied ? "Copied" : "Copy Page"}
 	</button>
 	<DropdownMenu>
@@ -77,7 +75,7 @@ async function copyPage() {
 			aria-label="Page options"
 			class="grid h-8 w-7 place-items-center rounded-l-none rounded-r-xl border-border border-l text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground [&>svg]:transition-[transform,scale,translate,rotate] [&>svg]:duration-[var(--duration-exit)] [&>svg]:ease-[var(--ease-out)] [&[data-state=open]>svg]:rotate-180 [&[data-state=open]>svg]:duration-[var(--duration-dropdown)] motion-reduce:[&>svg]:transition-none"
 		>
-			<IconChevronDown size={14} stroke={1.6} />
+			<IconChevronDown size={14} />
 		</DropdownMenuTrigger>
 		<DropdownMenuContent align="end" collisionPadding={16} class="w-52">
 			<DropdownMenuItem class="justify-start">

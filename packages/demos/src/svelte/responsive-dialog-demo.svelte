@@ -9,13 +9,15 @@ import {
 	ResponsiveDialogHeader,
 	ResponsiveDialogTitle,
 	ResponsiveDialogTrigger,
-	type ResponsiveDialogVariant,
 } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof ResponsiveDialog>>(props));
 
 let open = $state(false);
-const variant = $derived((props.variant as ResponsiveDialogVariant) ?? "default");
+const variant = $derived(p.variant ?? "default");
 const BTN =
 	"inline-flex h-9 items-center rounded-lg border border-border bg-card px-3 font-medium text-foreground text-sm";
 </script>

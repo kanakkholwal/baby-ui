@@ -1,16 +1,16 @@
 <script lang="ts">
-import { MorphingModal, type MorphSpring } from "@baby-ui/svelte";
+import { MorphingModal } from "@baby-ui/svelte";
 import type { ComponentProps } from "svelte";
-
-type MorphingModalSize = NonNullable<ComponentProps<typeof MorphingModal>["size"]>;
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof MorphingModal>>(props));
 </script>
 
 <MorphingModal
 	title="Deploy to production"
-	spring={(props.spring as MorphSpring) ?? "gentle"}
-	size={(props.size as MorphingModalSize) ?? "md"}
+	spring={p.spring ?? "gentle"}
+	size={p.size ?? "md"}
 	dismissOnBackdrop={props.dismissOnBackdrop !== false}
 	backdropBlur={Number(props.backdropBlur ?? 8)}
 >

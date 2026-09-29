@@ -14,26 +14,6 @@ import {
 
 export type { DialogSize, DialogVariant };
 
-/** The backdrop fades in step with the panel; Base UI owns the top layer and inertness. */
-export const DIALOG_BACKDROP = [
-	"fixed inset-0 z-50 bg-black/50 opacity-0 backdrop-blur-[2px]",
-	"transition-opacity duration-[var(--duration-exit)] ease-[var(--ease-out)]",
-	"data-[open]:opacity-100 data-[open]:duration-[var(--duration-overlay)]",
-	"starting:data-[open]:opacity-0",
-	"motion-reduce:transition-none",
-].join(" ");
-
-/** The panel scales and lifts. Only the closed state carries a transform, so nothing collides. */
-export const DIALOG_PANEL = [
-	"fixed top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2 overflow-visible outline-none",
-	"transition-[opacity,scale,translate] duration-[var(--duration-overlay)] ease-[var(--ease-out)]",
-	"data-[closed]:opacity-0 data-[closed]:scale-[var(--enter-scale)]",
-	"data-[closed]:translate-y-[calc(var(--enter-lift)-50%)] data-[closed]:duration-[var(--duration-exit)]",
-	"starting:data-[open]:opacity-0 starting:data-[open]:scale-[var(--enter-scale)]",
-	"starting:data-[open]:translate-y-[calc(var(--enter-lift)-50%)]",
-	"motion-reduce:transition-none",
-].join(" ");
-
 type Ctx = {
 	size: DialogSize;
 	variant: DialogVariant;
@@ -106,16 +86,17 @@ export function DialogContent({
 	children,
 }: ComponentProps<typeof DialogPrimitive.Popup>) {
 	const dialog = useDialog();
+	const styles = dialogFrame({ variant: dialog.variant });
 
 	return (
 		<DialogPrimitive.Portal>
-			<DialogPrimitive.Backdrop data-slot="dialog-backdrop" className={DIALOG_BACKDROP} />
+			<DialogPrimitive.Backdrop data-slot="dialog-backdrop" className={styles.backdrop()} />
 			<DialogPrimitive.Popup
 				data-slot="dialog-content"
 				data-variant={dialog.variant}
 				className={cn(
-					DIALOG_PANEL,
-					dialogFrame({ variant: dialog.variant }).panel(),
+					styles.popup(),
+					styles.panel(),
 					"w-[min(32rem,calc(100vw-2rem))]",
 					dialogWidth({ size: dialog.size }),
 					className,
@@ -124,7 +105,7 @@ export function DialogContent({
 				{dialog.variant === "framed" ? (
 					<>
 						{/* Inset frame: the body sits on a lighter surface, the footer in the rim below it. */}
-						<div className={cn(dialogFrame({ variant: dialog.variant }).body(), "p-5")}>
+						<div className={cn(styles.body(), "p-5")}>
 							{children}
 						</div>
 						<div ref={dialog.setFooterEl} className="empty:hidden" />

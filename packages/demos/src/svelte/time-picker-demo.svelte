@@ -1,7 +1,10 @@
 <script lang="ts">
-import { TimePicker, type TimePickerSize } from "@baby-ui/svelte";
+import { TimePicker } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof TimePicker>>(props));
 
 let time = $state<string | null>("09:30");
 const cycle = $derived(
@@ -15,8 +18,8 @@ const cycle = $derived(
 		bind:value={time}
 		aria-label="Meeting starts"
 		hourCycle={cycle}
-		step={Number(props.step ?? 15)}
-		size={(props.size as TimePickerSize) ?? "md"}
+		step={p.step ?? 15}
+		size={p.size ?? "md"}
 	/>
 	<p class="text-muted-foreground text-xs tabular-nums">Saved as {time ?? "no time"}</p>
 </div>

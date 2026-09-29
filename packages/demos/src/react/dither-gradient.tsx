@@ -1,23 +1,22 @@
 "use client";
 
-import {
-	DitherGradient,
-	type DitherGradientMatrix,
-	type DitherGradientTone,
-} from "@baby-ui/react";
+import { DitherGradient } from "@baby-ui/react";
+import type { ComponentProps } from "react";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
 export function DitherGradientDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof DitherGradient>>(props);
 	return (
 		<div className="relative h-80 w-full max-w-2xl overflow-hidden rounded-xl border border-border">
 			<DitherGradient
 				position="absolute"
-				tone={(props.tone as DitherGradientTone) ?? "spectrum"}
-				matrix={(props.matrix as DitherGradientMatrix) ?? "bayer4"}
-				angle={Number(props.angle ?? 45)}
-				speed={Number(props.speed ?? 1)}
-				pixelSize={Number(props.pixelSize ?? 3)}
+				tone={p.tone ?? "spectrum"}
+				matrix={p.matrix ?? "bayer4"}
+				angle={p.angle ?? 45}
+				speed={p.speed ?? 1}
+				pixelSize={p.pixelSize ?? 3}
 			>
 				<div className="grid size-full place-items-center">
 					<p className="font-semibold text-2xl text-foreground">Built on baby ui</p>

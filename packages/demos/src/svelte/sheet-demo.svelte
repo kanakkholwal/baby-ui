@@ -13,8 +13,11 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof SheetContent>>(props));
 
 let region = $state("fra");
 
@@ -27,7 +30,7 @@ const REGIONS = [
 
 <Sheet>
 	<SheetTrigger class="inline-flex h-9 items-center rounded-lg border border-border bg-card px-3 font-medium text-foreground text-sm">Open sheet</SheetTrigger>
-	<SheetContent side={(props.side as "left" | "right" | "top" | "bottom") ?? "right"}>
+	<SheetContent side={p.side ?? "right"}>
 		<SheetHeader>
 			<SheetTitle>Filters</SheetTitle>
 			<SheetClose />

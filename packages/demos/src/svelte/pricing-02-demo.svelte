@@ -1,8 +1,11 @@
 <script lang="ts">
-import { Pricing02, type Pricing02Variant } from "@baby-ui/svelte";
+import { Pricing02 } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 import { PRICING_PERIODS, PRICING_PLANS_02 } from "../data/pricing";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof Pricing02>>(props));
 
 let period = $state("monthly");
 let chosen = $state<string | null>(null);
@@ -18,7 +21,7 @@ let chosen = $state<string | null>(null);
 		title={"Start small.\nKeep room to grow."}
 		description="Straightforward plans with every essential included. Upgrade, downgrade, or cancel whenever you like."
 		footnotes={["No credit card required for Starter.", "Prices exclude applicable taxes."]}
-		variant={(props.variant as Pricing02Variant) ?? "soft"}
+		variant={p.variant ?? "soft"}
 	/>
 	<p aria-live="polite" class="text-center text-muted-foreground text-xs">
 		{chosen ? `Chose ${chosen}` : ""}

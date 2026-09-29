@@ -1,7 +1,10 @@
 <script lang="ts">
-import { TaskSteps, type TaskStepsSize } from "@baby-ui/svelte";
+import { TaskSteps } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof TaskSteps>>(props));
 
 const steps = [
 	{ id: "read", label: "Read the component spec", status: "done" as const },
@@ -15,7 +18,7 @@ const steps = [
 	<TaskSteps
 		{steps}
 		showConnector={props.showConnector !== false}
-		compact={Boolean(props.compact)}
-		size={(props.size as TaskStepsSize) ?? "md"}
+		compact={p.compact ?? false}
+		size={p.size ?? "md"}
 	/>
 </div>

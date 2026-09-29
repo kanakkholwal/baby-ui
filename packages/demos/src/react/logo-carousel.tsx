@@ -1,7 +1,9 @@
 "use client";
 
 import { LogoCarousel } from "@baby-ui/react";
+import type { ComponentProps } from "react";
 import { BRANDS } from "../data/media";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
@@ -20,10 +22,11 @@ function LogoMark({ brand }: { brand: (typeof BRANDS)[number] }) {
 }
 
 export function LogoCarouselDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof LogoCarousel>>(props);
 	return (
 		<LogoCarousel
 			columnCount={Number(props.columnCount ?? 4)}
-			direction={(props.direction as "ltr" | "rtl") ?? "ltr"}
+			direction={p.direction ?? "ltr"}
 			className="w-full max-w-lg gap-3"
 		>
 			{BRANDS.map((brand) => (

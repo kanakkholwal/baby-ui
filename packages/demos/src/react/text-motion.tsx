@@ -2,29 +2,16 @@
 
 import {
 	DiaText,
-	type DiaTextSize,
 	MorphText,
-	type MorphTextSize,
 	RevealText,
-	type RevealTextDirection,
-	type RevealTextSize,
-	type RevealTextSplit,
-	type RevealTextStaggerFrom,
-	type RevealTextTrigger,
 	RollingDigits,
-	type RollingDigitsDirection,
-	type RollingDigitsSize,
 	ShimmerText,
-	type ShimmerTextSize,
 	TextInertia,
-	type TextInertiaSize,
 	TextLoop,
-	type TextLoopDirection,
-	type TextLoopSize,
 	Typewriter,
-	type TypewriterCursor,
 } from "@baby-ui/react";
-import { useEffect, useState } from "react";
+import { type ComponentProps, useEffect, useState } from "react";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
@@ -35,6 +22,7 @@ const INERTIA_TEXT =
 	"Crafting refined, pixel-perfect web experiences that balance design clarity with technical excellence. Every interaction should feel responsive, intentional, and calm enough to disappear into the work.";
 
 export function DiaTextDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof DiaText>>(props);
 	return (
 		<p className="max-w-4xl text-center font-light text-3xl text-foreground tracking-tight sm:text-4xl">
 			Make interfaces feel{" "}
@@ -45,13 +33,14 @@ export function DiaTextDemo({ props }: { props: Props }) {
 				delayMs={Number(props.delayMs ?? 0)}
 				repeatDelayMs={Number(props.repeatDelayMs ?? 500)}
 				fixedWidth={Boolean(props.fixedWidth ?? false)}
-				size={(props.size as DiaTextSize) ?? "inherit"}
+				size={p.size ?? "inherit"}
 			/>
 		</p>
 	);
 }
 
 export function MorphTextDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof MorphText>>(props);
 	return (
 		<p className="max-w-4xl text-center font-light text-2xl text-foreground tracking-tight sm:text-4xl">
 			Build software that feels{" "}
@@ -59,8 +48,8 @@ export function MorphTextDemo({ props }: { props: Props }) {
 				words={MORPH_WORDS}
 				defaultIndex={Number(props.defaultIndex ?? 0)}
 				intervalMs={Number(props.intervalMs ?? 3000)}
-				subtext={(props.subtext as string) || undefined}
-				size={(props.size as MorphTextSize) ?? "inherit"}
+				subtext={p.subtext || undefined}
+				size={p.size ?? "inherit"}
 				className="font-semibold"
 			/>
 		</p>
@@ -68,8 +57,9 @@ export function MorphTextDemo({ props }: { props: Props }) {
 }
 
 export function RevealTextDemo({ props }: { props: Props }) {
-	const split = (props.split as RevealTextSplit) ?? "word";
-	const trigger = (props.trigger as RevealTextTrigger) ?? "mount";
+	const p = controlProps<ComponentProps<typeof RevealText>>(props);
+	const split = p.split ?? "word";
+	const trigger = p.trigger ?? "mount";
 	return (
 		<div className="text-2xl">
 			<RevealText
@@ -82,10 +72,10 @@ export function RevealTextDemo({ props }: { props: Props }) {
 				staggerMs={Number(props.staggerMs ?? 90)}
 				delayMs={Number(props.delayMs ?? 0)}
 				blur={Number(props.blur ?? 12)}
-				direction={(props.direction as RevealTextDirection) ?? "up"}
-				staggerFrom={(props.staggerFrom as RevealTextStaggerFrom) ?? "start"}
+				direction={p.direction ?? "up"}
+				staggerFrom={p.staggerFrom ?? "start"}
 				mask={props.mask === true}
-				size={(props.size as RevealTextSize) ?? "inherit"}
+				size={p.size ?? "inherit"}
 				className="text-center font-semibold text-foreground tracking-tight"
 			/>
 		</div>
@@ -93,13 +83,14 @@ export function RevealTextDemo({ props }: { props: Props }) {
 }
 
 export function ShimmerTextDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof ShimmerText>>(props);
 	return (
 		<div className="text-lg">
 			<ShimmerText
 				text="Agent is thinking ..."
 				durationMs={Number(props.durationMs ?? 2000)}
 				spread={Number(props.spread ?? 2)}
-				size={(props.size as ShimmerTextSize) ?? "inherit"}
+				size={p.size ?? "inherit"}
 				className="font-light tracking-tight"
 			/>
 		</div>
@@ -107,12 +98,13 @@ export function ShimmerTextDemo({ props }: { props: Props }) {
 }
 
 export function TextInertiaDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof TextInertia>>(props);
 	return (
 		<div className="w-full max-w-3xl text-lg sm:text-xl">
 			<TextInertia
 				text={INERTIA_TEXT}
 				intensity={Number(props.intensity ?? 1)}
-				size={(props.size as TextInertiaSize) ?? "inherit"}
+				size={p.size ?? "inherit"}
 				className="justify-start text-left text-foreground leading-relaxed"
 			/>
 		</div>
@@ -120,6 +112,7 @@ export function TextInertiaDemo({ props }: { props: Props }) {
 }
 
 export function TextLoopDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof TextLoop>>(props);
 	return (
 		<p className="max-w-4xl text-center font-light text-foreground text-lg tracking-tight sm:text-xl">
 			<TextLoop
@@ -127,8 +120,8 @@ export function TextLoopDemo({ props }: { props: Props }) {
 				defaultIndex={Number(props.defaultIndex ?? 0)}
 				intervalMs={Number(props.intervalMs ?? 1000)}
 				durationMs={Number(props.durationMs ?? 300)}
-				direction={(props.direction as TextLoopDirection) ?? "up"}
-				size={(props.size as TextLoopSize) ?? "inherit"}
+				direction={p.direction ?? "up"}
+				size={p.size ?? "inherit"}
 				className="font-medium"
 			/>{" "}
 			software that ships faster.
@@ -137,12 +130,13 @@ export function TextLoopDemo({ props }: { props: Props }) {
 }
 
 export function TypewriterDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof Typewriter>>(props);
 	return (
 		<Typewriter
 			text="Typing like a person, typos and all."
 			durationMs={Number(props.durationMs ?? 3000)}
 			loop={Boolean(props.loop ?? true)}
-			cursor={(props.cursor as TypewriterCursor) ?? "bar"}
+			cursor={p.cursor ?? "bar"}
 			className="font-mono text-foreground text-xl"
 		/>
 	);
@@ -151,6 +145,7 @@ export function TypewriterDemo({ props }: { props: Props }) {
 const ROLLING_VALUES = [128400, 131250, 129600, 145000, 987000, 1024000];
 
 export function RollingDigitsDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof RollingDigits>>(props);
 	const [step, setStep] = useState(0);
 	useEffect(() => {
 		const id = setInterval(() => setStep((s) => (s + 1) % ROLLING_VALUES.length), 1800);
@@ -161,13 +156,13 @@ export function RollingDigitsDemo({ props }: { props: Props }) {
 			<RollingDigits
 				value={ROLLING_VALUES[step] ?? 0}
 				pad={props.pad === undefined ? undefined : Number(props.pad)}
-				locale={(props.locale as string) || undefined}
+				locale={p.locale || undefined}
 				startOnView={props.startOnView !== false}
 				stepMs={Number(props.stepMs ?? 80)}
 				coalesce={props.coalesce === true}
-				direction={(props.direction as RollingDigitsDirection) ?? "dynamic"}
+				direction={p.direction ?? "dynamic"}
 				offset={Number(props.offset ?? 32)}
-				size={(props.size as RollingDigitsSize) ?? "inherit"}
+				size={p.size ?? "inherit"}
 				className="font-semibold text-foreground tracking-tight"
 			/>
 		</div>

@@ -1,19 +1,18 @@
 <script lang="ts">
-import {
-	HoverTransition,
-	type HoverTransitionDirection,
-	type HoverTransitionEffect,
-} from "@baby-ui/svelte";
+import { HoverTransition } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof HoverTransition>>(props));
 </script>
 
 <HoverTransition
-	effect={(props.effect as HoverTransitionEffect) ?? "wipe"}
-	direction={(props.direction as HoverTransitionDirection) ?? "right"}
+	effect={p.effect ?? "wipe"}
+	direction={p.direction ?? "right"}
 	durationMs={Number(props.durationMs ?? 720)}
-	tilt={(props.tilt as boolean) ?? true}
-	label={(props.label as string) || "Hover to reveal more"}
+	tilt={p.tilt ?? true}
+	label={p.label || "Hover to reveal more"}
 	class="aspect-4/5 w-full max-w-xs rounded-3xl border border-border"
 >
 	<div class="relative flex size-full flex-col justify-end bg-card text-card-foreground">

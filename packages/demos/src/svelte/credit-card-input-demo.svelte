@@ -1,13 +1,10 @@
 <script lang="ts">
-import {
-	type CardValidity,
-	type CardValue,
-	CreditCardInput,
-	type CreditCardInputLayout,
-	type InputGroupSize,
-} from "@baby-ui/svelte";
+import { type CardValidity, type CardValue, CreditCardInput } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof CreditCardInput>>(props));
 
 let card = $state<CardValue>({ number: "", expiry: "", cvc: "" });
 let validity = $state<CardValidity | null>(null);
@@ -17,8 +14,8 @@ let validity = $state<CardValidity | null>(null);
 	<CreditCardInput
 		bind:value={card}
 		onValueChange={(_, v) => (validity = v)}
-		layout={(props.layout as CreditCardInputLayout) ?? "stacked"}
-		size={(props.size as InputGroupSize) ?? "md"}
+		layout={p.layout ?? "stacked"}
+		size={p.size ?? "md"}
 	/>
 	<p class="text-muted-foreground text-xs">
 		Try 4242 4242 4242 4242 with any future expiry.

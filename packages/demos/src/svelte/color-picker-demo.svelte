@@ -1,28 +1,31 @@
 <script lang="ts">
-import { ColorPicker, type ColorPickerVariant } from "@baby-ui/svelte";
+import { type ColorFormat, ColorPicker } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof ColorPicker>>(props));
 
 let value = $state("#7dd3fc");
-let format = $state<"hsv" | "hsl" | "rgb">("hsv");
+let format = $state<ColorFormat>("hsv");
 // Recents live in the parent; the popover adds the colour it closed on.
 let recent = $state<string[]>([]);
 
 $effect(() => {
-	if (typeof props.value === "string") value = props.value;
+	if (p.value) value = p.value;
 });
 $effect(() => {
-	format = (props.format as "hsv" | "hsl" | "rgb") ?? "hsv";
+	format = p.format ?? "hsv";
 });
 </script>
 
 <ColorPicker
 	bind:value
 	bind:format
-	variant={(props.variant as ColorPickerVariant) ?? "inline"}
+	variant={p.variant ?? "inline"}
 	{recent}
 	onOpenChange={(open) => {
 		if (!open) recent = [value, ...recent.filter((c) => c !== value)].slice(0, 6);
 	}}
-	label={(props.label as string) || "Accent"}
+	label={p.label || "Accent"}
 />

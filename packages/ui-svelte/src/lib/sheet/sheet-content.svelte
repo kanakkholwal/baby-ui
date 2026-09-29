@@ -1,8 +1,7 @@
 <script lang="ts">
 import { Dialog as SheetPrimitive } from "bits-ui";
-import { DIALOG_BACKDROP } from "../dialog/context";
 import { cn } from "../lib/cn";
-import { type SheetSide, sheetPanel } from "./variants";
+import { type SheetSide, sheet } from "./variants";
 
 let {
 	class: classProp,
@@ -10,15 +9,17 @@ let {
 	ref = $bindable(null),
 	...rest
 }: SheetPrimitive.ContentProps & { side?: SheetSide } = $props();
+
+const styles = $derived(sheet({ side }));
 </script>
 
 <SheetPrimitive.Portal>
-	<SheetPrimitive.Overlay data-slot="sheet-backdrop" class={DIALOG_BACKDROP} />
+	<SheetPrimitive.Overlay data-slot="sheet-backdrop" class={styles.backdrop()} />
 	<SheetPrimitive.Content
 		bind:ref
 		{...rest}
 		data-slot="sheet-content"
 		data-side={side}
-		class={cn(sheetPanel({ side }), classProp)}
+		class={cn(styles.panel(), classProp)}
 	/>
 </SheetPrimitive.Portal>

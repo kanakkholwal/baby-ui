@@ -44,6 +44,7 @@ export const demos: Record<string, DemoLoader> = {
 	"collab-card": () => import("./auto/collab-card-demo.svelte"),
 	collapsible: () => import("./collapsible-demo.svelte"),
 	"collection-surfer": () => import("./auto/collection-surfer-demo.svelte"),
+	"color-field": () => import("./auto/color-field-demo.svelte"),
 	"color-picker": () => import("./color-picker-demo.svelte"),
 	combobox: () => import("./combobox-demo.svelte"),
 	command: () => import("./command-demo.svelte"),

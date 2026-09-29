@@ -11,22 +11,22 @@ export type PageLayout = "stacked" | "split";
 /** `ink` replaces the ring colour where the fill is too light to read as one. */
 type Ramp = { primary: string; fg: string; ink?: string };
 
-/** The eleven beUI themes. Each rewrites the brand ramp; neutrals never move. */
+/** The beUI themes plus Mono. Each rewrites the brand ramp; neutrals never move. */
 export const THEMES = [
-	{ id: "default", name: "Mono", swatch: "oklch(40% 0 0)" },
+	{ id: "default", name: "Blue", swatch: "oklch(55% 0.18 255)" },
+	{
+		id: "mono",
+		name: "Mono",
+		swatch: "oklch(40% 0 0)",
+		light: { primary: "oklch(15% 0 0)", fg: "oklch(99% 0 0)" },
+		dark: { primary: "oklch(96% 0 0)", fg: "#151515" },
+	},
 	{
 		id: "violet",
 		name: "Violet",
 		swatch: "oklch(55% 0.2 290)",
 		light: { primary: "oklch(55% 0.2 290)", fg: "oklch(99% 0 0)" },
 		dark: { primary: "oklch(72% 0.16 290)", fg: "oklch(15% 0 0)" },
-	},
-	{
-		id: "blue",
-		name: "Blue",
-		swatch: "oklch(55% 0.18 255)",
-		light: { primary: "oklch(55% 0.18 255)", fg: "oklch(99% 0 0)" },
-		dark: { primary: "oklch(70% 0.15 255)", fg: "oklch(15% 0 0)" },
 	},
 	{
 		id: "green",
@@ -109,8 +109,6 @@ type Stored = {
 	framework: Framework;
 	dialect: Dialect;
 	pm: PackageManager;
-	/** Renamed from `clickSpark`, which defaulted on; old stores keep `true` under that name. */
-	sparks: boolean;
 	layout: PageLayout;
 };
 
@@ -118,7 +116,6 @@ const DEFAULT_STORED: Stored = {
 	framework: "svelte",
 	dialect: "ts",
 	pm: "bun",
-	sparks: false,
 	layout: "stacked",
 };
 
@@ -136,9 +133,6 @@ class Preferences {
 	get pm() {
 		return this.#stored.current.pm;
 	}
-	get clickSpark() {
-		return this.#stored.current.sparks ?? false;
-	}
 	// Stores saved before this field existed have no layout.
 	get layout(): PageLayout {
 		return this.#stored.current.layout ?? "stacked";
@@ -155,12 +149,13 @@ class Preferences {
 
 		const entry = THEMES.find((t) => t.id === this.theme) ?? THEMES[0];
 		const ramp = "light" in entry ? (dark ? entry.dark : entry.light) : undefined;
-		// --ring follows --primary unless a light fill needs a darker ink to clear 3:1.
-		const ink = (ramp as Ramp | undefined)?.ink;
+		// Ring and ink follow the fill unless a light fill needs a darker ink to clear 3:1.
+		const ink = (ramp as Ramp | undefined)?.ink ?? ramp?.primary;
 		for (const [name, value] of [
 			["--primary", ramp?.primary],
 			["--primary-foreground", ramp?.fg],
 			["--ring", ink],
+			["--accent-ink", ink],
 			["--accent", ramp?.primary],
 			["--accent-foreground", ramp?.fg],
 		] as const) {

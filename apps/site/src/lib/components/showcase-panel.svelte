@@ -1,6 +1,6 @@
 <script lang="ts">
+import { IconRefresh } from "@baby-ui/icons";
 import { Button, ShowcasePanel, type ShowcaseSpan, Spinner } from "@baby-ui/svelte";
-import IconRefresh from "@tabler/icons-svelte/icons/refresh";
 import { demos } from "$lib/demos";
 import { claim, type LiveSlot, watchLive } from "$lib/live-demo";
 import type { CardItem } from "$lib/registry";
@@ -53,7 +53,7 @@ const demoProps = $derived({ ...item?.defaults, ...extraProps });
 			aria-label="Replay {item?.name ?? slug}"
 			onclick={() => run++}
 		>
-			<IconRefresh stroke={1.7} />
+			<IconRefresh />
 		</Button>
 		<Button {href} size="sm" variant="outline" tabindex={-1} aria-hidden="true">{item?.name ?? slug}</Button>
 	{/snippet}

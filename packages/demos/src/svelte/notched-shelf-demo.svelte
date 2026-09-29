@@ -1,18 +1,14 @@
 <script lang="ts">
-import {
-	NotchedShelf,
-	type NotchedShelfAlign,
-	type NotchedShelfLayout,
-	type NotchedShelfShape,
-	type NotchedShelfSize,
-	type NotchedShelfVariant,
-} from "@baby-ui/svelte";
+import { NotchedShelf } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof NotchedShelf>>(props));
 
-const variant = $derived((props.variant as NotchedShelfVariant) ?? "solid");
-const layout = $derived((props.layout as NotchedShelfLayout) ?? "hanging");
-const size = $derived((props.size as NotchedShelfSize) ?? "md");
+const variant = $derived(p.variant ?? "solid");
+const layout = $derived(p.layout ?? "hanging");
+const size = $derived(p.size ?? "md");
 </script>
 
 <!-- Muted matches the card, so it bridges into a page-coloured surface instead. -->
@@ -27,8 +23,8 @@ const size = $derived((props.size as NotchedShelfSize) ?? "md");
 		{variant}
 		{layout}
 		{size}
-		shape={(props.shape as NotchedShelfShape) ?? "smooth"}
-		align={(props.align as NotchedShelfAlign) ?? "center"}
+		shape={p.shape ?? "smooth"}
+		align={p.align ?? "center"}
 		edge={props.edge === true}
 	>
 		<a

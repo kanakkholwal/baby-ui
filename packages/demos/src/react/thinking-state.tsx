@@ -5,7 +5,8 @@ import {
 	ThinkingState,
 	type ThinkingStateVariant,
 } from "@baby-ui/react";
-import { useEffect, useState } from "react";
+import { type ComponentProps, useEffect, useState } from "react";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
@@ -69,7 +70,8 @@ const CONTENT: Record<
 };
 
 export function ThinkingStateDemo({ props }: { props: Props }) {
-	const variant = (props.variant as ThinkingStateVariant) ?? "steps";
+	const p = controlProps<ComponentProps<typeof ThinkingState>>(props);
+	const variant = p.variant ?? "steps";
 	const [thinking, setThinking] = useState(true);
 
 	useEffect(() => {

@@ -1,36 +1,45 @@
 <script lang="ts">
 import {
+	IconBackground,
+	IconBook,
+	IconBrandGithub,
+	IconChartBar,
+	IconComponents,
+	IconFileText,
+	IconForms,
+	IconLayoutGrid,
+	IconMail,
+	IconMenu2,
+	IconPalette,
+	IconPhoto,
+	IconRobot,
+	IconSettings,
+	IconSparkles,
+	IconStack2,
+	IconTable,
+	IconTerminal2,
+	IconTypography,
+} from "@baby-ui/icons";
+import {
+	Button,
+	button,
 	MegaMenu,
 	type MegaMenuGroup,
 	type MegaMenuItem,
 	ThemeToggle,
 	type ThemeToggleValue,
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
 } from "@baby-ui/svelte";
-import IconBackground from "@tabler/icons-svelte/icons/background";
-import IconBook from "@tabler/icons-svelte/icons/book";
-import IconBrandGithub from "@tabler/icons-svelte/icons/brand-github";
-import IconChartBar from "@tabler/icons-svelte/icons/chart-bar";
-import IconComponents from "@tabler/icons-svelte/icons/components";
-import IconFileText from "@tabler/icons-svelte/icons/file-text";
-import IconForms from "@tabler/icons-svelte/icons/forms";
-import IconLayoutGrid from "@tabler/icons-svelte/icons/layout-grid";
-import IconMail from "@tabler/icons-svelte/icons/mail";
-import IconMenu2 from "@tabler/icons-svelte/icons/menu-2";
-import IconPalette from "@tabler/icons-svelte/icons/palette";
-import IconPhoto from "@tabler/icons-svelte/icons/photo";
-import IconRobot from "@tabler/icons-svelte/icons/robot";
-import IconSettings from "@tabler/icons-svelte/icons/settings";
-import IconSparkles from "@tabler/icons-svelte/icons/sparkles";
-import IconStack2 from "@tabler/icons-svelte/icons/stack-2";
-import IconTable from "@tabler/icons-svelte/icons/table";
-import IconTerminal2 from "@tabler/icons-svelte/icons/terminal-2";
-import IconTypography from "@tabler/icons-svelte/icons/typography";
 import { mode, setMode } from "mode-watcher";
 import { page } from "$app/state";
 import Logo from "$lib/components/logo.svelte";
 import SidebarToggleIcon from "$lib/components/sidebar-toggle-icon.svelte";
 import SiteSearch from "$lib/components/site-search.svelte";
 import { docsSidebar } from "$lib/docs-sidebar.svelte";
+import { GITHUB_URL, githubStars } from "$lib/github-stars";
 import { mobileNav } from "$lib/mobile-nav.svelte";
 import { prefs } from "$lib/preferences.svelte";
 import {
@@ -110,6 +119,16 @@ function pickMode(next: ThemeToggleValue) {
 	setMode(next);
 }
 
+let stars = $state<number | null>(null);
+const compact = new Intl.NumberFormat("en", {
+	notation: "compact",
+	maximumFractionDigits: 1,
+});
+
+$effect(() => {
+	void githubStars().then((count) => (stars = count));
+});
+
 let scrolled = $state(false);
 
 $effect(() => {
@@ -137,24 +156,26 @@ function active(match: string[]) {
 	<div class="relative flex h-14 w-full items-center justify-between gap-4 px-4 md:px-6 xl:px-8">
 		<div class="flex items-center gap-3">
 			{#if hasSidebar}
-				<button
-					type="button"
+				<Button
+					variant="outline"
+					size="icon"
 					onclick={() => (mobileNav.open = true)}
 					aria-label="Open navigation"
-					class="grid size-9 shrink-0 place-items-center rounded-2xl border border-border bg-card/20 text-muted-foreground transition-colors hover:border-border-strong hover:text-foreground md:hidden"
+					class="rounded-2xl border-border bg-card/20 text-foreground/75 hover:border-border-strong hover:bg-card/20 hover:text-foreground md:hidden"
 				>
-					<IconMenu2 size={17} stroke={1.6} />
-				</button>
-				<button
-					type="button"
+					<IconMenu2 size={17} />
+				</Button>
+				<Button
+					variant="ghost"
+					size="icon-sm"
 					onclick={() => (docsSidebar.current = !docsSidebar.current)}
 					aria-expanded={docsSidebar.current}
 					aria-controls="docs-sidebar"
 					aria-label={docsSidebar.current ? "Close navigation" : "Open navigation"}
-					class="hidden size-8 shrink-0 place-items-center rounded-md text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:grid"
+					class="hidden rounded-md text-foreground/75 hover:bg-transparent hover:text-foreground md:inline-flex"
 				>
 					<SidebarToggleIcon open={docsSidebar.current} class="size-[18px]" />
-				</button>
+				</Button>
 			{/if}
 			<a
 				href="/"
@@ -168,21 +189,21 @@ function active(match: string[]) {
 				<MegaMenu groups={GROUPS} active={page.url.pathname}>
 					{#snippet itemIcon(item: MegaMenuItem)}
 						{@const Icon = iconFor.get(item.href)}
-						{#if Icon}<Icon stroke={1.6} aria-hidden="true" />{/if}
+						{#if Icon}<Icon aria-hidden="true" />{/if}
 					{/snippet}
 				</MegaMenu>
 				{#each LINKS as link (link.href)}
 					{@const current = active(link.match)}
-					<a
+					<Button
 						href={link.href}
+						variant="ghost"
 						aria-current={current ? "page" : undefined}
-						class={[
-							"inline-flex items-center whitespace-nowrap rounded-full px-3.5 py-2 font-medium text-sm transition-colors motion-reduce:transition-none",
-							current ? "text-foreground" : "text-muted-foreground hover:text-foreground",
-						]}
+						class="rounded-full px-3.5 hover:bg-transparent {current
+							? 'text-foreground'
+							: 'text-muted-foreground hover:text-foreground'}"
 					>
 						{link.label}
-					</a>
+					</Button>
 				{/each}
 			</nav>
 		</div>
@@ -195,46 +216,65 @@ function active(match: string[]) {
 				onThemeChange={pickMode}
 				variant="rectangle"
 				start="bottom-up"
-				class="size-9 rounded-xl text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground"
+				class={button({
+					variant: "ghost",
+					size: "icon",
+					class: "rounded-xl text-foreground/75 hover:text-foreground",
+				})}
 				iconClass="size-4"
 			/>
 
-			<button
-				type="button"
+			<Button
+				variant="ghost"
+				size="icon"
 				onclick={() => (prefs.open = true)}
 				aria-label="Settings"
-				class="gear flex size-9 shrink-0 items-center justify-center rounded-xl text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground"
+				class="gear rounded-xl text-foreground/75 hover:text-foreground"
 			>
-				<IconSettings size={17} stroke={1.6} />
-			</button>
+				<IconSettings size={17} />
+			</Button>
 
-			<a
-				href="https://github.com/kanakkholwal/baby-ui"
-				rel="noreferrer noopener"
-				target="_blank"
-				class="hidden h-9 items-center gap-1.5 rounded-2xl border border-border bg-card/20 px-3 font-medium text-foreground text-xs transition-colors hover:border-border-strong sm:inline-flex"
-			>
-				<IconBrandGithub size={15} stroke={1.6} />
-				GitHub
-			</a>
+			<TooltipProvider>
+			<Tooltip>
+				<TooltipTrigger>
+					{#snippet child({ props })}
+						<Button
+							{...props}
+							href={GITHUB_URL}
+							rel="noreferrer noopener"
+							target="_blank"
+							variant="ghost"
+							loadingLabel=""
+							aria-label={stars === null ? "Star on GitHub" : `Star on GitHub, ${stars} stars`}
+							class="h-9 gap-1 rounded-xl px-2 text-foreground/75 tabular-nums hover:text-foreground"
+						>
+							<IconBrandGithub size={16} />
+							{#if stars !== null}<span class="text-xs">{compact.format(stars)}</span>{/if}
+						</Button>
+					{/snippet}
+				</TooltipTrigger>
+				<TooltipContent side="bottom">Star on GitHub</TooltipContent>
+			</Tooltip>
+			</TooltipProvider>
 
 		</nav>
 	</div>
 </header>
 
 <style>
-	.gear :global(svg) {
+	/* Global: `.gear` lands on Button's own element, outside this component's scope. */
+	:global(.gear svg) {
 		transition: transform var(--duration-dropdown) var(--ease-out);
 	}
 
 	@media (hover: hover) and (pointer: fine) {
-		.gear:hover :global(svg) {
+		:global(.gear:hover svg) {
 			transform: rotate(90deg);
 		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.gear :global(svg) {
+		:global(.gear svg) {
 			transition: none;
 		}
 	}

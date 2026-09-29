@@ -4,14 +4,16 @@ import {
 	TableBody,
 	TableCaption,
 	TableCell,
-	type TableDensity,
 	TableFooter,
 	TableHead,
 	TableHeader,
 	TableRow,
 } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof Table>>(props));
 
 const INVOICES = [
 	{ invoice: "INV001", status: "Paid", method: "Credit card", amount: "$250.00" },
@@ -21,7 +23,7 @@ const INVOICES = [
 ];
 </script>
 
-<Table density={props.density as TableDensity | undefined}>
+<Table variant={p.variant} density={p.density}>
 	<TableCaption>A list of recent invoices.</TableCaption>
 	<TableHeader>
 		<TableRow>

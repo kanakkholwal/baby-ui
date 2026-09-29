@@ -1,22 +1,23 @@
 <script lang="ts">
 import {
 	Message,
-	type MessageAlign,
 	MessageAvatar,
 	MessageBubble,
-	type MessageBubbleVariant,
 	MessageContent,
 	MessageFooter,
 	MessageGroup,
 	MessageHeader,
-	type MessageMotion,
 } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const pMessage = $derived(controlProps<ComponentProps<typeof Message>>(props));
+const pBubble = $derived(controlProps<ComponentProps<typeof MessageBubble>>(props));
 
-const align = $derived((props.align as MessageAlign) ?? "start");
-const motion = $derived((props.motion as MessageMotion) ?? "spring");
-const variant = $derived((props.variant as MessageBubbleVariant) ?? "default");
+const align = $derived(pMessage.align ?? "start");
+const motion = $derived(pMessage.motion ?? "spring");
+const variant = $derived(pBubble.variant ?? "default");
 const animated = $derived(props.animated !== false);
 </script>
 

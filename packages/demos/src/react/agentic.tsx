@@ -9,15 +9,12 @@ import {
 	BreadcrumbPage,
 	BreadcrumbSeparator,
 	Message,
-	type MessageAlign,
 	MessageAvatar,
 	MessageBubble,
-	type MessageBubbleVariant,
 	MessageContent,
 	MessageFooter,
 	MessageGroup,
 	MessageHeader,
-	type MessageMotion,
 	RadioGroup,
 	RadioGroupItem,
 	Reasoning,
@@ -27,24 +24,19 @@ import {
 	ReasoningStepSources,
 	type ReasoningStepStatus,
 	ReasoningSteps,
-	type ReasoningVariant,
 	ResponseStream,
 	Slider,
-	type SliderSize,
-	type SliderVariant,
 	Tabs,
 	TabsContent,
 	TabsList,
 	TabsTrigger,
-	type TabsVariant,
 	TaskSteps,
-	type TaskStepsSize,
 } from "@baby-ui/react";
 import { type ComponentProps, useEffect, useState } from "react";
+import { controlProps } from "../data/preview-props";
 import { SLIDER_MARKS, SLIDER_PRESETS } from "../data/slider";
 
 type Props = Record<string, unknown>;
-type ResponseStreamSize = NonNullable<ComponentProps<typeof ResponseStream>["size"]>;
 
 export function BreadcrumbDemo({ props }: { props: Props }) {
 	const collapsed = props.collapsed !== false;
@@ -86,15 +78,16 @@ const RADIO_OPTIONS = [
 ];
 
 export function RadioGroupDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof RadioGroup>>(props);
 	const [value, setValue] = useState("weekly");
 	return (
 		<RadioGroup
 			value={value}
 			onValueChange={setValue}
-			orientation={(props.orientation as "vertical" | "horizontal") ?? "vertical"}
-			variant={(props.variant as "default" | "card") ?? "default"}
-			size={(props.size as "sm" | "md" | "lg" | "xl") ?? "md"}
-			disabled={Boolean(props.disabled)}
+			orientation={p.orientation ?? "vertical"}
+			variant={p.variant ?? "default"}
+			size={p.size ?? "md"}
+			disabled={p.disabled ?? false}
 			name="demo-radio"
 		>
 			{RADIO_OPTIONS.map((option) => (
@@ -105,12 +98,11 @@ export function RadioGroupDemo({ props }: { props: Props }) {
 }
 
 export function SliderDemo({ props }: { props: Props }) {
-	const variant = (props.variant as SliderVariant) ?? "default";
+	const p = controlProps<ComponentProps<typeof Slider>>(props);
+	const variant = p.variant ?? "default";
 	const preset = SLIDER_PRESETS[variant] ?? SLIDER_PRESETS.default;
 	const orientation =
-		variant === "default"
-			? ((props.orientation as "horizontal" | "vertical") ?? "horizontal")
-			: "horizontal";
+		variant === "default" ? (p.orientation ?? "horizontal") : "horizontal";
 	const range = Boolean(props.range);
 	const [value, setValue] = useState<number | number[]>(50);
 	useEffect(() => {
@@ -132,13 +124,13 @@ export function SliderDemo({ props }: { props: Props }) {
 				onValueChange={setValue}
 				variant={variant}
 				orientation={orientation}
-				min={Number(props.min ?? 0)}
-				max={Number(props.max ?? 100)}
-				step={Number(props.step ?? 1)}
-				disabled={Boolean(props.disabled)}
+				min={p.min ?? 0}
+				max={p.max ?? 100}
+				step={p.step ?? 1}
+				disabled={p.disabled ?? false}
 				label={preset?.label}
 				formatValue={preset?.format}
-				size={(props.size as SliderSize) ?? "md"}
+				size={p.size ?? "md"}
 				showValue={props.showValue === true}
 				marks={variant === "default" ? SLIDER_MARKS : undefined}
 			/>
@@ -159,14 +151,15 @@ const TAB_COPY: Record<string, string> = {
 };
 
 export function TabsDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof Tabs>>(props);
 	const [value, setValue] = useState("overview");
 	return (
 		<div className="w-full max-w-96">
 			<Tabs
 				value={value}
 				onValueChange={setValue}
-				variant={(props.variant as TabsVariant) ?? "pill"}
-				size={(props.size as "sm" | "md" | "lg" | "xl") ?? "md"}
+				variant={p.variant ?? "pill"}
+				size={p.size ?? "md"}
 			>
 				<TabsList>
 					{TABS.map((tab) => (
@@ -186,10 +179,11 @@ export function TabsDemo({ props }: { props: Props }) {
 }
 
 export function MessageDemo({ props }: { props: Props }) {
-	const align = (props.align as MessageAlign) ?? "start";
-	const motion = (props.motion as MessageMotion) ?? "spring";
-	const variant = (props.variant as MessageBubbleVariant) ?? "default";
-	const animated = props.animated !== false;
+	const p = controlProps<ComponentProps<typeof Message>>(props);
+	const pBubble = controlProps<ComponentProps<typeof MessageBubble>>(props);
+	const align = p.align ?? "start";
+	const motion = p.motion ?? "spring";
+	const animated = p.animated ?? true;
 	return (
 		<MessageGroup className="w-full max-w-96">
 			<Message align="end" animated={false}>
@@ -208,7 +202,7 @@ export function MessageDemo({ props }: { props: Props }) {
 				<MessageAvatar>A</MessageAvatar>
 				<MessageContent>
 					<MessageHeader>Assistant</MessageHeader>
-					<MessageBubble variant={variant}>
+					<MessageBubble variant={pBubble.variant ?? "default"}>
 						Because the item&apos;s own width grows as it magnifies, so its measured
 						centre moves with it. Measure from the resting rect instead.
 					</MessageBubble>
@@ -220,17 +214,18 @@ export function MessageDemo({ props }: { props: Props }) {
 }
 
 export function ResponseStreamDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof ResponseStream>>(props);
 	const text =
-		(props.text as string) ||
+		p.text ||
 		"Streaming reveals text at a steady rate so the reader is never chasing it.";
 	return (
 		<div className="w-full max-w-96 rounded-xl border border-border bg-card p-4">
 			<ResponseStream
 				key={`${text}-${String(props.speed)}`}
 				text={text}
-				speed={Number(props.speed ?? 60)}
-				streaming={props.streaming !== false}
-				size={(props.size as ResponseStreamSize) ?? "md"}
+				speed={p.speed ?? 60}
+				streaming={p.streaming ?? true}
+				size={p.size ?? "md"}
 			/>
 		</div>
 	);
@@ -251,6 +246,7 @@ function stepStatus(index: number, progress: number): ReasoningStepStatus {
 }
 
 export function ReasoningDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof Reasoning>>(props);
 	const scripted = props.thinking !== false;
 	const [progress, setProgress] = useState(0);
 	useEffect(() => {
@@ -267,10 +263,10 @@ export function ReasoningDemo({ props }: { props: Props }) {
 		<div className="w-full max-w-96">
 			<Reasoning
 				thinking={thinking}
-				duration={thinking ? Math.round(step * 1.4) : Number(props.duration ?? 4)}
-				defaultOpen={Boolean(props.defaultOpen)}
-				variant={(props.variant as ReasoningVariant) ?? "outline"}
-				thinkingLabel={(props.thinkingLabel as string) || "Thinking"}
+				duration={thinking ? Math.round(step * 1.4) : (p.duration ?? 4)}
+				defaultOpen={p.defaultOpen ?? false}
+				variant={p.variant ?? "outline"}
+				thinkingLabel={p.thinkingLabel || "Thinking"}
 			>
 				<ReasoningSteps>
 					{REASONING_STEPS.map((s, i) => (
@@ -310,13 +306,14 @@ const STEPS = [
 ];
 
 export function TaskStepsDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof TaskSteps>>(props);
 	return (
 		<div className="w-full max-w-80">
 			<TaskSteps
 				steps={STEPS}
-				showConnector={props.showConnector !== false}
-				compact={Boolean(props.compact)}
-				size={(props.size as TaskStepsSize) ?? "md"}
+				showConnector={p.showConnector ?? true}
+				compact={p.compact ?? false}
+				size={p.size ?? "md"}
 			/>
 		</div>
 	);

@@ -1,19 +1,21 @@
 <script lang="ts">
-import type { BadgeSize, BadgeVariant } from "@baby-ui/svelte";
 import { Badge } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof Badge>>(props));
 
-const size = $derived((props.size as BadgeSize) ?? "md");
+const size = $derived(p.size ?? "md");
 </script>
 
 <div class="flex w-full max-w-72 flex-col gap-3 text-sm">
 	<div class="flex items-center justify-between gap-4">
 		<span class="text-muted-foreground">api-gateway</span>
 		<Badge
-			variant={(props.variant as BadgeVariant) ?? "success"}
+			variant={p.variant ?? "success"}
 			{size}
-			dot={props.dot !== false}
+			dot={p.dot !== false}
 		>
 			Healthy
 		</Badge>

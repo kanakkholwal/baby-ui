@@ -1,14 +1,10 @@
 <script lang="ts">
-import {
-	Button,
-	FullscreenNav,
-	type FullscreenNavAlign,
-	type FullscreenNavSize,
-	type FullscreenNavVariant,
-} from "@baby-ui/svelte";
-import type { Snippet } from "svelte";
+import { Button, FullscreenNav } from "@baby-ui/svelte";
+import type { ComponentProps, Snippet } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof FullscreenNav>>(props));
 
 let open = $state(false);
 
@@ -30,10 +26,10 @@ const links = [
 	{links}
 	bind:open
 	current="#product"
-	title={(props.title as string) || "Menu"}
-	variant={(props.variant as FullscreenNavVariant) ?? "fade"}
-	align={(props.align as FullscreenNavAlign) ?? "start"}
-	size={(props.size as FullscreenNavSize) ?? "md"}
+	title={p.title || "Menu"}
+	variant={p.variant ?? "fade"}
+	align={p.align ?? "start"}
+	size={p.size ?? "md"}
 	numbered={props.numbered === true}
 	footer={footer as unknown as Snippet}
 />

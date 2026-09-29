@@ -1,7 +1,10 @@
 <script lang="ts">
 import { Composer, type ComposerAction, type ComposerModel } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof Composer>>(props));
 
 let value = $state("");
 let sent = $state("");
@@ -9,7 +12,7 @@ let model = $state("fast");
 let loading = $state(false);
 
 $effect(() => {
-	loading = Boolean(props.loading);
+	loading = p.loading ?? false;
 });
 </script>
 
@@ -44,11 +47,11 @@ $effect(() => {
 	<Composer
 		bind:value
 		bind:model
-		placeholder={(props.placeholder as string) || "Send a message…"}
-		size={(props.size as "sm" | "md" | "lg") ?? "md"}
+		placeholder={p.placeholder || "Send a message…"}
+		size={p.size ?? "md"}
 		{loading}
 		onStop={() => (loading = false)}
-		disabled={Boolean(props.disabled)}
+		disabled={p.disabled ?? false}
 		maxRows={Number(props.maxRows ?? 8)}
 		models={[
 			{ value: "fast", label: "Fast", icon: fastIcon },

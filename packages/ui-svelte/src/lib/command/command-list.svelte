@@ -1,7 +1,8 @@
 <script lang="ts">
 import { Command as CommandPrimitive } from "bits-ui";
 import { cn } from "../lib/cn";
-import { COMMAND_MARKER, getCommand } from "./context";
+import { getCommand } from "./context";
+import { commandFrame } from "./variants";
 
 let { class: classProp, children, ...rest }: CommandPrimitive.ListProps = $props();
 
@@ -30,7 +31,7 @@ $effect(() => {
 	{#if box}
 		<span
 			aria-hidden="true"
-			class={COMMAND_MARKER}
+			class={commandFrame().marker()}
 			style:translate="{box.x}px {box.y}px"
 			style:width="{box.w}px"
 			style:height="{box.h}px"

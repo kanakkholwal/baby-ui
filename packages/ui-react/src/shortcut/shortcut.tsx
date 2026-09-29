@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "../lib/cn";
 import {
+	isApplePlatform,
 	matchesShortcut,
 	parseShortcut,
 	shortcutBlocked,
@@ -13,7 +14,7 @@ import { type ShortcutSize, type ShortcutVariant, shortcutCap } from "./variants
 export type { ShortcutSize, ShortcutVariant };
 
 export interface ShortcutProps {
-	/** Tokens joined by `+`, e.g. `"cmd+k"` or `"shift+enter"`. */
+	/** Tokens joined by `+`, e.g. `"mod+k"` (⌘ on Apple, Ctrl elsewhere) or `"shift+enter"`. */
 	shortcut: string;
 	size?: ShortcutSize;
 	variant?: ShortcutVariant;
@@ -33,10 +34,13 @@ export function Shortcut({
 	className,
 }: ShortcutProps) {
 	const el = useRef<HTMLSpanElement>(null);
-	const parsed = parseShortcut(shortcut);
+	// Apple glyphs on the server and first paint; the platform is only known in the browser.
+	const [apple, setApple] = useState(true);
+	useEffect(() => setApple(isApplePlatform()), []);
+	const parsed = parseShortcut(shortcut, apple);
 
 	useEffect(() => {
-		const combo = parseShortcut(shortcut);
+		const combo = parseShortcut(shortcut, apple);
 		if (!combo) return;
 		const onKey = (event: KeyboardEvent) => {
 			if (event.repeat || !matchesShortcut(event, combo) || shortcutBlocked(event, combo))
@@ -49,7 +53,7 @@ export function Shortcut({
 		};
 		window.addEventListener("keydown", onKey);
 		return () => window.removeEventListener("keydown", onKey);
-	}, [shortcut, onTrigger]);
+	}, [shortcut, apple, onTrigger]);
 
 	return (
 		<span

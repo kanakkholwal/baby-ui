@@ -1,17 +1,13 @@
 <script lang="ts">
-import {
-	RevealText,
-	type RevealTextDirection,
-	type RevealTextSize,
-	type RevealTextSplit,
-	type RevealTextStaggerFrom,
-	type RevealTextTrigger,
-} from "@baby-ui/svelte";
+import { RevealText } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof RevealText>>(props));
 
-const split = $derived((props.split as RevealTextSplit) ?? "word");
-const trigger = $derived((props.trigger as RevealTextTrigger) ?? "mount");
+const split = $derived(p.split ?? "word");
+const trigger = $derived(p.trigger ?? "mount");
 </script>
 
 <div class="text-2xl">
@@ -25,10 +21,10 @@ const trigger = $derived((props.trigger as RevealTextTrigger) ?? "mount");
 			staggerMs={Number(props.staggerMs ?? 90)}
 			delayMs={Number(props.delayMs ?? 0)}
 			blur={Number(props.blur ?? 12)}
-			direction={(props.direction as RevealTextDirection) ?? "up"}
-			staggerFrom={(props.staggerFrom as RevealTextStaggerFrom) ?? "start"}
+			direction={p.direction ?? "up"}
+			staggerFrom={p.staggerFrom ?? "start"}
 			mask={props.mask === true}
-			size={(props.size as RevealTextSize) ?? "inherit"}
+			size={p.size ?? "inherit"}
 			class="text-center font-semibold text-foreground tracking-tight"
 		/>
 	{/key}

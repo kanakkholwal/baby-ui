@@ -8,17 +8,19 @@ import {
 	CardTitle,
 	Gauge,
 	HeroStage,
-	type HeroStageMotion,
 	HeroStageSlot,
 	Progress,
 } from "@baby-ui/react";
+import type { ComponentProps } from "react";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
 export function HeroStageDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof HeroStage>>(props);
 	return (
 		<div className="w-full max-w-md py-6">
-			<HeroStage motion={(props.motion as HeroStageMotion) ?? "scroll"}>
+			<HeroStage motion={p.motion ?? "scroll"}>
 				<div className="grid grid-cols-2 gap-3">
 					<HeroStageSlot index={0} x={-40} y={24} rotate={-6} className="col-span-2">
 						<Card className="gap-1 py-4">

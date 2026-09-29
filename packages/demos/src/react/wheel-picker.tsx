@@ -1,6 +1,8 @@
 "use client";
 
-import { WheelPicker, WheelPickerColumn, type WheelPickerRows } from "@baby-ui/react";
+import { WheelPicker, WheelPickerColumn } from "@baby-ui/react";
+import type { ComponentProps } from "react";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
@@ -9,7 +11,8 @@ const MINUTES = Array.from({ length: 60 }, (_, i) => String(i).padStart(2, "0"))
 const PERIODS = ["AM", "PM"];
 
 export function WheelPickerDemo({ props }: { props: Props }) {
-	const rows = (props.rows as WheelPickerRows) ?? "5";
+	const p = controlProps<ComponentProps<typeof WheelPicker>>(props);
+	const rows = p.rows ?? "5";
 	const itemHeight = Number(props.itemHeight ?? 44);
 	return (
 		<WheelPicker

@@ -7,15 +7,17 @@ import {
 	FormField,
 	FormFieldErrors,
 	FormLabel,
-	type FormSpacing,
 } from "@baby-ui/svelte/form";
+import type { ComponentProps } from "svelte";
 import { defaults, superForm } from "sveltekit-superforms";
 import { zod4 } from "sveltekit-superforms/adapters";
 import { z } from "zod";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
+const p = $derived(controlProps<ComponentProps<typeof FormField>>(props));
 
-const spacing = $derived((props.spacing as FormSpacing) ?? "comfortable");
+const spacing = $derived(p.spacing ?? "comfortable");
 
 const schema = z.object({
 	name: z.string().trim().min(1, "Enter your name."),
