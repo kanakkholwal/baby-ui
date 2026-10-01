@@ -4,6 +4,7 @@ const SIZES = ["sm", "md", "lg"];
 
 export const fineTuneCard = defineComponent({
 	slug: "fine-tune-card",
+	isNew: true,
 	name: "Fine Tune Card",
 	description:
 		"A compact interactive inspector: scrub-able number fields, a layout switch, a type select.",

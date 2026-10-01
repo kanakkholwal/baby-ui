@@ -19,8 +19,6 @@ import {
 	type QuestionAnswers,
 	type QuestionItem,
 	Reasoning,
-	type ReorderItem,
-	ReorderList,
 	TagInput,
 	Tool,
 } from "@baby-ui/react";
@@ -92,6 +90,8 @@ export function TagInputDemo({ props }: { props: Props }) {
 				placeholder={p.placeholder || "Add a tag…"}
 				max={p.max ?? 6}
 				disabled={p.disabled ?? false}
+				invalid={p.invalid ?? false}
+				size={p.size ?? "md"}
 				label="Tags"
 			/>
 		</div>
@@ -115,6 +115,8 @@ export function ColorPickerDemo({ props }: { props: Props }) {
 			format={format}
 			onFormatChange={setFormat}
 			variant={p.variant ?? "inline"}
+			size={p.size ?? "md"}
+			invalid={p.invalid ?? false}
 			recent={recent}
 			onOpenChange={(open) => {
 				if (!open)
@@ -122,29 +124,6 @@ export function ColorPickerDemo({ props }: { props: Props }) {
 			}}
 			label={p.label || "Accent"}
 		/>
-	);
-}
-
-const STEPS: ReorderItem[] = [
-	{ id: "spec", label: "Write the ComponentSpec" },
-	{ id: "svelte", label: "Author the Svelte port" },
-	{ id: "react", label: "Author the React port" },
-	{ id: "docs", label: "Write the doc page" },
-];
-
-export function ReorderListDemo({ props }: { props: Props }) {
-	const p = controlProps<ComponentProps<typeof ReorderList>>(props);
-	const [items, setItems] = useState(STEPS);
-	return (
-		<div className="w-full max-w-80">
-			<ReorderList
-				items={items}
-				onItemsChange={setItems}
-				disabled={p.disabled ?? false}
-				label={p.label || "Build steps"}
-				variant={p.variant ?? "card"}
-			/>
-		</div>
 	);
 }
 

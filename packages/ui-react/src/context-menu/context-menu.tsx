@@ -3,9 +3,9 @@
 import { ContextMenu as ContextMenuPrimitive } from "@base-ui/react/context-menu";
 import { Menu } from "@base-ui/react/menu";
 import type { ComponentProps } from "react";
-import { ANCHORED, stagger } from "../lib/anchor";
+import { ANCHORED } from "../lib/anchor";
 import { cn } from "../lib/cn";
-import { MENU_SHORTCUT, MENU_SURFACE, type MenuItemVariant, menuItem } from "../lib/menu";
+import { type MenuItemVariant, menu } from "../lib/menu";
 
 export const ContextMenu = ContextMenuPrimitive.Root;
 export const ContextMenuSub = Menu.SubmenuRoot;
@@ -46,10 +46,7 @@ export function ContextMenuContent({
 			>
 				<ContextMenuPrimitive.Popup
 					data-slot="context-menu-content"
-					ref={(node: HTMLDivElement | null) => {
-						if (node) stagger(node.querySelectorAll<HTMLElement>("[role='menuitem']"));
-					}}
-					className={cn(ANCHORED, "static", MENU_SURFACE, className)}
+					className={cn(ANCHORED, "static", menu().surface(), className)}
 					{...props}
 				/>
 			</ContextMenuPrimitive.Positioner>
@@ -76,7 +73,7 @@ export function ContextMenuItem({
 		<ContextMenuPrimitive.Item
 			data-slot="context-menu-item"
 			data-inset={inset || undefined}
-			className={cn(menuItem({ variant }), className)}
+			className={cn(menu({ variant }).item(), className)}
 			{...props}
 		/>
 	);
@@ -86,7 +83,7 @@ export function ContextMenuShortcut({ className, ...props }: ComponentProps<"kbd
 	return (
 		<kbd
 			data-slot="context-menu-shortcut"
-			className={cn(MENU_SHORTCUT, className)}
+			className={cn(menu().shortcut(), className)}
 			{...props}
 		/>
 	);
@@ -135,11 +132,7 @@ export function ContextMenuSubTrigger({
 			data-slot="context-menu-sub-trigger"
 			data-inset={inset || undefined}
 			closeDelay={closeDelay}
-			className={cn(
-				menuItem({ variant: "default" }),
-				"data-[open]:bg-foreground/[0.06]",
-				className,
-			)}
+			className={cn(menu().item(), className)}
 			{...props}
 		>
 			<span className="min-w-0 flex-1 truncate text-left">{children}</span>
@@ -184,7 +177,7 @@ export function ContextMenuSubContent({
 			>
 				<Menu.Popup
 					data-slot="context-menu-sub-content"
-					className={cn(ANCHORED, "static", MENU_SURFACE, "min-w-40", className)}
+					className={cn(ANCHORED, "static", menu().surface(), "min-w-40", className)}
 					{...props}
 				/>
 			</Menu.Positioner>
@@ -196,37 +189,32 @@ export function ContextMenuGroup(props: ComponentProps<typeof Menu.Group>) {
 	return <Menu.Group data-slot="context-menu-group" {...props} />;
 }
 
-function Check() {
-	return (
-		<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-3.5">
-			<path
-				d="m3.5 8.5 3 3 6-7"
-				stroke="currentColor"
-				strokeWidth="1.6"
-				strokeLinecap="round"
-				strokeLinejoin="round"
-			/>
-		</svg>
-	);
-}
-
 export function ContextMenuCheckboxItem({
 	className,
 	children,
 	...props
 }: ComponentProps<typeof Menu.CheckboxItem>) {
+	const styles = menu();
 	return (
 		<Menu.CheckboxItem
 			data-slot="context-menu-checkbox-item"
 			data-inset=""
-			className={cn(menuItem({ variant: "default" }), className)}
+			className={cn(styles.item(), className)}
 			{...props}
 		>
-			<span className="pointer-events-none absolute left-2.5 flex size-3.5 items-center justify-center">
-				<Menu.CheckboxItemIndicator>
-					<Check />
-				</Menu.CheckboxItemIndicator>
-			</span>
+			{/* Kept mounted so the tick can draw in and back out with the row's data-checked. */}
+			<Menu.CheckboxItemIndicator keepMounted className={styles.indicator()}>
+				<svg viewBox="0 0 16 16" fill="none" aria-hidden className={styles.check()}>
+					<path
+						d="m3.5 8.5 3 3 6-7"
+						pathLength={1}
+						stroke="currentColor"
+						strokeWidth="1.6"
+						strokeLinecap="round"
+						strokeLinejoin="round"
+					/>
+				</svg>
+			</Menu.CheckboxItemIndicator>
 			{children}
 		</Menu.CheckboxItem>
 	);
@@ -241,18 +229,17 @@ export function ContextMenuRadioItem({
 	children,
 	...props
 }: ComponentProps<typeof Menu.RadioItem>) {
+	const styles = menu();
 	return (
 		<Menu.RadioItem
 			data-slot="context-menu-radio-item"
 			data-inset=""
-			className={cn(menuItem({ variant: "default" }), className)}
+			className={cn(styles.item(), className)}
 			{...props}
 		>
-			<span className="pointer-events-none absolute left-2.5 flex size-3.5 items-center justify-center">
-				<Menu.RadioItemIndicator>
-					<span className="block size-1.5 rounded-full bg-current" />
-				</Menu.RadioItemIndicator>
-			</span>
+			<Menu.RadioItemIndicator keepMounted className={styles.indicator()}>
+				<span className={styles.dot()} />
+			</Menu.RadioItemIndicator>
 			{children}
 		</Menu.RadioItem>
 	);

@@ -112,6 +112,7 @@ export function DatePicker({
 					undefined
 				}
 				aria-disabled={disabled || undefined}
+				aria-invalid={invalid || outside || undefined}
 				data-slot="date-picker-group"
 				className={s.group()}
 				onKeyDown={(e) => {

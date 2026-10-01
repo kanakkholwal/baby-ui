@@ -1,4 +1,4 @@
-/** Sample data for the file-upload, number-input, search-input and multi-select demos. */
+/** Sample data for the file-upload, number-input and multi-select demos. */
 
 export const TEAM_MEMBERS = [
 	{ value: "ana", label: "Ana Ruiz", keywords: "design" },
@@ -7,19 +7,6 @@ export const TEAM_MEMBERS = [
 	{ value: "dev", label: "Dev Patel", keywords: "engineering" },
 	{ value: "emi", label: "Emi Sato", keywords: "research" },
 	{ value: "finn", label: "Finn Larsen", keywords: "support", disabled: true },
-];
-
-export const SEARCHABLE = [
-	"Accordion",
-	"Area Chart",
-	"Button",
-	"Calendar",
-	"Command",
-	"File Upload",
-	"Multi Select",
-	"Number Input",
-	"Search Input",
-	"Tooltip",
 ];
 
 /** Fakes an upload in demos only: real apps report progress from their own request. */

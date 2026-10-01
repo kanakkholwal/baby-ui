@@ -5,6 +5,7 @@ const SIZES = ["sm", "md", "lg"];
 
 export const fillButton = defineComponent({
 	slug: "fill-button",
+	isNew: true,
 	name: "Fill Button",
 	description:
 		"A call to action whose icon tile expands into a full fill on hover, swapping the label as it goes.",

@@ -3,9 +3,19 @@
 import { OTPInput, OTPInputContext } from "input-otp";
 import { type ComponentProps, createContext, useContext } from "react";
 import { cn } from "../lib/cn";
-import { type InputOtpSize, inputOtp } from "./variants";
+import { type InputOtpInvalidMotion, type InputOtpSize, inputOtp } from "./variants";
 
-const SizeCtx = createContext<InputOtpSize>("md");
+type StyleProps = {
+	size: InputOtpSize;
+	invalid: boolean;
+	invalidMotion: InputOtpInvalidMotion;
+};
+
+const StyleCtx = createContext<StyleProps>({
+	size: "md",
+	invalid: false,
+	invalidMotion: "shake",
+});
 
 // Distributes over OTPInput's children/render union; the input's numeric `size` gives way to ours.
 type OTPProps =
@@ -20,23 +30,29 @@ export function InputOTP({
 	className,
 	containerClassName,
 	size = "md",
+	invalid = false,
+	invalidMotion = "shake",
 	...props
 }: OTPProps & {
 	containerClassName?: string;
 	size?: InputOtpSize;
+	/** Reds every slot; `invalidMotion` plays each time this turns on. */
+	invalid?: boolean;
+	invalidMotion?: InputOtpInvalidMotion;
 }) {
-	const s = inputOtp({ size });
+	const s = inputOtp({ size, invalid, invalidMotion });
 	return (
-		<SizeCtx.Provider value={size}>
+		<StyleCtx.Provider value={{ size, invalid, invalidMotion }}>
 			<OTPInput
 				data-slot="input-otp"
+				aria-invalid={invalid || undefined}
 				containerClassName={cn(s.root(), containerClassName)}
 				spellCheck={false}
 				autoComplete="one-time-code"
 				className={cn(s.input(), className)}
 				{...props}
 			/>
-		</SizeCtx.Provider>
+		</StyleCtx.Provider>
 	);
 }
 
@@ -55,7 +71,7 @@ export function InputOTPSlot({
 	className,
 	...props
 }: ComponentProps<"div"> & { index: number }) {
-	const s = inputOtp({ size: useContext(SizeCtx) });
+	const s = inputOtp(useContext(StyleCtx));
 	const { char, hasFakeCaret, isActive } =
 		useContext(OTPInputContext)?.slots[index] ?? {};
 	return (

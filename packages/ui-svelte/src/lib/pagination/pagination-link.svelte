@@ -2,15 +2,18 @@
 import type { Snippet } from "svelte";
 import type { HTMLButtonAttributes } from "svelte/elements";
 import { cn } from "../lib/cn";
+import { type PaginationSize, pagination } from "./variants";
 
 let {
 	children,
 	active = false,
+	size = "md",
 	class: classProp,
 	...rest
 }: {
 	children?: Snippet;
 	active?: boolean;
+	size?: PaginationSize;
 	class?: string;
 } & HTMLButtonAttributes = $props();
 </script>
@@ -20,11 +23,7 @@ let {
 	type="button"
 	data-slot="pagination-link"
 	aria-current={active ? "page" : undefined}
-	class={cn(
-		"grid size-8 place-items-center rounded-lg text-muted-foreground text-sm tabular-nums transition-colors hover:text-foreground",
-		"aria-[current=page]:bg-foreground/[0.08] aria-[current=page]:font-medium aria-[current=page]:text-foreground",
-		classProp,
-	)}
+	class={cn(pagination({ size }).link(), classProp)}
 >
 	{@render children?.()}
 </button>

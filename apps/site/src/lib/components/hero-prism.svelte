@@ -46,13 +46,6 @@ const fade =
 	aria-hidden="true"
 	class={cn("pointer-events-none absolute inset-0 isolate overflow-hidden bg-background", className)}
 >
-	<div
-		class={cn(
-			"absolute inset-0 bg-[radial-gradient(circle_at_55%_45%,var(--primary)_0%,var(--background)_48%,var(--foreground)_100%)]",
-			fade,
-			gl.webgl && "opacity-0",
-		)}
-	></div>
 	<canvas
 		bind:this={canvas}
 		class={cn("absolute inset-0 block size-full", fade, !gl.webgl && "opacity-0")}

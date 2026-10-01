@@ -12,7 +12,8 @@ export const dateField = tv({
 			"transition-[box-shadow,border-color] duration-[var(--duration-press)] ease-[var(--ease-out)] motion-reduce:transition-none",
 			// Rings while a segment is focused, not while the calendar button is.
 			"has-[[data-segment]:focus]:border-ring has-[[data-segment]:focus]:ring-2 has-[[data-segment]:focus]:ring-ring",
-			"has-[[data-segment][data-invalid]]:border-[var(--destructive)]",
+			// aria-invalid is the `invalid` prop; bits-ui only validates a field that has a value.
+			"has-[[data-segment][data-invalid]]:border-[var(--destructive)] aria-invalid:border-[var(--destructive)]",
 			"aria-disabled:opacity-50 data-[disabled]:opacity-50",
 		],
 		input: "flex min-w-0 items-center gap-px px-1.5",
@@ -23,6 +24,7 @@ export const dateField = tv({
 			"focus:bg-primary/10 focus:text-primary",
 			"data-[segment=literal]:px-0 data-[segment=literal]:text-muted-foreground",
 			"data-[invalid]:text-[var(--destructive)] data-[invalid]:focus:bg-[color-mix(in_oklch,var(--destructive)_12%,transparent)]",
+			"in-aria-invalid:text-[var(--destructive)] in-aria-invalid:focus:bg-[color-mix(in_oklch,var(--destructive)_12%,transparent)]",
 			"aria-disabled:cursor-not-allowed data-[disabled]:cursor-not-allowed",
 		],
 		icon: "pointer-events-none ms-1.5 flex shrink-0 items-center text-muted-foreground [&_svg]:size-4",

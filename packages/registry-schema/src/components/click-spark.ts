@@ -2,6 +2,7 @@ import { defineComponent } from "../index.ts";
 
 export const clickSpark = defineComponent({
 	slug: "click-spark",
+	isNew: true,
 	name: "Click Spark",
 	description:
 		"A burst of short lines wherever the page is pressed, drawn on one fixed canvas.",

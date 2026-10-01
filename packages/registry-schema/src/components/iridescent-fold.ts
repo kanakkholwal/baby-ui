@@ -7,6 +7,7 @@ const union = (values: string[]) => values.map((v) => `"${v}"`).join(" | ");
 
 export const iridescentFold = defineComponent({
 	slug: "iridescent-fold",
+	isNew: true,
 	name: "Iridescent Fold",
 	description:
 		"Holographic foil folds with a thin-film sheen, drawn in WebGL from theme tokens.",

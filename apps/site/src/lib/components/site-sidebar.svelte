@@ -35,7 +35,13 @@ const sections = $derived<DocsNavSection[]>([
 			href: item.href,
 			label: item.name,
 			badge:
-				item.tier === "pro" ? "Pro" : item.status !== "stable" ? item.status : undefined,
+				item.tier === "pro"
+					? "Pro"
+					: item.isNew
+						? "New"
+						: item.status !== "stable"
+							? item.status
+							: undefined,
 		})),
 	})),
 ]);

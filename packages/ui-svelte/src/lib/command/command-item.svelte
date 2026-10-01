@@ -1,6 +1,7 @@
 <script lang="ts">
 import { Command as CommandPrimitive } from "bits-ui";
 import { cn } from "../lib/cn";
+import { commandFrame } from "./variants";
 
 let {
 	children,
@@ -24,11 +25,7 @@ let {
 	keywords={keywords ? keywords.split(/\s+/) : undefined}
 	onSelect={onSelect ?? onclick}
 	data-slot="command-item"
-	class={cn(
-		"relative flex w-full items-center justify-between gap-3 rounded-lg px-2.5 py-2 text-left text-sm transition-colors",
-		"text-muted-foreground data-[selected]:text-foreground",
-		classProp,
-	)}
+	class={cn(commandFrame().item(), classProp)}
 	{...rest}
 >
 	{@render children?.()}

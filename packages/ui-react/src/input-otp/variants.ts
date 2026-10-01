@@ -24,8 +24,35 @@ export const inputOtp = tv({
 			md: { slot: "size-10 text-base" },
 			lg: { slot: "size-12 text-lg" },
 		},
+		invalid: {
+			true: {
+				slot: "border-destructive data-[active=true]:border-destructive data-[active=true]:ring-destructive/25",
+			},
+			false: {},
+		},
+		/** Plays once each time `invalid` turns on. */
+		invalidMotion: { shake: {}, pulse: {}, none: {} },
 	},
-	defaultVariants: { size: "md" },
+	compoundVariants: [
+		{
+			invalid: true,
+			invalidMotion: "shake",
+			class: {
+				root: "animate-[otp-shake_400ms_var(--ease-out)] motion-reduce:animate-none",
+			},
+		},
+		{
+			invalid: true,
+			invalidMotion: "pulse",
+			class: {
+				slot: "animate-[otp-pulse_360ms_var(--ease-out)] motion-reduce:animate-none",
+			},
+		},
+	],
+	defaultVariants: { size: "md", invalid: false, invalidMotion: "shake" },
 });
 
 export type InputOtpSize = NonNullable<VariantProps<typeof inputOtp>["size"]>;
+export type InputOtpInvalidMotion = NonNullable<
+	VariantProps<typeof inputOtp>["invalidMotion"]
+>;

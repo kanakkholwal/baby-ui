@@ -2,13 +2,20 @@
 
 import type { KeyboardEvent } from "react";
 import { useState } from "react";
+import { Badge } from "../badge/badge";
 import { cn } from "../lib/cn";
+import { type TagInputSize, tagInput } from "./variants";
+
+export type { TagInputSize };
 
 export interface TagInputProps {
 	tags: string[];
 	placeholder?: string;
 	max?: number;
 	disabled?: boolean;
+	/** Marks the field invalid from outside, e.g. a form error. */
+	invalid?: boolean;
+	size?: TagInputSize;
 	label?: string;
 	className?: string;
 	onTagsChange: (tags: string[]) => void;
@@ -19,10 +26,13 @@ export function TagInput({
 	placeholder = "Add a tag…",
 	max,
 	disabled = false,
+	invalid = false,
+	size = "md",
 	label,
 	className,
 	onTagsChange,
 }: TagInputProps) {
+	const s = tagInput({ size });
 	const [draft, setDraft] = useState("");
 	const full = max !== undefined && tags.length >= max;
 
@@ -50,47 +60,46 @@ export function TagInput({
 
 	return (
 		<div
-			className={cn(
-				"flex w-full flex-wrap items-center gap-1.5 rounded-lg border border-input bg-background p-1.5",
-				"focus-within:border-ring focus-within:ring-2 focus-within:ring-ring",
-				disabled && "pointer-events-none opacity-50",
-				className,
-			)}
+			data-slot="tag-input"
+			data-disabled={disabled || undefined}
+			aria-invalid={invalid || undefined}
+			className={cn(s.root(), className)}
 		>
 			{tags.map((tag) => (
-				<span
-					key={tag}
-					className="inline-flex h-6 items-center gap-1 rounded-md bg-card px-2 text-foreground text-xs"
-				>
-					{tag}
+				<Badge key={tag} size={size === "sm" ? "sm" : "md"} className={s.chip()}>
+					<span className={s.chipLabel()}>{tag}</span>
 					<button
 						type="button"
 						aria-label={`Remove ${tag}`}
+						disabled={disabled}
 						onClick={() => onTagsChange(tags.filter((t) => t !== tag))}
-						className="text-muted-foreground transition-colors hover:text-foreground"
+						className={s.chipRemove()}
 					>
-						<svg viewBox="0 0 12 12" fill="none" aria-hidden className="size-3">
-							<path
-								d="m3 3 6 6M9 3l-6 6"
-								stroke="currentColor"
-								strokeWidth="1.5"
-								strokeLinecap="round"
-							/>
+						<svg
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							strokeWidth="2.2"
+							strokeLinecap="round"
+							aria-hidden
+						>
+							<path d="M18 6 6 18M6 6l12 12" />
 						</svg>
 					</button>
-				</span>
+				</Badge>
 			))}
 
 			<input
 				type="text"
 				aria-label={label}
+				aria-invalid={invalid || undefined}
 				placeholder={full ? "" : placeholder}
 				disabled={disabled}
 				value={draft}
 				onChange={(e) => setDraft(e.currentTarget.value)}
 				onKeyDown={onKeyDown}
 				onBlur={add}
-				className="h-6 min-w-24 flex-1 bg-transparent px-1 text-foreground text-sm outline-none placeholder:text-muted-foreground"
+				className={s.input()}
 			/>
 
 			<span role="status" className="sr-only">

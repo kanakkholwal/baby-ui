@@ -73,6 +73,8 @@ export const ComponentSpecSchema = z.object({
 	status: z.enum(["stable", "beta", "alpha", "experimental"]).default("beta"),
 	/** Hidden from the catalog, nav, search and counts; the registry still serves it so installs keep working. */
 	retired: z.boolean().default(false),
+	/** Badged "New" and listed first; clear it once the component has settled. */
+	isNew: z.boolean().default(false),
 
 	props: z.array(PropSpecSchema).default([]),
 	/** Named variant axes, e.g. `{ variant: ["default","ghost"], size: ["sm","lg"] }`. */

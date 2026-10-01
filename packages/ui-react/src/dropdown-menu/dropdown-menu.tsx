@@ -2,9 +2,9 @@
 
 import { Menu } from "@base-ui/react/menu";
 import type { ComponentProps } from "react";
-import { ANCHORED, stagger, UNFOLD_ITEM } from "../lib/anchor";
+import { ANCHORED } from "../lib/anchor";
 import { cn } from "../lib/cn";
-import { MENU_SHORTCUT, MENU_SURFACE, type MenuItemVariant, menuItem } from "../lib/menu";
+import { type MenuItemVariant, menu } from "../lib/menu";
 
 export const DropdownMenu = Menu.Root;
 export const DropdownMenuSub = Menu.SubmenuRoot;
@@ -48,10 +48,7 @@ export function DropdownMenuContent({
 			>
 				<Menu.Popup
 					data-slot="dropdown-menu-content"
-					ref={(node: HTMLDivElement | null) => {
-						if (node) stagger(node.querySelectorAll<HTMLElement>("[role='menuitem']"));
-					}}
-					className={cn(ANCHORED, "static", MENU_SURFACE, className)}
+					className={cn(ANCHORED, "static", menu().surface(), className)}
 					{...props}
 				/>
 			</Menu.Positioner>
@@ -74,7 +71,7 @@ export function DropdownMenuItem({
 		<Menu.Item
 			data-slot="dropdown-menu-item"
 			data-inset={inset || undefined}
-			className={cn(UNFOLD_ITEM, menuItem({ variant }), className)}
+			className={cn(menu({ variant }).item(), className)}
 			{...props}
 		/>
 	);
@@ -84,7 +81,7 @@ export function DropdownMenuShortcut({ className, ...props }: ComponentProps<"kb
 	return (
 		<kbd
 			data-slot="dropdown-menu-shortcut"
-			className={cn(MENU_SHORTCUT, className)}
+			className={cn(menu().shortcut(), className)}
 			{...props}
 		/>
 	);
@@ -133,11 +130,7 @@ export function DropdownMenuSubTrigger({
 			data-slot="dropdown-menu-sub-trigger"
 			data-inset={inset || undefined}
 			closeDelay={closeDelay}
-			className={cn(
-				menuItem({ variant: "default" }),
-				"data-[open]:bg-foreground/[0.06]",
-				className,
-			)}
+			className={cn(menu().item(), className)}
 			{...props}
 		>
 			<span className="min-w-0 flex-1 truncate text-left">{children}</span>
@@ -182,7 +175,7 @@ export function DropdownMenuSubContent({
 			>
 				<Menu.Popup
 					data-slot="dropdown-menu-sub-content"
-					className={cn(ANCHORED, "static", MENU_SURFACE, "min-w-40", className)}
+					className={cn(ANCHORED, "static", menu().surface(), "min-w-40", className)}
 					{...props}
 				/>
 			</Menu.Positioner>

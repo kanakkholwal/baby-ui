@@ -7,6 +7,7 @@ const union = (values: string[]) => values.map((v) => `"${v}"`).join(" | ");
 
 export const lightCaustics = defineComponent({
 	slug: "light-caustics",
+	isNew: true,
 	name: "Light Caustics",
 	description:
 		"Rippling underwater caustic filaments over a tinted base, drawn in WebGL from theme tokens.",

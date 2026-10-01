@@ -21,6 +21,7 @@ let checkIn = $state<DateValue | undefined>();
 		max={now.add({ months: 6 })}
 		locale={p.locale || undefined}
 		captionLayout={p.captionLayout ?? "dropdown"}
+		invalid={p.invalid ?? false}
 		size={p.size ?? "md"}
 		aria-describedby="demo-check-in-hint"
 	/>

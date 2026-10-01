@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Spinner } from "@baby-ui/svelte";
+import { Badge, Spinner } from "@baby-ui/svelte";
 import { demos } from "$lib/demos";
 import { claim, type LiveSlot, watchLive } from "$lib/live-demo";
 import type { CardItem } from "$lib/registry";
@@ -51,6 +51,9 @@ const demoProps = $derived(item.defaults);
 					<span class="rounded-full bg-foreground px-1.5 py-px font-medium text-[10px] text-background">
 						Pro
 					</span>
+				{/if}
+				{#if item.isNew}
+					<Badge size="sm" variant="info">New</Badge>
 				{/if}
 			</h3>
 			<p class="mt-1 line-clamp-2 text-muted-foreground text-xs leading-relaxed">

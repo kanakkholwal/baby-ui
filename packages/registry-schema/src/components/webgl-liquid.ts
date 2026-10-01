@@ -6,6 +6,7 @@ const POSITIONS = ["absolute", "fixed"];
 
 export const webglLiquid = defineComponent({
 	slug: "webgl-liquid",
+	isNew: true,
 	name: "WebGL Liquid",
 	description:
 		"A rising liquid field that fades up into the surface, drawn in WebGL from theme tokens.",

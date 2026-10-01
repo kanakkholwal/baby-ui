@@ -270,11 +270,7 @@ export function CommandItem({
 			keywords={keywords ? keywords.split(/\s+/) : undefined}
 			onSelect={onSelect ?? onClick}
 			data-slot="command-item"
-			className={cn(
-				"relative flex w-full items-center justify-between gap-3 rounded-lg px-2.5 py-2 text-left text-sm transition-colors",
-				"text-muted-foreground data-[selected=true]:text-foreground",
-				className,
-			)}
+			className={cn(commandFrame().item(), className)}
 			{...props}
 		>
 			{children}

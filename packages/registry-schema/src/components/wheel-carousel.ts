@@ -2,6 +2,7 @@ import { defineComponent } from "../index.ts";
 
 export const wheelCarousel = defineComponent({
 	slug: "wheel-carousel",
+	isNew: true,
 	name: "Wheel Carousel",
 	description:
 		"Labels on a turning wheel beside a crossfading photo; scroll, drag or click to spin it.",

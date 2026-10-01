@@ -1,5 +1,8 @@
 import type { ComponentProps } from "react";
 import { cn } from "../lib/cn";
+import { type PaginationSize, pagination } from "./variants";
+
+export type { PaginationSize };
 
 /** Part names and data-slot values follow shadcn/ui, so this drops into an existing project. */
 export function Pagination({ className, ...props }: ComponentProps<"nav">) {
@@ -27,39 +30,44 @@ export function PaginationItem({ className, ...props }: ComponentProps<"li">) {
 	return <li data-slot="pagination-item" className={cn("flex", className)} {...props} />;
 }
 
+type SizeProp = { size?: PaginationSize };
+
 export function PaginationLink({
 	className,
 	active = false,
+	size = "md",
 	...props
-}: ComponentProps<"button"> & { active?: boolean }) {
+}: ComponentProps<"button"> & SizeProp & { active?: boolean }) {
 	return (
 		<button
 			type="button"
 			data-slot="pagination-link"
 			aria-current={active ? "page" : undefined}
-			className={cn(
-				"grid size-8 place-items-center rounded-lg text-muted-foreground text-sm tabular-nums transition-colors hover:text-foreground",
-				"aria-[current=page]:bg-foreground/[0.08] aria-[current=page]:font-medium aria-[current=page]:text-foreground",
-				className,
-			)}
+			className={cn(pagination({ size }).link(), className)}
 			{...props}
 		/>
 	);
 }
 
-const NAV =
-	"grid size-8 place-items-center rounded-lg border border-border text-muted-foreground transition-colors hover:text-foreground disabled:pointer-events-none disabled:opacity-40";
+const navClass = (size: PaginationSize) => {
+	const s = pagination({ size });
+	return cn(s.link(), s.nav());
+};
 
-export function PaginationPrevious({ className, ...props }: ComponentProps<"button">) {
+export function PaginationPrevious({
+	className,
+	size = "md",
+	...props
+}: ComponentProps<"button"> & SizeProp) {
 	return (
 		<button
 			type="button"
 			data-slot="pagination-previous"
 			aria-label="Previous page"
-			className={cn(NAV, className)}
+			className={cn(navClass(size), className)}
 			{...props}
 		>
-			<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-3.5">
+			<svg viewBox="0 0 16 16" fill="none" aria-hidden>
 				<path
 					d="M10 4 6 8l4 4"
 					stroke="currentColor"
@@ -72,16 +80,20 @@ export function PaginationPrevious({ className, ...props }: ComponentProps<"butt
 	);
 }
 
-export function PaginationNext({ className, ...props }: ComponentProps<"button">) {
+export function PaginationNext({
+	className,
+	size = "md",
+	...props
+}: ComponentProps<"button"> & SizeProp) {
 	return (
 		<button
 			type="button"
 			data-slot="pagination-next"
 			aria-label="Next page"
-			className={cn(NAV, className)}
+			className={cn(navClass(size), className)}
 			{...props}
 		>
-			<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-3.5">
+			<svg viewBox="0 0 16 16" fill="none" aria-hidden>
 				<path
 					d="m6 4 4 4-4 4"
 					stroke="currentColor"

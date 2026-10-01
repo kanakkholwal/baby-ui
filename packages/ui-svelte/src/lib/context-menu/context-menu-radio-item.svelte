@@ -2,7 +2,7 @@
 import { ContextMenu as ContextMenuPrimitive } from "bits-ui";
 import type { Snippet } from "svelte";
 import { cn } from "../lib/cn";
-import { menuItem } from "../lib/menu";
+import { menu } from "../lib/menu";
 
 let {
 	class: classProp,
@@ -12,6 +12,8 @@ let {
 }: Omit<ContextMenuPrimitive.RadioItemProps, "children"> & {
 	children?: Snippet;
 } = $props();
+
+const styles = menu();
 </script>
 
 <ContextMenuPrimitive.RadioItem
@@ -19,13 +21,11 @@ let {
 	{...rest}
 	data-slot="context-menu-radio-item"
 	data-inset=""
-	class={cn(menuItem({ variant: "default" }), classProp)}
+	class={cn(styles.item(), classProp)}
 >
 	{#snippet children({ checked })}
-		<span class="pointer-events-none absolute left-2.5 flex size-3.5 items-center justify-center">
-			{#if checked}
-				<span class="block size-1.5 rounded-full bg-current"></span>
-			{/if}
+		<span class={styles.indicator()}>
+			<span data-on={checked} class={styles.dot()}></span>
 		</span>
 		{@render label?.()}
 	{/snippet}

@@ -8,6 +8,7 @@ import type { PageProps } from "./$types";
 let { data }: PageProps = $props();
 
 const total = $derived(data.sections.reduce((n, s) => n + s.items.length, 0));
+const fresh = $derived(data.fresh);
 const DESCRIPTION = $derived(
 	`Browse ${componentCountLabel(total)} animated, accessible React and Svelte components: controls, blocks, charts, text effects, backgrounds and AI agent UI.`,
 );
@@ -33,6 +34,20 @@ const DESCRIPTION = $derived(
 	<p class="mt-2 max-w-2xl text-muted-foreground">
 		{total} components, charts included, each with a React and a Svelte port built from the same spec.
 	</p>
+
+	{#if data.fresh.length}
+		<section id="new" class="mt-12 scroll-mt-[calc(var(--header-h)+1.5rem)]">
+			<div class="flex items-baseline gap-2">
+				<h2 class="font-semibold text-foreground text-lg tracking-tight">Newly added</h2>
+				<span class="text-muted-foreground text-sm tabular-nums">{fresh.length}</span>
+			</div>
+			<div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+				{#each fresh as item (item.slug)}
+					<ComponentCard {item} />
+				{/each}
+			</div>
+		</section>
+	{/if}
 
 	{#each data.sections as group (group.category)}
 		<section id={group.category} class="mt-12 scroll-mt-[calc(var(--header-h)+1.5rem)]">

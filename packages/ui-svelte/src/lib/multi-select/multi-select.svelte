@@ -54,6 +54,7 @@ const labels = $derived({ ...MULTI_SELECT_LABELS, ...labelsProp });
 const s = $derived(multiSelect({ size }));
 let open = $state(false);
 let search = $state("");
+let field = $state<HTMLDivElement | null>(null);
 const selected = $derived(options.filter((o) => value.includes(o.value)));
 const shown = $derived(selected.slice(0, maxChips));
 const hidden = $derived(selected.length - shown.length);
@@ -74,14 +75,20 @@ function removeLast() {
 }
 </script>
 
-{#snippet checkIcon()}
-	<svg viewBox="0 0 14 14" fill="none" aria-hidden="true" class={s.check()}>
-		<path d="M3 7.4 5.6 10 11 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+<!-- Always mounted: the tick draws in when the row is chosen and back out when it is not. -->
+{#snippet checkIcon(on: boolean)}
+	<svg viewBox="0 0 14 14" fill="none" aria-hidden="true" data-on={on} class={s.check()}>
+		<path d="M3 7.4 5.6 10 11 4.2" pathLength="1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
 	</svg>
 {/snippet}
 
 <Popover bind:open>
-	<div data-slot="multi-select" data-disabled={disabled || undefined} class={cn(s.root(), classProp)}>
+	<div
+		bind:this={field}
+		data-slot="multi-select"
+		data-disabled={disabled || undefined}
+		class={cn(s.root(), classProp)}
+	>
 		{#each shown as option (option.value)}
 			<Badge size={chipSize} class={s.chip()}>
 				<span class={s.chipLabel()}>{option.label}</span>
@@ -124,7 +131,7 @@ function removeLast() {
 			</svg>
 		</PopoverTrigger>
 	</div>
-	<PopoverContent align="start" class={s.content()}>
+	<PopoverContent customAnchor={field} align="start" class={s.content()}>
 		<Command class={s.list()}>
 			<CommandInput
 				placeholder={labels.search}
@@ -148,7 +155,7 @@ function removeLast() {
 						>
 							<span class="flex min-w-0 items-center gap-2">
 								<span aria-hidden="true" data-checked={checked} class={s.box()}>
-									{#if checked}{@render checkIcon()}{/if}
+									{@render checkIcon(checked)}
 								</span>
 								<span class="truncate">{option.label}</span>
 								{#if checked}<span class="sr-only">, {labels.selected}</span>{/if}

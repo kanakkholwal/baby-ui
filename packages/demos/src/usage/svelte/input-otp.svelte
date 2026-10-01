@@ -12,13 +12,13 @@ let code = $state("");
 <InputOTP maxlength={6} bind:value={code}>
 	{#snippet children({ cells })}
 		<InputOTPGroup>
-			{#each cells.slice(0, 3) as cell (cell)}
+			{#each cells.slice(0, 3) as cell, i (i)}
 				<InputOTPSlot {cell} />
 			{/each}
 		</InputOTPGroup>
 		<InputOTPSeparator />
 		<InputOTPGroup>
-			{#each cells.slice(3, 6) as cell (cell)}
+			{#each cells.slice(3, 6) as cell, i (i)}
 				<InputOTPSlot {cell} />
 			{/each}
 		</InputOTPGroup>

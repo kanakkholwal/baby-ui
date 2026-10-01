@@ -1,19 +1,26 @@
 <script lang="ts">
 import { PinInput as InputOTPPrimitive } from "bits-ui";
 import { cn } from "../lib/cn";
-import { setInputOtpSize } from "./context";
-import { type InputOtpSize, inputOtp } from "./variants";
+import { setInputOtpStyle } from "./context";
+import { type InputOtpInvalidMotion, type InputOtpSize, inputOtp } from "./variants";
 
 let {
 	ref = $bindable(null),
 	value = $bindable(""),
 	size = "md",
+	invalid = false,
+	invalidMotion = "shake",
 	class: classProp,
 	...rest
-}: Omit<InputOTPPrimitive.RootProps, "size"> & { size?: InputOtpSize } = $props();
+}: Omit<InputOTPPrimitive.RootProps, "size"> & {
+	size?: InputOtpSize;
+	/** Reds every slot; `invalidMotion` plays each time this turns on. */
+	invalid?: boolean;
+	invalidMotion?: InputOtpInvalidMotion;
+} = $props();
 
-setInputOtpSize(() => size);
-const s = $derived(inputOtp({ size }));
+setInputOtpStyle(() => ({ size, invalid, invalidMotion }));
+const s = $derived(inputOtp({ size, invalid, invalidMotion }));
 </script>
 
 <!-- One real input under the slots, so paste and one-time-code autofill work natively. -->
@@ -21,6 +28,7 @@ const s = $derived(inputOtp({ size }));
 	bind:ref
 	bind:value
 	data-slot="input-otp"
+	aria-invalid={invalid || undefined}
 	spellcheck={false}
 	autocomplete="one-time-code"
 	class={cn(s.root(), s.input(), classProp)}

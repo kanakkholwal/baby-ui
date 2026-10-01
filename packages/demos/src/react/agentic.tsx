@@ -8,6 +8,10 @@ import {
 	BreadcrumbList,
 	BreadcrumbPage,
 	BreadcrumbSeparator,
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
 	Message,
 	MessageAvatar,
 	MessageBubble,
@@ -32,37 +36,57 @@ import {
 	TabsTrigger,
 	TaskSteps,
 } from "@baby-ui/react";
-import { type ComponentProps, useEffect, useState } from "react";
+import { type ComponentProps, Fragment, useEffect, useState } from "react";
 import { controlProps } from "../data/preview-props";
 import { SLIDER_MARKS, SLIDER_PRESETS } from "../data/slider";
 
 type Props = Record<string, unknown>;
 
+// The levels the ellipsis folds away; each stays one click from the menu.
+const BREADCRUMB_HIDDEN = [
+	{ href: "/components", label: "Components" },
+	{ href: "/components/base", label: "Base" },
+];
+
 export function BreadcrumbDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof Breadcrumb>>(props);
 	const collapsed = props.collapsed !== false;
 	return (
-		<Breadcrumb>
+		<Breadcrumb variant={p.variant ?? "default"} size={p.size ?? "md"}>
 			<BreadcrumbList>
 				<BreadcrumbItem>
 					<BreadcrumbLink href="/">Home</BreadcrumbLink>
 				</BreadcrumbItem>
 				<BreadcrumbSeparator />
 				{collapsed ? (
-					<BreadcrumbItem>
-						<BreadcrumbEllipsis />
-					</BreadcrumbItem>
-				) : (
 					<>
 						<BreadcrumbItem>
-							<BreadcrumbLink href="/components">Components</BreadcrumbLink>
+							<DropdownMenu>
+								<DropdownMenuTrigger aria-label="Show more levels">
+									<BreadcrumbEllipsis />
+								</DropdownMenuTrigger>
+								<DropdownMenuContent align="start">
+									{BREADCRUMB_HIDDEN.map((level) => (
+										<DropdownMenuItem
+											key={level.href}
+											render={<a href={level.href}>{level.label}</a>}
+										/>
+									))}
+								</DropdownMenuContent>
+							</DropdownMenu>
 						</BreadcrumbItem>
 						<BreadcrumbSeparator />
-						<BreadcrumbItem>
-							<BreadcrumbLink href="/components/base">Base</BreadcrumbLink>
-						</BreadcrumbItem>
 					</>
+				) : (
+					BREADCRUMB_HIDDEN.map((level) => (
+						<Fragment key={level.href}>
+							<BreadcrumbItem>
+								<BreadcrumbLink href={level.href}>{level.label}</BreadcrumbLink>
+							</BreadcrumbItem>
+							<BreadcrumbSeparator />
+						</Fragment>
+					))
 				)}
-				<BreadcrumbSeparator />
 				<BreadcrumbItem>
 					<BreadcrumbPage>Breadcrumb</BreadcrumbPage>
 				</BreadcrumbItem>

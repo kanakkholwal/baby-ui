@@ -2,6 +2,7 @@ import { defineComponent } from "../index.ts";
 
 export const artGallery = defineComponent({
 	slug: "art-gallery",
+	isNew: true,
 	name: "Art Gallery",
 	description:
 		"An endless grid of framed images seen through a lens; drag to pan and it pulls back while you move.",

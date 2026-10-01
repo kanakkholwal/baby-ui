@@ -158,6 +158,41 @@
 	}
 }
 
+/* Menu and select rows: the check draws and the radio dot pops when the row turns on.
+   Base UI marks the row (data-checked, data-selected); the Svelte ports set data-on. */
+.menu-check path {
+	stroke-dasharray: 1;
+	stroke-dashoffset: 1;
+	transition: stroke-dashoffset 250ms linear;
+}
+
+.menu-check[data-on="true"] path,
+[data-checked]:not([data-checked="false"]) .menu-check path,
+[data-slot="select-item"][data-selected] .menu-check path {
+	stroke-dashoffset: 0;
+}
+
+.menu-dot {
+	scale: 0.7;
+	opacity: 0;
+	transition:
+		scale 250ms var(--ease-out-quart),
+		opacity 250ms var(--ease-out-quart);
+}
+
+.menu-dot[data-on="true"],
+[data-checked]:not([data-checked="false"]) .menu-dot {
+	scale: 1;
+	opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.menu-check path,
+	.menu-dot {
+		transition: none;
+	}
+}
+
 /* Switch thumb: travel and press-squish in one transition, plus the refusal
    shake a disabled switch plays instead of doing nothing. */
 /* Travel is `translate` (Tailwind v4 translate-x), not `transform`, or it snaps. */
@@ -195,15 +230,17 @@
 
 /* Shared across both ports of radio-group, slider, message, response-stream,
    reasoning and task-steps, so neither framework owns the timing. */
+/* The Svelte port sets data-on; Base UI's indicator marks itself data-checked. */
 .radio-dot {
-	transform: scale(0.6);
+	transform: scale(0.7);
 	opacity: 0;
 	transition:
-		transform var(--duration-press) var(--ease-out),
-		opacity var(--duration-press) var(--ease-out);
+		transform 250ms var(--ease-out-quart),
+		opacity 250ms var(--ease-out-quart);
 }
 
-.radio-dot[data-on="true"] {
+.radio-dot[data-on="true"],
+.radio-dot[data-checked] {
 	transform: scale(1);
 	opacity: 1;
 }
@@ -3544,6 +3581,28 @@
 @media (prefers-reduced-motion: reduce) {
 	.calendar-weeks-in {
 		animation: none;
+	}
+}
+
+/* InputOTP's invalidMotion: the row shakes, or every slot gives one pulse. */
+@keyframes otp-shake {
+	20% {
+		translate: -6px 0;
+	}
+	40% {
+		translate: 5px 0;
+	}
+	60% {
+		translate: -3px 0;
+	}
+	80% {
+		translate: 2px 0;
+	}
+}
+
+@keyframes otp-pulse {
+	40% {
+		scale: 1.08;
 	}
 }
 

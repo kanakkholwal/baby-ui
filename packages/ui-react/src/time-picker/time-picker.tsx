@@ -85,6 +85,7 @@ export function TimePicker({
 			aria-label={ariaLabel ?? labels.group}
 			aria-describedby={describedBy}
 			aria-disabled={disabled || undefined}
+			aria-invalid={invalid || undefined}
 			data-slot="time-picker"
 			className={cn(s.group(), "w-fit", className)}
 		>

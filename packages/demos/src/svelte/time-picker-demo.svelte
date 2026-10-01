@@ -19,6 +19,7 @@ const cycle = $derived(
 		aria-label="Meeting starts"
 		hourCycle={cycle}
 		step={p.step ?? 15}
+		invalid={p.invalid ?? false}
 		size={p.size ?? "md"}
 	/>
 	<p class="text-muted-foreground text-xs tabular-nums">Saved as {time ?? "no time"}</p>

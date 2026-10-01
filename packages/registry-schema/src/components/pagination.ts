@@ -2,6 +2,7 @@ import { defineComponent } from "../index.ts";
 
 export const pagination = defineComponent({
 	slug: "pagination",
+	isNew: true,
 	name: "Pagination",
 	description:
 		"Page links in a sliding window, with the first and last always reachable.",
@@ -29,7 +30,22 @@ export const pagination = defineComponent({
 			default: 1,
 			control: { kind: "number", min: 0, max: 3, step: 1 },
 		},
+		{
+			name: "size",
+			type: '"sm" | "md" | "lg"',
+			description:
+				"PaginationLink, PaginationPrevious and PaginationNext: button size, as in shadcn/ui.",
+			default: "md",
+			control: { kind: "select", options: ["sm", "md", "lg"] },
+		},
 	],
+	motion: {
+		springs: [],
+		reducedMotion: "Colour changes only; nothing squishes.",
+		behaviour: [
+			"Page buttons tint on hover, fill when current and squish to 0.93 on press, easing back over 250ms.",
+		],
+	},
 	a11y: {
 		keyboard: ["Tab reaches each page link and both arrows"],
 		notes: [
@@ -51,9 +67,10 @@ export const pagination = defineComponent({
 			files: [
 				{ path: "pagination/pagination.tsx", type: "registry:ui" },
 				{ path: "pagination/range.ts", type: "registry:ui" },
+				{ path: "pagination/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 		svelte: {
 			entry: "Pagination",
@@ -66,9 +83,10 @@ export const pagination = defineComponent({
 				{ path: "pagination/pagination-next.svelte", type: "registry:ui" },
 				{ path: "pagination/pagination-ellipsis.svelte", type: "registry:ui" },
 				{ path: "pagination/range.ts", type: "registry:ui" },
+				{ path: "pagination/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 	},
 	keywords: ["pagination"],

@@ -2,7 +2,7 @@
 import { ContextMenu as ContextMenuPrimitive } from "bits-ui";
 import type { Snippet } from "svelte";
 import { cn } from "../lib/cn";
-import { menuItem } from "../lib/menu";
+import { menu } from "../lib/menu";
 
 let {
 	class: classProp,
@@ -13,6 +13,8 @@ let {
 }: Omit<ContextMenuPrimitive.CheckboxItemProps, "children"> & {
 	children?: Snippet;
 } = $props();
+
+const styles = menu();
 </script>
 
 <ContextMenuPrimitive.CheckboxItem
@@ -21,21 +23,21 @@ let {
 	{...rest}
 	data-slot="context-menu-checkbox-item"
 	data-inset=""
-	class={cn(menuItem({ variant: "default" }), classProp)}
+	class={cn(styles.item(), classProp)}
 >
 	{#snippet children({ checked: on })}
-		<span class="pointer-events-none absolute left-2.5 flex size-3.5 items-center justify-center">
-			{#if on}
-				<svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class="size-3.5">
-					<path
-						d="m3.5 8.5 3 3 6-7"
-						stroke="currentColor"
-						stroke-width="1.6"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-					/>
-				</svg>
-			{/if}
+		<span class={styles.indicator()}>
+			<!-- Always mounted so the tick can draw in and back out. -->
+			<svg viewBox="0 0 16 16" fill="none" aria-hidden="true" data-on={on} class={styles.check()}>
+				<path
+					d="m3.5 8.5 3 3 6-7"
+					pathLength="1"
+					stroke="currentColor"
+					stroke-width="1.6"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				/>
+			</svg>
 		</span>
 		{@render label?.()}
 	{/snippet}

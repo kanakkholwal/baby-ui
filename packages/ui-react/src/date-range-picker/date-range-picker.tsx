@@ -191,6 +191,7 @@ export function DateRangePicker({
 					undefined
 				}
 				aria-disabled={disabled || undefined}
+				aria-invalid={invalid || error !== null || undefined}
 				data-slot="date-range-picker-group"
 				className={field.group()}
 				onKeyDown={(e) => {

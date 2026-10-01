@@ -50,7 +50,6 @@ import {
 	SheetHeader,
 	SheetTitle,
 	SheetTrigger,
-	Shortcut,
 	Slider,
 	Toaster,
 	toast,
@@ -110,11 +109,9 @@ export function DialogDemo({ props }: { props: Props }) {
 				<DialogFooter>
 					<Button variant="ghost" size="sm" onClick={() => setOpen(false)}>
 						Cancel
-						<Shortcut shortcut="esc" size="sm" />
 					</Button>
 					<Button size="sm" className="ml-auto" onClick={() => setOpen(false)}>
 						Add
-						<Shortcut shortcut="enter" size="sm" />
 					</Button>
 				</DialogFooter>
 			</DialogContent>

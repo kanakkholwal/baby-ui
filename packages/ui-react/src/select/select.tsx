@@ -2,7 +2,8 @@
 
 import { Select as SelectPrimitive } from "@base-ui/react/select";
 import type { ComponentProps, ReactNode } from "react";
-import { ANCHORED, UNFOLD_ITEM } from "../lib/anchor";
+import { ANCHORED } from "../lib/anchor";
+import { menu } from "../lib/menu";
 import { cn } from "../lib/cn";
 
 export function Select({
@@ -54,8 +55,8 @@ export function SelectTrigger({
 			data-slot="select-trigger"
 			className={cn(
 				"inline-flex h-9 w-full items-center justify-between gap-2 rounded-lg border border-input bg-background px-3 text-foreground text-sm outline-none transition-colors",
-				"focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring",
-				"disabled:cursor-not-allowed disabled:opacity-50",
+				"hover:border-border-strong focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring",
+				"data-[popup-open]:border-ring disabled:cursor-not-allowed disabled:opacity-50",
 				className,
 			)}
 			{...props}
@@ -109,8 +110,9 @@ export function SelectContent({
 					data-slot="select-content"
 					className={cn(
 						ANCHORED,
-						"static z-50 max-h-[min(16rem,var(--available-height))] w-[var(--anchor-width)] overflow-x-hidden overflow-y-auto",
-						"scroll-area rounded-xl border border-border bg-popover p-1 shadow-2xl",
+						menu().surface(),
+						// After the surface: a select matches its trigger, never the menus' min width.
+						"static z-50 max-h-[min(16rem,var(--available-height))] w-[var(--anchor-width)] min-w-0 overflow-x-hidden overflow-y-auto scroll-area",
 						className,
 					)}
 					{...props}
@@ -127,23 +129,20 @@ export function SelectItem({
 	children,
 	...props
 }: ComponentProps<typeof SelectPrimitive.Item>) {
+	const styles = menu();
 	return (
 		<SelectPrimitive.Item
 			data-slot="select-item"
-			className={cn(
-				UNFOLD_ITEM,
-				"relative flex w-full cursor-default items-center justify-between gap-2 rounded-md px-2.5 py-1.5 text-left text-foreground text-sm outline-none",
-				"data-[highlighted]:bg-foreground/[0.06]",
-				"data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-				className,
-			)}
+			className={cn(styles.item(), className)}
 			{...props}
 		>
 			<SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
-			<SelectPrimitive.ItemIndicator>
-				<svg viewBox="0 0 14 14" fill="none" aria-hidden className="size-3.5 shrink-0">
+			{/* Kept mounted so the tick draws in with the row's data-selected. */}
+			<SelectPrimitive.ItemIndicator keepMounted>
+				<svg viewBox="0 0 14 14" fill="none" aria-hidden className={styles.check()}>
 					<path
 						d="M3 7.4 5.6 10 11 4.2"
+						pathLength={1}
 						stroke="currentColor"
 						strokeWidth="1.6"
 						strokeLinecap="round"

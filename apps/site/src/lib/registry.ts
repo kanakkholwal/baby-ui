@@ -45,6 +45,7 @@ export type CardItem = {
 	description: string;
 	href: string;
 	tier: ComponentSpec["tier"];
+	isNew: boolean;
 	defaults: Record<string, unknown>;
 };
 
@@ -82,10 +83,7 @@ export const COLLECTIONS = {
 		blurb: "Fields and controls for sign-ups, settings and checkout, keyboard-first.",
 		slugs: [
 			"input",
-			"password-input",
-			"phone-input",
-			"currency-input",
-			"credit-card-input",
+			"input-group",
 			"textarea",
 			"label",
 			"select",
@@ -100,12 +98,12 @@ export const COLLECTIONS = {
 			"input-otp",
 			"calendar",
 			"range-calendar",
+			"date-field",
 			"date-picker",
 			"date-range-picker",
 			"time-picker",
 			"file-upload",
 			"number-input",
-			"search-input",
 			"multi-select",
 		],
 	},
@@ -300,6 +298,7 @@ export type SidebarGroup = {
 		href: string;
 		status: ComponentSpec["status"];
 		tier: ComponentSpec["tier"];
+		isNew: boolean;
 	}[];
 };
 

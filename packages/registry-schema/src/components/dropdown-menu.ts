@@ -2,6 +2,7 @@ import { defineComponent } from "../index.ts";
 
 export const dropdownMenu = defineComponent({
 	slug: "dropdown-menu",
+	isNew: true,
 	name: "Dropdown Menu",
 	description:
 		"Anchored action menu with roving focus, destructive styling and outside dismissal.",

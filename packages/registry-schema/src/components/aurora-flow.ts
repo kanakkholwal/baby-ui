@@ -6,6 +6,7 @@ const POSITIONS = ["absolute", "fixed"];
 
 export const auroraFlow = defineComponent({
 	slug: "aurora-flow",
+	isNew: true,
 	name: "Aurora Flow",
 	description:
 		"Layered silk veils drifting through a WebGL noise field, coloured from theme tokens.",

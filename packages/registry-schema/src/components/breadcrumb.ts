@@ -2,27 +2,53 @@ import { defineComponent } from "../index.ts";
 
 export const breadcrumb = defineComponent({
 	slug: "breadcrumb",
+	isNew: true,
 	name: "Breadcrumb",
 	description:
-		"Trail to the current page that collapses its middle when it runs out of room.",
+		"Trail to the current page; its middle folds into an ellipsis that opens the hidden levels in a dropdown.",
 	category: "base",
 	status: "stable",
 	props: [
 		{
+			name: "variant",
+			type: '"default" | "framed"',
+			description: "Breadcrumb: a bare trail, or the trail in a bordered bar.",
+			default: "default",
+			control: { kind: "select", options: ["default", "framed"] },
+		},
+		{
+			name: "size",
+			type: '"sm" | "md"',
+			description: "Breadcrumb: text and ellipsis size.",
+			default: "md",
+			control: { kind: "select", options: ["sm", "md"] },
+		},
+		{
 			name: "collapsed",
 			type: "boolean",
 			description:
-				"Demo only: whether the middle of the trail is replaced with BreadcrumbEllipsis.",
+				"Demo only: whether the middle of the trail folds into BreadcrumbEllipsis inside a DropdownMenu.",
 			default: true,
 			control: { kind: "boolean" },
 		},
 	],
+	motion: {
+		springs: [],
+		reducedMotion: "The menu appears without scaling; the ellipsis does not squish.",
+		behaviour: [
+			"The ellipsis tints on hover and while its menu is open, and squishes on press.",
+			"Its DropdownMenu opens on the shared anchored contract: zoom from 0.9 and a 4px lean, 150ms in, 100ms out.",
+		],
+	},
 	a11y: {
-		keyboard: [],
+		keyboard: [
+			"Enter or Space on the ellipsis opens the hidden levels; arrow keys move through them",
+		],
 		notes: [
 			"A nav labelled Breadcrumb wrapping an ordered list, so the order is conveyed rather than implied by the separators.",
 			"The last item is aria-current=page and is not a link, because it goes nowhere.",
 			"Separators are aria-hidden; they are punctuation, not content.",
+			"The ellipsis itself is aria-hidden; give its DropdownMenuTrigger a label such as Show more levels.",
 			"Part names and data-slot values match shadcn/ui, so this replaces an existing breadcrumb without touching call sites.",
 		],
 	},
@@ -37,9 +63,10 @@ export const breadcrumb = defineComponent({
 			entry: "Breadcrumb",
 			files: [
 				{ path: "breadcrumb/breadcrumb.tsx", type: "registry:ui" },
+				{ path: "breadcrumb/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 		svelte: {
 			entry: "Breadcrumb",
@@ -51,10 +78,12 @@ export const breadcrumb = defineComponent({
 				{ path: "breadcrumb/breadcrumb-page.svelte", type: "registry:ui" },
 				{ path: "breadcrumb/breadcrumb-separator.svelte", type: "registry:ui" },
 				{ path: "breadcrumb/breadcrumb-ellipsis.svelte", type: "registry:ui" },
+				{ path: "breadcrumb/context.ts", type: "registry:ui" },
+				{ path: "breadcrumb/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 	},
-	keywords: ["breadcrumb", "navigation", "trail"],
+	keywords: ["breadcrumb", "navigation", "trail", "ellipsis", "dropdown"],
 });

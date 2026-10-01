@@ -1,11 +1,15 @@
 <script lang="ts">
+import Badge from "../badge/badge.svelte";
 import { cn } from "../lib/cn";
+import { type TagInputSize, tagInput } from "./variants";
 
 let {
 	tags = $bindable<string[]>([]),
 	placeholder = "Add a tag…",
 	max,
 	disabled = false,
+	invalid = false,
+	size = "md",
 	label,
 	class: classProp,
 }: {
@@ -13,13 +17,16 @@ let {
 	placeholder?: string;
 	max?: number;
 	disabled?: boolean;
+	/** Marks the field invalid from outside, e.g. a form error. */
+	invalid?: boolean;
+	size?: TagInputSize;
 	label?: string;
 	class?: string;
 } = $props();
 
 let draft = $state("");
-let input = $state<HTMLInputElement>();
 
+const s = $derived(tagInput({ size }));
 const full = $derived(max !== undefined && tags.length >= max);
 
 function add() {
@@ -46,39 +53,38 @@ function onkeydown(event: KeyboardEvent) {
 </script>
 
 <div
-	class={cn(
-		"flex w-full flex-wrap items-center gap-1.5 rounded-lg border border-input bg-background p-1.5",
-		"focus-within:border-ring focus-within:ring-2 focus-within:ring-ring",
-		disabled && "pointer-events-none opacity-50",
-		classProp,
-	)}
+	data-slot="tag-input"
+	data-disabled={disabled || undefined}
+	aria-invalid={invalid || undefined}
+	class={cn(s.root(), classProp)}
 >
 	{#each tags as tag (tag)}
-		<span class="inline-flex h-6 items-center gap-1 rounded-md bg-card px-2 text-foreground text-xs">
-			{tag}
+		<Badge size={size === "sm" ? "sm" : "md"} class={s.chip()}>
+			<span class={s.chipLabel()}>{tag}</span>
 			<button
 				type="button"
 				aria-label="Remove {tag}"
+				{disabled}
 				onclick={() => (tags = tags.filter((t) => t !== tag))}
-				class="text-muted-foreground transition-colors hover:text-foreground"
+				class={s.chipRemove()}
 			>
-				<svg viewBox="0 0 12 12" fill="none" aria-hidden="true" class="size-3">
-					<path d="m3 3 6 6M9 3l-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+					<path d="M18 6 6 18M6 6l12 12" />
 				</svg>
 			</button>
-		</span>
+		</Badge>
 	{/each}
 
 	<input
-		bind:this={input}
 		bind:value={draft}
 		type="text"
 		aria-label={label}
+		aria-invalid={invalid || undefined}
 		placeholder={full ? "" : placeholder}
 		{disabled}
 		{onkeydown}
 		onblur={add}
-		class="h-6 min-w-24 flex-1 bg-transparent px-1 text-foreground text-sm outline-none placeholder:text-muted-foreground"
+		class={s.input()}
 	/>
 
 	<span role="status" class="sr-only">{tags.length} tags</span>

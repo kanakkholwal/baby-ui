@@ -10,12 +10,11 @@ const p = $derived(controlProps<ComponentProps<typeof DateRangePicker>>(props));
 let range = $state<ComponentProps<typeof DateRangePicker>["value"]>();
 </script>
 
-<div class="w-full max-w-64">
-	<DateRangePicker
-		bind:value={range}
-		aria-label="Report period"
-		confirm={p.confirm ?? false}
-		locale={p.locale || undefined}
-		size={p.size ?? "md"}
-	/>
-</div>
+<DateRangePicker
+	bind:value={range}
+	aria-label="Report period"
+	confirm={p.confirm ?? false}
+	locale={p.locale || undefined}
+	invalid={p.invalid ?? false}
+	size={p.size ?? "md"}
+/>

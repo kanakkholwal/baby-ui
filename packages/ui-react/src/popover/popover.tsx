@@ -30,15 +30,17 @@ export function PopoverContent({
 	alignOffset = 0,
 	side = "bottom",
 	sideOffset = 4,
+	anchor,
 	...props
 }: ComponentProps<typeof PopoverPrimitive.Popup> &
 	Pick<
 		ComponentProps<typeof PopoverPrimitive.Positioner>,
-		"align" | "alignOffset" | "side" | "sideOffset"
+		"align" | "alignOffset" | "side" | "sideOffset" | "anchor"
 	>) {
 	return (
 		<PopoverPrimitive.Portal>
 			<PopoverPrimitive.Positioner
+				anchor={anchor}
 				align={align}
 				alignOffset={alignOffset}
 				side={side}

@@ -248,9 +248,11 @@ export function PaginationDemo({ props }: { props: Props }) {
 	useEffect(() => setPage(Number(props.page ?? 4)), [props.page]);
 	const total = Number(props.total ?? 12);
 	const entries = paginationRange(page, total, Number(props.siblings ?? 1));
+	const size = controlProps<ComponentProps<typeof PaginationLink>>(props).size ?? "md";
 	return (
 		<Pagination>
 			<PaginationPrevious
+				size={size}
 				disabled={page <= 1}
 				onClick={() => setPage((p) => Math.max(1, p - 1))}
 			/>
@@ -260,7 +262,11 @@ export function PaginationDemo({ props }: { props: Props }) {
 						{entry === "gap" ? (
 							<PaginationEllipsis />
 						) : (
-							<PaginationLink active={entry === page} onClick={() => setPage(entry)}>
+							<PaginationLink
+								size={size}
+								active={entry === page}
+								onClick={() => setPage(entry)}
+							>
 								{entry}
 							</PaginationLink>
 						)}
@@ -268,6 +274,7 @@ export function PaginationDemo({ props }: { props: Props }) {
 				))}
 			</PaginationContent>
 			<PaginationNext
+				size={size}
 				disabled={page >= total}
 				onClick={() => setPage((p) => Math.min(total, p + 1))}
 			/>
@@ -299,21 +306,19 @@ export function ScrubFieldDemo({ props }: { props: Props }) {
 	const [value, setValue] = useState(Number(props.defaultValue ?? 96));
 	useEffect(() => setValue(Number(props.defaultValue ?? 96)), [props.defaultValue]);
 	return (
-		<div className="w-32">
-			<ScrubField
-				label={p.label || "W"}
-				value={value}
-				onValueChange={setValue}
-				min={Number(p.min ?? 0)}
-				max={Number(p.max ?? 999)}
-				step={Number(p.step ?? 1)}
-				largeStep={Number(p.largeStep ?? 10)}
-				suffix={p.suffix || undefined}
-				size={p.size ?? "md"}
-				tone={p.tone ?? "default"}
-				disabled={p.disabled ?? false}
-			/>
-		</div>
+		<ScrubField
+			label={p.label || "W"}
+			value={value}
+			onValueChange={setValue}
+			min={Number(p.min ?? 0)}
+			max={Number(p.max ?? 999)}
+			step={Number(p.step ?? 1)}
+			largeStep={Number(p.largeStep ?? 10)}
+			suffix={p.suffix || "px"}
+			size={p.size ?? "md"}
+			tone={p.tone ?? "default"}
+			disabled={p.disabled ?? false}
+		/>
 	);
 }
 

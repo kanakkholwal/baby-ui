@@ -7,7 +7,7 @@ import {
 	CardHeader,
 	CardTitle,
 	Checkbox,
-	ColorField,
+	ColorPicker,
 	FieldSeparator,
 	Input,
 	InputOTP,
@@ -41,7 +41,7 @@ let brand = $state("#2f6fdb");
 		</div>
 		<div class="flex flex-col gap-1.5">
 			<Label for="intro-brand">Brand colour</Label>
-			<ColorField id="intro-brand" bind:value={brand} label="Brand colour" />
+			<ColorPicker variant="field" id="intro-brand" bind:value={brand} label="Brand colour" />
 		</div>
 		<div class="flex items-center gap-5">
 			<Switch bind:checked={notify} label="Notify" />

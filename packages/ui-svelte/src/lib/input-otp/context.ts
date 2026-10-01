@@ -1,8 +1,16 @@
 import { getContext, hasContext, setContext } from "svelte";
-import type { InputOtpSize } from "./variants";
+import type { InputOtpInvalidMotion, InputOtpSize } from "./variants";
 
-const SIZE = Symbol("input-otp-size");
-export const setInputOtpSize = (get: () => InputOtpSize) => setContext(SIZE, get);
-/** The root's size, read lazily so a changed prop reaches every slot. */
-export const getInputOtpSize = (): InputOtpSize =>
-	hasContext(SIZE) ? getContext<() => InputOtpSize>(SIZE)() : "md";
+export type InputOtpStyle = {
+	size: InputOtpSize;
+	invalid: boolean;
+	invalidMotion: InputOtpInvalidMotion;
+};
+
+const STYLE = Symbol("input-otp-style");
+export const setInputOtpStyle = (get: () => InputOtpStyle) => setContext(STYLE, get);
+/** The root's style props, read lazily so a changed prop reaches every slot. */
+export const getInputOtpStyle = (): InputOtpStyle =>
+	hasContext(STYLE)
+		? getContext<() => InputOtpStyle>(STYLE)()
+		: { size: "md", invalid: false, invalidMotion: "shake" };

@@ -1,5 +1,6 @@
 <script lang="ts">
 import HomeCta from "$lib/components/home-cta.svelte";
+import HomeNew from "$lib/components/home-new.svelte";
 import HomeShowcase from "$lib/components/home-showcase.svelte";
 import InstallCommand from "$lib/components/install-command.svelte";
 import LandingHero from "$lib/components/landing-hero.svelte";
@@ -41,6 +42,10 @@ const DESCRIPTION = $derived(
 	<LandingHero />
 
 	<HomeShowcase items={data.grid} />
+
+	{#if data.fresh.length}
+		<HomeNew items={data.fresh} count={data.freshCount} />
+	{/if}
 
 	<section aria-labelledby="home-install-heading" class="mx-auto max-w-2xl px-4 pb-24">
 		<h2 id="home-install-heading" class="mb-4 text-center text-muted-foreground text-sm">

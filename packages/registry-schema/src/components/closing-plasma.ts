@@ -6,6 +6,7 @@ const POSITIONS = ["absolute", "fixed"];
 
 export const closingPlasma = defineComponent({
 	slug: "closing-plasma",
+	isNew: true,
 	name: "Closing Plasma",
 	description:
 		"A ridged simplex plasma in WebGL that follows the theme between dark and light.",

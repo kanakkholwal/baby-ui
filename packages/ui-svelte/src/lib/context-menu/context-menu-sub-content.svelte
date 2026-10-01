@@ -3,7 +3,7 @@ import { ContextMenu as ContextMenuPrimitive } from "bits-ui";
 import { getContext } from "svelte";
 import { ANCHORED } from "../lib/anchor";
 import { cn } from "../lib/cn";
-import { MENU_SURFACE } from "../lib/menu";
+import { menu } from "../lib/menu";
 
 let { class: classProp, ...rest }: ContextMenuPrimitive.SubContentProps = $props();
 
@@ -22,6 +22,6 @@ const sub = getContext<{ close: () => void } | undefined>("context-menu-sub");
 		}}
 		{...rest}
 		data-slot="context-menu-sub-content"
-		class={cn(ANCHORED, "static", MENU_SURFACE, "min-w-40", classProp)}
+		class={cn(ANCHORED, "static", menu().surface(), "min-w-40", classProp)}
 	/>
 </ContextMenuPrimitive.Portal>

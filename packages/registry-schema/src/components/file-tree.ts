@@ -2,6 +2,7 @@ import { defineComponent } from "../index.ts";
 
 export const fileTree = defineComponent({
 	slug: "file-tree",
+	isNew: true,
 	name: "File Tree",
 	description:
 		"Keyboard-navigable file explorer with animated expand and collapse, indent guides, and single selection.",

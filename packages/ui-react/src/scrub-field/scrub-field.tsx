@@ -41,12 +41,7 @@ export function ScrubField({
 	disabled = false,
 	className,
 }: ScrubFieldProps) {
-	const {
-		root,
-		label: labelClass,
-		input,
-		suffix: suffixClass,
-	} = scrubField({ size, tone });
+	const s = scrubField({ size, tone });
 
 	return (
 		<NumberFieldPrimitive.Root
@@ -62,13 +57,22 @@ export function ScrubField({
 			largeStep={largeStep}
 			allowWheelScrub
 			disabled={disabled}
-			className={cn(root(), className)}
+			className={cn(s.root(), className)}
 		>
-			<NumberFieldPrimitive.ScrubArea className={labelClass()}>
+			<NumberFieldPrimitive.ScrubArea className={s.label()}>
 				{label}
+				<svg viewBox="0 0 16 16" fill="none" aria-hidden className={s.grip()}>
+					<path
+						d="M5 4.5 1.5 8 5 11.5M11 4.5 14.5 8 11 11.5"
+						stroke="currentColor"
+						strokeWidth="1.5"
+						strokeLinecap="round"
+						strokeLinejoin="round"
+					/>
+				</svg>
 			</NumberFieldPrimitive.ScrubArea>
-			<NumberFieldPrimitive.Input aria-label={`${label} value`} className={input()} />
-			{suffix ? <span className={suffixClass()}>{suffix}</span> : null}
+			<NumberFieldPrimitive.Input aria-label={`${label} value`} className={s.input()} />
+			{suffix ? <span className={s.suffix()}>{suffix}</span> : null}
 		</NumberFieldPrimitive.Root>
 	);
 }

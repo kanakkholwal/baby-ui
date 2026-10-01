@@ -23,6 +23,8 @@ $effect(() => {
 	bind:value
 	bind:format
 	variant={p.variant ?? "inline"}
+	size={p.size ?? "md"}
+	invalid={p.invalid ?? false}
 	{recent}
 	onOpenChange={(open) => {
 		if (!open) recent = [value, ...recent.filter((c) => c !== value)].slice(0, 6);

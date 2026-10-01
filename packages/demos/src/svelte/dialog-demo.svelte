@@ -11,7 +11,6 @@ import {
 	DialogTrigger,
 	Input,
 	Label,
-	Shortcut,
 } from "@baby-ui/svelte";
 import type { ComponentProps } from "svelte";
 import { controlProps } from "../data/preview-props";
@@ -51,11 +50,9 @@ const id = $props.id();
 		<DialogFooter>
 			<Button variant="ghost" size="sm" onclick={() => (open = false)}>
 				Cancel
-				<Shortcut shortcut="esc" size="sm" />
 			</Button>
 			<Button size="sm" class="ml-auto" onclick={() => (open = false)}>
 				Add
-				<Shortcut shortcut="enter" size="sm" />
 			</Button>
 		</DialogFooter>
 	</DialogContent>

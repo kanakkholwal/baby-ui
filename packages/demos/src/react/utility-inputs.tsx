@@ -1,18 +1,7 @@
-import {
-	FileUpload,
-	MultiSelect,
-	NumberInput,
-	SearchInput,
-	type UploadFile,
-} from "@baby-ui/react";
+import { FileUpload, MultiSelect, NumberInput, type UploadFile } from "@baby-ui/react";
 import { type ComponentProps, useEffect, useRef, useState } from "react";
 import { controlProps } from "../data/preview-props";
-import {
-	AVATAR_MAX_BYTES,
-	SEARCHABLE,
-	TEAM_MEMBERS,
-	UPLOAD_TICK_MS,
-} from "../data/utility-inputs";
+import { AVATAR_MAX_BYTES, TEAM_MEMBERS, UPLOAD_TICK_MS } from "../data/utility-inputs";
 
 type Props = Record<string, unknown>;
 
@@ -113,45 +102,6 @@ export function NumberInputDemo({ props }: { props: Props }) {
 				size={size}
 				disabled={p.disabled ?? false}
 			/>
-		</div>
-	);
-}
-
-export function SearchInputDemo({ props }: { props: Props }) {
-	const p = controlProps<ComponentProps<typeof SearchInput>>(props);
-	const [query, setQuery] = useState("");
-	const [results, setResults] = useState(SEARCHABLE);
-	const [loading, setLoading] = useState(false);
-	const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
-	useEffect(() => () => clearTimeout(timer.current), []);
-
-	return (
-		<div className="flex w-full max-w-sm flex-col gap-3">
-			<SearchInput
-				value={query}
-				onValueChange={setQuery}
-				shortcut="/"
-				placeholder="Search components…"
-				loading={loading || (p.loading ?? false)}
-				size={p.size ?? "md"}
-				onSearch={(q) => {
-					// Stands in for a request to your search endpoint.
-					setLoading(true);
-					clearTimeout(timer.current);
-					timer.current = setTimeout(() => {
-						setResults(
-							SEARCHABLE.filter((name) => name.toLowerCase().includes(q.toLowerCase())),
-						);
-						setLoading(false);
-					}, 350);
-				}}
-			/>
-			<ul className="flex flex-col gap-1 text-muted-foreground text-sm">
-				{results.slice(0, 5).map((name) => (
-					<li key={name}>{name}</li>
-				))}
-				{results.length === 0 ? <li>No components match.</li> : null}
-			</ul>
 		</div>
 	);
 }

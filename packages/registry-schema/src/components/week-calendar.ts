@@ -4,6 +4,7 @@ const VARIANTS = ["card", "plain"];
 
 export const weekCalendar = defineComponent({
 	slug: "week-calendar",
+	isNew: true,
 	name: "Week Calendar",
 	description:
 		"A week strip that swipes between weeks and pulls open into the full month.",

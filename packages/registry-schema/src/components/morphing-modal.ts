@@ -2,6 +2,7 @@ import { defineComponent } from "../index.ts";
 
 export const morphingModal = defineComponent({
 	slug: "morphing-modal",
+	isNew: true,
 	name: "Morphing Modal",
 	description:
 		"Card that expands into a dialog from its own position, measured with FLIP so the two frameworks travel identically.",

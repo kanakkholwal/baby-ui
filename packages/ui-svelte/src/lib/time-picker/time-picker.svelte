@@ -83,7 +83,12 @@ function onMinuteKey(event: KeyboardEvent) {
 	granularity="minute"
 	validate={invalid ? () => labels.group : undefined}
 >
-	<div data-slot="time-picker" data-disabled={disabled || undefined} class={cn(s.group(), "w-fit", classProp)}>
+	<div
+		data-slot="time-picker"
+		data-disabled={disabled || undefined}
+		aria-invalid={invalid || undefined}
+		class={cn(s.group(), "w-fit", classProp)}
+	>
 		<span class={s.icon()}>
 			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 				<path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0M12 7v5l3 3" />

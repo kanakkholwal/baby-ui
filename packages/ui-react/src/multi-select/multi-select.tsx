@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Badge } from "../badge/badge";
 import {
 	Command,
@@ -59,6 +59,7 @@ export function MultiSelect({
 	const s = multiSelect({ size });
 	const [open, setOpen] = useState(false);
 	const [search, setSearch] = useState("");
+	const field = useRef<HTMLDivElement>(null);
 	const selected = options.filter((o) => value.includes(o.value));
 	const shown = selected.slice(0, maxChips);
 	const hidden = selected.length - shown.length;
@@ -74,6 +75,7 @@ export function MultiSelect({
 	return (
 		<Popover open={open} onOpenChange={setOpen}>
 			<div
+				ref={field}
 				data-slot="multi-select"
 				data-disabled={disabled || undefined}
 				className={cn(s.root(), className)}
@@ -139,7 +141,7 @@ export function MultiSelect({
 					</svg>
 				</PopoverTrigger>
 			</div>
-			<PopoverContent align="start" className={s.content()}>
+			<PopoverContent anchor={field} align="start" className={s.content()}>
 				<Command className={s.list()}>
 					<CommandInput
 						placeholder={labels.search}
@@ -165,7 +167,7 @@ export function MultiSelect({
 									>
 										<span className="flex min-w-0 items-center gap-2">
 											<span aria-hidden data-checked={checked} className={s.box()}>
-												{checked ? <CheckIcon className={s.check()} /> : null}
+												<CheckIcon on={checked} className={s.check()} />
 											</span>
 											<span className="truncate">{option.label}</span>
 											{checked ? (
@@ -210,11 +212,13 @@ export function MultiSelect({
 	);
 }
 
-function CheckIcon({ className }: { className?: string }) {
+// Always mounted: the tick draws in when the row is chosen and back out when it is not.
+function CheckIcon({ on, className }: { on: boolean; className?: string }) {
 	return (
-		<svg viewBox="0 0 14 14" fill="none" aria-hidden className={className}>
+		<svg viewBox="0 0 14 14" fill="none" aria-hidden data-on={on} className={className}>
 			<path
 				d="M3 7.4 5.6 10 11 4.2"
+				pathLength={1}
 				stroke="currentColor"
 				strokeWidth="1.8"
 				strokeLinecap="round"

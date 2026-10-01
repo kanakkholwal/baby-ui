@@ -2,6 +2,7 @@ import { defineComponent } from "../index.ts";
 
 export const filterTable = defineComponent({
 	slug: "filter-table",
+	isNew: true,
 	name: "Filter Table",
 	description: "Status chips directly filter a task table, rows collapsing in place.",
 	category: "advanced",

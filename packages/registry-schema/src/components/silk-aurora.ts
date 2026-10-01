@@ -6,6 +6,7 @@ const POSITIONS = ["absolute", "fixed"];
 
 export const silkAurora = defineComponent({
 	slug: "silk-aurora",
+	isNew: true,
 	name: "Silk Aurora",
 	description:
 		"Three soft silk ribbons with a pearlescent sheen, drawn in WebGL from theme tokens.",

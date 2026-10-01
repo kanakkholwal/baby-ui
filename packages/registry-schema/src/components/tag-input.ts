@@ -2,6 +2,7 @@ import { defineComponent } from "../index.ts";
 
 export const tagInput = defineComponent({
 	slug: "tag-input",
+	isNew: true,
 	name: "Tag Input",
 	description:
 		"Free-text tags with Enter to commit and Backspace to remove the last one.",
@@ -35,7 +36,28 @@ export const tagInput = defineComponent({
 			default: false,
 			control: { kind: "boolean" },
 		},
+		{
+			name: "invalid",
+			type: "boolean",
+			description: "Marks the field invalid from outside, e.g. a form error.",
+			default: false,
+			control: { kind: "boolean" },
+		},
+		{
+			name: "size",
+			type: '"sm" | "md" | "lg"',
+			description: "Field height and chip size.",
+			default: "md",
+			control: { kind: "select", options: ["sm", "md", "lg"] },
+		},
 	],
+	motion: {
+		springs: [],
+		reducedMotion: "Chips appear without scaling.",
+		behaviour: [
+			"A new tag pops in from 0.95 over 200ms; the field rings while the input has focus.",
+		],
+	},
 	a11y: {
 		keyboard: [
 			"Enter or comma commits the current text",
@@ -59,17 +81,21 @@ export const tagInput = defineComponent({
 			entry: "TagInput",
 			files: [
 				{ path: "tag-input/tag-input.tsx", type: "registry:ui" },
+				{ path: "tag-input/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			registryDependencies: ["badge"],
 		},
 		svelte: {
 			entry: "TagInput",
 			files: [
 				{ path: "tag-input/tag-input.svelte", type: "registry:ui" },
+				{ path: "tag-input/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
-			dependencies: ["clsx", "tailwind-merge"],
+			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			registryDependencies: ["badge"],
 		},
 	},
 	keywords: ["tag", "input"],

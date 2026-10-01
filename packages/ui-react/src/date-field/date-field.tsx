@@ -101,6 +101,7 @@ export function DateField({
 					undefined
 				}
 				aria-disabled={disabled || undefined}
+				aria-invalid={invalid || outside || undefined}
 				data-slot="date-field-group"
 				className={s.group()}
 			>

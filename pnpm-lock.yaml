@@ -141,6 +141,9 @@ catalogs:
     sveltekit-superforms:
       specifier: ^2.30.2
       version: 2.30.2
+    swapy:
+      specifier: ^1.0.5
+      version: 1.0.5
     tailwind-merge:
       specifier: ^3.7.0
       version: 3.7.0
@@ -610,6 +613,9 @@ importers:
       sonner:
         specifier: 'catalog:'
         version: 2.0.8(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      swapy:
+        specifier: 'catalog:'
+        version: 1.0.5
       tailwind-merge:
         specifier: 'catalog:'
         version: 3.7.0
@@ -695,6 +701,9 @@ importers:
       sveltekit-superforms:
         specifier: 'catalog:'
         version: 2.30.2(@sveltejs/kit@2.70.3(@sveltejs/vite-plugin-svelte@7.3.0(svelte@5.57.1)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)))(svelte@5.57.1)(typescript@6.0.3)(vite@8.3.0(@types/node@26.6.2)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)))(svelte@5.57.1)(typescript@6.0.3)
+      swapy:
+        specifier: 'catalog:'
+        version: 1.0.5
       tailwind-merge:
         specifier: 'catalog:'
         version: 3.7.0
@@ -3938,6 +3947,9 @@ packages:
     peerDependencies:
       '@sveltejs/kit': 1.x || 2.x
       svelte: 3.x || 4.x || >=5.0.0-next.51
+
+  swapy@1.0.5:
+    resolution: {integrity: sha512-XEzy5HCw7yESb7QajKTBJ+NA/BL0kAKlE7XhSMPZawF740X4ws/5CFtXRsVDQ+EztISC759a9+DJM9mxjz4hXg==}
 
   tabbable@6.5.0:
     resolution: {integrity: sha512-wieBHXygIm7OyQOu5hQlkk62/WyCFYGlWg7L6/ZCUZwx0o398Zkn4pVmMyfYhfMG8kGrj/Krt8eIk6UKC6VzwA==}
@@ -7591,6 +7603,8 @@ snapshots:
     transitivePeerDependencies:
       - '@types/json-schema'
       - typescript
+
+  swapy@1.0.5: {}
 
   tabbable@6.5.0: {}
 

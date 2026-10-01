@@ -90,7 +90,12 @@ function setOpen(next: boolean) {
 		granularity="day"
 		validate={invalid ? () => labels.group : undefined}
 	>
-		<div data-slot="date-picker-group" data-disabled={disabled || undefined} class={s.group()}>
+		<div
+			data-slot="date-picker-group"
+			data-disabled={disabled || undefined}
+			aria-invalid={invalid || outside || undefined}
+			class={s.group()}
+		>
 			<DateField.Input
 				{id}
 				{name}

@@ -6,6 +6,7 @@ const POSITIONS = ["absolute", "fixed"];
 
 export const ditherGradient = defineComponent({
 	slug: "dither-gradient",
+	isNew: true,
 	name: "Dither Gradient",
 	description:
 		"A full-bleed token-coloured gradient drawn with ordered Bayer dithering on a canvas.",

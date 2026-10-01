@@ -59,6 +59,7 @@ export function DatePickerDemo({ props }: { props: Props }) {
 				max={later}
 				locale={p.locale || undefined}
 				captionLayout={p.captionLayout ?? "dropdown"}
+				invalid={p.invalid ?? false}
 				size={p.size ?? "md"}
 				aria-describedby="demo-check-in-hint"
 			/>
@@ -74,16 +75,15 @@ export function DateRangePickerDemo({ props }: { props: Props }) {
 	const p = controlProps<ComponentProps<typeof DateRangePicker>>(props);
 	const [range, setRange] = useState<DateRange | undefined>();
 	return (
-		<div className="w-full max-w-64">
-			<DateRangePicker
-				value={range}
-				onValueChange={setRange}
-				aria-label="Report period"
-				confirm={p.confirm ?? false}
-				locale={p.locale || undefined}
-				size={p.size ?? "md"}
-			/>
-		</div>
+		<DateRangePicker
+			value={range}
+			onValueChange={setRange}
+			aria-label="Report period"
+			confirm={p.confirm ?? false}
+			locale={p.locale || undefined}
+			invalid={p.invalid ?? false}
+			size={p.size ?? "md"}
+		/>
 	);
 }
 
@@ -100,6 +100,7 @@ export function TimePickerDemo({ props }: { props: Props }) {
 				aria-label="Meeting starts"
 				hourCycle={cycle}
 				step={p.step ?? 15}
+				invalid={p.invalid ?? false}
 				size={p.size ?? "md"}
 			/>
 			<p className="text-muted-foreground text-xs tabular-nums">

@@ -8,7 +8,7 @@ import {
 	isCollection,
 	TOP_LEVEL,
 } from "$lib/registry";
-import { cardItems, specs } from "$lib/server/registry";
+import { cardItems, newFirst, specs } from "$lib/server/registry";
 import type { PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = ({ params }) => {
@@ -16,16 +16,14 @@ export const load: PageServerLoad = ({ params }) => {
 	if (isCollection(id)) {
 		const { label, blurb, slugs } = COLLECTIONS[id];
 		const shown = specs.filter((s) => (slugs as readonly string[]).includes(s.slug));
-		const items = cardItems(
-			shown.sort((a, b) => a.name.localeCompare(b.name)).map((s) => s.slug),
-		);
+		const items = cardItems(shown.sort(newFirst).map((s) => s.slug));
 		return { label, blurb, path: `/${id}`, topLevel: true, items };
 	}
 	const category = id as Category;
 	if (!CATEGORIES.includes(category)) throw error(404, `No category named "${id}"`);
 	const slugs = specs
 		.filter((s) => s.category === category)
-		.sort((a, b) => a.name.localeCompare(b.name))
+		.sort(newFirst)
 		.map((s) => s.slug);
 	// A preview category has no visible specs while its flag is off.
 	if (!slugs.length) throw error(404, `No category named "${id}"`);

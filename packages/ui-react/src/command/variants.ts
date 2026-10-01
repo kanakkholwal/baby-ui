@@ -15,6 +15,13 @@ export const commandFrame = tv({
 			"motion-reduce:transition-none",
 		],
 		panel: "rounded-2xl border border-border bg-background shadow-2xl",
+		// cmdk writes data-selected="true"/"false"; bits-ui writes a bare attribute.
+		item: [
+			"relative flex w-full cursor-default select-none items-center justify-between gap-3 rounded-lg px-2.5 py-2 text-left text-muted-foreground text-sm outline-none",
+			"transition-[color,scale] [transition-duration:100ms,250ms] ease-[var(--ease-out-quart)] active:scale-[var(--press-scale-row)] motion-reduce:transition-none",
+			'data-[selected=""]:text-foreground data-[selected=true]:text-foreground',
+			'data-[disabled=""]:pointer-events-none data-[disabled=""]:opacity-50 data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50',
+		],
 		// One marker for the active row. It snaps: arrow keys repeat too fast for motion to help.
 		marker: "pointer-events-none absolute top-0 left-0 rounded-md bg-foreground/[0.06]",
 		header: "flex items-center justify-between gap-3 px-3.5",

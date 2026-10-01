@@ -147,6 +147,7 @@ function pick(next: DateRange | undefined) {
 			undefined}
 		data-slot="date-range-picker-group"
 		data-disabled={disabled || undefined}
+		aria-invalid={invalid || error !== null || undefined}
 		class={field.group()}
 		onkeydown={(e: KeyboardEvent) => {
 			if (e.key === "ArrowDown" && e.altKey) {

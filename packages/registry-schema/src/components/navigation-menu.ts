@@ -2,6 +2,7 @@ import { defineComponent } from "../index.ts";
 
 export const navigationMenu = defineComponent({
 	slug: "navigation-menu",
+	isNew: true,
 	name: "Navigation Menu",
 	description:
 		"Site navigation with hover and focus triggers and one shared panel that resizes and slides between them.",

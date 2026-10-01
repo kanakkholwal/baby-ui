@@ -37,7 +37,6 @@ import { codeBlock } from "./code-block.ts";
 import { collabCard } from "./collab-card.ts";
 import { collapsible } from "./collapsible.ts";
 import { collectionSurfer } from "./collection-surfer.ts";
-import { colorField } from "./color-field.ts";
 import { colorPicker } from "./color-picker.ts";
 import { combobox } from "./combobox.ts";
 import { command } from "./command.ts";
@@ -48,9 +47,7 @@ import { contextMenu } from "./context-menu.ts";
 import { conversation } from "./conversation.ts";
 import { copyButton } from "./copy-button.ts";
 import { counter } from "./counter.ts";
-import { creditCardInput } from "./credit-card-input.ts";
 import { cubeText } from "./cube-text.ts";
-import { currencyInput } from "./currency-input.ts";
 import { cycleText } from "./cycle-text.ts";
 import { dateField, datePicker, dateRangePicker, timePicker } from "./date-picker.ts";
 import { diaText } from "./dia-text.ts";
@@ -71,6 +68,8 @@ import { emailReceipt } from "./email-receipt.ts";
 import { emailTeamInvite } from "./email-team-invite.ts";
 import { emailVerify } from "./email-verify.ts";
 import { emailWelcome } from "./email-welcome.ts";
+import { empty } from "./empty.ts";
+import { errorBoundary } from "./error-boundary.ts";
 import { eyeTracking } from "./eye-tracking.ts";
 import { field } from "./field.ts";
 import { fileDiff } from "./file-diff.ts";
@@ -139,8 +138,6 @@ import { orbitCardStack } from "./orbit-card-stack.ts";
 import { overviewCard } from "./overview-card.ts";
 import { pagination } from "./pagination.ts";
 import { particleText } from "./particle-text.ts";
-import { passwordInput } from "./password-input.ts";
-import { phoneInput } from "./phone-input.ts";
 import { pieChart } from "./pie-chart.ts";
 import { pixelCanvas } from "./pixel-canvas.ts";
 import { pixelImageTrail } from "./pixel-image-trail.ts";
@@ -155,7 +152,6 @@ import { radioGroup } from "./radio-group.ts";
 import { reasoning } from "./reasoning.ts";
 import { recommendationCard } from "./recommendation-card.ts";
 import { recordsTable } from "./records-table.ts";
-import { reorderList } from "./reorder-list.ts";
 import { responseStream } from "./response-stream.ts";
 import { responsiveDialog } from "./responsive-dialog.ts";
 import { revealText } from "./reveal-text.ts";
@@ -174,7 +170,6 @@ import { scrollSplitCard } from "./scroll-split-card.ts";
 import { scrollTiltedGrid } from "./scroll-tilted-grid.ts";
 import { scrollVelocity } from "./scroll-velocity.ts";
 import { scrubField } from "./scrub-field.ts";
-import { searchInput } from "./search-input.ts";
 import { select } from "./select.ts";
 import { separator } from "./separator.ts";
 import { sheet } from "./sheet.ts";
@@ -198,6 +193,7 @@ import { stickyScrollCards } from "./sticky-scroll-cards.ts";
 import { streamingText } from "./streaming-text.ts";
 import { sunburstChart } from "./sunburst-chart.ts";
 import { swapText } from "./swap-text.ts";
+import { swappable } from "./swappable.ts";
 import { switchComponent } from "./switch.ts";
 import { tableOfContents } from "./table-of-contents.ts";
 import { table } from "./table.ts";
@@ -275,7 +271,6 @@ export const specs: ComponentSpec[] = [
 	collabCard,
 	collapsible,
 	collectionSurfer,
-	colorField,
 	colorPicker,
 	combobox,
 	command,
@@ -286,9 +281,7 @@ export const specs: ComponentSpec[] = [
 	conversation,
 	copyButton,
 	counter,
-	creditCardInput,
 	cubeText,
-	currencyInput,
 	cycleText,
 	dateField,
 	datePicker,
@@ -312,6 +305,8 @@ export const specs: ComponentSpec[] = [
 	emailTeamInvite,
 	emailVerify,
 	emailWelcome,
+	empty,
+	errorBoundary,
 	eyeTracking,
 	field,
 	fileDiff,
@@ -380,8 +375,6 @@ export const specs: ComponentSpec[] = [
 	overviewCard,
 	pagination,
 	particleText,
-	passwordInput,
-	phoneInput,
 	pieChart,
 	pixelCanvas,
 	pixelImageTrail,
@@ -396,7 +389,6 @@ export const specs: ComponentSpec[] = [
 	reasoning,
 	recommendationCard,
 	recordsTable,
-	reorderList,
 	responseStream,
 	responsiveDialog,
 	revealText,
@@ -415,7 +407,6 @@ export const specs: ComponentSpec[] = [
 	scrollTiltedGrid,
 	scrollVelocity,
 	scrubField,
-	searchInput,
 	select,
 	separator,
 	sheet,
@@ -440,6 +431,7 @@ export const specs: ComponentSpec[] = [
 	streamingText,
 	sunburstChart,
 	swapText,
+	swappable,
 	switchComponent,
 	tableOfContents,
 	table,

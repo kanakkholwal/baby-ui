@@ -41,18 +41,19 @@ export function InputOTPDemo({ props }: { props: Props }) {
 				onChange={setValue}
 				size={size}
 				aria-label="Verification code"
-				aria-invalid={status === "wrong" || undefined}
+				invalid={status === "wrong"}
+				invalidMotion={p.invalidMotion ?? "shake"}
 			>
 				<InputOTPGroup>
-					<InputOTPSlot index={0} aria-invalid={status === "wrong" || undefined} />
-					<InputOTPSlot index={1} aria-invalid={status === "wrong" || undefined} />
-					<InputOTPSlot index={2} aria-invalid={status === "wrong" || undefined} />
+					<InputOTPSlot index={0} />
+					<InputOTPSlot index={1} />
+					<InputOTPSlot index={2} />
 				</InputOTPGroup>
 				<InputOTPSeparator />
 				<InputOTPGroup>
-					<InputOTPSlot index={3} aria-invalid={status === "wrong" || undefined} />
-					<InputOTPSlot index={4} aria-invalid={status === "wrong" || undefined} />
-					<InputOTPSlot index={5} aria-invalid={status === "wrong" || undefined} />
+					<InputOTPSlot index={3} />
+					<InputOTPSlot index={4} />
+					<InputOTPSlot index={5} />
 				</InputOTPGroup>
 			</InputOTP>
 			<p className="h-5 text-sm" aria-live="polite">

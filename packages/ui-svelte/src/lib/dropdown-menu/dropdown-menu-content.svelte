@@ -2,7 +2,7 @@
 import { DropdownMenu as DropdownMenuPrimitive } from "bits-ui";
 import { ANCHORED, stagger } from "../lib/anchor";
 import { cn } from "../lib/cn";
-import { MENU_SURFACE } from "../lib/menu";
+import { menu } from "../lib/menu";
 
 let {
 	class: classProp,
@@ -24,6 +24,6 @@ $effect(() => {
 		{align}
 		{...rest}
 		data-slot="dropdown-menu-content"
-		class={cn(ANCHORED, "static", MENU_SURFACE, classProp)}
+		class={cn(ANCHORED, "static", menu().surface(), classProp)}
 	/>
 </DropdownMenuPrimitive.Portal>

@@ -2,6 +2,7 @@ import { defineComponent } from "../index.ts";
 
 export const select = defineComponent({
 	slug: "select",
+	isNew: true,
 	name: "Select",
 	description:
 		"Listbox that matches its trigger width, keeps the selected option in view and flips when needed.",
@@ -73,6 +74,7 @@ export const select = defineComponent({
 			files: [
 				{ path: "select/select.tsx", type: "registry:ui" },
 				{ path: "lib/anchor.ts", type: "registry:lib" },
+				{ path: "lib/menu.ts", type: "registry:lib" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["tailwind-variants", "clsx", "tailwind-merge", "@base-ui/react"],
@@ -89,6 +91,7 @@ export const select = defineComponent({
 				{ path: "select/select-label.svelte", type: "registry:ui" },
 				{ path: "select/select-separator.svelte", type: "registry:ui" },
 				{ path: "lib/anchor.ts", type: "registry:lib" },
+				{ path: "lib/menu.ts", type: "registry:lib" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["tailwind-variants", "clsx", "tailwind-merge", "bits-ui"],

@@ -14,20 +14,21 @@ import { ChoroplethChartDemo } from "./choropleth-chart";
 import { ChromaticWaveDemo } from "./chromatic-wave";
 import { ClosingPlasmaDemo } from "./closing-plasma";
 import { ComposedChartDemo } from "./composed-chart";
-import { CreditCardInputDemo, CurrencyInputDemo, PasswordInputDemo, PhoneInputDemo } from "./compound-inputs";
-import { AttachmentDemo, ColorPickerDemo, ComposerDemo, ConversationDemo, CopyButtonDemo, FileDiffDemo, MarkdownDemo, QuestionDemo, ReorderListDemo, TagInputDemo, ToolDemo } from "./content";
+import { AttachmentDemo, ColorPickerDemo, ComposerDemo, ConversationDemo, CopyButtonDemo, FileDiffDemo, MarkdownDemo, QuestionDemo, TagInputDemo, ToolDemo } from "./content";
 import { CalendarDemo, InputOTPDemo, RangeCalendarDemo } from "./dates";
 import { AlertDialogDemo, CommandDemo, DialogDemo, DrawerDemo, FullscreenNavDemo, SheetDemo, ToastDemo } from "./dialogs";
 import { DiffTableDemo } from "./diff-table";
 import { DitherGradientDemo } from "./dither-gradient";
 import { DocsNavDemo } from "./docs-nav";
 import { DotMatrixGlowDemo } from "./dot-matrix-glow";
+import { EmptyDemo } from "./empty";
+import { ErrorBoundaryDemo } from "./error-boundary";
 import { FillButtonDemo } from "./fill-button";
 import { FineTuneCardDemo } from "./fine-tune-card";
 import { FlightStatusCardDemo } from "./flight-status-card";
 import { FlowchartDemo } from "./flowchart";
 import { FooterDemo } from "./footer";
-import { FieldDemo, InputGroupDemo, NativeSelectDemo, SeparatorDemo } from "./forms";
+import { FieldDemo, NativeSelectDemo, SeparatorDemo } from "./forms";
 import { BentoGridDemo, ButtonDemo, FileTreeDemo, MorphingModalDemo } from "./foundations";
 import { FunnelChartDemo } from "./funnel-chart";
 import { GaugeChartDemo } from "./gauge-chart";
@@ -36,6 +37,7 @@ import { HeatmapChartDemo } from "./heatmap-chart";
 import { HeroStageDemo } from "./hero-stage";
 import { HoverTransitionDemo } from "./hover-transition";
 import { ImageTrailDemo } from "./image-trail";
+import { InputGroupDemo } from "./input-group";
 import { IridescentFoldDemo } from "./iridescent-fold";
 import { LayeredStackDemo } from "./layered-stack";
 import { LightCausticsDemo } from "./light-caustics";
@@ -83,6 +85,7 @@ import { SplitFlapDisplayDemo } from "./split-flap-display";
 import { StickyScrollCardsDemo } from "./sticky-scroll-cards";
 import { StreamingTextDemo } from "./streaming-text";
 import { SunburstChartDemo } from "./sunburst-chart";
+import { SwappableDemo } from "./swappable";
 import { TableOfContentsDemo } from "./table-of-contents";
 import { TableDemo } from "./table";
 import { TaskRowsDemo } from "./task-rows";
@@ -92,7 +95,7 @@ import { AnimatedGradientTextDemo, CounterDemo, CycleTextDemo, DoubleUnderlineDe
 import { ThemeToggleDemo } from "./theme-toggle";
 import { ThinkingStateDemo } from "./thinking-state";
 import { ToolChipsDemo } from "./tool-chips";
-import { FileUploadDemo, MultiSelectDemo, NumberInputDemo, SearchInputDemo } from "./utility-inputs";
+import { FileUploadDemo, MultiSelectDemo, NumberInputDemo } from "./utility-inputs";
 import { WebglLiquidDemo } from "./webgl-liquid";
 import { WeekCalendarDemo } from "./week-calendar";
 import { WheelCarouselDemo } from "./wheel-carousel";
@@ -106,7 +109,6 @@ import { CircularTextDemo } from "./auto/circular-text";
 import { CodeBlockDemo } from "./auto/code-block";
 import { CollabCardDemo } from "./auto/collab-card";
 import { CollectionSurferDemo } from "./auto/collection-surfer";
-import { ColorFieldDemo } from "./auto/color-field";
 import { ContextCardsDemo } from "./auto/context-cards";
 import { CubeTextDemo } from "./auto/cube-text";
 import { DitheredLogoDemo } from "./auto/dithered-logo";
@@ -179,7 +181,6 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"collab-card": CollabCardDemo,
 	collapsible: CollapsibleDemo,
 	"collection-surfer": CollectionSurferDemo,
-	"color-field": ColorFieldDemo,
 	"color-picker": ColorPickerDemo,
 	combobox: ComboboxDemo,
 	command: CommandDemo,
@@ -190,9 +191,7 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	conversation: ConversationDemo,
 	"copy-button": CopyButtonDemo,
 	counter: CounterDemo,
-	"credit-card-input": CreditCardInputDemo,
 	"cube-text": CubeTextDemo,
-	"currency-input": CurrencyInputDemo,
 	"cycle-text": CycleTextDemo,
 	"date-field": DateFieldDemo,
 	"date-picker": DatePickerDemo,
@@ -208,6 +207,8 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"draggable-marquee": DraggableMarqueeDemo,
 	drawer: DrawerDemo,
 	"dropdown-menu": DropdownMenuDemo,
+	empty: EmptyDemo,
+	"error-boundary": ErrorBoundaryDemo,
 	"eye-tracking": EyeTrackingDemo,
 	field: FieldDemo,
 	"file-diff": FileDiffDemo,
@@ -276,8 +277,6 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"overview-card": OverviewCardDemo,
 	pagination: PaginationDemo,
 	"particle-text": ParticleTextDemo,
-	"password-input": PasswordInputDemo,
-	"phone-input": PhoneInputDemo,
 	"pie-chart": PieChartDemo,
 	"pixel-canvas": PixelCanvasDemo,
 	"pixel-image-trail": PixelImageTrailDemo,
@@ -293,7 +292,6 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	reasoning: ReasoningDemo,
 	"recommendation-card": RecommendationCardDemo,
 	"records-table": RecordsTableDemo,
-	"reorder-list": ReorderListDemo,
 	"response-stream": ResponseStreamDemo,
 	"responsive-dialog": ResponsiveDialogDemo,
 	"reveal-text": RevealTextDemo,
@@ -312,7 +310,6 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"scroll-tilted-grid": ScrollTiltedGridDemo,
 	"scroll-velocity": ScrollVelocityDemo,
 	"scrub-field": ScrubFieldDemo,
-	"search-input": SearchInputDemo,
 	select: SelectDemo,
 	separator: SeparatorDemo,
 	sheet: SheetDemo,
@@ -337,6 +334,7 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"streaming-text": StreamingTextDemo,
 	"sunburst-chart": SunburstChartDemo,
 	"swap-text": SwapTextDemo,
+	swappable: SwappableDemo,
 	switch: SwitchDemo,
 	table: TableDemo,
 	"table-of-contents": TableOfContentsDemo,

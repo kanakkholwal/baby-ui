@@ -31,17 +31,19 @@ const status = $derived(
 		bind:value
 		{size}
 		aria-label="Verification code"
-		aria-invalid={status === "wrong" || undefined}>
+		invalid={status === "wrong"}
+		invalidMotion={p.invalidMotion ?? "shake"}>
 		{#snippet children({ cells })}
+			<!-- Keyed by position: bits-ui hands out new cell objects on every keystroke. -->
 			<InputOTPGroup>
-				{#each cells.slice(0, 3) as cell (cell)}
-					<InputOTPSlot {cell} aria-invalid={status === "wrong" || undefined} />
+				{#each cells.slice(0, 3) as cell, i (i)}
+					<InputOTPSlot {cell} />
 				{/each}
 			</InputOTPGroup>
 			<InputOTPSeparator />
 			<InputOTPGroup>
-				{#each cells.slice(3, 6) as cell (cell)}
-					<InputOTPSlot {cell} aria-invalid={status === "wrong" || undefined} />
+				{#each cells.slice(3, 6) as cell, i (i)}
+					<InputOTPSlot {cell} />
 				{/each}
 			</InputOTPGroup>
 		{/snippet}

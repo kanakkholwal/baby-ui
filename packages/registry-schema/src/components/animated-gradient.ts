@@ -5,6 +5,7 @@ const POSITIONS = ["absolute", "fixed"];
 
 export const animatedGradient = defineComponent({
 	slug: "animated-gradient",
+	isNew: true,
 	name: "Animated Gradient",
 	description:
 		"A full-bleed background of soft token-coloured blobs drifting on a CSS-only loop.",

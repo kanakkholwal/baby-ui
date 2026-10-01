@@ -2,6 +2,7 @@ import { defineComponent } from "../index.ts";
 
 export const multiSelect = defineComponent({
 	slug: "multi-select",
+	isNew: true,
 	name: "Multi Select",
 	description:
 		"Pick several options from a searchable list; choices show as removable chips, with select all, clear and a +N overflow.",

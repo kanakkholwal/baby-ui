@@ -1,26 +1,32 @@
 "use client";
 
-import type { PointerEvent as ReactPointerEvent } from "react";
+import type { ReactNode, PointerEvent as ReactPointerEvent } from "react";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "../input-group/input-group";
 import { cn } from "../lib/cn";
 import {
+	hexKeyStep,
 	hexToHsl,
 	hexToHsv,
 	hexToRgb,
 	hslToHex,
 	hsvToHex,
 	isValidHex,
+	parseHex,
 	rgbToHex,
+	stepHex,
 } from "../lib/color";
 import { Popover, PopoverContent, PopoverTrigger } from "../popover/popover";
 import {
+	arrowStep,
+	type ColorPickerSize,
 	type ColorPickerVariant,
 	colorPicker,
 	hasEyeDropper,
 	pickScreenColor,
 } from "./variants";
 
-export type { ColorPickerVariant };
+export type { ColorPickerSize, ColorPickerVariant };
 
 export type ColorFormat = "hsv" | "hsl" | "rgb";
 
@@ -32,8 +38,19 @@ export interface ColorPickerProps {
 	className?: string;
 	onValueChange: (value: string) => void;
 	onFormatChange?: (format: ColorFormat) => void;
-	/** `popover` puts the picker behind a swatch-and-hex trigger. */
+	/**
+	 * `inline` full picker, `field` swatch + hex field, `area` saturation square,
+	 * `slider` hue strip, `swatch` one disc, `swatches` a row of discs to choose from.
+	 */
 	variant?: ColorPickerVariant;
+	/** Size of the field, area, slider and discs; the inline panel keeps its width. */
+	size?: ColorPickerSize;
+	/** `field`: marks the hex input invalid from outside, e.g. a form error. */
+	invalid?: boolean;
+	disabled?: boolean;
+	/** `field`: id and form name of the hex input. */
+	id?: string;
+	name?: string;
 	/** Recently used colours, newest first; the parent owns the list. */
 	recent?: string[];
 	/** Offer the screen eyedropper where the browser supports it. */
@@ -57,6 +74,8 @@ function clamp(n: number) {
 	return Math.max(0, Math.min(1, n));
 }
 
+const clamp100 = (n: number) => Math.max(0, Math.min(100, n));
+
 export function ColorPicker({
 	value,
 	format: formatProp,
@@ -66,12 +85,17 @@ export function ColorPicker({
 	onValueChange,
 	onFormatChange,
 	variant = "inline",
+	size = "md",
+	invalid = false,
+	disabled = false,
+	id,
+	name,
 	recent = [],
 	eyedropper = true,
 	open,
 	onOpenChange,
 }: ColorPickerProps) {
-	const s = colorPicker({ variant });
+	const s = colorPicker({ variant, size });
 	const [canDrop, setCanDrop] = useState(false);
 	useEffect(() => setCanDrop(eyedropper && hasEyeDropper()), [eyedropper]);
 	const uid = useId();
@@ -238,29 +262,134 @@ export function ColorPicker({
 		readStrip(event.clientX);
 	}
 
+	const area = (
+		<div
+			ref={square}
+			role="slider"
+			tabIndex={disabled ? -1 : 0}
+			aria-label={`${label} saturation and brightness`}
+			aria-valuemin={0}
+			aria-valuemax={100}
+			aria-valuenow={sat}
+			aria-valuetext={`Saturation ${sat}%, brightness ${val}%`}
+			aria-disabled={disabled || undefined}
+			onPointerDown={startSquare}
+			onKeyDown={(e) => {
+				const step = arrowStep(e.key, e.shiftKey);
+				if (!step) return;
+				e.preventDefault();
+				applyHsv([hue, clamp100(sat + step.dx), clamp100(val + step.dy)]);
+			}}
+			style={{
+				background:
+					"linear-gradient(to bottom, transparent, #000), linear-gradient(to right, #fff, var(--picker-hue))",
+				["--picker-hue" as string]: hueColor,
+			}}
+			className={cn(s.area(), variant === "area" && className)}
+		>
+			<span
+				aria-hidden
+				style={{ left: `${sat}%`, top: `${100 - val}%`, background: preview }}
+				className={s.areaThumb()}
+			/>
+		</div>
+	);
+
+	const track = (
+		<div
+			ref={strip}
+			role="slider"
+			tabIndex={disabled ? -1 : 0}
+			aria-label={`${label} hue`}
+			aria-valuemin={0}
+			aria-valuemax={360}
+			aria-valuenow={hue}
+			aria-valuetext={`${hue}°`}
+			aria-disabled={disabled || undefined}
+			onPointerDown={startStrip}
+			onKeyDown={(e) => {
+				const step = arrowStep(e.key, e.shiftKey);
+				if (!step) return;
+				e.preventDefault();
+				applyHsv([Math.max(0, Math.min(360, hue + step.dx + step.dy)), sat, val]);
+			}}
+			style={{
+				background: "linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00)",
+			}}
+			className={s.track()}
+		>
+			<span
+				aria-hidden
+				style={{ left: `${(hue / 360) * 100}%`, background: hueColor }}
+				className={s.trackThumb()}
+			/>
+		</div>
+	);
+
+	if (variant === "area") return area;
+
+	if (variant === "slider") {
+		return (
+			<div data-slot="color-picker-slider" className={cn(s.slider(), className)}>
+				<div className={s.sliderHeader()}>
+					<span>Hue</span>
+					<span className={s.sliderValue()}>{hue}°</span>
+				</div>
+				{track}
+			</div>
+		);
+	}
+
+	if (variant === "swatch") {
+		return (
+			<span
+				role="img"
+				aria-label={`${label}: ${preview}`}
+				data-slot="color-picker-swatch"
+				style={{ background: preview }}
+				className={cn(s.disc(), className)}
+			/>
+		);
+	}
+
+	if (variant === "swatches") {
+		return (
+			<fieldset
+				aria-label={label}
+				data-slot="color-picker-swatches"
+				className={cn(s.discs(), className)}
+			>
+				{swatches.map((swatch) => (
+					<label key={swatch} className={s.discLabel()}>
+						<input
+							type="radio"
+							name={`${uid}-swatch`}
+							value={swatch}
+							checked={swatch.toLowerCase() === value.toLowerCase()}
+							disabled={disabled}
+							aria-label={swatch}
+							onChange={() => apply(swatch)}
+							className="peer sr-only"
+						/>
+						<span
+							aria-hidden
+							style={{ background: swatch, ["--disc" as string]: swatch }}
+							className={cn(s.discOption(), s.disc())}
+						/>
+					</label>
+				))}
+			</fieldset>
+		);
+	}
+
 	const picker = (
 		<div
 			className={cn(
 				"w-60 select-none overflow-hidden rounded-xl border border-border bg-popover",
-				className,
+				variant === "inline" && className,
 			)}
 		>
-			<div
-				ref={square}
-				onPointerDown={startSquare}
-				style={{
-					background:
-						"linear-gradient(to bottom, transparent, #000), linear-gradient(to right, #fff, var(--picker-hue))",
-					["--picker-hue" as string]: hueColor,
-				}}
-				className="relative h-36 w-full cursor-crosshair"
-			>
-				<span
-					aria-hidden
-					style={{ left: `${sat}%`, top: `${100 - val}%`, background: preview }}
-					className="-translate-x-1/2 -translate-y-1/2 pointer-events-none absolute size-3.5 rounded-full border-2 border-white shadow-[0_1px_4px_rgb(0_0_0/0.5)]"
-				/>
-			</div>
+			{area}
 
 			<div className="flex items-center gap-2.5 border-border border-b p-2">
 				<span
@@ -269,21 +398,7 @@ export function ColorPicker({
 					className="size-7 shrink-0 rounded-md ring-1 ring-foreground/10 ring-inset"
 				/>
 				<div className="min-w-0 flex-1 space-y-1.5">
-					<div
-						ref={strip}
-						onPointerDown={startStrip}
-						style={{
-							background:
-								"linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00)",
-						}}
-						className="relative h-2.5 w-full cursor-ew-resize rounded-full"
-					>
-						<span
-							aria-hidden
-							style={{ left: `${(hue / 360) * 100}%`, background: hueColor }}
-							className="-translate-x-1/2 -translate-y-1/2 pointer-events-none absolute top-1/2 size-3.5 rounded-full border-2 border-white shadow-[0_1px_4px_rgb(0_0_0/0.5)]"
-						/>
-					</div>
+					{track}
 					<div className="flex items-center gap-1 rounded-md border border-border bg-background px-1.5 transition-[border-color,box-shadow] focus-within:border-ring focus-within:ring-2 focus-within:ring-ring">
 						<span className="font-mono text-[0.78rem] text-muted-foreground">#</span>
 						<input
@@ -416,14 +531,108 @@ export function ColorPicker({
 	if (variant === "inline") return picker;
 
 	return (
-		<Popover open={open} onOpenChange={onOpenChange}>
-			<PopoverTrigger aria-label={`${label}: ${preview}`} className={s.trigger()}>
-				<span aria-hidden="true" style={{ background: preview }} className={s.swatch()} />
-				<span className={s.hex()}>{preview}</span>
-			</PopoverTrigger>
-			<PopoverContent align="start" className={s.content()}>
-				{picker}
-			</PopoverContent>
-		</Popover>
+		<HexField
+			value={preview}
+			onValueChange={apply}
+			size={size}
+			label={label}
+			invalid={invalid}
+			disabled={disabled}
+			id={id}
+			name={name}
+			open={open}
+			onOpenChange={onOpenChange}
+			className={className}
+		>
+			{picker}
+		</HexField>
+	);
+}
+
+/** The `field` variant: a swatch that opens the picker beside a hex input you can type into. */
+function HexField({
+	value,
+	onValueChange,
+	size,
+	label,
+	invalid,
+	disabled,
+	id,
+	name,
+	open,
+	onOpenChange,
+	className,
+	children,
+}: {
+	className?: string;
+	value: string;
+	onValueChange: (value: string) => void;
+	size: ColorPickerSize;
+	label: string;
+	invalid: boolean;
+	disabled: boolean;
+	id?: string;
+	name?: string;
+	open?: boolean;
+	onOpenChange?: (open: boolean) => void;
+	children: ReactNode;
+}) {
+	const s = colorPicker({ size });
+	// What the user is typing; null shows the committed value.
+	const [draft, setDraft] = useState<string | null>(null);
+	const parsed = draft === null ? value : parseHex(draft);
+
+	function commit(next: string) {
+		setDraft(null);
+		if (next !== value) onValueChange(next);
+	}
+
+	return (
+		<InputGroup
+			size={size}
+			data-slot="color-picker-field"
+			className={cn(s.field(), className)}
+		>
+			<InputGroupAddon>
+				<Popover open={open} onOpenChange={onOpenChange}>
+					<PopoverTrigger
+						disabled={disabled}
+						aria-label={`Pick ${label.toLowerCase()}`}
+						className={s.trigger()}
+					>
+						<span
+							aria-hidden
+							className={s.swatch()}
+							style={{ backgroundColor: parsed ?? value }}
+						/>
+					</PopoverTrigger>
+					<PopoverContent align="start" className={s.content()}>
+						{children}
+					</PopoverContent>
+				</Popover>
+			</InputGroupAddon>
+			<InputGroupInput
+				id={id}
+				name={name}
+				disabled={disabled}
+				aria-label={label}
+				invalid={invalid || parsed === null}
+				spellCheck={false}
+				autoComplete="off"
+				value={draft ?? value.toUpperCase()}
+				onChange={(e) => setDraft(e.currentTarget.value)}
+				onBlur={() => (parsed ? commit(parsed) : setDraft(null))}
+				onKeyDown={(e) => {
+					const step = hexKeyStep(e.key);
+					if (e.key === "Enter" && parsed) commit(parsed);
+					else if (e.key === "Escape") setDraft(null);
+					else if (step !== null) {
+						e.preventDefault();
+						commit(stepHex(parsed ?? value, step));
+					}
+				}}
+				className={s.hexInput()}
+			/>
+		</InputGroup>
 	);
 }

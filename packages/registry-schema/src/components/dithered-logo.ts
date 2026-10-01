@@ -6,6 +6,7 @@ const SIZES = ["sm", "md", "lg"];
 
 export const ditheredLogo = defineComponent({
 	slug: "dithered-logo",
+	isNew: true,
 	name: "Dithered Logo",
 	description:
 		"A logo dithered into a dot grid in token colours; dots shy from the pointer and ripple on click.",

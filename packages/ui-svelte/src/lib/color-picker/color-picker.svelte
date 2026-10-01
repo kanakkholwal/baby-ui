@@ -1,18 +1,26 @@
 <script lang="ts">
+import InputGroup from "../input-group/input-group.svelte";
+import InputGroupAddon from "../input-group/input-group-addon.svelte";
+import InputGroupInput from "../input-group/input-group-input.svelte";
 import { cn } from "../lib/cn";
 import {
+	hexKeyStep,
 	hexToHsl,
 	hexToHsv,
 	hexToRgb,
 	hslToHex,
 	hsvToHex,
 	isValidHex,
+	parseHex,
 	rgbToHex,
+	stepHex,
 } from "../lib/color";
 import Popover from "../popover/popover.svelte";
 import PopoverContent from "../popover/popover-content.svelte";
 import PopoverTrigger from "../popover/popover-trigger.svelte";
 import {
+	arrowStep,
+	type ColorPickerSize,
 	type ColorPickerVariant,
 	colorPicker,
 	hasEyeDropper,
@@ -35,6 +43,11 @@ let {
 	],
 	label = "Colour",
 	variant = "inline",
+	size = "md",
+	invalid = false,
+	disabled = false,
+	id,
+	name,
 	recent = [],
 	eyedropper = true,
 	open = $bindable(false),
@@ -45,19 +58,30 @@ let {
 	format?: ColorFormat;
 	swatches?: string[];
 	label?: string;
-	/** `popover` puts the picker behind a swatch-and-hex trigger. */
+	/**
+	 * `inline` full picker, `field` swatch + hex field, `area` saturation square,
+	 * `slider` hue strip, `swatch` one disc, `swatches` a row of discs to choose from.
+	 */
 	variant?: ColorPickerVariant;
+	/** Size of the field, area, slider and discs; the inline panel keeps its width. */
+	size?: ColorPickerSize;
+	/** `field`: marks the hex input invalid from outside, e.g. a form error. */
+	invalid?: boolean;
+	disabled?: boolean;
+	/** `field`: id and form name of the hex input. */
+	id?: string;
+	name?: string;
 	/** Recently used colours, newest first; the parent owns the list. */
 	recent?: string[];
 	/** Offer the screen eyedropper where the browser supports it. */
 	eyedropper?: boolean;
-	/** Bindable; popover variant only. */
+	/** Bindable; field variant only. */
 	open?: boolean;
 	onOpenChange?: (open: boolean) => void;
 	class?: string;
 } = $props();
 
-const s = $derived(colorPicker({ variant }));
+const s = $derived(colorPicker({ variant, size }));
 let canDrop = $state(false);
 $effect(() => {
 	canDrop = eyedropper && hasEyeDropper();
@@ -86,6 +110,25 @@ let dragging = $state<"square" | "strip" | null>(null);
 
 const hueColor = $derived(`hsl(${hue}, 100%, 50%)`);
 const preview = $derived(isValidHex(hex) ? hex : isValidHex(value) ? value : "#000000");
+
+// The field's typed text; null shows the committed value.
+let draft = $state<string | null>(null);
+const parsed = $derived(draft === null ? preview : parseHex(draft));
+
+function commitHex(next: string) {
+	draft = null;
+	if (next !== preview) apply(next);
+}
+
+function hexKeydown(event: KeyboardEvent) {
+	const step = hexKeyStep(event.key);
+	if (event.key === "Enter" && parsed) commitHex(parsed);
+	else if (event.key === "Escape") draft = null;
+	else if (step !== null) {
+		event.preventDefault();
+		commitHex(stepHex(parsed ?? preview, step));
+	}
+}
 
 // Not $derived: `value` is externally controlled and can change at any time, and syncs
 // into five representations that aren't uniquely invertible from hex alone (grey has no hue).
@@ -172,6 +215,25 @@ function onpointermove(event: PointerEvent) {
 	else if (dragging === "strip") readStrip(event);
 }
 
+const clamp100 = (n: number) => Math.max(0, Math.min(100, n));
+
+function areaKeydown(event: KeyboardEvent) {
+	const step = arrowStep(event.key, event.shiftKey);
+	if (!step) return;
+	event.preventDefault();
+	sat = clamp100(sat + step.dx);
+	val = clamp100(val + step.dy);
+	applyHsv();
+}
+
+function trackKeydown(event: KeyboardEvent) {
+	const step = arrowStep(event.key, event.shiftKey);
+	if (!step) return;
+	event.preventDefault();
+	hue = Math.max(0, Math.min(360, hue + step.dx + step.dy));
+	applyHsv();
+}
+
 const CHANNELS = $derived(
 	format === "hsl"
 		? ([
@@ -208,33 +270,74 @@ const FORMATS: ColorFormat[] = ["hsv", "hsl", "rgb"];
 
 <svelte:window {onpointermove} onpointerup={() => (dragging = null)} onpointercancel={() => (dragging = null)} />
 
+{#snippet area()}
+	<div
+		bind:this={square}
+		role="slider"
+		tabindex={disabled ? -1 : 0}
+		aria-label="{label} saturation and brightness"
+		aria-valuemin={0}
+		aria-valuemax={100}
+		aria-valuenow={sat}
+		aria-valuetext="Saturation {sat}%, brightness {val}%"
+		aria-disabled={disabled || undefined}
+		style:--picker-hue={hueColor}
+		style:background="linear-gradient(to bottom, transparent, #000), linear-gradient(to right, #fff, var(--picker-hue))"
+		onpointerdown={(e) => {
+			dragging = "square";
+			square?.setPointerCapture(e.pointerId);
+			readSquare(e);
+		}}
+		onkeydown={areaKeydown}
+		class={cn(s.area(), variant === "area" && classProp)}
+	>
+		<span
+			aria-hidden="true"
+			style:left="{sat}%"
+			style:top="{100 - val}%"
+			style:background={preview}
+			class={s.areaThumb()}
+		></span>
+	</div>
+{/snippet}
+
+{#snippet track()}
+	<div
+		bind:this={strip}
+		role="slider"
+		tabindex={disabled ? -1 : 0}
+		aria-label="{label} hue"
+		aria-valuemin={0}
+		aria-valuemax={360}
+		aria-valuenow={hue}
+		aria-valuetext="{hue}°"
+		aria-disabled={disabled || undefined}
+		onpointerdown={(e) => {
+			dragging = "strip";
+			strip?.setPointerCapture(e.pointerId);
+			readStrip(e);
+		}}
+		onkeydown={trackKeydown}
+		style:background="linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00)"
+		class={s.track()}
+	>
+		<span
+			aria-hidden="true"
+			style:left="{(hue / 360) * 100}%"
+			style:background={hueColor}
+			class={s.trackThumb()}
+		></span>
+	</div>
+{/snippet}
+
 {#snippet picker()}
 	<div
 		class={cn(
 			"w-60 select-none overflow-hidden rounded-xl border border-border bg-popover",
-			classProp,
+			variant === "inline" && classProp,
 		)}
 	>
-		<!-- svelte-ignore a11y_no_static_element_interactions -->
-		<div
-			bind:this={square}
-			style:--picker-hue={hueColor}
-			style:background="linear-gradient(to bottom, transparent, #000), linear-gradient(to right, #fff, var(--picker-hue))"
-			onpointerdown={(e) => {
-				dragging = "square";
-				square?.setPointerCapture(e.pointerId);
-				readSquare(e);
-			}}
-			class="relative h-36 w-full cursor-crosshair"
-		>
-			<span
-				aria-hidden="true"
-				style:left="{sat}%"
-				style:top="{100 - val}%"
-				style:background={preview}
-				class="-translate-x-1/2 -translate-y-1/2 pointer-events-none absolute size-3.5 rounded-full border-2 border-white shadow-[0_1px_4px_rgb(0_0_0/0.5)]"
-			></span>
-		</div>
+		{@render area()}
 
 		<div class="flex items-center gap-2.5 border-border border-b p-2">
 			<span
@@ -243,24 +346,7 @@ const FORMATS: ColorFormat[] = ["hsv", "hsl", "rgb"];
 				class="size-7 shrink-0 rounded-md ring-1 ring-foreground/10 ring-inset"
 			></span>
 			<div class="min-w-0 flex-1 space-y-1.5">
-				<!-- svelte-ignore a11y_no_static_element_interactions -->
-				<div
-					bind:this={strip}
-					onpointerdown={(e) => {
-						dragging = "strip";
-						strip?.setPointerCapture(e.pointerId);
-						readStrip(e);
-					}}
-					style:background="linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00)"
-					class="relative h-2.5 w-full cursor-ew-resize rounded-full"
-				>
-					<span
-						aria-hidden="true"
-						style:left="{(hue / 360) * 100}%"
-						style:background={hueColor}
-						class="-translate-x-1/2 -translate-y-1/2 pointer-events-none absolute top-1/2 size-3.5 rounded-full border-2 border-white shadow-[0_1px_4px_rgb(0_0_0/0.5)]"
-					></span>
-				</div>
+				{@render track()}
 				<div
 					class="flex items-center gap-1 rounded-md border border-border bg-background px-1.5 transition-[border-color,box-shadow] focus-within:border-ring focus-within:ring-2 focus-within:ring-ring"
 				>
@@ -368,14 +454,74 @@ const FORMATS: ColorFormat[] = ["hsv", "hsl", "rgb"];
 
 {#if variant === "inline"}
 	{@render picker()}
+{:else if variant === "area"}
+	{@render area()}
+{:else if variant === "slider"}
+	<div data-slot="color-picker-slider" class={cn(s.slider(), classProp)}>
+		<div class={s.sliderHeader()}>
+			<span>Hue</span>
+			<span class={s.sliderValue()}>{hue}°</span>
+		</div>
+		{@render track()}
+	</div>
+{:else if variant === "swatch"}
+	<span
+		role="img"
+		aria-label="{label}: {preview}"
+		data-slot="color-picker-swatch"
+		style:background={preview}
+		class={cn(s.disc(), classProp)}
+	></span>
+{:else if variant === "swatches"}
+	<fieldset aria-label={label} data-slot="color-picker-swatches" class={cn(s.discs(), classProp)}>
+		{#each swatches as swatch (swatch)}
+			<label class={s.discLabel()}>
+				<!-- A native radio under each disc, so arrow keys and forms work as radios do. -->
+				<input
+					type="radio"
+					name="{uid}-swatch"
+					value={swatch}
+					checked={swatch.toLowerCase() === value.toLowerCase()}
+					{disabled}
+					aria-label={swatch}
+					onchange={() => apply(swatch)}
+					class="peer sr-only"
+				/>
+				<span
+					aria-hidden="true"
+					style:background={swatch}
+					style:--disc={swatch}
+					class={cn(s.discOption(), s.disc())}
+				></span>
+			</label>
+		{/each}
+	</fieldset>
 {:else}
-	<Popover bind:open onOpenChange={(next) => onOpenChange?.(next)}>
-		<PopoverTrigger aria-label="{label}: {preview}" class={s.trigger()}>
-			<span aria-hidden="true" style:background={preview} class={s.swatch()}></span>
-			<span class={s.hex()}>{preview}</span>
-		</PopoverTrigger>
-		<PopoverContent align="start" class={s.content()}>
-			{@render picker()}
-		</PopoverContent>
-	</Popover>
+	<!-- The field variant: a swatch that opens the picker beside a hex input you can type into. -->
+	<InputGroup {size} data-slot="color-picker-field" class={cn(s.field(), classProp)}>
+		<InputGroupAddon>
+			<Popover bind:open onOpenChange={(next) => onOpenChange?.(next)}>
+				<PopoverTrigger {disabled} aria-label="Pick {label.toLowerCase()}" class={s.trigger()}>
+					<span aria-hidden="true" class={s.swatch()} style:background-color={parsed ?? preview}></span>
+				</PopoverTrigger>
+				<PopoverContent align="start" class={s.content()}>
+					{@render picker()}
+				</PopoverContent>
+			</Popover>
+		</InputGroupAddon>
+		<InputGroupInput
+			{id}
+			{name}
+			{disabled}
+			aria-label={label}
+			invalid={invalid || parsed === null}
+			spellcheck={false}
+			autocomplete="off"
+			value={draft ?? preview.toUpperCase()}
+			oninput={(e) => (draft = e.currentTarget.value)}
+			onblur={() => (parsed ? commitHex(parsed) : (draft = null))}
+			onkeydown={hexKeydown}
+			class={s.hexInput()}
+		/>
+	</InputGroup>
 {/if}

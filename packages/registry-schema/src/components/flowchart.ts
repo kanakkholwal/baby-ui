@@ -4,6 +4,7 @@ const BACKGROUNDS = ["dots", "grid", "none"];
 
 export const flowchart = defineComponent({
 	slug: "flowchart",
+	isNew: true,
 	name: "Flowchart",
 	description:
 		"A workflow canvas: draggable nodes joined by a measured bezier connector.",

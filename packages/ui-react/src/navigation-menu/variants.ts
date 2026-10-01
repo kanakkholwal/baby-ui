@@ -5,8 +5,10 @@ import { popover } from "../popover/variants";
 export const navigationMenuTriggerStyle = tv({
 	base: [
 		"group/navigation-menu-trigger inline-flex w-max items-center justify-center rounded-lg font-medium outline-none",
-		"transition-colors hover:bg-muted focus:bg-muted focus-visible:ring-2 focus-visible:ring-ring",
-		"data-[state=open]:bg-muted/50 data-[popup-open]:bg-muted/50",
+		// bg-muted matches card and popover surfaces, so the fill is a foreground tint like ghost buttons.
+		"transition-[color,background-color,scale] [transition-duration:100ms,100ms,250ms] ease-[var(--ease-out-quart)]",
+		"hover:bg-foreground/[0.06] focus-visible:ring-2 focus-visible:ring-ring active:scale-[var(--press-scale-sm)]",
+		"data-[state=open]:bg-foreground/[0.06] data-[popup-open]:bg-foreground/[0.06]",
 		"disabled:pointer-events-none disabled:opacity-50 motion-reduce:transition-none",
 	],
 	variants: {
@@ -37,10 +39,12 @@ export const navigationMenu = tv({
 		content: "p-2 **:data-[slot=navigation-menu-link]:focus:ring-0",
 		// Popover's own surface, so the panel and every popover look the same.
 		viewport: [popover().surface(), "overflow-hidden"],
+		// The panel's rows follow the menu row contract: tint on hover and focus, squish on press.
 		link: [
-			"flex flex-col gap-0.5 rounded-md p-2 text-sm outline-none transition-colors",
-			"hover:bg-muted focus:bg-muted focus-visible:ring-2 focus-visible:ring-ring",
-			"data-[active]:bg-muted/50 aria-[current=page]:bg-muted/50 motion-reduce:transition-none",
+			"flex flex-col gap-0.5 rounded-md p-2 text-sm outline-none",
+			"transition-[background-color,scale] [transition-duration:100ms,250ms] ease-[var(--ease-out-quart)]",
+			"hover:bg-foreground/[0.06] focus:bg-foreground/[0.06] active:scale-[var(--press-scale-row)]",
+			"data-[active]:bg-foreground/[0.06] aria-[current=page]:bg-foreground/[0.06] motion-reduce:transition-none",
 		],
 		indicator: "top-full z-10 flex h-1.5 items-end justify-center overflow-hidden",
 		indicatorArrow:

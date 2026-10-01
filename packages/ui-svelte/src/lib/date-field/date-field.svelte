@@ -68,7 +68,12 @@ function set(next: DateValue | undefined) {
 		granularity="day"
 		validate={invalid ? () => labels.group : undefined}
 	>
-		<div data-slot="date-field-group" data-disabled={disabled || undefined} class={s.group()}>
+		<div
+			data-slot="date-field-group"
+			data-disabled={disabled || undefined}
+			aria-invalid={invalid || outside || undefined}
+			class={s.group()}
+		>
 			<span class={s.icon()}>
 				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 					<path d="M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zM16 3v4M8 3v4M4 11h16" />

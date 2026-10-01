@@ -14,8 +14,6 @@ import {
 	InputGroupAddon,
 	InputGroupButton,
 	InputGroupInput,
-	InputGroupText,
-	InputGroupTextarea,
 	NativeSelect,
 	NativeSelectOptGroup,
 	NativeSelectOption,
@@ -228,58 +226,6 @@ export function FieldDemo({ props }: { props: Props }) {
 				</FieldGroup>
 			</FieldSet>
 		</form>
-	);
-}
-
-export function InputGroupDemo({ props }: { props: Props }) {
-	const p = controlProps<ComponentProps<typeof InputGroup>>(props);
-	const size = p.size ?? "md";
-	const [domain, setDomain] = useState("");
-	const [note, setNote] = useState("");
-	const [copied, setCopied] = useState(false);
-	return (
-		<div className="flex w-full max-w-sm flex-col gap-4">
-			<InputGroup size={size}>
-				<InputGroupAddon>
-					<InputGroupText>https://</InputGroupText>
-				</InputGroupAddon>
-				<InputGroupInput
-					aria-label="Domain"
-					placeholder="acme"
-					value={domain}
-					onChange={(e) => setDomain(e.currentTarget.value)}
-				/>
-				<InputGroupAddon align="inline-end">
-					<InputGroupText>.dev</InputGroupText>
-				</InputGroupAddon>
-			</InputGroup>
-			<InputGroup size={size}>
-				<InputGroupInput
-					aria-label="Invite link"
-					readOnly
-					value="https://acme.dev/join/7fk2"
-				/>
-				<InputGroupAddon align="inline-end">
-					<InputGroupButton onClick={() => setCopied(true)}>
-						{copied ? "Copied" : "Copy"}
-					</InputGroupButton>
-				</InputGroupAddon>
-			</InputGroup>
-			<InputGroup>
-				<InputGroupTextarea
-					aria-label="Release note"
-					placeholder="What changed?"
-					value={note}
-					onChange={(e) => setNote(e.currentTarget.value)}
-					rows={3}
-				/>
-				<InputGroupAddon align="block-end">
-					<InputGroupText className="ml-auto tabular-nums">
-						{note.length}/280
-					</InputGroupText>
-				</InputGroupAddon>
-			</InputGroup>
-		</div>
 	);
 }
 

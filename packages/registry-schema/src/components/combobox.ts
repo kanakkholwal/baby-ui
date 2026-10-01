@@ -2,6 +2,7 @@ import { defineComponent } from "../index.ts";
 
 export const combobox = defineComponent({
 	slug: "combobox",
+	isNew: true,
 	name: "Combobox",
 	description:
 		"A Popover whose content is a Command: searchable selection, shadcn/ui's own recipe.",

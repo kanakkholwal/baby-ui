@@ -101,3 +101,25 @@ export function rgbToHex(red: number, green: number, blue: number): string {
 			.padStart(2, "0");
 	return `#${part(red)}${part(green)}${part(blue)}`;
 }
+
+/** Reads "#abc", "abc", "#aabbcc" or "aabbcc" as lowercase "#rrggbb"; null when it is not hex. */
+export function parseHex(raw: string): string | null {
+	const hex = raw.trim().replace(/^#/, "").toLowerCase();
+	if (/^[0-9a-f]{3}$/.test(hex)) return `#${[...hex].map((c) => c + c).join("")}`;
+	return /^[0-9a-f]{6}$/.test(hex) ? `#${hex}` : null;
+}
+
+/** Steps a hex on its 24-bit value, clamped to black and white. */
+export function stepHex(hex: string, delta: number): string {
+	const next = Number.parseInt(hex.slice(1), 16) + delta;
+	return `#${Math.min(0xffffff, Math.max(0, next)).toString(16).padStart(6, "0")}`;
+}
+
+/** The step a key applies to a hex field: arrows by 1, Page keys by 16. */
+export function hexKeyStep(key: string): number | null {
+	if (key === "ArrowUp") return 1;
+	if (key === "ArrowDown") return -1;
+	if (key === "PageUp") return 16;
+	if (key === "PageDown") return -16;
+	return null;
+}

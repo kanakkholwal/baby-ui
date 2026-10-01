@@ -64,6 +64,7 @@ export function cardItem(spec: ComponentSpec): CardItem {
 		description: spec.description,
 		href: specHref(spec),
 		tier: spec.tier,
+		isNew: spec.isNew,
 		defaults: defaultProps(spec),
 	};
 }
@@ -74,6 +75,21 @@ export function cardItems(slugs: string[]): CardItem[] {
 		const spec = liveSpecs.find((s) => s.slug === slug);
 		return spec ? [cardItem(spec)] : [];
 	});
+}
+
+/** Browsing order for card grids: new components first, then alphabetical. */
+export function newFirst<T extends { name: string; isNew: boolean }>(a: T, b: T): number {
+	return Number(b.isNew) - Number(a.isNew) || a.name.localeCompare(b.name);
+}
+
+/** Live new components: categories in schema order, alphabetical within each. */
+export function newItems(): CardItem[] {
+	return CATEGORIES.flatMap((category) =>
+		liveSpecs
+			.filter((s) => s.isNew && s.category === category)
+			.map(cardItem)
+			.sort(newFirst),
+	);
 }
 
 /** Every category, with `lead` (the route's own category) moved to the front. */
@@ -92,6 +108,7 @@ export function sidebarGroups(lead?: Category): SidebarGroup[] {
 					href: specHref(s),
 					status: s.status,
 					tier: s.tier,
+					isNew: s.isNew,
 				}))
 				.sort((a, b) => a.name.localeCompare(b.name)),
 		}))

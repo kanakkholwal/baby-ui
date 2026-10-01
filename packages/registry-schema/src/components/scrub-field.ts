@@ -5,6 +5,7 @@ const TONES = ["default", "edited"];
 
 export const scrubField = defineComponent({
 	slug: "scrub-field",
+	isNew: true,
 	name: "Scrub Field",
 	description:
 		"A number input whose label is a horizontal drag handle: drag, arrow keys (Shift for ×10), or type directly.",
@@ -96,11 +97,11 @@ export const scrubField = defineComponent({
 	],
 	motion: {
 		springs: [],
-		reducedMotion:
-			"No motion to reduce; the tone change on `edited` is an instant colour swap.",
+		reducedMotion: "Colour changes only; nothing moves.",
 		behaviour: [
-			"Dragging the label left/right steps the value by `step` per ~2px of pointer movement.",
-			"Arrow keys step by `step` (Shift for `largeStep`); typing a number commits it directly.",
+			"The label is the handle: a resize cursor, a hover tint and a double chevron say it drags.",
+			"Dragging steps the value by `step` per 2px (Shift for `largeStep`); the handle and border turn primary while it runs.",
+			"Arrow keys and the wheel on a focused field step it; typing a number commits it directly.",
 		],
 	},
 	a11y: {
