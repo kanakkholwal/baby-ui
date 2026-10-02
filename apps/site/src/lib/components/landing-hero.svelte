@@ -1,7 +1,14 @@
 <script lang="ts">
 import { IconArrowRight } from "@baby-ui/icons";
-import { Button, DiaText, FillButton } from "@baby-ui/svelte";
+import { Button, DiaText, FillButton, ShimmerText } from "@baby-ui/svelte";
 import HeroPrism from "./hero-prism.svelte";
+
+let { newCount = 0 }: { newCount?: number } = $props();
+
+// Rounded down to a multiple of five, so the badge reads "55+" rather than an exact tally.
+const newLabel = $derived(
+	newCount >= 5 ? `${Math.floor(newCount / 5) * 5}+` : String(newCount),
+);
 
 const TAILS = [
 	"agent interfaces.",
@@ -28,18 +35,28 @@ const BG_CLASS =
 
 	<!-- Fills the first screen, so the showcase starts below the fold. -->
 	<div class="mx-auto flex w-full max-w-3xl flex-col items-center px-4 py-16 text-center md:py-20">
-		<a
-			href="/charts"
-			class="hero-in group mb-7 inline-flex items-center gap-2 rounded-full border border-border bg-background/60 py-1 pr-3 pl-1 text-foreground text-xs transition-colors hover:border-border-strong"
-		>
-			<span class="rounded-full bg-foreground px-2 py-0.5 font-medium text-background">New</span>
-			Charts you can read by keyboard
-			<IconArrowRight
-				size={13}
-				aria-hidden="true"
-				class="transition-transform duration-150 group-hover:translate-x-0.5 motion-reduce:transition-none"
-			/>
-		</a>
+		{#if newCount > 0}
+			<!-- p-px: the rotating beam shows through as a 1px ring around the pill. -->
+			<a
+				href="/components#new"
+				class="hero-in group relative mb-7 inline-flex rounded-full bg-border p-px text-foreground text-xs transition-[scale] duration-150 ease-[var(--ease-out)] active:scale-[0.97] motion-reduce:transition-none"
+			>
+				<span aria-hidden="true" class="new-beam absolute inset-0 rounded-full"></span>
+				<span aria-hidden="true" class="new-beam absolute -inset-1 rounded-full opacity-50 blur-md"></span>
+				<span class="relative inline-flex items-center gap-2 rounded-full bg-background py-1 pr-3 pl-1">
+					<span class="inline-flex items-center gap-1.5 rounded-full bg-primary px-2 py-0.5 font-medium text-primary-foreground">
+						<span aria-hidden="true" class="new-dot size-1.5 rounded-full bg-primary-foreground"></span>
+						New
+					</span>
+					<ShimmerText as="span" text="{newLabel} components just landed" />
+					<IconArrowRight
+						size={13}
+						aria-hidden="true"
+						class="transition-transform duration-150 group-hover:translate-x-0.5 motion-reduce:transition-none"
+					/>
+				</span>
+			</a>
+		{/if}
 
 		<h1 class="hero-in font-normal text-[2.5rem] text-foreground leading-[1.04] tracking-[-0.05em] sm:text-6xl xl:text-7xl" style:--i="1">
 			<span class="block">Accessible UI for</span>
@@ -103,8 +120,47 @@ const BG_CLASS =
 		}
 	}
 
+	/* Registered so the conic gradient's start angle can animate. */
+	@property --beam-angle {
+		syntax: "<angle>";
+		inherits: false;
+		initial-value: 0deg;
+	}
+
+	.new-beam {
+		background: conic-gradient(
+			from var(--beam-angle),
+			transparent 0% 65%,
+			var(--primary) 82%,
+			color-mix(in oklch, var(--primary) 40%, var(--foreground)) 90%,
+			transparent 100%
+		);
+		animation: beam-spin 3s linear infinite;
+	}
+
+	.new-dot {
+		animation: dot-pulse 1.6s var(--ease-out) infinite;
+	}
+
+	@keyframes beam-spin {
+		to {
+			--beam-angle: 360deg;
+		}
+	}
+
+	@keyframes dot-pulse {
+		0% {
+			box-shadow: 0 0 0 0 color-mix(in oklch, var(--primary-foreground) 70%, transparent);
+		}
+		100% {
+			box-shadow: 0 0 0 5px transparent;
+		}
+	}
+
 	@media (prefers-reduced-motion: reduce) {
-		.hero-in {
+		.hero-in,
+		.new-beam,
+		.new-dot {
 			animation: none;
 		}
 	}

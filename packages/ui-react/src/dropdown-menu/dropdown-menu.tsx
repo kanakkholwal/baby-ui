@@ -77,6 +77,37 @@ export function DropdownMenuItem({
 	);
 }
 
+export function DropdownMenuCheckboxItem({
+	className,
+	children,
+	...props
+}: ComponentProps<typeof Menu.CheckboxItem>) {
+	const styles = menu();
+	return (
+		<Menu.CheckboxItem
+			data-slot="dropdown-menu-checkbox-item"
+			data-inset=""
+			className={cn(styles.item(), className)}
+			{...props}
+		>
+			{/* Kept mounted so the tick can draw in and back out with the row's data-checked. */}
+			<Menu.CheckboxItemIndicator keepMounted className={styles.indicator()}>
+				<svg viewBox="0 0 16 16" fill="none" aria-hidden className={styles.check()}>
+					<path
+						d="m3.5 8.5 3 3 6-7"
+						pathLength={1}
+						stroke="currentColor"
+						strokeWidth="1.6"
+						strokeLinecap="round"
+						strokeLinejoin="round"
+					/>
+				</svg>
+			</Menu.CheckboxItemIndicator>
+			{children}
+		</Menu.CheckboxItem>
+	);
+}
+
 export function DropdownMenuShortcut({ className, ...props }: ComponentProps<"kbd">) {
 	return (
 		<kbd

@@ -49,6 +49,7 @@ import { copyButton } from "./copy-button.ts";
 import { counter } from "./counter.ts";
 import { cubeText } from "./cube-text.ts";
 import { cycleText } from "./cycle-text.ts";
+import { dataTable } from "./data-table.ts";
 import { dateField, datePicker, dateRangePicker, timePicker } from "./date-picker.ts";
 import { diaText } from "./dia-text.ts";
 import { dialog } from "./dialog.ts";
@@ -283,6 +284,7 @@ export const specs: ComponentSpec[] = [
 	counter,
 	cubeText,
 	cycleText,
+	dataTable,
 	dateField,
 	datePicker,
 	dateRangePicker,

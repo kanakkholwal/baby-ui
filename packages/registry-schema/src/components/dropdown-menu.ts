@@ -89,6 +89,7 @@ export const dropdownMenu = defineComponent({
 				{ path: "dropdown-menu/dropdown-menu-trigger.svelte", type: "registry:ui" },
 				{ path: "dropdown-menu/dropdown-menu-content.svelte", type: "registry:ui" },
 				{ path: "dropdown-menu/dropdown-menu-item.svelte", type: "registry:ui" },
+				{ path: "dropdown-menu/dropdown-menu-checkbox-item.svelte", type: "registry:ui" },
 				{ path: "dropdown-menu/dropdown-menu-label.svelte", type: "registry:ui" },
 				{ path: "dropdown-menu/dropdown-menu-separator.svelte", type: "registry:ui" },
 				{ path: "dropdown-menu/dropdown-menu-shortcut.svelte", type: "registry:ui" },

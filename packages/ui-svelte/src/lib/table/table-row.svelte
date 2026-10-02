@@ -6,15 +6,19 @@ import { getTableStyle } from "./context";
 import { table } from "./variants";
 
 let {
+	ref = $bindable(null),
 	children,
 	class: className,
 	...rest
-}: { children?: Snippet } & HTMLAttributes<HTMLTableRowElement> = $props();
+}: {
+	ref?: HTMLTableRowElement | null;
+	children?: Snippet;
+} & HTMLAttributes<HTMLTableRowElement> = $props();
 
 const style = getTableStyle();
 const classes = $derived(table(style()));
 </script>
 
-<tr data-slot="table-row" class={cn(classes.row(), className)} {...rest}>
+<tr bind:this={ref} data-slot="table-row" class={cn(classes.row(), className)} {...rest}>
 	{@render children?.()}
 </tr>

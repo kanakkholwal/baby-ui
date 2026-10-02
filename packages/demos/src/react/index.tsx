@@ -15,6 +15,7 @@ import { ChromaticWaveDemo } from "./chromatic-wave";
 import { ClosingPlasmaDemo } from "./closing-plasma";
 import { ComposedChartDemo } from "./composed-chart";
 import { AttachmentDemo, ColorPickerDemo, ComposerDemo, ConversationDemo, CopyButtonDemo, FileDiffDemo, MarkdownDemo, QuestionDemo, TagInputDemo, ToolDemo } from "./content";
+import { DataTableDemo } from "./data-table";
 import { CalendarDemo, InputOTPDemo, RangeCalendarDemo } from "./dates";
 import { AlertDialogDemo, CommandDemo, DialogDemo, DrawerDemo, FullscreenNavDemo, SheetDemo, ToastDemo } from "./dialogs";
 import { DiffTableDemo } from "./diff-table";
@@ -193,6 +194,7 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	counter: CounterDemo,
 	"cube-text": CubeTextDemo,
 	"cycle-text": CycleTextDemo,
+	"data-table": DataTableDemo,
 	"date-field": DateFieldDemo,
 	"date-picker": DatePickerDemo,
 	"date-range-picker": DateRangePickerDemo,

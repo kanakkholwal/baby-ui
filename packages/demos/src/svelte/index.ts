@@ -56,6 +56,7 @@ export const demos: Record<string, DemoLoader> = {
 	counter: () => import("./counter-demo.svelte"),
 	"cube-text": () => import("./auto/cube-text-demo.svelte"),
 	"cycle-text": () => import("./cycle-text-demo.svelte"),
+	"data-table": () => import("./data-table-demo.svelte"),
 	"date-field": () => import("./date-field-demo.svelte"),
 	"date-picker": () => import("./date-picker-demo.svelte"),
 	"date-range-picker": () => import("./date-range-picker-demo.svelte"),

@@ -39,7 +39,7 @@ const DESCRIPTION = $derived(
 />
 
 <main class="relative">
-	<LandingHero />
+	<LandingHero newCount={data.freshCount} />
 
 	<HomeShowcase items={data.grid} />
 

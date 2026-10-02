@@ -3606,6 +3606,16 @@
 	}
 }
 
+/* DataTable's refetch bar: a 40%-wide segment sweeping across the top edge. */
+@keyframes data-table-progress {
+	from {
+		translate: -100% 0;
+	}
+	to {
+		translate: 250% 0;
+	}
+}
+
 /* A typed digit rises into its slot from the baseline. */
 .otp-value {
 	display: inline-block;

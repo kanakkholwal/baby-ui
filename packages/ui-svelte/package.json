@@ -17,6 +17,10 @@
 			"svelte": "./src/lib/lib/*.ts",
 			"types": "./src/lib/lib/*.ts"
 		},
+		"./data-table/worker": {
+			"types": "./src/lib/data-table/worker.ts",
+			"default": "./src/lib/data-table/worker.ts"
+		},
 		"./*": {
 			"svelte": "./src/lib/*/index.ts",
 			"types": "./src/lib/*/index.ts"
@@ -28,6 +32,9 @@
 	"dependencies": {
 		"@better-svelte-email/components": "catalog:",
 		"@internationalized/date": "catalog:",
+		"@tanstack/store": "catalog:",
+		"@tanstack/table-core": "catalog:",
+		"@tanstack/virtual-core": "catalog:",
 		"bits-ui": "catalog:",
 		"clsx": "catalog:",
 		"d3-array": "catalog:",

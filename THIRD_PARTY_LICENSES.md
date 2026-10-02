@@ -5,6 +5,11 @@ the projects below: props were re-specified as ComponentSpecs and each framework
 implementation was authored against that spec rather than copied. The original
 notices are reproduced here as those licenses require.
 
+## @tanstack/svelte-table (rune reactivity bindings)
+
+- Source: https://github.com/TanStack/table
+- License: MIT
+
 ## animata
 
 - Source: https://animata.design
@@ -43,4 +48,9 @@ notices are reproduced here as those licenses require.
 ## sivir-ui
 
 - Source: https://github.com/aidan-neel/sivir-ui
+- License: MIT
+
+## swapy
+
+- Source: https://github.com/TahaSh/swapy
 - License: MIT
