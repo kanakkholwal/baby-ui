@@ -20,9 +20,9 @@ import {
 	fetchInvoicePage,
 	formatIssued,
 	INVOICE_STATUS,
-	invoices,
 	type Invoice,
 	type InvoiceQuery,
+	invoices,
 	queryInvoices,
 } from "../data/data-table";
 import { controlProps } from "../data/preview-props";

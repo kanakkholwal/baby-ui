@@ -15,8 +15,8 @@ import {
 	useRef,
 	useState,
 } from "react";
-import { button } from "../button/variants";
 import { Button } from "../button/button";
+import { button } from "../button/variants";
 import { Checkbox } from "../checkbox/checkbox";
 import {
 	DropdownMenu,
@@ -57,16 +57,17 @@ import {
 import type { TableVariant } from "../table/variants";
 import {
 	ariaSort,
-	canReorderColumn,
 	type ColumnDrop,
+	canReorderColumn,
 	columnDropAt,
 	columnLabel,
 	constructDataTable,
+	createRowVirtualizer,
 	DATA_TABLE_ICONS,
 	DATA_TABLE_LABELS,
+	type DataTableCellContext,
 	type DataTableColumn,
 	type DataTableColumnDef,
-	type DataTableCellContext,
 	type DataTableHeaderContext,
 	type DataTableInstance,
 	type DataTableLabels,
@@ -75,14 +76,13 @@ import {
 	debounce,
 	hasError,
 	isDataTablePending,
-	createRowVirtualizer,
 	moveColumn,
 	moveColumnBy,
 	observeNearEnd,
 	pinnedOffset,
-	scrollRootFor,
 	rangeLabel,
 	SELECT_COLUMN,
+	scrollRootFor,
 	setDataTableOptions,
 	statusMessage,
 	subscribeDataTable,

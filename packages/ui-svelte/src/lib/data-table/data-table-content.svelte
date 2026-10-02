@@ -21,10 +21,11 @@ import TableRow from "../table/table-row.svelte";
 import { getDataTableStatus } from "./context";
 import {
 	ariaSort,
-	canReorderColumn,
 	type ColumnDrop,
+	canReorderColumn,
 	columnDropAt,
 	columnLabel,
+	createRowVirtualizer,
 	DATA_TABLE_ICONS,
 	type DataTableColumn,
 	type DataTableInstance,
@@ -33,7 +34,6 @@ import {
 	isDataTablePending,
 	moveColumn,
 	moveColumnBy,
-	createRowVirtualizer,
 	observeNearEnd,
 	pinnedOffset,
 	scrollRootFor,

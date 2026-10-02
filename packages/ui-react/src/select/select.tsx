@@ -3,8 +3,8 @@
 import { Select as SelectPrimitive } from "@base-ui/react/select";
 import type { ComponentProps, ReactNode } from "react";
 import { ANCHORED } from "../lib/anchor";
-import { menu } from "../lib/menu";
 import { cn } from "../lib/cn";
+import { menu } from "../lib/menu";
 
 export function Select({
 	value,
