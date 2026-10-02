@@ -15,7 +15,7 @@ export interface FunnelRing {
 	spring: { stiffness: number; damping: number };
 }
 
-/** bklit: stages 120ms apart, labels 250ms after their stage, 350ms fade. */
+/** Stages 120ms apart, labels 250ms after their stage, 350ms fade. */
 export const STAGE_STAGGER = 120;
 export const LABEL_DELAY = 250;
 export const LABEL_FADE = 350;

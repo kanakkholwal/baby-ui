@@ -176,7 +176,7 @@ function PiePlot({
 	const cx = frame.width / 2;
 	const cy = frame.height / 2;
 
-	// Any change to what is drawn replays the sweep, as bklit does on mount.
+	// Any change to what is drawn replays the sweep, the same as on mount.
 	const signature = slices.map((s) => `${s.key}:${s.value}`).join("|");
 	const [epoch, setEpoch] = useState(0);
 	const [settled, setSettled] = useState(!animate);

@@ -207,7 +207,6 @@ export async function buildItem(
 			status: spec.status,
 			frameworks: Object.keys(spec.impl),
 			docs: `${SITE_URL}${docsPath(spec)}`,
-			...(spec.licenseOrigin ? { licenseOrigin: spec.licenseOrigin } : {}),
 		},
 	});
 }

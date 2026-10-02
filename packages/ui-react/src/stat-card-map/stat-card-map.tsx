@@ -41,7 +41,7 @@ export interface StatCardMapProps {
 	className?: string;
 }
 
-/** bklit's map stat card: the headline follows the active region, over a sequential choropleth. */
+/** The map stat card: the headline follows the active region, over a sequential choropleth. */
 export function StatCardMap({
 	title,
 	geo,

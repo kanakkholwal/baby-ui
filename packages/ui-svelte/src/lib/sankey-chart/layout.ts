@@ -131,7 +131,7 @@ export function layoutSankey(
 /** Matches `CHART_DURATION.enter`; local so the layout imports without the kernel. */
 const ENTER = 1100;
 
-/** bklit's enter schedule, in ms. */
+/** Enter schedule, in ms. */
 export const SANKEY_TIMING = {
 	link: (i: number, n: number) => 0.2 * ENTER + (i / Math.max(n, 1)) * 0.8 * ENTER * 0.4,
 	node: (i: number, n: number) => (i / Math.max(n, 1)) * 0.6 * ENTER * 0.4,
@@ -144,7 +144,7 @@ export const SANKEY_TIMING = {
 		) + ENTER,
 };
 
-/** Link stroke opacity at rest, highlighted and faded (bklit: 0.5, min(1, 0.5 * 1.3), 0.1). */
+/** Link stroke opacity at rest, highlighted and faded: 0.5, min(1, 0.5 * 1.3), 0.1. */
 export const LINK_OPACITY = { rest: 0.5, highlight: 0.65, faded: 0.1 } as const;
 export const NODE_FADED = 0.4;
 export const LABEL_OFFSET = 12;
@@ -159,7 +159,7 @@ export interface LabelPlacement {
 	dy: number;
 }
 
-/** Name and value label spots; they slide in from inside the node, as in bklit. */
+/** Name and value label spots; they slide in from inside the node. */
 export function labelPlacement(
 	node: LaidNode,
 	flow: SankeyFlow,

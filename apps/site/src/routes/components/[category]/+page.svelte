@@ -1,4 +1,5 @@
 <script lang="ts">
+import { Button } from "@baby-ui/svelte";
 import ComponentCard from "$lib/components/component-card.svelte";
 import Seo from "$lib/components/seo.svelte";
 import { breadcrumbLd, collectionLd, metaDescription } from "$lib/seo";
@@ -52,9 +53,31 @@ const description = $derived(
 	<h1 class="mt-4 font-semibold text-3xl text-foreground tracking-tight">{label}</h1>
 	<p class="mt-2 max-w-2xl text-muted-foreground">{data.blurb}</p>
 
-	<div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-		{#each data.items as item (item.slug)}
-			<ComponentCard {item} />
+	{#if data.groups}
+		<nav aria-label="Jump to section" class="mt-5 flex flex-wrap gap-1.5">
+			{#each data.groups as group (group.id)}
+				<Button href="#{group.id}" variant="outline" size="sm">{group.label}</Button>
+			{/each}
+		</nav>
+
+		{#each data.groups as group (group.id)}
+			<section id={group.id} class="mt-12 scroll-mt-[calc(var(--header-h)+1.5rem)]">
+				<div class="flex items-baseline gap-2">
+					<h2 class="font-semibold text-foreground text-lg tracking-tight">{group.label}</h2>
+					<span class="text-muted-foreground text-sm tabular-nums">{group.items.length}</span>
+				</div>
+				<div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+					{#each group.items as item (item.slug)}
+						<ComponentCard {item} />
+					{/each}
+				</div>
+			</section>
 		{/each}
-	</div>
+	{:else}
+		<div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+			{#each data.items as item (item.slug)}
+				<ComponentCard {item} />
+			{/each}
+		</div>
+	{/if}
 </main>

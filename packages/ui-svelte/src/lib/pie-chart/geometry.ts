@@ -21,12 +21,12 @@ export interface PieRow {
 	dataIndex: number;
 }
 
-/** bklit's hover pop: stiffness 400, damping 25, about 8% overshoot. */
+/** Hover pop: stiffness 400, damping 25, about 8% overshoot. */
 export const POP_SPRING = { stiffness: 400, damping: 25 };
 
 export const PIE_START = -Math.PI / 2;
 export const PIE_END = (3 * Math.PI) / 2;
-/** bklit's per-slice enter delay: 100ms, then 80ms per slice. */
+/** Per-slice enter delay: 100ms, then 80ms per slice. */
 export const sliceDelay = (index: number) => 100 + index * 80;
 /** Labels only fit slices wider than ~20 degrees. */
 export const LABEL_MIN_SPAN = 0.35;

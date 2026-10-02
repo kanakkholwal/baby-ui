@@ -5,7 +5,7 @@ export interface Notch {
 	origin: { x: number; y: number };
 }
 
-/** bklit's notch enter: 300/20 spring, background then active, delays in seconds. */
+/** Notch enter: 300/20 spring, background then active, delays in seconds. */
 export const NOTCH_SPRING = { stiffness: 300, damping: 20 } as const;
 export const NOTCH_TIMING = {
 	background: 0.015,

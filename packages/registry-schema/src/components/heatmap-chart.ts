@@ -93,7 +93,7 @@ export const heatmapChart = defineComponent({
 		reducedMotion:
 			"Cells appear at once, the shimmer holds at a flat 0.2 and hover dims still fade.",
 		behaviour: [
-			"Cells fade in over 1600ms on cubic-bezier(0.85, 0, 0.916, 0.282) with a seeded per-cell delay; at the default length the spread is zero, so they fade together as in bklit.",
+			"Cells fade in over 1600ms on cubic-bezier(0.85, 0, 0.916, 0.282) with a seeded per-cell delay; at the default length the spread is zero, so they fade together.",
 			"Ready to loading fades the cells out over 450ms, then each cell pulses to a seeded 0 to 0.85 over 0.35 to 1.2s and rests 80 to 500ms.",
 			"Hovering a day or a legend level fades every other cell to 0.3 over 220ms on cubic-bezier(0.4, 0, 0.2, 1).",
 			"Phases advance when their clock ends, not on a timer set at the start.",

@@ -131,7 +131,7 @@ export function Bar({
 	);
 }
 
-/** bklit bar-squares: cells cascade bottom to top over 40% of the entrance. */
+/** Bar squares: cells cascade bottom to top over 40% of the entrance. */
 function Squares({
 	d,
 	vertical,
@@ -245,7 +245,7 @@ function Depth({
 	);
 }
 
-/** bklit BarPulse: a white band sweeps base to tip every 2.4s, ease-in-out, clipped to the bar. */
+/** A white band sweeps base to tip every 2.4s, ease-in-out, clipped to the bar. */
 function PulseWave({
 	rect,
 	axis,

@@ -19,7 +19,7 @@ export interface Point {
 	y: number;
 }
 
-/** bklit's enter timing in seconds, before the reduced-motion gate. */
+/** Enter timing in seconds, before the reduced-motion gate. */
 export const RADAR_TIMING = {
 	gridStagger: 0.08,
 	levelLabelStep: 0.06,

@@ -153,7 +153,7 @@ export function tokensUrl(framework: Framework): string {
 
 /**
  * `tokens`: the motion layer and the variables shadcn lacks, which every component
- * depends on. `theme`: the full beUI palette, for projects adopting the look wholesale.
+ * depends on. `theme`: the full palette, for projects adopting the look wholesale.
  */
 export async function buildThemeItems(framework: Framework): Promise<RegistryItem[]> {
 	const palette = await split("tokens.css");
@@ -184,7 +184,7 @@ export async function buildThemeItems(framework: Framework): Promise<RegistryIte
 		name: "theme",
 		type: "registry:theme",
 		title: "Theme",
-		description: "The beUI palette, radius and type stack, replacing shadcn's defaults.",
+		description: "The full palette, radius and type stack, replacing shadcn's defaults.",
 		registryDependencies: [tokensUrl(framework)],
 		cssVars: {
 			light: pick(palette.light, standard),

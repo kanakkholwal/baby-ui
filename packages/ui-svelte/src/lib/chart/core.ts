@@ -56,7 +56,7 @@ export function selectionBetween(a: number, b: number): ChartSelection {
 
 export type ChartStatus = "loading" | "ready";
 
-/** bklit's lifecycle: the series conceals, the grid retweens, then the series reveals. */
+/** Lifecycle: the series conceals, the grid retweens, then the series reveals. */
 export type ChartPhase =
 	| "loading"
 	| "gridTweenReady"
@@ -91,7 +91,7 @@ export function toDate(value: unknown): Date {
 	return value instanceof Date ? value : new Date(value as string | number);
 }
 
-/** bklit's domain rule: non-negative data sits on zero with 10% headroom, mixed data pads 5%. */
+/** Domain rule: non-negative data sits on zero with 10% headroom, mixed data pads 5%. */
 export function resolveDomain(data: Datum[], keys: string[]): Domain {
 	let min = Number.POSITIVE_INFINITY;
 	let max = Number.NEGATIVE_INFINITY;
@@ -237,7 +237,7 @@ export function hoverThrottle() {
 
 export type FadeEdges = boolean | "left" | "right";
 
-/** Opacity stops 0/15/85/100 across the plot width, matching bklit's series fade. */
+/** Opacity stops 0/15/85/100 across the plot width, matching the series fade. */
 export function fadeStops(fade: FadeEdges): { offset: string; opacity: number }[] {
 	const left = fade === true || fade === "left";
 	const right = fade === true || fade === "right";
@@ -337,7 +337,7 @@ function compositions(sum: number, parts: number): number[][] {
 	return out;
 }
 
-/** bklit's tick picker: tries every gap layout for target +-1 ticks and keeps the most even. */
+/** The tick picker tries every gap layout for target +-1 ticks and keeps the most even. */
 export function evenTickIndices(
 	length: number,
 	target: number,

@@ -69,7 +69,7 @@ export const sankeyChart = defineComponent({
 		reducedMotion: "Links, nodes and labels appear in place; hover fades still run.",
 		behaviour: [
 			"Links draw along their length over 1100ms on cubic-bezier(0.85, 0, 0.15, 1), starting at 220ms and staggered across 352ms.",
-			"Nodes grow from scaleY 0.9 and fade in, staggered across 264ms; bklit grows from 0.",
+			"Nodes grow from scaleY 0.9 and fade in, staggered across 264ms, never from 0.",
 			"Names slide 8px out of the node and fade in; value labels follow 60ms later and settle at 0.6 opacity.",
 			"Hovering a link or node lights its paths at 0.65 and fades the rest to 0.1 over 180ms ease-out.",
 		],

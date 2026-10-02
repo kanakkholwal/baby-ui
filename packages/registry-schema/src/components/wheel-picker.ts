@@ -90,7 +90,7 @@ export const wheelPicker = defineComponent({
 		reducedMotion: "Rows stay flat and every jump is instant.",
 		behaviour: [
 			"Scrolling is native with scroll-snap, so touch flicks, the wheel and trackpads keep the platform's momentum.",
-			"Each row follows iconiq's barrel on a scroll-driven view() timeline: y = R sin(a), rotateX(-a), fading by cos(a) to the power 1.15.",
+			"Each row follows a barrel curve on a scroll-driven view() timeline: y = R sin(a), rotateX(-a), fading by cos(a) to the power 1.15.",
 			"A mouse drag carries 22% of its release velocity past the pointer, then snaps to the nearest enabled row.",
 			"Looping wheels triple the list and recentre silently once scrolling stops.",
 		],

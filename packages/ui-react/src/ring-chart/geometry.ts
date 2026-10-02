@@ -18,12 +18,12 @@ export interface RingLayout {
 
 export const RING_START = -Math.PI / 2;
 export const RING_END = (3 * Math.PI) / 2;
-/** bklit's hover pop: stiffness 400, damping 25, about 8% overshoot. */
+/** Hover pop: stiffness 400, damping 25, about 8% overshoot. */
 export const POP_SPRING = { stiffness: 400, damping: 25 };
-/** bklit staggers each ring's expand by 80ms and its progress sweep from 600ms, 100ms apart. */
+/** Staggers each ring's expand by 80ms and its progress sweep from 600ms, 100ms apart. */
 export const expandDelay = (index: number) => index * 80;
 export const sweepDelay = (index: number) => 600 + index * 100;
-/** Rings start at 0.9 instead of bklit's 0: the motion contract never scales from nothing. */
+/** Rings start at 0.9, not 0: the motion contract never scales from nothing. */
 export const EXPAND_FROM = 0.9;
 
 export function ringRows(
@@ -57,7 +57,7 @@ export function ringRows(
 	});
 }
 
-/** bklit's layout: rings grow outward from `baseInner`, scaled so the outermost fits. */
+/** Layout: rings grow outward from `baseInner`, scaled so the outermost fits. */
 export function ringLayout(
 	count: number,
 	size: number,

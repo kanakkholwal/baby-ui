@@ -14,7 +14,7 @@ export type AuroraFlowOptions = {
 	interactive: boolean;
 };
 
-// Shader math ported from Componentry's Aurora Flow; its fixed knobs are inlined at their defaults.
+// Fixed knobs are inlined at their defaults.
 const FRAGMENT = `
 precision highp float;
 uniform vec2 uResolution;

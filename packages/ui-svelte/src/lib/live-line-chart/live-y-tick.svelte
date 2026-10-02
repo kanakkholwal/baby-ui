@@ -19,7 +19,7 @@ let {
 	class: string;
 } = $props();
 
-/** bklit's y-tick spring, for both position and the enter/exit fade. */
+/** The y-tick spring, for both position and the enter/exit fade. */
 const TICK_SPRING: SpringConfig = { stiffness: 180, damping: 24 };
 
 let node = $state<SVGGElement | null>(null);

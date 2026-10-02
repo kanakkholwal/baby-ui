@@ -14,7 +14,7 @@ import {
 	chartSelection,
 } from "./variants";
 
-/** bklit shows bands from the grid retween on, so they settle with the series. */
+/** Bands show from the grid retween on, so they settle with the series. */
 const bandVisible = (phase: ChartPhase) =>
 	phase === "ready" || phase === "revealing" || phase === "gridTweenReady";
 
@@ -122,7 +122,7 @@ export interface SelectionAreaProps {
 	className?: string;
 }
 
-/** The dragged or Shift+Arrow range; fades in and out over 150ms like bklit's segment. */
+/** The dragged or Shift+Arrow range; fades in and out over 150ms. */
 export function SelectionArea({ edge = "dashed", className }: SelectionAreaProps) {
 	const { selectionX, innerHeight } = usePlot();
 	const last = useRef<[number, number] | null>(null);

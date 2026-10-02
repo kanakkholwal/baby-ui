@@ -21,11 +21,11 @@ export interface ZoomState {
 
 export const IDENTITY_ZOOM: ZoomState = { k: 1, x: 0, y: 0 };
 export const SCALE_STEPS = 5;
-/** Motion's default wheel step in bklit: 5% per notch. */
+/** Default wheel step: 5% per notch. */
 export const WHEEL_STEP = 1.05;
 export const KEY_ZOOM_STEP = 1.25;
 export const KEY_PAN_STEP = 40;
-/** Hover dim and undim share one ease-out transition, where bklit snapped back. */
+/** Hover dim and undim share one ease-out transition instead of snapping back. */
 export const DIM_TRANSITION = "opacity 180ms cubic-bezier(0, 0, 0.58, 1)";
 export const ZOOM_TRANSITION = "transform 180ms cubic-bezier(0, 0, 0.58, 1)";
 

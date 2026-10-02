@@ -14,7 +14,7 @@ export type ClosingPlasmaOptions = {
 	interactive: boolean;
 };
 
-// Shader math ported from Componentry's Closing Plasma; light mode fades edges to the surface.
+// Light mode fades edges to the surface.
 const FRAGMENT = `
 precision highp float;
 uniform vec2 uResolution;

@@ -63,7 +63,7 @@ export const ringChart = defineComponent({
 		reducedMotion: "Rings appear filled and the hover scale jumps to its end state.",
 		behaviour: [
 			"Each ring expands from 0.9 scale over 1100ms, 80ms apart, then sweeps to its value from 600ms, 100ms apart.",
-			"bklit expands from 0; baby-ui starts at 0.9 because nothing scales in from nothing.",
+			"Rings start at 0.9, never 0, because nothing scales in from nothing.",
 			"The active ring scales to 1.03 and rings outside it to 1.02 on a 400/25 spring; the others fade to 35% over 150ms.",
 		],
 	},

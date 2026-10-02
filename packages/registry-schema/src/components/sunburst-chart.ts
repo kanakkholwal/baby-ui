@@ -41,7 +41,7 @@ export const sunburstChart = defineComponent({
 			name: "hoverPop",
 			type: "number",
 			description:
-				"Pixels the hovered path grows outward; bklit caps it at 10% of a ring, split along the path.",
+				"Pixels the hovered path grows outward, capped at 10% of a ring, split along the path.",
 			default: 8,
 			control: { kind: "select", options: ["0", "2", "4", "8"] },
 		},
@@ -73,7 +73,7 @@ export const sunburstChart = defineComponent({
 			"Rings appear whole; zoom and hover grow land on their end state at once.",
 		behaviour: [
 			"The chart fades in over 350ms on cubic-bezier(0.22, 1, 0.36, 1); each arc sweeps clockwise over 1100ms, 120ms per ring plus 80ms per position.",
-			"Arcs grow from scale 0.9, not bklit's 0, so nothing appears from a point.",
+			"Arcs grow from scale 0.9, not 0, so nothing appears from a point.",
 			"Drilling lerps every arc's angles and radii over 750ms on cubic-bezier(0.22, 1, 0.36, 1) along the shorter way round; arcs entering or leaving collapse to a point.",
 			"The hovered path grows outward over 420ms and unrelated arcs fade to 25% over 160ms.",
 		],

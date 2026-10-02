@@ -105,7 +105,7 @@ export type MarkerShape =
 	| { kind: "fill"; viewBox: string; d: string }
 	| { kind: "bar" };
 
-/** Hand-drawn paths from iconiq's Marker, per style. */
+/** Hand-drawn paths per style. */
 export const MARKER_SHAPES: Record<MarkerVariant, MarkerShape> = {
 	wavy: {
 		kind: "strokes",

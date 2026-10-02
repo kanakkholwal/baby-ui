@@ -40,7 +40,7 @@ export function HighlightBand({ d, stroke, strokeWidth, className }: HighlightBa
 	const width = useDomSpring(CHART_SPRING.highlight, (v) =>
 		rectRef.current?.setAttribute("width", String(Math.max(0, v))),
 	);
-	// A selected range takes over the band, as bklit does while dragging.
+	// A selected range takes over the band while dragging.
 	const bounds =
 		phase !== "ready"
 			? null

@@ -14,4 +14,4 @@ Click an arc with children, or press Enter on it, to zoom in. The centre, Backsp
 breadcrumb all zoom back out. `focus` is the zoomed node's path joined by ` / `, so you can
 drive it from a URL or your own controls.
 
-Arcs grow in from 90% scale rather than bklit's zero, per the motion contract.
+Arcs grow in from 90% scale rather than zero, per the motion contract.

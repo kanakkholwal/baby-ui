@@ -1,6 +1,6 @@
 import type { Datum } from "../chart/core";
 
-/** bklit's pulse clip overhangs the plot so round caps at the edges are not cut. */
+/** The pulse clip overhangs the plot so round caps at the edges are not cut. */
 export const PULSE_CLIP_PAD = 10;
 export const PULSE_CYCLE = 2200;
 export const PULSE_PAUSE = 280;
@@ -23,7 +23,7 @@ export function skeletonHeights(count: number, seed = 0): number[] {
 	);
 }
 
-/** bklit's 7-point loading skeleton, normalised to plot fractions (0 bottom, 1 top). */
+/** A 7-point loading skeleton, normalised to plot fractions (0 bottom, 1 top). */
 export function pulseSkeleton(count = 7): number[] {
 	const values = Array.from(
 		{ length: count },
@@ -41,7 +41,7 @@ export function pulseClip(p: number, innerWidth: number): { x: number; width: nu
 	return { x: innerWidth + PULSE_CLIP_PAD - width, width };
 }
 
-/** Exit durations from the current progress, scaled like bklit's half-cycle. */
+/** Exit durations from the current progress, scaled to a half-cycle. */
 export function pulseExitPlan(p: number): { grow: number; shrink: number } {
 	const half = PULSE_CYCLE / 2;
 	const grow = p < 0.5 ? half * ((0.5 - p) / 0.5) : 0;

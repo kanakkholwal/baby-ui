@@ -34,7 +34,7 @@ export function createSeriesRegistry(hidden: () => ReadonlySet<string>) {
 	};
 }
 
-/** bklit's lifecycle: status flips conceal, retween the domain, then reveal on completion. */
+/** Lifecycle: status flips conceal, retween the domain, then reveal on completion. */
 export function createChartPhase(status: () => ChartStatus, animate: () => boolean) {
 	const initial = status();
 	let phase = $state<ChartPhase>(

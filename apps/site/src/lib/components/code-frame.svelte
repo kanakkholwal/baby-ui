@@ -25,7 +25,7 @@ let {
 } = $props();
 </script>
 
-<!-- Sivir's inset frame: a tinted outer card, a header in its padding, and the code on
+<!-- The inset frame: a tinted outer card, a header in its padding, and the code on
      an inner surface whose radius is the outer one minus border and inset. -->
 <div class={["min-w-0 max-w-full rounded-xl border border-border bg-card p-1 text-foreground", classProp]}>
 	<div class="flex min-h-8 items-center gap-2 px-1 pb-1">

@@ -9,7 +9,7 @@ export type PrismGradientOptions = {
 	grain: number;
 };
 
-// Shader math ported from Componentry's Prism Gradient; its fixed knobs are inlined at their defaults.
+// Fixed knobs are inlined at their defaults.
 const FRAGMENT = `
 precision highp float;
 uniform vec2 uResolution;

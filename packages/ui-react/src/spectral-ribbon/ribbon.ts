@@ -12,7 +12,7 @@ export type SpectralRibbonOptions = {
 	grain: number;
 };
 
-// Shader math ported from Componentry's Spectral Ribbon; the fringe and core take token colours.
+// The fringe and core take token colours.
 const FRAGMENT = `
 precision highp float;
 uniform vec2 uResolution;

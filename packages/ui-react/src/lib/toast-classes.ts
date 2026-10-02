@@ -1,4 +1,4 @@
-/** beUI's toast layout on sonner's unstyled markup; `data-type` on the toast tints the icon. */
+/** Our toast layout on sonner's unstyled markup; `data-type` on the toast tints the icon. */
 export const TOAST_CLASSES = {
 	// A grid so DOM order stops mattering: icon | content | close on row one, actions under
 	// the content on row two, whichever order sonner emits them in.

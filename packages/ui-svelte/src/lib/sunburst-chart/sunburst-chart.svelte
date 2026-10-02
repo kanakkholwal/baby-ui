@@ -39,7 +39,7 @@ let {
 	breadcrumb?: boolean;
 	/** Pixels the hovered path grows outward. */
 	hoverPop?: number;
-	/** Multiplies bklit's ring and clockwise stagger; floored at 0.25. */
+	/** Multiplies the ring and clockwise stagger; floored at 0.25. */
 	staggerScale?: number;
 	/** Id of the node the chart is zoomed into: names joined by " / ". Bindable. */
 	focus?: string;

@@ -206,7 +206,7 @@ export interface ChartTooltipPanelProps {
 	children: ReactNode;
 }
 
-/** bklit's floating panel: 100/20 follow spring, and a 300/25 entrance that replays on every flip. */
+/** The floating panel: 100/20 follow spring, and a 300/25 entrance that replays on every flip. */
 export function ChartTooltipPanel({
 	anchor,
 	instant,

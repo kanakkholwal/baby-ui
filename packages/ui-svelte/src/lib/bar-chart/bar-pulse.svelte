@@ -11,7 +11,7 @@ let wave = $state<SVGRectElement | null>(null);
 const start = $derived(pulseRect(rect, axis, 0));
 const vertical = $derived(axis.orientation === "vertical");
 
-/** bklit BarPulse: a white band sweeps base to tip every 2.4s, ease-in-out, clipped to the bar. */
+/** A white band sweeps base to tip every 2.4s, ease-in-out, clipped to the bar. */
 $effect(() => {
 	if (prefersReducedMotion()) return;
 	let playback: Playback | null = null;

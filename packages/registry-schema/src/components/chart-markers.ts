@@ -48,7 +48,7 @@ export const chartMarkers = defineComponent({
 		springs: [],
 		reducedMotion: "Markers, badges and fans appear in place.",
 		behaviour: [
-			"After the chart reveal, groups spring in 100ms apart from scale 0.85, opacity 0 and 2px blur on a 300/25 spring (bklit starts badges and fans at 0; the motion contract floors them at 0.85).",
+			"After the chart reveal, groups spring in 100ms apart from scale 0.85, opacity 0 and 2px blur on a 300/25 spring; the motion contract floors entrances at 0.85, never 0.",
 			"A stack fans out over 160 degrees at 50px radius on a 400/22 spring, 40ms apart; the count badge and centre dot pop on 400/20.",
 			"Clickable markers grow to 1.15 on hover and press to 0.95 on a 400/17 spring.",
 			"Leaving the ready phase springs markers back out, mirroring the entrance.",

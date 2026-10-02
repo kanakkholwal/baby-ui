@@ -134,7 +134,7 @@ export function useSeriesRegistry(hidden: ReadonlySet<string>) {
 	return { registered, series, register };
 }
 
-/** bklit's lifecycle: status flips conceal, retween the domain, then reveal on completion. */
+/** Lifecycle: status flips conceal, retween the domain, then reveal on completion. */
 export function useChartPhase(status: ChartStatus, animate: boolean) {
 	const [phase, setPhase] = useState<ChartPhase>(() =>
 		status === "loading" ? "loading" : animate ? "revealing" : "ready",

@@ -28,7 +28,7 @@ const STROKE = {
 } as const;
 </script>
 
-<!-- beUI's icon set, one glyph per status; svelte-sonner owns stacking, swipe and timing. -->
+<!-- One glyph per status; svelte-sonner owns stacking, swipe and timing. -->
 {#snippet successIcon()}
 	<svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class="size-3.5">
 		<path d="m3.5 8.5 3 3 6-7" {...STROKE} stroke-linejoin="round" />

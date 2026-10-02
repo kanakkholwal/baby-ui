@@ -88,7 +88,7 @@ function activeDelay(index: number) {
 	const step = NOTCH_TIMING.activeStep * stagger;
 	return index >= from ? (index - from) * step : (from - 1 - index) * step;
 }
-// The first drawn value enters with bklit's base delay; later changes ripple from the old edge.
+// The first drawn value enters with the base delay; later changes ripple from the old edge.
 let from = $state<number | null>(null);
 let settled: number | null = null;
 $effect.pre(() => {

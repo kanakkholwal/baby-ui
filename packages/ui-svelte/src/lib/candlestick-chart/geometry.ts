@@ -18,7 +18,7 @@ export interface CandleGeometry {
 	wickBottom: number;
 }
 
-/** bklit's default candle enter: `{ type: "spring", duration: 0.8, bounce: 0.15 }` solved to k and c. */
+/** Default candle enter: `{ type: "spring", duration: 0.8, bounce: 0.15 }` solved to k and c. */
 export const CANDLE_SPRING: SpringConfig = { stiffness: 117.98, damping: 18.47 };
 export const CANDLE_FADE = 150;
 export const CANDLE_CONCEAL = 450;
@@ -75,7 +75,7 @@ export function candleGeometry(
 	return out;
 }
 
-/** bklit staggers candles across 60% of the enter duration. */
+/** Staggers candles across 60% of the enter duration. */
 export function candleStagger(count: number): number {
 	return count > 0 ? (0.6 * CHART_DURATION.enter) / count : 0;
 }

@@ -17,7 +17,7 @@ export const splitText = defineComponent({
 			type: "string",
 			description: "The word to split.",
 			control: { kind: "text" },
-			default: "ANIMATA",
+			default: "BABY UI",
 		},
 		{
 			name: "durationMs",

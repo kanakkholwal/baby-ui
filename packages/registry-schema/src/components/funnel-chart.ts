@@ -99,7 +99,7 @@ export const funnelChart = defineComponent({
 		reducedMotion:
 			"Stages and labels appear at once and the hover swell jumps to its end state.",
 		behaviour: [
-			"Each stage grows from scale 0.9, not bklit's 0, over 1100ms on cubic-bezier(0.85, 0, 0.15, 1), 120ms apart.",
+			"Each stage grows from scale 0.9, not 0, over 1100ms on cubic-bezier(0.85, 0, 0.15, 1), 120ms apart.",
 			"Labels fade in over 350ms, 250ms after their stage.",
 			"The active stage's rings swell on springs from 300/24 inward to 180/18 outward; other stages fade to 40% over 150ms.",
 		],

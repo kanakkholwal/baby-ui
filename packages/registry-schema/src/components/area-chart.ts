@@ -94,7 +94,7 @@ export const areaChart = defineComponent({
 		reducedMotion: "Areas appear in place and new data swaps without a morph.",
 		behaviour: [
 			"Areas reveal left to right with the chart clip over 1100ms on cubic-bezier(0.85, 0, 0.15, 1).",
-			"New data morphs the top and bottom edges together over 500ms on the same curve; bklit snapped the fill.",
+			"New data morphs the top and bottom edges together over 500ms on the same curve, instead of snapping.",
 			"While the pointer is on the plot every area dims to 60% over 400ms ease-in-out.",
 		],
 	},

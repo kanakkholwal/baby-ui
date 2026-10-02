@@ -38,7 +38,7 @@ export const slider = tv({
 	variants: {
 		variant: {
 			default: {},
-			// beUI's range slider: an inset fill under a thin pill handle.
+			// An inset fill under a thin pill handle.
 			track: {
 				control:
 					"overflow-hidden rounded-lg bg-muted has-focus-visible:ring-4 has-focus-visible:ring-foreground/30 has-focus-visible:ring-inset",

@@ -71,7 +71,7 @@ export const candlestickChart = defineComponent({
 		springs: [],
 		reducedMotion: "Candles appear at full height with no stagger.",
 		behaviour: [
-			"Wick and body grow from their own centres on a spring of stiffness 118 and damping 18.5, bklit's 0.8s spring with 0.15 bounce, so they overshoot slightly.",
+			"Wick and body grow from their own centres on a spring of stiffness 118 and damping 18.5 (solved from a 0.8s duration with 0.15 bounce), so they overshoot slightly.",
 			"Candles start 0.6 x 1100ms / n apart and fade in over 150ms; the chart turns interactive when the last spring settles.",
 			"While a candle is active the rest dim over 150ms.",
 		],

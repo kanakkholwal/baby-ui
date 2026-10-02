@@ -36,7 +36,7 @@ function slopeOf(points: { t: number; y: number }[], method: ProjectionMethod): 
 	return Math.abs(denom) < 1e-12 ? 0 : (n * sty - st * sy) / denom;
 }
 
-/** bklit's projection: anchor on the last row, extend `horizon` steps by trend or to a target. */
+/** Projection: anchor on the last row, extend `horizon` steps by trend or to a target. */
 export function buildProjection(options: {
 	data: Record<string, unknown>[];
 	dataKey: string;
@@ -101,7 +101,7 @@ export function projectionExtent(points: ProjectionPoint[]) {
 	};
 }
 
-/** Keeps the end marker inside the plot, as bklit pads the visible end by the marker radius. */
+/** Keeps the end marker inside the plot by padding the visible end by the marker radius. */
 export function visibleEndX(
 	endX: number,
 	innerWidth: number,

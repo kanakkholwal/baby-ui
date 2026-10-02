@@ -29,7 +29,7 @@ const left = new Spring(0, CHART_SPRING.highlight, (v) =>
 const width = new Spring(0, CHART_SPRING.highlight, (v) =>
 	rect?.setAttribute("width", String(Math.max(0, v))),
 );
-// A selected range takes over the band, as bklit does while dragging.
+// A selected range takes over the band while dragging.
 const bounds = $derived(
 	plot.phase !== "ready"
 		? null

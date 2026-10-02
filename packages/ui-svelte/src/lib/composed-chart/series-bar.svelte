@@ -103,7 +103,7 @@ const signature = $derived(
 	[...targets].map(([k, s]) => `${k}:${s.base}:${s.top}`).join(","),
 );
 
-// Bars grow from the baseline in bklit's stagger, retween on data changes and mirror on conceal.
+// Bars grow from the baseline staggered, retween on data changes and mirror on conceal.
 let clock = $state(1);
 let kind = $state<Kind>("enter");
 let from = new Map<string, Segment>();

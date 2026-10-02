@@ -13,7 +13,7 @@ const STROKE = {
 	strokeLinecap: "round",
 } as const;
 
-// beUI's icon set, one glyph per status.
+// One glyph per status.
 const ICONS: ToasterProps["icons"] = {
 	success: (
 		<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-3.5">

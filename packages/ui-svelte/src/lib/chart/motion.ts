@@ -47,7 +47,7 @@ export function cubicBezier(x1: number, y1: number, x2: number, y2: number): Eas
 	};
 }
 
-/** bklit's house curve: reveal, domain tween, path morph, axis slides. */
+/** The house curve: reveal, domain tween, path morph, axis slides. */
 export const CHART_EASE = cubicBezier(0.85, 0, 0.15, 1);
 export const CHART_EASE_CSS = "cubic-bezier(0.85, 0, 0.15, 1)";
 /** Motion's default for a timed transition with no ease. */

@@ -558,7 +558,7 @@ function BarPlot({
 	);
 }
 
-/** bklit's loading bars: seeded heights under a diagonal shimmer that re-rolls each pass. */
+/** Loading bars: seeded heights under a diagonal shimmer that re-rolls each pass. */
 function BarSkeleton() {
 	const { phase, band, categories, innerWidth, innerHeight, orientation, uid } =
 		useBarChart();

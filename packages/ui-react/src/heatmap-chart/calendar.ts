@@ -124,7 +124,7 @@ export function buildCalendar(
 	return { cells, weeks: (cells.at(-1)?.col ?? 0) + 1, months, weekdays, max };
 }
 
-/** bklit's Park-Miller generator, so reveal and shimmer are identical on every render. */
+/** A seeded Park-Miller generator, so reveal and shimmer are identical on every render. */
 export function seeded(seed: number): () => number {
 	let state = seed % 2_147_483_647;
 	if (state <= 0) state += 2_147_483_646;
@@ -149,7 +149,7 @@ export const HEATMAP_TIMING = {
 	loadingMax: 0.85,
 } as const;
 
-/** bklit's per-cell delay; with the default 1600ms fade the spread is zero and cells fade together. */
+/** Per-cell delay; with the default 1600ms fade the spread is zero and cells fade together. */
 export function enterDelay(
 	col: number,
 	row: number,

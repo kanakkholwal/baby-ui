@@ -23,5 +23,3 @@ and touch all work in every look without being reimplemented.
 `inline`, `fluid`, `wave` and `ruler` take a single value. Pass an array and they fall
 back to `track`, which draws a range. `formatValue` sets the text in every look and the
 value screen readers announce.
-
-The `track` to `ruler` looks are adapted from [beUI](https://beui.dev) (MIT).

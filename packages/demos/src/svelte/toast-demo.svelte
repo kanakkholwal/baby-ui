@@ -7,7 +7,7 @@ const p = $derived(controlProps<ToasterProps>(props));
 
 const position = $derived(p.position ?? "bottom-right");
 
-// The same set beUI's preview opens, plus the tones it lacks.
+// One example per toast tone.
 const EXAMPLES = [
 	{ label: "Title only", run: () => toast.success("Saved") },
 	{

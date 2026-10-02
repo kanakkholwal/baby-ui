@@ -11,7 +11,7 @@ export type PageLayout = "stacked" | "split";
 /** `ink` replaces the ring colour where the fill is too light to read as one. */
 type Ramp = { primary: string; fg: string; ink?: string };
 
-/** The beUI themes plus Mono. Each rewrites the brand ramp; neutrals never move. */
+/** Each rewrites the brand ramp; neutrals never move. */
 export const THEMES = [
 	{ id: "default", name: "Blue", swatch: "oklch(55% 0.18 255)" },
 	{

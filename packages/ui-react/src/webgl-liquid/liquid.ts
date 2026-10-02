@@ -12,7 +12,7 @@ export type WebglLiquidOptions = {
 	reveal: boolean;
 };
 
-// Shader math ported from Componentry's WebGL Liquid; output is premultiplied over the surface.
+// Output is premultiplied over the surface.
 const FRAGMENT = `
 precision highp float;
 uniform vec2 uResolution;

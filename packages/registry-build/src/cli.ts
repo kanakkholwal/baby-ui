@@ -137,7 +137,8 @@ async function main() {
 		await writeJson("r/specs.json", {
 			site: SITE_URL,
 			registry: REGISTRY_URL,
-			specs: releasedSpecs,
+			// licenseOrigin names a studied reference only for THIRD_PARTY_LICENSES.md, never a public endpoint.
+			specs: releasedSpecs.map(({ licenseOrigin: _licenseOrigin, ...spec }) => spec),
 		}),
 	);
 

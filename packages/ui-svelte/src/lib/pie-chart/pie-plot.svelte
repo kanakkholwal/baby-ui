@@ -49,7 +49,7 @@ const inner = $derived(outer * PIE_INNER_RATIO[variant]);
 const cx = $derived(frame.width / 2);
 const cy = $derived(frame.height / 2);
 
-// Any change to what is drawn replays the sweep, as bklit does on mount.
+// Any change to what is drawn replays the sweep, the same as on mount.
 const signature = $derived(slices.map((s) => `${s.key}:${s.value}`).join("|"));
 // svelte-ignore state_referenced_locally
 let settled = $state(!animate);

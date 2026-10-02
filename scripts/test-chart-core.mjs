@@ -96,7 +96,7 @@ test("spring settles on target and keeps velocity across a retarget", async () =
 	assert.equal(values.at(-1), 0);
 });
 
-test("underdamped spring overshoots by bklit's documented amount", async () => {
+test("underdamped spring overshoots by the documented amount", async () => {
 	let peak = 0;
 	const spring = new Spring(
 		0,
@@ -108,7 +108,7 @@ test("underdamped spring overshoots by bklit's documented amount", async () => {
 	assert.ok(peak > 112 && peak < 120, `peak ${peak}, expected ~116.3`);
 });
 
-test("resolveDomain follows bklit's headroom rules", () => {
+test("resolveDomain follows the headroom rules", () => {
 	assert.deepEqual(resolveDomain([{ a: 10 }, { a: 90 }], ["a"]), [0, 100]);
 	const mixed = resolveDomain([{ a: -50 }, { a: 50 }], ["a"]);
 	assert.ok(mixed[0] <= -55 && mixed[1] >= 55);
@@ -157,7 +157,7 @@ test("evenTickIndices keeps both ends and dedupes labels", () => {
 	assert.equal(new Set(deduped.map((i) => Math.floor(i / 5))).size, deduped.length);
 });
 
-test("phase machine walks bklit's lifecycle", () => {
+test("phase machine walks the lifecycle", () => {
 	assert.equal(nextPhase("loading", "status-ready"), "gridTweenReady");
 	assert.equal(nextPhase("gridTweenReady", "done"), "revealing");
 	assert.equal(nextPhase("revealing", "done"), "ready");
@@ -284,7 +284,7 @@ test("heatmap calendar and sankey layout are shared verbatim and lay out correct
 		[4, 0, 1, 0, 0, 0, 0, 1],
 	);
 	assert.equal(hm.levelOf(5, 8, [1, 3, 6]), 3);
-	assert.equal(hm.enterDelay(3, 4, 1), 0, "default fade leaves no spread, as in bklit");
+	assert.equal(hm.enterDelay(3, 4, 1), 0, "default fade leaves no spread");
 	const random = hm.seeded(42);
 	const again = hm.seeded(42);
 	assert.equal(random(), again(), "seeded PRNG repeats");

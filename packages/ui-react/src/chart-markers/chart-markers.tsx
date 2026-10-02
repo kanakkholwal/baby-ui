@@ -62,7 +62,7 @@ function MarkerFace({ marker }: { marker: ChartMarker }) {
 	return <>{marker.icon ?? marker.title.slice(0, 1).toUpperCase()}</>;
 }
 
-/** Link, button or plain disc; hover and press use bklit's 400/17 spring. */
+/** Link, button or plain disc; hover and press use a 400/17 spring. */
 function MarkerDisc({
 	marker,
 	label,

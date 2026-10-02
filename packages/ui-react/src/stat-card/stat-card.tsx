@@ -62,7 +62,7 @@ export interface StatCardProps {
 	children?: ReactNode;
 }
 
-/** bklit's stat card: the headline, caption and trend follow whichever point the chart has active. */
+/** The stat card: the headline, caption and trend follow whichever point the chart has active. */
 export function StatCard({
 	title,
 	data,

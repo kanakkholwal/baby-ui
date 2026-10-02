@@ -12,7 +12,7 @@ export type SilkAuroraOptions = {
 	interactive: boolean;
 };
 
-// Shader math ported from Componentry's Silk Aurora; the glint takes the sheen colour.
+// The glint takes the sheen colour.
 const FRAGMENT = `
 precision highp float;
 uniform vec2 uResolution;

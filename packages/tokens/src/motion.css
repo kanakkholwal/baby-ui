@@ -1826,7 +1826,7 @@
 	}
 }
 
-/* WheelPicker: each option rides a scroll-driven view() timeline through iconiq's barrel,
+/* WheelPicker: each option rides a scroll-driven view() timeline through a barrel curve,
    y = R sin(a), rotateX(-a), a = d * PI / (rows + 2); sampled per visible-row count. */
 .wheel-picker-item-3 {
 	animation: wheel-picker-3 linear both;
@@ -2475,7 +2475,7 @@
 	}
 }
 
-/* Slider: thumb and fill glide to each new value on iconiq's 180/26 spring, sampled into
+/* Slider: thumb and fill glide to each new value on a 180/26 spring, sampled into
    linear(); position properties cover both Base UI (inset-inline) and bits-ui (left/right). */
 .slider-glide {
 	--slider-spring: linear(0, 0.054, 0.166, 0.296, 0.422, 0.535, 0.631, 0.71, 0.774, 0.826, 0.866, 0.898, 0.922, 0.941, 0.955, 0.966, 0.974, 0.981, 0.985, 0.989, 0.992, 0.994, 0.995, 0.996, 1);
@@ -2490,7 +2490,7 @@
 	transition-property: inset-block-end, bottom, top, height, scale, box-shadow;
 }
 
-/* Progress: the fill scales on iconiq's softer 84/18 spring; the sweep is a glossy band. */
+/* Progress: the fill scales on a soft 84/18 spring; the sweep is a glossy band. */
 .progress-fill {
 	transform-origin: left center;
 	transition: transform 761ms

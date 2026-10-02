@@ -45,7 +45,7 @@ export const dropdownMenu = defineComponent({
 		reducedMotion: "The menu appears without the scale, and rows no longer stagger in.",
 		behaviour: [
 			"Opens anchored to the trigger and flips above it when there is no room below (Base UI/bits-ui popper collision detection).",
-			"Unfolds from the trigger edge (beUI unfold: clip-path from the near edge, flat-to-round\ncorners), with a 30ms stagger per row, the same as Select and Combobox.",
+			"Unfolds from the trigger edge: a clip-path reveal from the near edge, corners going\nfrom flat to round, with a 30ms stagger per row, the same as Select and Combobox.",
 			"Focus moves to the first item on open and back to the trigger on close, so the keyboard never lands nowhere.",
 			"A submenu opens to the right of its trigger on hover or click/arrow-right/enter, and scales in rather than unfolding, since the unfold direction is tuned for top/bottom placement.",
 		],

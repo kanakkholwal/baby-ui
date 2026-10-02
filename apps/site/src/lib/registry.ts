@@ -116,6 +116,117 @@ export type CollectionId = keyof typeof COLLECTIONS;
 export const isCollection = (id: string): id is CollectionId =>
 	Object.hasOwn(COLLECTIONS, id);
 
+/** Sub-sections a category's listing page can group into, ordered for display. */
+export const CATEGORY_GROUPS = {
+	base: [
+		{
+			id: "inputs",
+			label: "Inputs & Forms",
+			slugs: [
+				"input",
+				"input-group",
+				"input-otp",
+				"textarea",
+				"label",
+				"select",
+				"native-select",
+				"combobox",
+				"multi-select",
+				"tag-input",
+				"checkbox",
+				"radio-group",
+				"switch",
+				"slider",
+				"scrub-field",
+				"color-picker",
+				"number-input",
+				"file-upload",
+				"form",
+				"field",
+				"calendar",
+				"range-calendar",
+				"date-field",
+				"date-picker",
+				"date-range-picker",
+				"time-picker",
+			],
+		},
+		{
+			id: "buttons",
+			label: "Buttons & Actions",
+			slugs: ["button", "toggle", "toggle-group", "copy-button", "shortcut"],
+		},
+		{
+			id: "overlays",
+			label: "Overlays",
+			slugs: [
+				"dialog",
+				"alert-dialog",
+				"sheet",
+				"drawer",
+				"responsive-dialog",
+				"popover",
+				"hover-card",
+				"tooltip",
+				"command",
+			],
+		},
+		{
+			id: "navigation",
+			label: "Menus & Navigation",
+			slugs: [
+				"dropdown-menu",
+				"context-menu",
+				"navigation-menu",
+				"breadcrumb",
+				"pagination",
+				"tabs",
+			],
+		},
+		{
+			id: "data-display",
+			label: "Data Display",
+			slugs: [
+				"table",
+				"data-table",
+				"card",
+				"avatar",
+				"badge",
+				"accordion",
+				"collapsible",
+				"separator",
+				"scroll-area",
+				"typography",
+				"markdown",
+				"code-block",
+				"file-diff",
+				"empty",
+			],
+		},
+		{
+			id: "feedback",
+			label: "Feedback & Status",
+			slugs: [
+				"alert",
+				"toast",
+				"progress",
+				"gauge",
+				"skeleton",
+				"spinner",
+				"show-more",
+				"error-boundary",
+			],
+		},
+		{
+			id: "utility",
+			label: "Utility",
+			slugs: ["theme-toggle", "swappable"],
+		},
+	],
+} as const satisfies Partial<
+	Record<Category, { id: string; label: string; slugs: readonly string[] }[]>
+>;
+
 export type NavLink = { href: string; label: string };
 
 /** Icon names the header maps to Tabler icons; this module stays free of Svelte. */

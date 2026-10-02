@@ -32,7 +32,7 @@ $effect(() => {
 });
 </script>
 
-<!-- Sivir's inset frame, same treatment as Card's `framed` variant and CodeBlock: a rim in
+<!-- The inset frame, same treatment as Card's `framed` variant and CodeBlock: a rim in
      bg-background around a bg-card body, so it reads as its own surface, not a plain box. -->
 <Collapsible bind:open class="mt-4 rounded-2xl border border-border bg-background p-1">
 	<CollapsibleTrigger class="px-3 py-2">

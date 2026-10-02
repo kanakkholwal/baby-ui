@@ -31,7 +31,7 @@ let {
 
 const plot = useCartesian();
 const styles = $derived(chartReferenceArea({ tone }));
-/** bklit shows bands from the grid retween on, so they settle with the series. */
+/** Bands show from the grid retween on, so they settle with the series. */
 const bandVisible = (phase: ChartPhase) =>
 	phase === "ready" || phase === "revealing" || phase === "gridTweenReady";
 const toY = (v: number | undefined, edge: number) =>

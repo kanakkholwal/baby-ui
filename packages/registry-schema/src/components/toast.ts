@@ -3,8 +3,7 @@ import { defineComponent } from "../index.ts";
 export const toast = defineComponent({
 	slug: "toast",
 	name: "Toast",
-	description:
-		"sonner's stack in beUI's clothing: one Toaster, then toast() from anywhere.",
+	description: "A styled stack on sonner: one Toaster, then toast() from anywhere.",
 	category: "base",
 	status: "stable",
 	props: [
@@ -29,7 +28,7 @@ export const toast = defineComponent({
 			name: "expand",
 			type: "boolean",
 			description:
-				"Show every toast at full size, beUI style. Off collapses older ones behind the newest.",
+				"Show every toast at full size. Off collapses older ones behind the newest.",
 			default: true,
 			control: { kind: "boolean" },
 		},

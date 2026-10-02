@@ -69,7 +69,7 @@ export const radarChart = defineComponent({
 		springs: [],
 		reducedMotion: "Rings, axes, labels and polygons appear in place.",
 		behaviour: [
-			"Rings grow from 0.9 scale on a 100/15 spring, 80ms apart; bklit starts them at 0.",
+			"Rings grow from 0.9 scale on a 100/15 spring, 80ms apart, never from 0.",
 			"Axes draw out on an 80/15 spring, 50ms apart, and labels travel out on the same spring.",
 			"Polygons grow radially over 1100ms on cubic-bezier(0.85, 0, 0.15, 1), 150ms apart.",
 			"The active series scales to 1.05 on a 400/25 spring while the others fade to 30%.",

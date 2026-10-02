@@ -1,4 +1,4 @@
-/** Per-look demo copy, after beUI's previews: what each slider is measuring and how it reads. */
+/** Per-look demo copy: what each slider is measuring and how it reads. */
 export const SLIDER_PRESETS: Record<
 	string,
 	{ label: string; format: (value: number) => string }

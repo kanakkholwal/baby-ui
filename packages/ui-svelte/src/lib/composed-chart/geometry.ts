@@ -1,4 +1,4 @@
-/** bklit's bar width: 88% of a slot unless sized, then shrunk so a group fits 92% of the slot. */
+/** Bar width: 88% of a slot unless sized, then shrunk so a group fits 92% of the slot. */
 export function seriesBarWidth(options: {
 	innerWidth: number;
 	count: number;
@@ -34,7 +34,7 @@ export function seriesBarOffset(options: {
 	return -total / 2 + index * (width + gap);
 }
 
-/** bklit staggers bar i by i x 40% of the enter duration over the bar count. */
+/** Staggers bar i by i x 40% of the enter duration over the bar count. */
 export function seriesBarDelay(index: number, count: number, duration: number): number {
 	return count > 0 ? (index * duration * 0.4) / count : 0;
 }

@@ -52,7 +52,7 @@ export interface SunburstLayout {
 const TOP = -Math.PI / 2;
 const TWO_PI = 2 * Math.PI;
 export const ID_SEP = " / ";
-/** bklit's drill hub: 65% of one ring, 8% smaller per level past the first drill. */
+/** Drill hub: 65% of one ring, 8% smaller per level past the first drill. */
 const HUB_SCALE = 0.65;
 const HUB_DEPTH_SHRINK = 0.08;
 /** Hover grow budget: 28% of a ring for the whole path, 10% per segment. */
@@ -62,7 +62,7 @@ const GROW_SEGMENT_CAP = 0.1;
 const OPACITY_STEP = 0.15;
 const OPACITY_FLOOR = 0.45;
 
-/** bklit's enter and zoom curve, as cubic-bezier control points. */
+/** Enter and zoom curve, as cubic-bezier control points. */
 export const SUNBURST_CURVE = [0.22, 1, 0.36, 1] as const;
 export const ZOOM_MS = 750;
 export const GROW_MS = 420;
@@ -269,7 +269,7 @@ export function clockwiseFraction(angle: number): number {
 	return normalised / TWO_PI;
 }
 
-/** bklit's enter stagger in ms: 120 per ring plus 80 per clockwise position. */
+/** Enter stagger in ms: 120 per ring plus 80 per clockwise position. */
 export function enterDelays(arcs: ArcDatum[], staggerScale = 1) {
 	const scale = Math.max(0.25, staggerScale);
 	const byDepth = new Map<number, ArcDatum[]>();

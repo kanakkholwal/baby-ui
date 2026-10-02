@@ -6,16 +6,16 @@ category: text
 tags: [text, transition, reveal, animated, preset]
 ---
 
-Consolidates animata's whole `text-animator.tsx` preset family (blur-out-up,
-soft-blur-in, fade-through, per-character-rise, shared-axis-y/z, spring-scale-in, and 13
-more) into one component with a `variant` prop instead of 19 separate registry items.
+Nineteen named text-reveal presets (blur-out-up, soft-blur-in, fade-through,
+per-character-rise, shared-axis-y/z, spring-scale-in, and 13 more) behind one component
+with a `variant` prop, instead of 19 separate registry items.
 
 ## One engine, not 19 keyframes
 
 Every preset shares a single `@keyframes` block in `motion.css`, driven by CSS custom
 properties (`--tt-from-opacity`, `--tt-from-x/y`, `--tt-from-scale`, `--tt-from-blur`)
-set per preset -- the original ships a JS/WAAPI engine; this ships CSS transitions
-instead, matching the rest of this library's motion.
+set per preset, so the whole family runs on CSS transitions instead of a JS engine,
+matching the rest of this library's motion.
 
 ## Replays on `text` change, not a timer
 

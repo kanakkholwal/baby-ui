@@ -68,7 +68,7 @@ export interface LoadingPulseProps {
 	className?: string;
 }
 
-/** bklit's travelling pulse: one 2.2s eased sweep over a placeholder line, 280ms apart. */
+/** A travelling pulse: one 2.2s eased sweep over a placeholder line, 280ms apart. */
 export function LoadingPulse({ curve, strokeWidth = 2.5, className }: LoadingPulseProps) {
 	const { innerWidth, innerHeight, phase } = useCartesian();
 	const { mode, finish } = useLoadingMode(phase);
@@ -186,7 +186,7 @@ export interface LoadingSweepProps {
 	className?: string;
 }
 
-/** bklit's sweep: a 25 degree shimmer band crosses a seeded silhouette that re-rolls between passes. */
+/** The sweep: a 25 degree shimmer band crosses a seeded silhouette that re-rolls between passes. */
 export function LoadingSweep({
 	curve,
 	withArea = false,

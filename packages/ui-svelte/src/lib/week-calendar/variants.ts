@@ -76,7 +76,7 @@ export const WEEK_CALENDAR_LABELS: WeekCalendarLabels = {
 	none: "No date selected",
 };
 
-/** iconiq swipe: 55% elastic follow, 3.5deg of tilt per 120px, 45px or 350px/s commits. */
+/** Swipe: 55% elastic follow, 3.5deg of tilt per 120px, 45px or 350px/s commits. */
 export const SWIPE = {
 	elastic: 0.55,
 	tiltDeg: 3.5,

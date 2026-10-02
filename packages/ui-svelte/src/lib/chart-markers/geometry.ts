@@ -18,11 +18,11 @@ export interface MarkerGroup<T extends ChartMarkerBase> {
 
 export const FAN_RADIUS = 50;
 export const FAN_ANGLE = 160;
-/** Marker disc centre sits this far above the plot top, as in bklit. */
+/** Marker disc centre sits this far above the plot top. */
 export const MARKER_OFFSET = -8;
 export const GROUP_STAGGER = 100;
 export const FAN_STAGGER = 40;
-/** bklit scales in from 0; the motion contract floors entrances at 0.85. */
+/** The motion contract floors entrances at 0.85, never 0. */
 export const ENTER_SCALE = 0.85;
 export const FANNED_SCALE = 0.6;
 export const GUIDE_TRANSITION = "stroke-opacity 200ms cubic-bezier(0, 0, 0.58, 1)";

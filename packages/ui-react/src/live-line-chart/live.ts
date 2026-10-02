@@ -17,7 +17,7 @@ export interface LiveFrame {
 
 export type Momentum = "up" | "down" | "flat";
 
-/** bklit's per-frame lerp was tuned at 60fps; this is its frame-rate independent form. */
+/** The per-frame lerp was tuned at 60fps; this is its frame-rate independent form. */
 const REFERENCE_FRAME_MS = 1000 / 60;
 /** Longer gaps (a stalled tab) settle in one step instead of overshooting the maths. */
 const MAX_STEP_MS = 250;
@@ -113,7 +113,7 @@ export function nearestPointIndex(points: LivePoint[], timeSec: number): number 
 	return timeSec - a.time > b.time - timeSec ? hi : hi - 1;
 }
 
-/** Window points plus bklit's virtual live tip at `now` and one queued a tick ahead. */
+/** Window points plus a virtual live tip at `now` and one queued a tick ahead. */
 export function liveRecords(
 	data: LivePoint[],
 	frame: LiveFrame,
@@ -133,7 +133,7 @@ export function liveRecords(
 	return records;
 }
 
-/** bklit's detector: the last five samples against the recent range, with a 12% dead band. */
+/** Detects against the last five samples vs. the recent range, with a 12% dead band. */
 export function detectMomentum(values: number[], lookback = 20): Momentum {
 	if (values.length < 5) return "flat";
 	const start = Math.max(0, values.length - lookback);

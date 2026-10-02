@@ -2,7 +2,7 @@ import { type Datum, type Domain, niceDomain } from "../chart/core";
 import { CHART_DURATION } from "../chart/motion";
 import type { ScatterShape } from "./variants";
 
-/** bklit's marker enter: opacity and a 2px blur settle over 500ms. */
+/** Marker enter: opacity and a 2px blur settle over 500ms. */
 export const POINT_ENTER = 500;
 export const POINT_BLUR = 2;
 export const POINT_CONCEAL = 450;
@@ -24,7 +24,7 @@ export function scatterDomain(data: Datum[], keys: string[]): Domain {
 	return niceDomain([min - pad, max + pad]);
 }
 
-/** Points appear as the reveal edge passes them, like bklit's markers. */
+/** Points appear as the reveal edge passes them. */
 export function enterDelay(x: number, radius: number, innerWidth: number): number {
 	if (innerWidth <= 0) return 0;
 	return (Math.max(0, x - radius) / innerWidth) * CHART_DURATION.enter;
@@ -35,7 +35,7 @@ export interface NearestHit {
 	key: string;
 }
 
-/** True 2D nearest point across every visible series, not bklit's x-only bisect. */
+/** True 2D nearest point across every visible series, not an x-only bisect. */
 export function nearestPoint(
 	data: Datum[],
 	keys: string[],

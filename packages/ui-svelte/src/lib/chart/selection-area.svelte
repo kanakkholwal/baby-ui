@@ -17,7 +17,7 @@ const shown = $derived.by(() => {
 });
 </script>
 
-<!-- The dragged or Shift+Arrow range; fades in and out over 150ms like bklit's segment. -->
+<!-- The dragged or Shift+Arrow range; fades in and out over 150ms. -->
 {#if shown}
 	<g
 		data-slot="chart-selection"

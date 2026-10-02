@@ -33,7 +33,7 @@ const iframeSrc = $derived(
 );
 </script>
 
-<!-- Sivir's inset frame: a tinted outer card, canvas sunk one level on bg-background. -->
+<!-- The inset frame: a tinted outer card, canvas sunk one level on bg-background. -->
 <div class={["rounded-xl border border-border bg-card p-1", classProp]}>
 	<div
 		style:max-height={maxHeight}

@@ -1,7 +1,7 @@
 <script lang="ts">
 let { open, class: className = "" }: { open: boolean; class?: string } = $props();
 
-// Paths from iconiqui's sidebar toggle: the inner panel's right edge sits at x=10 closed, x=14 open.
+// The inner panel's right edge sits at x=10 closed, x=14 open.
 const OUTER =
 	"M11 3H13C16.7712 3 18.6569 3 19.8284 4.17157C21 5.34315 21 7.22876 21 11V13C21 16.7712 21 18.6569 19.8284 19.8284C18.6569 21 16.7712 21 13 21H11C7.2288 21 5.3431 21 4.1716 19.8284C3 18.6569 3 16.7712 3 13V11C3 7.22876 3 5.34315 4.1716 4.17157C5.3431 3 7.2288 3 11 3Z";
 const CLOSED =

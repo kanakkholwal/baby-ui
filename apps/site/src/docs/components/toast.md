@@ -1,6 +1,6 @@
 ---
 title: Toast
-description: "sonner's stack in beUI's clothing: one Toaster, then toast() from anywhere."
+description: "A styled stack on sonner: one Toaster, then toast() from anywhere."
 component: toast
 category: base
 tags: [toast, sonner, notification]
@@ -8,8 +8,8 @@ tags: [toast, sonner, notification]
 
 Mount `Toaster` once near the root, then call `toast()` from any module. sonner (React) and
 svelte-sonner (Svelte) own stacking, swipe to dismiss, timers and the live region; every
-class on the toast is ours, so it matches beUI's layout: round tinted icon, title, two-line
-description, pill action, round close.
+class on the toast is ours: round tinted icon, title, two-line description, pill action,
+round close.
 
 ## Calls
 

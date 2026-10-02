@@ -15,7 +15,7 @@ export const staggeredLetter = defineComponent({
 			type: "string",
 			description: "The text to reveal.",
 			control: { kind: "text" },
-			default: "Animata",
+			default: "Staggered",
 		},
 		{
 			name: "applyMask",

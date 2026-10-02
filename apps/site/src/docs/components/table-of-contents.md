@@ -17,4 +17,4 @@ Headings inside a scrolling panel instead of the window? Pass that element as `r
 `scrollOffset` to your sticky header's height so a heading tucked under it counts as passed.
 
 Set `activeIds` to drive the highlight yourself, for example from your router; in Svelte, bind
-it to read what the scroll spy sees. The design follows Fumadocs' table of contents.
+it to read what the scroll spy sees.

@@ -13,7 +13,7 @@ import { crosshairFade, edgeOpacity, niceInterval, tickValues } from "./live";
 import { useLive } from "./live-line-chart";
 import { type LiveAxisPosition, liveAxis } from "./variants";
 
-/** bklit's y-tick spring, for both position and the enter/exit fade. */
+/** The y-tick spring, for both position and the enter/exit fade. */
 const TICK_SPRING: SpringConfig = { stiffness: 180, damping: 24 };
 const TICK_EXIT_MS = 450;
 /** Room for one "11:22:49 pm" time label plus breathing space. */

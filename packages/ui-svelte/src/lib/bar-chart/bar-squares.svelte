@@ -13,7 +13,7 @@ const size = $derived(vertical ? d.rect.width : d.rect.height);
 const cells = $derived(squareColumn(vertical ? d.rect.height : d.rect.width, size));
 const negative = $derived(d.target.value < 0);
 
-/** bklit bar-squares: cells cascade bottom to top over 40% of the entrance. */
+/** Bar squares: cells cascade bottom to top over 40% of the entrance. */
 function cell(offset: number, j: number): Rect {
 	const p =
 		d.elapsed === null

@@ -91,7 +91,7 @@ export const choroplethChart = defineComponent({
 			"Regions appear at once and zoom steps apply without easing; dimming keeps its opacity fade.",
 		behaviour: [
 			"Regions fade in over 1100ms on cubic-bezier(0.85, 0, 0.15, 1).",
-			"Other regions dim over 180ms ease-out and undim on the same transition (bklit snapped back).",
+			"Other regions dim over 180ms ease-out and undim on the same transition instead of snapping back.",
 			"Zoom steps ease over 180ms; dragging and pinching track the pointer with no transition.",
 		],
 	},

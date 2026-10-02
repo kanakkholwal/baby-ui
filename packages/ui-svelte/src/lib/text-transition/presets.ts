@@ -18,8 +18,8 @@ export interface TextTransitionPreset {
 
 const SPRING_EASE = "cubic-bezier(0.34, 1.56, 0.64, 1)";
 
-/** One entry per `variant` value. Ported from animata's `text-animator.tsx` engine,
- * re-expressed as CSS custom properties instead of a WAAPI spec object. */
+/** One entry per `variant` value, expressed as CSS custom properties for a shared
+ * `@keyframes` block instead of a per-preset WAAPI spec object. */
 export const TEXT_TRANSITION_PRESETS = {
 	"blur-out-up": {
 		target: "word",

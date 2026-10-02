@@ -1,5 +1,5 @@
-/* Palette ported from beUI. Base values first, shadcn semantics mapped onto them, so
-   a consumer's shadcn theme still fits while our own extensions stay available. */
+/* Base values first, shadcn semantics mapped onto them, so a consumer's shadcn theme
+   still fits while our own extensions stay available. */
 
 :root {
 	--background: oklch(99% 0 0);

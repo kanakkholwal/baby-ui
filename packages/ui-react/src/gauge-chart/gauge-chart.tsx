@@ -144,7 +144,7 @@ export function GaugeChart({
 				}
 			: arcNotches({ width: plotWidth, height: plotHeight, total, spacing });
 	}, [linear, plotWidth, plotHeight, total, spacing]);
-	// The first drawn value enters with bklit's base delay; later changes ripple from the old edge.
+	// The first drawn value enters with the base delay; later changes ripple from the old edge.
 	const previous = useRef<number | null>(null);
 	const from = previous.current;
 	const drawn = geometry !== null;

@@ -40,7 +40,7 @@ import {
 	targetRange,
 } from "./live";
 
-/** bklit commits the animation loop to React at most every 32ms (about 30fps). */
+/** Commits the animation loop to React at most every 32ms (about 30fps). */
 const COMMIT_MS = 32;
 const DEFAULT_LIVE_MARGIN: Margin = { top: 24, right: 72, bottom: 32, left: 48 };
 

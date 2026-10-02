@@ -97,7 +97,7 @@ type Motion = { from: Map<string, Segment>; kind: "enter" | "update" | "exit" };
 
 const EMPTY = new Map<string, Segment>();
 
-/** Bars grow from the baseline in bklit's stagger, retween on data changes and mirror on conceal. */
+/** Bars grow from the baseline staggered, retween on data changes and mirror on conceal. */
 function useBarMotion(targets: Map<string, Segment>, order: string[], phase: ChartPhase) {
 	const { animate } = usePlot();
 	const [clock, setClock] = useState(1);

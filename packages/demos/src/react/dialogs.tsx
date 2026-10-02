@@ -191,14 +191,14 @@ export function SheetDemo({ props }: { props: Props }) {
 	);
 }
 
-// The same set beUI's preview opens, plus the tones it lacks.
+// One example per toast tone.
 const TOAST_EXAMPLES: { label: string; run: () => unknown }[] = [
 	{ label: "Title only", run: () => toast.success("Saved") },
 	{
 		label: "Promise",
 		run: () => {
 			// A shared `description` on toast.promise() would show on every state; updating
-			// the same id by hand gives loading and success their own, like beUI's demo.
+			// the same id by hand gives loading and success their own.
 			const id = toast.loading("Publishing component", {
 				description: "Bundling source, preview, and registry metadata.",
 			});

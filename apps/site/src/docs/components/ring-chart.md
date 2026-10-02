@@ -10,5 +10,5 @@ Needs `chart` and `counter`. Each row gives a value and a maximum (`maxKey`, def
 the first row is the innermost ring. Rings keep their thickness ratio and scale to fit the
 container.
 
-Rings start at 90% scale rather than bklit's zero, so they settle into place instead of
+Rings start at 90% scale rather than zero, so they settle into place instead of
 appearing from a point.

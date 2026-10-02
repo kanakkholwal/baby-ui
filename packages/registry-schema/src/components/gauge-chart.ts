@@ -86,9 +86,9 @@ export const gaugeChart = defineComponent({
 		reducedMotion:
 			"Notches appear at their final state and the value prints without counting.",
 		behaviour: [
-			"Track notches grow from 0.9 scale on a 300/20 spring, 15ms apart; bklit starts them at 0.",
+			"Track notches grow from 0.9 scale on a 300/20 spring, 15ms apart, never from 0.",
 			"Active notches follow after 300ms, 20ms apart, on the same spring.",
-			"A new value ripples from the old edge: notches switching on and off both animate, where bklit snaps them off.",
+			"A new value ripples from the old edge: notches switching on and off both animate instead of snapping.",
 		],
 	},
 	a11y: {

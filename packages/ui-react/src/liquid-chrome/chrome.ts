@@ -10,7 +10,7 @@ export type LiquidChromeOptions = {
 	interactive: boolean;
 };
 
-// Shader math ported from Componentry's Liquid Chrome; shadows and vignette fall to the shadow token.
+// Shadows and vignette fall to the shadow token.
 const FRAGMENT = `
 precision highp float;
 uniform vec2 uResolution;

@@ -23,7 +23,7 @@ export interface BarRect extends Rect {
 
 export const ENTER_MS = 1100;
 export const UPDATE_MS = 500;
-/** bklit spreads the stagger over 40% of the enter duration. */
+/** Spreads the stagger over 40% of the enter duration. */
 export const STAGGER_SHARE = 0.4;
 export const SQUARE_GAP = 3;
 export const PULSE_MS = 2400;
@@ -152,7 +152,7 @@ export function lerpRect(a: Rect, b: Rect, t: number): Rect {
 	};
 }
 
-/** Per-category delay, bklit's `i * 0.4 * duration / n`. */
+/** Per-category delay: `i * 0.4 * duration / n`. */
 export function staggerDelay(index: number, count: number): number {
 	return count > 1 ? (index * STAGGER_SHARE * ENTER_MS) / count : 0;
 }
@@ -162,7 +162,7 @@ export function enterSpan(count: number, squares: boolean): number {
 	return base + staggerDelay(count - 1, count);
 }
 
-/** Squares a bar length into cells, bottom cell first, like bklit's `computeSquareColumn`. */
+/** Squares a bar length into cells, bottom cell first. */
 export function squareColumn(length: number, size: number, gap = SQUARE_GAP): number[] {
 	if (length <= 0 || size <= 0) return [];
 	const step = size + gap;
@@ -170,7 +170,7 @@ export function squareColumn(length: number, size: number, gap = SQUARE_GAP): nu
 	return Array.from({ length: count }, (_, i) => i * step);
 }
 
-/** Delay of square `j` in a column: bklit cascades over 40% of the enter duration. */
+/** Delay of square `j` in a column: cascades over 40% of the enter duration. */
 export function squareDelay(j: number, count: number): number {
 	return count > 1 ? (j * STAGGER_SHARE * ENTER_MS) / (count - 1) : 0;
 }
@@ -207,7 +207,7 @@ function mapRect(rect: Rect, map: (p: Point) => Point): Rect {
 const pathOf = (points: Point[], map: (p: Point) => Point) =>
 	`M${points.map((p) => map(p).join(",")).join("L")}Z`;
 
-/** bklit bar-depth: side face toward the chart centre, lid lifted by 45% of the depth, any direction. */
+/** Bar depth: side face toward the chart centre, lid lifted by 45% of the depth, any direction. */
 export function depthFaces(
 	rect: Rect,
 	options: {
@@ -283,7 +283,7 @@ export function skeletonHeights(count: number, tick: number): number[] {
 	);
 }
 
-/** Opacity stops of the sweep band: 0.05 + sin²(πt) * 0.85, 17 steps like bklit. */
+/** Opacity stops of the sweep band: 0.05 + sin²(πt) * 0.85, in 17 steps. */
 export const SWEEP_STOPS = Array.from({ length: 17 }, (_, i) => {
 	const t = i / 16;
 	return {
