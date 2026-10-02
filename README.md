@@ -14,6 +14,18 @@
   <a href="LICENSE">Apache-2.0</a>
 </p>
 
+
+## Star History
+
+<a href="https://www.star-history.com/?repos=kanakkholwal%2Fbaby-ui&type=date&logscale=&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=kanakkholwal/baby-ui&type=date&theme=dark&logscale&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=kanakkholwal/baby-ui&type=date&logscale&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=kanakkholwal/baby-ui&type=date&logscale&legend=top-left" />
+ </picture>
+</a>
+
+
 ## What this is
 
 145+ components, each built once from a shared spec and shipped as a real React port and a
