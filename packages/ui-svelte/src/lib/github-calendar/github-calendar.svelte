@@ -21,6 +21,7 @@ import {
 	type GithubCalendarVariant,
 	githubCalendar,
 	TONE_FILL,
+	WEEK_TRACK,
 } from "./variants";
 
 type Props = Omit<HTMLAttributes<HTMLDivElement>, "title"> & {
@@ -120,7 +121,7 @@ function onkeydown(event: KeyboardEvent) {
 				aria-label={l.grid}
 				{onkeydown}
 				class={s.grid()}
-				style:grid-template-columns="auto repeat({grid.weeks}, auto)"
+				style:grid-template-columns="auto repeat({grid.weeks}, {WEEK_TRACK[size]})"
 				style:grid-template-rows="auto repeat(7, auto)"
 			>
 				{#each grid.months as m (m.col)}

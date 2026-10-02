@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useId, useMemo } from "react";
 import {
 	type Draft,
 	draftToTime,
@@ -10,15 +10,18 @@ import {
 } from "../date-field/core";
 import { DateSegments, useFieldDraft } from "../date-field/segments";
 import { dateField } from "../date-field/variants";
+import { FieldError } from "../field/field";
 import { cn } from "../lib/cn";
 import {
 	formatTime,
+	nowAsTimeValue,
 	parseTime,
 	TIME_PICKER_LABELS,
 	type TimePickerLabels,
 	type TimeValue,
+	timeOutOfRange,
 } from "./core";
-import type { TimePickerSize } from "./variants";
+import { type TimePickerSize, timePicker } from "./variants";
 
 export type { TimePickerLabels, TimePickerSize, TimeValue };
 
@@ -31,6 +34,14 @@ export interface TimePickerProps {
 	/** Minutes moved per arrow press; typed minutes are not snapped. */
 	step?: number;
 	locale?: string;
+	/** Earliest allowed time; a value outside marks the field invalid. */
+	min?: TimeValue;
+	/** Latest allowed time; a value outside marks the field invalid. */
+	max?: TimeValue;
+	/** Show an X button at the end while the field has a value. */
+	clearable?: boolean;
+	/** Show a "Now" quick-set button at the end. */
+	showNow?: boolean;
 	disabled?: boolean;
 	/** Marks the field invalid from outside, e.g. a form error. */
 	invalid?: boolean;
@@ -51,6 +62,10 @@ export function TimePicker({
 	hourCycle: hourCycleProp,
 	step = 1,
 	locale,
+	min,
+	max,
+	clearable = false,
+	showNow = false,
 	disabled = false,
 	invalid = false,
 	size = "md",
@@ -64,6 +79,8 @@ export function TimePicker({
 	const labels = { ...TIME_PICKER_LABELS, ...labelsProp };
 	const hourCycle = hourCycleProp ?? localeHourCycle(locale);
 	const s = dateField({ size });
+	const tp = timePicker();
+	const errorId = `${useId()}-error`;
 	const layout = useMemo(
 		() => fieldLayout("time", locale, hourCycle),
 		[locale, hourCycle],
@@ -79,58 +96,112 @@ export function TimePicker({
 		onValueChange,
 	);
 
+	const outside = timeOutOfRange(value, min, max);
+	const showClear = clearable && value !== null;
+	const showNowButton = showNow;
+	const showTrailing = showClear || showNowButton;
+
+	const clear = () => onValueChange(null);
+	const setNow = () => onValueChange(nowAsTimeValue());
+
 	return (
-		<fieldset
-			id={id}
-			aria-label={ariaLabel ?? labels.group}
-			aria-describedby={describedBy}
-			aria-disabled={disabled || undefined}
-			aria-invalid={invalid || undefined}
-			data-slot="time-picker"
-			className={cn(s.group(), "w-fit", className)}
-		>
-			<span className={s.icon()}>
-				<svg
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					strokeWidth={2}
-					strokeLinecap="round"
-					strokeLinejoin="round"
-					aria-hidden="true"
-				>
-					<path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0M12 7v5l3 3" />
-				</svg>
-			</span>
-			<DateSegments
-				layout={layout}
-				draft={draft}
-				onDraftChange={setDraft}
-				labels={{
-					year: "",
-					month: "",
-					day: "",
-					hour: labels.hour,
-					minute: labels.minute,
-					dayPeriod: labels.period,
-				}}
-				placeholders={{
-					year: "",
-					month: "",
-					day: "",
-					hour: labels.empty,
-					minute: labels.empty,
-					dayPeriod: "",
-				}}
-				hourCycle={hourCycle}
-				step={step}
-				locale={locale}
-				disabled={disabled}
-				invalid={invalid}
-				className={s.input()}
-				segmentClassName={s.segment()}
-			/>
+		<div data-slot="time-picker" className={cn(s.root(), className)}>
+			<fieldset
+				id={id}
+				aria-label={ariaLabel ?? labels.group}
+				aria-describedby={
+					[describedBy, outside ? errorId : undefined].filter(Boolean).join(" ") ||
+					undefined
+				}
+				aria-disabled={disabled || undefined}
+				aria-invalid={invalid || outside || undefined}
+				data-slot="time-picker-group"
+				className={cn(s.group(), "w-fit")}
+			>
+				<span className={s.icon()}>
+					<svg
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						strokeWidth={2}
+						strokeLinecap="round"
+						strokeLinejoin="round"
+						aria-hidden="true"
+					>
+						<path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0M12 7v5l3 3" />
+					</svg>
+				</span>
+				<DateSegments
+					layout={layout}
+					draft={draft}
+					onDraftChange={setDraft}
+					labels={{
+						year: "",
+						month: "",
+						day: "",
+						hour: labels.hour,
+						minute: labels.minute,
+						dayPeriod: labels.period,
+					}}
+					placeholders={{
+						year: "",
+						month: "",
+						day: "",
+						hour: labels.empty,
+						minute: labels.empty,
+						dayPeriod: "",
+					}}
+					hourCycle={hourCycle}
+					step={step}
+					locale={locale}
+					disabled={disabled}
+					invalid={invalid || outside}
+					className={s.input()}
+					segmentClassName={s.segment()}
+				/>
+				{showTrailing ? (
+					<div data-slot="time-picker-trailing" className={tp.trailing()}>
+						{showNowButton ? (
+							<button
+								type="button"
+								aria-label={labels.now}
+								disabled={disabled}
+								onClick={setNow}
+								className={tp.nowButton()}
+							>
+								{labels.now}
+							</button>
+						) : null}
+						{showClear ? (
+							<button
+								type="button"
+								aria-label={labels.clear}
+								disabled={disabled}
+								onClick={clear}
+								className={tp.clearButton()}
+							>
+								<svg
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									strokeWidth={1.75}
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									aria-hidden="true"
+									className="size-3.5"
+								>
+									<path d="M18 6 6 18M6 6l12 12" />
+								</svg>
+							</button>
+						) : null}
+					</div>
+				) : null}
+			</fieldset>
 			{name ? <input type="hidden" name={name} value={value ?? ""} /> : null}
-		</fieldset>
+			<FieldError
+				id={errorId}
+				errors={outside ? [{ message: labels.outOfRange }] : undefined}
+			/>
+		</div>
 	);
 }

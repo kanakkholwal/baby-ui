@@ -1,5 +1,12 @@
 import { createHash } from "node:crypto";
-import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import {
+	existsSync,
+	mkdirSync,
+	readFileSync,
+	renameSync,
+	rmSync,
+	writeFileSync,
+} from "node:fs";
 import { dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -40,6 +47,14 @@ export class Output {
 		if (!root) throw new Error(`gen: ${rel(path)} is outside every root`);
 		return root;
 	}
+}
+
+// Two gen runs at once (dev server plus a manual run) interleaved plain writes and left a
+// shorter manifest over a longer one's tail; a rename swaps the whole file in one step.
+function writeAtomic(file, content) {
+	const tmp = `${file}.${process.pid}.tmp`;
+	writeFileSync(tmp, content);
+	renameSync(tmp, file);
 }
 
 /** What the previous run generated under a root, path to content hash (null when unknown). */
@@ -95,7 +110,7 @@ export function flush(output, { check }) {
 			stale.push(path);
 			if (!check) {
 				mkdirSync(dirname(path), { recursive: true });
-				writeFileSync(path, content);
+				writeAtomic(path, content);
 			}
 		}
 		for (const [old, sum] of before) {
@@ -127,7 +142,7 @@ export function flush(output, { check }) {
 			stale.push(file);
 			if (check) continue;
 			if (content === null) rmSync(file);
-			else writeFileSync(file, content);
+			else writeAtomic(file, content);
 		}
 	}
 	return { generated: [...output.files.keys()], stale, conflicts };

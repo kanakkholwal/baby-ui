@@ -92,20 +92,27 @@ export function TimePickerDemo({ props }: { props: Props }) {
 	const [time, setTime] = useState<string | null>("09:30");
 	const cycle = props.hourCycle === "24" ? 24 : props.hourCycle === "12" ? 12 : undefined;
 	return (
-		<div className="flex w-fit flex-col gap-2">
-			<span className="font-medium text-sm">Meeting starts</span>
+		<Field className="w-fit">
+			<FieldLabel>Meeting starts</FieldLabel>
 			<TimePicker
 				value={time}
 				onValueChange={setTime}
 				aria-label="Meeting starts"
 				hourCycle={cycle}
 				step={p.step ?? 15}
+				min="08:00"
+				max="18:00"
+				clearable={p.clearable ?? false}
+				showNow={p.showNow ?? false}
 				invalid={p.invalid ?? false}
 				size={p.size ?? "md"}
 			/>
+			<FieldDescription>
+				Type it, or use the arrow keys. Clear and Now sit at the end.
+			</FieldDescription>
 			<p className="text-muted-foreground text-xs tabular-nums">
 				Saved as {time ?? "no time"}
 			</p>
-		</div>
+		</Field>
 	);
 }

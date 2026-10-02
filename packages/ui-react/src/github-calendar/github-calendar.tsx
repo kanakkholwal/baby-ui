@@ -32,6 +32,7 @@ import {
 	type GithubCalendarVariant,
 	githubCalendar,
 	TONE_FILL,
+	WEEK_TRACK,
 } from "./variants";
 
 export type {
@@ -155,7 +156,7 @@ export function GithubCalendar({
 						onKeyDown={onKeyDown}
 						className={s.grid()}
 						style={{
-							gridTemplateColumns: `auto repeat(${grid.weeks}, auto)`,
+							gridTemplateColumns: `auto repeat(${grid.weeks}, ${WEEK_TRACK[size]})`,
 							gridTemplateRows: "auto repeat(7, auto)",
 						}}
 					>

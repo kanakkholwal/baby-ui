@@ -2,7 +2,7 @@ import { defineComponent } from "../index.ts";
 
 const VARIANTS = ["default", "glow", "minimal"];
 const SHAPES = ["square", "rounded", "circle"];
-const SIZES = ["sm", "md", "lg"];
+const SIZES = ["sm", "md", "lg", "fluid"];
 const TONES = ["scale", "success", "primary"];
 
 export const githubCalendar = defineComponent({
@@ -40,7 +40,8 @@ export const githubCalendar = defineComponent({
 		{
 			name: "size",
 			type: SIZES.map((v) => `"${v}"`).join(" | "),
-			description: "Cell size: 10, 12 or 16px.",
+			description:
+				"Cell size: 10, 12 or 16px, or `fluid` to share the width (scrolling below 10px).",
 			default: "md",
 			control: { kind: "select", options: SIZES },
 		},

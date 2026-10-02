@@ -33,12 +33,14 @@ import { FieldDemo, NativeSelectDemo, SeparatorDemo } from "./forms";
 import { BentoGridDemo, ButtonDemo, FileTreeDemo, MorphingModalDemo } from "./foundations";
 import { FunnelChartDemo } from "./funnel-chart";
 import { GaugeChartDemo } from "./gauge-chart";
+import { GithubStatsDemo } from "./github-stats";
 import { GrainGradientDemo } from "./grain-gradient";
 import { HeatmapChartDemo } from "./heatmap-chart";
 import { HeroStageDemo } from "./hero-stage";
 import { HoverTransitionDemo } from "./hover-transition";
 import { ImageTrailDemo } from "./image-trail";
 import { InputGroupDemo } from "./input-group";
+import { InvoiceListDemo } from "./invoice-list";
 import { IridescentFoldDemo } from "./iridescent-fold";
 import { LayeredStackDemo } from "./layered-stack";
 import { LightCausticsDemo } from "./light-caustics";
@@ -52,6 +54,7 @@ import { MegaNavbarDemo } from "./mega-navbar";
 import { MusicPlayerDemo } from "./music-player";
 import { NavigationMenuDemo } from "./navigation-menu";
 import { NotchedShelfDemo } from "./notched-shelf";
+import { NpmStatsDemo } from "./npm-stats";
 import { ClickSparkDemo, DraggableMarqueeDemo, TextReelDemo } from "./obsidian";
 import { OgNewsletterIssueDemo } from "./og-newsletter-issue";
 import { ComboboxDemo, ContextMenuDemo, DropdownMenuDemo, HoverCardDemo, PopoverDemo, SelectDemo, TooltipDemo } from "./overlays";
@@ -83,6 +86,7 @@ import { SignatureDemo } from "./signature";
 import { SilkAuroraDemo } from "./silk-aurora";
 import { SpectralRibbonDemo } from "./spectral-ribbon";
 import { SplitFlapDisplayDemo } from "./split-flap-display";
+import { StarHistoryDemo } from "./star-history";
 import { StickyScrollCardsDemo } from "./sticky-scroll-cards";
 import { StreamingTextDemo } from "./streaming-text";
 import { SunburstChartDemo } from "./sunburst-chart";
@@ -229,6 +233,7 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"gauge-chart": GaugeChartDemo,
 	"gibberish-text": GibberishTextDemo,
 	"github-calendar": GithubCalendarDemo,
+	"github-stats": GithubStatsDemo,
 	"glitch-text": GlitchTextDemo,
 	"gradient-hero-01": GradientHero01Demo,
 	"grain-gradient": GrainGradientDemo,
@@ -241,6 +246,7 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	input: InputDemo,
 	"input-group": InputGroupDemo,
 	"input-otp": InputOTPDemo,
+	"invoice-list": InvoiceListDemo,
 	"iridescent-fold": IridescentFoldDemo,
 	"jitter-text": JitterTextDemo,
 	"jumping-text": JumpingTextDemo,
@@ -268,6 +274,7 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"native-select": NativeSelectDemo,
 	"navigation-menu": NavigationMenuDemo,
 	"notched-shelf": NotchedShelfDemo,
+	"npm-stats": NpmStatsDemo,
 	"number-input": NumberInputDemo,
 	"og-author-profile": OgAuthorProfileDemo,
 	"og-blog-post": OgBlogPostDemo,
@@ -329,6 +336,7 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"split-flap-display": SplitFlapDisplayDemo,
 	"split-text": SplitTextDemo,
 	"staggered-letter": StaggeredLetterDemo,
+	"star-history": StarHistoryDemo,
 	"stat-card": StatCardDemo,
 	"stat-card-map": StatCardMapDemo,
 	"status-monitor": StatusMonitorDemo,

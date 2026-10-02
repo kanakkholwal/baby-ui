@@ -1,5 +1,5 @@
 <script lang="ts">
-import { TimePicker } from "@baby-ui/svelte";
+import { Field, FieldDescription, FieldLabel, TimePicker } from "@baby-ui/svelte";
 import type { ComponentProps } from "svelte";
 import { controlProps } from "../data/preview-props";
 
@@ -12,15 +12,22 @@ const cycle = $derived(
 );
 </script>
 
-<div class="flex w-fit flex-col gap-2">
-	<span class="font-medium text-sm">Meeting starts</span>
+<Field class="w-fit">
+	<FieldLabel>Meeting starts</FieldLabel>
 	<TimePicker
 		bind:value={time}
 		aria-label="Meeting starts"
 		hourCycle={cycle}
 		step={p.step ?? 15}
+		min="08:00"
+		max="18:00"
+		clearable={p.clearable ?? false}
+		showNow={p.showNow ?? false}
 		invalid={p.invalid ?? false}
 		size={p.size ?? "md"}
 	/>
+	<FieldDescription>
+		Type it, or use the arrow keys. Clear and Now sit at the end.
+	</FieldDescription>
 	<p class="text-muted-foreground text-xs tabular-nums">Saved as {time ?? "no time"}</p>
-</div>
+</Field>

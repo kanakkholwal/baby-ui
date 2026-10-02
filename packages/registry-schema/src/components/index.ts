@@ -90,6 +90,7 @@ import { gaugeChart } from "./gauge-chart.ts";
 import { gauge } from "./gauge.ts";
 import { gibberishText } from "./gibberish-text.ts";
 import { githubCalendar } from "./github-calendar.ts";
+import { githubStatsBlock } from "./github-stats.ts";
 import { glitchText } from "./glitch-text.ts";
 import { gradientHero01 } from "./gradient-hero-01.ts";
 import { grainGradient } from "./grain-gradient.ts";
@@ -102,6 +103,7 @@ import { infiniteImageField } from "./infinite-image-field.ts";
 import { inputGroup } from "./input-group.ts";
 import { inputOtp } from "./input-otp.ts";
 import { input } from "./input.ts";
+import { invoiceList } from "./invoice-list.ts";
 import { iridescentFold } from "./iridescent-fold.ts";
 import { jitterText } from "./jitter-text.ts";
 import { jumpingText } from "./jumping-text.ts";
@@ -128,6 +130,7 @@ import { musicPlayer } from "./music-player.ts";
 import { nativeSelect } from "./native-select.ts";
 import { navigationMenu } from "./navigation-menu.ts";
 import { notchedShelf } from "./notched-shelf.ts";
+import { npmStatsBlock } from "./npm-stats.ts";
 import { numberInput } from "./number-input.ts";
 import { ogAuthorProfile } from "./og-author-profile.ts";
 import { ogBlogPost } from "./og-blog-post.ts";
@@ -188,6 +191,7 @@ import { spinner } from "./spinner.ts";
 import { splitFlapDisplay } from "./split-flap-display.ts";
 import { splitText } from "./split-text.ts";
 import { staggeredLetter } from "./staggered-letter.ts";
+import { starHistoryBlock } from "./star-history.ts";
 import { statCard, statCardMap } from "./stat-card.ts";
 import { statusMonitor } from "./status-monitor.ts";
 import { stickyScrollCards } from "./sticky-scroll-cards.ts";
@@ -328,6 +332,7 @@ export const specs: ComponentSpec[] = [
 	gauge,
 	gibberishText,
 	githubCalendar,
+	githubStatsBlock,
 	glitchText,
 	gradientHero01,
 	grainGradient,
@@ -340,6 +345,7 @@ export const specs: ComponentSpec[] = [
 	inputGroup,
 	inputOtp,
 	input,
+	invoiceList,
 	iridescentFold,
 	jitterText,
 	jumpingText,
@@ -366,6 +372,7 @@ export const specs: ComponentSpec[] = [
 	nativeSelect,
 	navigationMenu,
 	notchedShelf,
+	npmStatsBlock,
 	numberInput,
 	ogAuthorProfile,
 	ogBlogPost,
@@ -426,6 +433,7 @@ export const specs: ComponentSpec[] = [
 	splitFlapDisplay,
 	splitText,
 	staggeredLetter,
+	starHistoryBlock,
 	statCard,
 	statCardMap,
 	statusMonitor,

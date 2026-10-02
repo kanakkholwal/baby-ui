@@ -21,6 +21,20 @@ const total = $derived(data.total ?? 0);
 const DESCRIPTION = $derived(
 	`Animated, accessible React and Svelte components on one token layer. Install any of ${componentCountLabel(total)} components with the shadcn CLI, in TypeScript or JavaScript.`,
 );
+
+// Featured slugs, cycled so the terminal shows the CLI installing something new each beat.
+const SHOWCASE = $derived([...data.grid, ...data.fresh].map((item) => item.slug));
+let showcaseIndex = $state(0);
+const showcaseSlug = $derived(SHOWCASE[showcaseIndex % SHOWCASE.length] ?? "line-chart");
+
+$effect(() => {
+	const count = SHOWCASE.length;
+	if (count < 2 || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+	const id = setInterval(() => {
+		showcaseIndex = (showcaseIndex + 1) % count;
+	}, 2400);
+	return () => clearInterval(id);
+});
 </script>
 
 <Seo
@@ -51,7 +65,7 @@ const DESCRIPTION = $derived(
 		<h2 id="home-install-heading" class="mb-4 text-center text-muted-foreground text-sm">
 			One command per component. It lands in your project as source.
 		</h2>
-		<InstallCommand slug="line-chart" />
+		<InstallCommand slug={showcaseSlug} cascade />
 		<p class="mt-4 text-center text-muted-foreground text-xs">
 			New here? <a
 				href="/docs/installation"

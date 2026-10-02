@@ -364,13 +364,47 @@ export const timePicker = defineComponent({
 			description: "BCP 47 locale for the AM/PM label and the default clock.",
 			control: { kind: "none" },
 		},
+		{
+			name: "min / max",
+			type: 'string "HH:mm"',
+			description:
+				"Earliest and latest allowed time; a value outside marks the field invalid.",
+			control: { kind: "none" },
+		},
+		{
+			name: "clearable",
+			type: "boolean",
+			description:
+				"Show an X button at the end while the field has a value, resetting it to null.",
+			default: "false",
+			control: { kind: "boolean" as const },
+		},
+		{
+			name: "showNow",
+			type: "boolean",
+			description:
+				"Show a 'Now' chip that sets the value to the current local time as HH:mm.",
+			default: "false",
+			control: { kind: "boolean" as const },
+		},
 		invalidProp,
 		sizeProp,
+		{
+			name: "labels",
+			type: "Partial<TimePickerLabels>",
+			description:
+				"Group and segment names plus the trailing buttons: clear, now, outOfRange.",
+			control: { kind: "none" },
+		},
 	],
 	motion: segmentMotion,
 	a11y: {
 		keyboard: [...segmentKeys, "A or P sets the period"],
-		notes: [segmentNote],
+		notes: [
+			segmentNote,
+			"Clear and Now trailing buttons mirror the group's focus ring; both expose aria-label.",
+			"An out-of-range value is announced through the field's error, linked by aria-describedby.",
+		],
 	},
 	impl: {
 		react: {

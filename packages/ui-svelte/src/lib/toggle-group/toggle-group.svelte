@@ -13,6 +13,7 @@ let {
 	size = "md",
 	disabled = false,
 	label = "Options",
+	onValueChange,
 	class: classProp,
 	...rest
 }: {
@@ -23,6 +24,7 @@ let {
 	size?: ToggleGroupSize;
 	disabled?: boolean;
 	label?: string;
+	onValueChange?: (value: string | string[]) => void;
 	class?: string;
 } = $props();
 
@@ -49,6 +51,9 @@ const rootClass = $derived(
 		data-slot="toggle-group"
 		aria-label={label}
 		class={rootClass}
+		onValueChange={onValueChange
+			? (next: string[]) => onValueChange(next)
+			: undefined}
 		{...rest}
 	>
 		{@render children?.()}
@@ -61,6 +66,9 @@ const rootClass = $derived(
 		data-slot="toggle-group"
 		aria-label={label}
 		class={rootClass}
+		onValueChange={onValueChange
+			? (next: string) => onValueChange(next)
+			: undefined}
 		{...rest}
 	>
 		{@render children?.()}

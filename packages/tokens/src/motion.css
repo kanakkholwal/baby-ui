@@ -3422,6 +3422,88 @@
 	animation: flight-status-reveal 1100ms var(--ease-out) 200ms both;
 }
 
+/* Sparklines draw left to right by clip, so stroke width and aspect stretch never matter. */
+.spark-reveal {
+	animation: spark-reveal 700ms var(--ease-out-quart) 120ms both;
+}
+
+@keyframes spark-reveal {
+	from {
+		clip-path: inset(0 100% 0 0);
+	}
+	to {
+		clip-path: inset(0 0 0 0);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.spark-reveal {
+		animation: none;
+	}
+}
+
+/* License key chips: flip in on reveal or a new key, wave on copy, pulse while minting,
+   ring once when a new key lands. Delays come inline, one step per chip. */
+.license-flip {
+	transform-origin: 50% 0%;
+	animation: license-flip 360ms var(--ease-out) both;
+}
+
+@keyframes license-flip {
+	from {
+		opacity: 0;
+		transform: rotateX(-80deg);
+	}
+}
+
+.license-wave {
+	animation: license-wave 420ms var(--ease-out) both;
+}
+
+@keyframes license-wave {
+	40% {
+		transform: translateY(-2px);
+		border-color: color-mix(in oklch, var(--primary) 55%, var(--border));
+	}
+}
+
+.license-pulse {
+	animation: license-pulse 900ms ease-in-out infinite alternate;
+}
+
+@keyframes license-pulse {
+	from {
+		opacity: 0.85;
+	}
+	to {
+		opacity: 0.3;
+	}
+}
+
+.license-ring {
+	animation:
+		license-flip 360ms var(--ease-out) both,
+		license-ring 1100ms var(--ease-out) both;
+}
+
+@keyframes license-ring {
+	from {
+		box-shadow: 0 0 0 1.5px var(--success);
+	}
+	to {
+		box-shadow: 0 0 0 1.5px transparent;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.license-flip,
+	.license-wave,
+	.license-pulse,
+	.license-ring {
+		animation: none;
+	}
+}
+
 @keyframes flight-status-char {
 	from {
 		opacity: 0;

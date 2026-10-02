@@ -20,3 +20,15 @@ reads as the AM it shows.
 
 `step` sets the minutes an arrow press moves and snaps to that grid, wrapping within the
 hour; typed minutes are kept as typed.
+
+## Bounds
+
+`min` and `max` accept any `HH:mm` string. A value outside marks the field invalid and
+surfaces `outOfRange` below it, mirroring Date Picker. Either bound may be omitted.
+
+## Trailing buttons
+
+Pass `clearable` to render an × button while the field has a value; it resets the value to
+`null`. Pass `showNow` for a `Now` chip that sets the value to the current local time.
+Both sit at the trailing edge, follow the group's focus ring, and stay disabled while the
+field is.
