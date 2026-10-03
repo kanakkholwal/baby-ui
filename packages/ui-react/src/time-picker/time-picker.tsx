@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useMemo } from "react";
+import { useId, useMemo, useState } from "react";
 import {
 	type Draft,
 	draftToTime,
@@ -13,7 +13,9 @@ import { dateField } from "../date-field/variants";
 import { FieldError } from "../field/field";
 import { cn } from "../lib/cn";
 import {
+	clockHands,
 	formatTime,
+	nearestTurn,
 	nowAsTimeValue,
 	parseTime,
 	TIME_PICKER_LABELS,
@@ -53,6 +55,45 @@ export interface TimePickerProps {
 	"aria-label"?: string;
 	"aria-describedby"?: string;
 	className?: string;
+}
+
+function TimePickerClock({
+	value,
+	handClassName,
+}: {
+	value: TimeValue | null;
+	handClassName: string;
+}) {
+	const target = clockHands(value);
+	const [angles, setAngles] = useState(target);
+	const next = {
+		hour: nearestTurn(angles.hour, target.hour),
+		minute: nearestTurn(angles.minute, target.minute),
+	};
+	if (next.hour !== angles.hour || next.minute !== angles.minute) setAngles(next);
+
+	return (
+		<svg
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			strokeWidth={2}
+			strokeLinecap="round"
+			aria-hidden="true"
+		>
+			<circle cx="12" cy="12" r="9" />
+			<path
+				d="M12 12V8.5"
+				className={handClassName}
+				style={{ rotate: `${next.hour}deg` }}
+			/>
+			<path
+				d="M12 12V7"
+				className={handClassName}
+				style={{ rotate: `${next.minute}deg` }}
+			/>
+		</svg>
+	);
 }
 
 /** Segmented hour and minute (plus AM/PM on a 12-hour clock), typed or stepped with the arrows. */
@@ -119,17 +160,7 @@ export function TimePicker({
 				className={cn(s.group(), "w-fit")}
 			>
 				<span className={s.icon()}>
-					<svg
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						strokeWidth={2}
-						strokeLinecap="round"
-						strokeLinejoin="round"
-						aria-hidden="true"
-					>
-						<path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0M12 7v5l3 3" />
-					</svg>
+					<TimePickerClock value={value} handClassName={tp.hand()} />
 				</span>
 				<DateSegments
 					layout={layout}

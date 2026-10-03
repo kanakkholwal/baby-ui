@@ -17,9 +17,8 @@ import {
 	type DateRangePreset,
 	DEFAULT_RANGE_PRESETS,
 	type RangeDateParts,
-	sameRange,
-	todayParts,
 } from "./core";
+import DateRangePickerPresets from "./date-range-picker-presets.svelte";
 import { type DateRangePickerSize, dateRangePicker } from "./variants";
 
 let {
@@ -95,7 +94,6 @@ $effect(() => {
 });
 
 const shown = $derived(confirm ? pending : value);
-const today = todayParts();
 const outsideOf = (d: DateValue | undefined) =>
 	d !== undefined &&
 	((min !== undefined && d.compare(min) < 0) ||
@@ -184,23 +182,16 @@ function pick(next: DateRange | undefined) {
 			</PopoverTrigger>
 			<PopoverContent align="end" class={s.content()}>
 				{#if presets.length}
-					<fieldset aria-label={labels.presets} class={s.rail()}>
-						{#each presets as preset (preset.label)}
-							{@const range = preset.range(today)}
-							<button
-								type="button"
-								aria-pressed={sameRange(rangeParts(shown), range)}
-								class={s.preset()}
-								onclick={() => {
-									pick({ start: toDate(range.from), end: toDate(range.to) });
-									// Show where the range starts, so a preset never lands off screen.
-									month = toDate(range.from);
-								}}
-							>
-								{preset.label}
-							</button>
-						{/each}
-					</fieldset>
+					<DateRangePickerPresets
+						{presets}
+						label={labels.presets}
+						selected={rangeParts(shown)}
+						onPick={(range) => {
+							pick({ start: toDate(range.from), end: toDate(range.to) });
+							// Show where the range starts, so a preset never lands off screen.
+							month = toDate(range.from);
+						}}
+					/>
 				{/if}
 				<div class={s.main()}>
 					<RangeCalendar

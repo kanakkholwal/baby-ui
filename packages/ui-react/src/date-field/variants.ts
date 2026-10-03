@@ -29,7 +29,8 @@ export const dateField = tv({
 		],
 		icon: "pointer-events-none ms-1.5 flex shrink-0 items-center text-muted-foreground [&_svg]:size-4",
 		separator: "select-none text-muted-foreground",
-		trigger: "ms-auto shrink-0",
+		trigger:
+			"ms-auto shrink-0 aria-expanded:bg-foreground/[0.06] aria-expanded:text-foreground",
 		content: "w-auto p-0",
 	},
 	variants: {

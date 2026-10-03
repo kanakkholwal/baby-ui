@@ -134,9 +134,11 @@ import { npmStatsBlock } from "./npm-stats.ts";
 import { numberInput } from "./number-input.ts";
 import { ogAuthorProfile } from "./og-author-profile.ts";
 import { ogBlogPost } from "./og-blog-post.ts";
+import { ogBrand } from "./og-brand.ts";
 import { ogChangelog } from "./og-changelog.ts";
 import { ogDocsPage } from "./og-docs-page.ts";
 import { ogGithubRepo } from "./og-github-repo.ts";
+import { ogLanding } from "./og-landing.ts";
 import { ogNewsletterIssue } from "./og-newsletter-issue.ts";
 import { orbitCardStack } from "./orbit-card-stack.ts";
 import { overviewCard } from "./overview-card.ts";
@@ -376,9 +378,11 @@ export const specs: ComponentSpec[] = [
 	numberInput,
 	ogAuthorProfile,
 	ogBlogPost,
+	ogBrand,
 	ogChangelog,
 	ogDocsPage,
 	ogGithubRepo,
+	ogLanding,
 	ogNewsletterIssue,
 	orbitCardStack,
 	overviewCard,

@@ -1,11 +1,13 @@
 import { createContext, getContext, hasContext, type Snippet, setContext } from "svelte";
-import type { DialogVariant } from "../dialog/context";
+import type { CommandVariant, commandFrame } from "./variants";
 
 export type CommandContext = {
 	/** Visible rows after filtering, for the count next to the search input. */
 	readonly resultCount: number;
 	/** The currently highlighted item's value, so the sliding marker knows when to remeasure. */
 	readonly activeValue: string;
+	readonly variant: CommandVariant;
+	readonly styles: ReturnType<typeof commandFrame>;
 };
 
 export const [getCommand, setCommand] = createContext<CommandContext>();
@@ -14,7 +16,7 @@ export const [getCommand, setCommand] = createContext<CommandContext>();
  * outside a CommandDialog just skips it. */
 export type CommandDialogState = {
 	readonly open: boolean;
-	readonly variant: DialogVariant;
+	readonly variant: CommandVariant;
 	/** CommandHeader hoists here so CommandDialog can render it in the rim above the card. */
 	header: { children?: Snippet; class?: string } | undefined;
 };

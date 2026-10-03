@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Command as CommandPrimitive } from "bits-ui";
 import { cn } from "../lib/cn";
-import { commandFrame } from "./variants";
+import { getCommand } from "./context";
 
 let {
 	children,
@@ -18,6 +18,8 @@ let {
 	onSelect?: () => void;
 	onclick?: () => void;
 } = $props();
+
+const command = getCommand();
 </script>
 
 <CommandPrimitive.Item
@@ -25,7 +27,7 @@ let {
 	keywords={keywords ? keywords.split(/\s+/) : undefined}
 	onSelect={onSelect ?? onclick}
 	data-slot="command-item"
-	class={cn(commandFrame().item(), classProp)}
+	class={cn(command.styles.item(), classProp)}
 	{...rest}
 >
 	{@render children?.()}

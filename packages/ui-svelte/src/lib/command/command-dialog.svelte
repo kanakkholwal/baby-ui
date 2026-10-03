@@ -4,7 +4,7 @@ import type { Snippet } from "svelte";
 import { dialogFrame } from "../dialog/variants";
 import { cn } from "../lib/cn";
 import { setCommandDialogState } from "./context";
-import { commandFrame, type DialogVariant } from "./variants";
+import { type CommandVariant, commandFrame } from "./variants";
 
 let {
 	children,
@@ -18,7 +18,7 @@ let {
 	open?: boolean;
 	label?: string;
 	description?: string;
-	variant?: DialogVariant;
+	variant?: CommandVariant;
 	class?: string;
 } = $props();
 
@@ -57,16 +57,10 @@ setCommandDialogState({
 			<DialogPrimitive.Title class="sr-only">{label}</DialogPrimitive.Title>
 			<DialogPrimitive.Description class="sr-only">{description}</DialogPrimitive.Description>
 			{#if variant === "framed" && header}
-				<div
-					data-slot="command-header"
-					class={cn(styles.header(), header.class)}
-				>
+				<div data-slot="command-header" class={cn(styles.header(), header.class)}>
 					<p class="font-medium text-foreground text-sm">{@render header.children?.()}</p>
 					<span class="flex shrink-0 items-center gap-1.5 text-muted-foreground text-xs">
-						<kbd
-							class="inline-flex h-4 min-w-4 items-center justify-center rounded border border-border bg-card px-1 font-medium font-sans text-[10px]"
-							>esc</kbd
-						>
+						<kbd class={styles.kbd()}>esc</kbd>
 						close
 					</span>
 				</div>

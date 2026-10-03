@@ -127,9 +127,11 @@ import { MagnetLinesDemo } from "./auto/magnet-lines";
 import { MaskTextDemo } from "./auto/mask-text";
 import { OgAuthorProfileDemo } from "./auto/og-author-profile";
 import { OgBlogPostDemo } from "./auto/og-blog-post";
+import { OgBrandDemo } from "./auto/og-brand";
 import { OgChangelogDemo } from "./auto/og-changelog";
 import { OgDocsPageDemo } from "./auto/og-docs-page";
 import { OgGithubRepoDemo } from "./auto/og-github-repo";
+import { OgLandingDemo } from "./auto/og-landing";
 import { OrbitCardStackDemo } from "./auto/orbit-card-stack";
 import { ParticleTextDemo } from "./auto/particle-text";
 import { ScrollChoreographyDemo } from "./auto/scroll-choreography";
@@ -278,9 +280,11 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"number-input": NumberInputDemo,
 	"og-author-profile": OgAuthorProfileDemo,
 	"og-blog-post": OgBlogPostDemo,
+	"og-brand": OgBrandDemo,
 	"og-changelog": OgChangelogDemo,
 	"og-docs-page": OgDocsPageDemo,
 	"og-github-repo": OgGithubRepoDemo,
+	"og-landing": OgLandingDemo,
 	"og-newsletter-issue": OgNewsletterIssueDemo,
 	"orbit-card-stack": OrbitCardStackDemo,
 	"overview-card": OverviewCardDemo,

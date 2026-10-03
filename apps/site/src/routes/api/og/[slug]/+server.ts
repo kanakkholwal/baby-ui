@@ -22,7 +22,10 @@ const loader = templateLoader({
 });
 
 const fontsPromise = googleFonts({
-	families: [{ name: "Inter", weight: [400, 500, 600, 700] }],
+	families: [
+		{ name: "Inter", weight: [400, 500, 600, 700] },
+		{ name: "JetBrains Mono", weight: [400, 500, 700] },
+	],
 });
 
 export const GET: RequestHandler = async ({ params, url, request }) => {

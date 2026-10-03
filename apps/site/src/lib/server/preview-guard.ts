@@ -7,6 +7,7 @@ const IMAGE_HOSTS = new Set([
 	"i.pravatar.cc",
 	"cdn.simpleicons.org",
 	"avatars.githubusercontent.com",
+	"cdn.vibrant.design",
 ]);
 
 export function sameOrigin(request: Request, url: URL): boolean {

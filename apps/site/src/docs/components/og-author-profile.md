@@ -1,15 +1,18 @@
 ---
 title: OG Author Profile
-description: A 1200x630 author card with avatar panel, name, role, bio, handle and stats, rendered to PNG with takumi.
+description: A 1200x630 author card as an avatar panel, a tilted boarding pass or a staggered editorial bio, rendered to PNG with takumi.
 component: og-author-profile
 category: og-images
-tags: [og, open graph, social card, author, profile]
+tags: [og, open graph, social card, author, profile, boarding pass]
 ---
 
 A fixed 1200x630 canvas built from flex layout and your theme tokens, so it renders the same in
-the browser and in [takumi](https://takumi.kane.tw). Name clamps to two lines, bio to two, stats
-show the first three. No avatar falls back to initials. `mode` picks a light or dark card; `tone`
-colours the avatar panel and accents.
+the browser and in [takumi](https://takumi.kane.tw).
+
+- `default`: avatar panel, name, role, bio, stat row. No avatar falls back to initials.
+- `pass`: a tilted ticket; `stats` become the flight fields, `label` captions the name.
+- `editorial`: name and bio as staggered lines over a tone circle; each `\n` in `bio` starts a line.
+- `tone` colours one accent per layout. `pass` needs JetBrains Mono loaded in the renderer.
 
 ## Render it to PNG
 
@@ -25,7 +28,12 @@ import { ImageResponse } from "takumi-js/response";
 import OgAuthorProfile from "$lib/components/og/og-author-profile/og-author-profile.svelte";
 import css from "../../../app.css?inline";
 
-const fonts = googleFonts({ families: [{ name: "Inter", weight: [400, 600, 700] }] });
+const fonts = googleFonts({
+	families: [
+		{ name: "Inter", weight: [400, 600, 700] },
+		{ name: "JetBrains Mono", weight: [400, 500] },
+	],
+});
 
 export async function GET({ url }) {
 	const { head, body } = render(OgAuthorProfile, {
@@ -44,7 +52,12 @@ import { googleFonts } from "takumi-js/helpers";
 import { ImageResponse } from "takumi-js/response";
 import { OgAuthorProfile } from "@/components/og/og-author-profile/og-author-profile";
 
-const fonts = googleFonts({ families: [{ name: "Inter", weight: [400, 600, 700] }] });
+const fonts = googleFonts({
+	families: [
+		{ name: "Inter", weight: [400, 600, 700] },
+		{ name: "JetBrains Mono", weight: [400, 500] },
+	],
+});
 
 export async function GET(request: Request) {
 	const name = new URL(request.url).searchParams.get("name") ?? "";

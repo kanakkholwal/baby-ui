@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useMemo, useState } from "react";
+import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from "react";
 import type { DateRange, Matcher } from "react-day-picker";
 import { Button } from "../button/button";
 import { button } from "../button/variants";
@@ -18,6 +18,7 @@ import { DateSegments, useFieldDraft } from "../date-field/segments";
 import { dateField } from "../date-field/variants";
 import { FieldError } from "../field/field";
 import { cn } from "../lib/cn";
+import { type PillBox, pillStyle, pressedBox } from "../lib/pill";
 import { Popover, PopoverContent, PopoverTrigger } from "../popover/popover";
 import { RangeCalendar } from "../range-calendar/range-calendar";
 import {
@@ -74,6 +75,59 @@ function useWideScreen() {
 		return () => query.removeEventListener("change", sync);
 	}, []);
 	return wide;
+}
+
+/** The preset rail: one pressed preset at most, marked by a fill that slides between them. */
+export function DateRangePickerPresets({
+	presets,
+	label,
+	selected,
+	onPick,
+}: {
+	presets: DateRangePreset[];
+	label: string;
+	selected: DateRangeParts | null;
+	onPick: (range: DateRangeParts) => void;
+}) {
+	const s = dateRangePicker();
+	const rail = useRef<HTMLFieldSetElement>(null);
+	const today = todayParts();
+	const [box, setBox] = useState<PillBox | null>(null);
+	const [ready, setReady] = useState(false);
+	const pressedKey = presets.find((p) => sameRange(selected, p.range(today)))?.label;
+
+	useLayoutEffect(() => {
+		setBox(pressedBox(rail.current));
+	}, [pressedKey, presets]);
+
+	// Placed before it may slide, so the first paint never sweeps in from the corner.
+	useEffect(() => {
+		if (!box || ready) return;
+		const frame = requestAnimationFrame(() => setReady(true));
+		return () => cancelAnimationFrame(frame);
+	}, [box, ready]);
+
+	return (
+		<fieldset ref={rail} aria-label={label} className={s.rail()}>
+			<span
+				aria-hidden
+				data-ready={ready ? "" : undefined}
+				className={s.pill()}
+				style={pillStyle(box)}
+			/>
+			{presets.map((preset) => (
+				<button
+					key={preset.label}
+					type="button"
+					aria-pressed={preset.label === pressedKey}
+					onClick={() => onPick(preset.range(today))}
+					className={s.preset()}
+				>
+					{preset.label}
+				</button>
+			))}
+		</fieldset>
+	);
 }
 
 /** Segmented start and end dates, with a two-month calendar (one on phones) and presets. */
@@ -151,7 +205,6 @@ export function DateRangePicker({
 			isOutsideRange(committed.to, minParts, maxParts));
 	const error = reversed ? labels.reversed : outside ? labels.outOfRange : null;
 
-	const today = todayParts();
 	const matchers: Matcher[] = [
 		...(min ? [{ before: min }] : []),
 		...(max ? [{ after: max }] : []),
@@ -226,29 +279,16 @@ export function DateRangePicker({
 					</PopoverTrigger>
 					<PopoverContent align="end" className={s.content()}>
 						{presets.length ? (
-							<fieldset aria-label={labels.presets} className={s.rail()}>
-								{presets.map((preset) => {
-									const range = preset.range(today);
-									return (
-										<button
-											key={preset.label}
-											type="button"
-											aria-pressed={sameRange(rangeParts(shown), range)}
-											onClick={() => {
-												pick({
-													from: fromDateParts(range.from),
-													to: fromDateParts(range.to),
-												});
-												// Show where the range starts, so a preset never lands off screen.
-												setMonth(fromDateParts(range.from));
-											}}
-											className={s.preset()}
-										>
-											{preset.label}
-										</button>
-									);
-								})}
-							</fieldset>
+							<DateRangePickerPresets
+								presets={presets}
+								label={labels.presets}
+								selected={rangeParts(shown)}
+								onPick={(range) => {
+									pick({ from: fromDateParts(range.from), to: fromDateParts(range.to) });
+									// Show where the range starts, so a preset never lands off screen.
+									setMonth(fromDateParts(range.from));
+								}}
+							/>
 						) : null}
 						<div className={s.main()}>
 							<RangeCalendar

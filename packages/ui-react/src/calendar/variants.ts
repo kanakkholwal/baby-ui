@@ -12,7 +12,29 @@ export const calendar = tv({
 			"size-7 select-none rounded-full p-0 text-muted-foreground hover:text-foreground disabled:opacity-50 aria-disabled:opacity-50 rtl:rotate-180",
 		header:
 			"flex h-(--cell-size) w-full items-center justify-start gap-1 ps-1.5 pe-16 font-medium text-sm",
-		heading: "select-none font-medium text-foreground text-sm",
+		heading: "calendar-caption-in select-none font-medium text-foreground text-sm",
+		// Month and year open their grids; the chevron turns with the grid it opened.
+		captionButton: [
+			"group/caption inline-flex h-7 select-none items-center gap-1 rounded-md px-1.5 font-medium text-foreground text-sm outline-none",
+			"transition-[background-color,color,scale] duration-150 ease-[var(--ease-out)] hover:bg-foreground/[0.06] active:scale-[var(--press-scale-sm)]",
+			"focus-visible:ring-2 focus-visible:ring-ring aria-expanded:bg-foreground/[0.06] motion-reduce:transition-none",
+			"[&>svg]:size-3.5 [&>svg]:text-muted-foreground [&>svg]:transition-[rotate] [&>svg]:duration-200 [&>svg]:ease-[var(--ease-out)] aria-expanded:[&>svg]:rotate-180",
+		],
+		captionYear:
+			"text-muted-foreground tabular-nums hover:text-foreground aria-expanded:text-foreground",
+		captionText: "calendar-caption-in inline-block",
+		// The chooser overlays the hidden day grid, so switching views never resizes the calendar.
+		stage: "relative",
+		hiddenGrid: "invisible",
+		// Cells match the caption buttons: compact pills centred in a 4 by 3 grid.
+		choices:
+			"calendar-choices-in absolute inset-0 grid min-w-0 grid-cols-4 grid-rows-3 place-items-center",
+		choice: [
+			"calendar-choice-in flex h-7 min-w-12 select-none items-center justify-center rounded-md px-2 text-[13px] text-foreground tabular-nums outline-none",
+			"transition-[background-color,color,scale] [transition-duration:100ms,100ms,250ms] ease-[var(--ease-out)] hover:bg-foreground/[0.06] active:scale-[var(--press-scale-sm)]",
+			"focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-40 motion-reduce:active:scale-100",
+			"data-[current]:font-medium data-[current]:text-primary data-[selected]:bg-primary data-[selected]:font-medium data-[selected]:text-primary-foreground data-[selected]:hover:bg-primary-hover",
+		],
 		grid: "calendar-weeks-in flex w-full border-collapse flex-col",
 		gridRow: "flex w-full",
 		headCell:
@@ -42,6 +64,10 @@ export const calendar = tv({
 			"[&:has([data-range-start])]:rounded-s-full [&:has([data-range-start])]:bg-foreground/[0.06]",
 			"[&:has([data-range-end])]:rounded-e-full [&:has([data-range-end])]:bg-foreground/[0.06]",
 			"first:[&:has([data-range-middle])]:rounded-s-full last:[&:has([data-range-middle])]:rounded-e-full",
+			// The previewed end: a fainter track that fades as it follows the pointer.
+			"transition-[background-color] duration-150 ease-[var(--ease-out)] motion-reduce:transition-none",
+			"[&:has([data-highlighted]:not([data-selected]))]:bg-foreground/[0.04]",
+			"first:[&:has([data-highlighted])]:rounded-s-full last:[&:has([data-highlighted])]:rounded-e-full",
 		],
 		rangeDay:
 			"data-[range-middle]:rounded-none data-[range-middle]:bg-transparent data-[range-middle]:text-foreground",

@@ -7,8 +7,11 @@ tags: [og, open graph, social card, blog]
 ---
 
 A fixed 1200x630 canvas built from flex layout and your theme tokens, so it renders the same in
-the browser and in [takumi](https://takumi.kane.tw). Title clamps to three lines, excerpt to two.
-`mode` picks a light or dark card regardless of the page theme; `tone` colours the glow.
+the browser and in [takumi](https://takumi.kane.tw).
+
+- `default`: full-bleed hairlines, category with a `tone` dot, title, excerpt and byline.
+- `cover`: a centred stack (mono wordmark, `category` as the lead line, title) over `cover`, faded in.
+- `mode` picks a light or dark card regardless of the page theme. `cover` needs JetBrains Mono.
 
 ## Render it to PNG
 
@@ -24,7 +27,12 @@ import { ImageResponse } from "takumi-js/response";
 import OgBlogPost from "$lib/components/og/og-blog-post/og-blog-post.svelte";
 import css from "../../../app.css?inline";
 
-const fonts = googleFonts({ families: [{ name: "Inter", weight: [400, 600, 700] }] });
+const fonts = googleFonts({
+	families: [
+		{ name: "Inter", weight: [400, 600, 700] },
+		{ name: "JetBrains Mono", weight: [500] },
+	],
+});
 
 export async function GET({ url }) {
 	const { head, body } = render(OgBlogPost, {
@@ -43,7 +51,12 @@ import { googleFonts } from "takumi-js/helpers";
 import { ImageResponse } from "takumi-js/response";
 import { OgBlogPost } from "@/components/og/og-blog-post/og-blog-post";
 
-const fonts = googleFonts({ families: [{ name: "Inter", weight: [400, 600, 700] }] });
+const fonts = googleFonts({
+	families: [
+		{ name: "Inter", weight: [400, 600, 700] },
+		{ name: "JetBrains Mono", weight: [500] },
+	],
+});
 
 export async function GET(request: Request) {
 	const title = new URL(request.url).searchParams.get("title") ?? "";

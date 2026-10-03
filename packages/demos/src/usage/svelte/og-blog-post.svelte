@@ -2,4 +2,4 @@
 import { OgBlogPost } from "@baby-ui/svelte";
 </script>
 
-<OgBlogPost title="Designing motion that respects the reader" site="baby ui" />
+<OgBlogPost title="Designing motion that respects the reader" site="Acme" />

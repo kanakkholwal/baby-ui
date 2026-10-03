@@ -1,48 +1,51 @@
 import { defineComponent } from "../index.ts";
 
 const MODES = ["light", "dark"];
-const TONES = ["chart", "primary", "neutral"];
+const TONES = ["neutral", "chart", "primary"];
+const VARIANTS = ["default", "cover"];
 
 export const ogBlogPost = defineComponent({
 	slug: "og-blog-post",
 	name: "OG Blog Post",
 	description:
-		"A 1200x630 blog post card: publication, category, title, excerpt and a byline, rendered to PNG with takumi.",
+		"A 1200x630 blog post card: an editorial hairline layout with a byline, or a centred stack over a faded cover image.",
 	category: "og-images",
 	status: "stable",
 	demo: { mode: "auto", frame: "og" },
-	variants: { mode: MODES, tone: TONES },
+	variants: { variant: VARIANTS, mode: MODES, tone: TONES },
 	props: [
 		{
 			name: "title",
 			type: "string",
-			description: "Post title; clamps to three lines.",
+			description: "Post title; clamps to three lines (two in `cover`).",
 			required: true,
-			default: "Designing motion that respects the reader",
-			control: { kind: "text" },
+			control: { kind: "text", placeholder: "Post title" },
 		},
 		{
 			name: "site",
 			type: "string",
-			description: "Publication name, top left.",
+			description: "Publication name; top left, or centred in `cover`.",
 			required: true,
-			default: "baby ui",
-			control: { kind: "text" },
+			control: { kind: "text", placeholder: "Publication" },
 		},
 		{
 			name: "excerpt",
 			type: "string",
-			description: "One or two lines under the title; clamps to two.",
-			default:
-				"Exits mirror entrances, springs settle fast, and reduced motion gets its own path.",
-			control: { kind: "text" },
+			description: "Under the title; clamps to two lines (one in `cover`).",
+			control: { kind: "text", placeholder: "Excerpt" },
 		},
 		{
 			name: "category",
 			type: "string",
-			description: "Pill, top right.",
-			default: "Engineering",
-			control: { kind: "text" },
+			description:
+				"Top right with a tone dot; the muted lead line over the title in `cover`.",
+			control: { kind: "text", placeholder: "Category" },
+		},
+		{
+			name: "cover",
+			type: "string",
+			description: "Image URL faded in under the text in `cover`.",
+			control: { kind: "none" },
 		},
 		{
 			name: "author",
@@ -71,16 +74,22 @@ export const ogBlogPost = defineComponent({
 		{
 			name: "mode",
 			type: MODES.map((v) => `"${v}"`).join(" | "),
-			description: "Light or dark card, independent of the page theme.",
-			default: "light",
+			description:
+				"Light or dark card, independent of the page theme. Defaults to light.",
 			control: { kind: "select", options: MODES },
 		},
 		{
 			name: "tone",
 			type: TONES.map((v) => `"${v}"`).join(" | "),
-			description: "Colour of the corner glow.",
-			default: "chart",
+			description: "Colour of the category dot. Defaults to neutral.",
 			control: { kind: "select", options: TONES },
+		},
+		{
+			name: "variant",
+			type: VARIANTS.map((v) => `"${v}"`).join(" | "),
+			description: "Editorial hairline card, or a centred stack over a cover image.",
+			default: "default",
+			control: { kind: "select", options: VARIANTS },
 		},
 	],
 	motion: {
@@ -88,6 +97,7 @@ export const ogBlogPost = defineComponent({
 		reducedMotion: "A static image; nothing moves.",
 		behaviour: [
 			"Fixed 1200x630 canvas built only from flex layout and theme tokens, so takumi renders it the same as the browser.",
+			"`cover` uses the JetBrains Mono wordmark; load it in the renderer alongside Inter.",
 			"`mode` scopes the dark tokens to the card itself, so a dark card renders from a light page and vice versa.",
 		],
 	},
@@ -117,5 +127,5 @@ export const ogBlogPost = defineComponent({
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 	},
-	keywords: ["og", "open graph", "social card", "blog", "takumi", "image"],
+	keywords: ["og", "open graph", "social card", "blog", "cover", "takumi", "image"],
 });

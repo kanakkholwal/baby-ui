@@ -17,7 +17,7 @@ let {
 	date,
 	highlights,
 	mode = "light",
-	tone = "chart",
+	tone = "neutral",
 	class: className,
 }: {
 	/** Release version, e.g. "v2.4.0"; also drawn as the background numeral. */

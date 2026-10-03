@@ -1,87 +1,134 @@
 <script lang="ts">
-import { IconSearch } from "@baby-ui/icons";
+import {
+	IconBackground,
+	IconBook,
+	IconChartBar,
+	IconComponents,
+	IconLayoutColumns,
+	IconLayoutGrid,
+	IconMail,
+	IconPhoto,
+	IconRobot,
+	IconSearch,
+	IconSparkles,
+	IconStack2,
+	IconTypography,
+} from "@baby-ui/icons";
+import type { Category } from "@baby-ui/registry-schema";
 import {
 	Button,
 	Command,
+	CommandBar,
 	CommandDialog,
 	CommandEmpty,
+	CommandFilter,
+	CommandFilters,
+	CommandFooter,
 	CommandGroup,
-	CommandHeader,
+	CommandHint,
 	CommandInput,
 	CommandItem,
 	CommandList,
 	Shortcut,
 } from "@baby-ui/svelte";
+import type { Component } from "svelte";
 import { goto } from "$app/navigation";
 import { track } from "$lib/analytics";
-import { type DocsHit, searchDocs } from "$lib/docs-search";
-import { type CatalogItem, loadCatalog, searchItems } from "$lib/registry";
+import { CATEGORY_LABEL, type CatalogItem, loadCatalog } from "$lib/registry";
+import { scoreEntry } from "$lib/search-score";
 
 let open = $state(false);
+let filter = $state("all");
 let query = $state("");
-let hits = $state<DocsHit[]>([]);
 let mac = $state(false);
+let catalog = $state<CatalogItem[]>([]);
 
-const GUIDES = [
-	{
-		href: "/docs",
-		name: "Introduction",
-		description: "What Baby UI is and how it installs",
-	},
+const PAGES = [
+	{ href: "/docs", name: "Introduction", keywords: "docs about overview" },
 	{
 		href: "/docs/installation",
 		name: "Installation",
-		description: "Set up a project and add components with the shadcn CLI",
+		keywords: "setup cli shadcn install",
 	},
-	{
-		href: "/docs/theming",
-		name: "Theming",
-		description: "Colour, dark mode and motion variables",
-	},
-	{ href: "/components", name: "All components", description: "Browse the registry" },
+	{ href: "/docs/theming", name: "Theming", keywords: "tokens colours dark mode motion" },
+	{ href: "/components", name: "All components", keywords: "browse registry catalog" },
 ];
 
-let catalog = $state<CatalogItem[]>([]);
+const CATEGORY_ICON: Record<Category, Component<{ size?: number }>> = {
+	base: IconComponents,
+	blocks: IconLayoutColumns,
+	advanced: IconStack2,
+	animated: IconSparkles,
+	agents: IconRobot,
+	text: IconTypography,
+	backgrounds: IconBackground,
+	charts: IconChartBar,
+	"og-images": IconPhoto,
+	emails: IconMail,
+};
 
 // The catalog is fetched on first open, so pages don't carry every component's metadata.
 $effect(() => {
 	if (open && !catalog.length) void loadCatalog().then((items) => (catalog = items));
 });
 
-const groups = $derived.by(() => {
-	const items = searchItems(catalog);
-	const names = [...new Set(items.map((item) => item.group))];
-	return names.map((name) => ({
-		name,
-		items: items.filter((item) => item.group === name),
-	}));
-});
-
 $effect(() => {
 	mac = navigator.platform.toLowerCase().includes("mac");
 });
 
-// Full-text hits from docvia, beside the command filter's matches on names and descriptions.
+// Each new open starts on everything, like a fresh search.
 $effect(() => {
-	const q = query.trim();
-	if (q.length < 2) {
-		hits = [];
-		return;
-	}
-	let stale = false;
-	const timer = setTimeout(async () => {
-		try {
-			const next = await searchDocs(q, await loadCatalog());
-			if (!stale) hits = next;
-		} catch {
-			if (!stale) hits = [];
-		}
-	}, 120);
-	return () => {
-		stale = true;
-		clearTimeout(timer);
-	};
+	if (!open) return;
+	filter = "all";
+	query = "";
 });
+
+type Entry = { name: string; href: string; keywords: string };
+type Section = {
+	id: string;
+	label: string;
+	icon: Component<{ size?: number }>;
+	items: Entry[];
+};
+
+// Docs first, then categories in order; titles and tags only, never prose.
+const sections = $derived<Section[]>([
+	{ id: "docs", label: "Docs", icon: IconBook, items: PAGES },
+	...(Object.keys(CATEGORY_ICON) as Category[])
+		.map((category) => ({
+			id: category,
+			label: CATEGORY_LABEL[category],
+			icon: CATEGORY_ICON[category],
+			items: catalog
+				.filter((item) => item.category === category)
+				.sort((x, y) => x.name.localeCompare(y.name))
+				.map((item) => ({
+					name: item.name,
+					href: item.href,
+					keywords: [item.slug, ...item.keywords].join(" "),
+				})),
+		}))
+		.filter((section) => section.items.length > 0),
+]);
+
+const best = (section: Section) =>
+	Math.max(
+		0,
+		...section.items.map((item) => scoreEntry(item.name, item.keywords, query)),
+	);
+
+// While typing, the section holding the best match leads, so an exact title is never buried.
+const shown = $derived(
+	sections
+		.filter((section) => filter === "all" || section.id === filter)
+		.map((section) => ({ section, score: query.trim() ? best(section) : 1 }))
+		.filter(({ score }) => score > 0)
+		.sort((x, y) => y.score - x.score)
+		.map(({ section }) => section),
+);
+
+const rank = (value: string, search: string, keywords?: string[]) =>
+	scoreEntry(value, keywords?.join(" ") ?? "", search);
 
 function go(href: string) {
 	open = false;
@@ -104,66 +151,49 @@ function go(href: string) {
 	<Shortcut shortcut="mod+k" ontrigger={() => (open = !open)} class="hidden" />
 </Button>
 
-<CommandDialog bind:open variant="framed">
-	<Command>
-		<CommandHeader>Search</CommandHeader>
-		<CommandInput
-			placeholder="Search components and docs…"
-			oninput={(e) => (query = e.currentTarget.value)}
-		/>
-		<CommandList>
-			<CommandEmpty>Nothing matches that.</CommandEmpty>
-			{#if hits.length}
-				<CommandGroup heading="In the docs" forceMount>
-					{#each hits as hit (hit.href)}
-						<CommandItem
-							value={hit.section ? `${hit.page} › ${hit.section}` : hit.page}
-							forceMount
-							onclick={() => go(hit.href)}
-						>
-							<span class="min-w-0">
-								<span class="block truncate">
-									{hit.page}{#if hit.section}{" "}<span class="text-muted-foreground">› {hit.section}</span>{/if}
-								</span>
-								<span class="line-clamp-2 text-muted-foreground text-xs">{hit.snippet}</span>
-							</span>
-						</CommandItem>
-					{/each}
-				</CommandGroup>
-			{/if}
-			<CommandGroup heading="Guides">
-				{#each GUIDES as guide (guide.href)}
-					<CommandItem value={guide.name} keywords={guide.description} onclick={() => go(guide.href)}>
-						<span class="min-w-0">
-							<span class="block truncate">{guide.name}</span>
-							<span class="block truncate text-muted-foreground text-xs">
-								{guide.description}
-							</span>
-						</span>
-					</CommandItem>
+<CommandDialog
+	bind:open
+	variant="launcher"
+	label="Search"
+	description="Search the docs and every component."
+	class="w-[min(48rem,calc(100vw-2rem))]"
+>
+	<Command filter={rank}>
+		<CommandBar>
+			<CommandInput
+				placeholder="Search the library…"
+				hint={mac ? "⌘K" : "Ctrl K"}
+				oninput={(e) => (query = e.currentTarget.value)}
+			/>
+			<CommandFilters bind:value={filter} label="Show">
+				<CommandFilter value="all" label="Everything"><IconLayoutGrid size={16} /></CommandFilter>
+				<CommandFilter value="docs" label="Docs"><IconBook size={16} /></CommandFilter>
+				{#each sections.slice(1) as section (section.id)}
+					{@const Icon = section.icon}
+					<CommandFilter value={section.id} label={section.label}><Icon size={16} /></CommandFilter>
 				{/each}
-			</CommandGroup>
-			{#each groups as group (group.name)}
-				<CommandGroup heading={group.name}>
-					{#each group.items as item (item.href)}
-						<CommandItem
-							value={item.name}
-							keywords={item.keywords}
-							onclick={() => go(item.href)}
-						>
-							<span class="min-w-0">
-								<span class="block truncate">{item.name}</span>
-								<span class="block truncate text-muted-foreground text-xs">
-									{item.description}
-								</span>
-							</span>
+			</CommandFilters>
+		</CommandBar>
+		<CommandList class="max-h-[min(24rem,52dvh)]">
+			<CommandEmpty>Nothing matches that.</CommandEmpty>
+			{#each shown as section (section.id)}
+				{@const Icon = section.icon}
+				<CommandGroup heading={section.label}>
+					{#each section.items as item (item.href)}
+						<CommandItem value={item.name} keywords={item.keywords} onclick={() => go(item.href)}>
+							<Icon size={16} />
+							{item.name}
 						</CommandItem>
 					{/each}
 				</CommandGroup>
 			{/each}
 		</CommandList>
-		<p class="shrink-0 border-border border-t px-4 py-2 text-[11px] text-muted-foreground">
-			Enter to open · Escape to close
-		</p>
+		<CommandFooter>
+			<span class="flex items-center gap-4">
+				<CommandHint keys={["↑", "↓"]}>Move</CommandHint>
+				<CommandHint keys={["↵"]}>Open</CommandHint>
+			</span>
+			<CommandHint keys={["Esc"]}>Close</CommandHint>
+		</CommandFooter>
 	</Command>
 </CommandDialog>

@@ -1,7 +1,7 @@
 import { defineComponent } from "../index.ts";
 
 const MODES = ["light", "dark"];
-const TONES = ["chart", "primary", "neutral"];
+const TONES = ["neutral", "chart", "primary"];
 
 export const ogChangelog = defineComponent({
 	slug: "og-changelog",
@@ -68,7 +68,7 @@ export const ogChangelog = defineComponent({
 			name: "tone",
 			type: TONES.map((v) => `"${v}"`).join(" | "),
 			description: "Colour of the version pill and the timeline head.",
-			default: "chart",
+			default: "neutral",
 			control: { kind: "select", options: TONES },
 		},
 	],
@@ -77,7 +77,7 @@ export const ogChangelog = defineComponent({
 		reducedMotion: "A static image; nothing moves.",
 		behaviour: [
 			"Fixed 1200x630 canvas built only from flex layout and theme tokens, so takumi renders it the same as the browser.",
-			"Markers use the success, info, warning and destructive tokens, so they follow the theme in both modes.",
+			"Marker chips stay neutral; only their icons take the success, info, warning and destructive tokens.",
 		],
 	},
 	a11y: {

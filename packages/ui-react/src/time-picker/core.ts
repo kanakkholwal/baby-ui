@@ -57,6 +57,20 @@ export function timeOutOfRange(
 	return false;
 }
 
+export type ClockHands = { hour: number; minute: number };
+
+/** Hand angles in degrees for the field's clock icon; an empty field keeps the resting pose. */
+export function clockHands(value: TimeValue | null): ClockHands {
+	const parts = parseTime(value);
+	if (!parts) return { hour: 135, minute: 0 };
+	return { hour: (parts.hour % 12) * 30 + parts.minute / 2, minute: parts.minute * 6 };
+}
+
+/** The angle nearest `from` that points like `to`, so a hand never sweeps the long way round. */
+export function nearestTurn(from: number, to: number): number {
+	return from + ((((to - from) % 360) + 540) % 360) - 180;
+}
+
 /** Local-now formatted as `HH:mm`, for the optional quick-set button. */
 export function nowAsTimeValue(now = new Date()): TimeValue {
 	return formatTime({ hour: now.getHours(), minute: now.getMinutes() });

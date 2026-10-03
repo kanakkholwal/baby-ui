@@ -37,6 +37,17 @@ const popoverMotion = {
 	behaviour: [
 		...segmentMotion.behaviour,
 		"The calendar opens on the shared anchored contract: zoom from 0.9 and a 4px lean, 150ms in, 100ms out.",
+		"The calendar button stays tinted while open; picking a range end previews a fainter track first.",
+	],
+};
+
+const timeMotion = {
+	springs: [],
+	reducedMotion: "The hands jump to the new time.",
+	behaviour: [
+		...segmentMotion.behaviour,
+		"The clock icon's hands point at the value and sweep the short way round over 300ms.",
+		"The clear button pops in from 0.75 when the field gains a value.",
 	],
 };
 
@@ -298,6 +309,7 @@ export const dateRangePicker = defineComponent({
 				{ path: "date-range-picker/core.ts", type: "registry:ui" },
 				{ path: "date-range-picker/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
+				{ path: "lib/pill.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "react-day-picker"],
 			registryDependencies: [
@@ -312,9 +324,14 @@ export const dateRangePicker = defineComponent({
 			entry: "DateRangePicker",
 			files: [
 				{ path: "date-range-picker/date-range-picker.svelte", type: "registry:ui" },
+				{
+					path: "date-range-picker/date-range-picker-presets.svelte",
+					type: "registry:ui",
+				},
 				{ path: "date-range-picker/core.ts", type: "registry:ui" },
 				{ path: "date-range-picker/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
+				{ path: "lib/pill.ts", type: "registry:lib" },
 			],
 			dependencies: svelteDeps,
 			registryDependencies: [
@@ -397,7 +414,7 @@ export const timePicker = defineComponent({
 			control: { kind: "none" },
 		},
 	],
-	motion: segmentMotion,
+	motion: timeMotion,
 	a11y: {
 		keyboard: [...segmentKeys, "A or P sets the period"],
 		notes: [
@@ -422,6 +439,7 @@ export const timePicker = defineComponent({
 			entry: "TimePicker",
 			files: [
 				{ path: "time-picker/time-picker.svelte", type: "registry:ui" },
+				{ path: "time-picker/time-picker-clock.svelte", type: "registry:ui" },
 				{ path: "time-picker/core.ts", type: "registry:ui" },
 				{ path: "time-picker/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },

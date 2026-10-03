@@ -36,7 +36,7 @@ export function OgDocsPage({
 	snippet,
 	filename,
 	mode = "light",
-	tone = "chart",
+	tone = "neutral",
 	motif = "code",
 	className,
 }: OgDocsPageProps) {
@@ -47,7 +47,6 @@ export function OgDocsPage({
 	return (
 		<div data-slot="og-docs-page" className={cn(s.root(), className)}>
 			<div className={s.dots()} />
-			<div className={s.glow()} />
 			<div className={s.column()}>
 				<div className={s.brand()}>
 					{logo ? <img src={logo} alt="" className={s.logo()} /> : null}

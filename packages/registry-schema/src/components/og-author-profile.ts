@@ -1,81 +1,96 @@
 import { defineComponent } from "../index.ts";
 
 const MODES = ["light", "dark"];
-const TONES = ["chart", "primary", "neutral"];
+const TONES = ["neutral", "chart", "primary"];
+const VARIANTS = ["default", "pass", "editorial"];
 
 export const ogAuthorProfile = defineComponent({
 	slug: "og-author-profile",
 	name: "OG Author Profile",
 	description:
-		"A 1200x630 author card: large avatar on a tone panel, name, role, bio, handle and a stat row, rendered to PNG with takumi.",
+		"A 1200x630 author card: an avatar panel with a stat row, a tilted boarding pass, or a staggered editorial bio.",
 	category: "og-images",
 	status: "stable",
 	demo: { mode: "auto", frame: "og" },
-	variants: { mode: MODES, tone: TONES },
+	variants: { variant: VARIANTS, mode: MODES, tone: TONES },
 	props: [
 		{
 			name: "name",
 			type: "string",
-			description: "Author name; clamps to two lines.",
+			description: "Author name; clamps to two lines (one on the pass).",
 			required: true,
-			default: "Ada Park",
-			control: { kind: "text" },
+			control: { kind: "text", placeholder: "Name" },
 		},
 		{
 			name: "role",
 			type: "string",
-			description: "Role or title under the name.",
-			default: "Staff Engineer at Acme",
-			control: { kind: "text" },
+			description: "Role under the name; the tone-coloured second line on the pass.",
+			control: { kind: "text", placeholder: "Role" },
+			showWhen: { variant: ["default", "pass"] },
 		},
 		{
 			name: "bio",
 			type: "string",
-			description: "One or two lines of bio; clamps to two.",
-			default:
-				"Writes about design systems, motion and the craft of shipping small, sharp tools.",
-			control: { kind: "text" },
+			description:
+				"Bio; clamps to two lines. In `editorial` each line break starts a staggered line.",
+			control: { kind: "text", placeholder: "Bio" },
 		},
 		{
 			name: "handle",
 			type: "string",
 			description:
-				"Social handle in a pill, top right; a leading @ is dropped since the icon draws one.",
-			default: "@adapark",
-			control: { kind: "text" },
+				"Handle in a pill, top right (leading @ dropped); the motto beside the site on the pass.",
+			control: { kind: "text", placeholder: "@handle" },
+			showWhen: { variant: ["default", "pass"] },
 		},
 		{
 			name: "site",
 			type: "string",
 			description: "Site or publication name, top left.",
-			default: "baby ui",
-			control: { kind: "text" },
+			control: { kind: "text", placeholder: "Site" },
+			showWhen: { variant: ["default", "pass"] },
+		},
+		{
+			name: "label",
+			type: "string",
+			description: 'Caption over the name, e.g. "Author", or "Passenger" on the pass.',
+			control: { kind: "text", placeholder: "Label" },
+			showWhen: { variant: ["default", "pass"] },
 		},
 		{
 			name: "avatar",
 			type: "string",
-			description: "Avatar image URL; initials from the name when absent.",
+			description:
+				"Avatar image URL; initials from the name when absent. The emblem beside the site on the pass.",
 			control: { kind: "none" },
 		},
 		{
 			name: "stats",
 			type: "{ value: string; label: string }[]",
-			description: "Up to three pre-formatted stats along the bottom.",
+			description:
+				"Up to three pre-formatted stats along the bottom; the flight fields on the pass.",
 			control: { kind: "none" },
 		},
 		{
 			name: "mode",
 			type: MODES.map((v) => `"${v}"`).join(" | "),
-			description: "Light or dark card, independent of the page theme.",
-			default: "light",
+			description:
+				"Light or dark card, independent of the page theme. Defaults to light.",
 			control: { kind: "select", options: MODES },
 		},
 		{
 			name: "tone",
 			type: TONES.map((v) => `"${v}"`).join(" | "),
-			description: "Colour of the avatar panel and accents.",
-			default: "chart",
+			description:
+				"Accent: role and handle icon, the pass stripes and labels, the editorial circle. Defaults to neutral.",
 			control: { kind: "select", options: TONES },
+		},
+		{
+			name: "variant",
+			type: VARIANTS.map((v) => `"${v}"`).join(" | "),
+			description: "Avatar panel card, tilted boarding pass, or staggered editorial bio.",
+			default: "default",
+			control: { kind: "select", options: VARIANTS },
 		},
 	],
 	motion: {
@@ -84,6 +99,7 @@ export const ogAuthorProfile = defineComponent({
 		behaviour: [
 			"Fixed 1200x630 canvas built only from flex layout and theme tokens, so takumi renders it the same as the browser.",
 			"`mode` scopes the dark tokens to the card itself, so a dark card renders from a light page and vice versa.",
+			"The pass tilts with a 2D rotate (the renderer has no 3D transforms) and sets its type in JetBrains Mono.",
 		],
 	},
 	a11y: {

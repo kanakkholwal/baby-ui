@@ -1,7 +1,7 @@
 import { defineComponent } from "../index.ts";
 
 const MODES = ["light", "dark"];
-const TONES = ["chart", "primary", "neutral"];
+const TONES = ["neutral", "chart", "primary"];
 const MOTIFS = ["code", "terminal"];
 
 export const ogDocsPage = defineComponent({
@@ -74,8 +74,8 @@ export const ogDocsPage = defineComponent({
 		{
 			name: "tone",
 			type: TONES.map((v) => `"${v}"`).join(" | "),
-			description: "Colour of the glow, current breadcrumb and prompt.",
-			default: "chart",
+			description: "Colour of the current breadcrumb, prompt and placeholder accents.",
+			default: "neutral",
 			control: { kind: "select", options: TONES },
 		},
 		{

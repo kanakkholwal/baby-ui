@@ -17,7 +17,7 @@ let {
 	snippet,
 	filename,
 	mode = "light",
-	tone = "chart",
+	tone = "neutral",
 	motif = "code",
 	class: className,
 }: {
@@ -45,7 +45,6 @@ const shell = $derived(motif === "terminal");
 
 <div data-slot="og-docs-page" class={cn(s.root(), className)}>
 	<div class={s.dots()}></div>
-	<div class={s.glow()}></div>
 	<div class={s.column()}>
 		<div class={s.brand()}>
 			{#if logo}<img src={logo} alt="" class={s.logo()} />{/if}

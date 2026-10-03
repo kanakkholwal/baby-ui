@@ -142,6 +142,14 @@ Any agent (Claude Code, Codex, Cursor, Copilot) should read this file first.
   removing collapsed rows immediately and was fixed to match. Enforce on every new component
   with this shape from the start, same standing as the controlled-component and variant-axis
   HARD RULEs above.
+- **HARD RULE:** micro-interactions and micro-animations everywhere (user, 2026-10-03). Every
+  interactive part answers the user: presses scale (`--press-scale*`), the active item's
+  indicator slides between options instead of repainting, views that page or swap (months,
+  years, tabs, scopes) slide in the direction of travel with a short blur-fade, chevrons rotate
+  with their disclosure, values that change (counts, totals, times) roll or tick, and key caps
+  in hints depress with their key. Frequency still decides size: keyboard-repeated motion
+  (arrow keys, palette open) snaps, pointer-driven motion may glide. Reduced motion drops the
+  movement and keeps the colour and opacity change.
 - `transition-[...]` arbitrary lists must name `scale`, `translate` and `rotate` when they
   animate them (`rotate-90` sets the standalone `rotate` property); `transition-transform`
   already covers all three.

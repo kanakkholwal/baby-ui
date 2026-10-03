@@ -3,8 +3,7 @@ import { tv, type VariantProps } from "tailwind-variants";
 export const ogDocsPage = tv({
 	slots: {
 		root: "relative flex h-[630px] w-[1200px] overflow-hidden bg-background font-sans text-foreground",
-		dots: "absolute inset-y-0 right-0 w-[640px] bg-[radial-gradient(var(--border)_2px,transparent_2px)] bg-[size:32px_32px]",
-		glow: "absolute top-[120px] right-[40px] h-[420px] w-[520px] rounded-full opacity-50 blur-[110px]",
+		dots: "absolute inset-y-0 right-0 w-[640px] bg-[radial-gradient(var(--border)_2px,transparent_2px)] bg-[size:32px_32px] [mask-image:linear-gradient(to_right,transparent,black_40%)]",
 		column: "relative flex w-[640px] flex-col p-[72px] pr-0",
 		brand: "flex items-center gap-4 font-semibold text-[28px] tracking-tight",
 		site: "line-clamp-1",
@@ -37,23 +36,20 @@ export const ogDocsPage = tv({
 			dark: { root: "dark" },
 		},
 		tone: {
+			neutral: {
+				crumbCurrent: "text-foreground underline decoration-2 underline-offset-8",
+				prompt: "text-muted-foreground",
+				boneAccent: "bg-muted-foreground",
+			},
 			chart: {
-				glow: "bg-chart-2",
 				crumbCurrent: "text-chart-2",
 				prompt: "text-chart-2",
 				boneAccent: "bg-chart-2",
 			},
 			primary: {
-				glow: "bg-primary",
 				crumbCurrent: "text-primary",
 				prompt: "text-primary",
 				boneAccent: "bg-primary",
-			},
-			neutral: {
-				glow: "bg-muted-foreground/40",
-				crumbCurrent: "text-foreground underline decoration-2 underline-offset-8",
-				prompt: "text-muted-foreground",
-				boneAccent: "bg-muted-foreground",
 			},
 		},
 		motif: {
@@ -61,7 +57,7 @@ export const ogDocsPage = tv({
 			terminal: { window: "dark bg-background text-foreground", gutter: "hidden" },
 		},
 	},
-	defaultVariants: { mode: "light", tone: "chart", motif: "code" },
+	defaultVariants: { mode: "light", tone: "neutral", motif: "code" },
 });
 
 /** Placeholder line widths (px) drawn when no snippet is passed. */

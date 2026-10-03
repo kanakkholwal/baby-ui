@@ -56,11 +56,21 @@ function resolveModule(from, spec) {
 /** Named exports read from syntax alone, fast enough to rerun on every save. `declared` marks
  * names defined here (not re-exported), which picks the owning file when two export one name. */
 export function exportsOf(path, seen = new Set()) {
-	const mtime = statSync(path).mtimeMs;
 	const hit = cache.get(path);
-	if (hit && hit.mtime === mtime) return hit.names;
+	// A hit is stale when any re-exported file changed, not just this one.
+	if (
+		hit &&
+		[...hit.stamps].every(([file, t]) => existsSync(file) && statSync(file).mtimeMs === t)
+	)
+		return hit.names;
 	if (seen.has(path)) return [];
 	seen.add(path);
+	const stamps = new Map([[path, statSync(path).mtimeMs]]);
+	const follow = (target) => {
+		const found = exportsOf(target, seen);
+		for (const [file, t] of cache.get(target)?.stamps ?? []) stamps.set(file, t);
+		return found;
+	};
 
 	const kind = path.endsWith(".tsx") ? ts.ScriptKind.TSX : ts.ScriptKind.TS;
 	const source = ts.createSourceFile(
@@ -107,7 +117,7 @@ export function exportsOf(path, seen = new Set()) {
 	const lookup = (from, name) => {
 		const target = resolveModule(path, from);
 		if (!target) return false;
-		return exportsOf(target, seen).find((n) => n.name === name)?.type ?? false;
+		return follow(target).find((n) => n.name === name)?.type ?? false;
 	};
 
 	for (const node of source.statements) {
@@ -117,8 +127,7 @@ export function exportsOf(path, seen = new Set()) {
 			if (!node.exportClause && from) {
 				const target = resolveModule(path, from);
 				if (target) {
-					for (const n of exportsOf(target, seen))
-						push(n.name, n.type || node.isTypeOnly, false);
+					for (const n of follow(target)) push(n.name, n.type || node.isTypeOnly, false);
 				}
 				continue;
 			}
@@ -156,6 +165,6 @@ export function exportsOf(path, seen = new Set()) {
 			}
 		}
 	}
-	cache.set(path, { mtime, names });
+	cache.set(path, { stamps, names });
 	return names;
 }

@@ -3,6 +3,12 @@ import { type DateValue, isEqualMonth } from "@internationalized/date";
 import { RangeCalendar as CalendarPrimitive } from "bits-ui";
 import type { Snippet } from "svelte";
 import type { ButtonVariant } from "../button/variants";
+import CalendarChooser from "../calendar/calendar-chooser.svelte";
+import CalendarChooserNav from "../calendar/calendar-chooser-nav.svelte";
+import {
+	CalendarChooserState,
+	setCalendarChooser,
+} from "../calendar/chooser-state.svelte";
 import type { WithoutChildren } from "../calendar/types";
 import {
 	type CalendarCaptionLayout,
@@ -35,27 +41,36 @@ let {
 	captionLayout = "label",
 	size = "md",
 	locale = "en-US",
-	months: monthsProp,
-	years,
-	monthFormat: monthFormatProp,
+	minValue,
+	maxValue,
+	monthFormat,
 	yearFormat = "numeric",
 	day,
 	disableDaysOutsideMonth = false,
 	...rest
 }: WithoutChildren<CalendarPrimitive.RootProps> & {
 	buttonVariant?: ButtonVariant;
+	/** The dropdown layouts turn month and year into buttons that open month and year grids. */
 	captionLayout?: CalendarCaptionLayout;
 	size?: CalendarSize;
-	months?: CalendarPrimitive.MonthSelectProps["months"];
-	years?: CalendarPrimitive.YearSelectProps["years"];
 	monthFormat?: CalendarPrimitive.MonthSelectProps["monthFormat"];
 	yearFormat?: CalendarPrimitive.YearSelectProps["yearFormat"];
 	day?: Snippet<[{ day: DateValue; outsideMonth: boolean }]>;
 } = $props();
 
-const monthFormat = $derived(
-	monthFormatProp ?? (captionLayout.startsWith("dropdown") ? "short" : "long"),
-);
+const chooser = new CalendarChooserState({
+	placeholder: () => placeholder,
+	setPlaceholder: (next) => {
+		placeholder = next;
+	},
+	locale: () => locale,
+	minValue: () => minValue,
+	maxValue: () => maxValue,
+});
+setCalendarChooser(chooser);
+
+const styles = calendar();
+const days = $derived(chooser.view === "days");
 </script>
 
 <CalendarPrimitive.Root
@@ -65,60 +80,65 @@ const monthFormat = $derived(
 	{weekdayFormat}
 	{disableDaysOutsideMonth}
 	{locale}
-	{monthFormat}
-	{yearFormat}
+	{minValue}
+	{maxValue}
 	data-slot="range-calendar"
+	data-calendar-motion={chooser.motion}
 	class={cn(calendar({ size }).root(), classProp)}
 	{...rest}
 >
 	{#snippet children({ months, weekdays })}
 		<RangeCalendarMonths>
 			<RangeCalendarNav>
-				<RangeCalendarPrevButton variant={buttonVariant} />
-				<RangeCalendarNextButton variant={buttonVariant} />
+				{#if days}
+					<RangeCalendarPrevButton variant={buttonVariant} />
+					<RangeCalendarNextButton variant={buttonVariant} />
+				{:else}
+					<CalendarChooserNav variant={buttonVariant} />
+				{/if}
 			</RangeCalendarNav>
 			{#each months as month, monthIndex (month)}
 				<RangeCalendarMonth>
 					<RangeCalendarHeader>
 						<RangeCalendarCaption
 							{captionLayout}
-							months={monthsProp}
 							{monthFormat}
-							{years}
 							{yearFormat}
 							month={month.value}
-							bind:placeholder
 							{locale}
 							{monthIndex}
 						/>
 					</RangeCalendarHeader>
-					<!-- Re-keyed per month so the weeks replay calendar-weeks-in instead of snapping. -->
-					{#key month.value.toString()}
-					<RangeCalendarGrid>
-						<RangeCalendarGridHead>
-							<RangeCalendarGridRow class="select-none">
-								{#each weekdays as weekday, i (i)}
-									<RangeCalendarHeadCell>{weekday.slice(0, 2)}</RangeCalendarHeadCell>
-								{/each}
-							</RangeCalendarGridRow>
-						</RangeCalendarGridHead>
-						<RangeCalendarGridBody>
-							{#each month.weeks as weekDates (weekDates)}
-								<RangeCalendarGridRow class="mt-2">
-									{#each weekDates as date (date)}
-										<RangeCalendarCell {date} month={month.value}>
-											{#if day}
-												{@render day({ day: date, outsideMonth: !isEqualMonth(date, month.value) })}
-											{:else}
-												<RangeCalendarDay />
-											{/if}
-										</RangeCalendarCell>
+					<!-- The grid keeps its footprint under the chooser; re-keyed so it replays its entrance. -->
+					<div class={styles.stage()}>
+						{#key `${month.value}-${days}`}
+						<RangeCalendarGrid inert={!days} class={days ? undefined : styles.hiddenGrid()}>
+							<RangeCalendarGridHead>
+								<RangeCalendarGridRow class="select-none">
+									{#each weekdays as weekday, i (i)}
+										<RangeCalendarHeadCell>{weekday.slice(0, 2)}</RangeCalendarHeadCell>
 									{/each}
 								</RangeCalendarGridRow>
-							{/each}
-						</RangeCalendarGridBody>
-					</RangeCalendarGrid>
-					{/key}
+							</RangeCalendarGridHead>
+							<RangeCalendarGridBody>
+								{#each month.weeks as weekDates (weekDates)}
+									<RangeCalendarGridRow class="mt-2">
+										{#each weekDates as date (date)}
+											<RangeCalendarCell {date} month={month.value}>
+												{#if day}
+													{@render day({ day: date, outsideMonth: !isEqualMonth(date, month.value) })}
+												{:else}
+													<RangeCalendarDay />
+												{/if}
+											</RangeCalendarCell>
+										{/each}
+									</RangeCalendarGridRow>
+								{/each}
+							</RangeCalendarGridBody>
+						</RangeCalendarGrid>
+						{/key}
+						{#if !days && monthIndex === 0}<CalendarChooser />{/if}
+					</div>
 				</RangeCalendarMonth>
 			{/each}
 		</RangeCalendarMonths>

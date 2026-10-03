@@ -42,7 +42,7 @@ export function OgChangelog({
 	date,
 	highlights,
 	mode = "light",
-	tone = "chart",
+	tone = "neutral",
 	className,
 }: OgChangelogProps) {
 	const s = ogChangelog({ mode, tone });

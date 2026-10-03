@@ -42,21 +42,22 @@ export const ogChangelog = tv({
 			},
 		},
 	},
-	defaultVariants: { mode: "light", tone: "chart" },
+	defaultVariants: { mode: "light", tone: "neutral" },
 });
 
+// Chips stay neutral so three entries never read as three accents; the icon carries the kind.
 export const ogChangelogMarker = tv({
 	slots: {
 		marker:
-			"flex w-[150px] shrink-0 items-center justify-center gap-2 rounded-xl py-1.5 font-semibold text-[20px]",
+			"flex w-[150px] shrink-0 items-center justify-center gap-2 rounded-xl border border-border py-1.5 font-semibold text-[20px] text-foreground",
 		icon: "h-5 w-5",
 	},
 	variants: {
 		kind: {
-			added: { marker: "bg-success/15 text-success" },
-			changed: { marker: "bg-info/15 text-info" },
-			fixed: { marker: "bg-warning/15 text-warning" },
-			removed: { marker: "bg-destructive/15 text-destructive" },
+			added: { icon: "text-success" },
+			changed: { icon: "text-info" },
+			fixed: { icon: "text-warning" },
+			removed: { icon: "text-destructive" },
 		},
 	},
 	defaultVariants: { kind: "added" },

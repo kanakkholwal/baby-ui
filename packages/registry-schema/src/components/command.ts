@@ -39,20 +39,23 @@ export const command = defineComponent({
 		},
 		{
 			name: "variant",
-			type: '"default" | "framed"',
+			type: '"default" | "framed" | "launcher" | "spotlight"',
 			description:
-				"`framed` insets the search input and results in the same rim as Dialog. `default` is a single flat surface, matching shadcn/ui's cmdk-based Command.",
+				"`default` is plain shadcn: one surface, a soft input, flat rows. `framed` puts a titled rim around an inset card. `launcher` pairs a pill search with an icon filter tray (CommandFilters) and key hints (CommandFooter). `spotlight` is a large input under scope chips.",
 			default: "default",
-			control: { kind: "select", options: ["default", "framed"] },
+			control: {
+				kind: "select",
+				options: ["default", "framed", "launcher", "spotlight"],
+			},
 		},
 	],
 	motion: {
 		springs: [],
-		reducedMotion:
-			"The panel fades in place instead of dropping from above its shortcut.",
+		reducedMotion: "Closing snaps instead of fading.",
 		behaviour: [
-			"The panel scales and drops from above its shortcut, same duration tokens as Dialog.",
-			"A single marker glides between rows on arrow keys, rather than repainting a background per row.",
+			"Opening is instant: the palette is a keyboard shortcut used many times a day. Closing fades over the exit token.",
+			"One marker sits under the active row and snaps between rows, since arrow keys repeat too fast for motion to help. `default` paints the row itself, as shadcn does.",
+			"Filter tooltips open after a short delay; once one is open, the next opens instantly.",
 			"The highlight resets to the first result on every keystroke.",
 		],
 	},
@@ -87,6 +90,7 @@ export const command = defineComponent({
 				{ path: "command/score.ts", type: "registry:ui" },
 				{ path: "command/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
+				{ path: "lib/pill.ts", type: "registry:lib" },
 			],
 			dependencies: [
 				"clsx",
@@ -95,8 +99,8 @@ export const command = defineComponent({
 				"cmdk",
 				"@base-ui/react",
 			],
-			// Reuses Dialog's dialogFrame backdrop and DialogVariant type.
-			registryDependencies: ["dialog"],
+			// Dialog's backdrop; ToggleGroup and Tooltip build the filter tray.
+			registryDependencies: ["dialog", "toggle-group", "tooltip"],
 		},
 		svelte: {
 			entry: "Command",
@@ -104,6 +108,11 @@ export const command = defineComponent({
 				{ path: "command/command.svelte", type: "registry:ui" },
 				{ path: "command/command-dialog.svelte", type: "registry:ui" },
 				{ path: "command/command-header.svelte", type: "registry:ui" },
+				{ path: "command/command-bar.svelte", type: "registry:ui" },
+				{ path: "command/command-filters.svelte", type: "registry:ui" },
+				{ path: "command/command-filter.svelte", type: "registry:ui" },
+				{ path: "command/command-footer.svelte", type: "registry:ui" },
+				{ path: "command/command-hint.svelte", type: "registry:ui" },
 				{ path: "command/command-input.svelte", type: "registry:ui" },
 				{ path: "command/command-list.svelte", type: "registry:ui" },
 				{ path: "command/command-empty.svelte", type: "registry:ui" },
@@ -115,10 +124,11 @@ export const command = defineComponent({
 				{ path: "command/score.ts", type: "registry:ui" },
 				{ path: "command/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
+				{ path: "lib/pill.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "bits-ui"],
-			// Reuses Dialog's dialogFrame backdrop and DialogVariant type.
-			registryDependencies: ["dialog"],
+			// Dialog's backdrop; ToggleGroup and Tooltip build the filter tray.
+			registryDependencies: ["dialog", "toggle-group", "tooltip"],
 		},
 	},
 	keywords: ["command"],

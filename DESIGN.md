@@ -46,6 +46,14 @@ Motion is CSS-only. Exits undercut entrances; reduced motion keeps opacity and d
 | Check and dot | Menu checkbox/radio rows, Select, MultiSelect, RadioGroup | tick draws (stroke-dashoffset), dot pops 0.7 to 1, 250ms | reverse | linear / `--ease-out-quart` |
 | Chip | MultiSelect, TagInput | pops in from 0.95, 200ms | removed at once | `--ease-out` |
 | Indicator | Tabs, ToggleGroup | 250ms slide | 250ms | `--ease-drawer` |
+| Filter pill (`lib/pill.ts`) | Command filters and scopes, DateRangePicker presets | 250ms slide between options | 250ms | `--ease-out` |
+| Row marker | Command | snaps on keys; glides 150ms when the pointer moves it | snaps | `--ease-out` |
+| Key cap | Command hints | 1px press while its key is held | 100ms | `--ease-out` |
+
+Micro-interactions everywhere: every interactive part answers. Presses scale, the active
+option's indicator slides instead of repainting, paging views slide the way they travel, chevrons
+rotate with their disclosure, changing values roll or tick. Keyboard-repeated motion snaps;
+pointer-driven motion may glide.
 
 Tokens:
 
@@ -69,11 +77,22 @@ Tokens:
 
 - Fields are segmented (month, day, year, hour, minute, period). Literals are muted, empty
   segments show a placeholder, the focused segment takes a soft primary tint.
-- Calendars read the month from the start edge with prev/next together at the end; the grid
-  fades and rises 4px when the month changes. Today is a soft primary tint, selected a fill.
+- Calendars read the month from the start edge with prev/next together at the end. Paging
+  slides the weeks and caption the way they travel with a blur-fade. Today is a soft primary
+  tint, selected a fill.
+- Dropdown captions are month and year buttons opening a 4 by 3 month or year grid. The grid
+  overlays the hidden day grid, so the calendar never resizes; cells are caption-sized pills
+  (`h-7`, 13px), the page zooms out on open and back in on pick, and focus returns to the button.
 - Pickers open their calendar on `ANCHORED`.
 
 ## Icons
 
 - `@baby-ui/icons`: Solar line-duotone and linear (rounded corners), brands from Simple Icons.
 - Chevrons and table-of-contents glyphs are linear, never duotone.
+
+## OG images
+
+- One accent mark per card (a dot, a period, a circle, a wash); canvases stay foreground and background.
+- No blurred corner glows or grid-plus-glow backdrops. `tone` defaults to `neutral`.
+- Colour-led layouts (`og-brand` pipes and mesh) draw only from `--chart-1..5`.
+- Renderer limits: 2D transforms only, no `.ico` images, SVG colours via `currentColor`.

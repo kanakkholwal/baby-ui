@@ -5,11 +5,13 @@ import type { dateField } from "../date-field/variants";
 export const dateRangePicker = tv({
 	slots: {
 		content: "flex w-auto max-w-[calc(100vw-2rem)] flex-col p-0 sm:flex-row",
-		rail: "flex min-w-0 gap-1 overflow-x-auto border-border border-b p-2 sm:w-36 sm:flex-col sm:overflow-visible sm:border-e sm:border-b-0",
+		rail: "relative flex min-w-0 gap-1 overflow-x-auto border-border border-b p-2 sm:w-36 sm:flex-col sm:overflow-visible sm:border-e sm:border-b-0",
+		// Slides to the pressed preset instead of each preset repainting its own fill.
+		pill: "pointer-events-none absolute top-0 left-0 rounded-md bg-foreground/[0.08] data-[ready]:transition-[translate,width,height] data-[ready]:duration-250 data-[ready]:ease-[var(--ease-out)] motion-reduce:transition-none",
 		preset: [
-			"shrink-0 whitespace-nowrap rounded-md px-2.5 py-1.5 text-left text-muted-foreground text-sm outline-none",
-			"transition-colors duration-100 hover:bg-foreground/[0.06] hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring",
-			"aria-pressed:bg-foreground/[0.06] aria-pressed:text-foreground motion-reduce:transition-none",
+			"relative shrink-0 whitespace-nowrap rounded-md px-2.5 py-1.5 text-left text-muted-foreground text-sm outline-none",
+			"transition-[color,background-color,scale] duration-150 ease-[var(--ease-out)] active:scale-[var(--press-scale-sm)] motion-reduce:transition-none",
+			"not-aria-pressed:hover:bg-foreground/[0.04] hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring aria-pressed:text-foreground",
 		],
 		main: "flex min-w-0 flex-col",
 		footer: "flex justify-end gap-2 border-border border-t p-2",

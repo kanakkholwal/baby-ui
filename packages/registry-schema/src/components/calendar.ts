@@ -14,6 +14,7 @@ const a11y = {
 		"Page Up and Page Down move to the previous or next month",
 		"Home and End jump to the start or end of the week",
 		"Enter or Space selects the focused day",
+		"In the month and year grids, arrows move between cells and Escape returns to the days",
 	],
 	notes: [
 		"Grid semantics, focus and keyboard come from react-day-picker (React) and bits-ui (Svelte).",
@@ -23,22 +24,27 @@ const a11y = {
 
 const motion = {
 	springs: [],
-	reducedMotion: "Day hover colour changes without a transition.",
-	behaviour: ["Days change colour on hover over 100ms; months swap without animation."],
+	reducedMotion: "Views and months cross-fade over 120ms without travel or blur.",
+	behaviour: [
+		"Paging slides the weeks and caption 14px the way they travel, with a 2px blur-fade, 240ms.",
+		"Opening the month or year grid zooms out from the days; picking zooms back in, 260ms.",
+		"Month and year cells stagger in 14ms apart; days and cells squish on press.",
+	],
 };
 
 export const calendar = defineComponent({
 	slug: "calendar",
 	name: "Calendar",
 	description:
-		"Date grid with month and year dropdowns, keyboard navigation and shadcn's API.",
+		"Date grid with month and year grids, direction-aware paging and shadcn's API.",
 	category: "base",
 	status: "stable",
 	props: [
 		{
 			name: "captionLayout",
 			type: '"label" | "dropdown" | "dropdown-months" | "dropdown-years"',
-			description: "Plain heading, or native month and year selects in the caption.",
+			description:
+				"Plain heading, or month and year buttons that open month and year grids.",
 			default: "label",
 			control: {
 				kind: "select",
@@ -66,6 +72,7 @@ export const calendar = defineComponent({
 			entry: "Calendar",
 			files: [
 				{ path: "calendar/calendar.tsx", type: "registry:ui" },
+				{ path: "calendar/chooser.ts", type: "registry:ui" },
 				{ path: "calendar/types.ts", type: "registry:ui" },
 				{ path: "calendar/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
@@ -79,6 +86,8 @@ export const calendar = defineComponent({
 				{ path: "calendar/calendar.svelte", type: "registry:ui" },
 				{ path: "calendar/calendar-caption.svelte", type: "registry:ui" },
 				{ path: "calendar/calendar-cell.svelte", type: "registry:ui" },
+				{ path: "calendar/calendar-chooser.svelte", type: "registry:ui" },
+				{ path: "calendar/calendar-chooser-nav.svelte", type: "registry:ui" },
 				{ path: "calendar/calendar-day.svelte", type: "registry:ui" },
 				{ path: "calendar/calendar-grid.svelte", type: "registry:ui" },
 				{ path: "calendar/calendar-grid-body.svelte", type: "registry:ui" },
@@ -94,6 +103,8 @@ export const calendar = defineComponent({
 				{ path: "calendar/calendar-next-button.svelte", type: "registry:ui" },
 				{ path: "calendar/calendar-prev-button.svelte", type: "registry:ui" },
 				{ path: "calendar/calendar-year-select.svelte", type: "registry:ui" },
+				{ path: "calendar/chooser.ts", type: "registry:ui" },
+				{ path: "calendar/chooser-state.svelte.ts", type: "registry:ui" },
 				{ path: "calendar/types.ts", type: "registry:ui" },
 				{ path: "calendar/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
