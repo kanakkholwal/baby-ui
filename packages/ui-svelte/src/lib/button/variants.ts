@@ -16,7 +16,7 @@ export const button = tv({
 	variants: {
 		variant: {
 			// Hover darkens toward --foreground: white on a lightened blue fell to 4.05:1.
-			default: "bg-primary text-primary-foreground hover:bg-primary-hover",
+			default: "bg-primary text-primary-foreground hover:bg-(--primary-hover)",
 			default_soft: "border-primary/10 bg-primary/8 text-primary hover:bg-primary/15",
 			secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
 			outline:

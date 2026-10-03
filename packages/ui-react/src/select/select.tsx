@@ -127,8 +127,8 @@ export function SelectContent({
 					className={cn(
 						ANCHORED,
 						menu().surface(),
-						// After the surface: a select matches its trigger, never the menus' min width.
-						"static z-50 max-h-[min(16rem,var(--available-height))] w-[var(--anchor-width)] min-w-0 overflow-x-hidden overflow-y-auto scroll-area",
+						// At least the trigger's width, growing to the longest option so labels never clip.
+						"static z-50 max-h-[min(16rem,var(--available-height))] w-max min-w-[var(--anchor-width)] max-w-[min(24rem,var(--available-width))] overflow-x-hidden overflow-y-auto scroll-area",
 						selectContent({ size }),
 						className,
 					)}

@@ -26,8 +26,8 @@ let {
 		class={cn(
 			ANCHORED,
 			menu().surface(),
-			// After the surface: a select matches its trigger, never the menus' min width.
-			"static z-50 max-h-[min(16rem,var(--bits-select-content-available-height))] w-[var(--bits-select-anchor-width)] min-w-0 overflow-x-hidden overflow-y-auto scroll-area",
+			// At least the trigger's width, growing to the longest option so labels never clip.
+			"static z-50 max-h-[min(16rem,var(--bits-select-content-available-height))] w-max min-w-[var(--bits-select-anchor-width)] max-w-[min(24rem,var(--bits-select-content-available-width))] overflow-x-hidden overflow-y-auto scroll-area",
 			selectContent({ size }),
 			classProp,
 		)}

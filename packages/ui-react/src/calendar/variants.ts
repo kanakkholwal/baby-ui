@@ -33,7 +33,7 @@ export const calendar = tv({
 			"calendar-choice-in flex h-7 min-w-12 select-none items-center justify-center rounded-md px-2 text-sm text-foreground tabular-nums outline-none",
 			"transition-[background-color,color,scale] [transition-duration:var(--duration-instant),var(--duration-instant),var(--duration-slow)] ease-[var(--ease-out)] hover:bg-foreground/[0.06] active:scale-[var(--press-scale-sm)]",
 			"focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-40 motion-reduce:active:scale-100",
-			"data-[current]:font-medium data-[current]:text-primary data-[selected]:bg-primary data-[selected]:font-medium data-[selected]:text-primary-foreground data-[selected]:hover:bg-primary-hover",
+			"data-[current]:font-medium data-[current]:text-primary data-[selected]:bg-primary data-[selected]:font-medium data-[selected]:text-primary-foreground data-[selected]:hover:bg-(--primary-hover)",
 		],
 		grid: "calendar-weeks-in flex w-full border-collapse flex-col",
 		gridRow: "flex w-full",
@@ -55,7 +55,7 @@ export const calendar = tv({
 			"data-[disabled]:pointer-events-none data-[disabled]:text-muted-foreground data-[disabled]:opacity-50",
 			"data-[unavailable]:text-muted-foreground data-[unavailable]:line-through",
 			"data-[selected]:not-data-[range-middle]:bg-primary data-[selected]:not-data-[range-middle]:text-primary-foreground",
-			"data-[selected]:not-data-[range-middle]:hover:bg-primary-hover",
+			"data-[selected]:not-data-[range-middle]:hover:bg-(--primary-hover)",
 			"motion-reduce:transition-none",
 		],
 		// The range track is a foreground tint: bg-muted equals card and popover, so it would vanish there.

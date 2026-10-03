@@ -81,7 +81,7 @@ const LAYOUTS: { id: PageLayout; label: string; icon: Icon }[] = [
 			<PropertyPanelGroup>
 				<PropertyPanelGroupLabel>Components</PropertyPanelGroupLabel>
 				<PropertyPanelGroupContent>
-					<Field orientation="horizontal" size="sm">
+					<Field size="sm">
 						<FieldLabel>Layout</FieldLabel>
 						<SegmentControl
 							size="sm"

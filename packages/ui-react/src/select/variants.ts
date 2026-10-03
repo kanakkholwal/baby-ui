@@ -25,17 +25,16 @@ export const selectTrigger = tv({
 	defaultVariants: { variant: "default", size: "default" },
 });
 
-// Pair with the trigger's size. Small lists grow to their rows, so a short trigger never clips them.
+// Pair with the trigger's size; every size grows past a short trigger to fit its rows.
 export const selectContent = tv({
 	variants: {
 		size: {
 			xs: [
-				"min-w-max rounded-lg",
+				"rounded-lg",
 				"**:data-[slot=select-item]:gap-3 **:data-[slot=select-item]:px-2 **:data-[slot=select-item]:py-1 **:data-[slot=select-item]:text-xs",
 				"[&_[data-slot=select-item]_svg]:size-3",
 			],
 			sm: [
-				"min-w-max",
 				"**:data-[slot=select-item]:gap-3 **:data-[slot=select-item]:py-1 **:data-[slot=select-item]:text-xs",
 				"[&_[data-slot=select-item]_svg]:size-3",
 			],
