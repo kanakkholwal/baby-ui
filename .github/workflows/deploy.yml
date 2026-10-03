@@ -16,37 +16,24 @@ env:
   BABY_UI_REGISTRY_URL: https://baby-ui.pages.dev
   WRANGLER_VERSION: "4.135.0"
 
+permissions:
+  contents: read
+
 jobs:
+  ci:
+    uses: ./.github/workflows/ci.yml
+
   deploy:
+    needs: ci
     runs-on: ubuntu-latest
     environment: production
     steps:
       - uses: actions/checkout@v6
-
-      - uses: pnpm/action-setup@v6
-
-      - uses: actions/setup-node@v6
+      - uses: ./.github/actions/setup
         with:
-          node-version: 22
-          cache: pnpm
+          build-caches: "true"
 
-      # registry-schema bundles with `bun build` and registry-build runs its CLI with
-      # `bun run`, so bun is part of the toolchain, not just a local convenience.
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: 1.3.14
-
-      - run: pnpm install --frozen-lockfile
-
-      - name: Lint and format
-        run: pnpm lint
-
-      - name: Comment and import gates, type-check
-        run: pnpm check
-
-      - name: Chart core tests
-        run: pnpm test:chart
-
+      # Rebuilt here rather than reused from CI: production URLs and keys are baked in.
       - name: Build site and registry
         run: pnpm build
         env:

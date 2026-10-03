@@ -1,46 +1,31 @@
-import { readdir, readFile } from "node:fs/promises";
-import { join, relative, resolve } from "node:path";
+import { readFile, writeFile } from "node:fs/promises";
+import { repoPath, sourceFiles } from "./lib/source-files.mjs";
 
 // House rule: relative imports carry no .js extension. Bundlers resolve them, and the
 // published registry output would otherwise ship a specifier a consumer has to fix.
-const ROOTS = ["packages", "apps", "scripts"];
-const SKIP = new Set([
-	"node_modules",
-	"dist",
-	".svelte-kit",
-	".docvia",
-	"build",
-	".turbo",
-	"static",
-	"public",
-]);
 const SOURCE = /\.(ts|tsx|svelte|mjs|js)$/;
-const RELATIVE = /(?:from|import)\s*\(?\s*["'](\.[^"']*)["']/g;
+const RELATIVE = /((?:from|import)\s*\(?\s*["'])(\.[^"']*?)\.jsx?(["'])/g;
 
-async function* walk(dir) {
-	for (const entry of await readdir(dir, { withFileTypes: true })) {
-		if (SKIP.has(entry.name)) continue;
-		const path = join(dir, entry.name);
-		if (entry.isDirectory()) yield* walk(path);
-		else if (SOURCE.test(entry.name) && !entry.name.endsWith(".d.ts")) yield path;
-	}
-}
-
+const args = process.argv.slice(2);
+const write = args.includes("--write");
 const problems = [];
-for (const root of ROOTS) {
-	for await (const file of walk(resolve(root))) {
-		const source = await readFile(file, "utf8");
-		for (const [, spec] of source.matchAll(RELATIVE)) {
-			if (/\.jsx?$/.test(spec)) {
-				problems.push(`${relative(process.cwd(), file)}: "${spec}"`);
-			}
-		}
+let fixed = 0;
+
+for (const file of await sourceFiles(args, SOURCE)) {
+	const source = await readFile(file, "utf8");
+	const matches = [...source.matchAll(RELATIVE)];
+	if (!matches.length) continue;
+	if (write) {
+		await writeFile(file, source.replace(RELATIVE, "$1$2$3"));
+		fixed += matches.length;
+		continue;
 	}
+	for (const [specifier] of matches) problems.push(`${repoPath(file)}: ${specifier}`);
 }
 
 if (problems.length) {
-	console.error("Relative imports must not carry a .js extension:");
+	console.error("Relative imports must not carry a .js extension (fix: --write):");
 	for (const p of problems) console.error(`  ${p}`);
 	process.exit(1);
 }
-console.log("Import extensions OK");
+console.log(fixed ? `Import extensions: removed ${fixed}` : "Import extensions OK");

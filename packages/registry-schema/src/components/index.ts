@@ -132,14 +132,26 @@ import { navigationMenu } from "./navigation-menu.ts";
 import { notchedShelf } from "./notched-shelf.ts";
 import { npmStatsBlock } from "./npm-stats.ts";
 import { numberInput } from "./number-input.ts";
-import { ogAuthorProfile } from "./og-author-profile.ts";
 import { ogBlogPost } from "./og-blog-post.ts";
-import { ogBrand } from "./og-brand.ts";
 import { ogChangelog } from "./og-changelog.ts";
 import { ogDocsPage } from "./og-docs-page.ts";
+import { ogEditorialBio } from "./og-editorial-bio.ts";
 import { ogGithubRepo } from "./og-github-repo.ts";
-import { ogLanding } from "./og-landing.ts";
+import { ogJobPosting } from "./og-job-posting.ts";
 import { ogNewsletterIssue } from "./og-newsletter-issue.ts";
+import { ogPodcastEpisode } from "./og-podcast-episode.ts";
+import { ogPricing } from "./og-pricing.ts";
+import { ogProductLaunch } from "./og-product-launch.ts";
+import { ogProductShop } from "./og-product-shop.ts";
+import { ogScatter } from "./og-scatter.ts";
+import { ogShowcase } from "./og-showcase.ts";
+import { ogSoftFocus } from "./og-soft-focus.ts";
+import { ogSplit } from "./og-split.ts";
+import { ogSpotlight } from "./og-spotlight.ts";
+import { ogStatsMetrics } from "./og-stats-metrics.ts";
+import { ogTestimonial } from "./og-testimonial.ts";
+import { ogTiltedScreen } from "./og-tilted-screen.ts";
+import { ogWordmark } from "./og-wordmark.ts";
 import { orbitCardStack } from "./orbit-card-stack.ts";
 import { overviewCard } from "./overview-card.ts";
 import { pagination } from "./pagination.ts";
@@ -376,14 +388,26 @@ export const specs: ComponentSpec[] = [
 	notchedShelf,
 	npmStatsBlock,
 	numberInput,
-	ogAuthorProfile,
 	ogBlogPost,
-	ogBrand,
 	ogChangelog,
 	ogDocsPage,
+	ogEditorialBio,
 	ogGithubRepo,
-	ogLanding,
+	ogJobPosting,
 	ogNewsletterIssue,
+	ogPodcastEpisode,
+	ogPricing,
+	ogProductLaunch,
+	ogProductShop,
+	ogScatter,
+	ogShowcase,
+	ogSoftFocus,
+	ogSplit,
+	ogSpotlight,
+	ogStatsMetrics,
+	ogTestimonial,
+	ogTiltedScreen,
+	ogWordmark,
 	orbitCardStack,
 	overviewCard,
 	pagination,

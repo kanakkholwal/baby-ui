@@ -46,6 +46,14 @@ layer for both ports, motion that respects `prefers-reduced-motion` throughout.
 - `pnpm install`, then `pnpm dev` (root) starts the docs site; `pnpm playground` starts the
   React/Svelte isolated runners. Every dev server runs through [portless](https://portless.sh),
   so it's `site.baby-ui.localhost` and friends, not a port to remember.
+- Run them from the root: turbo starts `gen:watch` (and `registry:watch` for the site) beside
+  Vite, so adding or removing a component regenerates indexes and registry JSON live. A
+  generator error is logged and retried on the next save; the dev server keeps running.
+- Each dev process logs its own memory (`site memory`, `gen: memory`, `registry watcher: memory`)
+  when it moves by 10%, and every registry rebuild prints its peak.
+- `pnpm install` sets up a pre-commit hook (lefthook) that strips `.js` from relative imports,
+  runs `biome check --write` and the comment gate on staged files, then re-stages the fixes.
+  `pnpm fix` does the same across the repo; `pnpm lint` checks without writing, as CI does.
 - `pnpm dev:list` / `pnpm dev:stop` show and clean up running dev servers.
 - `pnpm check`, `pnpm lint`, `pnpm build` run the same gates CI does.
 - Agent and contributor rules live in [`.agents/rules.md`](.agents/rules.md); deployment

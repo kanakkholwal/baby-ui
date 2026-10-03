@@ -15,6 +15,9 @@ the browser and in [takumi](https://takumi.kane.tw).
 
 ## Render it to PNG
 
+Register each font under the family name your `--font-*` tokens use; on a mismatch takumi
+silently falls back to the first font and the PNG stops matching the page.
+
 Install the renderer once: `pnpm add takumi-js`. Point `og:image` at the route with the post's
 fields in the query string.
 

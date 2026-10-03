@@ -4,10 +4,12 @@ packages:
   - "packages/*"
 
 # pnpm writes these as a placeholder and then refuses the install until they are
-# booleans. esbuild links its platform binary here; workerd is what wrangler runs.
+# booleans. esbuild links its platform binary here; workerd is what wrangler runs;
+# lefthook installs the git hooks from lefthook.yml (it skips itself when CI is set).
 allowBuilds:
   core-js: false
   esbuild: true
+  lefthook: true
   workerd: true
 
 # One version of everything, declared once. Packages reference these as

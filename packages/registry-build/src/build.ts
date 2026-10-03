@@ -24,6 +24,16 @@ function resolveRegistryDep(framework: Framework, dep: string): string {
 
 const EXPORT_FROM = /export\s+(?:type\s+)?\{[^}]*\}\s+from\s+"\.\/([^"]+)";/g;
 
+// Every item's barrel reads the same package index; one read per framework per build.
+const packageIndexes = new Map<Framework, Promise<string>>();
+function packageIndex(framework: Framework): Promise<string> {
+	const index =
+		packageIndexes.get(framework) ??
+		readFile(resolve(FRAMEWORK[framework].srcDir, "index.ts"), "utf8");
+	packageIndexes.set(framework, index);
+	return index;
+}
+
 /**
  * An `index.ts` for the item's own folder, re-exporting what the package index exports from
  * it, so `@/components/<dir>/<slug>` resolves. Only files this item ships are re-exported.
@@ -33,7 +43,7 @@ async function barrelFor(
 	folder: string,
 	shipped: Set<string>,
 ): Promise<string | null> {
-	const index = await readFile(resolve(FRAMEWORK[framework].srcDir, "index.ts"), "utf8");
+	const index = await packageIndex(framework);
 	const lines: string[] = [];
 	for (const match of index.matchAll(EXPORT_FROM)) {
 		const module = match[1] as string;

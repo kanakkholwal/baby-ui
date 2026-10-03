@@ -6,7 +6,7 @@ import { sveltekit } from "@sveltejs/kit/vite";
 import tailwindcss from "@tailwindcss/vite";
 import { FontaineTransform } from "fontaine";
 import { defineConfig, loadEnv, type Plugin, searchForWorkspaceRoot } from "vite";
-import { generate, watchRoots } from "../../scripts/generate.mjs";
+import { reportMemory } from "../../scripts/lib/memory.mjs";
 import docviaConfig from "./docvia.config.ts";
 
 const require = createRequire(import.meta.url);
@@ -25,26 +25,16 @@ const rendererSvelte = join(
 	"index.js",
 );
 
-/** Reruns `pnpm gen` (shared copies, indexes, auto demos, usage) while the dev server runs. */
-function generatedFiles(): Plugin {
-	const slash = (path: string) => path.replaceAll("\\", "/");
+/** The dev server's own memory, logged beside the gen and registry watchers' lines. */
+function devMemory(): Plugin {
 	return {
-		name: "baby-ui-generated-files",
-		buildStart() {
-			generate({ quiet: true });
-		},
+		name: "baby-ui-dev-memory",
+		apply: "serve",
 		configureServer(server) {
-			const roots = watchRoots();
-			server.watcher.add(roots);
-			const watched = roots.map(slash);
-			const sync = (file: string) => {
-				const path = slash(file);
-				// Its own outputs (indexes, manifests) change on every run; reacting would loop once.
-				if (!/\.(tsx?|svelte)$/.test(path) || /\/index\.tsx?$/.test(path)) return;
-				if (watched.some((root) => path.startsWith(root))) generate({ quiet: true });
-			};
-			for (const event of ["add", "change", "unlink"] as const)
-				server.watcher.on(event, sync);
+			const stop = reportMemory((line) =>
+				server.config.logger.info(`site ${line}`, { timestamp: true }),
+			);
+			server.httpServer?.once("close", stop);
 		},
 	};
 }
@@ -114,7 +104,7 @@ export default defineConfig(({ command, mode }) => {
 			},
 		},
 		plugins: [
-			generatedFiles(),
+			devMemory(),
 			// Size-adjusted fallback faces, so the font swap no longer moves the layout (CLS).
 			FontaineTransform.vite({
 				fallbacks: {

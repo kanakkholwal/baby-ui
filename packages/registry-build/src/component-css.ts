@@ -38,9 +38,9 @@ export async function cssFor(sources: string[]): Promise<Css | undefined> {
 		postcss.parse(raw.replace(/\r\n/g, "\n")),
 	);
 	const root = await parsed;
-	const text = sources.join("\n");
-	const used = (selector: string) =>
-		classesOf(selector).some((c) => new RegExp(`(^|[^\\w-])${c}([^\\w-]|$)`).test(text));
+	// A class counts as used when it appears as a whole [\w-] run in the sources.
+	const tokens = new Set(sources.join("\n").match(/[\w-]+/g));
+	const used = (selector: string) => classesOf(selector).some((c) => tokens.has(c));
 
 	const out: Css = {};
 	const animations = new Set<string>();

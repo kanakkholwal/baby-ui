@@ -13,6 +13,9 @@ The activity grid is decoration, not repository data; `tone` colours it and the 
 
 ## Render it to PNG
 
+Register each font under the family name your `--font-*` tokens use; on a mismatch takumi
+silently falls back to the first font and the PNG stops matching the page.
+
 Install the renderer once: `pnpm add takumi-js`. Point `og:image` at the route with the repo in
 the query string and fetch the rest from the GitHub API.
 

@@ -1,9 +1,9 @@
 import { defaultProps } from "@baby-ui/registry-schema";
 import { error } from "@sveltejs/kit";
 import { render } from "svelte/server";
-import { googleFonts } from "takumi-js/helpers";
 import { ImageResponse } from "takumi-js/response";
 import { proOgSample, proOgTemplates } from "$lib/pro";
+import { ogFonts } from "$lib/server/og-fonts";
 import { MAX_PROPS, safeUrls, sameOrigin } from "$lib/server/preview-guard";
 import { findSpec } from "$lib/server/registry";
 import { type TemplateModule, templateLoader } from "$lib/server/templates";
@@ -19,13 +19,6 @@ const loader = templateLoader({
 		"../../../../../../../packages/ui-svelte/src/lib/og-*/og-*.svelte",
 	),
 	...proOgTemplates,
-});
-
-const fontsPromise = googleFonts({
-	families: [
-		{ name: "Inter", weight: [400, 500, 600, 700] },
-		{ name: "JetBrains Mono", weight: [400, 500, 700] },
-	],
 });
 
 export const GET: RequestHandler = async ({ params, url, request }) => {
@@ -59,7 +52,7 @@ export const GET: RequestHandler = async ({ params, url, request }) => {
 		width: 1200,
 		height: 630,
 		css: layoutCss,
-		fonts: await fontsPromise,
+		fonts: await ogFonts(),
 		// private: a shared cache would replay the image to requests that skipped the origin check.
 		headers: { "cache-control": "private, max-age=3600" },
 	});

@@ -1,12 +1,17 @@
-import { existsSync, watch } from "node:fs";
+import { existsSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { flush, Output, ROOT, rel } from "./gen/core.mjs";
 import { autoDemos } from "./gen/demos.mjs";
 import { emailTheme } from "./gen/email-theme.mjs";
 import { indexes } from "./gen/indexes.mjs";
-import { isShared, sharedFiles } from "./gen/shared.mjs";
+import { sharedFiles } from "./gen/shared.mjs";
 import { usageFiles } from "./gen/usage.mjs";
+import { reportMemory } from "./lib/memory.mjs";
+import { watchAndRun } from "./lib/watch.mjs";
+
+// Per-root manifests and atomic-write temp files, rewritten by every run.
+const BOOKKEEPING = /(\.generated\.json|\.gitignore|\.tmp)$/;
 
 /** React is the source for every shared .ts; the Svelte port gets generated copies. */
 export const TARGETS = [
@@ -66,12 +71,14 @@ export function generate({ check = false, quiet = false } = {}) {
 }
 
 /** Folders whose edits can change generated output. */
-export function watchRoots() {
+function watchRoots() {
 	return [
 		"packages/ui-react/src",
 		"packages/ui-svelte/src/lib",
 		"packages/registry-schema/src/components",
 		"packages/demos/src",
+		// tokens.css feeds the generated email theme.
+		"packages/tokens/src",
 		...(HAS_PRO ? ["pro/packages/react/src"] : []),
 	].map((path) => join(ROOT, path));
 }
@@ -88,18 +95,20 @@ if (isMain) {
 		if (result.stale.length > 0 || result.conflicts.length > 0) process.exit(1);
 	} else {
 		// Conflicts are reported, never fatal here: `prepare` must not fail an install. --check fails.
-		generate();
+		let owned = new Set(generate().generated);
 		if (args.has("--watch")) {
-			let timer;
-			for (const dir of watchRoots()) {
-				watch(dir, { recursive: true }, (_event, file) => {
-					if (!file || /index\.tsx?$|\.gitignore$/.test(file)) return;
-					if (!/\.(tsx?|svelte)$/.test(file) && !isShared(file)) return;
-					clearTimeout(timer);
-					timer = setTimeout(() => generate(), 150);
-				});
-			}
+			watchAndRun({
+				roots: watchRoots(),
+				// Its own writes would retrigger it. A pruned file costs one extra run that writes nothing.
+				ignore: (path) => owned.has(path) || BOOKKEEPING.test(path),
+				run: () => {
+					owned = new Set(generate().generated);
+				},
+				onError: (error) =>
+					console.error(`gen failed, retrying on the next change: ${error.message}`),
+			});
 			console.log("gen: watching sources");
+			reportMemory((line) => console.log(`gen: ${line}`));
 		}
 	}
 }

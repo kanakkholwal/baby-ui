@@ -51,12 +51,13 @@ export async function verifySprings(
 }
 
 /** docvia applies one frontmatter schema to every collection, so it cannot require
- * `component`/`category` of component docs alone. Enforced here instead. */
+ * `component`/`category` of component docs alone. `missing` lists specs with no page yet. */
 export async function verifyComponentDocs(
 	specs: ComponentSpec[],
 	docsDir: string,
-): Promise<string[]> {
+): Promise<{ errors: string[]; missing: string[] }> {
 	const errors: string[] = [];
+	const missing: string[] = [];
 	const known = new Set(specs.map((s) => s.slug));
 	const seen = new Set<string>();
 
@@ -95,7 +96,7 @@ export async function verifyComponentDocs(
 
 	for (const spec of specs) {
 		if (!seen.has(spec.slug))
-			errors.push(`${spec.slug}: no doc page at docs/components/${spec.slug}.md`);
+			missing.push(`${spec.slug}: no doc page at docs/components/${spec.slug}.md`);
 	}
-	return errors;
+	return { errors, missing };
 }

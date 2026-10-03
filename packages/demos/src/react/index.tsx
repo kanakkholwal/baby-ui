@@ -125,13 +125,25 @@ import { GradientHero01Demo } from "./auto/gradient-hero-01";
 import { InfiniteImageFieldDemo } from "./auto/infinite-image-field";
 import { MagnetLinesDemo } from "./auto/magnet-lines";
 import { MaskTextDemo } from "./auto/mask-text";
-import { OgAuthorProfileDemo } from "./auto/og-author-profile";
 import { OgBlogPostDemo } from "./auto/og-blog-post";
-import { OgBrandDemo } from "./auto/og-brand";
 import { OgChangelogDemo } from "./auto/og-changelog";
 import { OgDocsPageDemo } from "./auto/og-docs-page";
+import { OgEditorialBioDemo } from "./auto/og-editorial-bio";
 import { OgGithubRepoDemo } from "./auto/og-github-repo";
-import { OgLandingDemo } from "./auto/og-landing";
+import { OgJobPostingDemo } from "./auto/og-job-posting";
+import { OgPodcastEpisodeDemo } from "./auto/og-podcast-episode";
+import { OgPricingDemo } from "./auto/og-pricing";
+import { OgProductLaunchDemo } from "./auto/og-product-launch";
+import { OgProductShopDemo } from "./auto/og-product-shop";
+import { OgScatterDemo } from "./auto/og-scatter";
+import { OgShowcaseDemo } from "./auto/og-showcase";
+import { OgSoftFocusDemo } from "./auto/og-soft-focus";
+import { OgSplitDemo } from "./auto/og-split";
+import { OgSpotlightDemo } from "./auto/og-spotlight";
+import { OgStatsMetricsDemo } from "./auto/og-stats-metrics";
+import { OgTestimonialDemo } from "./auto/og-testimonial";
+import { OgTiltedScreenDemo } from "./auto/og-tilted-screen";
+import { OgWordmarkDemo } from "./auto/og-wordmark";
 import { OrbitCardStackDemo } from "./auto/orbit-card-stack";
 import { ParticleTextDemo } from "./auto/particle-text";
 import { ScrollChoreographyDemo } from "./auto/scroll-choreography";
@@ -278,14 +290,26 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"notched-shelf": NotchedShelfDemo,
 	"npm-stats": NpmStatsDemo,
 	"number-input": NumberInputDemo,
-	"og-author-profile": OgAuthorProfileDemo,
 	"og-blog-post": OgBlogPostDemo,
-	"og-brand": OgBrandDemo,
 	"og-changelog": OgChangelogDemo,
 	"og-docs-page": OgDocsPageDemo,
+	"og-editorial-bio": OgEditorialBioDemo,
 	"og-github-repo": OgGithubRepoDemo,
-	"og-landing": OgLandingDemo,
+	"og-job-posting": OgJobPostingDemo,
 	"og-newsletter-issue": OgNewsletterIssueDemo,
+	"og-podcast-episode": OgPodcastEpisodeDemo,
+	"og-pricing": OgPricingDemo,
+	"og-product-launch": OgProductLaunchDemo,
+	"og-product-shop": OgProductShopDemo,
+	"og-scatter": OgScatterDemo,
+	"og-showcase": OgShowcaseDemo,
+	"og-soft-focus": OgSoftFocusDemo,
+	"og-split": OgSplitDemo,
+	"og-spotlight": OgSpotlightDemo,
+	"og-stats-metrics": OgStatsMetricsDemo,
+	"og-testimonial": OgTestimonialDemo,
+	"og-tilted-screen": OgTiltedScreenDemo,
+	"og-wordmark": OgWordmarkDemo,
 	"orbit-card-stack": OrbitCardStackDemo,
 	"overview-card": OverviewCardDemo,
 	pagination: PaginationDemo,

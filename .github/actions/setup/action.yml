@@ -1,0 +1,42 @@
+name: Setup
+description: Toolchain (pnpm, Node, Bun), dependencies, and optionally the build caches.
+
+inputs:
+  build-caches:
+    description: Restore and save the turbo and registry transpile caches.
+    default: "false"
+
+runs:
+  using: composite
+  steps:
+    - uses: pnpm/action-setup@v6
+
+    - uses: actions/setup-node@v6
+      with:
+        node-version: 22
+        cache: pnpm
+
+    # registry-schema bundles with `bun build` and registry-build runs its CLI with
+    # `bun run`, so bun is part of the toolchain, not just a local convenience.
+    - uses: oven-sh/setup-bun@v2
+      with:
+        bun-version: 1.3.14
+
+    - run: pnpm install --frozen-lockfile
+      shell: bash
+
+    # Saved per run and restored from the newest, so the caches follow the code instead of
+    # freezing at the first run for a key.
+    - if: inputs.build-caches == 'true'
+      uses: actions/cache@v4
+      with:
+        path: .turbo/cache
+        key: turbo-${{ runner.os }}-${{ github.sha }}
+        restore-keys: turbo-${{ runner.os }}-
+
+    - if: inputs.build-caches == 'true'
+      uses: actions/cache@v4
+      with:
+        path: packages/registry-build/node_modules/.cache/registry-build
+        key: registry-tojs-${{ hashFiles('pnpm-lock.yaml', 'packages/registry-build/src/tojs.ts') }}-${{ github.run_id }}
+        restore-keys: registry-tojs-${{ hashFiles('pnpm-lock.yaml', 'packages/registry-build/src/tojs.ts') }}-

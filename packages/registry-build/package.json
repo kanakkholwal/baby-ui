@@ -8,6 +8,7 @@
 	},
 	"scripts": {
 		"registry": "bun run src/cli.ts",
+		"registry:dev": "bun run src/cli.ts --dev",
 		"check": "tsc --noEmit && bun test",
 		"test": "bun test"
 	},

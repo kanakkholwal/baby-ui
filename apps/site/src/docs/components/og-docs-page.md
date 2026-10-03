@@ -13,6 +13,9 @@ without `snippet` the window draws placeholder bars.
 
 ## Render it to PNG
 
+Register each font under the family name your `--font-*` tokens use; on a mismatch takumi
+silently falls back to the first font and the PNG stops matching the page.
+
 Install the renderer once: `pnpm add takumi-js`. Point `og:image` at the route with the page's
 fields in the query string.
 

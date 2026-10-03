@@ -6,31 +6,37 @@ import { autoSpecs } from "./demos.mjs";
 const USAGE = join(ROOT, "packages/demos/src/usage");
 const SPECS = join(ROOT, "packages/registry-schema/src/components");
 
-/** Required props with their spec defaults, read from the spec block of one slug. */
-function requiredProps(slug) {
+/** Each spec block by slug, read once per run. */
+function specBlocks() {
+	const blocks = new Map();
 	for (const file of readdirSync(SPECS).filter(
 		(f) => f.endsWith(".ts") && f !== "index.ts",
 	)) {
 		for (const block of readFileSync(join(SPECS, file), "utf8")
 			.split("defineComponent(")
 			.slice(1)) {
-			if (block.match(/\bslug:\s*"([a-z0-9-]+)"/)?.[1] !== slug) continue;
-			const props = [];
-			for (const prop of block.split(/\n\t\t\{\n/).slice(1)) {
-				const name = prop.match(/\bname:\s*"(\w+)"/)?.[1];
-				if (!name || !/\brequired:\s*true/.test(prop)) continue;
-				const value = prop.match(
-					/\bdefault:\s*("(?:[^"\\]|\\.)*"|'[^']*'|-?[\d.]+|true|false)/,
-				)?.[1];
-				props.push({
-					name,
-					value: value === undefined ? undefined : Function(`return (${value})`)(),
-				});
-			}
-			return props;
+			const slug = block.match(/\bslug:\s*"([a-z0-9-]+)"/)?.[1];
+			if (slug && !blocks.has(slug)) blocks.set(slug, block);
 		}
 	}
-	return [];
+	return blocks;
+}
+
+/** Required props with their spec defaults, read from the spec block of one slug. */
+function requiredProps(block) {
+	const props = [];
+	for (const prop of block?.split(/\n\t\t\{\n/).slice(1) ?? []) {
+		const name = prop.match(/\bname:\s*"(\w+)"/)?.[1];
+		if (!name || !/\brequired:\s*true/.test(prop)) continue;
+		const value = prop.match(
+			/\bdefault:\s*("(?:[^"\\]|\\.)*"|'[^']*'|-?[\d.]+|true|false)/,
+		)?.[1];
+		props.push({
+			name,
+			value: value === undefined ? undefined : Function(`return (${value})`)(),
+		});
+	}
+	return props;
 }
 
 function jsx(name, value) {
@@ -45,8 +51,9 @@ function jsx(name, value) {
 export function usageFiles(output, report) {
 	const generated = previousFor(USAGE);
 	report.usageMissing = [];
+	const blocks = specBlocks();
 	for (const spec of autoSpecs()) {
-		const props = requiredProps(spec.slug);
+		const props = requiredProps(blocks.get(spec.slug));
 		const missing = props.filter((p) => p.value === undefined).map((p) => p.name);
 		if (missing.length) {
 			// Only worth reporting when no hand-written usage covers the gap.

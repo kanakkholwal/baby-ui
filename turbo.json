@@ -5,6 +5,16 @@
 		"//#gen": {
 			"cache": false
 		},
+		"//#gen:watch": {
+			"cache": false,
+			"persistent": true,
+			"dependsOn": ["//#gen"]
+		},
+		"//#registry:watch": {
+			"cache": false,
+			"persistent": true,
+			"dependsOn": ["@baby-ui/registry-build#registry"]
+		},
 		"//#fonts": {
 			"inputs": ["scripts/sync-fonts.mjs", "packages/tokens/fonts/**"],
 			"outputs": ["apps/*/static/fonts/**", "apps/playground/*/public/fonts/**"]
@@ -61,7 +71,14 @@
 		"dev": {
 			"cache": false,
 			"persistent": true,
-			"dependsOn": ["//#gen", "//#fonts", "//#emails", "^registry"]
+			"dependsOn": ["//#gen", "//#fonts", "//#emails", "^registry"],
+			"with": ["//#gen:watch"]
+		},
+		"@baby-ui/site#dev": {
+			"cache": false,
+			"persistent": true,
+			"dependsOn": ["//#gen", "//#fonts", "//#emails", "^registry"],
+			"with": ["//#gen:watch", "//#registry:watch"]
 		}
 	}
 }

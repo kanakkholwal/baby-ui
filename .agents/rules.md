@@ -115,7 +115,8 @@ Any agent (Claude Code, Codex, Cursor, Copilot) should read this file first.
   told apart, collapse them into one value instead of shipping a dead option.
 - React and Svelte ports change together, same spec, same classes, same measured motion.
 - `pnpm gen` (`scripts/generate.mjs`) writes gitignored files; it runs on `prepare`, before turbo
-  check/registry/build, and live inside the site dev server. Edit sources, never its outputs:
+  check/registry/build, and live during `pnpm dev`/`pnpm playground` as its own `gen:watch`
+  process (the site also gets `registry:watch`); never inside Vite. Edit sources, never its outputs:
   - Shared non-component `.ts` (variants, engines, types, labels, `lib/`) has ONE source, the React
     copy; Svelte copies are generated. Port-specific files go in `scripts/shared-exceptions.json`.
   - All 5 index files (spec list, both UI `index.ts`, both demo maps) are generated from folders.
@@ -202,10 +203,13 @@ Plan and bklit motion numbers: `.notes/10-charts-plan.md`.
 
 ## Gates before saying done
 
-`pnpm lint` · `node scripts/check-comments.mjs --all` · `node scripts/check-import-extensions.mjs` · `pnpm test:chart`
+`pnpm fix` (writes) then `pnpm lint` (biome + comment + import gates, read-only) · `pnpm test`
 · `pnpm turbo check` · `pnpm turbo registry` · `pnpm turbo build` · `pnpm size`.
-Paste the outputs. If `apps/site` `pnpm dev` is running, adapter-cloudflare fails with EBUSY
+Paste the outputs. The lefthook pre-commit runs the same fixes on staged files; never bypass it
+with `--no-verify`. If `apps/site` `pnpm dev` is running, adapter-cloudflare fails with EBUSY
 on `.svelte-kit/cloudflare`; say so rather than working around it.
+adapter-cloudflare 7 leaks one workerd per in-place Vite restart (vite.config edits); restart
+`pnpm dev` after editing it. Fixed upstream in adapter 8, which needs SvelteKit 3.
 
 ## Places
 

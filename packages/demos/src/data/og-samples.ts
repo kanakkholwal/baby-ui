@@ -88,41 +88,6 @@ export const OG_GITHUB_REPO = {
 	contributorCount: "+128",
 };
 
-const AUTHOR_PROFILE_BY_VARIANT: Record<string, Record<string, unknown>> = {
-	default: {
-		name: "Ada Park",
-		role: "Staff Engineer at Acme",
-		bio: "Writes about design systems, motion and the craft of shipping small, sharp tools.",
-		handle: "@adapark",
-		site: "baby ui",
-		avatar: "https://i.pravatar.cc/320?img=47",
-		stats: [
-			{ value: "128", label: "Posts" },
-			{ value: "12.4k", label: "Followers" },
-			{ value: "4.2M", label: "Reads" },
-		],
-	},
-	pass: {
-		name: "Mike Barton",
-		role: "Software Designer",
-		label: "Passenger",
-		site: "Northern Air",
-		handle: "Shaping the journey",
-		avatar: `${VIBRANT}/r1lvryz.svg`,
-		stats: [
-			{ value: "TD18", label: "Flight" },
-			{ value: "MAN", label: "From" },
-			{ value: "SFO", label: "To" },
-		],
-		tone: "chart",
-	},
-	editorial: {
-		name: "Rauno Freiberg",
-		bio: "is an Estonian\ninteraction\ndesigner\nworking with Vercel\nand Devouring Details",
-		tone: "chart",
-	},
-};
-
 export const OG_NEWSLETTER_ISSUE = {
 	inside: [
 		"Springs that settle in under 300ms",
@@ -137,77 +102,40 @@ const pics = (seed: string, count: number, w = 640, h = 640) =>
 		(_, i) => `https://picsum.photos/seed/${seed}${i}/${w}/${h}`,
 	);
 
-const BRAND_BY_VARIANT: Record<string, Record<string, unknown>> = {
-	plain: { name: "Natural", mode: "light" },
-	waves: { name: "ElevenLabs", logo: `${VIBRANT}/oxccwur.png` },
-	pipes: { name: "Wavelength", logo: `${VIBRANT}/20qqhh6.png`, mode: "dark" },
-	mesh: { name: "stripe", logo: `${VIBRANT}/60feg2b.svg` },
-	blur: { name: "Polar", logo: `${VIBRANT}/bpk06v7.png` },
-	scatter: {
-		name: "lightspark",
-		logo: `${VIBRANT}/8y0lmgf.png`,
-		images: pics("spark", 7),
-	},
-	mosaic: {
-		name: "Framer",
-		logo: "https://cdn.vibrant.design/project-avatars/alxad4v/5236660cac1b1ee19640.webp",
-		images: pics("frame", 14, 480, 560),
-		mode: "dark",
-	},
-	split: {
-		name: "Melius",
-		logo: `${VIBRANT}/kww0c0w.png`,
-		images: pics("melius", 1, 900, 900),
-		mode: "dark",
-	},
+// Templates studied from a real brand's card preview ship with that brand as the sample, as credit.
+export const OG_SOFT_FOCUS = { logo: `${VIBRANT}/bpk06v7.png` };
+
+export const OG_SCATTER = { logo: `${VIBRANT}/8y0lmgf.png`, images: pics("spark", 7) };
+
+export const OG_SPLIT = {
+	logo: `${VIBRANT}/kww0c0w.png`,
+	image: "https://picsum.photos/seed/melius/900/900",
 };
 
-const LANDING_BY_VARIANT: Record<string, Record<string, unknown>> = {
-	streaks: {
-		site: "Axiom",
-		title: "The modern machine data platform",
-		mode: "dark",
-		tone: "chart",
-	},
-	showcase: {
-		logo: `${VIBRANT}/1uesj9u.png`,
-		title: "Never run out of design inspiration again.",
-		images: pics("mobbin", 6, 420, 600),
-	},
-	picker: {
-		site: "Shotbase",
-		logo: `${VIBRANT}/965gn46.png`,
-		title: "Beautiful",
-		words: ["Web pages", "Screenshots", "Captures", "Recordings", "Sharing"],
-		cta: "Download for Mac",
-		mode: "dark",
-		tone: "primary",
-	},
-	screen: {
-		site: "shaders",
-		logo: `${VIBRANT}/wp91sx3.svg`,
-		title: "The design platform for web shaders",
-		description:
-			"Ship creative frontend effects with a component library and a design editor.",
-		images: pics("shaders", 1, 1400, 900),
-		mode: "dark",
-		tone: "primary",
-	},
-	spotlight: {
-		site: "Skydive",
-		logo: `${VIBRANT}/hm5yvaq.png`,
-		title: "Agents that live in the cloud",
-		images: [5, 9, 12, 16, 20, 25, 32, 44].map(
-			(n) => `https://i.pravatar.cc/240?img=${n}`,
-		),
-	},
+export const OG_SHOWCASE = {
+	logo: `${VIBRANT}/1uesj9u.png`,
+	images: pics("mobbin", 6, 420, 600),
 };
 
-function brandSample(props: Record<string, unknown>): Record<string, unknown> {
-	if ((props.variant ?? "plain") === "plain" && props.mode === "dark")
-		return { name: "Cursor", logo: `${VIBRANT}/kjqdvvk.png` };
-	return byVariant(BRAND_BY_VARIANT, { variant: props.variant ?? "plain" });
-}
+export const OG_TILTED_SCREEN = {
+	logo: `${VIBRANT}/wp91sx3.svg`,
+	image: "https://picsum.photos/seed/shaders/1400/900",
+};
+
+export const OG_SPOTLIGHT = {
+	logo: `${VIBRANT}/hm5yvaq.png`,
+	images: [5, 9, 12, 16, 20, 25, 32, 44].map((n) => `https://i.pravatar.cc/240?img=${n}`),
+};
+
+export const OG_EDITORIAL_BIO = {
+	lines: [
+		"is an Estonian",
+		"interaction",
+		"designer",
+		"working with Vercel",
+		"and Devouring Details",
+	],
+};
 
 function byVariant(
 	table: Record<string, Record<string, unknown>>,
@@ -221,21 +149,82 @@ export const OG_SAMPLE_BY_PROPS: Record<
 	string,
 	(props: Record<string, unknown>) => Record<string, unknown>
 > = {
-	"og-author-profile": (props) => byVariant(AUTHOR_PROFILE_BY_VARIANT, props),
 	"og-blog-post": (props) => byVariant(BLOG_POST_BY_VARIANT, props),
-	"og-brand": brandSample,
-	"og-landing": (props) =>
-		byVariant(LANDING_BY_VARIANT, { variant: props.variant ?? "streaks" }),
+	"og-wordmark": (props) =>
+		props.mode === "dark"
+			? { name: "Cursor", logo: `${VIBRANT}/kjqdvvk.png` }
+			: { name: "Natural" },
 	"og-docs-page": (props) =>
 		props.motif === "terminal"
 			? { snippet: OG_DOCS_SNIPPETS.svelte.shell, filename: "zsh" }
 			: {},
 };
 
+export const OG_PRODUCT_LAUNCH = {
+	brand: "Acme",
+	screenshot: "https://picsum.photos/id/180/1320/960",
+};
+
+export const OG_PRICING = {
+	features: [
+		"Unlimited projects",
+		"Priority support",
+		"SSO and audit logs",
+		"10 TB bandwidth",
+	],
+	note: "Billed yearly. Cancel anytime.",
+	brand: "Acme",
+};
+
+export const OG_JOB_POSTING = {
+	logo: "https://i.pravatar.cc/160?img=30",
+};
+
+export const OG_PODCAST_EPISODE = {
+	cover: "https://picsum.photos/id/1082/800/800",
+	guest: { name: "Ada Park", avatar: "https://i.pravatar.cc/160?img=32" },
+};
+
+export const OG_PRODUCT_SHOP = {
+	image: "https://picsum.photos/id/21/800/800",
+	store: "Northwind",
+};
+
+export const OG_TESTIMONIAL = {
+	author: {
+		name: "Maya Chen",
+		role: "Head of Design",
+		avatar: "https://i.pravatar.cc/200?img=47",
+	},
+};
+
+export const OG_STATS_METRICS = {
+	stats: [
+		{ label: "Quarterly revenue", value: "$1.2M", delta: "+18%", trend: "up" as const },
+		{ label: "active users", value: "48.3k" },
+		{ label: "NPS", value: "64" },
+	],
+	sparkline: [12, 15, 14, 19, 22, 21, 26, 30, 29, 35, 38, 44],
+};
+
 export const OG_SAMPLES: Record<string, Record<string, unknown>> = {
 	"og-blog-post": OG_BLOG_POST,
 	"og-changelog": OG_CHANGELOG,
 	"og-docs-page": OG_DOCS_PAGE,
+	"og-editorial-bio": OG_EDITORIAL_BIO,
 	"og-github-repo": OG_GITHUB_REPO,
+	"og-job-posting": OG_JOB_POSTING,
 	"og-newsletter-issue": OG_NEWSLETTER_ISSUE,
+	"og-podcast-episode": OG_PODCAST_EPISODE,
+	"og-pricing": OG_PRICING,
+	"og-product-launch": OG_PRODUCT_LAUNCH,
+	"og-product-shop": OG_PRODUCT_SHOP,
+	"og-scatter": OG_SCATTER,
+	"og-showcase": OG_SHOWCASE,
+	"og-soft-focus": OG_SOFT_FOCUS,
+	"og-split": OG_SPLIT,
+	"og-spotlight": OG_SPOTLIGHT,
+	"og-stats-metrics": OG_STATS_METRICS,
+	"og-testimonial": OG_TESTIMONIAL,
+	"og-tilted-screen": OG_TILTED_SCREEN,
 };

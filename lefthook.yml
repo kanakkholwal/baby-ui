@@ -1,0 +1,15 @@
+# Fixes what it can in the staged files and re-stages them; CI runs the same gates read-only.
+pre-commit:
+  piped: true
+  jobs:
+    - name: import extensions
+      glob: "*.{ts,tsx,svelte,mjs,js}"
+      run: node scripts/check-import-extensions.mjs --write {staged_files}
+      stage_fixed: true
+    - name: biome
+      glob: "*.{js,jsx,mjs,cjs,ts,tsx,json,jsonc,svelte}"
+      run: pnpm exec biome check --write --no-errors-on-unmatched --files-ignore-unknown=true --colors=off {staged_files}
+      stage_fixed: true
+    - name: comments
+      glob: "*.{ts,tsx,js,jsx,mjs,svelte}"
+      run: node scripts/check-comments.mjs {staged_files}

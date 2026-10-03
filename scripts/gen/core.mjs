@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
 import {
+	copyFileSync,
 	existsSync,
 	mkdirSync,
 	readFileSync,
@@ -54,7 +55,31 @@ export class Output {
 function writeAtomic(file, content) {
 	const tmp = `${file}.${process.pid}.tmp`;
 	writeFileSync(tmp, content);
-	renameSync(tmp, file);
+	try {
+		renameWithRetry(tmp, file);
+	} catch (error) {
+		rmSync(tmp, { force: true });
+		throw error;
+	}
+}
+
+// Windows refuses to replace a file another process holds open without delete sharing (Biome's
+// language server keeps indexed files open). Retry briefly, then overwrite in place.
+const LOCKED = new Set(["EPERM", "EACCES", "EBUSY"]);
+const pause = (ms) => Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
+function renameWithRetry(from, to) {
+	for (let attempt = 0; ; attempt++) {
+		try {
+			return renameSync(from, to);
+		} catch (error) {
+			if (!LOCKED.has(error.code)) throw error;
+			if (attempt >= 4) {
+				copyFileSync(from, to);
+				return rmSync(from);
+			}
+			pause(10 * 2 ** attempt);
+		}
+	}
 }
 
 /** What the previous run generated under a root, path to content hash (null when unknown). */

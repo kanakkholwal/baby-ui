@@ -94,5 +94,7 @@ Tokens:
 
 - One accent mark per card (a dot, a period, a circle, a wash); canvases stay foreground and background.
 - No blurred corner glows or grid-plus-glow backdrops. `tone` defaults to `neutral`.
-- Colour-led layouts (`og-brand` pipes and mesh) draw only from `--chart-1..5`.
+- Colour-led templates (`og-pipes`, `og-gradient-mesh`) draw only from `--chart-1..5`.
+- One design per template; a reference's look never hides behind a variant switch.
 - Renderer limits: 2D transforms only, no `.ico` images, SVG colours via `currentColor`.
+- Negative angles as `rotate-[-45deg]`: `-rotate-45` compiles to a calc() angle takumi drops.
