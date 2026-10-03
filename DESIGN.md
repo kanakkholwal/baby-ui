@@ -98,3 +98,4 @@ Tokens:
 - One design per template; a reference's look never hides behind a variant switch.
 - Renderer limits: 2D transforms only, no `.ico` images, SVG colours via `currentColor`.
 - Negative angles as `rotate-[-45deg]`: `-rotate-45` compiles to a calc() angle takumi drops.
+- The renderer registers fonts under the exact `--font-*` family names; a miss falls back silently.

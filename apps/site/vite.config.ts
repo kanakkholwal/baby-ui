@@ -39,7 +39,7 @@ function devMemory(): Plugin {
 	};
 }
 
-export default defineConfig(({ command, mode }) => {
+export default defineConfig(({ command, mode, isPreview }) => {
 	// The Pro feature flag: VITE_SHOW_PRO=true|false wins; unset, dev shows Pro and builds hide it.
 	const flag = loadEnv(mode, process.cwd(), "VITE_").VITE_SHOW_PRO;
 	const showPro = flag === undefined ? mode === "development" : flag === "true";
@@ -133,7 +133,9 @@ export default defineConfig(({ command, mode }) => {
 						filename.split(/[/\\]/).includes("node_modules") ? undefined : true,
 				},
 
-				adapter: adapter(),
+				// The site reads no Cloudflare bindings, so emulating them in dev only cost a workerd
+				// per server start. Bring it back for `vite dev` if a route ever reads `platform`.
+				adapter: command === "build" || isPreview ? adapter() : undefined,
 			}),
 		],
 	};
