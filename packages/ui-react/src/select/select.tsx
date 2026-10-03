@@ -153,7 +153,9 @@ export function SelectItem({
 			className={cn(styles.item(), className)}
 			{...props}
 		>
-			<SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+			<SelectPrimitive.ItemText className="flex min-w-0 items-center gap-2">
+				{children}
+			</SelectPrimitive.ItemText>
 			{/* Kept mounted so the tick draws in with the row's data-selected. */}
 			<SelectPrimitive.ItemIndicator keepMounted>
 				<svg viewBox="0 0 14 14" fill="none" aria-hidden className={styles.check()}>

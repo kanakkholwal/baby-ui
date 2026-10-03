@@ -30,6 +30,11 @@ export const FRAMEWORK: Record<
 		routePrefix: string;
 		libAlias: string;
 		uiAlias: string;
+		componentsAlias: string;
+		/** What docs and the Manual view print for each alias, when the shipped form is a placeholder. */
+		readerAliases?: Record<string, string>;
+		/** Alias imports name the file: SvelteKit 3's `#lib/*` subpath imports do no extension lookup. */
+		aliasExtensions?: boolean;
 		uiTarget: string;
 		libTarget: string;
 		/** shadcn-svelte resolves a file target from its ui/lib alias; shadcn from the root. */
@@ -41,14 +46,23 @@ export const FRAMEWORK: Record<
 		routePrefix: "r",
 		libAlias: "@/lib",
 		uiAlias: "@/components/ui",
+		componentsAlias: "@/components",
 		uiTarget: "components/ui",
 		libTarget: "lib",
 	},
 	svelte: {
 		srcDir: resolve(REPO_ROOT, "packages/ui-svelte/src/lib"),
 		routePrefix: "svelte/r",
-		libAlias: "$lib",
-		uiAlias: "$lib/components/ui",
+		// The CLI swaps these for the project's components.json aliases: `#lib` on SvelteKit 3.
+		libAlias: "$LIB$",
+		uiAlias: "$UI$",
+		componentsAlias: "$COMPONENTS$",
+		readerAliases: {
+			$LIB$: "#lib",
+			$UI$: "#lib/components/ui",
+			$COMPONENTS$: "#lib/components",
+		},
+		aliasExtensions: true,
 		uiTarget: "src/lib/components/ui",
 		libTarget: "src/lib",
 		aliasRelativeTargets: true,

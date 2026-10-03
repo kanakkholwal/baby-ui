@@ -433,7 +433,7 @@ export const timePicker = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
-			registryDependencies: ["date-field"],
+			registryDependencies: ["date-field", "field", "button"],
 		},
 		svelte: {
 			entry: "TimePicker",
@@ -445,7 +445,7 @@ export const timePicker = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: svelteDeps,
-			registryDependencies: ["date-field"],
+			registryDependencies: ["date-field", "field", "button"],
 		},
 	},
 	keywords: ["time picker", "time field", "time input", "clock", "booking", "form"],

@@ -25,7 +25,7 @@ SvelteKit, `src/routes/og/repo/+server.ts`:
 import { render } from "svelte/server";
 import { googleFonts } from "takumi-js/helpers";
 import { ImageResponse } from "takumi-js/response";
-import OgGithubRepo from "$lib/components/og/og-github-repo/og-github-repo.svelte";
+import OgGithubRepo from "#lib/components/og/og-github-repo/og-github-repo.svelte";
 import css from "../../../app.css?inline";
 
 const fonts = googleFonts({ families: [{ name: "Inter", weight: [400, 600, 700] }] });

@@ -1,4 +1,5 @@
-import { basename, posix } from "node:path";
+import { existsSync, statSync } from "node:fs";
+import { basename, posix, resolve } from "node:path";
 import { type ComponentSpec, type Framework, installDir } from "@baby-ui/registry-schema";
 import { FRAMEWORK } from "./config";
 
@@ -10,6 +11,8 @@ export interface InstallLayout {
 	projectPath(target: string, type: string): string;
 	/** Rewrites monorepo-relative imports (`../dialog/dialog`) to the consumer's aliases. */
 	rewriteImports(source: string): string;
+	/** Shipped source as a reader copies it: alias placeholders resolved to the default aliases. */
+	display(source: string): string;
 	/** Import path a reader uses for an installed item, e.g. `@/components/og/og-blog-post`. */
 	itemImport(slug: string): string;
 }
@@ -22,10 +25,30 @@ export function installLayout(
 	framework: Framework,
 	specs: readonly ComponentSpec[],
 ): InstallLayout {
-	const { uiTarget, libTarget, uiAlias, libAlias, aliasRelativeTargets } =
-		FRAMEWORK[framework];
-	const componentsAlias = uiAlias.replace(/\/ui$/, "");
+	const {
+		srcDir,
+		uiTarget,
+		libTarget,
+		uiAlias,
+		libAlias,
+		componentsAlias,
+		readerAliases = {},
+		aliasRelativeTargets,
+		aliasExtensions,
+	} = FRAMEWORK[framework];
+	// Sources sit one folder deep, so `../x/y` always means `<srcDir>/x/y`.
+	const withExtension = (rest: string) => {
+		const abs = resolve(srcDir, rest);
+		if (existsSync(abs)) return statSync(abs).isDirectory() ? `${rest}/index.js` : rest;
+		return `${rest}.js`;
+	};
 	const componentsTarget = uiTarget.replace(/\/ui$/, "");
+	const alias = (dir: string) => (dir === "ui" ? uiAlias : `${componentsAlias}/${dir}`);
+	const display = (source: string) =>
+		Object.entries(readerAliases).reduce(
+			(text, [placeholder, path]) => text.replaceAll(placeholder, path),
+			source,
+		);
 
 	const folderDir = new Map<string, string>();
 	const slugDir = new Map<string, string>();
@@ -57,18 +80,21 @@ export function installLayout(
 				RELATIVE_IMPORT,
 				(_m, keyword: string, q: string, spec: string) => {
 					let next = spec.replace(/\.js$/, "");
-					if (next.startsWith("../lib/")) {
-						next = `${libAlias}/${next.slice("../lib/".length)}`;
-					} else if (next.startsWith("../")) {
-						const rest = next.slice("../".length);
-						next = `${componentsAlias}/${folderDir.get(rest.split("/")[0] ?? "") ?? "ui"}/${rest}`;
+					if (next.startsWith("../")) {
+						const raw = next.slice("../".length);
+						const rest = aliasExtensions ? withExtension(raw) : raw;
+						next = raw.startsWith("lib/")
+							? `${libAlias}/${rest.slice("lib/".length)}`
+							: `${alias(folderDir.get(raw.split("/")[0] ?? "") ?? "ui")}/${rest}`;
 					}
 					return `${keyword}${q}${next}${q}`;
 				},
 			);
 		},
+		display,
 		itemImport(slug) {
-			return `${componentsAlias}/${slugDir.get(slug) ?? "ui"}/${slug}`;
+			const path = `${alias(slugDir.get(slug) ?? "ui")}/${slug}`;
+			return display(aliasExtensions ? `${path}/index.js` : path);
 		},
 	};
 }

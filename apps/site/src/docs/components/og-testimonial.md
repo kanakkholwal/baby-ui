@@ -25,7 +25,7 @@ SvelteKit, `src/routes/og/quote/+server.ts`:
 import { render } from "svelte/server";
 import { googleFonts } from "takumi-js/helpers";
 import { ImageResponse } from "takumi-js/response";
-import OgTestimonial from "$lib/components/ui/og-testimonial/og-testimonial.svelte";
+import OgTestimonial from "#lib/components/ui/og-testimonial/og-testimonial.svelte";
 import css from "../../../app.css?inline";
 
 const fonts = googleFonts({ families: [{ name: "Inter", weight: [400, 600, 700] }] });

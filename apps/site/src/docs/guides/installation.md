@@ -53,7 +53,7 @@ export default function Page() {
 ```svelte
 // tab: Svelte
 <script lang="ts">
-	import { Button } from "$lib/components/ui/button";
+	import { Button } from "#lib/components/ui/button/index.js";
 </script>
 
 <Button>Deploy</Button>
@@ -96,6 +96,9 @@ Then `npx shadcn@latest add @baby-ui/button`. Every item, `tokens`, `theme` and 
 - **"Could not find valid path aliases"**: the project has no `@` alias. In Vite, add it to
   `vite.config.ts` and to `paths` in `tsconfig.json` and `tsconfig.app.json`; leave out
   `baseUrl`, which TypeScript 6 rejects.
+- **Svelte imports use `$lib` on SvelteKit 3**: installed files import through the aliases in
+  `components.json`. SvelteKit 3 removed `$lib`, so set them to `#lib` (`"lib": "#lib"`,
+  `"ui": "#lib/components/ui"` and so on); SvelteKit 2 projects keep `$lib`.
 - **`@/components/ui/button` imports the wrong Button**: `init` left shadcn's
   `components/ui/button.tsx`, which shadows the folder. Delete it.
 - **Grey, unstyled controls**: `tokens` is missing; add `tokens.json` with the same command.

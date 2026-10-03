@@ -38,7 +38,12 @@
 		},
 		"build": {
 			"dependsOn": ["//#gen", "//#fonts", "//#emails", "^build", "^registry"],
-			"env": ["VITE_POSTHOG_KEY", "BABY_UI_REGISTRY_URL", "BABY_UI_SITE_URL"],
+			"env": [
+				"VITE_POSTHOG_KEY",
+				"VITE_SHOW_PRO",
+				"BABY_UI_REGISTRY_URL",
+				"BABY_UI_SITE_URL"
+			],
 			"outputs": ["dist/**", ".svelte-kit/**", "build/**", ".docvia/**"]
 		},
 		"registry": {
@@ -55,7 +60,8 @@
 				"../registry-schema/src/**",
 				"../ui-react/src/**",
 				"../ui-svelte/src/**",
-				"../../apps/site/src/docs/**"
+				"../../apps/site/src/docs/**",
+				"../../pro/packages/schema/src/**"
 			],
 			"outputs": [
 				"../../apps/site/static/r/**",

@@ -3,6 +3,7 @@ import type { Framework } from "@baby-ui/registry-schema";
 import { getSpec, specs } from "@baby-ui/registry-schema/components";
 import { buildItem } from "./build";
 import { installLayout } from "./layout";
+import { verifyRegistryDependencies } from "./verify";
 
 const layouts = {
 	react: installLayout("react", specs),
@@ -57,7 +58,7 @@ describe("shipped imports point at the other item's folder", () => {
 		);
 		const svelte = await built("email-welcome", "svelte");
 		expect(svelte.files.flatMap((f) => imports(f.content))).toContain(
-			"$lib/components/emails/ui/email-kit/email-button.svelte",
+			"$COMPONENTS$/emails/ui/email-kit/email-button.svelte",
 		);
 	});
 
@@ -66,8 +67,17 @@ describe("shipped imports point at the other item's folder", () => {
 			'import { cn } from "@/lib/cn";',
 		);
 		expect(layouts.svelte.rewriteImports('import { cn } from "../lib/cn";')).toBe(
-			'import { cn } from "$lib/cn";',
+			'import { cn } from "$LIB$/cn.js";',
 		);
+	});
+
+	test("svelte alias imports name the real file, folder or rune module", () => {
+		const shipped = (spec: string) =>
+			layouts.svelte.rewriteImports(`import x from "${spec}";`).match(/"([^"]+)"/)?.[1];
+		expect(shipped("../button/variants")).toBe("$UI$/button/variants.js");
+		expect(shipped("../button/button.svelte")).toBe("$UI$/button/button.svelte");
+		expect(shipped("../lib/use-is-mobile.svelte")).toBe("$LIB$/use-is-mobile.svelte.js");
+		expect(shipped("../chart")).toBe("$COMPONENTS$/charts/chart/index.js");
 	});
 
 	test("same-folder imports stay relative", () => {
@@ -80,9 +90,11 @@ describe("paths shown to readers", () => {
 	test("usage imports use the installed folder", () => {
 		expect(layouts.react.itemImport("og-blog-post")).toBe("@/components/og/og-blog-post");
 		expect(layouts.svelte.itemImport("email-kit")).toBe(
-			"$lib/components/emails/ui/email-kit",
+			"#lib/components/emails/ui/email-kit/index.js",
 		);
-		expect(layouts.svelte.itemImport("button")).toBe("$lib/components/ui/button");
+		expect(layouts.svelte.itemImport("button")).toBe(
+			"#lib/components/ui/button/index.js",
+		);
 	});
 
 	test("the Manual view resolves shadcn-svelte's alias-relative targets", () => {
@@ -94,4 +106,13 @@ describe("paths shown to readers", () => {
 			"components/ui/b/b.tsx",
 		);
 	});
+});
+
+describe("installs are complete", () => {
+	test.each(["react", "svelte"] as const)(
+		"every %s sibling import is a declared registryDependency",
+		async (framework) => {
+			expect(await verifyRegistryDependencies([...specs], framework)).toEqual([]);
+		},
+	);
 });

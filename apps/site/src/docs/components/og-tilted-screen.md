@@ -24,7 +24,7 @@ SvelteKit, `src/routes/og/product/+server.ts`:
 import { render } from "svelte/server";
 import { googleFonts } from "takumi-js/helpers";
 import { ImageResponse } from "takumi-js/response";
-import OgTiltedScreen from "$lib/components/og/og-tilted-screen/og-tilted-screen.svelte";
+import OgTiltedScreen from "#lib/components/og/og-tilted-screen/og-tilted-screen.svelte";
 import css from "../../../app.css?inline";
 
 const fonts = googleFonts({ families: [{ name: "Inter", weight: [400, 600] }] });

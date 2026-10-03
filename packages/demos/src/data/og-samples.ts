@@ -1,7 +1,7 @@
 const VIBRANT = "https://cdn.vibrant.design/favicons";
 
 const CODE_SVELTE = [
-	'import { Dialog } from "$lib/ui/dialog";',
+	'import { Dialog } from "#lib/ui/dialog";',
 	"",
 	"// grows from the trigger edge",
 	"<Dialog>",

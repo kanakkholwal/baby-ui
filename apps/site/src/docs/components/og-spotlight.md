@@ -24,7 +24,7 @@ SvelteKit, `src/routes/og/team/+server.ts`:
 import { render } from "svelte/server";
 import { googleFonts } from "takumi-js/helpers";
 import { ImageResponse } from "takumi-js/response";
-import OgSpotlight from "$lib/components/og/og-spotlight/og-spotlight.svelte";
+import OgSpotlight from "#lib/components/og/og-spotlight/og-spotlight.svelte";
 import css from "../../../app.css?inline";
 
 const fonts = googleFonts({ families: [{ name: "Inter", weight: [400, 500] }] });

@@ -5,7 +5,7 @@ export const select = defineComponent({
 	isNew: true,
 	name: "Select",
 	description:
-		"Listbox that matches its trigger width, keeps the selected option in view and flips when needed.",
+		"Listbox at least as wide as its trigger that grows to fit its longest option, keeps the selected option in view and flips when needed.",
 	category: "base",
 	status: "stable",
 	variants: { variant: ["default", "ghost"], size: ["xs", "sm", "default"] },

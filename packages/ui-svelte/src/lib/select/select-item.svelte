@@ -22,11 +22,14 @@ const styles = menu();
 	class={cn(styles.item(), classProp)}
 >
 	{#snippet children({ selected, highlighted })}
-		{#if childrenProp}
-			{@render childrenProp({ selected, highlighted })}
-		{:else}
-			{label || value}
-		{/if}
+		<!-- One wrapper, so a leading icon sits beside its label instead of spreading with the tick. -->
+		<span class="flex min-w-0 items-center gap-2">
+			{#if childrenProp}
+				{@render childrenProp({ selected, highlighted })}
+			{:else}
+				{label || value}
+			{/if}
+		</span>
 		<!-- Always mounted so the tick draws in when the row is chosen. -->
 		<svg viewBox="0 0 14 14" fill="none" aria-hidden="true" data-on={selected} class={styles.check()}>
 			<path

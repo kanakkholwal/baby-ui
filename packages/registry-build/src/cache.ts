@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
+import { mkdir, readFile, rename, rm, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -50,7 +50,21 @@ export async function openCache(name: string, version: string) {
 			// Two builds at once (turbo plus the dev watcher) must never leave a half-written file.
 			const tmp = `${file}.${process.pid}.tmp`;
 			await writeFile(tmp, JSON.stringify({ version, entries } satisfies Stored));
-			await rename(tmp, file);
+			// Windows refuses the rename while another build reads the file; a lost cache costs time, not output.
+			for (let attempt = 0; ; attempt++) {
+				try {
+					return await rename(tmp, file);
+				} catch (error) {
+					const code = (error as NodeJS.ErrnoException).code ?? "";
+					if (attempt < 4 && ["EPERM", "EACCES", "EBUSY"].includes(code)) {
+						await new Promise((done) => setTimeout(done, 50 * 2 ** attempt));
+						continue;
+					}
+					await rm(tmp, { force: true });
+					console.warn(`registry-build: cache not saved (${code || error})`);
+					return;
+				}
+			}
 		},
 	};
 }

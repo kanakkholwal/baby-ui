@@ -25,7 +25,7 @@ SvelteKit, `src/routes/og/product/+server.ts`:
 import { render } from "svelte/server";
 import { googleFonts } from "takumi-js/helpers";
 import { ImageResponse } from "takumi-js/response";
-import OgProductShop from "$lib/components/ui/og-product-shop/og-product-shop.svelte";
+import OgProductShop from "#lib/components/ui/og-product-shop/og-product-shop.svelte";
 import css from "../../../app.css?inline";
 
 const fonts = googleFonts({ families: [{ name: "Inter", weight: [400, 600, 700] }] });

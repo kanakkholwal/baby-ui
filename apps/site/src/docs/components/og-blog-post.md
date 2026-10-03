@@ -27,7 +27,7 @@ SvelteKit, `src/routes/og/blog/+server.ts`:
 import { render } from "svelte/server";
 import { googleFonts } from "takumi-js/helpers";
 import { ImageResponse } from "takumi-js/response";
-import OgBlogPost from "$lib/components/og/og-blog-post/og-blog-post.svelte";
+import OgBlogPost from "#lib/components/og/og-blog-post/og-blog-post.svelte";
 import css from "../../../app.css?inline";
 
 const fonts = googleFonts({

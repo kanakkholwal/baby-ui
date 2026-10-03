@@ -385,10 +385,8 @@ const categoryTrail = $derived(
 				<SelectContent align="end" size="xs">
 					{#each FRAMEWORKS as option (option.id)}
 						<SelectItem value={option.id} label={option.label}>
-							<span class="flex items-center gap-1.5">
-								<option.icon size={12} />
-								{option.label}
-							</span>
+							<option.icon size={12} />
+							{option.label}
 						</SelectItem>
 					{/each}
 				</SelectContent>

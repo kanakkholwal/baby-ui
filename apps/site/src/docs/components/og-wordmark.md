@@ -22,7 +22,7 @@ SvelteKit, `src/routes/og/brand/+server.ts`:
 import { render } from "svelte/server";
 import { googleFonts } from "takumi-js/helpers";
 import { ImageResponse } from "takumi-js/response";
-import OgWordmark from "$lib/components/og/og-wordmark/og-wordmark.svelte";
+import OgWordmark from "#lib/components/og/og-wordmark/og-wordmark.svelte";
 import css from "../../../app.css?inline";
 
 const fonts = googleFonts({ families: [{ name: "Inter", weight: [400, 600] }] });

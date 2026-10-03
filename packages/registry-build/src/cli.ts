@@ -28,10 +28,12 @@ import { buildThemeItems } from "./theme";
 import { buildThemeCss } from "./theme-css";
 import { jsPath, saveTranspileCache, toJavaScript } from "./tojs";
 import { buildUsage, verifyUsage } from "./usage";
-import { verifyComponentDocs, verifySprings } from "./verify";
+import { verifyComponentDocs, verifyRegistryDependencies, verifySprings } from "./verify";
 
 /** `--dev` (the dev watcher): a spec still waiting for its doc page warns instead of failing. */
 const DEV = process.argv.includes("--dev");
+// The site's Pro flag, read the same way: VITE_SHOW_PRO wins, unset means on in dev and off in builds.
+const SHOW_PRO = process.env.VITE_SHOW_PRO ? process.env.VITE_SHOW_PRO === "true" : DEV;
 const GENERATED = resolve(REPO_ROOT, "apps/site/src/lib/generated");
 
 // Registry routes are entirely ours; the site's generated folder also holds emails, so only
@@ -71,6 +73,9 @@ async function main() {
 	);
 	const errors = [
 		...(await Promise.all(FRAMEWORKS.map((f) => verifySprings([...specs], f)))).flat(),
+		...(
+			await Promise.all(FRAMEWORKS.map((f) => verifyRegistryDependencies([...specs], f)))
+		).flat(),
 		...docs.errors,
 		...(DEV ? [] : docs.missing),
 		...(await verifyUsage([...specs])),
@@ -82,7 +87,8 @@ async function main() {
 	}
 	if (DEV) for (const m of docs.missing) console.warn(`registry-build: ${m}`);
 
-	const proSpecs = await loadProSpecs();
+	// Pro usage snippets reach the site only when it shows Pro; the flag-off build must not name them.
+	const proSpecs = SHOW_PRO ? await loadProSpecs() : [];
 	const layouts = Object.fromEntries(
 		FRAMEWORKS.map((f) => [f, installLayout(f, [...specs, ...proSpecs])]),
 	) as Record<Framework, InstallLayout>;
@@ -96,10 +102,8 @@ async function main() {
 	};
 	// Pro source ships only from the private registry, so it never lands in public output.
 	const publicSpecs = specs.filter((spec) => spec.tier !== "pro");
-	// Preview categories publish only with the site's Pro flag, which production builds leave off.
-	const showPreview = process.env.VITE_SHOW_PRO === "true";
 	const releasedSpecs = publicSpecs.filter(
-		(spec) => showPreview || !PREVIEW_CATEGORIES.includes(spec.category),
+		(spec) => SHOW_PRO || !PREVIEW_CATEGORIES.includes(spec.category),
 	);
 
 	for (const framework of FRAMEWORKS as readonly Framework[]) {
@@ -168,11 +172,12 @@ async function main() {
 				perFrameworkCss[framework] = cssText(item.css as Parameters<typeof cssText>[0]);
 			perFramework[framework] = await Promise.all(
 				item.files.map(async (file) => {
-					const js = await toJavaScript(file.content, file.path).catch(() => null);
+					const ts = layouts[framework].display(file.content);
+					const js = await toJavaScript(ts, file.path).catch(() => null);
 					return {
 						path: file.path,
 						target: file.target && layouts[framework].projectPath(file.target, file.type),
-						ts: file.content,
+						ts,
 						js,
 						jsPath: js ? jsPath(file.path) : null,
 					};

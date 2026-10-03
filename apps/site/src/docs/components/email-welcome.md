@@ -23,8 +23,8 @@ SvelteKit, `src/routes/api/welcome/+server.ts` (`pnpm add @better-svelte-email/s
 import { pixelBasedPreset, Renderer, toPlainText } from "@better-svelte-email/server";
 import { Resend } from "resend";
 import { env } from "$env/dynamic/private";
-import EmailWelcome from "$lib/components/emails/email-welcome/email-welcome.svelte";
-import { emailTailwindConfig } from "$lib/email-theme";
+import EmailWelcome from "#lib/components/emails/email-welcome/email-welcome.svelte";
+import { emailTailwindConfig } from "#lib/email-theme.js";
 
 const renderer = new Renderer({
 	tailwindConfig: { ...emailTailwindConfig, presets: [pixelBasedPreset] },

@@ -18,6 +18,11 @@ import {
 	PropertyPanelGroup,
 	PropertyPanelGroupContent,
 	PropertyPanelGroupLabel,
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
 	Sheet,
 	SheetClose,
 	SheetContent,
@@ -42,6 +47,12 @@ const LAYOUTS: { id: PageLayout; label: string; icon: Icon }[] = [
 	{ id: "split", label: "Split", icon: IconLayoutColumns },
 	{ id: "playground", label: "Play", icon: IconAdjustmentsHorizontal },
 ];
+
+// Resolving through LAYOUTS narrows the select's string back to a PageLayout without a cast.
+function pickLayout(next: string) {
+	const hit = LAYOUTS.find((layout) => layout.id === next);
+	if (hit) prefs.set("layout", hit.id);
+}
 </script>
 
 <Sheet bind:open={prefs.open}>
@@ -81,15 +92,25 @@ const LAYOUTS: { id: PageLayout; label: string; icon: Icon }[] = [
 			<PropertyPanelGroup>
 				<PropertyPanelGroupLabel>Components</PropertyPanelGroupLabel>
 				<PropertyPanelGroupContent>
-					<Field size="sm">
+					<Field orientation="horizontal" size="sm">
 						<FieldLabel>Layout</FieldLabel>
-						<SegmentControl
-							size="sm"
-							label="Page layout"
-							options={LAYOUTS}
-							current={prefs.layout}
-							onPick={(id) => prefs.set("layout", id)}
-						/>
+						<Select
+							items={LAYOUTS.map((layout) => ({ value: layout.id, label: layout.label }))}
+							bind:value={() => prefs.layout, pickLayout}
+						>
+							<SelectTrigger size="sm" aria-label="Page layout" class="w-full">
+								<SelectValue />
+							</SelectTrigger>
+							<SelectContent size="sm">
+								{#each LAYOUTS as layout (layout.id)}
+									{@const Glyph = layout.icon}
+									<SelectItem value={layout.id} label={layout.label}>
+										<Glyph />
+										{layout.label}
+									</SelectItem>
+								{/each}
+							</SelectContent>
+						</Select>
 					</Field>
 					<Field orientation="horizontal" size="sm">
 						<FieldLabel>Framework</FieldLabel>
@@ -111,12 +132,12 @@ const LAYOUTS: { id: PageLayout; label: string; icon: Icon }[] = [
 							onPick={(id) => prefs.set("dialect", id)}
 						/>
 					</Field>
-					<p class="text-[11px] text-muted-foreground">Split and Play need a wide screen.</p>
+					<p class="text-muted-foreground text-xs">Split and Play need a wide screen.</p>
 				</PropertyPanelGroupContent>
 			</PropertyPanelGroup>
 		</PropertyPanel>
 
-		<p class="mt-auto border-border border-t px-4 py-3 text-[11px] text-muted-foreground">
+		<p class="mt-auto border-border border-t px-4 py-3 text-muted-foreground text-xs">
 			Saved in this browser and synced across open tabs.
 		</p>
 	</SheetContent>

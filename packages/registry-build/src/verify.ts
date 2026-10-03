@@ -50,6 +50,44 @@ export async function verifySprings(
 	return errors;
 }
 
+const SIBLING_IMPORT = /(?:from\s+|import\s+)["']\.\.\/([^/"']+)/g;
+
+/** Every folder a shipped file imports from must come with it, or the install breaks. */
+export async function verifyRegistryDependencies(
+	specs: ComponentSpec[],
+	framework: Framework,
+): Promise<string[]> {
+	const errors: string[] = [];
+	const { srcDir } = FRAMEWORK[framework];
+	// A folder belongs to the spec named after it; other specs that list its files only borrow them.
+	const owner = new Map<string, string>();
+	for (const spec of specs)
+		for (const file of spec.impl[framework]?.files ?? []) {
+			const [folder] = file.path.split("/");
+			if (!folder || folder === "lib" || !file.path.includes("/")) continue;
+			if (folder === spec.slug || !owner.has(folder)) owner.set(folder, spec.slug);
+		}
+
+	for (const spec of specs) {
+		const impl = spec.impl[framework];
+		if (!impl) continue;
+		const shipped = new Set(impl.files.map((f) => f.path.split("/")[0]));
+		const declared = new Set(impl.registryDependencies ?? []);
+		for (const file of impl.files) {
+			const source = await readFile(resolve(srcDir, file.path), "utf8").catch(() => "");
+			for (const [, folder = ""] of source.matchAll(SIBLING_IMPORT)) {
+				const dep = owner.get(folder);
+				if (folder === "lib" || shipped.has(folder) || !dep || declared.has(dep))
+					continue;
+				errors.push(
+					`${spec.slug} (${framework}) ${file.path}: imports ../${folder}, so registryDependencies needs "${dep}"`,
+				);
+			}
+		}
+	}
+	return [...new Set(errors)];
+}
+
 /** docvia applies one frontmatter schema to every collection, so it cannot require
  * `component`/`category` of component docs alone. `missing` lists specs with no page yet. */
 export async function verifyComponentDocs(
