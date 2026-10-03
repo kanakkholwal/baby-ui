@@ -20,6 +20,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
       - uses: ./.github/actions/setup
 
       # The pre-commit hook fixes these locally; CI only verifies, never writes.
@@ -40,6 +42,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
       - uses: ./.github/actions/setup
         with:
           build-caches: "true"
@@ -86,7 +90,11 @@ jobs:
 
       - if: env.HAS_PRO == 'true'
         uses: actions/checkout@v6
+        with:
+          persist-credentials: false
 
+      # The token reaches this step only: never `env`, never a `run` line, never written to
+      # pro/.git, so install scripts and the build cannot read it. GitHub masks it in logs.
       - name: Check out Pro
         if: env.HAS_PRO == 'true'
         uses: actions/checkout@v6

@@ -31,8 +31,11 @@ jobs:
     environment: production
     steps:
       - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
 
       # Production always bundles Pro; without the token this fails rather than ship without it.
+      # The token reaches this step only and is never written to pro/.git.
       - name: Check out Pro
         uses: actions/checkout@v6
         with:
