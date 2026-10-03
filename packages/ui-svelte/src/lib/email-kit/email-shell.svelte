@@ -8,12 +8,7 @@ import {
 	Section,
 } from "@better-svelte-email/components";
 import type { Snippet } from "svelte";
-import {
-	type EmailShellAccent,
-	type EmailShellSurface,
-	type EmailShellWidth,
-	emailShell,
-} from "./variants";
+import { type EmailShellSurface, emailShell } from "./variants";
 
 let {
 	preview,
@@ -21,9 +16,7 @@ let {
 	footer,
 	cardFooter,
 	lang = "en",
-	width = "md",
 	surface = "card",
-	accent = "none",
 }: {
 	/** Inbox preview line shown after the subject; keep it under ~90 characters. */
 	preview: string;
@@ -34,13 +27,10 @@ let {
 	/** Rendered inside the card after the content, edge to edge, e.g. a `band` or `bar` footer. */
 	cardFooter?: Snippet;
 	lang?: string;
-	width?: EmailShellWidth;
 	surface?: EmailShellSurface;
-	/** `top` adds a strip of the accent colour across the card. */
-	accent?: EmailShellAccent;
 } = $props();
 
-const s = $derived(emailShell({ width, surface, accent }));
+const s = $derived(emailShell({ surface }));
 </script>
 
 <Html {lang}>

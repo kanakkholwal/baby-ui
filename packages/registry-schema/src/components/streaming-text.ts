@@ -1,15 +1,17 @@
 import { defineComponent } from "../index.ts";
 
 const LAYOUTS = ["inline", "card"];
+const SIZES = ["sm", "md", "lg"];
 
 export const streamingText = defineComponent({
 	slug: "streaming-text",
 	name: "Streaming Text",
 	description:
-		"Word-by-word answer reveal with inline citation chips, then actions, sources and follow-ups once it settles.",
+		"Word-by-word answer reveal, plain or with inline citation chips, then actions, sources and follow-ups once it settles.",
 	category: "agents",
 	status: "stable",
-	variants: { layout: LAYOUTS },
+	isUpdated: true,
+	variants: { layout: LAYOUTS, size: SIZES },
 	props: [
 		{
 			name: "layout",
@@ -20,10 +22,31 @@ export const streamingText = defineComponent({
 			control: { kind: "select", options: LAYOUTS },
 		},
 		{
+			name: "size",
+			type: SIZES.map((v) => `"${v}"`).join(" | "),
+			description: "Type scale of the answer.",
+			default: "md",
+			control: { kind: "select", options: SIZES },
+		},
+		{
+			name: "caret",
+			type: "boolean",
+			description: "Blinking caret while the text reveals.",
+			default: true,
+			control: { kind: "boolean" },
+		},
+		{
+			name: "actions",
+			type: "boolean",
+			description: "Copy, retry and feedback row once the reveal settles.",
+			default: true,
+			control: { kind: "boolean" },
+		},
+		{
 			name: "content",
-			type: "StreamingToken[]",
+			type: "StreamingToken[] | string",
 			description:
-				'The answer, tokenized. A token is a word, or `{ text: "", cite: n }` to place a citation chip for `sources[n]` inline.',
+				'The answer: a plain string, or tokens where each is a word or `{ text: "", cite: n }` to place a citation chip for `sources[n]` inline.',
 			control: { kind: "none" },
 		},
 		{
@@ -53,7 +76,7 @@ export const streamingText = defineComponent({
 		reducedMotion:
 			"The whole answer renders immediately; the caret and citation pop-ins drop.",
 		behaviour: [
-			"Words reveal one at a time and stop, same contract as ResponseStream; there is no gallery-style auto-loop baked in.",
+			"Words reveal one at a time and stop; there is no gallery-style auto-loop baked in.",
 			"Actions, sources and follow-ups fade in together once every word has revealed.",
 		],
 	},

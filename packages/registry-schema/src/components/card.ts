@@ -6,6 +6,8 @@ export const card = defineComponent({
 	description: "Content surface with header, body and footer slots.",
 	category: "base",
 	status: "stable",
+	isUpdated: true,
+	variants: { variant: ["default", "secondary", "ghost", "framed"] },
 	props: [
 		{
 			name: "interactive",
@@ -17,11 +19,11 @@ export const card = defineComponent({
 		},
 		{
 			name: "variant",
-			type: '"default" | "framed"',
+			type: '"default" | "secondary" | "ghost" | "framed"',
 			description:
-				"`framed` wraps the body in the same inset rim as Dialog and Command: a thin bg-background border around a bg-card surface.",
+				"`default` sits on the page colour with a border; `secondary` is the borderless grey card step for grouped or nested areas; `ghost` has no fill or border; `framed` wraps the body in Dialog's inset rim.",
 			default: "default",
-			control: { kind: "select", options: ["default", "framed"] },
+			control: { kind: "select", options: ["default", "secondary", "ghost", "framed"] },
 		},
 	],
 	motion: {

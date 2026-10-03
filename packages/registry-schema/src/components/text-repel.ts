@@ -1,15 +1,16 @@
 import { defineComponent } from "../index.ts";
 
-const MODES = ["repel", "attract"];
+const MODES = ["repel", "attract", "inertia"];
 const SIZES = ["inherit", "sm", "md", "lg"];
 
 export const textRepel = defineComponent({
 	slug: "text-repel",
 	name: "Text Repel",
 	description:
-		"Letters shy away from, or lean toward, the pointer and spring back when it leaves.",
+		"Letters shy away from, lean toward, or get flicked by the pointer, then spring back.",
 	category: "text",
 	status: "stable",
+	isUpdated: true,
 	variants: { mode: MODES, size: SIZES },
 	props: [
 		{
@@ -23,7 +24,7 @@ export const textRepel = defineComponent({
 			name: "mode",
 			type: MODES.map((v) => `"${v}"`).join(" | "),
 			description:
-				"Repel pushes letters away from the pointer; attract pulls them toward it.",
+				"Repel pushes letters away from the pointer, attract pulls them toward it, inertia flicks each letter it crosses by the pointer's speed.",
 			default: "repel",
 			control: { kind: "select", options: MODES },
 		},
@@ -33,6 +34,7 @@ export const textRepel = defineComponent({
 			description: "Pointer influence radius, in px.",
 			default: 120,
 			control: { kind: "number", min: 40, max: 300, step: 10 },
+			showWhen: { mode: ["repel", "attract"] },
 		},
 		{
 			name: "strength",

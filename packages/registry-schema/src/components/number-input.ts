@@ -4,10 +4,11 @@ export const numberInput = defineComponent({
 	slug: "number-input",
 	name: "Number Input",
 	description:
-		"A stepper with hold-to-repeat buttons, keyboard steps, Intl formatting and a label you can drag to scrub.",
+		"A stepper with hold-to-repeat buttons, keyboard steps, Intl formatting and a label you can drag to scrub, or a compact inline scrub field.",
 	category: "base",
 	status: "beta",
-	variants: { size: ["sm", "md", "lg"] },
+	isUpdated: true,
+	variants: { variant: ["default", "scrub"], size: ["sm", "md", "lg"] },
 	props: [
 		{
 			name: "value",
@@ -54,11 +55,26 @@ export const numberInput = defineComponent({
 			control: { kind: "none" },
 		},
 		{
+			name: "variant",
+			type: '"default" | "scrub"',
+			description:
+				"`default` stacks the label above a stepper; `scrub` folds the label into the field as its drag handle, with no steppers.",
+			default: "default",
+			control: { kind: "select", options: ["default", "scrub"] },
+		},
+		{
 			name: "size",
 			type: '"sm" | "md" | "lg"',
 			description: "Field height.",
 			default: "md",
 			control: { kind: "select", options: ["sm", "md", "lg"] },
+		},
+		{
+			name: "suffix",
+			type: "string",
+			description: 'Scrub: a unit shown after the value, e.g. "px".',
+			control: { kind: "text" },
+			showWhen: { variant: ["scrub"] },
 		},
 		{
 			name: "disabled",

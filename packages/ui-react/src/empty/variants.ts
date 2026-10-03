@@ -72,31 +72,31 @@ export const emptyMedia = tv({
 			variant: "icon",
 			tone: "success",
 			class:
-				"bg-[color-mix(in_oklch,var(--success)_12%,transparent)] text-[var(--success)]",
+				"bg-[color-mix(in_oklch,var(--success)_12%,transparent)] text-success-strong",
 		},
 		{
 			variant: "icon",
 			tone: "warning",
 			class:
-				"bg-[color-mix(in_oklch,var(--warning)_14%,transparent)] text-[var(--warning)]",
+				"bg-[color-mix(in_oklch,var(--warning)_14%,transparent)] text-warning-strong",
 		},
 		{
 			variant: "icon",
 			tone: "destructive",
 			class:
-				"bg-[color-mix(in_oklch,var(--destructive)_12%,transparent)] text-[var(--destructive)]",
+				"bg-[color-mix(in_oklch,var(--destructive)_12%,transparent)] text-destructive-strong",
 		},
 		{
 			variant: "icon",
 			tone: "info",
-			class: "bg-[color-mix(in_oklch,var(--info)_12%,transparent)] text-[var(--info)]",
+			class: "bg-[color-mix(in_oklch,var(--info)_12%,transparent)] text-info-strong",
 		},
 		// A bare glyph takes the tone as its colour, so `tone` is never a dead prop.
 		{ variant: "default", tone: "primary", class: "text-primary" },
-		{ variant: "default", tone: "success", class: "text-[var(--success)]" },
-		{ variant: "default", tone: "warning", class: "text-[var(--warning)]" },
-		{ variant: "default", tone: "destructive", class: "text-[var(--destructive)]" },
-		{ variant: "default", tone: "info", class: "text-[var(--info)]" },
+		{ variant: "default", tone: "success", class: "text-success-strong" },
+		{ variant: "default", tone: "warning", class: "text-warning-strong" },
+		{ variant: "default", tone: "destructive", class: "text-destructive-strong" },
+		{ variant: "default", tone: "info", class: "text-info-strong" },
 	],
 	defaultVariants: { variant: "default", tone: "neutral" },
 });

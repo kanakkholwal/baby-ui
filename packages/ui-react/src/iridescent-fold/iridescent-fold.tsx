@@ -10,12 +10,19 @@ import {
 	type IridescentFoldPosition,
 	type IridescentFoldSpeed,
 	type IridescentFoldTone,
+	type IridescentFoldVariant,
 	iridescentFold,
 } from "./variants";
 
-export type { IridescentFoldPosition, IridescentFoldSpeed, IridescentFoldTone };
+export type {
+	IridescentFoldPosition,
+	IridescentFoldSpeed,
+	IridescentFoldTone,
+	IridescentFoldVariant,
+};
 
 export interface IridescentFoldProps {
+	variant?: IridescentFoldVariant;
 	tone?: IridescentFoldTone;
 	speed?: IridescentFoldSpeed;
 	position?: IridescentFoldPosition;
@@ -27,9 +34,10 @@ export interface IridescentFoldProps {
 	children?: ReactNode;
 }
 
-/** Holographic foil folds with a thin-film sheen, drawn in WebGL from theme tokens. */
+/** Holographic foil or satin with a thin-film sheen and specular streaks, drawn in WebGL. */
 export function IridescentFold({
-	tone = "spectrum",
+	variant = "foil",
+	tone = "holo",
 	speed = "normal",
 	position = "absolute",
 	intensity = 1,
@@ -42,14 +50,16 @@ export function IridescentFold({
 		speed: IRIDESCENT_FOLD_SPEED[speed],
 		intensity,
 		grain,
+		silk: variant === "silk",
 	};
 	const { root, canvas, webgl } = useCanvasEngine(mountIridescentFold, options, [
+		variant,
 		tone,
 		speed,
 		intensity,
 		grain,
 	]);
-	const s = iridescentFold({ tone, speed, position, webgl });
+	const s = iridescentFold({ variant, tone, speed, position, webgl });
 
 	return (
 		<div ref={root} data-slot="iridescent-fold" className={cn(s.root(), className)}>

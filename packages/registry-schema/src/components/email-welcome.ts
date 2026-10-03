@@ -1,6 +1,5 @@
 import { defineComponent } from "../index.ts";
 
-const SURFACES = ["card", "plain"];
 const DENSITIES = ["comfortable", "compact"];
 
 export const emailWelcome = defineComponent({
@@ -10,21 +9,13 @@ export const emailWelcome = defineComponent({
 		"Sent right after sign-up: greets the user, lists their first few actions and links to the product.",
 	category: "emails",
 	status: "beta",
-	variants: { design: ["classic", "stacked"], surface: SURFACES, density: DENSITIES },
+	variants: { density: DENSITIES },
 	props: [
-		{
-			name: "design",
-			type: '"classic" | "stacked"',
-			description:
-				"`classic` is one card; `stacked` splits the email into cards with a centred, image-led opener.",
-			default: "stacked",
-			control: { kind: "select", options: ["classic", "stacked"] },
-		},
 		{
 			name: "heroImageUrl, heroImageAlt",
 			type: "string",
 			description:
-				"Absolute URL of a wide illustration or product shot, with alt text, for `stacked`.",
+				"Absolute URL of a wide illustration or product shot above the heading, with alt text.",
 			control: { kind: "none" },
 		},
 		{
@@ -32,7 +23,7 @@ export const emailWelcome = defineComponent({
 			type: "string",
 			description: "Shown in the header, heading and preview line.",
 			required: true,
-			default: "Northwind",
+			default: "Acme",
 			control: { kind: "text" },
 		},
 		{
@@ -58,8 +49,9 @@ export const emailWelcome = defineComponent({
 		},
 		{
 			name: "steps",
-			type: "{ title: string; description: string }[]",
-			description: "Two to four first actions; an empty list hides the section.",
+			type: "{ title: string; description: string; href?: string; actionLabel?: string }[]",
+			description:
+				"Two to four first actions, each with an optional deep link; an empty list hides the section.",
 			required: true,
 			control: { kind: "none" },
 		},
@@ -74,7 +66,20 @@ export const emailWelcome = defineComponent({
 			name: "logoUrl",
 			type: "string",
 			description:
-				"Absolute URL, about 32px tall. Falls back to the product name as text.",
+				"Absolute PNG URL of a square mark, set beside the product name in the header and footer.",
+			control: { kind: "none" },
+		},
+		{
+			name: "resources",
+			type: "{ title: string; description: string; href: string }[]",
+			description:
+				"Docs, templates or community links, each a titled row in its own card.",
+			control: { kind: "none" },
+		},
+		{
+			name: "note",
+			type: "{ name: string; message: string; role?: string; avatarUrl?: string }",
+			description: "A short signed note, e.g. from a founder; the help line joins it.",
 			control: { kind: "none" },
 		},
 		{
@@ -114,13 +119,6 @@ export const emailWelcome = defineComponent({
 			description: "Lead-in before the support address.",
 			default: "Questions? Reply to this email or write to",
 			control: { kind: "none" },
-		},
-		{
-			name: "surface",
-			type: SURFACES.map((v) => `"${v}"`).join(" | "),
-			description: "A bordered card on a quiet page, or content straight on the page.",
-			default: "card",
-			control: { kind: "select", options: SURFACES },
 		},
 		{
 			name: "density",

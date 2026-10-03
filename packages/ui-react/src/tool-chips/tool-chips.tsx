@@ -193,7 +193,7 @@ export function ToolChips({
 															"truncate text-xs leading-[1.6]",
 															row.detailMono && "font-mono",
 															line.tone === "add"
-																? "text-success"
+																? "text-success-strong"
 																: "text-muted-foreground",
 														)}
 													>
@@ -220,11 +220,11 @@ export function ToolChips({
 										}}
 									>
 										<span className="min-w-0 truncate">{diff.file}</span>
-										<span className="shrink-0 text-success tabular-nums">
+										<span className="shrink-0 text-success-strong tabular-nums">
 											+{diff.add}
 										</span>
 										{diff.del > 0 ? (
-											<span className="shrink-0 text-destructive tabular-nums">
+											<span className="shrink-0 text-destructive-strong tabular-nums">
 												−{diff.del}
 											</span>
 										) : null}
@@ -239,9 +239,9 @@ export function ToolChips({
 													{diff.file}
 												</span>
 												<span className="shrink-0 tabular-nums">
-													<span className="text-success">+{diff.add}</span>
+													<span className="text-success-strong">+{diff.add}</span>
 													{diff.del > 0 ? (
-														<span className="text-destructive"> −{diff.del}</span>
+														<span className="text-destructive-strong"> −{diff.del}</span>
 													) : null}
 												</span>
 											</div>
@@ -252,9 +252,9 @@ export function ToolChips({
 														className={cn(
 															"flex gap-2 whitespace-pre px-2.5",
 															line.tone === "add"
-																? "bg-success/10 text-success"
+																? "bg-success/10 text-success-strong"
 																: line.tone === "del"
-																	? "bg-destructive/10 text-destructive"
+																	? "bg-destructive/10 text-destructive-strong"
 																	: "text-muted-foreground",
 														)}
 													>

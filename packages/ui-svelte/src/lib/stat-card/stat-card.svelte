@@ -11,10 +11,10 @@ import CardHeader from "../card/card-header.svelte";
 import CardTitle from "../card/card-title.svelte";
 import ChartContainer from "../chart/chart-container.svelte";
 import { type ChartStatus, type Datum, toDate } from "../chart/core";
-import Counter from "../counter/counter.svelte";
 import { cn } from "../lib/cn";
 import Line from "../line-chart/line.svelte";
 import LineChart from "../line-chart/line-chart.svelte";
+import RollingDigits from "../rolling-digits/rolling-digits.svelte";
 import Skeleton from "../skeleton/skeleton.svelte";
 import {
 	periodTrend,
@@ -193,12 +193,14 @@ function setActive(index: number | null) {
 			</div>
 		{:else}
 			<div class={styles.headline()}>
-				<Counter
+				<RollingDigits
+					variant="count"
 					value={shownValue}
 					format={number}
 					size="sm"
 					durationMs={counterMs}
-					triggerOnView={false}
+					startOnView={false}
+					class="font-bold text-foreground"
 				/>
 				<span class={styles.label()}>{shownLabel}</span>
 				<span class={styles.srOnly()} aria-live="polite">{announced}</span>

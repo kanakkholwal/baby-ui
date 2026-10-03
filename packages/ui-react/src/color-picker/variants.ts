@@ -16,7 +16,7 @@ export const colorPicker = tv({
 		rowLabel: "min-w-0 flex-1 truncate text-muted-foreground",
 		// Reads as text until pointed at or focused; typing a hex commits on Enter or blur.
 		rowHex:
-			"w-[9ch] rounded-sm bg-transparent px-1 text-right font-mono text-foreground uppercase tabular-nums outline-none transition-colors hover:bg-foreground/[0.06] focus:bg-foreground/[0.06] aria-invalid:text-destructive",
+			"w-[9ch] rounded-sm bg-transparent px-1 text-right font-mono text-foreground uppercase tabular-nums outline-none transition-colors hover:bg-foreground/[0.06] focus:bg-foreground/[0.06] aria-invalid:text-destructive-strong",
 		trigger:
 			"grid place-items-center rounded-md outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none",
 		swatch: [

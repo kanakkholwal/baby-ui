@@ -4,14 +4,37 @@ export const taskSteps = defineComponent({
 	slug: "task-steps",
 	name: "Task Steps",
 	description:
-		"Ordered agent plan where each step shows pending, active, done or failed.",
+		"Ordered agent plan where each step shows pending, active, done or failed, as a timeline or expandable rows.",
 	category: "agents",
 	status: "stable",
+	isUpdated: true,
+	variants: { variant: ["timeline", "capsules", "list"] },
 	props: [
 		{
 			name: "steps",
-			type: "{ id: string; label: string; status: TaskStatus }[]",
-			description: "Steps in execution order.",
+			type: "TaskStep[]",
+			description:
+				"Steps in execution order: `id`, `label`, `status`, and for rows an optional `meta`, `step` number and `details` pairs.",
+			control: { kind: "none" },
+		},
+		{
+			name: "variant",
+			type: '"timeline" | "capsules" | "list"',
+			description:
+				"`timeline` ticks down a connector; `capsules` and `list` are expandable rows with a figure, a status pill and details.",
+			default: "timeline",
+			control: { kind: "select", options: ["timeline", "capsules", "list"] },
+		},
+		{
+			name: "onToggle",
+			type: "(id: string, open: boolean) => void",
+			description: "Rows: fired when a row expands or collapses.",
+			control: { kind: "none" },
+		},
+		{
+			name: "onRetry",
+			type: "(id: string) => void",
+			description: "Rows: shows a retry button on failed rows.",
 			control: { kind: "none" },
 		},
 		{
@@ -20,6 +43,7 @@ export const taskSteps = defineComponent({
 			description: "Draw a rule connecting consecutive steps.",
 			default: true,
 			control: { kind: "boolean" },
+			showWhen: { variant: ["timeline"] },
 		},
 		{
 			name: "compact",
@@ -27,6 +51,7 @@ export const taskSteps = defineComponent({
 			description: "Tighter rows for a sidebar.",
 			default: false,
 			control: { kind: "boolean" },
+			showWhen: { variant: ["timeline"] },
 		},
 		{
 			name: "size",
@@ -34,6 +59,7 @@ export const taskSteps = defineComponent({
 			description: "Marker, icon and label scale.",
 			default: "md",
 			control: { kind: "select", options: ["sm", "md"] },
+			showWhen: { variant: ["timeline"] },
 		},
 		{
 			name: "labels",
@@ -50,6 +76,7 @@ export const taskSteps = defineComponent({
 			"The active step's spinner rotates at 850ms linear; every other icon is static.",
 			"A step turning done draws its tick over 200ms, the same draw the checkbox uses.",
 			"The connector above a completed step fills from top to bottom over 300ms.",
+			"Rows fade up 80ms apart; a row expands its details with grid-template-rows and the chevron turns.",
 		],
 	},
 	a11y: {
@@ -71,19 +98,23 @@ export const taskSteps = defineComponent({
 			entry: "TaskSteps",
 			files: [
 				{ path: "task-steps/task-steps.tsx", type: "registry:ui" },
+				{ path: "task-steps/rows.tsx", type: "registry:ui" },
 				{ path: "task-steps/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			registryDependencies: ["badge"],
 		},
 		svelte: {
 			entry: "TaskSteps",
 			files: [
 				{ path: "task-steps/task-steps.svelte", type: "registry:ui" },
+				{ path: "task-steps/task-step-rows.svelte", type: "registry:ui" },
 				{ path: "task-steps/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
+			registryDependencies: ["badge"],
 		},
 	},
 	keywords: ["tasks", "steps", "agent", "plan", "progress"],

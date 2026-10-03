@@ -8,8 +8,8 @@ export const emailKit = defineComponent({
 	category: "emails",
 	status: "beta",
 	variants: {
-		width: ["md", "lg"],
-		surface: ["card", "plain"],
+		surface: ["card", "plain", "stacked"],
+		variant: ["lockup", "logo"],
 		tone: ["neutral", "info", "success", "warning", "destructive"],
 	},
 	props: [
@@ -22,19 +22,19 @@ export const emailKit = defineComponent({
 			control: { kind: "none" },
 		},
 		{
-			name: "width",
-			type: '"md" | "lg"',
+			name: "surface",
+			type: '"card" | "plain" | "stacked"',
 			description:
-				"EmailShell: 560px or 600px column. 600px is the most any inbox reliably shows.",
-			default: "md",
+				"EmailShell: a 600px bordered card, content straight on the page, or EmailSection cards.",
+			default: "card",
 			control: { kind: "none" },
 		},
 		{
-			name: "surface",
-			type: '"card" | "plain"',
+			name: "variant",
+			type: '"lockup" | "logo"',
 			description:
-				"EmailShell: a bordered card on a quiet page, or content straight on the page.",
-			default: "card",
+				"EmailHeader: a square mark beside the product name, or a wordmark image on its own.",
+			default: "lockup",
 			control: { kind: "none" },
 		},
 		{

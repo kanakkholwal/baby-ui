@@ -1,23 +1,33 @@
 import { defineComponent } from "../index.ts";
 
+const VARIANTS = ["sweep", "double", "draw", "bar"];
 const TONES = ["default", "primary", "accent"];
+const TRIGGERS = ["hover", "always"];
 
 export const underlineHoverText = defineComponent({
 	slug: "underline-hover-text",
 	name: "Underline Hover Text",
 	description:
-		"A muted baseline, and a bold stroke that sweeps outward from the centre on hover.",
+		"Inline text with a hover underline in four strokes: a centre sweep, a lifting double hairline, a drawn hairline, or a sliding bar.",
 	category: "text",
 	status: "stable",
-	demo: { mode: "auto", frame: "none" },
-	variants: { tone: TONES },
+	isUpdated: true,
+	variants: { variant: VARIANTS, tone: TONES, trigger: TRIGGERS },
 	props: [
 		{
-			name: "text",
-			type: "string",
-			description: "The text to underline.",
-			control: { kind: "text" },
-			default: "Underline hover",
+			name: "children",
+			type: "ReactNode | Snippet",
+			description:
+				"The text to underline; it stays inline, so it sits inside a sentence.",
+			control: { kind: "none" },
+		},
+		{
+			name: "variant",
+			type: VARIANTS.map((v) => `"${v}"`).join(" | "),
+			description:
+				"`sweep` grows a stroke from the centre over a faint baseline and lifts the text; `double` lifts a second hairline above the first; `draw` grows a hairline from the start; `bar` slides a thick bar in from the start and out past the end.",
+			default: "sweep",
+			control: { kind: "select", options: VARIANTS },
 		},
 		{
 			name: "tone",
@@ -27,27 +37,40 @@ export const underlineHoverText = defineComponent({
 			control: { kind: "select", options: TONES },
 		},
 		{
+			name: "trigger",
+			type: TRIGGERS.map((v) => `"${v}"`).join(" | "),
+			description:
+				"`hover` draws the stroke on hover and keyboard focus; `always` keeps it drawn.",
+			default: "hover",
+			control: { kind: "select", options: TRIGGERS },
+		},
+		{
 			name: "durationMs",
 			type: "number",
-			description: "How long the lift and stroke take, in ms.",
+			description: "How long the stroke takes, in ms.",
 			default: 500,
 			control: { kind: "number", min: 100, max: 1500, step: 50 },
+		},
+		{
+			name: "as",
+			type: "string",
+			description: "Element to render, e.g. `a` for a link.",
+			default: "span",
+			control: { kind: "none" },
 		},
 	],
 	motion: {
 		springs: [],
 		reducedMotion:
-			"The stroke still sweeps in, just without the 500ms ease and the lift.",
+			"The stroke still appears on hover; only its easing travel is shortened.",
 		behaviour: [
-			"On hover the label lifts 2px, and a rounded stroke grows outward from the centre to full width beneath it.",
+			"Every stroke answers keyboard focus as well as hover.",
+			"`bar` flips its transform origin with the hover, so it grows in from the start and shrinks off the end in pure CSS.",
 		],
 	},
 	a11y: {
-		notes: [
-			"The baseline and stroke are `aria-hidden`; the label carries the real text.",
-		],
+		notes: ["The strokes are `aria-hidden`; the children carry the real text."],
 	},
-
 	impl: {
 		react: {
 			entry: "UnderlineHoverText",
@@ -68,5 +91,5 @@ export const underlineHoverText = defineComponent({
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 	},
-	keywords: ["text", "underline", "hover", "link"],
+	keywords: ["text", "underline", "hover", "link", "double underline", "border", "metis"],
 });

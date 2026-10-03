@@ -95,7 +95,6 @@ export const COLLECTIONS = {
 			"radio-group",
 			"switch",
 			"slider",
-			"scrub-field",
 			"color-picker",
 			"input-otp",
 			"calendar",
@@ -139,7 +138,6 @@ export const CATEGORY_GROUPS = {
 				"radio-group",
 				"switch",
 				"slider",
-				"scrub-field",
 				"color-picker",
 				"number-input",
 				"file-upload",
@@ -212,7 +210,6 @@ export const CATEGORY_GROUPS = {
 				"alert",
 				"toast",
 				"progress",
-				"gauge",
 				"skeleton",
 				"spinner",
 				"show-more",
@@ -356,6 +353,7 @@ export function siteNav(categories: NavCategory[]): NavItem[] {
 				hint: "Start with installation",
 			},
 		},
+		{ href: "/studio", label: "Studio", match: ["/studio"] },
 		...(__SHOW_PRO__
 			? [{ href: "/pricing", label: "Pricing", match: ["/pricing"] }]
 			: []),

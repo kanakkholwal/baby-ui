@@ -2,7 +2,6 @@ import { GOALS, GOALS_CONFIG } from "./channels";
 import { CIRCUIT_CONNECTIONS, CIRCUIT_NODES } from "./circuit";
 import { CONTRIBUTIONS } from "./contributions";
 import { avatar, photo } from "./media";
-import { GALLERY_ITEMS } from "./obsidian";
 import { ORBIT_PEOPLE } from "./stacks";
 import {
 	MAP_TOTAL,
@@ -18,8 +17,6 @@ export const AGENT_SCREEN = {
 	streamSrc:
 		"https://wsrv.nl/?url=95dnc2a95qgwt9ff.public.blob.vercel-storage.com/agent-desktop-v3.png&w=1280&output=webp&q=80",
 };
-
-export const ART_GALLERY = { items: GALLERY_ITEMS };
 
 export const CASE_STUDY_FLIP_STACK = {
 	heading: "Design that delivers.",
@@ -173,7 +170,7 @@ export const FILTER_TABLE = {
 	},
 };
 
-export const FISHEYE_INFINITE_GRID = {
+export const INFINITE_IMAGE_FIELD = {
 	items: [
 		[1015, "A river bending through a valley", "River Bend"],
 		[1016, "Red canyon walls at dusk", "Canyon"],
@@ -208,12 +205,6 @@ export const GRADIENT_HERO_01 = {
 		{ label: "Explore blocks", href: "/components/blocks" },
 		{ label: "View source", href: "https://github.com/kanakkholwal/baby-ui" },
 	],
-};
-
-export const INFINITE_IMAGE_FIELD = {
-	images: [1015, 1016, 1018, 1019, 1020, 1021, 1022, 1025, 1035, 1039, 1043, 1044].map(
-		(id) => photo(id, 320, 440),
-	),
 };
 
 export const ORBIT_CARD_STACK = { items: ORBIT_PEOPLE };

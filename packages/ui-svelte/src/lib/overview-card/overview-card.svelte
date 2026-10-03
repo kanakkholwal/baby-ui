@@ -11,10 +11,10 @@ import CardHeader from "../card/card-header.svelte";
 import CardTitle from "../card/card-title.svelte";
 import ChartContainer from "../chart/chart-container.svelte";
 import { type ChartStatus, type Datum, toDate } from "../chart/core";
-import Counter from "../counter/counter.svelte";
 import { cn } from "../lib/cn";
 import Line from "../line-chart/line.svelte";
 import LineChart from "../line-chart/line-chart.svelte";
+import RollingDigits from "../rolling-digits/rolling-digits.svelte";
 import ToggleGroup from "../toggle-group/toggle-group.svelte";
 import ToggleGroupItem from "../toggle-group/toggle-group-item.svelte";
 import { type OverviewCardChart, type OverviewCardSize, overviewCard } from "./variants";
@@ -133,7 +133,7 @@ function setPeriod(next: string) {
 	</CardHeader>
 	<CardContent class={styles.body()}>
 		<div class={styles.headline()}>
-			<Counter value={shownValue} format={number} size="lg" durationMs={400} triggerOnView={false} />
+			<RollingDigits variant="count" value={shownValue} format={number} size="lg" durationMs={400} startOnView={false} class="font-bold text-foreground" />
 			<span class={styles.label()}>{shownLabel}</span>
 			<Badge variant={up ? "success" : "destructive"} size="sm">
 				<svg aria-hidden="true" viewBox="0 0 12 12" class="size-3" fill="none">

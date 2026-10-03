@@ -20,8 +20,8 @@ export const tool = tv({
 		status: {
 			pending: { icon: "text-muted-foreground", label: "text-muted-foreground" },
 			running: { icon: "text-primary", label: "text-primary" },
-			done: { icon: "text-success", label: "text-success" },
-			error: { icon: "text-destructive", label: "text-destructive" },
+			done: { icon: "text-success-strong", label: "text-success-strong" },
+			error: { icon: "text-destructive-strong", label: "text-destructive-strong" },
 		},
 		open: {
 			true: {

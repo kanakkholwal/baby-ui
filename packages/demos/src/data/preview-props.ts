@@ -16,6 +16,21 @@ export function controlProps<Props>(props: Record<string, unknown> | undefined):
 	) as Props;
 }
 
+/** Resolves site-hosted sample assets (`logoUrl: "/email/..."`) against the rendering origin. */
+export function withSiteAssets(
+	props: Record<string, unknown>,
+	origin: string,
+): Record<string, unknown> {
+	return Object.fromEntries(
+		Object.entries(props).map(([key, value]) => [
+			key,
+			key.endsWith("Url") && typeof value === "string" && value.startsWith("/")
+				? `${origin}${value}`
+				: value,
+		]),
+	);
+}
+
 const TEMPLATE_SAMPLES: Record<string, Record<string, unknown>> = {
 	...OG_SAMPLES,
 	...EMAIL_SAMPLES,

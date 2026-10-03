@@ -29,9 +29,9 @@ export const statusTone = tv({
 	slots: { bar: "", text: "" },
 	variants: {
 		status: {
-			normal: { bar: "bg-success", text: "text-success" },
-			warning: { bar: "bg-warning", text: "text-warning" },
-			error: { bar: "bg-destructive", text: "text-destructive" },
+			normal: { bar: "bg-success", text: "text-success-strong" },
+			warning: { bar: "bg-warning", text: "text-warning-strong" },
+			error: { bar: "bg-destructive", text: "text-destructive-strong" },
 			empty: { bar: "bg-foreground/10", text: "text-muted-foreground" },
 		},
 	},

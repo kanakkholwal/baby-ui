@@ -24,7 +24,7 @@ test("every category has a complete, distinct row", () => {
 
 test("derived lists follow the table", () => {
 	assert.deepEqual(TOP_LEVEL_CATEGORIES, ["charts", "og-images", "emails"]);
-	assert.deepEqual(PREVIEW_CATEGORIES, ["emails"]);
+	assert.deepEqual(PREVIEW_CATEGORIES, []);
 });
 
 test("hrefs: top-level at /<category>, the rest under /components", () => {

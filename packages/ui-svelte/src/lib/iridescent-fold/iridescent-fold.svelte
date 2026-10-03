@@ -9,11 +9,13 @@ import {
 	type IridescentFoldPosition,
 	type IridescentFoldSpeed,
 	type IridescentFoldTone,
+	type IridescentFoldVariant,
 	iridescentFold,
 } from "./variants";
 
 let {
-	tone = "spectrum",
+	variant = "foil",
+	tone = "holo",
 	speed = "normal",
 	position = "absolute",
 	intensity = 1,
@@ -21,6 +23,7 @@ let {
 	class: classProp,
 	children,
 }: {
+	variant?: IridescentFoldVariant;
 	tone?: IridescentFoldTone;
 	speed?: IridescentFoldSpeed;
 	position?: IridescentFoldPosition;
@@ -39,12 +42,13 @@ const gl = canvasEngine(
 	() => ({ root, canvas }),
 	() => options,
 );
-const s = $derived(iridescentFold({ tone, speed, position, webgl: gl.webgl }));
+const s = $derived(iridescentFold({ variant, tone, speed, position, webgl: gl.webgl }));
 const options: IridescentFoldOptions = $derived({
 	colors: IRIDESCENT_FOLD_COLORS[tone],
 	speed: IRIDESCENT_FOLD_SPEED[speed],
 	intensity,
 	grain,
+	silk: variant === "silk",
 });
 </script>
 

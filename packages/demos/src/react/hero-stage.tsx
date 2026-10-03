@@ -6,7 +6,7 @@ import {
 	CardDescription,
 	CardHeader,
 	CardTitle,
-	Gauge,
+	GaugeChart,
 	HeroStage,
 	HeroStageSlot,
 	Progress,
@@ -32,7 +32,7 @@ export function HeroStageDemo({ props }: { props: Props }) {
 					</HeroStageSlot>
 					<HeroStageSlot index={1} x={50} y={-30} rotate={8}>
 						<Card className="items-center py-4">
-							<Gauge value={72} label="Uptime" />
+							<GaugeChart layout="ring" value={72} label="Uptime" />
 						</Card>
 					</HeroStageSlot>
 					<HeroStageSlot index={2} x={-20} y={40} rotate={-4}>

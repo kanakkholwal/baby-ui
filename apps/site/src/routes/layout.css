@@ -31,12 +31,14 @@
 	}
 	/* A modal <dialog> makes the UA hide the page scrollbar; reserving it stops the jump.
 	   scrollbar-color inherits to every scroll container, scrollbar-width does not. */
+	/* Only the page shows a scrollbar; inner panes still scroll by wheel, touch and keys. */
 	html {
 		scrollbar-gutter: stable;
 		scrollbar-color: var(--border-strong) transparent;
-	}
-	* {
 		scrollbar-width: thin;
+	}
+	:where(body, body *) {
+		scrollbar-width: none;
 	}
 	body {
 		background: var(--background);
@@ -159,6 +161,10 @@
 	}
 	::-webkit-scrollbar-thumb:hover {
 		background: var(--muted-foreground);
+	}
+	body ::-webkit-scrollbar,
+	body::-webkit-scrollbar {
+		display: none;
 	}
 }
 

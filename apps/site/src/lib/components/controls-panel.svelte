@@ -41,8 +41,9 @@ $effect(() => {
 </script>
 
 {#if docked}
-	<section aria-label="Controls" class="flex h-full min-h-0 flex-col rounded-xl border border-border bg-card">
-		<div class="flex h-10 shrink-0 items-center justify-between gap-2 border-border border-b px-3">
+	<!-- Same inset frame as the stage beside it: tinted shell, body sunk onto bg-background. -->
+	<section aria-label="Controls" class="flex h-full min-h-0 flex-col rounded-xl border border-border bg-card p-1">
+		<div class="flex h-9 shrink-0 items-center justify-between gap-2 pr-0.5 pl-2.5">
 			<p class="flex items-center gap-2 font-medium text-foreground text-sm">
 				<IconAdjustmentsHorizontal size={16} class="text-muted-foreground" />
 				Controls
@@ -52,7 +53,7 @@ $effect(() => {
 				Reset
 			</Button>
 		</div>
-		<div class="scrollbar-hide min-h-0 flex-1 overflow-y-auto p-3">
+		<div class="scrollbar-hide min-h-0 flex-1 overflow-y-auto rounded-[7px] bg-background p-3">
 			{#key spec.slug}
 				<SpecDials {spec} bind:values />
 			{/key}

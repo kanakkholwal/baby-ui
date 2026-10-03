@@ -22,19 +22,20 @@ import {
 	RadioGroup,
 	RadioGroupItem,
 	Reasoning,
+	ReasoningRows,
 	ReasoningStep,
 	ReasoningStepDetails,
 	ReasoningStepSource,
 	ReasoningStepSources,
 	type ReasoningStepStatus,
 	ReasoningSteps,
-	ResponseStream,
 	Slider,
 	sliderLayout,
 	Tabs,
 	TabsContent,
 	TabsList,
 	TabsTrigger,
+	type TaskStep,
 	TaskSteps,
 } from "@baby-ui/react";
 import { type ComponentProps, Fragment, useEffect, useState } from "react";
@@ -237,24 +238,6 @@ export function MessageDemo({ props }: { props: Props }) {
 	);
 }
 
-export function ResponseStreamDemo({ props }: { props: Props }) {
-	const p = controlProps<ComponentProps<typeof ResponseStream>>(props);
-	const text =
-		p.text ||
-		"Streaming reveals text at a steady rate so the reader is never chasing it.";
-	return (
-		<div className="w-full max-w-96 rounded-xl border border-border bg-card p-4">
-			<ResponseStream
-				key={`${text}-${String(props.speed)}`}
-				text={text}
-				speed={p.speed ?? 60}
-				streaming={p.streaming ?? true}
-				size={p.size ?? "md"}
-			/>
-		</div>
-	);
-}
-
 const REASONING_STEPS = [
 	{
 		label: "Read the brief",
@@ -268,6 +251,12 @@ const REASONING_STEPS = [
 function stepStatus(index: number, progress: number): ReasoningStepStatus {
 	return index < progress ? "done" : index === progress ? "active" : "pending";
 }
+
+const CODING_ROWS = [
+	{ primary: "Read", secondary: "flavors.ts", mono: true },
+	{ primary: "Edit", secondary: "ChurnSchedule.tsx", mono: true, add: 74, del: 41 },
+	{ primary: "Run", secondary: "npm run freeze", mono: true },
+];
 
 export function ReasoningDemo({ props }: { props: Props }) {
 	const p = controlProps<ComponentProps<typeof Reasoning>>(props);
@@ -292,31 +281,38 @@ export function ReasoningDemo({ props }: { props: Props }) {
 				variant={p.variant ?? "outline"}
 				thinkingLabel={p.thinkingLabel || "Thinking"}
 			>
-				<ReasoningSteps>
-					{REASONING_STEPS.map((s, i) => (
-						<ReasoningStep
-							key={s.label}
-							label={s.label}
-							description={s.description}
-							status={stepStatus(i, step)}
-						>
-							{i === 1 ? (
-								<ReasoningStepSources>
-									<ReasoningStepSource href="https://base-ui.com">
-										base-ui.com
-									</ReasoningStepSource>
-									<ReasoningStepSource>svelte.dev</ReasoningStepSource>
-								</ReasoningStepSources>
-							) : null}
-							{i === 2 ? (
-								<ReasoningStepDetails summary="Why grid rows">
-									<p>Animating grid-template-rows needs no height measuring.</p>
-									<p>A height tween needs a ResizeObserver and still snaps.</p>
-								</ReasoningStepDetails>
-							) : null}
-						</ReasoningStep>
-					))}
-				</ReasoningSteps>
+				{p.variant === "inline" ? (
+					<ReasoningRows
+						kind="coding"
+						rows={CODING_ROWS.slice(0, thinking ? step + 1 : 3)}
+					/>
+				) : (
+					<ReasoningSteps>
+						{REASONING_STEPS.map((s, i) => (
+							<ReasoningStep
+								key={s.label}
+								label={s.label}
+								description={s.description}
+								status={stepStatus(i, step)}
+							>
+								{i === 1 ? (
+									<ReasoningStepSources>
+										<ReasoningStepSource href="https://base-ui.com">
+											base-ui.com
+										</ReasoningStepSource>
+										<ReasoningStepSource>svelte.dev</ReasoningStepSource>
+									</ReasoningStepSources>
+								) : null}
+								{i === 2 ? (
+									<ReasoningStepDetails summary="Why grid rows">
+										<p>Animating grid-template-rows needs no height measuring.</p>
+										<p>A height tween needs a ResizeObserver and still snaps.</p>
+									</ReasoningStepDetails>
+								) : null}
+							</ReasoningStep>
+						))}
+					</ReasoningSteps>
+				)}
 			</Reasoning>
 		</div>
 	);
@@ -329,8 +325,70 @@ const STEPS = [
 	{ id: "docs", label: "Write the doc page", status: "pending" as const },
 ];
 
+const ROW_STEPS: TaskStep[] = [
+	{
+		id: "verify",
+		label: "Verified vendor records",
+		meta: "12 suppliers",
+		status: "done",
+		details: [
+			{ label: "Matched tax and contact IDs", meta: "12/12" },
+			{ label: "Flagged stale records", meta: "0" },
+		],
+	},
+	{
+		id: "index",
+		label: "Build reorder task list",
+		meta: "7 SKUs",
+		status: "active",
+		step: 2,
+		details: [
+			{ label: "Reading POS export", meta: "3 files" },
+			{ label: "Scoring stockout risk", meta: "68%" },
+		],
+	},
+	{
+		id: "draft",
+		label: "Draft supplier emails",
+		meta: "2 messages",
+		status: "pending",
+		step: 3,
+		details: [
+			{ label: "Cone supplier follow-up", meta: "draft" },
+			{ label: "Pistachio reorder note", meta: "draft" },
+		],
+	},
+];
+
 export function TaskStepsDemo({ props }: { props: Props }) {
 	const p = controlProps<ComponentProps<typeof TaskSteps>>(props);
+	const variant = p.variant ?? "timeline";
+	const [rows, setRows] = useState(ROW_STEPS);
+	// Scripted for the demo: the last row fails, then Retry settles it.
+	useEffect(() => {
+		setRows(ROW_STEPS);
+		const id = setTimeout(
+			() =>
+				setRows((current) =>
+					current.map((r) => (r.id === "draft" ? { ...r, status: "failed" } : r)),
+				),
+			2600,
+		);
+		return () => clearTimeout(id);
+	}, [variant]);
+
+	if (variant !== "timeline")
+		return (
+			<TaskSteps
+				variant={variant}
+				steps={rows}
+				onRetry={(id) =>
+					setRows((current) =>
+						current.map((r) => (r.id === id ? { ...r, status: "done" } : r)),
+					)
+				}
+			/>
+		);
 	return (
 		<div className="w-full max-w-80">
 			<TaskSteps

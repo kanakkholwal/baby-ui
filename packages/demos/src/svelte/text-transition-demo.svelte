@@ -11,8 +11,8 @@ const p = $derived(controlProps<ComponentProps<typeof TextTransition>>(props));
 	<TextTransition
 		text={p.text || "Ship it in seconds"}
 		variant={p.variant ?? "blur-out-up"}
-		durationMs={Number(props.durationMs ?? 560)}
-		staggerMs={Number(props.staggerMs ?? 28)}
+		durationMs={props.durationMs === undefined ? undefined : Number(props.durationMs)}
+		staggerMs={props.staggerMs === undefined ? undefined : Number(props.staggerMs)}
 		class="text-3xl font-semibold text-foreground"
 	/>
 {/key}

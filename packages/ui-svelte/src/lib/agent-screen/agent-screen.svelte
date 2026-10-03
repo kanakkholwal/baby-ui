@@ -146,7 +146,7 @@ function endRecording() {
 					<span class="truncate font-semibold text-sm text-foreground">{agentName}</span>
 					{#if recording}
 						<span
-							class="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-destructive/10 py-0.5 pr-2 pl-1.5 font-medium text-xs text-destructive tabular-nums"
+							class="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-destructive/10 py-0.5 pr-2 pl-1.5 font-medium text-xs text-destructive-strong tabular-nums"
 						>
 							<span class="size-2 animate-pulse rounded-full bg-destructive"></span>
 							{fmt(secs)}

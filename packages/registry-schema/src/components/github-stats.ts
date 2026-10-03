@@ -22,7 +22,7 @@ const registryDependencies = [
 	"bar-chart",
 	"card",
 	"chart",
-	"counter",
+	"rolling-digits",
 	"empty",
 	"github-calendar",
 	"select",

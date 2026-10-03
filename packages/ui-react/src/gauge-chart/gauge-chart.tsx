@@ -1,9 +1,9 @@
 "use client";
 
-import { useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { prefersReducedMotion, Spring } from "../chart/motion";
-import { Counter } from "../counter/counter";
 import { cn } from "../lib/cn";
+import { RollingDigits } from "../rolling-digits/rolling-digits";
 import {
 	activeCount,
 	arcNotches,
@@ -13,6 +13,8 @@ import {
 	NOTCH_SPRING,
 	NOTCH_TIMING,
 	type Notch,
+	RING_CIRCUMFERENCE,
+	RING_RADIUS,
 	scaleFill,
 } from "./geometry";
 import { type GaugeChartLayout, type GaugeChartTone, gaugeChart } from "./variants";
@@ -160,6 +162,72 @@ export function GaugeChart({
 	};
 	const styles = gaugeChart({ layout, tone });
 	const text = formatter(value);
+	// The ring sweeps from empty on mount; later changes ease along the dash.
+	const [swept, setSwept] = useState(!animate);
+	useEffect(() => {
+		if (swept) return;
+		const id = requestAnimationFrame(() => setSwept(true));
+		return () => cancelAnimationFrame(id);
+	}, [swept]);
+
+	if (layout === "ring") {
+		const arc = RING_CIRCUMFERENCE * 0.75;
+		const share = max > min ? Math.min(1, Math.max(0, (value - min) / (max - min))) : 0;
+		return (
+			// biome-ignore lint/a11y/useSemanticElements: <meter> cannot hold the drawn dial
+			<div
+				role="meter"
+				aria-valuemin={min}
+				aria-valuemax={max}
+				aria-valuenow={value}
+				aria-valuetext={text}
+				aria-label={label}
+				data-slot="gauge-chart"
+				data-layout="ring"
+				className={cn(styles.root(), className)}
+			>
+				<svg viewBox="0 0 100 100" aria-hidden="true" className={styles.ring()}>
+					<circle
+						cx={50}
+						cy={50}
+						r={RING_RADIUS}
+						strokeWidth={8}
+						strokeLinecap="round"
+						strokeDasharray={`${arc} ${RING_CIRCUMFERENCE}`}
+						className={styles.ringTrack()}
+					/>
+					<circle
+						cx={50}
+						cy={50}
+						r={RING_RADIUS}
+						strokeWidth={8}
+						strokeLinecap="round"
+						strokeDasharray={`${arc} ${RING_CIRCUMFERENCE}`}
+						strokeDashoffset={arc * (1 - (swept ? share : 0))}
+						stroke={
+							tone === "scale"
+								? scaleFill(Math.max(0, Math.round(share * total) - 1), total)
+								: undefined
+						}
+						className={styles.ringActive()}
+					/>
+				</svg>
+				{showValue ? (
+					<div className={styles.center()}>
+						<RollingDigits
+							variant="count"
+							value={value}
+							format={formatter}
+							size="sm"
+							startOnView={false}
+							className={cn("font-bold text-foreground", styles.value())}
+						/>
+						{label ? <span className={styles.label()}>{label}</span> : null}
+					</div>
+				) : null}
+			</div>
+		);
+	}
 
 	const svg = geometry ? (
 		<svg
@@ -212,12 +280,13 @@ export function GaugeChart({
 						<div className={styles.header()}>
 							{label ? <span className={styles.label()}>{label}</span> : <span />}
 							{showValue ? (
-								<Counter
+								<RollingDigits
+									variant="count"
 									value={value}
 									format={formatter}
 									size="sm"
-									triggerOnView={false}
-									className={styles.value()}
+									startOnView={false}
+									className={cn("font-bold text-foreground", styles.value())}
 								/>
 							) : null}
 						</div>
@@ -232,12 +301,13 @@ export function GaugeChart({
 							className={styles.center()}
 							style={{ paddingTop: (geometry?.size ?? 0) * 0.08 }}
 						>
-							<Counter
+							<RollingDigits
+								variant="count"
 								value={value}
 								format={formatter}
 								size="md"
-								triggerOnView={false}
-								className={styles.value()}
+								startOnView={false}
+								className={cn("font-bold text-foreground", styles.value())}
 							/>
 							{label ? <span className={styles.label()}>{label}</span> : null}
 						</div>

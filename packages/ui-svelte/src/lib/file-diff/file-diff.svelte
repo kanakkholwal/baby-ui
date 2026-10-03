@@ -26,8 +26,8 @@ const MARK = { add: "+", remove: "-", context: " " };
 	<div class="flex items-center justify-between gap-3 border-border border-b bg-background/60 px-4 py-2.5">
 		<span class="truncate font-mono text-foreground text-xs">{filename}</span>
 		<span class="flex shrink-0 items-center gap-2 font-mono text-xs">
-			<span class="text-success">+{added}</span>
-			<span class="text-destructive">-{removed}</span>
+			<span class="text-success-strong">+{added}</span>
+			<span class="text-destructive-strong">-{removed}</span>
 		</span>
 	</div>
 

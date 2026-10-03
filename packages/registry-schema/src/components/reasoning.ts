@@ -1,14 +1,15 @@
 import { defineComponent } from "../index.ts";
 
-const VARIANTS = ["outline", "card"];
+const VARIANTS = ["outline", "card", "inline"];
 
 export const reasoning = defineComponent({
 	slug: "reasoning",
 	name: "Reasoning",
 	description:
-		"Collapsible chain-of-thought panel with optional steps, sources and images; opens while thinking and closes when done.",
+		"Collapsible chain-of-thought panel with steps, sources, images or trace rows; opens while thinking and closes when done.",
 	category: "agents",
 	status: "stable",
+	isUpdated: true,
 	variants: { variant: VARIANTS },
 	props: [
 		{
@@ -48,7 +49,8 @@ export const reasoning = defineComponent({
 		{
 			name: "variant",
 			type: VARIANTS.map((v) => `"${v}"`).join(" | "),
-			description: "Bordered panel, or a filled card with no border.",
+			description:
+				"Bordered panel, a filled card with no border, or `inline`: no chrome, a compact header over a thread line.",
 			default: "outline",
 			control: { kind: "select", options: VARIANTS },
 		},
@@ -77,6 +79,7 @@ export const reasoning = defineComponent({
 			"Collapsed while thinking, the active step's label slides up under the title, fading in from an 8px drop and 3px blur over 220ms.",
 			"A step that turns active grows its row open and fades in over --duration-overlay; its glyph pops from a dot to a check when done.",
 			"Pending steps render nothing until they turn active or done.",
+			"ReasoningRows fade up one by one 80ms apart; `kind` picks ticking steps (the active one spins), linked search sources or selectable files with +/- counts.",
 		],
 	},
 	a11y: {
@@ -113,6 +116,7 @@ export const reasoning = defineComponent({
 				{ path: "reasoning/reasoning-step-sources.svelte", type: "registry:ui" },
 				{ path: "reasoning/reasoning-step-source.svelte", type: "registry:ui" },
 				{ path: "reasoning/reasoning-step-image.svelte", type: "registry:ui" },
+				{ path: "reasoning/reasoning-rows.svelte", type: "registry:ui" },
 				{ path: "reasoning/context.ts", type: "registry:ui" },
 				{ path: "reasoning/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
@@ -121,5 +125,14 @@ export const reasoning = defineComponent({
 			registryDependencies: ["badge", "collapsible"],
 		},
 	},
-	keywords: ["reasoning", "thinking", "ai", "chain of thought", "steps", "sources"],
+	keywords: [
+		"reasoning",
+		"thinking",
+		"ai",
+		"chain of thought",
+		"steps",
+		"sources",
+		"trace",
+		"tools",
+	],
 });

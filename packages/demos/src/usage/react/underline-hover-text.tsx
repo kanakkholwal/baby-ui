@@ -3,5 +3,13 @@
 import { UnderlineHoverText } from "@baby-ui/react";
 
 export function Example() {
-	return <UnderlineHoverText text="Underline hover" tone="primary" />;
+	return (
+		<p>
+			Read the{" "}
+			<UnderlineHoverText as="a" href="/changelog" variant="draw" tone="primary">
+				changelog
+			</UnderlineHoverText>
+			.
+		</p>
+	);
 }

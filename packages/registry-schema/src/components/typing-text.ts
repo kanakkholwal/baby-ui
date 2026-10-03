@@ -73,6 +73,15 @@ export const typingText = defineComponent({
 			control: { kind: "boolean" },
 		},
 		{
+			name: "stumbles",
+			type: "boolean",
+			description:
+				"Types like a person: wrong keys appear and get corrected on the way. The same string always stumbles the same way; `delay` scales the pace.",
+			default: false,
+			control: { kind: "boolean" },
+			showWhen: { smooth: [false] },
+		},
+		{
 			name: "onComplete",
 			type: "() => void",
 			description: "Fired once, when typing finishes and `repeat` is false.",

@@ -1,10 +1,15 @@
 ---
 title: Task Steps
-description: Ordered agent plan where each step shows pending, active, done or failed.
+description: Ordered agent plan where each step shows pending, active, done or failed, as a timeline or expandable rows.
 component: task-steps
 category: agents
-tags: [tasks, steps, agent, plan]
+tags: [tasks, steps, agent, plan, rows]
 ---
+
+`variant="timeline"` ticks down a connector. `capsules` and `list` turn each step into an
+expandable row with a `meta` figure, a status pill and `details`; failed rows get a retry
+button when you pass `onRetry`. The status always comes from `steps`: there are no timers
+inside.
 
 Four states, each with its own icon and colour, and each with the status also present as
 visually hidden text. A red circle and a green circle are the same circle to a

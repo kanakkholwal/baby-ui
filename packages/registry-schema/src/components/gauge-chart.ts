@@ -4,9 +4,10 @@ export const gaugeChart = defineComponent({
 	slug: "gauge-chart",
 	name: "Gauge Chart",
 	description:
-		"A reading drawn as a notched arc or track whose notches spring in one by one.",
+		"A reading drawn as a notched arc or track whose notches spring in one by one, or a compact ring dial.",
 	category: "charts",
 	status: "stable",
+	isUpdated: true,
 	props: [
 		{
 			name: "value",
@@ -18,11 +19,11 @@ export const gaugeChart = defineComponent({
 		},
 		{
 			name: "layout",
-			type: '"arc" | "linear"',
+			type: '"arc" | "linear" | "ring"',
 			description:
-				"Three-quarter arc with the value centred, or a flat track with a header.",
+				"Notched three-quarter arc with the value centred, a flat notched track with a header, or `ring`: a compact continuous dial for cards and tight spots.",
 			default: "arc",
-			control: { kind: "select", options: ["arc", "linear"] },
+			control: { kind: "select", options: ["arc", "linear", "ring"] },
 		},
 		{
 			name: "tone",
@@ -37,6 +38,7 @@ export const gaugeChart = defineComponent({
 			description: "How many notches make up the track.",
 			default: 40,
 			control: { kind: "number", min: 10, max: 60, step: 2 },
+			showWhen: { layout: ["arc", "linear"] },
 		},
 		{
 			name: "spacing",
@@ -44,6 +46,7 @@ export const gaugeChart = defineComponent({
 			description: "Share of the track left as gaps between notches, 0 to 100.",
 			default: 25,
 			control: { kind: "number", min: 0, max: 60, step: 5 },
+			showWhen: { layout: ["arc", "linear"] },
 		},
 		{
 			name: "label",
@@ -116,7 +119,7 @@ export const gaugeChart = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
-			registryDependencies: ["chart", "counter"],
+			registryDependencies: ["chart", "rolling-digits"],
 		},
 		svelte: {
 			entry: "GaugeChart",
@@ -128,7 +131,7 @@ export const gaugeChart = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
-			registryDependencies: ["chart", "counter"],
+			registryDependencies: ["chart", "rolling-digits"],
 		},
 	},
 	keywords: ["gauge", "meter", "score", "progress", "chart"],

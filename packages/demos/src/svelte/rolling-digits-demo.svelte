@@ -22,6 +22,8 @@ $effect(() => {
 		locale={p.locale || undefined}
 		startOnView={props.startOnView !== false}
 		stepMs={Number(props.stepMs ?? 80)}
+		variant={p.variant ?? "roll"}
+		durationMs={props.durationMs === undefined ? undefined : Number(props.durationMs)}
 		coalesce={props.coalesce === true}
 		direction={p.direction ?? "dynamic"}
 		offset={Number(props.offset ?? 32)}

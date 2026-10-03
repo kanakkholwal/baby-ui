@@ -12,17 +12,8 @@ import EmailKeyValue, {
 import EmailPanel from "../email-kit/email-panel.svelte";
 import EmailShell from "../email-kit/email-shell.svelte";
 import EmailText from "../email-kit/email-text.svelte";
-import {
-	type EmailShellAccent,
-	type EmailShellSurface,
-	emailLayout,
-} from "../email-kit/variants";
-import {
-	EMAIL_RECEIPT_LABELS,
-	type EmailReceiptDesign,
-	type EmailReceiptLabels,
-	emailReceipt,
-} from "./variants";
+import { type EmailShellSurface, emailLayout } from "../email-kit/variants";
+import { EMAIL_RECEIPT_LABELS, type EmailReceiptLabels, emailReceipt } from "./variants";
 
 let {
 	productName,
@@ -45,9 +36,7 @@ let {
 	actionLabel = "Download invoice",
 	helpLabel = "Questions about this charge? Write to",
 	labels: labelOverrides,
-	design = "classic",
 	surface = "card",
-	accent = "none",
 }: {
 	productName: string;
 	receiptNumber: string;
@@ -69,7 +58,7 @@ let {
 	invoiceUrl?: string;
 	/** Address for questions about the charge. */
 	billingEmail?: string;
-	/** Absolute URL, about 32px tall. Falls back to the product name as text. */
+	/** Absolute PNG URL of a square mark, set beside the product name in header and footer. */
 	logoUrl?: string;
 	footerLinks?: EmailFooterLink[];
 	reason?: string;
@@ -79,61 +68,40 @@ let {
 	actionLabel?: string;
 	helpLabel?: string;
 	labels?: Partial<EmailReceiptLabels>;
-	/** `classic` lists everything in rows; `summary` leads with a display headline and a tinted items panel. */
-	design?: EmailReceiptDesign;
-	surface?: EmailShellSurface;
-	accent?: EmailShellAccent;
+	surface?: Exclude<EmailShellSurface, "stacked">;
 } = $props();
 
 const s = emailLayout();
-const r = $derived(emailReceipt({ design }));
-const summary = $derived(design === "summary");
+const r = emailReceipt();
 const labels = $derived({ ...EMAIL_RECEIPT_LABELS, ...labelOverrides });
 </script>
 
-{#snippet plainFooter()}
-	<EmailFooter lines={companyLines} links={footerLinks} {reason} brand={productName} layout="plain" />
-{/snippet}
-{#snippet barFooter()}
-	<EmailFooter lines={companyLines} links={footerLinks} {reason} brand={productName} layout="bar" />
-{/snippet}
-{#snippet details()}
-	<EmailKeyValue
-		density="compact"
-		rows={[
-			{ label: labels.receipt, value: receiptNumber },
-			{ label: labels.date, value: date },
-			{ label: labels.paymentMethod, value: paymentMethod },
-		]}
-	/>
-{/snippet}
-{#snippet lineItems()}
-	<EmailKeyValue rows={[...items, ...adjustments]} total={{ label: labels.total, value: total }} />
-{/snippet}
-
-<EmailShell {preview} {surface} {accent}>
-	{#snippet footer()}{#if !summary}{@render plainFooter()}{/if}{/snippet}
-	{#snippet cardFooter()}{#if summary}{@render barFooter()}{/if}{/snippet}
+<EmailShell {preview} {surface}>
+	{#snippet cardFooter()}
+		<EmailFooter lines={companyLines} links={footerLinks} {reason} brand={productName} logo={logoUrl} layout="bar" />
+	{/snippet}
 	<EmailHeader brand={productName} logo={logoUrl} />
 	<Section class={s.badge()}>
 		<EmailBadge tone="success">{labels.status}</EmailBadge>
 	</Section>
-	<EmailHeading size={summary ? "display" : "lg"}>{heading}</EmailHeading>
+	<EmailHeading size="display">{heading}</EmailHeading>
 	<EmailText tone="muted" class={s.intro()}>{intro}</EmailText>
-	{#if summary}
-		<Section class={r.summary()}>
-			<EmailPanel>
-				<EmailText class={s.sectionTitle()}>{labels.items}</EmailText>
-				{@render lineItems()}
-			</EmailPanel>
-		</Section>
-		<Section class={r.details()}>{@render details()}</Section>
-	{:else}
-		<Section class={s.section()}>{@render details()}</Section>
-		<EmailDivider />
-		<EmailText class={s.sectionTitle()}>{labels.items}</EmailText>
-		{@render lineItems()}
-	{/if}
+	<Section class={r.summary()}>
+		<EmailPanel>
+			<EmailText class={s.sectionTitle()}>{labels.items}</EmailText>
+			<EmailKeyValue rows={[...items, ...adjustments]} total={{ label: labels.total, value: total }} />
+		</EmailPanel>
+	</Section>
+	<Section class={r.details()}>
+		<EmailKeyValue
+			density="compact"
+			rows={[
+				{ label: labels.receipt, value: receiptNumber },
+				{ label: labels.date, value: date },
+				{ label: labels.paymentMethod, value: paymentMethod },
+			]}
+		/>
+	</Section>
 	{#if billingLines.length > 0}
 		<Section class={s.section()}>
 			<EmailText class={s.sectionTitle()}>{labels.billedTo}</EmailText>
@@ -144,11 +112,7 @@ const labels = $derived({ ...EMAIL_RECEIPT_LABELS, ...labelOverrides });
 	{/if}
 	{#if invoiceUrl}
 		<Section class={s.action()}>
-			<EmailButton
-				href={invoiceUrl}
-				variant={summary ? "primary" : "secondary"}
-				shape={summary ? "pill" : "rounded"}
-			>{actionLabel}</EmailButton>
+			<EmailButton href={invoiceUrl} shape="pill">{actionLabel}</EmailButton>
 		</Section>
 	{/if}
 	{#if billingEmail}

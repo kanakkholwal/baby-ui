@@ -4,11 +4,20 @@ export const textReel = defineComponent({
 	slug: "text-reel",
 	name: "Text Reel",
 	description:
-		"An endless vertical reel of words that drifts, then speeds up and reverses with page scroll.",
+		"An endless reel of words, a vertical column or a horizontal marquee, that drifts, then speeds up and reverses with page scroll.",
 	category: "text",
 	status: "stable",
-	variants: { size: ["sm", "md", "lg"] },
+	isUpdated: true,
+	variants: { orientation: ["vertical", "horizontal"], size: ["sm", "md", "lg"] },
 	props: [
+		{
+			name: "orientation",
+			type: '"vertical" | "horizontal"',
+			description:
+				"Vertical rolls a column like a slot reel; horizontal drifts one marquee band.",
+			default: "vertical",
+			control: { kind: "select", options: ["vertical", "horizontal"] },
+		},
 		{
 			name: "items",
 			type: "string[]",

@@ -1,8 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "../lib/cn";
-import { type StreamingTextLayout, streamingText } from "./variants";
+import {
+	type StreamingTextLayout,
+	type StreamingTextSize,
+	streamingText,
+} from "./variants";
 
 const WORD_DELAY = 55;
 
@@ -34,7 +38,13 @@ const ACTION_ICON =
 
 export interface StreamingTextProps {
 	layout?: StreamingTextLayout;
-	content: StreamingToken[];
+	size?: StreamingTextSize;
+	/** Tokens with optional citations, or plain text revealed word by word. */
+	content: StreamingToken[] | string;
+	/** Blinking caret while the text reveals. */
+	caret?: boolean;
+	/** Copy, retry and feedback row once done. */
+	actions?: boolean;
 	sources?: StreamingSource[];
 	followUps?: string[];
 	sourcesLabel?: string;
@@ -47,10 +57,13 @@ export interface StreamingTextProps {
 	className?: string;
 }
 
-/** Reveals once and stops, same contract as ResponseStream; no gallery-style auto-loop. */
+/** A streamed answer that reveals once and stops: plain text, or cited tokens with sources and follow-ups. */
 export function StreamingText({
 	layout = "inline",
-	content,
+	size = "md",
+	content: contentProp,
+	caret = true,
+	actions = true,
 	sources = [],
 	followUps = [],
 	sourcesLabel,
@@ -62,12 +75,22 @@ export function StreamingText({
 	onFeedback,
 	className,
 }: StreamingTextProps) {
+	const content = useMemo<StreamingToken[]>(
+		() =>
+			typeof contentProp === "string"
+				? contentProp
+						.split(/\s+/)
+						.filter(Boolean)
+						.map((word) => ({ text: word }))
+				: contentProp,
+		[contentProp],
+	);
 	const [count, setCount] = useState(0);
 	const [sourcesOpen, setSourcesOpen] = useState(false);
 	const [copied, setCopied] = useState(false);
 	const done = count >= content.length;
 	const doneRef = useRef(false);
-	const { root, text } = streamingText({ layout });
+	const { root, text } = streamingText({ layout, size });
 
 	useEffect(() => {
 		if (done) return;
@@ -97,7 +120,7 @@ export function StreamingText({
 
 	return (
 		<div data-slot="streaming-text" className={cn(root(), className)}>
-			<p className={text()}>
+			<p aria-busy={!done || undefined} className={text()}>
 				{content
 					.slice(0, count)
 					.map((token, i) =>
@@ -107,7 +130,7 @@ export function StreamingText({
 							<span key={`${token.text}-${i}`}>{token.text} </span>
 						),
 					)}
-				{!done ? (
+				{caret && !done ? (
 					<span
 						aria-hidden
 						className="stream-caret ml-0.5 inline-block h-[1em] w-[2px] translate-y-[0.15em] bg-current"
@@ -119,105 +142,109 @@ export function StreamingText({
 				className="mt-2 flex items-center gap-0.5 transition-opacity duration-400"
 				style={{ opacity: done ? 1 : 0, pointerEvents: done ? "auto" : "none" }}
 			>
-				<button
-					type="button"
-					onClick={copyText}
-					aria-label={copied ? "Copied" : "Copy"}
-					className={ACTION_ICON}
-				>
-					{copied ? (
-						<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-3.5">
-							<path
-								d="M3.5 8.4 6.4 11 12.5 4.5"
-								stroke="currentColor"
-								strokeWidth="1.6"
-								strokeLinecap="round"
-								strokeLinejoin="round"
-							/>
-						</svg>
-					) : (
-						<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-3.5">
-							<rect
-								x="5.5"
-								y="5.5"
-								width="8"
-								height="8"
-								rx="1.6"
-								stroke="currentColor"
-								strokeWidth="1.3"
-							/>
-							<path
-								d="M10.5 2.5H3.6A1.6 1.6 0 0 0 2 4.1V11"
-								stroke="currentColor"
-								strokeWidth="1.3"
-								strokeLinecap="round"
-							/>
-						</svg>
-					)}
-				</button>
-				{onRetry ? (
-					<button
-						type="button"
-						onClick={onRetry}
-						aria-label="Retry"
-						className={ACTION_ICON}
-					>
-						<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-3.5">
-							<path
-								d="M13 8a5 5 0 1 1-1.6-3.7"
-								stroke="currentColor"
-								strokeWidth="1.3"
-								strokeLinecap="round"
-							/>
-							<path
-								d="M13 2.5V5h-2.5"
-								stroke="currentColor"
-								strokeWidth="1.3"
-								strokeLinecap="round"
-								strokeLinejoin="round"
-							/>
-						</svg>
-					</button>
-				) : null}
-				{onFeedback ? (
+				{actions ? (
 					<>
 						<button
 							type="button"
-							onClick={() => onFeedback(true)}
-							aria-label="Good response"
+							onClick={copyText}
+							aria-label={copied ? "Copied" : "Copy"}
 							className={ACTION_ICON}
 						>
-							<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-3.5">
-								<path
-									d="M6 14V6.5l3-4.5 1 .8-1 3.2h4.3a1 1 0 0 1 1 1.2l-1 5a1 1 0 0 1-1 .8H6Zm0 0H3.5A1.5 1.5 0 0 1 2 12.5v-4A1.5 1.5 0 0 1 3.5 7H6"
-									stroke="currentColor"
-									strokeWidth="1.2"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-								/>
-							</svg>
+							{copied ? (
+								<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-3.5">
+									<path
+										d="M3.5 8.4 6.4 11 12.5 4.5"
+										stroke="currentColor"
+										strokeWidth="1.6"
+										strokeLinecap="round"
+										strokeLinejoin="round"
+									/>
+								</svg>
+							) : (
+								<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-3.5">
+									<rect
+										x="5.5"
+										y="5.5"
+										width="8"
+										height="8"
+										rx="1.6"
+										stroke="currentColor"
+										strokeWidth="1.3"
+									/>
+									<path
+										d="M10.5 2.5H3.6A1.6 1.6 0 0 0 2 4.1V11"
+										stroke="currentColor"
+										strokeWidth="1.3"
+										strokeLinecap="round"
+									/>
+								</svg>
+							)}
 						</button>
-						<button
-							type="button"
-							onClick={() => onFeedback(false)}
-							aria-label="Bad response"
-							className={ACTION_ICON}
-						>
-							<svg
-								viewBox="0 0 16 16"
-								fill="none"
-								aria-hidden
-								className="size-3.5 rotate-180"
+						{onRetry ? (
+							<button
+								type="button"
+								onClick={onRetry}
+								aria-label="Retry"
+								className={ACTION_ICON}
 							>
-								<path
-									d="M6 14V6.5l3-4.5 1 .8-1 3.2h4.3a1 1 0 0 1 1 1.2l-1 5a1 1 0 0 1-1 .8H6Zm0 0H3.5A1.5 1.5 0 0 1 2 12.5v-4A1.5 1.5 0 0 1 3.5 7H6"
-									stroke="currentColor"
-									strokeWidth="1.2"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-								/>
-							</svg>
-						</button>
+								<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-3.5">
+									<path
+										d="M13 8a5 5 0 1 1-1.6-3.7"
+										stroke="currentColor"
+										strokeWidth="1.3"
+										strokeLinecap="round"
+									/>
+									<path
+										d="M13 2.5V5h-2.5"
+										stroke="currentColor"
+										strokeWidth="1.3"
+										strokeLinecap="round"
+										strokeLinejoin="round"
+									/>
+								</svg>
+							</button>
+						) : null}
+						{onFeedback ? (
+							<>
+								<button
+									type="button"
+									onClick={() => onFeedback(true)}
+									aria-label="Good response"
+									className={ACTION_ICON}
+								>
+									<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-3.5">
+										<path
+											d="M6 14V6.5l3-4.5 1 .8-1 3.2h4.3a1 1 0 0 1 1 1.2l-1 5a1 1 0 0 1-1 .8H6Zm0 0H3.5A1.5 1.5 0 0 1 2 12.5v-4A1.5 1.5 0 0 1 3.5 7H6"
+											stroke="currentColor"
+											strokeWidth="1.2"
+											strokeLinecap="round"
+											strokeLinejoin="round"
+										/>
+									</svg>
+								</button>
+								<button
+									type="button"
+									onClick={() => onFeedback(false)}
+									aria-label="Bad response"
+									className={ACTION_ICON}
+								>
+									<svg
+										viewBox="0 0 16 16"
+										fill="none"
+										aria-hidden
+										className="size-3.5 rotate-180"
+									>
+										<path
+											d="M6 14V6.5l3-4.5 1 .8-1 3.2h4.3a1 1 0 0 1 1 1.2l-1 5a1 1 0 0 1-1 .8H6Zm0 0H3.5A1.5 1.5 0 0 1 2 12.5v-4A1.5 1.5 0 0 1 3.5 7H6"
+											stroke="currentColor"
+											strokeWidth="1.2"
+											strokeLinecap="round"
+											strokeLinejoin="round"
+										/>
+									</svg>
+								</button>
+							</>
+						) : null}
 					</>
 				) : null}
 				{sources.length ? (

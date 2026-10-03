@@ -8,7 +8,7 @@ tags: [email, magic link, otp, sign in, passwordless]
 
 Built from the [Email Kit](/emails/email-kit), themed from your tokens and switched to your dark palette when the inbox is. With `code` set, the code leads and the button becomes the alternative; without it, the button is the whole email. `requestDetails` (device, location, time) lets a reader spot an attempt that wasn't theirs. The default preview line includes the code so it shows in notifications; override `preview` if your threat model says otherwise.
 
-`design` picks the look: `spotlight` (the default) centres the code in a tinted panel above a full-width button; `classic` is a plain left-aligned card.
+The code sits in a tinted panel above a full-width button; without `code`, the button leads.
 
 ## Send it
 

@@ -15,6 +15,7 @@ export function TextReelDemo({ props }: { props: Props }) {
 			prefix={p.prefix || "We"}
 			speed={Number(p.speed ?? 0.6)}
 			paused={p.paused ?? false}
+			orientation={p.orientation ?? "vertical"}
 			size={p.size ?? "md"}
 			className="w-full"
 		/>

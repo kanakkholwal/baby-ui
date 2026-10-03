@@ -54,6 +54,8 @@ export default defineConfig(({ command, mode, isPreview }) => {
 		// The package ships a raw .svelte file in dist; dev SSR externalises it and Node
 		// then refuses the extension. Harmless in the bundled prod build, fatal in dev.
 		ssr: { noExternal: ["@docvia/renderer-svelte"] },
+		// The OG renderer worker lazy-loads takumi's backend, which an IIFE worker can't split.
+		worker: { format: "es" },
 		// SvelteKit narrows fs.allow to the app; demos and components live in packages/ and pro/.
 		server: { fs: { allow: [searchForWorkspaceRoot(process.cwd())] } },
 		// The scanner can't see lazy demos or docvia's virtual modules; finding these mid-session

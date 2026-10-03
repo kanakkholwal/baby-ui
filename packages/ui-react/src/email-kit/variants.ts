@@ -5,18 +5,15 @@ import { tv, type VariantProps } from "tailwind-variants";
 export const emailShell = tv({
 	slots: {
 		body: "m-0 font-sans",
-		page: "bg-card py-12 dark:bg-card-dark",
-		container: "mx-auto w-full px-4",
+		page: "bg-card py-10 dark:bg-card-dark",
+		// 600px is the width every client lays out without scaling; 12px keeps phones edge-near.
+		container: "mx-auto w-full max-w-[600px] px-3",
 		// The card has no padding of its own, so a footer band inside it can run edge to edge.
 		card: "rounded-lg border border-border border-solid bg-background dark:border-border-dark dark:bg-background-dark",
 		// 24px, not 32: stacked padding otherwise overflows a 320px phone, and breakpoints are out.
 		content: "px-6 py-10",
 	},
 	variants: {
-		width: {
-			md: { container: "max-w-[560px]" },
-			lg: { container: "max-w-[600px]" },
-		},
 		surface: {
 			card: {},
 			plain: {
@@ -30,28 +27,29 @@ export const emailShell = tv({
 				content: "px-0 py-0",
 			},
 		},
-		accent: {
-			none: {},
-			top: { card: "border-t-4 border-t-accent dark:border-t-accent-dark" },
-		},
 	},
-	defaultVariants: { width: "md", surface: "card", accent: "none" },
+	defaultVariants: { surface: "card" },
 });
 
+// Mark and name sit inline in one text line, so `align` centres the lockup without nested tables.
 export const emailHeader = tv({
 	slots: {
-		root: "mb-10",
-		logo: "h-8 w-auto",
-		brand:
-			"m-0 font-semibold text-[16px] text-foreground leading-[24px] tracking-[-0.01em] dark:text-foreground-dark",
+		root: "m-0 mb-10 font-semibold text-[17px] text-foreground leading-[32px] tracking-[-0.01em] dark:text-foreground-dark",
+		logo: "inline-block h-8 align-middle",
+		name: "align-middle",
 	},
 	variants: {
+		variant: {
+			// `logo` is a full wordmark image, so the name is left out.
+			lockup: { logo: "w-8", name: "ml-[10px]" },
+			logo: { logo: "w-auto" },
+		},
 		align: {
 			left: { root: "text-left" },
 			center: { root: "text-center" },
 		},
 	},
-	defaultVariants: { align: "left" },
+	defaultVariants: { variant: "lockup", align: "left" },
 });
 
 export const emailHeading = tv({
@@ -60,7 +58,7 @@ export const emailHeading = tv({
 		size: {
 			md: "text-[20px] leading-[28px]",
 			lg: "text-[26px] leading-[34px]",
-			display: "font-extrabold text-[40px] leading-[44px] tracking-[-0.03em]",
+			display: "font-extrabold text-[36px] leading-[42px] tracking-[-0.03em]",
 		},
 		align: {
 			left: "text-left",
@@ -104,7 +102,7 @@ export const emailHero = tv({
 			},
 			destructive: {
 				root: "bg-destructive-soft dark:bg-destructive-soft-dark",
-				eyebrow: "text-destructive dark:text-destructive-dark",
+				eyebrow: "text-foreground dark:text-destructive-dark",
 				meta: "text-foreground dark:text-foreground-dark",
 				title: "text-foreground dark:text-foreground-dark",
 				text: "text-foreground dark:text-foreground-dark",
@@ -112,7 +110,7 @@ export const emailHero = tv({
 		},
 		size: {
 			md: { title: "text-[26px] leading-[32px]" },
-			display: { title: "text-[40px] leading-[44px]" },
+			display: { title: "text-[36px] leading-[42px]" },
 		},
 		align: {
 			left: { root: "text-left" },
@@ -164,7 +162,7 @@ export const emailList = tv({
 			},
 			check: {
 				marker:
-					"bg-success-soft text-success dark:bg-success-soft-dark dark:text-success-dark",
+					"bg-success-soft text-foreground dark:bg-success-soft-dark dark:text-success-dark",
 			},
 			dot: {
 				marker: "text-muted-foreground dark:text-muted-foreground-dark",
@@ -190,6 +188,7 @@ export const emailText = tv({
 	defaultVariants: { tone: "default", size: "md" },
 });
 
+// Light status hues are under 4.5:1 on any fill, so light mode keeps the hue in the fill only.
 export const emailBadge = tv({
 	base: "m-0 inline-block rounded-sm px-2 py-[2px] font-semibold text-[12px] leading-[18px] tracking-[0.02em]",
 	variants: {
@@ -199,11 +198,11 @@ export const emailBadge = tv({
 			accent:
 				"bg-accent-soft text-foreground dark:bg-accent-soft-dark dark:text-foreground-dark",
 			success:
-				"bg-success-soft text-success dark:bg-success-soft-dark dark:text-success-dark",
+				"bg-success-soft text-foreground dark:bg-success-soft-dark dark:text-success-dark",
 			warning:
-				"bg-warning-soft text-warning dark:bg-warning-soft-dark dark:text-warning-dark",
+				"bg-warning-soft text-foreground dark:bg-warning-soft-dark dark:text-warning-dark",
 			destructive:
-				"bg-destructive-soft text-destructive dark:bg-destructive-soft-dark dark:text-destructive-dark",
+				"bg-destructive-soft text-foreground dark:bg-destructive-soft-dark dark:text-destructive-dark",
 		},
 	},
 	defaultVariants: { tone: "neutral" },
@@ -276,7 +275,9 @@ export const emailFooter = tv({
 		root: "mt-8 px-6",
 		bar: "",
 		brand:
-			"m-0 font-extrabold text-[16px] text-foreground leading-[24px] tracking-[-0.01em] dark:text-foreground-dark",
+			"m-0 mb-3 font-semibold text-[14px] text-foreground leading-[20px] tracking-[-0.01em] dark:text-foreground-dark",
+		mark: "inline-block h-5 w-5 align-middle",
+		markName: "ml-2 align-middle",
 		text: "m-0 text-[12px] text-muted-foreground leading-[20px] dark:text-muted-foreground-dark",
 		reason:
 			"m-0 mb-3 text-[12px] text-muted-foreground leading-[20px] dark:text-muted-foreground-dark",
@@ -296,7 +297,8 @@ export const emailFooter = tv({
 			bar: {
 				root: "mt-0 px-6 pb-6",
 				bar: "rounded-lg bg-foreground px-5 py-5 dark:bg-foreground-dark",
-				brand: "text-background dark:text-background-dark",
+				brand:
+					"mb-0 text-[16px] text-background leading-[24px] dark:text-background-dark",
 				link: "text-background underline dark:text-background-dark",
 				linkText: "text-background dark:text-background-dark",
 			},
@@ -376,9 +378,22 @@ export const emailStats = tv({
 				label: "text-foreground dark:text-foreground-dark",
 			},
 		},
+		// Light status hues fail contrast, so only dark mode tints; the arrow carries direction.
+		trend: {
+			up: { note: "dark:text-success-dark" },
+			down: { note: "dark:text-destructive-dark" },
+			flat: { note: "dark:text-muted-foreground-dark" },
+		},
 	},
 	defaultVariants: { columns: 3, tone: "neutral" },
 });
+
+/** Glyph before a stat's note, so the direction reads without colour. */
+export const EMAIL_STAT_TREND_GLYPH: Record<EmailStatsTrend, string> = {
+	up: "▲ ",
+	down: "▼ ",
+	flat: "→ ",
+};
 
 export const emailKeyValue = tv({
 	slots: {
@@ -398,9 +413,8 @@ export const emailKeyValue = tv({
 	defaultVariants: { density: "comfortable" },
 });
 
-export type EmailShellWidth = NonNullable<VariantProps<typeof emailShell>["width"]>;
 export type EmailShellSurface = NonNullable<VariantProps<typeof emailShell>["surface"]>;
-export type EmailShellAccent = NonNullable<VariantProps<typeof emailShell>["accent"]>;
+export type EmailHeaderVariant = NonNullable<VariantProps<typeof emailHeader>["variant"]>;
 export type EmailHeaderAlign = NonNullable<VariantProps<typeof emailHeader>["align"]>;
 export type EmailHeadingSize = NonNullable<VariantProps<typeof emailHeading>["size"]>;
 export type EmailHeadingAlign = NonNullable<VariantProps<typeof emailHeading>["align"]>;
@@ -429,6 +443,7 @@ export type EmailFallbackLinkAlign = NonNullable<
 >;
 export type EmailStatsColumns = NonNullable<VariantProps<typeof emailStats>["columns"]>;
 export type EmailStatsTone = NonNullable<VariantProps<typeof emailStats>["tone"]>;
+export type EmailStatsTrend = NonNullable<VariantProps<typeof emailStats>["trend"]>;
 export type EmailKeyValueDensity = NonNullable<
 	VariantProps<typeof emailKeyValue>["density"]
 >;

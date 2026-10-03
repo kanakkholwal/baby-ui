@@ -53,6 +53,10 @@ jobs:
       - name: Worker bundle budget
         run: pnpm size
 
+      # A public checkout has no Pro to show; the pro job below proves the flag with it bundled.
+      - name: Pro stays hidden
+        run: node scripts/check-pro-bundle.mjs --expect=hidden
+
       # Built by `pnpm build`; kept so the React preview can be deployed once it has a host.
       - name: Upload React runner build
         uses: actions/upload-artifact@v4
@@ -61,3 +65,51 @@ jobs:
           path: apps/playground/react-runner/dist
           if-no-files-found: error
           retention-days: 14
+
+  # Pro lives in a private repo and is always bundled; the flag only decides whether the site shows it.
+  # With its token set, this builds both ways: flag on must show Pro, flag off (production) must not.
+  pro:
+    name: Pro bundle (VITE_SHOW_PRO=${{ matrix.show-pro }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        show-pro: ["true", "false"]
+    env:
+      HAS_PRO: ${{ secrets.PRO_REPO_TOKEN != '' }}
+      VITE_SHOW_PRO: ${{ matrix.show-pro }}
+    steps:
+      - name: Skip without the Pro token
+        if: env.HAS_PRO != 'true'
+        run: echo "::notice::PRO_REPO_TOKEN is not set (forks, Dependabot); Pro bundle checks skipped."
+
+      - if: env.HAS_PRO == 'true'
+        uses: actions/checkout@v6
+
+      - name: Check out Pro
+        if: env.HAS_PRO == 'true'
+        uses: actions/checkout@v6
+        with:
+          repository: kanakkholwal/baby-ui-pro
+          token: ${{ secrets.PRO_REPO_TOKEN }}
+          path: pro
+          persist-credentials: false
+
+      - if: env.HAS_PRO == 'true'
+        uses: ./.github/actions/setup
+
+      - name: Install Pro
+        if: env.HAS_PRO == 'true'
+        run: pnpm install --frozen-lockfile --dir pro
+
+      - name: Type-check Pro
+        if: env.HAS_PRO == 'true'
+        run: pnpm --dir pro run check
+
+      - name: Build
+        if: env.HAS_PRO == 'true'
+        run: pnpm build
+
+      - name: Pro bundled, shown only with the flag on
+        if: env.HAS_PRO == 'true'
+        run: node scripts/check-pro-bundle.mjs --expect=${{ matrix.show-pro == 'true' && 'visible' || 'hidden' }}

@@ -1,7 +1,7 @@
 <script lang="ts">
-import { InfiniteImageField } from "@baby-ui/svelte";
+import { InfiniteImageField, type InfiniteImageItem } from "@baby-ui/svelte";
 
-const images = ["/photos/one.jpg", "/photos/two.jpg", "/photos/three.jpg"];
+let { works }: { works: InfiniteImageItem[] } = $props();
 </script>
 
-<InfiniteImageField {images} />
+<InfiniteImageField items={works} variant="fisheye" />

@@ -1,8 +1,8 @@
 import type { DemoLoader } from "@baby-ui/demos/svelte";
 import type { Component } from "svelte";
 
-// The only client-safe module reaching into the optional pro/ checkout. Each glob matches
-// nothing in a public checkout, and builds without `__SHOW_PRO__` drop them entirely.
+// The only client-safe module reaching into the optional pro/ checkout; each glob matches
+// nothing in a public checkout. Pro is always bundled: `__SHOW_PRO__` gates what is shown, not this.
 
 // Prop types live in the Pro repo, which public CI never checks out.
 // biome-ignore lint/suspicious/noExplicitAny: see above
@@ -22,54 +22,56 @@ const first = <T>(globbed: Lazy<T>) => Object.values(globbed)[0]?.();
 
 /** Pro demos by slug, following the public `<slug>-demo.svelte` convention. */
 export const proDemos: Record<string, DemoLoader> = bySlug(
-	__SHOW_PRO__
-		? (import.meta.glob(
-				"../../../../pro/packages/demos/src/svelte/*-demo.svelte",
-			) as Record<string, DemoLoader>)
-		: {},
+	import.meta.glob("../../../../pro/packages/demos/src/svelte/*-demo.svelte") as Record<
+		string,
+		DemoLoader
+	>,
 	"-demo.svelte",
 );
 
-const screens: Lazy<{ default: AnyComponent }> = __SHOW_PRO__
-	? import.meta.glob<{ default: AnyComponent }>(
-			"../../../../pro/packages/demos/src/screens/*-screen.svelte",
-		)
-	: {};
+const screens = import.meta.glob<{ default: AnyComponent }>(
+	"../../../../pro/packages/demos/src/screens/*-screen.svelte",
+);
 // biome-ignore lint/suspicious/noExplicitAny: typed in the Pro repo
-const screenSample: Lazy<Record<string, any>> = __SHOW_PRO__
-	? import.meta.glob("../../../../pro/packages/demos/src/screens/sample.ts")
-	: {};
+const screenSample: Lazy<Record<string, any>> = import.meta.glob(
+	"../../../../pro/packages/demos/src/screens/sample.ts",
+);
 
-/** A Pro screen and its sample data, or undefined when this build has no Pro. */
+/** A Pro screen and its sample data, or undefined when Pro is absent or not shown. */
 export async function proScreen(name: string) {
 	const load = bySlug(screens, "-screen.svelte")[name];
-	if (!load || !Object.keys(screenSample).length) return undefined;
+	if (!__SHOW_PRO__ || !load || !Object.keys(screenSample).length) return undefined;
 	const [mod, sample] = await Promise.all([load(), first(screenSample)]);
 	return sample && { Screen: mod.default, sample };
 }
 
-export const proEmailTemplates: Lazy<Template> = __SHOW_PRO__
-	? import.meta.glob<Template>(
-			"../../../../pro/packages/svelte/src/lib/email-*/email-*.svelte",
-		)
-	: {};
-export const proOgTemplates: Lazy<Template> = __SHOW_PRO__
-	? import.meta.glob<Template>("../../../../pro/packages/svelte/src/lib/og-*/og-*.svelte")
-	: {};
+export const proEmailTemplates = import.meta.glob<Template>(
+	"../../../../pro/packages/svelte/src/lib/email-*/email-*.svelte",
+);
+export const proOgTemplates = import.meta.glob<Template>(
+	"../../../../pro/packages/svelte/src/lib/og-*/og-*.svelte",
+);
 
-const emailSamples: Lazy<Samples> = __SHOW_PRO__
-	? import.meta.glob<Samples>(
-			"../../../../pro/packages/demos/src/data/email-samples.ts",
-			{
-				import: "EMAIL_SAMPLES",
-			},
-		)
-	: {};
-const ogSamples: Lazy<Samples> = __SHOW_PRO__
-	? import.meta.glob<Samples>("../../../../pro/packages/demos/src/data/og-samples.ts", {
-			import: "OG_SAMPLES",
-		})
-	: {};
+const emailSamples = import.meta.glob<Samples>(
+	"../../../../pro/packages/demos/src/data/email-samples.ts",
+	{ import: "EMAIL_SAMPLES" },
+);
+const ogSamples = import.meta.glob<Samples>(
+	"../../../../pro/packages/demos/src/data/og-samples.ts",
+	{ import: "OG_SAMPLES" },
+);
+
+const proComponentModules = import.meta.glob<Record<string, unknown>>(
+	"../../../../pro/packages/svelte/src/lib/*/index.ts",
+);
+
+/** Pro components' own modules by slug (their folder), for pages that render one unframed. */
+export const proComponents: Lazy<Record<string, unknown>> = Object.fromEntries(
+	Object.entries(proComponentModules).map(([path, load]) => [
+		path.split("/").at(-2) ?? path,
+		load,
+	]),
+);
 
 /** Sample props for a Pro email or OG template, when Pro is present. */
 export const proEmailSample = async (slug: string) => (await first(emailSamples))?.[slug];

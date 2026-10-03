@@ -20,6 +20,6 @@ let value = $state("");
 		placeholder={p.placeholder || "Enter a value"}
 	/>
 	{#if props.invalid}
-		<p class="text-[var(--destructive)] text-xs">That name is already taken.</p>
+		<p class="text-destructive-strong text-xs">That name is already taken.</p>
 	{/if}
 </div>

@@ -7,7 +7,7 @@ import { ActivePointProvider, ChartFrame } from "../chart/frame";
 import { CHART_DURATION, type Playback, Spring, tween } from "../chart/motion";
 import { useActiveIndex } from "../chart/time-series";
 import { ChartTooltipContent, ChartTooltipPanel } from "../chart/tooltip";
-import { Counter } from "../counter/counter";
+import { RollingDigits } from "../rolling-digits/rolling-digits";
 import {
 	EXPAND_FROM,
 	expandDelay,
@@ -260,12 +260,14 @@ function RingPlot({
 						height: centerRadius * 2,
 					}}
 				>
-					<Counter
+					<RollingDigits
+						variant="count"
 						value={activeRow ? activeRow.value : total}
 						format={counterFormat}
 						durationMs={600}
-						triggerOnView={false}
+						startOnView={false}
 						size="sm"
+						className="font-bold text-foreground"
 					/>
 					<span className={styles.caption()}>
 						{activeRow ? activeRow.label : centerLabel}

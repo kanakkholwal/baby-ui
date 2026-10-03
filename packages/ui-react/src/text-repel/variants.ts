@@ -12,10 +12,11 @@ export const textRepel = tv({
 		srOnly: "sr-only",
 	},
 	variants: {
-		/** Repel pushes letters away from the pointer; attract pulls them toward it. */
+		/** Repel pushes letters away, attract pulls them in, inertia flicks each one the pointer crosses. */
 		mode: {
 			repel: {},
 			attract: {},
+			inertia: {},
 		},
 		size: {
 			inherit: {},
@@ -80,4 +81,65 @@ export function repelAll(
 		const origin = origins[i];
 		if (origin) applyOffset(el, repelOffset(origin, pointer, radius, strength, mode));
 	});
+}
+
+const REST: RepelOffset = { x: 0, y: 0, rotate: 0 };
+const KICK_HOLD_MS = 180;
+const MAX_ROTATION = 18;
+const clamp = (v: number, max: number) => Math.min(Math.max(v, -max), max);
+const orFallback = (v: number, fallback: number) => (Math.abs(v) < 1 ? fallback : v);
+
+/** Kick for a letter the pointer just entered: its velocity, or an alternating nudge when still. */
+export function inertiaKick(
+	velocity: Point,
+	index: number,
+	strength: number,
+): RepelOffset {
+	const k = strength / 45;
+	const side = index % 2 === 0 ? 1 : -1;
+	return {
+		x: clamp(orFallback(velocity.x * k * 2.2, side * k * 10), strength),
+		y: clamp(orFallback(velocity.y * k * 2.2, -k * 7), strength),
+		rotate: clamp(
+			orFallback((velocity.x - velocity.y) * k * 0.5, side * k * 6),
+			MAX_ROTATION,
+		),
+	};
+}
+
+/** Inertia mode: flicks the letter under the pointer, then lets the spring carry it home. */
+export function createInertia() {
+	let last: Point | null = null;
+	let velocity: Point = { x: 0, y: 0 };
+	let current: HTMLElement | undefined;
+	const timers = new Set<ReturnType<typeof setTimeout>>();
+	return {
+		move(
+			pointer: Point,
+			target: EventTarget | null,
+			letters: HTMLElement[],
+			strength: number,
+		) {
+			if (last) velocity = { x: pointer.x - last.x, y: pointer.y - last.y };
+			last = pointer;
+			const index = letters.findIndex((el) => el === target);
+			const el = letters[index];
+			if (!el || el === current) return;
+			current = el;
+			applyOffset(el, inertiaKick(velocity, index, strength));
+			const timer = setTimeout(() => {
+				timers.delete(timer);
+				applyOffset(el, REST);
+			}, KICK_HOLD_MS);
+			timers.add(timer);
+		},
+		leave() {
+			last = null;
+			velocity = { x: 0, y: 0 };
+			current = undefined;
+		},
+		destroy() {
+			for (const timer of timers) clearTimeout(timer);
+		},
+	};
 }

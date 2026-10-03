@@ -8,22 +8,9 @@ export const emailMagicLink = defineComponent({
 	category: "emails",
 	status: "beta",
 	variants: {
-		design: ["classic", "spotlight"],
 		surface: ["card", "plain"],
-		accent: ["none", "top"],
 	},
 	props: [
-		{
-			name: "design",
-			type: '"classic" | "spotlight"',
-			description:
-				"`classic` is a left-aligned card; `spotlight` centres everything around the code in a tinted panel.",
-			control: {
-				kind: "select",
-				options: ["classic", "spotlight"],
-			},
-			default: "spotlight",
-		},
 		{
 			name: "productName",
 			type: "string",
@@ -32,7 +19,7 @@ export const emailMagicLink = defineComponent({
 				kind: "text",
 			},
 			required: true,
-			default: "Northwind",
+			default: "Acme",
 		},
 		{
 			name: "signInUrl",
@@ -91,7 +78,7 @@ export const emailMagicLink = defineComponent({
 			name: "logoUrl",
 			type: "string",
 			description:
-				"Absolute URL, about 32px tall. Falls back to the product name as text.",
+				"Absolute PNG URL of a square mark, set beside the product name in the header and footer.",
 			control: {
 				kind: "none",
 			},
@@ -129,16 +116,6 @@ export const emailMagicLink = defineComponent({
 				options: ["card", "plain"],
 			},
 			default: "card",
-		},
-		{
-			name: "accent",
-			type: '"none" | "top"',
-			description: "`top` adds a strip of the accent colour across the card.",
-			control: {
-				kind: "select",
-				options: ["none", "top"],
-			},
-			default: "none",
 		},
 	],
 	a11y: {

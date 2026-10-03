@@ -6,11 +6,11 @@ import { RecordsTable } from "@baby-ui/svelte";
 	rows={[
 		{
 			id: "1",
-			name: "Northwind Traders",
+			name: "Acme Corp",
 			tags: ["Retail"],
 			last: "3 days ago",
 			strength: "strong",
-			website: "northwindtraders.com",
+			website: "acme.com",
 		},
 		{ id: "2", name: "Coral Reef Studio", tags: ["Design"], last: "No contact", strength: "none" },
 	]}

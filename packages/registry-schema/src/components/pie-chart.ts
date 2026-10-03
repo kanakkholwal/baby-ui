@@ -114,7 +114,7 @@ export const pieChart = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "d3-shape"],
-			registryDependencies: ["chart", "counter"],
+			registryDependencies: ["chart", "rolling-digits"],
 		},
 		svelte: {
 			entry: "PieChart",
@@ -127,7 +127,7 @@ export const pieChart = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "d3-shape"],
-			registryDependencies: ["chart", "counter"],
+			registryDependencies: ["chart", "rolling-digits"],
 		},
 	},
 	keywords: ["pie", "donut", "chart", "share", "proportion"],

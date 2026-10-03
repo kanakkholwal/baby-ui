@@ -7,8 +7,8 @@ import { ActivePointProvider, ChartFrame } from "../chart/frame";
 import { CHART_DURATION, type Playback, Spring, tween } from "../chart/motion";
 import { useActiveIndex } from "../chart/time-series";
 import { ChartTooltipContent, ChartTooltipPanel } from "../chart/tooltip";
-import { Counter } from "../counter/counter";
 import { cn } from "../lib/cn";
+import { RollingDigits } from "../rolling-digits/rolling-digits";
 import {
 	arcPath,
 	bisector,
@@ -304,12 +304,14 @@ function PiePlot({
 						height: inner * 2,
 					}}
 				>
-					<Counter
+					<RollingDigits
+						variant="count"
 						value={activeSlice ? activeSlice.value : total}
 						format={counterFormat}
 						durationMs={600}
-						triggerOnView={false}
+						startOnView={false}
 						size="sm"
+						className="font-bold text-foreground"
 					/>
 					<span className={styles.caption()}>
 						{activeSlice ? activeSlice.label : centerLabel}

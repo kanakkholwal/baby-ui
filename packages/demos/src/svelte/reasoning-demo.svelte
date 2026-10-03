@@ -1,6 +1,7 @@
 <script lang="ts">
 import {
 	Reasoning,
+	ReasoningRows,
 	ReasoningStep,
 	ReasoningStepDetails,
 	ReasoningStepSource,
@@ -22,6 +23,12 @@ const steps = [
 	{ label: "Search the docs" },
 	{ label: "Compare two approaches" },
 	{ label: "Draft the answer" },
+];
+
+const codingRows = [
+	{ primary: "Read", secondary: "flavors.ts", mono: true },
+	{ primary: "Edit", secondary: "ChurnSchedule.tsx", mono: true, add: 74, del: 41 },
+	{ primary: "Run", secondary: "npm run freeze", mono: true },
 ];
 
 const scripted = $derived(props.thinking !== false);
@@ -51,6 +58,9 @@ function stepStatus(index: number): ReasoningStepStatus {
 		variant={p.variant ?? "outline"}
 		thinkingLabel={p.thinkingLabel || "Thinking"}
 	>
+		{#if p.variant === "inline"}
+			<ReasoningRows kind="coding" rows={codingRows.slice(0, thinking ? step + 1 : 3)} />
+		{:else}
 		<ReasoningSteps>
 			{#each steps as s, i (s.label)}
 				<ReasoningStep label={s.label} description={s.description} status={stepStatus(i)}>
@@ -68,5 +78,6 @@ function stepStatus(index: number): ReasoningStepStatus {
 				</ReasoningStep>
 			{/each}
 		</ReasoningSteps>
+		{/if}
 	</Reasoning>
 </div>

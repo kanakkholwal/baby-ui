@@ -1,21 +1,11 @@
-import { tv, type VariantProps } from "tailwind-variants";
+import { tv } from "tailwind-variants";
 
 export const emailReceipt = tv({
 	slots: {
-		summary: "mt-8",
+		summary: "mt-10",
 		details: "mt-8",
 	},
-	variants: {
-		design: {
-			classic: {},
-			// Order-confirmation style: display headline, items in a tinted panel, brand bar footer.
-			summary: { summary: "mt-10" },
-		},
-	},
-	defaultVariants: { design: "classic" },
 });
-
-export type EmailReceiptDesign = NonNullable<VariantProps<typeof emailReceipt>["design"]>;
 
 /** Default copy for the receipt's labels; pass `labels` to translate or rename any of them. */
 export const EMAIL_RECEIPT_LABELS = {

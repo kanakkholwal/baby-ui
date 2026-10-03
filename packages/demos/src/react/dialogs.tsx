@@ -170,7 +170,7 @@ export function SheetDemo({ props }: { props: Props }) {
 	return (
 		<Sheet>
 			<SheetTrigger className={BTN}>Open sheet</SheetTrigger>
-			<SheetContent side={p.side ?? "right"}>
+			<SheetContent side={p.side ?? "right"} variant={p.variant ?? "default"}>
 				<SheetHeader>
 					<SheetTitle>Filters</SheetTitle>
 					<SheetClose />

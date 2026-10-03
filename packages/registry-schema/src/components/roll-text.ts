@@ -7,9 +7,10 @@ export const rollText = defineComponent({
 	slug: "roll-text",
 	name: "Roll Text",
 	description:
-		"Stacked text layers that roll vertically on hover, like a flip-clock digit.",
+		"A label that rolls on hover like a flip-clock digit, or swaps to a second label on hover and click.",
 	category: "text",
 	status: "stable",
+	isUpdated: true,
 	variants: { size: SIZES, motion: MOTIONS },
 	props: [
 		{
@@ -20,12 +21,40 @@ export const rollText = defineComponent({
 			default: "Roll text",
 		},
 		{
+			name: "to",
+			type: "string",
+			description:
+				"A second label: hover previews it and click toggles to it, turning the roll into a swap.",
+			default: "",
+			control: { kind: "text" },
+		},
+		{
+			name: "active",
+			type: "boolean",
+			description: "Controlled swap state when `to` is set.",
+			control: { kind: "none" },
+		},
+		{
+			name: "defaultActive",
+			type: "boolean",
+			description: "Uncontrolled starting swap state.",
+			default: false,
+			control: { kind: "none" },
+		},
+		{
+			name: "onActiveChange",
+			type: "(active: boolean) => void",
+			description: "Fires when a click toggles the swap.",
+			control: { kind: "none" },
+		},
+		{
 			name: "groupHover",
 			type: "boolean",
 			description:
 				"Plays when the nearest `[data-roll-group]`/`.group/roll` ancestor is hovered or focused, instead of this element itself.",
 			default: false,
 			control: { kind: "boolean" },
+			showWhen: { to: [""] },
 		},
 		{
 			name: "disabled",
@@ -41,6 +70,7 @@ export const rollText = defineComponent({
 				"Stagger the roll across words or characters. `none` animates the whole label at once.",
 			default: "none",
 			control: { kind: "select", options: ["none", "word", "character"] },
+			showWhen: { to: [""] },
 		},
 		{
 			name: "staggerMs",
@@ -77,6 +107,7 @@ export const rollText = defineComponent({
 		reducedMotion: "The roll completes instantly to its open state instead of animating.",
 		behaviour: [
 			"Tilt: the front letter tips back and blurs away while an echo flips up from below with a slight overshoot; units finish on the echo landing.",
+			"With `to`, the root is a toggle button: slide lifts one label out and the next in, tilt turns each letter over in 3D and replays backwards on the way out.",
 			"On hover/focus, two stacked copies of the label roll: the top slides up out of view, the bottom rises in to replace it. Re-triggering while open rolls again from the top.",
 		],
 	},
@@ -95,6 +126,7 @@ export const rollText = defineComponent({
 			files: [
 				{ path: "roll-text/roll-text.tsx", type: "registry:ui" },
 				{ path: "roll-text/variants.ts", type: "registry:ui" },
+				{ path: "roll-text/swap.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
@@ -104,10 +136,11 @@ export const rollText = defineComponent({
 			files: [
 				{ path: "roll-text/roll-text.svelte", type: "registry:ui" },
 				{ path: "roll-text/variants.ts", type: "registry:ui" },
+				{ path: "roll-text/swap.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
 		},
 	},
-	keywords: ["text", "roll", "hover", "flip"],
+	keywords: ["text", "roll", "hover", "flip", "swap", "toggle"],
 });

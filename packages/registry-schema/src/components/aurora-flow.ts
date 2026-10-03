@@ -1,6 +1,7 @@
 import { defineComponent } from "../index.ts";
 
-const TONES = ["chart", "accent", "ember", "mono"];
+const VARIANTS = ["veil", "silk"];
+const TONES = ["chart", "accent", "ember", "violet", "pearl", "mono"];
 const SPEEDS = ["slow", "normal", "fast"];
 const POSITIONS = ["absolute", "fixed"];
 
@@ -9,15 +10,24 @@ export const auroraFlow = defineComponent({
 	isNew: true,
 	name: "Aurora Flow",
 	description:
-		"Layered silk veils drifting through a WebGL noise field, coloured from theme tokens.",
+		"Silk light drifting through a WebGL field, as layered veils or three sheened ribbons, coloured from theme tokens.",
 	category: "backgrounds",
 	status: "stable",
-	variants: { tone: TONES, speed: SPEEDS, position: POSITIONS },
+	isUpdated: true,
+	variants: { variant: VARIANTS, tone: TONES, speed: SPEEDS, position: POSITIONS },
 	props: [
+		{
+			name: "variant",
+			type: VARIANTS.map((v) => `"${v}"`).join(" | "),
+			description:
+				"`veil` drifts layered light along `direction`; `silk` lays three soft ribbons with a pearl sheen.",
+			default: "veil",
+			control: { kind: "select", options: VARIANTS },
+		},
 		{
 			name: "tone",
 			type: TONES.map((v) => `"${v}"`).join(" | "),
-			description: "Token palette for the veils and light.",
+			description: "Token palette; each tone has a veil and a silk reading.",
 			default: "chart",
 			control: { kind: "select", options: TONES },
 		},
@@ -38,28 +48,28 @@ export const auroraFlow = defineComponent({
 		{
 			name: "intensity",
 			type: "number",
-			description: "Veil and light strength, 0 to 2.",
+			description: "Veil or ribbon strength, 0 to 2.",
 			default: 1,
 			control: { kind: "number", min: 0, max: 2, step: 0.1 },
 		},
 		{
 			name: "grain",
 			type: "number",
-			description: "Film grain, 0 to 1.",
-			default: 0.22,
+			description: "Film grain, 0 to 1. 0.22 for veil, 0.85 for silk.",
 			control: { kind: "number", min: 0, max: 1, step: 0.05 },
 		},
 		{
 			name: "direction",
 			type: "number",
-			description: "Flow direction in degrees.",
+			description: "Veil: flow direction in degrees.",
 			default: -18,
 			control: { kind: "number", min: -180, max: 180, step: 5 },
+			showWhen: { variant: ["veil"] },
 		},
 		{
 			name: "interactive",
 			type: "boolean",
-			description: "Veils bend toward the pointer.",
+			description: "Veils bend, or ribbons lean, toward the pointer.",
 			default: true,
 			control: { kind: "boolean" },
 		},
@@ -97,6 +107,7 @@ export const auroraFlow = defineComponent({
 			files: [
 				{ path: "aurora-flow/aurora-flow.tsx", type: "registry:ui" },
 				{ path: "aurora-flow/aurora.ts", type: "registry:ui" },
+				{ path: "aurora-flow/silk.ts", type: "registry:ui" },
 				{ path: "aurora-flow/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 				{ path: "lib/shader.ts", type: "registry:lib" },
@@ -109,7 +120,9 @@ export const auroraFlow = defineComponent({
 			entry: "AuroraFlow",
 			files: [
 				{ path: "aurora-flow/aurora-flow.svelte", type: "registry:ui" },
+				{ path: "aurora-flow/aurora-field.svelte", type: "registry:ui" },
 				{ path: "aurora-flow/aurora.ts", type: "registry:ui" },
+				{ path: "aurora-flow/silk.ts", type: "registry:ui" },
 				{ path: "aurora-flow/variants.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 				{ path: "lib/shader.ts", type: "registry:lib" },

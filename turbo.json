@@ -21,6 +21,7 @@
 		},
 		"//#emails": {
 			"dependsOn": ["//#gen"],
+			"env": ["BABY_UI_SITE_URL"],
 			"inputs": [
 				"scripts/emails/**",
 				"packages/tokens/src/**",
@@ -79,6 +80,17 @@
 			"persistent": true,
 			"dependsOn": ["//#gen", "//#fonts", "//#emails", "^registry"],
 			"with": ["//#gen:watch"]
+		},
+		"@baby-ui/site#build": {
+			"dependsOn": ["//#gen", "//#fonts", "//#emails", "^build", "^registry"],
+			"env": [
+				"VITE_POSTHOG_KEY",
+				"VITE_SHOW_PRO",
+				"BABY_UI_REGISTRY_URL",
+				"BABY_UI_SITE_URL"
+			],
+			"inputs": ["$TURBO_DEFAULT$", "../../pro/packages/*/src/**"],
+			"outputs": [".svelte-kit/**", "build/**", ".docvia/**"]
 		},
 		"@baby-ui/site#dev": {
 			"cache": false,

@@ -1,87 +1,59 @@
 <script lang="ts">
-import { untrack } from "svelte";
-import { cn } from "../lib/cn";
-import { type FieldOptions, mountField } from "./field";
-import { INFINITE_IMAGE_FIELD_LABELS, type InfiniteImageFieldLabels } from "./labels";
-import {
-	type InfiniteImageFieldLayout,
-	type InfiniteImageFieldShape,
-	type InfiniteImageFieldSize,
-	infiniteImageField,
+import DriftField from "./drift-field.svelte";
+import FisheyeField from "./fisheye-field.svelte";
+import GalleryField from "./gallery-field.svelte";
+import type { InfiniteImageFieldLabels } from "./labels";
+import type {
+	InfiniteImageFieldLayout,
+	InfiniteImageFieldShape,
+	InfiniteImageFieldSize,
+	InfiniteImageFieldVariant,
+	InfiniteImageItem,
 } from "./variants";
 
 let {
-	images,
-	shape = "rounded",
-	layout = "grid",
-	size,
-	imageWidth = 160,
-	imageHeight = 220,
-	gap = 24,
-	maxSpeed = 5,
-	smoothing = 0.07,
-	labels,
-	class: className,
+	variant = "drift",
+	...rest
 }: {
-	/** Image URLs; each cell always shows the same one. */
-	images: string[];
-	shape?: InfiniteImageFieldShape;
-	/** `staggered` offsets every other column by half a tile. */
-	layout?: InfiniteImageFieldLayout;
+	/** Tiles repeat endlessly; each cell always shows the same item. */
+	items: InfiniteImageItem[];
+	variant?: InfiniteImageFieldVariant;
 	size?: InfiniteImageFieldSize;
-	/** Tile size in CSS px. */
+	/** Drift: tile corners. */
+	shape?: InfiniteImageFieldShape;
+	/** Drift: `staggered` offsets every other column by half a tile. */
+	layout?: InfiniteImageFieldLayout;
+	/** Drift and fisheye: tile size in CSS px (at the lens edge for fisheye). */
 	imageWidth?: number;
 	imageHeight?: number;
-	/** Space between tiles in CSS px. */
+	/** Drift and fisheye: space between tiles in CSS px. */
 	gap?: number;
-	/** Top drift speed in CSS px per frame at 60fps. */
+	/** Drift: top speed in CSS px per frame at 60fps. */
 	maxSpeed?: number;
-	/** How quickly the drift follows the pointer, 0 to 1 per frame. */
+	/** Drift: how quickly the drift follows the pointer, 0 to 1 per frame. */
 	smoothing?: number;
+	/** Fisheye and gallery: lens strength, 0 is flat. Defaults per variant. */
+	lens?: number;
+	/** Fisheye: momentum kept after a drag, 0 to 0.98. */
+	inertia?: number;
+	/** Fisheye: frame each image with a title and caption row. */
+	captions?: boolean;
+	/** Gallery: cell size in world units; the view is 2 units tall. */
+	cellSize?: number;
+	/** Gallery: how far the view pulls back while dragging; 1 disables it. */
+	dragZoom?: number;
+	/** Gallery: the "drag to explore" hint. */
+	showHint?: boolean;
 	labels?: Partial<InfiniteImageFieldLabels>;
 	class?: string;
 } = $props();
-
-const l = $derived({ ...INFINITE_IMAGE_FIELD_LABELS, ...labels });
-const s = $derived(infiniteImageField({ shape, layout, size }));
-const options: FieldOptions = $derived({
-	images,
-	shape,
-	layout,
-	imageWidth,
-	imageHeight,
-	gap,
-	maxSpeed,
-	smoothing,
-});
-
-let root = $state<HTMLElement>();
-let canvas = $state<HTMLCanvasElement>();
-let engine: ReturnType<typeof mountField> | undefined;
-
-$effect(() => {
-	if (!root || !canvas) return;
-	engine = mountField(
-		root,
-		canvas,
-		untrack(() => $state.snapshot(options)),
-	);
-	return () => engine?.destroy();
-});
-
-$effect(() => {
-	const next = $state.snapshot(options);
-	engine?.update(next);
-});
 </script>
 
-<!-- svelte-ignore a11y_no_noninteractive_tabindex -- focus is how arrow keys drift the field -->
-<section
-	bind:this={root}
-	data-slot="infinite-image-field"
-	aria-label={l.label}
-	tabindex="0"
-	class={cn(s.root(), className)}
->
-	<canvas bind:this={canvas} aria-hidden="true" class={s.canvas()}></canvas>
-</section>
+<!-- An endless image field: drifts toward the pointer, or pans by drag through a fisheye or WebGL lens. -->
+{#if variant === "fisheye"}
+	<FisheyeField {...rest} />
+{:else if variant === "gallery"}
+	<GalleryField {...rest} />
+{:else}
+	<DriftField {...rest} />
+{/if}

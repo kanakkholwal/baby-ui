@@ -1,28 +1,40 @@
 import { Column, Img, Link, Row, Section, Text } from "react-email";
 import {
 	EmailButton,
-	EmailDivider,
 	EmailFooter,
 	type EmailFooterLink,
 	EmailHeader,
 	EmailHeading,
 	EmailSection,
 	EmailShell,
-	type EmailShellAccent,
-	type EmailShellSurface,
 	EmailText,
 } from "../email-kit/email-kit";
-import {
-	type EmailWelcomeDensity,
-	type EmailWelcomeDesign,
-	emailWelcome,
-} from "./variants";
+import { type EmailWelcomeDensity, emailWelcome } from "./variants";
 
-export type { EmailWelcomeDensity, EmailWelcomeDesign };
+export type { EmailWelcomeDensity };
 
 export interface EmailWelcomeStep {
 	title: string;
 	description: string;
+	/** Deep link into the product for this step. */
+	href?: string;
+	/** Link text; name the destination, e.g. "Connect a data source". */
+	actionLabel?: string;
+}
+
+export interface EmailWelcomeResource {
+	title: string;
+	description: string;
+	href: string;
+}
+
+/** A short personal note, e.g. from a founder, signed with a name and role. */
+export interface EmailWelcomeNote {
+	name: string;
+	message: string;
+	role?: string;
+	/** Absolute URL of a square photo. */
+	avatarUrl?: string;
 }
 
 export interface EmailWelcomeProps {
@@ -34,32 +46,33 @@ export interface EmailWelcomeProps {
 	/** Sender name and postal address, one line each. */
 	companyLines: string[];
 	recipientName?: string;
-	/** Absolute URL, about 32px tall. Falls back to the product name as text. */
+	/** Absolute PNG URL of a square mark, set beside the product name in header and footer. */
 	logoUrl?: string;
-	/** Absolute URL of a wide illustration or product shot for the `stacked` design. */
+	/** Absolute URL of a wide illustration or product shot above the heading. */
 	heroImageUrl?: string;
 	heroImageAlt?: string;
 	actionLabel?: string;
+	/** Docs, templates or community links, each a titled row. */
+	resources?: EmailWelcomeResource[];
+	note?: EmailWelcomeNote;
 	/** Shown as a mailto link in the help line; omit to hide the line. */
 	supportEmail?: string;
 	/** Lead-in before the support address. */
 	supportLabel?: string;
 	footerLinks?: EmailFooterLink[];
 	preview?: string;
-	/** Small line above the heading in the `stacked` design. */
+	/** Small line above the heading. */
 	eyebrow?: string;
 	heading?: string;
 	intro?: string;
 	stepsTitle?: string;
+	resourcesTitle?: string;
 	/** Footer line saying why this arrived, e.g. "You're receiving this because you signed up". */
 	reason?: string;
-	/** `classic` is one card; `stacked` splits the email into cards with a centred, image-led opener. */
-	design?: EmailWelcomeDesign;
-	surface?: EmailShellSurface;
-	accent?: EmailShellAccent;
 	density?: EmailWelcomeDensity;
 }
 
+/** Separate cards on a quiet page: an image-led opener, first steps, resources and a note. */
 export function EmailWelcome({
 	productName,
 	actionUrl,
@@ -70,101 +83,140 @@ export function EmailWelcome({
 	heroImageUrl,
 	heroImageAlt,
 	actionLabel = "Get started",
+	resources = [],
+	note,
 	supportEmail,
 	supportLabel = "Questions? Reply to this email or write to",
 	footerLinks,
 	preview = `Your ${productName} account is ready. Here is how to get started.`,
 	eyebrow = "Thanks for joining",
 	heading = recipientName ? `Welcome, ${recipientName}` : `Welcome to ${productName}`,
-	intro = `Your ${productName} account is ready. A few things worth doing first:`,
+	intro = `Your ${productName} account is ready. Here is what's worth doing first.`,
 	stepsTitle = "Getting started",
+	resourcesTitle = "Explore",
 	reason,
-	design = "classic",
-	surface = "card",
-	accent = "none",
 	density = "comfortable",
 }: EmailWelcomeProps) {
-	const s = emailWelcome({ design, density });
-	const stacked = design === "stacked";
-	const stepList =
-		steps.length > 0 ? (
-			<Section className={s.steps()}>
-				{steps.map((step, i) => (
-					<Row key={step.title}>
-						<Column className={s.stepIndex()}>
-							<Text className={s.stepBadge()}>{i + 1}</Text>
-						</Column>
-						<Column>
-							<Text className={s.stepTitle()}>{step.title}</Text>
-							<Text className={s.stepBody()}>{step.description}</Text>
-						</Column>
-					</Row>
-				))}
-			</Section>
-		) : null;
+	const s = emailWelcome({ density });
 	const help = supportEmail ? (
 		<EmailText tone="muted" size="sm">
 			{supportLabel}{" "}
-			<Link href={`mailto:${supportEmail}`} className={s.helpLink()}>
+			<Link href={`mailto:${supportEmail}`} className={s.link()}>
 				{supportEmail}
 			</Link>
 			.
 		</EmailText>
 	) : null;
-	const footer = <EmailFooter lines={companyLines} links={footerLinks} reason={reason} />;
-
-	if (stacked)
-		return (
-			<EmailShell preview={preview} surface="stacked" accent={accent} footer={footer}>
-				<EmailSection align="center">
-					<EmailHeader brand={productName} logo={logoUrl} align="center" />
-					{heroImageUrl ? (
-						<Img
-							src={heroImageUrl}
-							alt={heroImageAlt ?? productName}
-							width={432}
-							className={s.heroImage()}
-						/>
-					) : null}
-					<EmailText className={s.eyebrow()}>{eyebrow}</EmailText>
-					<EmailHeading size="display" align="center">
-						{heading}
-					</EmailHeading>
-					<EmailText tone="muted" className={s.intro()}>
-						{intro}
-					</EmailText>
-					<Section className={s.action()}>
-						<EmailButton href={actionUrl} size="lg" shape="pill">
-							{actionLabel}
-						</EmailButton>
+	return (
+		<EmailShell
+			preview={preview}
+			surface="stacked"
+			footer={
+				<EmailFooter
+					lines={companyLines}
+					links={footerLinks}
+					reason={reason}
+					brand={productName}
+					logo={logoUrl}
+				/>
+			}
+		>
+			<EmailSection align="center">
+				<EmailHeader brand={productName} logo={logoUrl} align="center" />
+				{heroImageUrl ? (
+					<Img
+						src={heroImageUrl}
+						alt={heroImageAlt ?? productName}
+						width={528}
+						className={s.heroImage()}
+					/>
+				) : null}
+				<EmailText className={s.eyebrow()}>{eyebrow}</EmailText>
+				<EmailHeading size="display" align="center">
+					{heading}
+				</EmailHeading>
+				<EmailText tone="muted" className={s.intro()}>
+					{intro}
+				</EmailText>
+				<Section className={s.action()}>
+					<EmailButton href={actionUrl} size="lg" shape="pill">
+						{actionLabel}
+					</EmailButton>
+				</Section>
+			</EmailSection>
+			{steps.length > 0 ? (
+				<EmailSection>
+					<EmailHeading size="md">{stepsTitle}</EmailHeading>
+					<Section className={s.steps()}>
+						{steps.map((step, i) => (
+							<Section key={step.title}>
+								{i > 0 ? <Section className={s.stepGap()} /> : null}
+								<Row>
+									<Column className={s.stepIndex()}>
+										<Text className={s.stepBadge()}>{i + 1}</Text>
+									</Column>
+									<Column>
+										<Text className={s.stepTitle()}>{step.title}</Text>
+										<Text className={s.stepBody()}>{step.description}</Text>
+										{step.href ? (
+											<Text className={s.stepLink()}>
+												<Link href={step.href} className={s.link()}>
+													{step.actionLabel ?? step.title}
+												</Link>
+											</Text>
+										) : null}
+									</Column>
+								</Row>
+							</Section>
+						))}
+					</Section>
+					{note ? null : help ? <Section className={s.help()}>{help}</Section> : null}
+				</EmailSection>
+			) : null}
+			{resources.length > 0 ? (
+				<EmailSection>
+					<EmailHeading size="md">{resourcesTitle}</EmailHeading>
+					<Section className={s.steps()}>
+						{resources.map((resource) => (
+							<Section key={resource.href} className={s.resource()}>
+								<Text className={s.resourceTitle()}>
+									<Link href={resource.href} className={s.link()}>
+										{resource.title}
+									</Link>
+								</Text>
+								<EmailText tone="muted" size="sm">
+									{resource.description}
+								</EmailText>
+							</Section>
+						))}
 					</Section>
 				</EmailSection>
-				{stepList ? (
-					<EmailSection>
-						<EmailHeading size="md">{stepsTitle}</EmailHeading>
-						{stepList}
-					</EmailSection>
-				) : null}
-				{help ? <EmailSection>{help}</EmailSection> : null}
-			</EmailShell>
-		);
-
-	return (
-		<EmailShell preview={preview} surface={surface} accent={accent} footer={footer}>
-			<EmailHeader brand={productName} logo={logoUrl} />
-			<EmailHeading>{heading}</EmailHeading>
-			<EmailText tone="muted" className={s.intro()}>
-				{intro}
-			</EmailText>
-			{stepList}
-			<Section className={s.action()}>
-				<EmailButton href={actionUrl}>{actionLabel}</EmailButton>
-			</Section>
-			{help ? (
-				<>
-					<EmailDivider spacing="lg" />
-					{help}
-				</>
+			) : null}
+			{note ? (
+				<EmailSection>
+					<Row>
+						{note.avatarUrl ? (
+							<Column className={s.noteAvatarCell()}>
+								<Img
+									src={note.avatarUrl}
+									alt={note.name}
+									width={40}
+									height={40}
+									className={s.noteAvatar()}
+								/>
+							</Column>
+						) : null}
+						<Column>
+							<Text className={s.noteName()}>{note.name}</Text>
+							{note.role ? <Text className={s.noteRole()}>{note.role}</Text> : null}
+						</Column>
+					</Row>
+					<EmailText className={s.noteMessage()}>{note.message}</EmailText>
+					{help ? <Section className={s.help()}>{help}</Section> : null}
+				</EmailSection>
+			) : null}
+			{!note && steps.length === 0 && help ? (
+				<EmailSection align="center">{help}</EmailSection>
 			) : null}
 		</EmailShell>
 	);

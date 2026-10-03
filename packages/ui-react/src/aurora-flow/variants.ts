@@ -10,6 +10,11 @@ export const auroraFlow = tv({
 		content: "relative z-10 size-full",
 	},
 	variants: {
+		/** Veil drifts layered light along `direction`; silk lays three ribbons with a pearl sheen. */
+		variant: {
+			veil: {},
+			silk: { fallback: "opacity-50" },
+		},
 		tone: {
 			chart: {
 				fallback:
@@ -22,6 +27,14 @@ export const auroraFlow = tv({
 			ember: {
 				fallback:
 					"bg-[image:radial-gradient(ellipse_at_18%_28%,var(--chart-2),transparent_52%),radial-gradient(ellipse_at_78%_40%,var(--chart-4),transparent_48%)]",
+			},
+			violet: {
+				fallback:
+					"bg-[image:radial-gradient(ellipse_at_18%_28%,var(--violet),transparent_52%),radial-gradient(ellipse_at_78%_40%,var(--chart-5),transparent_48%)]",
+			},
+			pearl: {
+				fallback:
+					"bg-[image:radial-gradient(ellipse_at_18%_28%,var(--chart-4),transparent_52%),radial-gradient(ellipse_at_78%_40%,var(--accent),transparent_48%)]",
 			},
 			mono: {
 				fallback:
@@ -38,48 +51,72 @@ export const auroraFlow = tv({
 			false: { canvas: "opacity-0" },
 		},
 	},
-	defaultVariants: { tone: "chart", speed: "normal", position: "absolute", webgl: false },
+	defaultVariants: {
+		variant: "veil",
+		tone: "chart",
+		speed: "normal",
+		position: "absolute",
+		webgl: false,
+	},
 });
 
+export type AuroraFlowVariant = NonNullable<VariantProps<typeof auroraFlow>["variant"]>;
 export type AuroraFlowTone = NonNullable<VariantProps<typeof auroraFlow>["tone"]>;
 export type AuroraFlowSpeed = NonNullable<VariantProps<typeof auroraFlow>["speed"]>;
 export type AuroraFlowPosition = NonNullable<VariantProps<typeof auroraFlow>["position"]>;
 
-/** Shader colours per tone, deepest first. */
-export const AURORA_FLOW_COLORS: Record<AuroraFlowTone, readonly string[]> = {
-	chart: [
-		"var(--background)",
-		"color-mix(in oklch, var(--chart-1) 35%, var(--background))",
-		"var(--chart-1)",
-		"var(--chart-3)",
-		"var(--foreground)",
-	],
-	accent: [
-		"var(--background)",
-		"color-mix(in oklch, var(--accent) 30%, var(--background))",
-		"var(--accent)",
-		"var(--violet)",
-		"var(--foreground)",
-	],
-	ember: [
-		"var(--background)",
-		"color-mix(in oklch, var(--chart-2) 35%, var(--background))",
-		"var(--chart-2)",
-		"var(--chart-4)",
-		"var(--foreground)",
-	],
-	mono: [
-		"var(--background)",
-		"color-mix(in oklch, var(--foreground) 12%, var(--background))",
-		"color-mix(in oklch, var(--foreground) 40%, var(--background))",
-		"var(--muted-foreground)",
-		"var(--foreground)",
-	],
+/** Each tone's two hues; mono has no hue and gets its own tonal palettes below. */
+const TONE_HUES: Record<Exclude<AuroraFlowTone, "mono">, readonly [string, string]> = {
+	chart: ["var(--chart-1)", "var(--chart-3)"],
+	accent: ["var(--accent)", "var(--violet)"],
+	ember: ["var(--chart-2)", "var(--chart-4)"],
+	violet: ["var(--violet)", "var(--chart-5)"],
+	pearl: ["var(--chart-4)", "var(--accent)"],
 };
+
+/** Shader colours for a tone: veil takes five deepest first, silk base, mid, sheen and accent. */
+export function auroraColors(variant: AuroraFlowVariant, tone: AuroraFlowTone): string[] {
+	if (tone === "mono")
+		return variant === "silk"
+			? [
+					"var(--background)",
+					"color-mix(in oklch, var(--foreground) 4%, var(--background))",
+					"color-mix(in oklch, var(--foreground) 11%, var(--background))",
+					"color-mix(in oklch, var(--primary) 14%, var(--background))",
+				]
+			: [
+					"var(--background)",
+					"color-mix(in oklch, var(--foreground) 12%, var(--background))",
+					"color-mix(in oklch, var(--foreground) 40%, var(--background))",
+					"var(--muted-foreground)",
+					"var(--foreground)",
+				];
+	const [a, b] = TONE_HUES[tone];
+	return variant === "silk"
+		? [
+				"var(--background)",
+				"color-mix(in oklch, var(--foreground) 6%, var(--background))",
+				`color-mix(in oklch, ${a} 35%, var(--foreground))`,
+				b,
+			]
+		: [
+				"var(--background)",
+				`color-mix(in oklch, ${a} 35%, var(--background))`,
+				a,
+				b,
+				"var(--foreground)",
+			];
+}
 
 /** Time multiplier per speed. */
 export const AURORA_FLOW_SPEED: Record<AuroraFlowSpeed, number> = {
 	slow: 0.5,
 	normal: 1,
 	fast: 2,
+};
+
+/** Film grain when `grain` is unset: the silk sheen reads better with more of it. */
+export const AURORA_FLOW_GRAIN: Record<AuroraFlowVariant, number> = {
+	veil: 0.22,
+	silk: 0.85,
 };

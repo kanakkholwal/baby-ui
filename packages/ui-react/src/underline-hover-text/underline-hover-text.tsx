@@ -1,33 +1,64 @@
-import type { CSSProperties } from "react";
+import {
+	type CSSProperties,
+	createElement,
+	type ElementType,
+	type ReactNode,
+} from "react";
 import { cn } from "../lib/cn";
-import { type UnderlineHoverTextTone, underlineHoverText } from "./variants";
+import {
+	type UnderlineHoverTextTone,
+	type UnderlineHoverTextTrigger,
+	type UnderlineHoverTextVariant,
+	underlineHoverText,
+} from "./variants";
 
-export type { UnderlineHoverTextTone };
+export type {
+	UnderlineHoverTextTone,
+	UnderlineHoverTextTrigger,
+	UnderlineHoverTextVariant,
+};
 
 export interface UnderlineHoverTextProps {
-	text: string;
+	children: ReactNode;
+	as?: ElementType;
+	/** With `as="a"`, the link target. */
+	href?: string;
+	variant?: UnderlineHoverTextVariant;
 	tone?: UnderlineHoverTextTone;
-	/** How long the lift and stroke take, in ms. */
+	/** `hover` draws the stroke on hover and keyboard focus; `always` keeps it drawn. */
+	trigger?: UnderlineHoverTextTrigger;
+	/** How long the stroke takes, in ms. */
 	durationMs?: number;
 	className?: string;
 }
 
 export function UnderlineHoverText({
-	text,
+	children,
+	as = "span",
+	href,
+	variant = "sweep",
 	tone = "default",
+	trigger = "hover",
 	durationMs = 500,
 	className,
 }: UnderlineHoverTextProps) {
-	const { root, label, baseline, stroke } = underlineHoverText({ tone });
-	return (
-		<span
-			data-slot="underline-hover-text"
-			className={cn(root(), className)}
-			style={{ "--uht-duration": `${durationMs}ms` } as CSSProperties}
-		>
-			<span className={label()}>{text}</span>
-			<span aria-hidden className={baseline()} />
-			<span aria-hidden className={stroke()} />
-		</span>
+	const s = underlineHoverText({ variant, tone, trigger });
+	return createElement(
+		as,
+		{
+			href,
+			"data-slot": "underline-hover-text",
+			"data-variant": variant,
+			className: cn(s.root(), className),
+			style: { "--uht-duration": `${durationMs}ms` } as CSSProperties,
+		},
+		children,
+		createElement("span", {
+			key: "baseline",
+			"aria-hidden": true,
+			className: s.baseline(),
+		}),
+		createElement("span", { key: "stroke", "aria-hidden": true, className: s.stroke() }),
+		createElement("span", { key: "top", "aria-hidden": true, className: s.top() }),
 	);
 }

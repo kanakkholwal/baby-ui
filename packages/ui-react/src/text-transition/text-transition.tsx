@@ -27,6 +27,7 @@ function unitStyle(preset: TextTransitionPreset, index: number): CSSProperties {
 		"--tt-from-y": preset.from.y ?? "0px",
 		"--tt-from-scale": preset.from.scale ?? 1,
 		"--tt-from-blur": preset.from.blur ?? "0px",
+		"--tt-from-rotate": preset.from.rotate ?? "0deg",
 	} as CSSProperties;
 }
 

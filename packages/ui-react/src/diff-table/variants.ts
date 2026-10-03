@@ -12,14 +12,14 @@ export const diffRow = tv({
 		change: {
 			removed: {
 				row: "bg-destructive/10",
-				label: "text-destructive",
-				detail: "text-destructive line-through decoration-destructive/50",
+				label: "text-destructive-strong",
+				detail: "text-destructive-strong line-through decoration-destructive/50",
 				mark: "bg-destructive",
 			},
 			added: {
 				row: "bg-success/10",
-				label: "text-success",
-				detail: "text-success",
+				label: "text-success-strong",
+				detail: "text-success-strong",
 				mark: "bg-success",
 			},
 		},

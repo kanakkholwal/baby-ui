@@ -6,7 +6,6 @@ import { alert } from "./alert.ts";
 import { animatedGradientText } from "./animated-gradient-text.ts";
 import { animatedGradient } from "./animated-gradient.ts";
 import { areaChart } from "./area-chart.ts";
-import { artGallery } from "./art-gallery.ts";
 import { asciiEffect } from "./ascii-effect.ts";
 import { attachment } from "./attachment.ts";
 import { auroraFlow } from "./aurora-flow.ts";
@@ -46,9 +45,7 @@ import { contextCards } from "./context-cards.ts";
 import { contextMenu } from "./context-menu.ts";
 import { conversation } from "./conversation.ts";
 import { copyButton } from "./copy-button.ts";
-import { counter } from "./counter.ts";
 import { cubeText } from "./cube-text.ts";
-import { cycleText } from "./cycle-text.ts";
 import { dataTable } from "./data-table.ts";
 import { dateField, datePicker, dateRangePicker, timePicker } from "./date-picker.ts";
 import { diaText } from "./dia-text.ts";
@@ -58,7 +55,6 @@ import { ditherGradient } from "./dither-gradient.ts";
 import { ditheredLogo } from "./dithered-logo.ts";
 import { docsNav } from "./docs-nav.ts";
 import { dotMatrixGlow } from "./dot-matrix-glow.ts";
-import { doubleUnderline } from "./double-underline.ts";
 import { draggableMarquee } from "./draggable-marquee.ts";
 import { drawer } from "./drawer.ts";
 import { dropdownMenu } from "./dropdown-menu.ts";
@@ -71,7 +67,6 @@ import { emailVerify } from "./email-verify.ts";
 import { emailWelcome } from "./email-welcome.ts";
 import { empty } from "./empty.ts";
 import { errorBoundary } from "./error-boundary.ts";
-import { eyeTracking } from "./eye-tracking.ts";
 import { field } from "./field.ts";
 import { fileDiff } from "./file-diff.ts";
 import { fileTree } from "./file-tree.ts";
@@ -79,7 +74,6 @@ import { fileUpload } from "./file-upload.ts";
 import { fillButton } from "./fill-button.ts";
 import { filterTable } from "./filter-table.ts";
 import { fineTuneCard } from "./fine-tune-card.ts";
-import { fisheyeInfiniteGrid } from "./fisheye-infinite-grid.ts";
 import { flightStatusCard } from "./flight-status-card.ts";
 import { flowchart } from "./flowchart.ts";
 import { footer } from "./footer.ts";
@@ -87,7 +81,6 @@ import { form } from "./form.ts";
 import { fullscreenNav } from "./fullscreen-nav.ts";
 import { funnelChart } from "./funnel-chart.ts";
 import { gaugeChart } from "./gauge-chart.ts";
-import { gauge } from "./gauge.ts";
 import { gibberishText } from "./gibberish-text.ts";
 import { githubCalendar } from "./github-calendar.ts";
 import { githubStatsBlock } from "./github-stats.ts";
@@ -105,10 +98,7 @@ import { inputOtp } from "./input-otp.ts";
 import { input } from "./input.ts";
 import { invoiceList } from "./invoice-list.ts";
 import { iridescentFold } from "./iridescent-fold.ts";
-import { jitterText } from "./jitter-text.ts";
-import { jumpingText } from "./jumping-text.ts";
 import { label } from "./label.ts";
-import { layeredStack } from "./layered-stack.ts";
 import { lightCaustics } from "./light-caustics.ts";
 import { liquidChrome } from "./liquid-chrome.ts";
 import { liveLineChart } from "./live-line-chart.ts";
@@ -121,7 +111,6 @@ import { marker } from "./marker.ts";
 import { maskText } from "./mask-text.ts";
 import { megaNavbar } from "./mega-navbar.ts";
 import { message } from "./message.ts";
-import { metisText } from "./metis-text.ts";
 import { mirrorText } from "./mirror-text.ts";
 import { morphText } from "./morph-text.ts";
 import { morphingModal } from "./morphing-modal.ts";
@@ -171,7 +160,6 @@ import { radioGroup } from "./radio-group.ts";
 import { reasoning } from "./reasoning.ts";
 import { recommendationCard } from "./recommendation-card.ts";
 import { recordsTable } from "./records-table.ts";
-import { responseStream } from "./response-stream.ts";
 import { responsiveDialog } from "./responsive-dialog.ts";
 import { revealText } from "./reveal-text.ts";
 import { ringChart } from "./ring-chart.ts";
@@ -187,8 +175,6 @@ import { scrollProgress } from "./scroll-progress.ts";
 import { scrollReveal } from "./scroll-reveal.ts";
 import { scrollSplitCard } from "./scroll-split-card.ts";
 import { scrollTiltedGrid } from "./scroll-tilted-grid.ts";
-import { scrollVelocity } from "./scroll-velocity.ts";
-import { scrubField } from "./scrub-field.ts";
 import { select } from "./select.ts";
 import { separator } from "./separator.ts";
 import { sheet } from "./sheet.ts";
@@ -198,53 +184,41 @@ import { showMore } from "./show-more.ts";
 import { showcaseGrid } from "./showcase-grid.ts";
 import { sidebarNav } from "./sidebar-nav.ts";
 import { signature } from "./signature.ts";
-import { silkAurora } from "./silk-aurora.ts";
 import { skeleton } from "./skeleton.ts";
 import { slider } from "./slider.ts";
 import { spectralRibbon } from "./spectral-ribbon.ts";
 import { spinner } from "./spinner.ts";
 import { splitFlapDisplay } from "./split-flap-display.ts";
 import { splitText } from "./split-text.ts";
-import { staggeredLetter } from "./staggered-letter.ts";
 import { starHistoryBlock } from "./star-history.ts";
 import { statCard, statCardMap } from "./stat-card.ts";
 import { statusMonitor } from "./status-monitor.ts";
 import { stickyScrollCards } from "./sticky-scroll-cards.ts";
 import { streamingText } from "./streaming-text.ts";
 import { sunburstChart } from "./sunburst-chart.ts";
-import { swapText } from "./swap-text.ts";
 import { swappable } from "./swappable.ts";
 import { switchComponent } from "./switch.ts";
 import { tableOfContents } from "./table-of-contents.ts";
 import { table } from "./table.ts";
 import { tabs } from "./tabs.ts";
 import { tagInput } from "./tag-input.ts";
-import { taskRows } from "./task-rows.ts";
 import { taskSteps } from "./task-steps.ts";
-import { textBorderAnimation } from "./text-border-animation.ts";
-import { textExplodeIMessage } from "./text-explode-imessage.ts";
-import { textFlip } from "./text-flip.ts";
-import { textInertia } from "./text-inertia.ts";
 import { textLoop } from "./text-loop.ts";
 import { textReel } from "./text-reel.ts";
 import { textRepel } from "./text-repel.ts";
 import { textTransition } from "./text-transition.ts";
 import { textarea } from "./textarea.ts";
 import { themeToggle } from "./theme-toggle.ts";
-import { thinkingState } from "./thinking-state.ts";
-import { ticker } from "./ticker.ts";
 import { toast } from "./toast.ts";
 import { toggleGroup } from "./toggle-group.ts";
 import { toggle } from "./toggle.ts";
 import { toolChips } from "./tool-chips.ts";
 import { tool } from "./tool.ts";
 import { tooltip } from "./tooltip.ts";
-import { typewriter } from "./typewriter.ts";
 import { typingText } from "./typing-text.ts";
 import { typography } from "./typography.ts";
 import { underlineHoverText } from "./underline-hover-text.ts";
 import { usageCard } from "./usage-card.ts";
-import { waveReveal } from "./wave-reveal.ts";
 import { webglLiquid } from "./webgl-liquid.ts";
 import { weekCalendar } from "./week-calendar.ts";
 import { wheelCarousel } from "./wheel-carousel.ts";
@@ -258,7 +232,6 @@ export const specs: ComponentSpec[] = [
 	animatedGradientText,
 	animatedGradient,
 	areaChart,
-	artGallery,
 	asciiEffect,
 	attachment,
 	auroraFlow,
@@ -300,9 +273,7 @@ export const specs: ComponentSpec[] = [
 	contextMenu,
 	conversation,
 	copyButton,
-	counter,
 	cubeText,
-	cycleText,
 	dataTable,
 	dateField,
 	datePicker,
@@ -315,7 +286,6 @@ export const specs: ComponentSpec[] = [
 	ditheredLogo,
 	docsNav,
 	dotMatrixGlow,
-	doubleUnderline,
 	draggableMarquee,
 	drawer,
 	dropdownMenu,
@@ -328,7 +298,6 @@ export const specs: ComponentSpec[] = [
 	emailWelcome,
 	empty,
 	errorBoundary,
-	eyeTracking,
 	field,
 	fileDiff,
 	fileTree,
@@ -336,7 +305,6 @@ export const specs: ComponentSpec[] = [
 	fillButton,
 	filterTable,
 	fineTuneCard,
-	fisheyeInfiniteGrid,
 	flightStatusCard,
 	flowchart,
 	footer,
@@ -344,7 +312,6 @@ export const specs: ComponentSpec[] = [
 	fullscreenNav,
 	funnelChart,
 	gaugeChart,
-	gauge,
 	gibberishText,
 	githubCalendar,
 	githubStatsBlock,
@@ -362,10 +329,7 @@ export const specs: ComponentSpec[] = [
 	input,
 	invoiceList,
 	iridescentFold,
-	jitterText,
-	jumpingText,
 	label,
-	layeredStack,
 	lightCaustics,
 	liquidChrome,
 	liveLineChart,
@@ -378,7 +342,6 @@ export const specs: ComponentSpec[] = [
 	maskText,
 	megaNavbar,
 	message,
-	metisText,
 	mirrorText,
 	morphText,
 	morphingModal,
@@ -428,7 +391,6 @@ export const specs: ComponentSpec[] = [
 	reasoning,
 	recommendationCard,
 	recordsTable,
-	responseStream,
 	responsiveDialog,
 	revealText,
 	ringChart,
@@ -444,8 +406,6 @@ export const specs: ComponentSpec[] = [
 	scrollReveal,
 	scrollSplitCard,
 	scrollTiltedGrid,
-	scrollVelocity,
-	scrubField,
 	select,
 	separator,
 	sheet,
@@ -455,14 +415,12 @@ export const specs: ComponentSpec[] = [
 	showcaseGrid,
 	sidebarNav,
 	signature,
-	silkAurora,
 	skeleton,
 	slider,
 	spectralRibbon,
 	spinner,
 	splitFlapDisplay,
 	splitText,
-	staggeredLetter,
 	starHistoryBlock,
 	statCard,
 	statCardMap,
@@ -470,39 +428,29 @@ export const specs: ComponentSpec[] = [
 	stickyScrollCards,
 	streamingText,
 	sunburstChart,
-	swapText,
 	swappable,
 	switchComponent,
 	tableOfContents,
 	table,
 	tabs,
 	tagInput,
-	taskRows,
 	taskSteps,
-	textBorderAnimation,
-	textExplodeIMessage,
-	textFlip,
-	textInertia,
 	textLoop,
 	textReel,
 	textRepel,
 	textTransition,
 	textarea,
 	themeToggle,
-	thinkingState,
-	ticker,
 	toast,
 	toggleGroup,
 	toggle,
 	toolChips,
 	tool,
 	tooltip,
-	typewriter,
 	typingText,
 	typography,
 	underlineHoverText,
 	usageCard,
-	waveReveal,
 	webglLiquid,
 	weekCalendar,
 	wheelCarousel,

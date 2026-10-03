@@ -21,10 +21,13 @@ let {
 	fullscreen = $bindable(),
 	view = $bindable(),
 	views = [],
+	viewports = false,
 	onReload,
 }: {
 	viewport: "desktop" | "mobile";
 	fullscreen: boolean;
+	/** Shows the width switch outside fullscreen too, for previews that render at a set width. */
+	viewports?: boolean;
 	view?: string;
 	/** Extra views a category offers, e.g. OG's Live / PNG; see PREVIEW_VIEWS. */
 	views?: PreviewView[];
@@ -40,11 +43,11 @@ type Action = {
 	run: () => void;
 };
 
-// Viewport sizes only mean something in fullscreen, so they only appear there.
+// Demo widths only mean something in fullscreen; emails render at a set width, so always.
 const groups = $derived<Action[][]>(
 	[
 		views.map((v) => ({ ...v, pressed: view === v.id, run: () => (view = v.id) })),
-		fullscreen
+		fullscreen || viewports
 			? [
 					{
 						id: "desktop",

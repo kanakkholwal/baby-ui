@@ -5,13 +5,13 @@ import AvatarImage from "../avatar/avatar-image.svelte";
 import Badge from "../badge/badge.svelte";
 import { Bar, BarChart, BarTooltip, BarXAxis, BarYAxis } from "../bar-chart";
 import { ChartContainer, ChartTooltipContent } from "../chart";
-import Counter from "../counter/counter.svelte";
 import Empty from "../empty/empty.svelte";
 import EmptyDescription from "../empty/empty-description.svelte";
 import EmptyHeader from "../empty/empty-header.svelte";
 import EmptyTitle from "../empty/empty-title.svelte";
 import GithubCalendar from "../github-calendar/github-calendar.svelte";
 import { cn } from "../lib/cn";
+import RollingDigits from "../rolling-digits/rolling-digits.svelte";
 import Select from "../select/select.svelte";
 import SelectContent from "../select/select-content.svelte";
 import SelectItem from "../select/select-item.svelte";
@@ -135,7 +135,7 @@ const countFormat = (value: number) => formatCount(Math.round(value), locale);
 					<p class={styles.eyebrow()}>{labels.eyebrow}</p>
 					<p class={styles.hero()}>
 						{#if layout.animate}
-							<Counter value={total} format={countFormat} durationMs={900} class={styles.heroValue()} />
+							<RollingDigits variant="count" value={total} format={countFormat} durationMs={900} size="md" class={cn("font-bold text-foreground", styles.heroValue())} />
 						{:else}
 							<span class={styles.heroValue()}>{formatCount(total, locale)}</span>
 						{/if}
@@ -259,11 +259,13 @@ const countFormat = (value: number) => formatCount(Math.round(value), locale);
 					<dt class={styles.countLabel()}>{labels[key]}</dt>
 					<dd class="order-first">
 						{#if layout.animate}
-							<Counter
+							<RollingDigits
+								variant="count"
 								value={data.counts[key]}
 								format={countFormat}
 								durationMs={1200}
-								class={styles.countValue()}
+								size="md"
+								class={cn("font-bold text-foreground", styles.countValue())}
 							/>
 						{:else}
 							<span class={styles.countValue()}>{formatCount(data.counts[key], locale)}</span>

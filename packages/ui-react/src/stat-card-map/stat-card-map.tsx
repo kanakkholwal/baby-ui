@@ -11,8 +11,8 @@ import {
 	type GeoCollection,
 } from "../choropleth-chart/geometry";
 import type { ChoroplethProjection } from "../choropleth-chart/variants";
-import { Counter } from "../counter/counter";
 import { cn } from "../lib/cn";
+import { RollingDigits } from "../rolling-digits/rolling-digits";
 import { type StatCardMapSize, statCardMap } from "./variants";
 
 export type { StatCardMapSize };
@@ -102,12 +102,14 @@ export function StatCardMap({
 			<CardHeader className={styles.header()}>
 				<div className={styles.headline()}>
 					<CardTitle className={styles.title()}>{title}</CardTitle>
-					<Counter
+					<RollingDigits
+						variant="count"
 						value={entry?.value ?? value}
 						format={number}
 						size="sm"
 						durationMs={400}
-						triggerOnView={false}
+						startOnView={false}
+						className="font-bold text-foreground"
 					/>
 					<span className={styles.label()}>{entry?.label ?? label}</span>
 				</div>

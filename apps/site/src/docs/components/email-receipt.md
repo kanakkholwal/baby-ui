@@ -8,7 +8,7 @@ tags: [email, receipt, invoice, payment, billing]
 
 Built from the [Email Kit](/emails/email-kit), themed from your tokens and switched to your dark palette when the inbox is. Every amount and date is a string you format first (`Intl.NumberFormat`, `Intl.DateTimeFormat`), so the email matches your invoices exactly and never guesses a locale. `adjustments` sit between the items and the total for subtotals, discounts and tax. Rename or translate any label through `labels`.
 
-`design` picks the look: `summary` (the default) puts the items and total in a panel under a large heading, with a dark footer bar; `classic` is a plain card.
+The items and total sit in a panel under a large heading, with a dark footer bar.
 
 ## Send it
 

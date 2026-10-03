@@ -88,7 +88,9 @@ export function NumberInputDemo({ props }: { props: Props }) {
 				onValueChange={setSeats}
 				min={1}
 				max={50}
+				variant={p.variant ?? "default"}
 				size={size}
+				suffix={p.suffix || undefined}
 				disabled={p.disabled ?? false}
 			/>
 			<NumberInput
@@ -99,6 +101,7 @@ export function NumberInputDemo({ props }: { props: Props }) {
 				step={50}
 				largeStep={500}
 				formatOptions={{ style: "currency", currency: "USD", maximumFractionDigits: 0 }}
+				variant={p.variant ?? "default"}
 				size={size}
 				disabled={p.disabled ?? false}
 			/>

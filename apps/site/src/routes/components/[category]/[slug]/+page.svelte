@@ -98,8 +98,13 @@ $effect(() => {
 	if (!views.some((v) => v.id === view)) view = views[0]?.id ?? "";
 });
 const png = new OgPngPreview(() =>
-	view === "og_png"
-		? `/api/og/${data.spec.slug}?props=${encodeURIComponent(JSON.stringify(values))}`
+	data.spec.category === "og-images"
+		? {
+				slug: data.spec.slug,
+				entry: data.spec.impl.svelte?.entry ?? "",
+				controls: { ...defaultProps(data.spec), ...values },
+				active: view === "og_png",
+			}
 		: null,
 );
 const email = new EmailPreview(() => ({
@@ -114,9 +119,9 @@ const stage = $derived(
 	data.email ? emailStage : view === "og_png" ? pngStage : undefined,
 );
 
-// Viewport sizes are a fullscreen tool; leaving fullscreen restores the full-width frame.
+// Viewport sizes are a fullscreen tool, except for emails, which size their own iframe.
 $effect(() => {
-	if (!fullscreen) viewport = "desktop";
+	if (!fullscreen && !data.email) viewport = "desktop";
 });
 
 $effect(() => {
@@ -525,7 +530,7 @@ const categoryTrail = $derived(
 	<div
 		class={[
 			"mx-auto w-full",
-			viewport === "mobile" ? "max-w-sm" : "max-w-full",
+			viewport === "mobile" && !data.email ? "max-w-sm" : "max-w-full",
 			fill && "flex h-full flex-col",
 		]}
 	>
@@ -537,7 +542,7 @@ const categoryTrail = $derived(
 					demo={demos[data.spec.slug]}
 					props={values}
 					content={stage as Snippet | undefined}
-					maxHeight={fill ? undefined : "calc(100dvh - var(--header-h) - 4rem)"}
+					maxHeight={fill || data.email ? undefined : "calc(100dvh - var(--header-h) - 4rem)"}
 					class={fill ? "h-full flex-1" : undefined}
 				/>
 			{/key}
@@ -547,6 +552,7 @@ const categoryTrail = $derived(
 					bind:fullscreen
 					bind:view
 					{views}
+					viewports={Boolean(data.email)}
 					onReload={() => reloadKey++}
 				/>
 			</div>
@@ -561,6 +567,7 @@ const categoryTrail = $derived(
 			text={email.shown.text}
 			bytes={email.shown.bytes}
 			view={view === "email_text" ? "text" : "html"}
+			{viewport}
 			pending={email.pending}
 			title="{data.spec.name} preview"
 		/>

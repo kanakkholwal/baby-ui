@@ -1,21 +1,22 @@
 import { defineComponent } from "../index.ts";
 
 const SIZES = ["sm", "md", "lg"];
-const LAYOUTS = ["arc", "row"];
+const LAYOUTS = ["arc", "row", "grid"];
 
 export const orbitCardStack = defineComponent({
 	slug: "orbit-card-stack",
 	name: "Orbit Card Stack",
 	description:
-		"Profile cards piled in a stack that fan out on hover or focus and raise the active card.",
+		"Cards piled in a stack that fan into an arc, a row or a grid on hover or focus and raise the active card.",
 	category: "animated",
 	status: "stable",
+	isUpdated: true,
 	demo: { mode: "auto", frame: "none" },
 	variants: { size: SIZES, layout: LAYOUTS },
 	props: [
 		{
 			name: "items",
-			type: "{ name: string; role: string; description: string; image?: string; initials?: string; stat?: string; href?: string }[]",
+			type: "{ name: string; role?: string; description?: string; image?: string; initials?: string; stat?: string; href?: string }[]",
 			description: "The profiles. `href` adds a real link button to that card.",
 			required: true,
 			control: { kind: "none" },
@@ -23,7 +24,8 @@ export const orbitCardStack = defineComponent({
 		{
 			name: "layout",
 			type: LAYOUTS.map((v) => `"${v}"`).join(" | "),
-			description: "Open cards curve like a hand of cards, or sit in a near-flat row.",
+			description:
+				"Open cards curve like a hand of cards, sit in a near-flat row, or tile into a grid scaled to fit the stage.",
 			default: "arc",
 			control: { kind: "select", options: LAYOUTS },
 		},
@@ -40,6 +42,7 @@ export const orbitCardStack = defineComponent({
 			description: "Largest gap between open cards in px; shrinks to fit the stage.",
 			default: 168,
 			control: { kind: "number", min: 40, max: 240, step: 8 },
+			showWhen: { layout: ["arc", "row"] },
 		},
 		{
 			name: "lift",
@@ -47,6 +50,7 @@ export const orbitCardStack = defineComponent({
 			description: "How far the active open card rises, in px.",
 			default: 34,
 			control: { kind: "number", min: 0, max: 80, step: 2 },
+			showWhen: { layout: ["arc", "row"] },
 		},
 		{
 			name: "value",

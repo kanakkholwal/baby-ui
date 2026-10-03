@@ -1,10 +1,10 @@
 <script lang="ts">
-import Counter from "../counter/counter.svelte";
 import Empty from "../empty/empty.svelte";
 import EmptyDescription from "../empty/empty-description.svelte";
 import EmptyHeader from "../empty/empty-header.svelte";
 import EmptyTitle from "../empty/empty-title.svelte";
 import { cn } from "../lib/cn";
+import RollingDigits from "../rolling-digits/rolling-digits.svelte";
 import ToggleGroup from "../toggle-group/toggle-group.svelte";
 import ToggleGroupItem from "../toggle-group/toggle-group-item.svelte";
 import {
@@ -74,7 +74,7 @@ function setRange(next: string | string[]) {
 
 {#snippet figure(value: number, className: string)}
 	{#if layout.animate}
-		<Counter {value} format={compact} durationMs={900} class={className} />
+		<RollingDigits variant="count" {value} format={compact} durationMs={900} size="md" class={cn("font-bold text-foreground", className)} />
 	{:else}
 		<span class={className}>{compact(value)}</span>
 	{/if}

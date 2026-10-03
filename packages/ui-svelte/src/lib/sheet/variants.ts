@@ -10,9 +10,10 @@ export const sheet = tv({
 			"starting:data-[state=open]:opacity-0",
 			"motion-reduce:transition-none",
 		],
+		body: "",
 		// Only the closed state translates, so the open state needs no competing utility.
 		panel: [
-			"fixed z-50 flex flex-col gap-4 overflow-y-auto bg-popover p-6 shadow-(--overlay-shadow)",
+			"fixed z-50 flex flex-col shadow-(--overlay-shadow)",
 			"transition-transform duration-[var(--duration-overlay)] ease-[var(--ease-drawer)]",
 			"data-[state=closed]:duration-[var(--duration-panel-exit)]",
 			"data-[state=closed]:data-[side=left]:-translate-x-full",
@@ -27,6 +28,17 @@ export const sheet = tv({
 		],
 	},
 	variants: {
+		// Framed matches Dialog and Drawer: a card-step rim around a bordered popover body.
+		variant: {
+			default: {
+				panel: "gap-4 overflow-y-auto bg-popover p-6",
+				body: "contents",
+			},
+			framed: {
+				panel: "bg-card p-1",
+				body: "flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto rounded-[11px] border border-border bg-popover p-5",
+			},
+		},
 		side: {
 			left: { panel: "inset-y-0 left-0 h-full w-[min(22rem,100vw)]" },
 			right: { panel: "inset-y-0 right-0 h-full w-[min(22rem,100vw)]" },
@@ -34,7 +46,15 @@ export const sheet = tv({
 			bottom: { panel: "inset-x-0 bottom-0 w-full max-h-[80vh] rounded-t-2xl" },
 		},
 	},
-	defaultVariants: { side: "right" },
+	compoundVariants: [
+		{ variant: "framed", side: "left", class: { body: "rounded-l-none" } },
+		{ variant: "framed", side: "right", class: { body: "rounded-r-none" } },
+		{ variant: "framed", side: "top", class: { body: "rounded-t-none" } },
+		{ variant: "framed", side: "bottom", class: { body: "rounded-b-none" } },
+	],
+	defaultVariants: { variant: "default", side: "right" },
 });
+
+export type SheetVariant = NonNullable<VariantProps<typeof sheet>["variant"]>;
 
 export type SheetSide = NonNullable<VariantProps<typeof sheet>["side"]>;

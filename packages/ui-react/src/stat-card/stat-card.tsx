@@ -7,9 +7,9 @@ import { Button } from "../button/button";
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from "../card/card";
 import { ChartContainer } from "../chart/chart";
 import { type ChartStatus, type Datum, toDate } from "../chart/core";
-import { Counter } from "../counter/counter";
 import { cn } from "../lib/cn";
 import { Line, LineChart } from "../line-chart/line-chart";
+import { RollingDigits } from "../rolling-digits/rolling-digits";
 import { Skeleton } from "../skeleton/skeleton";
 import {
 	periodTrend,
@@ -202,12 +202,14 @@ export function StatCard({
 					</div>
 				) : (
 					<div className={styles.headline()}>
-						<Counter
+						<RollingDigits
+							variant="count"
 							value={shownValue}
 							format={number}
 							size="sm"
 							durationMs={counterMs}
-							triggerOnView={false}
+							startOnView={false}
+							className="font-bold text-foreground"
 						/>
 						<span className={styles.label()}>{shownLabel}</span>
 						<span className={styles.srOnly()} aria-live="polite">

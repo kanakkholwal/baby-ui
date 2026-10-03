@@ -25,14 +25,15 @@ export const button = tv({
 			link: "text-primary underline-offset-4 hover:underline active:scale-100",
 			destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
 			destructive_soft:
-				"border-destructive/10 bg-destructive/10 text-destructive hover:bg-destructive/15",
-			// The dark palette lifts these hues for use as text, so the solid fill takes dark text there.
-			success: "bg-success text-white hover:bg-success/90 dark:text-[#151515]",
-			success_soft: "border-success/10 bg-success/10 text-success hover:bg-success/15",
-			warning: "bg-warning text-white hover:bg-warning/90 dark:text-[#151515]",
-			warning_soft: "border-warning/10 bg-warning/10 text-warning hover:bg-warning/15",
-			info: "bg-info text-white hover:bg-info/90 dark:text-[#151515]",
-			info_soft: "border-info/10 bg-info/10 text-info hover:bg-info/15",
+				"border-destructive/10 bg-destructive/10 text-destructive-strong hover:bg-destructive/15",
+			success: "bg-success text-success-foreground hover:bg-success/90",
+			success_soft:
+				"border-success/10 bg-success/10 text-success-strong hover:bg-success/15",
+			warning: "bg-warning text-warning-foreground hover:bg-warning/90",
+			warning_soft:
+				"border-warning/10 bg-warning/10 text-warning-strong hover:bg-warning/15",
+			info: "bg-info text-info-foreground hover:bg-info/90",
+			info_soft: "border-info/10 bg-info/10 text-info-strong hover:bg-info/15",
 			// Raised surfaces: each tone sets --surface; the shared recipe below mixes the sheen,
 			// edges, ring and shadow from it, so they follow the theme's accent.
 			default_surface: "text-primary-foreground [--surface:var(--primary)]",
@@ -43,9 +44,9 @@ export const button = tv({
 				"hover:brightness-[0.98] dark:hover:brightness-110",
 			],
 			destructive_surface: "text-destructive-foreground [--surface:var(--destructive)]",
-			success_surface: "text-white [--surface:var(--success)] dark:text-[#151515]",
-			warning_surface: "text-white [--surface:var(--warning)] dark:text-[#151515]",
-			info_surface: "text-white [--surface:var(--info)] dark:text-[#151515]",
+			success_surface: "text-success-foreground [--surface:var(--success)]",
+			warning_surface: "text-warning-foreground [--surface:var(--warning)]",
+			info_surface: "text-info-foreground [--surface:var(--info)]",
 			dark: "bg-foreground text-background hover:bg-foreground/90",
 			light: "bg-white text-black hover:bg-white/90 dark:bg-black dark:text-white",
 			raw: "h-auto rounded-none border-0 p-0 active:scale-100",
@@ -66,8 +67,8 @@ export const button = tv({
 	},
 	compoundVariants: [
 		{
-			// Sheen over a top-to-bottom fill, a lit top edge falling to a darker one, a ring and a
-			// soft drop. Hover lifts brightness, which transitions where a gradient swap would snap.
+			// Stops derive from --surface: fill falls ~10% darker, edge runs lit to deep, the inset
+			// shade and drops are tinted alphas. Hover lifts brightness, since gradients can't transition.
 			variant: [
 				"default_surface",
 				"destructive_surface",
@@ -76,8 +77,8 @@ export const button = tv({
 				"info_surface",
 			],
 			class: [
-				"[background:linear-gradient(rgb(255_255_255/0.12),transparent_50%)_padding-box,linear-gradient(var(--surface),color-mix(in_oklab,var(--surface)_86%,black))_padding-box,linear-gradient(color-mix(in_oklab,var(--surface)_68%,white),color-mix(in_oklab,var(--surface)_78%,black))_border-box]",
-				"shadow-[0_0_0_1px_color-mix(in_oklab,var(--surface)_62%,black),inset_0_-3px_6px_-3px_color-mix(in_oklab,var(--surface)_40%,black),0_1px_1px_0_color-mix(in_oklab,var(--surface)_14%,transparent),0_2px_4px_0_color-mix(in_oklab,var(--surface)_18%,transparent)]",
+				"[background:linear-gradient(rgb(255_255_255/0.12),transparent_50%)_padding-box,linear-gradient(var(--surface),color-mix(in_oklab,var(--surface)_90%,black))_padding-box,linear-gradient(color-mix(in_oklab,var(--surface)_70%,white),color-mix(in_oklab,var(--surface)_80%,black))_border-box]",
+				"shadow-[0_0_0_1px_color-mix(in_oklab,var(--surface)_74%,black),inset_0_-3px_6px_-3px_color-mix(in_oklab,color-mix(in_oklab,var(--surface)_30%,black)_18%,transparent),0_1px_1px_0_color-mix(in_oklab,color-mix(in_oklab,var(--surface)_55%,black)_12%,transparent),0_2px_4px_0_color-mix(in_oklab,color-mix(in_oklab,var(--surface)_55%,black)_16%,transparent)]",
 				"hover:brightness-[1.06]",
 			],
 		},

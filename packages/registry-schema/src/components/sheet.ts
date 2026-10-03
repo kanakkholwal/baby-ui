@@ -7,7 +7,17 @@ export const sheet = defineComponent({
 		"Panel that slides in from any edge, with focus moved inside and Escape to close.",
 	category: "base",
 	status: "stable",
+	isUpdated: true,
+	variants: { variant: ["default", "framed"] },
 	props: [
+		{
+			name: "variant",
+			type: '"default" | "framed"',
+			description:
+				"SheetContent: `framed` insets the body in a card-step rim, like Dialog and Drawer. `default` is the flat shadcn/ui surface.",
+			default: "default",
+			control: { kind: "select", options: ["default", "framed"] },
+		},
 		{
 			name: "open",
 			type: "boolean",

@@ -8,19 +8,9 @@ export const emailPasswordReset = defineComponent({
 	category: "emails",
 	status: "beta",
 	variants: {
-		design: ["classic", "hero"],
 		surface: ["card", "plain"],
-		accent: ["none", "top"],
 	},
 	props: [
-		{
-			name: "design",
-			type: '"classic" | "hero"',
-			description:
-				"`classic` is a plain card; `hero` opens with a tinted panel, a full-width button and a footer band.",
-			default: "hero",
-			control: { kind: "select", options: ["classic", "hero"] },
-		},
 		{
 			name: "requestedAt",
 			type: "string",
@@ -35,7 +25,7 @@ export const emailPasswordReset = defineComponent({
 				kind: "text",
 			},
 			required: true,
-			default: "Northwind",
+			default: "Acme",
 		},
 		{
 			name: "resetUrl",
@@ -100,7 +90,7 @@ export const emailPasswordReset = defineComponent({
 			name: "logoUrl",
 			type: "string",
 			description:
-				"Absolute URL, about 32px tall. Falls back to the product name as text.",
+				"Absolute PNG URL of a square mark, set beside the product name in the header and footer.",
 			control: {
 				kind: "none",
 			},
@@ -138,16 +128,6 @@ export const emailPasswordReset = defineComponent({
 				options: ["card", "plain"],
 			},
 			default: "card",
-		},
-		{
-			name: "accent",
-			type: '"none" | "top"',
-			description: "`top` adds a strip of the accent colour across the card.",
-			control: {
-				kind: "select",
-				options: ["none", "top"],
-			},
-			default: "none",
 		},
 	],
 	a11y: {

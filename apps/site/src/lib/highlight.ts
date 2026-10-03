@@ -52,7 +52,7 @@ function load() {
 	return highlighter;
 }
 
-/** Runs on the server only, so no highlighter ships to the browser. */
+/** Pages highlight on the server; only the studios load this in the browser, on demand. */
 export async function highlight(code: string, lang: string) {
 	const shiki = await load();
 	return shiki.codeToHtml(code, {

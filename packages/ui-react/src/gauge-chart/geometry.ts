@@ -14,6 +14,10 @@ export const NOTCH_TIMING = {
 } as const;
 export const LINEAR_HEIGHT = 24;
 
+/** Ring layout: a 100-unit viewBox with an 8-unit stroke, so the dial scales with its box. */
+export const RING_RADIUS = 46;
+export const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
+
 export const clampStagger = (scale: number) => Math.max(0.25, Math.min(2.5, scale));
 
 export function activeCount(

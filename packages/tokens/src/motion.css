@@ -556,61 +556,6 @@
 	}
 }
 
-/* Shared by WaveReveal: per-unit animation-delay makes the stagger read as a wave.
-   Blur variants run both keyframes in one shorthand; a second class can't add one. */
-.wave-reveal-up {
-	animation: wave-reveal-up var(--duration-overlay) var(--ease-out) both;
-}
-
-.wave-reveal-down {
-	animation: wave-reveal-down var(--duration-overlay) var(--ease-out) both;
-}
-
-.wave-reveal-up-blur {
-	animation:
-		wave-reveal-up var(--duration-overlay) var(--ease-out) both,
-		wave-reveal-blur var(--duration-overlay) var(--ease-out) both;
-}
-
-.wave-reveal-down-blur {
-	animation:
-		wave-reveal-down var(--duration-overlay) var(--ease-out) both,
-		wave-reveal-blur var(--duration-overlay) var(--ease-out) both;
-}
-
-@keyframes wave-reveal-up {
-	from {
-		opacity: 0;
-		transform: translateY(12px);
-	}
-}
-
-@keyframes wave-reveal-down {
-	from {
-		opacity: 0;
-		transform: translateY(-12px);
-	}
-}
-
-@keyframes wave-reveal-blur {
-	from {
-		filter: blur(6px);
-	}
-	to {
-		filter: blur(0);
-	}
-}
-
-@media (prefers-reduced-motion: reduce) {
-	.wave-reveal-up,
-	.wave-reveal-down,
-	.wave-reveal-up-blur,
-	.wave-reveal-down-blur {
-		animation-name: fade-in;
-		filter: none;
-	}
-}
-
 /* Shared by RollText: two stacked copies of the label roll up like a flip-clock digit. */
 .roll-text__track {
 	display: inline;
@@ -782,7 +727,7 @@
 }
 
 /* Shared by TextTransition: one generic keyframe driven by custom properties the
-   component sets per unit, so 19 named presets share one animation, not 19. */
+   component sets per unit, so every named preset shares one animation. */
 .text-transition-unit {
 	animation: text-transition-enter var(--tt-duration, 400ms) var(--tt-ease, var(--ease-out))
 		var(--tt-delay, 0ms) both;
@@ -792,7 +737,7 @@
 	from {
 		opacity: var(--tt-from-opacity, 0);
 		transform: translate(var(--tt-from-x, 0px), var(--tt-from-y, 0px))
-			scale(var(--tt-from-scale, 1));
+			rotate(var(--tt-from-rotate, 0deg)) scale(var(--tt-from-scale, 1));
 		filter: blur(var(--tt-from-blur, 0px));
 	}
 }
@@ -826,57 +771,6 @@
 	}
 }
 
-/* Shared by JitterText: a small yoyo'd x/y/rotate wobble, paused briefly at rest. */
-.jitter-text {
-	animation: jitter-wobble var(--jt-duration, 600ms) var(--ease-in-out) infinite alternate;
-}
-
-@keyframes jitter-wobble {
-	0% {
-		transform: translate(0, 1.5px) rotate(0.5deg);
-	}
-	20% {
-		transform: translate(-1px, 1px) rotate(-1.5deg);
-	}
-	40% {
-		transform: translate(1.5px, -1px) rotate(1deg);
-	}
-	60% {
-		transform: translate(-1.5px, 1.5px) rotate(-1.5deg);
-	}
-	80% {
-		transform: translate(1px, -1.5px) rotate(1deg);
-	}
-	100% {
-		transform: translate(0, 0) rotate(0deg);
-	}
-}
-
-@media (prefers-reduced-motion: reduce) {
-	.jitter-text {
-		animation: none;
-	}
-}
-
-/* Shared by JumpingTextInstagram: a bouncy per-unit entrance (spring standing in for
-   Motion's damped spring), staggered via animation-delay. */
-.jump-in {
-	animation: jump-in var(--jump-duration, 500ms) var(--ease-spring) both;
-}
-
-@keyframes jump-in {
-	from {
-		opacity: 0;
-		transform: translateY(30px) rotate(-30deg);
-	}
-}
-
-@media (prefers-reduced-motion: reduce) {
-	.jump-in {
-		animation-name: fade-in;
-	}
-}
-
 /* Shared by MaskText: a circular mask follows the cursor (mask-position, set inline
    per move) and grows on hover (mask-size, the one part that actually transitions). */
 .mask-text-reveal {
@@ -899,35 +793,6 @@
 	}
 }
 
-/* Shared by Ticker: each digit is a 10-row strip that translates to the active row.
-   A transition, not a keyframe animation, so it replays on every value change with
-   no remount needed. */
-.ticker-digit {
-	position: relative;
-	display: inline-block;
-	overflow: hidden;
-	height: 1lh;
-	vertical-align: bottom;
-}
-
-.ticker-digit__track {
-	display: flex;
-	flex-direction: column;
-	transition: transform var(--ticker-duration, 500ms) var(--ease-out);
-	transform: translateY(calc(var(--ticker-index, 0) * -1lh));
-}
-
-.ticker-digit__row {
-	height: 1lh;
-	line-height: 1lh;
-}
-
-@media (prefers-reduced-motion: reduce) {
-	.ticker-digit__track {
-		transition: none;
-	}
-}
-
 /* Shared by ScrollReveal: one scroll listener sets --sr-progress on the container;
    every word derives its own reveal fraction (--sr-t) from a per-word CSS calc(),
    so no per-word JS writes are needed on scroll. */
@@ -943,61 +808,6 @@
 	.scroll-reveal-word {
 		opacity: 1;
 		filter: none;
-	}
-}
-
-/* Shared by TextExplodeIMessage: one cycle (shrink, jitter, explode outward, reset) per
-   character, driven by a per-character random --te-x/--te-y/--te-rot set once in JS
-   (same generic-engine idea as TextTransition, but with a full multi-stage timeline
-   instead of a single enter). Loop mode runs it forever; hover mode plays it once via
-   a class toggle. */
-[data-mode="loop"] .text-explode-char {
-	animation: text-explode var(--te-duration, 4000ms) var(--ease-in-out) infinite;
-}
-
-.text-explode-char--playing {
-	animation: text-explode var(--te-duration, 4000ms) var(--ease-in-out) 1;
-}
-
-@keyframes text-explode {
-	0%,
-	8% {
-		transform: scale(1) translate(0, 0) rotate(0deg);
-		opacity: 1;
-	}
-	16% {
-		transform: scale(0.85) translate(var(--te-jitter-x, 0px), var(--te-jitter-y, 0px)) rotate(0deg);
-	}
-	24% {
-		transform: scale(0.85)
-			translate(calc(var(--te-jitter-x, 0px) * -1), calc(var(--te-jitter-y, 0px) * -1)) rotate(0deg);
-	}
-	40% {
-		transform: scale(1.1) translate(calc(var(--te-x, 0px) * 0.4), calc(var(--te-y, 0px) * 0.4))
-			rotate(calc(var(--te-rot, 0deg) * 0.3));
-		opacity: 0.85;
-	}
-	70% {
-		transform: scale(calc(1 + var(--te-scale-extra, 0.5) * 0.6))
-			translate(calc(var(--te-x, 0px) * 0.8), calc(var(--te-y, 0px) * 0.8))
-			rotate(calc(var(--te-rot, 0deg) * 0.7));
-		opacity: 0.4;
-	}
-	88% {
-		transform: scale(calc(1 + var(--te-scale-extra, 0.5))) translate(var(--te-x, 0px), var(--te-y, 0px))
-			rotate(var(--te-rot, 0deg));
-		opacity: 0;
-	}
-	100% {
-		transform: scale(1) translate(0, 0) rotate(0deg);
-		opacity: 1;
-	}
-}
-
-@media (prefers-reduced-motion: reduce) {
-	[data-mode="loop"] .text-explode-char,
-	.text-explode-char--playing {
-		animation: none;
 	}
 }
 
@@ -1267,11 +1077,38 @@
 	}
 }
 
+/* TextLoop `fade`: the next item blurs in place as the current one drifts out the other way. */
+[data-slot="text-loop"][data-variant="fade"] .text-loop-enter {
+	animation-name: text-loop-fade-enter;
+}
+
+[data-slot="text-loop"][data-variant="fade"] .text-loop-exit {
+	animation-name: text-loop-fade-exit;
+}
+
+@keyframes text-loop-fade-enter {
+	from {
+		opacity: 0;
+		filter: blur(6px);
+		transform: translateY(calc(var(--text-loop-dir, 1) * 0.3em));
+	}
+}
+
+@keyframes text-loop-fade-exit {
+	to {
+		opacity: 0;
+		filter: blur(6px);
+		transform: translateY(calc(var(--text-loop-dir, 1) * -0.3em));
+	}
+}
+
 @media (prefers-reduced-motion: reduce) {
-	.text-loop-enter {
+	.text-loop-enter,
+	[data-slot="text-loop"][data-variant="fade"] .text-loop-enter {
 		animation-name: fade-in;
 	}
-	.text-loop-exit {
+	.text-loop-exit,
+	[data-slot="text-loop"][data-variant="fade"] .text-loop-exit {
 		animation-name: text-fade-out;
 	}
 }
@@ -1368,136 +1205,6 @@
 	.dia-text-swap {
 		animation-name: fade-in;
 		filter: none;
-	}
-}
-
-/* TextInertia: sampled response of a 58/16/1.35 spring kicked for 150ms, scaled per word.
-   Two identical keyframes so a second kick restarts the animation. */
-.text-inertia-kick-a {
-	animation: text-inertia-kick-a 1190ms linear;
-}
-
-.text-inertia-kick-b {
-	animation: text-inertia-kick-b 1190ms linear;
-}
-
-@keyframes text-inertia-kick-a {
-	4.2% {
-		transform: translate(calc(var(--ti-x) * 0.045), calc(var(--ti-y) * 0.045))
-			rotate(calc(var(--ti-r) * 0.045));
-	}
-	8.4% {
-		transform: translate(calc(var(--ti-x) * 0.147), calc(var(--ti-y) * 0.147))
-			rotate(calc(var(--ti-r) * 0.147));
-	}
-	12.6% {
-		transform: translate(calc(var(--ti-x) * 0.272), calc(var(--ti-y) * 0.272))
-			rotate(calc(var(--ti-r) * 0.272));
-	}
-	16.8% {
-		transform: translate(calc(var(--ti-x) * 0.354), calc(var(--ti-y) * 0.354))
-			rotate(calc(var(--ti-r) * 0.354));
-	}
-	21% {
-		transform: translate(calc(var(--ti-x) * 0.371), calc(var(--ti-y) * 0.371))
-			rotate(calc(var(--ti-r) * 0.371));
-	}
-	29.4% {
-		transform: translate(calc(var(--ti-x) * 0.311), calc(var(--ti-y) * 0.311))
-			rotate(calc(var(--ti-r) * 0.311));
-	}
-	42% {
-		transform: translate(calc(var(--ti-x) * 0.173), calc(var(--ti-y) * 0.173))
-			rotate(calc(var(--ti-r) * 0.173));
-	}
-	58.8% {
-		transform: translate(calc(var(--ti-x) * 0.057), calc(var(--ti-y) * 0.057))
-			rotate(calc(var(--ti-r) * 0.057));
-	}
-	75.7% {
-		transform: translate(calc(var(--ti-x) * 0.014), calc(var(--ti-y) * 0.014))
-			rotate(calc(var(--ti-r) * 0.014));
-	}
-}
-
-@keyframes text-inertia-kick-b {
-	4.2% {
-		transform: translate(calc(var(--ti-x) * 0.045), calc(var(--ti-y) * 0.045))
-			rotate(calc(var(--ti-r) * 0.045));
-	}
-	8.4% {
-		transform: translate(calc(var(--ti-x) * 0.147), calc(var(--ti-y) * 0.147))
-			rotate(calc(var(--ti-r) * 0.147));
-	}
-	12.6% {
-		transform: translate(calc(var(--ti-x) * 0.272), calc(var(--ti-y) * 0.272))
-			rotate(calc(var(--ti-r) * 0.272));
-	}
-	16.8% {
-		transform: translate(calc(var(--ti-x) * 0.354), calc(var(--ti-y) * 0.354))
-			rotate(calc(var(--ti-r) * 0.354));
-	}
-	21% {
-		transform: translate(calc(var(--ti-x) * 0.371), calc(var(--ti-y) * 0.371))
-			rotate(calc(var(--ti-r) * 0.371));
-	}
-	29.4% {
-		transform: translate(calc(var(--ti-x) * 0.311), calc(var(--ti-y) * 0.311))
-			rotate(calc(var(--ti-r) * 0.311));
-	}
-	42% {
-		transform: translate(calc(var(--ti-x) * 0.173), calc(var(--ti-y) * 0.173))
-			rotate(calc(var(--ti-r) * 0.173));
-	}
-	58.8% {
-		transform: translate(calc(var(--ti-x) * 0.057), calc(var(--ti-y) * 0.057))
-			rotate(calc(var(--ti-r) * 0.057));
-	}
-	75.7% {
-		transform: translate(calc(var(--ti-x) * 0.014), calc(var(--ti-y) * 0.014))
-			rotate(calc(var(--ti-r) * 0.014));
-	}
-}
-
-@media (prefers-reduced-motion: reduce) {
-	.text-inertia-kick-a,
-	.text-inertia-kick-b {
-		animation: none;
-	}
-}
-
-/* Typewriter: the caret fades out and back in over 800ms, linearly, like the source. */
-.typewriter-caret {
-	animation: typewriter-caret 800ms linear infinite;
-}
-
-@keyframes typewriter-caret {
-	50% {
-		opacity: 0;
-	}
-}
-
-@media (prefers-reduced-motion: reduce) {
-	.typewriter-caret {
-		animation: none;
-	}
-}
-
-/* CycleText: the outgoing word keeps drifting up as it fades, on the shared exit timing. */
-.cycle-text-exit {
-	animation: cycle-text-exit var(--duration-exit) var(--ease-out) both;
-}
-
-@keyframes cycle-text-exit {
-	to {
-		opacity: 0;
-		transform: translateY(-10px);
-	}
-}
-
-@media (prefers-reduced-motion: reduce) {
-	.cycle-text-exit {
-		animation-name: text-fade-out;
 	}
 }
 
@@ -2856,23 +2563,6 @@
 	}
 }
 
-/* ScrollVelocity: each row loops over two identical halves; scroll only changes playbackRate. */
-.scroll-velocity-track {
-	animation: scroll-velocity-loop var(--scroll-velocity-duration, 30s) linear infinite;
-}
-
-@keyframes scroll-velocity-loop {
-	to {
-		translate: -50% 0;
-	}
-}
-
-@media (prefers-reduced-motion: reduce) {
-	.scroll-velocity-track {
-		animation: none;
-	}
-}
-
 /* ImageTrail: a spawn restarts these on a pooled image; JS only writes the positions. */
 .image-trail--fade .image-trail-item[data-active] {
 	animation:
@@ -3219,44 +2909,6 @@
 		animation: none;
 	}
 }
-
-/* EyeTracking: a quick lid close near the end of each cycle; the cyber variant sweeps a scan line. */
-.eye-tracking-blink {
-	animation: eye-tracking-blink var(--et-blink, 4000ms) ease-in-out infinite;
-}
-
-.eye-tracking-scan {
-	animation: eye-tracking-scan 3s linear infinite;
-}
-
-@keyframes eye-tracking-blink {
-	0%,
-	95%,
-	100% {
-		scale: 1 1;
-	}
-	97.5% {
-		scale: 1 0.05;
-	}
-}
-
-@keyframes eye-tracking-scan {
-	0%,
-	100% {
-		top: 0;
-	}
-	50% {
-		top: calc(100% - 2px);
-	}
-}
-
-@media (prefers-reduced-motion: reduce) {
-	.eye-tracking-blink,
-	.eye-tracking-scan {
-		animation: none;
-	}
-}
-
 /* Scroll tilted grid: keyframes run on each figure's view timeline, or stay paused and are
    scrubbed through animation-delay by --scroll-tilted-progress where timelines are missing. */
 .scroll-tilted-tile {

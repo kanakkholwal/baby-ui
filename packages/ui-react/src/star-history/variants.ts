@@ -1,5 +1,4 @@
 import { tv, type VariantProps } from "tailwind-variants";
-import { cardFrame } from "../card/variants";
 
 export const starHistory = tv({
 	slots: {
@@ -7,7 +6,7 @@ export const starHistory = tv({
 		head: "flex flex-wrap items-start justify-between gap-x-8 gap-y-4 px-6 pt-6 md:px-8 md:pt-8",
 		repo: "flex min-w-0 items-center gap-1.5 font-medium text-muted-foreground text-xs",
 		repoName: "truncate font-mono",
-		repoIcon: "size-3.5 shrink-0 text-warning",
+		repoIcon: "size-3.5 shrink-0 text-warning-strong",
 		hero: "mt-1.5 flex flex-wrap items-baseline gap-x-2 gap-y-1",
 		heroValue:
 			"font-heading font-semibold text-5xl text-foreground tabular-nums tracking-tight",
@@ -24,7 +23,7 @@ export const starHistory = tv({
 		panel: "card-fade-up mt-0 min-w-0 outline-none",
 		// A 1px gap over a border-coloured grid draws every divider, with no doubled edges.
 		counts: "grid grid-cols-3 gap-px border-border border-t bg-border",
-		count: "flex min-w-0 flex-col gap-1 bg-card px-6 py-5 md:px-8",
+		count: "flex min-w-0 flex-col gap-1 bg-background px-6 py-5 md:px-8",
 		countValue:
 			"truncate font-heading font-semibold text-foreground text-xl tabular-nums tracking-tight",
 		countLabel: "text-muted-foreground text-xs",
@@ -35,9 +34,9 @@ export const starHistory = tv({
 		 * `compact`: the total, two facts and the chart for a sidebar. `minimal`: no chrome.
 		 */
 		variant: {
-			default: { root: cardFrame({ variant: "default" }).root() },
+			default: { root: "rounded-2xl border border-border bg-background" },
 			compact: {
-				root: cardFrame({ variant: "default" }).root(),
+				root: "rounded-2xl border border-border bg-background",
 				head: "px-5 pt-5 md:px-5 md:pt-5",
 				heroValue: "text-4xl",
 				facts: "mt-4 px-5 md:px-5 [&>*:nth-child(n+3)]:hidden",

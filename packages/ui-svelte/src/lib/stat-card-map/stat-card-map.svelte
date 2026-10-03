@@ -13,8 +13,8 @@ import {
 	type GeoCollection,
 } from "../choropleth-chart/geometry";
 import type { ChoroplethProjection } from "../choropleth-chart/variants";
-import Counter from "../counter/counter.svelte";
 import { cn } from "../lib/cn";
+import RollingDigits from "../rolling-digits/rolling-digits.svelte";
 import { type StatCardMapSize, statCardMap } from "./variants";
 
 let {
@@ -94,12 +94,14 @@ function setActive(index: number | null) {
 	<CardHeader class={styles.header()}>
 		<div class={styles.headline()}>
 			<CardTitle class={styles.title()}>{title}</CardTitle>
-			<Counter
+			<RollingDigits
+				variant="count"
 				value={entry?.value ?? value}
 				format={number}
 				size="sm"
 				durationMs={400}
-				triggerOnView={false}
+				startOnView={false}
+				class="font-bold text-foreground"
 			/>
 			<span class={styles.label()}>{entry?.label ?? label}</span>
 		</div>

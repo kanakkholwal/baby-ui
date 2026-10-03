@@ -1,7 +1,7 @@
 import { type ReactNode, useState } from "react";
-import { Counter } from "../counter";
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "../empty/empty";
 import { cn } from "../lib/cn";
+import { RollingDigits } from "../rolling-digits/rolling-digits";
 import { ToggleGroup, ToggleGroupItem } from "../toggle-group";
 import {
 	combineTotals,
@@ -271,7 +271,14 @@ function Figure({
 	className: string;
 }) {
 	return animate ? (
-		<Counter value={value} format={format} durationMs={900} className={className} />
+		<RollingDigits
+			variant="count"
+			value={value}
+			format={format}
+			durationMs={900}
+			size="md"
+			className={cn("font-bold text-foreground", className)}
+		/>
 	) : (
 		<span className={className}>{format(value)}</span>
 	);

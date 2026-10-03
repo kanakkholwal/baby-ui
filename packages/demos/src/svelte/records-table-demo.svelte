@@ -9,12 +9,12 @@ const p = $derived(controlProps<ComponentProps<typeof RecordsTable>>(props));
 const ROWS: RecordRow[] = [
 	{
 		id: "1",
-		name: "Northwind Traders",
+		name: "Acme Corp",
 		tags: ["Retail", "Logistics"],
 		last: "3 days ago",
 		strength: "strong",
-		website: "northwindtraders.com",
-		logo: "https://avatar.vercel.sh/northwindtraders.com?size=40",
+		website: "acme.com",
+		logo: "https://avatar.vercel.sh/acme.com?size=40",
 		aiValue: "Series B, $40M raised",
 	},
 	{

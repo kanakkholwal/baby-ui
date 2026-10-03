@@ -7,20 +7,8 @@ export const emailVerify = defineComponent({
 		"Confirms a new account's email address with a one-time link and an optional code.",
 	category: "emails",
 	status: "beta",
-	variants: {
-		design: ["classic", "centered"],
-		surface: ["card", "plain"],
-		accent: ["none", "top"],
-	},
+	variants: { surface: ["card", "plain"] },
 	props: [
-		{
-			name: "design",
-			type: '"classic" | "centered"',
-			description:
-				"`classic` is a left-aligned card; `centered` adds a security panel, a help block and a footer band.",
-			default: "centered",
-			control: { kind: "select", options: ["classic", "centered"] },
-		},
 		{
 			name: "productName",
 			type: "string",
@@ -29,13 +17,12 @@ export const emailVerify = defineComponent({
 				kind: "text",
 			},
 			required: true,
-			default: "Northwind",
+			default: "Acme",
 		},
 		{
 			name: "helpItems",
 			type: "{ title?: string; text: string; iconUrl?: string }[]",
-			description:
-				"Ways to reach support (email, phone, hours), shown in the `centered` design.",
+			description: "Ways to reach support (email, phone, hours), listed under the panel.",
 			control: { kind: "none" },
 		},
 		{
@@ -94,7 +81,7 @@ export const emailVerify = defineComponent({
 			name: "logoUrl",
 			type: "string",
 			description:
-				"Absolute URL, about 32px tall. Falls back to the product name as text.",
+				"Absolute PNG URL of a square mark, set beside the product name in the header and footer.",
 			control: {
 				kind: "none",
 			},
@@ -132,16 +119,6 @@ export const emailVerify = defineComponent({
 				options: ["card", "plain"],
 			},
 			default: "card",
-		},
-		{
-			name: "accent",
-			type: '"none" | "top"',
-			description: "`top` adds a strip of the accent colour across the card.",
-			control: {
-				kind: "select",
-				options: ["none", "top"],
-			},
-			default: "none",
 		},
 	],
 	a11y: {

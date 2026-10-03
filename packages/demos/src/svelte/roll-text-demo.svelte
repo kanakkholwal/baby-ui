@@ -5,12 +5,14 @@ import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
 const p = $derived(controlProps<ComponentProps<typeof RollText>>(props));
-const groupHover = $derived(props.groupHover === true);
+const to = $derived(p.to || undefined);
+const groupHover = $derived(props.groupHover === true && to === undefined);
 </script>
 
 {#snippet roll()}
 	<RollText
 		text={p.text || "Roll on hover"}
+		{to}
 		{groupHover}
 		disabled={props.disabled === true}
 		stagger={p.stagger ?? "none"}

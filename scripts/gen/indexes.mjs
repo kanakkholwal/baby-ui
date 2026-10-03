@@ -13,7 +13,6 @@ const DEMOS_SVELTE = join(ROOT, "packages/demos/src/svelte");
 const LIB_PUBLIC = ["cn.ts"];
 // Filenames whose PascalCase differs from the component's established name.
 const NAME_OVERRIDES = {
-	"text-explode-imessage": "TextExplodeIMessage",
 	// shadcn spells the one-time-code parts InputOTP*; match it so its blocks import cleanly.
 	"input-otp": "InputOTP",
 	"input-otp-group": "InputOTPGroup",
@@ -235,6 +234,14 @@ export function indexes(output, report) {
 			...[...svelteLoaders]
 				.sort(([a], [b]) => a.localeCompare(b))
 				.map(([slug, loader]) => `\t${quote(slug)}: ${loader},`),
+			"};",
+			"",
+			"/** Each component's own module by slug, for pages that render the component unframed. */",
+			"export const components: Record<string, () => Promise<Record<string, unknown>>> = {",
+			...slugs
+				.filter((slug) => svelte.folders.has(slug))
+				.sort()
+				.map((slug) => `\t${quote(slug)}: () => import("@baby-ui/svelte/${slug}"),`),
 			"};",
 			"",
 		].join("\n"),

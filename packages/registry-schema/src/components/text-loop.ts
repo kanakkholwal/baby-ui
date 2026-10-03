@@ -1,15 +1,18 @@
 import { defineComponent } from "../index.ts";
 
 const SIZES = ["inherit", "sm", "md", "lg"];
+const VARIANTS = ["slide", "fade", "roll"];
 const DIRECTIONS = ["up", "down"];
 
 export const textLoop = defineComponent({
 	slug: "text-loop",
 	name: "Text Loop",
-	description: "Loops through items, each sliding out as the next slides in behind it.",
+	description:
+		"Loops through items on an interval: sliding through a window, blurring in place, or rolling like a flip counter.",
 	category: "text",
 	status: "stable",
-	variants: { direction: DIRECTIONS, size: SIZES },
+	variants: { variant: VARIANTS, direction: DIRECTIONS, size: SIZES },
+	isUpdated: true,
 	props: [
 		{
 			name: "items",
@@ -50,6 +53,14 @@ export const textLoop = defineComponent({
 			description: "Enter and exit length.",
 			default: 300,
 			control: { kind: "number", min: 100, max: 1000, step: 50 },
+		},
+		{
+			name: "variant",
+			type: VARIANTS.map((v) => `"${v}"`).join(" | "),
+			description:
+				"`slide` moves items through a clipped window; `fade` blurs the next item in place as the last drifts out; `roll` turns a stack of items like a flip counter.",
+			default: "slide",
+			control: { kind: "select", options: VARIANTS },
 		},
 		{
 			name: "direction",

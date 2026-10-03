@@ -7,7 +7,7 @@ let { props = {} }: { props?: Record<string, unknown> } = $props();
 const p = $derived(controlProps<ComponentProps<typeof TypingText>>(props));
 </script>
 
-{#key String(props.smooth ?? "")}
+{#key String(props.smooth ?? "") + String(props.stumbles ?? "")}
 	<TypingText
 		text={p.text || "Creates a typing effect for given text"}
 		delay={Number(props.delay ?? 32)}
@@ -17,6 +17,7 @@ const p = $derived(controlProps<ComponentProps<typeof TypingText>>(props));
 		fadeDurationMs={Number(props.fadeDurationMs ?? 300)}
 		grow={props.grow === true}
 		hideCursorOnComplete={props.hideCursorOnComplete === true}
+		stumbles={props.stumbles === true}
 		size={p.size ?? "md"}
 		class="text-foreground"
 	/>

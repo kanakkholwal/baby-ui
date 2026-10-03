@@ -187,7 +187,7 @@ export const OG_PODCAST_EPISODE = {
 
 export const OG_PRODUCT_SHOP = {
 	image: "https://picsum.photos/id/21/800/800",
-	store: "Northwind",
+	store: "Acme",
 };
 
 export const OG_TESTIMONIAL = {

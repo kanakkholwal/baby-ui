@@ -33,5 +33,5 @@ let {
 	)}
 >
 	{@render children?.()}
-	{#if required}<span aria-hidden="true" class="text-[var(--destructive)]">*</span>{/if}
+	{#if required}<span aria-hidden="true" class="text-destructive-strong">*</span>{/if}
 </label>

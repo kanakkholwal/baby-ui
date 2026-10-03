@@ -1,6 +1,6 @@
 <script lang="ts">
 import { cn } from "../lib/cn";
-import { type NumberInputSize, numberInput } from "./variants";
+import { type NumberInputSize, type NumberInputVariant, numberInput } from "./variants";
 
 let {
 	value = $bindable(null),
@@ -12,7 +12,9 @@ let {
 	formatOptions,
 	locale,
 	label,
+	variant = "default",
 	size = "md",
+	suffix,
 	disabled = false,
 	invalid = false,
 	name,
@@ -36,7 +38,10 @@ let {
 	locale?: string;
 	/** Visible label; dragging it sideways scrubs the value. */
 	label?: string;
+	variant?: NumberInputVariant;
 	size?: NumberInputSize;
+	/** Scrub: a unit shown after the value, e.g. "px". */
+	suffix?: string;
 	disabled?: boolean;
 	invalid?: boolean;
 	name?: string;
@@ -48,7 +53,7 @@ let {
 	incrementLabel?: string;
 } = $props();
 
-const s = $derived(numberInput({ size }));
+const s = $derived(numberInput({ variant, size }));
 const fallbackId = $props.id();
 const id = $derived(idProp ?? fallbackId);
 const formatter = $derived(new Intl.NumberFormat(locale, formatOptions));
@@ -117,7 +122,7 @@ function startHold(amount: number) {
 $effect(() => stopHold);
 
 // Drag the label sideways to scrub, one step per 4px, as Base UI's ScrubArea does.
-let scrubX: number | null = null;
+let scrubX = $state<number | null>(null);
 function onScrubDown(event: PointerEvent) {
 	if (disabled || event.button !== 0) return;
 	scrubX = event.clientX;
@@ -132,8 +137,55 @@ function onScrubMove(event: PointerEvent) {
 }
 </script>
 
-<div data-slot="number-input" class={cn(s.root(), classProp)}>
-	{#if label}
+{#snippet field()}
+	<input
+		{id}
+		type="text"
+		inputmode="decimal"
+		autocomplete="off"
+		role="spinbutton"
+		aria-valuenow={value ?? undefined}
+		aria-valuemin={min}
+		aria-valuemax={max}
+		aria-valuetext={value === null ? undefined : formatter.format(value)}
+		aria-label={label ? undefined : ariaLabel}
+		aria-invalid={invalid || undefined}
+		{placeholder}
+		{disabled}
+		value={shown}
+		class={s.input()}
+		onfocus={() => {
+			draft = value === null ? "" : formatter.format(value);
+			editing = true;
+		}}
+		oninput={(e) => (draft = e.currentTarget.value)}
+		onblur={commit}
+		onkeydown={(e) => {
+			const big = e.shiftKey ? largeStep : step;
+			const moves: Record<string, () => void> = {
+				ArrowUp: () => stepBy(big),
+				ArrowDown: () => stepBy(-big),
+				PageUp: () => stepBy(largeStep),
+				PageDown: () => stepBy(-largeStep),
+				Home: () => min !== undefined && set(min),
+				End: () => max !== undefined && set(max),
+				Enter: () => commit(),
+			};
+			const move = moves[e.key];
+			if (!move) return;
+			e.preventDefault();
+			if (e.key !== "Enter") commit();
+			move();
+			if (e.key !== "Enter") {
+				draft = value === null ? "" : formatter.format(value);
+				editing = true;
+			}
+		}}
+	/>
+{/snippet}
+
+<div data-slot="number-input" data-variant={variant} class={cn(s.root(), classProp)}>
+	{#if label && variant === "default"}
 		<!-- A pointer shortcut; the input takes the keyboard. -->
 		<!-- svelte-ignore a11y_no_static_element_interactions -->
 		<span
@@ -147,6 +199,29 @@ function onScrubMove(event: PointerEvent) {
 			<label for={id}>{label}</label>
 		</span>
 	{/if}
+	{#if variant === "scrub"}
+		<div class={s.group()}>
+			{#if label}
+				<!-- svelte-ignore a11y_no_static_element_interactions -->
+				<span
+					class={s.label()}
+					data-disabled={disabled || undefined}
+					data-scrubbing={scrubX !== null || undefined}
+					onpointerdown={onScrubDown}
+					onpointermove={onScrubMove}
+					onpointerup={() => (scrubX = null)}
+					onpointercancel={() => (scrubX = null)}
+				>
+					<label for={id}>{label}</label>
+					<svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class={s.grip()}>
+						<path d="M5 4.5 1.5 8 5 11.5M11 4.5 14.5 8 11 11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+					</svg>
+				</span>
+			{/if}
+			{@render field()}
+			{#if suffix}<span class={s.suffix()}>{suffix}</span>{/if}
+		</div>
+	{:else}
 	<div class={s.group()}>
 		<button
 			type="button"
@@ -169,50 +244,7 @@ function onScrubMove(event: PointerEvent) {
 				<path d="M5 12h14" />
 			</svg>
 		</button>
-		<input
-			{id}
-			type="text"
-			inputmode="decimal"
-			autocomplete="off"
-			role="spinbutton"
-			aria-valuenow={value ?? undefined}
-			aria-valuemin={min}
-			aria-valuemax={max}
-			aria-valuetext={value === null ? undefined : formatter.format(value)}
-			aria-label={label ? undefined : ariaLabel}
-			aria-invalid={invalid || undefined}
-			{placeholder}
-			{disabled}
-			value={shown}
-			class={s.input()}
-			onfocus={() => {
-				draft = value === null ? "" : formatter.format(value);
-				editing = true;
-			}}
-			oninput={(e) => (draft = e.currentTarget.value)}
-			onblur={commit}
-			onkeydown={(e) => {
-				const big = e.shiftKey ? largeStep : step;
-				const moves: Record<string, () => void> = {
-					ArrowUp: () => stepBy(big),
-					ArrowDown: () => stepBy(-big),
-					PageUp: () => stepBy(largeStep),
-					PageDown: () => stepBy(-largeStep),
-					Home: () => min !== undefined && set(min),
-					End: () => max !== undefined && set(max),
-					Enter: () => commit(),
-				};
-				const move = moves[e.key];
-				if (!move) return;
-				e.preventDefault();
-				if (e.key !== "Enter") commit();
-				move();
-				if (e.key !== "Enter") {
-					draft = value === null ? "" : formatter.format(value);
-					editing = true;
-				}
-			}}
-		/>
+		{@render field()}
 		<button
 			type="button"
 			tabindex={-1}
@@ -235,5 +267,6 @@ function onScrubMove(event: PointerEvent) {
 			</svg>
 		</button>
 	</div>
+	{/if}
 	{#if name}<input type="hidden" {name} value={value ?? ""} />{/if}
 </div>

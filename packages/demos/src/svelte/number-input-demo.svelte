@@ -12,7 +12,16 @@ let budget = $state<number | null>(1200);
 </script>
 
 <div class="flex w-full max-w-60 flex-col gap-5">
-	<NumberInput label="Seats" bind:value={seats} min={1} max={50} {size} disabled={p.disabled ?? false} />
+	<NumberInput
+		label="Seats"
+		bind:value={seats}
+		min={1}
+		max={50}
+		variant={p.variant ?? "default"}
+		{size}
+		suffix={p.suffix || undefined}
+		disabled={p.disabled ?? false}
+	/>
 	<NumberInput
 		label="Monthly budget"
 		bind:value={budget}
@@ -20,6 +29,7 @@ let budget = $state<number | null>(1200);
 		step={50}
 		largeStep={500}
 		formatOptions={{ style: "currency", currency: "USD", maximumFractionDigits: 0 }}
+		variant={p.variant ?? "default"}
 		{size}
 		disabled={p.disabled ?? false}
 	/>

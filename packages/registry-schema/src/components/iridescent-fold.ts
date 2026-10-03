@@ -1,6 +1,7 @@
 import { defineComponent } from "../index.ts";
 
-const TONES = ["spectrum", "cool", "warm", "mono"];
+const VARIANTS = ["foil", "silk"];
+const TONES = ["holo", "pearl", "opal", "lavender", "spectrum", "cool", "warm", "mono"];
 const SPEEDS = ["slow", "normal", "fast"];
 const POSITIONS = ["absolute", "fixed"];
 const union = (values: string[]) => values.map((v) => `"${v}"`).join(" | ");
@@ -10,16 +11,26 @@ export const iridescentFold = defineComponent({
 	isNew: true,
 	name: "Iridescent Fold",
 	description:
-		"Holographic foil folds with a thin-film sheen, drawn in WebGL from theme tokens.",
+		"Holographic foil or satin: crumpled creases or long draped folds, a pastel thin-film sheen and specular streaks, drawn in WebGL.",
 	category: "backgrounds",
 	status: "beta",
-	variants: { tone: TONES, speed: SPEEDS, position: POSITIONS },
+	isUpdated: true,
+	variants: { variant: VARIANTS, tone: TONES, speed: SPEEDS, position: POSITIONS },
 	props: [
+		{
+			name: "variant",
+			type: union(VARIANTS),
+			description:
+				"`foil` crumples into sharp creases with rainbow glints; `silk` drapes in long sheened folds with a fine sparkle.",
+			default: "foil",
+			control: { kind: "select", options: VARIANTS },
+		},
 		{
 			name: "tone",
 			type: union(TONES),
-			description: "Three tokens the thin-film sheen sweeps through.",
-			default: "spectrum",
+			description:
+				"The three colours the thin film sweeps through: holo, pearl, opal and lavender are pastel foil and satin palettes; the rest come from theme tokens.",
+			default: "holo",
 			control: { kind: "select", options: TONES },
 		},
 		{
@@ -61,6 +72,7 @@ export const iridescentFold = defineComponent({
 		springs: [],
 		reducedMotion: "One static frame is drawn.",
 		behaviour: [
+			"Ridged noise octaves fold into sharp creases over soft billows; colour follows fold height and surface angle, and creases catch white highlights.",
 			"Draws at most 30 frames a second on a low-power WebGL context.",
 			"The frame loop pauses while the element is off screen or the tab is hidden.",
 			"Colours resolve from theme tokens and resample when the theme changes.",

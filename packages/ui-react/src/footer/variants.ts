@@ -2,7 +2,7 @@ import { tv, type VariantProps } from "tailwind-variants";
 
 export const footer = tv({
 	slots: {
-		root: "@container relative w-full border-border border-t bg-card",
+		root: "@container relative w-full border-border border-t bg-background",
 		notch: "hidden",
 		topLink:
 			"group/top inline-flex h-9 items-center gap-2 rounded-full px-5 font-medium text-foreground text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring",

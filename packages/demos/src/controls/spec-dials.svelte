@@ -31,8 +31,17 @@ function seed(target: ComponentSpec): Record<string, unknown> {
 	return out;
 }
 
-// The parent keys this component on the slug, so reading spec once is the intent.
-let state = $state(untrack(() => seed(spec)));
+// The parent keys this component on the slug, so reading spec once is the intent. Values the
+// parent already holds (a shared link) win over the spec defaults.
+let state = $state(
+	untrack(() => {
+		const base = seed(spec);
+		return {
+			...base,
+			...Object.fromEntries(Object.entries(values ?? {}).filter(([key]) => key in base)),
+		};
+	}),
+);
 
 const dials = $derived(
 	spec.props.filter(

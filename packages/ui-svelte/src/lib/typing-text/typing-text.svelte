@@ -1,5 +1,6 @@
 <script lang="ts">
 import { cn } from "../lib/cn";
+import { typingStumbleSteps } from "./stumble";
 import { type TypingTextSize, typingText } from "./variants";
 
 let {
@@ -11,6 +12,7 @@ let {
 	fadeDurationMs = 300,
 	grow = false,
 	hideCursorOnComplete = false,
+	stumbles = false,
 	onComplete,
 	size = "md",
 	class: classProp,
@@ -24,11 +26,14 @@ let {
 	fadeDurationMs?: number;
 	grow?: boolean;
 	hideCursorOnComplete?: boolean;
+	/** Types like a person: wrong keys appear and get corrected. `delay` scales the pace. */
+	stumbles?: boolean;
 	onComplete?: () => void;
 	size?: TypingTextSize;
 	class?: string;
 } = $props();
 
+const stumbling = $derived(stumbles && !smooth);
 const words = $derived(text.split(/\s+/));
 const total = $derived(smooth ? words.length : text.length);
 
@@ -37,11 +42,20 @@ let direction = $state<1 | -1>(1);
 let completed = false;
 let blinkOn = $state(true);
 
+// Stumble mode: frames timed at a 32ms reference delay, scaled by `delay`.
+let pass = $state(0);
+let step = $state(0);
+let reduced = $state(false);
+const steps = $derived(typingStumbleSteps(text, pass));
+const stumbleDone = $derived(step >= steps.length);
+
 $effect(() => {
 	text; // re-run whenever the text prop changes, not just on mount
 	index = 0;
 	direction = 1;
 	completed = false;
+	pass = 0;
+	step = 0;
 });
 
 $effect(() => {
@@ -51,21 +65,30 @@ $effect(() => {
 	return () => clearInterval(id);
 });
 
+$effect(() => {
+	const query = matchMedia("(prefers-reduced-motion: reduce)");
+	reduced = query.matches;
+	const update = () => (reduced = query.matches);
+	query.addEventListener("change", update);
+	return () => query.removeEventListener("change", update);
+});
+
 const atEnd = $derived(index >= total);
 const atStart = $derived(index <= 0);
 const paused = $derived((atEnd && direction === 1) || (atStart && direction === -1));
 
 $effect(() => {
-	if (paused) return;
-	const step = Math.max(1, delay);
+	if (stumbling || paused) return;
+	const tick = Math.max(1, delay);
 	const id = setInterval(() => {
 		const next = index + direction;
 		index = direction === 1 ? Math.min(next, total) : Math.max(next, 0);
-	}, step);
+	}, tick);
 	return () => clearInterval(id);
 });
 
 $effect(() => {
+	if (stumbling) return;
 	if (atEnd && direction === 1) {
 		if (!repeat) {
 			if (!completed) {
@@ -87,16 +110,42 @@ $effect(() => {
 	}
 });
 
-const isComplete = $derived(index === total && !repeat);
+$effect(() => {
+	if (!stumbling || reduced) return;
+	if (stumbleDone) {
+		onComplete?.();
+		if (!repeat) return;
+		const id = setTimeout(() => {
+			pass += 1;
+			step = 0;
+		}, waitMs);
+		return () => clearTimeout(id);
+	}
+	const id = setTimeout(() => (step += 1), (steps[step]?.wait ?? 0) * (delay / 32));
+	return () => clearTimeout(id);
+});
+
+const shown = $derived(
+	stumbling
+		? reduced || stumbleDone
+			? text
+			: (steps[step]?.text ?? "")
+		: text.slice(0, index),
+);
+const isComplete = $derived(
+	stumbling ? stumbleDone && !repeat : index === total && !repeat,
+);
 const showCursor = $derived(!smooth && (!hideCursorOnComplete || !isComplete));
+const cursorSolid = $derived(stumbling ? stumbleDone : atEnd || atStart);
 const classes = $derived(typingText({ size }));
 </script>
 
 <div data-slot="typing-text" class={cn(classes, classProp)} style="--tt-fade-duration: {fadeDurationMs}ms;">
+	{#if stumbling}<span class="sr-only">{text}</span>{/if}
 	{#if !grow}
-		<div class="invisible">{text}</div>
+		<div aria-hidden={stumbling || undefined} class="invisible">{text}</div>
 	{/if}
-	<div class={!grow ? "absolute inset-0" : undefined}>
+	<div aria-hidden={stumbling || undefined} class={!grow ? "absolute inset-0" : undefined}>
 		{#if smooth}
 			<span class="flex flex-wrap whitespace-pre">
 				{#each words as word, i (i)}
@@ -106,8 +155,8 @@ const classes = $derived(typingText({ size }));
 				{/each}
 			</span>
 		{:else}
-			{text.slice(0, index)}
+			{shown}
 		{/if}
-		{#if showCursor}<span class={blinkOn || atEnd || atStart ? "" : "opacity-0"}>|</span>{/if}
+		{#if showCursor}<span class={blinkOn || cursorSolid ? "" : "opacity-0"}>|</span>{/if}
 	</div>
 </div>

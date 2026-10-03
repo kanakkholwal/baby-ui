@@ -7,16 +7,17 @@ export const fineTuneCard = defineComponent({
 	isNew: true,
 	name: "Fine Tune Card",
 	description:
-		"A compact interactive inspector: scrub-able number fields, a layout switch, a type select.",
+		"A compact element inspector on PropertyPanelControls: a layout switch, a slider per number and a type select.",
 	category: "advanced",
 	status: "stable",
+	isUpdated: true,
 	variants: { size: SIZES },
 	props: [
 		{
 			name: "fields",
 			type: "FineTuneField[]",
 			description:
-				"The scrub-able properties shown in the layout grid, rendered in pairs.",
+				"The tunable numbers, one slider row each; `key` doubles as the row label.",
 			control: { kind: "none" },
 		},
 		{
@@ -49,7 +50,7 @@ export const fineTuneCard = defineComponent({
 			name: "state",
 			type: "FineTuneState",
 			description:
-				"Controlled editable state (`segment`/`values`/`type`). Omit to let the card own it.",
+				"Controlled editable state (`layout`/`values`/`type`). Omit to let the card own it.",
 			control: { kind: "none" },
 		},
 		{
@@ -70,20 +71,19 @@ export const fineTuneCard = defineComponent({
 	motion: {
 		springs: [],
 		reducedMotion:
-			'The layout switch\'s sliding thumb and the "Edited" pop-in both drop; the shimmering "Adjust" label freezes.',
+			'The "Edited" pop-in drops and the shimmering "Adjust" label freezes; each control keeps its own reduced-motion rules.',
 		behaviour: [
-			"A scrub handle drags (pointer), arrows (Shift for ×10) or types directly to change a value; an edited field tints and rings.",
-			"The layout switch's thumb slides under the active segment rather than the icons swapping colour alone.",
+			"Rows are PropertyPanelControls: a segmented layout switch, a Slider per field and a Select for the type.",
+			"The header swaps the shimmering Adjust label for an Edited badge once any value leaves its default.",
 		],
 	},
 	a11y: {
 		keyboard: [
-			"Tab reaches each scrub handle, the layout segments and the type select",
-			"Arrow keys (Shift for ×10) adjust a focused scrub handle",
+			"Tab reaches the layout segments, each slider and the type select",
+			"Arrow keys adjust a focused slider",
 		],
 		notes: [
-			'Each scrub handle carries `role="slider"` with `aria-valuenow`/`aria-valuemin`/`aria-valuemax`, so its current value is announced, not just shown.',
-			"The type select is a real Select, so its own keyboard and screen-reader semantics aren't reimplemented here.",
+			"Every row is a real baby-ui control with its own label, so no semantics are reimplemented here.",
 		],
 	},
 	licenseOrigin: {
@@ -101,7 +101,7 @@ export const fineTuneCard = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
-			registryDependencies: ["select", "scrub-field"],
+			registryDependencies: ["property-panel"],
 		},
 		svelte: {
 			entry: "FineTuneCard",
@@ -112,8 +112,8 @@ export const fineTuneCard = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
-			registryDependencies: ["select", "scrub-field"],
+			registryDependencies: ["property-panel"],
 		},
 	},
-	keywords: ["inspector", "scrub", "number", "properties", "editor"],
+	keywords: ["inspector", "slider", "number", "properties", "editor"],
 });

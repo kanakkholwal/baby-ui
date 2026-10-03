@@ -1,13 +1,20 @@
 <script lang="ts">
 import { cn } from "../lib/cn";
 import type { StreamingSource, StreamingToken } from "./types";
-import { type StreamingTextLayout, streamingText } from "./variants";
+import {
+	type StreamingTextLayout,
+	type StreamingTextSize,
+	streamingText,
+} from "./variants";
 
 const WORD_DELAY = 55;
 
 let {
 	layout = "inline",
-	content,
+	size = "md",
+	content: contentProp,
+	caret = true,
+	actions = true,
 	sources = [],
 	followUps = [],
 	sourcesLabel,
@@ -20,7 +27,13 @@ let {
 	class: classProp,
 }: {
 	layout?: StreamingTextLayout;
-	content: StreamingToken[];
+	size?: StreamingTextSize;
+	/** Tokens with optional citations, or plain text revealed word by word. */
+	content: StreamingToken[] | string;
+	/** Blinking caret while the text reveals. */
+	caret?: boolean;
+	/** Copy, retry and feedback row once done. */
+	actions?: boolean;
 	sources?: StreamingSource[];
 	followUps?: string[];
 	sourcesLabel?: string;
@@ -33,11 +46,19 @@ let {
 	class?: string;
 } = $props();
 
+const content: StreamingToken[] = $derived(
+	typeof contentProp === "string"
+		? contentProp
+				.split(/s+/)
+				.filter(Boolean)
+				.map((word) => ({ text: word }))
+		: contentProp,
+);
 let count = $state(0);
 let sourcesOpen = $state(false);
 let copied = $state(false);
 const done = $derived(count >= content.length);
-const slots = $derived(streamingText({ layout }));
+const slots = $derived(streamingText({ layout, size }));
 
 $effect(() => {
 	if (count >= content.length) return;
@@ -69,7 +90,7 @@ async function copyText() {
 </script>
 
 <div data-slot="streaming-text" class={cn(slots.root(), classProp)}>
-	<p class={slots.text()}>
+	<p aria-busy={!done || undefined} class={slots.text()}>
 		{#each content.slice(0, count) as token, i (i)}
 			{#if token.cite !== undefined}
 				{@const source = sources[token.cite]}
@@ -88,7 +109,7 @@ async function copyText() {
 				<span>{token.text + " "}</span>
 			{/if}
 		{/each}
-		{#if !done}
+		{#if caret && !done}
 			<span aria-hidden="true" class="stream-caret ml-0.5 inline-block h-[1em] w-[2px] translate-y-[0.15em] bg-current"></span>
 		{/if}
 	</p>
@@ -97,6 +118,7 @@ async function copyText() {
 		class="mt-2 flex items-center gap-0.5 transition-opacity duration-400"
 		style="opacity: {done ? 1 : 0}; pointer-events: {done ? 'auto' : 'none'}"
 	>
+		{#if actions}
 		<button
 			type="button"
 			onclick={copyText}
@@ -148,6 +170,7 @@ async function copyText() {
 					<path d="M6 14V6.5l3-4.5 1 .8-1 3.2h4.3a1 1 0 0 1 1 1.2l-1 5a1 1 0 0 1-1 .8H6Zm0 0H3.5A1.5 1.5 0 0 1 2 12.5v-4A1.5 1.5 0 0 1 3.5 7H6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
 				</svg>
 			</button>
+		{/if}
 		{/if}
 		{#if sources.length}
 			<button

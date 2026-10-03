@@ -58,10 +58,13 @@ const FOLLOW_UPS = [
 const layout = $derived(p.layout ?? "inline");
 </script>
 
-{#key layout}
+{#key `${layout}-${String(props.actions)}`}
 	<div class="w-full max-w-96">
 		<StreamingText
 			{layout}
+			size={p.size ?? "md"}
+			caret={p.caret ?? true}
+			actions={p.actions ?? true}
 			content={CONTENT}
 			sources={SOURCES}
 			followUps={FOLLOW_UPS}

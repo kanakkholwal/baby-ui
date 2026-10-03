@@ -6,9 +6,7 @@ import {
 	RevealText,
 	RollingDigits,
 	ShimmerText,
-	TextInertia,
 	TextLoop,
-	Typewriter,
 } from "@baby-ui/react";
 import { type ComponentProps, useEffect, useState } from "react";
 import { controlProps } from "../data/preview-props";
@@ -18,8 +16,6 @@ type Props = Record<string, unknown>;
 const DIA_WORDS = ["fast.", "focused.", "effortlessly smooth."];
 const LOOP_ITEMS = ["Design", "Build", "Ship", "Iterate"];
 const MORPH_WORDS = ["fast", "fluid", "alive"];
-const INERTIA_TEXT =
-	"Crafting refined, pixel-perfect web experiences that balance design clarity with technical excellence. Every interaction should feel responsive, intentional, and calm enough to disappear into the work.";
 
 export function DiaTextDemo({ props }: { props: Props }) {
 	const p = controlProps<ComponentProps<typeof DiaText>>(props);
@@ -97,20 +93,6 @@ export function ShimmerTextDemo({ props }: { props: Props }) {
 	);
 }
 
-export function TextInertiaDemo({ props }: { props: Props }) {
-	const p = controlProps<ComponentProps<typeof TextInertia>>(props);
-	return (
-		<div className="w-full max-w-3xl text-lg sm:text-xl">
-			<TextInertia
-				text={INERTIA_TEXT}
-				intensity={Number(props.intensity ?? 1)}
-				size={p.size ?? "inherit"}
-				className="justify-start text-left text-foreground leading-relaxed"
-			/>
-		</div>
-	);
-}
-
 export function TextLoopDemo({ props }: { props: Props }) {
 	const p = controlProps<ComponentProps<typeof TextLoop>>(props);
 	return (
@@ -120,25 +102,13 @@ export function TextLoopDemo({ props }: { props: Props }) {
 				defaultIndex={Number(props.defaultIndex ?? 0)}
 				intervalMs={Number(props.intervalMs ?? 1000)}
 				durationMs={Number(props.durationMs ?? 300)}
+				variant={p.variant ?? "slide"}
 				direction={p.direction ?? "up"}
 				size={p.size ?? "inherit"}
 				className="font-medium"
 			/>{" "}
 			software that ships faster.
 		</p>
-	);
-}
-
-export function TypewriterDemo({ props }: { props: Props }) {
-	const p = controlProps<ComponentProps<typeof Typewriter>>(props);
-	return (
-		<Typewriter
-			text="Typing like a person, typos and all."
-			durationMs={Number(props.durationMs ?? 3000)}
-			loop={Boolean(props.loop ?? true)}
-			cursor={p.cursor ?? "bar"}
-			className="font-mono text-foreground text-xl"
-		/>
 	);
 }
 
@@ -159,6 +129,8 @@ export function RollingDigitsDemo({ props }: { props: Props }) {
 				locale={p.locale || undefined}
 				startOnView={props.startOnView !== false}
 				stepMs={Number(props.stepMs ?? 80)}
+				variant={p.variant ?? "roll"}
+				durationMs={props.durationMs === undefined ? undefined : Number(props.durationMs)}
 				coalesce={props.coalesce === true}
 				direction={p.direction ?? "dynamic"}
 				offset={Number(props.offset ?? 32)}

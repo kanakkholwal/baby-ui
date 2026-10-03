@@ -87,8 +87,7 @@ async function main() {
 	}
 	if (DEV) for (const m of docs.missing) console.warn(`registry-build: ${m}`);
 
-	// Pro usage snippets reach the site only when it shows Pro; the flag-off build must not name them.
-	const proSpecs = SHOW_PRO ? await loadProSpecs() : [];
+	const proSpecs = await loadProSpecs();
 	const layouts = Object.fromEntries(
 		FRAMEWORKS.map((f) => [f, installLayout(f, [...specs, ...proSpecs])]),
 	) as Record<Framework, InstallLayout>;

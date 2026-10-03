@@ -1,6 +1,12 @@
 <script lang="ts">
 import { Column, Row, Section, Text } from "@better-svelte-email/components";
-import { type EmailStatsColumns, type EmailStatsTone, emailStats } from "./variants";
+import {
+	EMAIL_STAT_TREND_GLYPH,
+	type EmailStatsColumns,
+	type EmailStatsTone,
+	type EmailStatsTrend,
+	emailStats,
+} from "./variants";
 
 export interface EmailStat {
 	/** Pre-formatted, e.g. "1,284" or "$12.4k". */
@@ -8,6 +14,8 @@ export interface EmailStat {
 	label: string;
 	/** Change or context in words, e.g. "Up 12% vs last week"; colour never carries it alone. */
 	note?: string;
+	/** Prefixes `note` with an arrow, tinted in dark mode. */
+	trend?: EmailStatsTrend;
 }
 
 /** Headline numbers in a grid of cards, `columns` per row. */
@@ -36,7 +44,7 @@ const rows = $derived.by(() => {
 						<Section class={s.card()}>
 							<Text class={s.value()}>{item.value}</Text>
 							<Text class={s.label()}>{item.label}</Text>
-							{#if item.note}<Text class={s.note()}>{item.note}</Text>{/if}
+							{#if item.note}<Text class={s.note({ trend: item.trend })}>{item.trend ? EMAIL_STAT_TREND_GLYPH[item.trend] : ""}{item.note}</Text>{/if}
 						</Section>
 					</Column>
 				{/each}

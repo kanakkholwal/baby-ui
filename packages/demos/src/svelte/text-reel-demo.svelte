@@ -13,6 +13,7 @@ const p = $derived(controlProps<ComponentProps<typeof TextReel>>(props));
 	prefix={p.prefix || "We"}
 	speed={Number(props.speed ?? 0.6)}
 	paused={p.paused ?? false}
+	orientation={p.orientation ?? "vertical"}
 	size={p.size ?? "md"}
 	class="w-full"
 />

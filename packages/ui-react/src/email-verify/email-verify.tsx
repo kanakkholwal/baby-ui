@@ -12,14 +12,11 @@ import {
 	type EmailListItem,
 	EmailPanel,
 	EmailShell,
-	type EmailShellAccent,
 	type EmailShellSurface,
 	EmailText,
 } from "../email-kit/email-kit";
 import { emailLayout } from "../email-kit/variants";
-import { type EmailVerifyDesign, emailVerify } from "./variants";
-
-export type { EmailVerifyDesign };
+import { emailVerify } from "./variants";
 
 export interface EmailVerifyProps {
 	productName: string;
@@ -33,32 +30,29 @@ export interface EmailVerifyProps {
 	companyLines: string[];
 	/** Optional code for people who opened the email on another device. */
 	code?: string;
-	/** Ways to reach support, e.g. email, phone, hours; shown in the `centered` design. */
+	/** Ways to reach support, e.g. email, phone, hours. */
 	helpItems?: EmailListItem[];
-	/** Absolute URL, about 32px tall. Falls back to the product name as text. */
+	/** Absolute PNG URL of a square mark, set beside the product name in header and footer. */
 	logoUrl?: string;
 	footerLinks?: EmailFooterLink[];
 	/** Footer line saying why this arrived. */
 	reason?: string;
 	preview?: string;
 	heading?: string;
-	/** Line under the heading in the `centered` design. */
+	/** Line under the heading. */
 	subheading?: string;
 	intro?: string;
 	actionLabel?: string;
 	codeLabel?: string;
 	fallbackLabel?: string;
-	/** Closing line; defaults to the expiry plus "ignore if this wasn't you". */
+	/** Security panel text; defaults to the expiry plus "ignore if this wasn't you". */
 	ignoreText?: string;
 	noticeTitle?: string;
 	helpTitle?: string;
-	/** `classic` is a left-aligned card; `centered` adds a security panel, help block and band footer. */
-	design?: EmailVerifyDesign;
-	surface?: EmailShellSurface;
-	accent?: EmailShellAccent;
+	surface?: Exclude<EmailShellSurface, "stacked">;
 }
 
-/** Confirms a new account's email address with a link and an optional code. */
+/** Confirms a new account's email address: centred button, optional code, security panel. */
 export function EmailVerify({
 	productName,
 	recipientEmail,
@@ -75,89 +69,67 @@ export function EmailVerify({
 	subheading = `Thanks for signing up for ${productName}`,
 	intro = `Confirm that ${recipientEmail} is your address to finish setting up your ${productName} account.`,
 	actionLabel = "Verify email address",
-	codeLabel = "Or enter this code in the app:",
+	codeLabel = "Or enter this code in the app",
 	fallbackLabel,
 	ignoreText = `This link expires in ${expiresIn}. If you didn't create a ${productName} account, you can ignore this email.`,
 	noticeTitle = "Security notice",
 	helpTitle = "Need help?",
-	design = "classic",
 	surface = "card",
-	accent = "none",
 }: EmailVerifyProps) {
 	const s = emailLayout();
-	const v = emailVerify({ design });
-	const centered = design === "centered";
-	const footer = (
-		<EmailFooter
-			lines={companyLines}
-			links={footerLinks}
-			reason={reason}
-			layout={centered ? "band" : "plain"}
-		/>
-	);
+	const v = emailVerify();
 	return (
 		<EmailShell
 			preview={preview}
 			surface={surface}
-			accent={accent}
-			footer={centered ? undefined : footer}
-			cardFooter={centered ? footer : undefined}
+			cardFooter={
+				<EmailFooter
+					lines={companyLines}
+					links={footerLinks}
+					reason={reason}
+					brand={productName}
+					logo={logoUrl}
+					layout="band"
+				/>
+			}
 		>
-			<EmailHeader
-				brand={productName}
-				logo={logoUrl}
-				align={centered ? "center" : "left"}
-			/>
-			<EmailHeading align={centered ? "center" : "left"}>{heading}</EmailHeading>
-			{centered ? (
-				<EmailText tone="muted" className={v.subheading()}>
-					{subheading}
-				</EmailText>
-			) : null}
-			<EmailText tone={centered ? "default" : "muted"} className={v.intro()}>
-				{intro}
+			<EmailHeader brand={productName} logo={logoUrl} align="center" />
+			<EmailHeading align="center">{heading}</EmailHeading>
+			<EmailText tone="muted" className={v.subheading()}>
+				{subheading}
 			</EmailText>
+			<EmailText className={v.intro()}>{intro}</EmailText>
 			<Section className={v.action()}>
-				<EmailButton href={verifyUrl}>{actionLabel}</EmailButton>
+				<EmailButton href={verifyUrl} size="lg">
+					{actionLabel}
+				</EmailButton>
 			</Section>
 			{code ? (
 				<Section className={s.section()}>
-					<EmailText tone="muted" size="sm" className={s.label()}>
+					<EmailText tone="muted" size="sm" className={v.codeLabel()}>
 						{codeLabel}
 					</EmailText>
 					<EmailCode code={code} />
 				</Section>
 			) : null}
-			{centered ? (
-				<>
-					<Section className={v.fallback()}>
-						<EmailFallbackLink href={verifyUrl} label={fallbackLabel} align="center" />
-					</Section>
-					<Section className={v.notice()}>
-						<EmailPanel>
-							<EmailText className={s.sectionTitle()}>{noticeTitle}</EmailText>
-							<EmailText size="sm">{ignoreText}</EmailText>
-						</EmailPanel>
-					</Section>
-					{helpItems.length > 0 ? (
-						<>
-							<EmailDivider spacing="lg" />
-							<EmailHeading size="md">{helpTitle}</EmailHeading>
-							<Section className={v.helpList()}>
-								<EmailList items={helpItems} marker="dot" />
-							</Section>
-						</>
-					) : null}
-				</>
-			) : (
+			<Section className={v.fallback()}>
+				<EmailFallbackLink href={verifyUrl} label={fallbackLabel} align="center" />
+			</Section>
+			<Section className={v.notice()}>
+				<EmailPanel>
+					<EmailText className={s.sectionTitle()}>{noticeTitle}</EmailText>
+					<EmailText size="sm">{ignoreText}</EmailText>
+				</EmailPanel>
+			</Section>
+			{helpItems.length > 0 ? (
 				<>
 					<EmailDivider spacing="lg" />
-					<EmailFallbackLink href={verifyUrl} label={fallbackLabel} />
-					<EmailText tone="muted" size="sm" className={s.closing()}>
-						{ignoreText}
-					</EmailText>
+					<EmailHeading size="md">{helpTitle}</EmailHeading>
+					<Section className={v.helpList()}>
+						<EmailList items={helpItems} marker="dot" />
+					</Section>
 				</>
-			)}
+			) : null}
 		</EmailShell>
 	);
 }

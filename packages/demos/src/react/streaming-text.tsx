@@ -56,8 +56,11 @@ export function StreamingTextDemo({ props }: { props: Props }) {
 	return (
 		<div className="w-full max-w-96">
 			<StreamingText
-				key={String(props.layout)}
+				key={`${String(props.layout)}-${String(props.actions)}`}
 				layout={p.layout ?? "inline"}
+				size={p.size ?? "md"}
+				caret={p.caret ?? true}
+				actions={p.actions ?? true}
 				content={CONTENT}
 				sources={SOURCES}
 				followUps={FOLLOW_UPS}

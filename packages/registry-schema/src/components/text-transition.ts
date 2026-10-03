@@ -6,7 +6,9 @@ const VARIANTS = [
 	"top-down-letters",
 	"fade-through",
 	"focus-blur-resolve",
+	"jump-in",
 	"kinetic-center-build",
+	"letter-drop",
 	"line-by-line-slide",
 	"mask-reveal-up",
 	"micro-scale-fade",
@@ -20,15 +22,17 @@ const VARIANTS = [
 	"short-slide-right",
 	"soft-blur-in",
 	"spring-scale-in",
+	"wave-drop",
 ];
 
 export const textTransition = defineComponent({
 	slug: "text-transition",
 	name: "Text Transition",
 	description:
-		"19 named text-reveal presets (per-character, per-word or whole-text) sharing one CSS animation engine.",
+		"22 named text-reveal presets (per-character, per-word or whole-text) sharing one CSS animation engine.",
 	category: "text",
 	status: "stable",
+	isUpdated: true,
 	variants: { variant: VARIANTS },
 	props: [
 		{

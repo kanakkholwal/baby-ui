@@ -8,7 +8,7 @@ tags: [email, invite, team, workspace]
 
 Built from the [Email Kit](/emails/email-kit), themed from your tokens and switched to your dark palette when the inbox is. Leads with the person who sent it: an invitation from a named colleague is the one people open. Without `inviterAvatarUrl` their initials show instead. `message` appears quoted, so pass it only when the inviter wrote one.
 
-`design` picks the look: `spotlight` (the default) centres a large avatar, the team name and a role badge; `classic` is a left-aligned card.
+A large avatar, the team name and a role badge lead the card.
 
 ## Send it
 

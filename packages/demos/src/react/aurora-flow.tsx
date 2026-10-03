@@ -12,10 +12,11 @@ export function AuroraFlowDemo({ props }: { props: Props }) {
 		<div className="relative h-80 w-full max-w-2xl overflow-hidden rounded-xl border border-border">
 			<AuroraFlow
 				position="absolute"
+				variant={p.variant ?? "veil"}
 				tone={p.tone ?? "chart"}
 				speed={p.speed ?? "normal"}
 				intensity={p.intensity ?? 1}
-				grain={p.grain ?? 0.22}
+				grain={p.grain}
 				direction={p.direction ?? -18}
 				interactive={p.interactive ?? true}
 			>

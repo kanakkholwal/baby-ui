@@ -11,6 +11,7 @@ import {
 	useState,
 } from "react";
 import { cn } from "../lib/cn";
+import { rollSwap, rollSwapSlide, rollSwapTilt, swapChars, tiltTiming } from "./swap";
 import {
 	ROLL_DONE,
 	type RollStagger,
@@ -35,8 +36,19 @@ export interface RollTextProps {
 	durationMs?: number;
 	size?: RollTextSize;
 	motion?: RollTextMotion;
+	/** A second label: hover previews it and click toggles to it, turning the roll into a swap. */
+	to?: string;
+	/** Controlled swap state when `to` is set. */
+	active?: boolean;
+	defaultActive?: boolean;
+	onActiveChange?: (active: boolean) => void;
 	className?: string;
 }
+
+type RollLabelProps = Omit<
+	RollTextProps,
+	"to" | "active" | "defaultActive" | "onActiveChange"
+>;
 
 type RollPhase = "closed" | "animating" | "open";
 type RollSegment = { key: string; value: string; delay: number };
@@ -95,6 +107,118 @@ const RollUnit = memo(function RollUnit({
 });
 
 export function RollText({
+	to,
+	active,
+	defaultActive,
+	onActiveChange,
+	...props
+}: RollTextProps) {
+	if (to === undefined) return <RollLabel {...props} />;
+	return (
+		<RollSwap
+			{...props}
+			to={to}
+			active={active}
+			defaultActive={defaultActive}
+			onActiveChange={onActiveChange}
+		/>
+	);
+}
+
+function RollSwap({
+	text,
+	to,
+	active: activeProp,
+	defaultActive = false,
+	onActiveChange,
+	disabled = false,
+	staggerMs = 32,
+	durationMs = 450,
+	size = "md",
+	motion = "slide",
+	className,
+}: RollTextProps & { to: string }) {
+	const [ownActive, setOwnActive] = useState(defaultActive);
+	const active = activeProp ?? ownActive;
+	const hover = !disabled;
+	const toggle = () => {
+		if (activeProp === undefined) setOwnActive(!active);
+		onActiveChange?.(!active);
+	};
+	const root = cn(rollText({ size, motion }), rollSwap({ motion }), className);
+	const label = {
+		type: "button" as const,
+		"data-slot": "roll-text",
+		"data-state": active ? "on" : "off",
+		disabled,
+		"aria-label": active ? to : text,
+		"aria-pressed": active,
+		onClick: toggle,
+		className: root,
+	};
+
+	if (motion === "tilt") {
+		const tilt = (layer: "first" | "second") => rollSwapTilt({ layer, active, hover });
+		const timing = tiltTiming(durationMs);
+		const letters = (value: string, layer: "first" | "second") => {
+			const chars = swapChars(value);
+			return (
+				<span aria-hidden className={tilt(layer).layer()}>
+					{chars.map((c, i) => (
+						<span
+							key={`${i}-${c}`}
+							className={tilt(layer).char()}
+							style={{ "--i": i, "--n": chars.length } as React.CSSProperties}
+						>
+							{c}
+						</span>
+					))}
+				</span>
+			);
+		};
+		return (
+			<button {...label}>
+				<span
+					className={tilt("first").stage()}
+					style={
+						{
+							"--swap-duration": `${timing.letter}ms`,
+							"--swap-stagger": `${staggerMs}ms`,
+							"--swap-lag": `${timing.lag}ms`,
+						} as React.CSSProperties
+					}
+				>
+					{letters(text, "first")}
+					{letters(to, "second")}
+				</span>
+			</button>
+		);
+	}
+
+	const slide = rollSwapSlide({ active, hover });
+	const longer = to.length > text.length ? to : null;
+	return (
+		<button {...label}>
+			<span
+				aria-hidden
+				className={slide.first()}
+				style={{ transitionDuration: `${durationMs}ms` }}
+			>
+				{text}
+				{longer ? <span className="invisible h-0">{longer}</span> : null}
+			</span>
+			<span
+				aria-hidden
+				className={slide.second()}
+				style={{ transitionDuration: `${durationMs}ms` }}
+			>
+				{to}
+			</span>
+		</button>
+	);
+}
+
+function RollLabel({
 	text,
 	groupHover = false,
 	disabled = false,
@@ -104,7 +228,7 @@ export function RollText({
 	size = "md",
 	motion = "slide",
 	className,
-}: RollTextProps) {
+}: RollLabelProps) {
 	const segments = useMemo(
 		() => splitSegments(text, stagger, staggerMs),
 		[text, stagger, staggerMs],
@@ -177,6 +301,7 @@ export function RollText({
 		// biome-ignore lint/a11y/noStaticElementInteractions: decorative roll, focusable for parity, no action to give it a role for
 		<span
 			ref={rootRef}
+			data-slot="roll-text"
 			tabIndex={groupHover ? undefined : 0}
 			className={cn(
 				rollText({ size, motion }),

@@ -169,7 +169,7 @@ export function InputDemo({ props }: { props: Props }) {
 				placeholder={p.placeholder || "Enter a value"}
 			/>
 			{p.invalid ? (
-				<p className="text-[var(--destructive)] text-xs">That name is already taken.</p>
+				<p className="text-destructive-strong text-xs">That name is already taken.</p>
 			) : null}
 		</div>
 	);

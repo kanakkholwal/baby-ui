@@ -43,7 +43,7 @@ export const collabCard = tv({
 				cursor: "stroke-background",
 			},
 			surface: {
-				root: "bg-card text-card-foreground ring-border",
+				root: "bg-background text-foreground ring-border",
 				backdrop: "bg-[linear-gradient(165deg,var(--card)_0%,var(--background)_100%)]",
 				status: "text-muted-foreground",
 				swatch: "ring-card",

@@ -9,7 +9,10 @@ import {
 	type TemplateModule,
 	templateLoader,
 } from "#lib/server/templates.js";
-import { previewProps } from "../../../../../../../packages/demos/src/data/preview-props";
+import {
+	previewProps,
+	withSiteAssets,
+} from "../../../../../../../packages/demos/src/data/preview-props";
 import { emailTailwindConfig } from "../../../../../../../packages/ui-svelte/src/lib/lib/email-theme";
 import type { RequestHandler } from "./$types";
 
@@ -41,10 +44,13 @@ export const GET: RequestHandler = async ({ params, url, request }) => {
 	} catch {
 		throw error(400, "props must be JSON");
 	}
-	const props = previewProps(
-		params.slug,
-		{ ...defaultProps(spec), ...given },
-		await proEmailSample(params.slug),
+	const props = withSiteAssets(
+		previewProps(
+			params.slug,
+			{ ...defaultProps(spec), ...given },
+			await proEmailSample(params.slug),
+		),
+		url.origin,
 	);
 
 	const { default: Template } = await load();

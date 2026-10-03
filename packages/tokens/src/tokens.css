@@ -19,11 +19,18 @@
 	--accent-fg: oklch(99% 0 0);
 	--neon: oklch(80% 0.22 145);
 	--violet: oklch(68% 0.22 295);
-	/* Used as text too, so the light values sit at 4.5:1 on --background. */
-	--danger: oklch(51% 0.2 25);
-	--success: oklch(48% 0.118 155);
-	--warning: oklch(50% 0.14 75);
-	--info: oklch(49% 0.16 255);
+	/* Status fills are too light for 4.5:1 text on white, so text uses -strong: fill mixed toward ink. */
+	--danger: oklch(65.32% 0.2328 25.74);
+	--destructive-strong: color-mix(in oklab, var(--danger) 64%, var(--foreground));
+	--success: oklch(73.29% 0.1935 150.81);
+	--success-strong: color-mix(in oklab, var(--success) 57%, var(--foreground));
+	--success-foreground: oklch(21.03% 0.0059 285.89);
+	--warning: oklch(78.19% 0.1585 72.33);
+	--warning-strong: color-mix(in oklab, var(--warning) 53%, var(--foreground));
+	--warning-foreground: oklch(21.03% 0.0059 285.89);
+	--info: oklch(62.04% 0.195 253.83);
+	--info-strong: color-mix(in oklab, var(--info) 70%, var(--foreground));
+	--info-foreground: oklch(99.11% 0 0);
 	--glass-bg: oklch(100% 0 0 / 0.55);
 	--glass-border: oklch(15% 0 0 / 0.08);
 	--gradient-bg: linear-gradient(135deg, oklch(100% 0 0) 0%, oklch(96% 0.008 210) 100%);
@@ -32,7 +39,7 @@
 		oklch(72% 0.18 195) 0%,
 		oklch(68% 0.22 295) 100%
 	);
-	--destructive-foreground: oklch(99% 0 0);
+	--destructive-foreground: oklch(99.11% 0 0);
 
 	--surface-shadow:
 		0 2px 4px 0 rgb(0 0 0 / 0.04), 0 1px 2px 0 rgb(0 0 0 / 0.06), 0 0 1px 0 rgb(0 0 0 / 0.06);
@@ -81,12 +88,18 @@
 	--border-strong: oklch(100% 0 0 / 0.12);
 	--accent: oklch(70% 0.15 255);
 	--accent-fg: #151515;
-	--danger: oklch(69% 0.2 25);
-	/* Dark text, like the other status fills: white on this red is 2.96:1. */
-	--destructive-foreground: #151515;
-	--success: oklch(70% 0.18 155);
-	--warning: oklch(78% 0.18 75);
-	--info: oklch(70% 0.15 255);
+	--danger: oklch(59.4% 0.1967 24.63);
+	--destructive-strong: color-mix(in oklab, var(--danger) 73%, var(--foreground));
+	--destructive-foreground: oklch(99.11% 0 0);
+	--success: oklch(73.29% 0.1935 150.81);
+	--success-strong: color-mix(in oklab, var(--success) 73%, var(--foreground));
+	--success-foreground: oklch(21.03% 0.0059 285.89);
+	--warning: oklch(82.03% 0.1388 76.34);
+	--warning-strong: color-mix(in oklab, var(--warning) 73%, var(--foreground));
+	--warning-foreground: oklch(21.03% 0.0059 285.89);
+	--info: oklch(62.04% 0.195 253.83);
+	--info-strong: color-mix(in oklab, var(--info) 73%, var(--foreground));
+	--info-foreground: oklch(99.11% 0 0);
 	--glass-bg: oklch(17% 0.002 265 / 0.55);
 	--glass-border: rgb(255 255 255 / 0.08);
 	--gradient-bg: linear-gradient(135deg, oklch(17% 0.002 265) 0%, oklch(21% 0.008 210) 100%);

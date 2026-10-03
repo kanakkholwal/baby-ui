@@ -20,6 +20,7 @@ import {
 import { cn } from "../lib/cn";
 import { emailTailwindConfig } from "../lib/email-theme";
 import {
+	EMAIL_STAT_TREND_GLYPH,
 	type EmailBadgeTone,
 	type EmailButtonShape,
 	type EmailButtonSize,
@@ -32,6 +33,7 @@ import {
 	type EmailFooterAlign,
 	type EmailFooterLayout,
 	type EmailHeaderAlign,
+	type EmailHeaderVariant,
 	type EmailHeadingAlign,
 	type EmailHeadingSize,
 	type EmailHeroAlign,
@@ -41,11 +43,10 @@ import {
 	type EmailListMarker,
 	type EmailPanelTone,
 	type EmailSectionAlign,
-	type EmailShellAccent,
 	type EmailShellSurface,
-	type EmailShellWidth,
 	type EmailStatsColumns,
 	type EmailStatsTone,
+	type EmailStatsTrend,
 	type EmailTextSize,
 	type EmailTextTone,
 	emailBadge,
@@ -80,6 +81,7 @@ export type {
 	EmailFooterAlign,
 	EmailFooterLayout,
 	EmailHeaderAlign,
+	EmailHeaderVariant,
 	EmailHeadingAlign,
 	EmailHeadingSize,
 	EmailHeroAlign,
@@ -89,11 +91,10 @@ export type {
 	EmailListMarker,
 	EmailPanelTone,
 	EmailSectionAlign,
-	EmailShellAccent,
 	EmailShellSurface,
-	EmailShellWidth,
 	EmailStatsColumns,
 	EmailStatsTone,
+	EmailStatsTrend,
 	EmailTextSize,
 	EmailTextTone,
 };
@@ -105,10 +106,7 @@ export interface EmailShellProps {
 	preview: string;
 	children: ReactNode;
 	lang?: string;
-	width?: EmailShellWidth;
 	surface?: EmailShellSurface;
-	/** `top` adds a strip of the accent colour across the card. */
-	accent?: EmailShellAccent;
 	/** Rendered under the card, e.g. a `plain` EmailFooter. */
 	footer?: ReactNode;
 	/** Rendered inside the card after the content, edge to edge, e.g. a `band` or `bar` footer. */
@@ -120,13 +118,11 @@ export function EmailShell({
 	preview,
 	children,
 	lang = "en",
-	width = "md",
 	surface = "card",
-	accent = "none",
 	footer,
 	cardFooter,
 }: EmailShellProps) {
-	const s = emailShell({ width, surface, accent });
+	const s = emailShell({ surface });
 	return (
 		<Html lang={lang}>
 			<Tailwind config={tailwindConfig}>
@@ -153,9 +149,12 @@ export function EmailShell({
 
 export interface EmailHeaderProps {
 	brand: string;
-	/** Absolute URL: inboxes cannot resolve relative paths. */
+	/** Absolute PNG or JPG URL, 32px tall; SVG does not render in Gmail or Outlook. */
 	logo?: string;
+	/** Rendered width of `logo`: 32 for a square mark, wider for a `logo` wordmark. */
 	logoWidth?: number;
+	/** `lockup` sets the name beside a square mark; `logo` shows a wordmark image alone. */
+	variant?: EmailHeaderVariant;
 	align?: EmailHeaderAlign;
 }
 
@@ -163,17 +162,24 @@ export function EmailHeader({
 	brand,
 	logo,
 	logoWidth = 32,
+	variant = "lockup",
 	align = "left",
 }: EmailHeaderProps) {
-	const s = emailHeader({ align });
+	const s = emailHeader({ variant, align });
 	return (
-		<Section className={s.root()}>
+		<Text className={s.root()}>
 			{logo ? (
-				<Img src={logo} alt={brand} width={logoWidth} height={32} className={s.logo()} />
-			) : (
-				<Text className={s.brand()}>{brand}</Text>
-			)}
-		</Section>
+				<Img
+					src={logo}
+					alt={variant === "logo" ? brand : ""}
+					role={variant === "logo" ? undefined : "presentation"}
+					width={logoWidth}
+					height={32}
+					className={s.logo()}
+				/>
+			) : null}
+			{logo && variant === "logo" ? null : <span className={s.name()}>{brand}</span>}
+		</Text>
 	);
 }
 
@@ -392,8 +398,10 @@ export interface EmailFooterProps {
 	links?: EmailFooterLink[];
 	/** Why the recipient got this email, e.g. "You're receiving this because you signed up". */
 	reason?: string;
-	/** Wordmark shown in the `bar` layout, usually the product name. */
+	/** Product name, set as a small lockup above the legal lines (inside the bar for `bar`). */
 	brand?: string;
+	/** Absolute URL of the square mark beside `brand`, shown at 20px. */
+	logo?: string;
 	/** `plain` goes in EmailShell's `footer`; `band`, `bar` and `row` go in its `cardFooter`. */
 	layout?: EmailFooterLayout;
 	align?: EmailFooterAlign;
@@ -404,10 +412,26 @@ export function EmailFooter({
 	links = [],
 	reason,
 	brand,
+	logo,
 	layout = "plain",
 	align = "center",
 }: EmailFooterProps) {
 	const s = emailFooter({ layout, align });
+	const lockup = brand ? (
+		<Text className={s.brand()}>
+			{logo ? (
+				<Img
+					src={logo}
+					alt=""
+					role="presentation"
+					width={20}
+					height={20}
+					className={s.mark()}
+				/>
+			) : null}
+			<span className={logo ? s.markName() : undefined}>{brand}</span>
+		</Text>
+	) : null;
 	const linkRow =
 		links.length > 0 ? (
 			<Text className={s.linkText()}>
@@ -436,9 +460,7 @@ export function EmailFooter({
 			<Section className={s.root()}>
 				<Section className={s.bar()}>
 					<Row>
-						<Column>
-							<Text className={s.brand()}>{brand ?? ""}</Text>
-						</Column>
+						<Column>{lockup}</Column>
 						<Column className={s.linksCell()}>{linkRow}</Column>
 					</Row>
 				</Section>
@@ -448,6 +470,7 @@ export function EmailFooter({
 	if (layout === "row")
 		return (
 			<Section className={s.root()}>
+				{lockup}
 				<Row>
 					<Column>{legal}</Column>
 					<Column className={s.linksCell()}>{linkRow}</Column>
@@ -456,6 +479,7 @@ export function EmailFooter({
 		);
 	return (
 		<Section className={s.root()}>
+			{lockup}
 			{legal}
 			{linkRow}
 		</Section>
@@ -493,6 +517,8 @@ export interface EmailStat {
 	label: string;
 	/** Change or context in words, e.g. "Up 12% vs last week"; colour never carries it alone. */
 	note?: string;
+	/** Prefixes `note` with an arrow, tinted in dark mode. */
+	trend?: EmailStatsTrend;
 }
 
 /** Headline numbers in a grid of cards, `columns` per row. */
@@ -520,7 +546,12 @@ export function EmailStats({
 								<Section className={s.card()}>
 									<Text className={s.value()}>{item.value}</Text>
 									<Text className={s.label()}>{item.label}</Text>
-									{item.note ? <Text className={s.note()}>{item.note}</Text> : null}
+									{item.note ? (
+										<Text className={s.note({ trend: item.trend })}>
+											{item.trend ? EMAIL_STAT_TREND_GLYPH[item.trend] : ""}
+											{item.note}
+										</Text>
+									) : null}
 								</Section>
 							</Column>,
 						])}

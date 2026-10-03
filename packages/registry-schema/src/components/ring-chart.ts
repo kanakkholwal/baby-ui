@@ -96,7 +96,7 @@ export const ringChart = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "d3-shape"],
-			registryDependencies: ["chart", "counter"],
+			registryDependencies: ["chart", "rolling-digits"],
 		},
 		svelte: {
 			entry: "RingChart",
@@ -109,7 +109,7 @@ export const ringChart = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "d3-shape"],
-			registryDependencies: ["chart", "counter"],
+			registryDependencies: ["chart", "rolling-digits"],
 		},
 	},
 	keywords: ["ring", "progress", "radial", "goal", "chart"],

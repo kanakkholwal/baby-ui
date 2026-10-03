@@ -3,9 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import { cn } from "../lib/cn";
 import { createReel } from "./reel";
-import { type TextReelSize, textReel } from "./variants";
+import { type TextReelOrientation, type TextReelSize, textReel } from "./variants";
 
-export type { TextReelSize };
+export type { TextReelOrientation, TextReelSize };
 
 export interface TextReelProps {
 	items: string[];
@@ -14,6 +14,7 @@ export interface TextReelProps {
 	/** Drift in px per frame while the page is still; scrolling boosts and steers it. */
 	speed?: number;
 	paused?: boolean;
+	orientation?: TextReelOrientation;
 	size?: TextReelSize;
 	className?: string;
 }
@@ -23,6 +24,7 @@ export function TextReel({
 	prefix,
 	speed = 0.6,
 	paused = false,
+	orientation = "vertical",
 	size = "md",
 	className,
 }: TextReelProps) {
@@ -30,23 +32,25 @@ export function TextReel({
 	const trackRef = useRef<HTMLDivElement>(null);
 	const reelRef = useRef<ReturnType<typeof createReel>>(null);
 	const [copies, setCopies] = useState(2);
-	const s = textReel({ size });
+	const s = textReel({ orientation, size });
+	const axis = orientation === "horizontal" ? "x" : "y";
 
 	useEffect(() => {
 		if (!viewportRef.current || !trackRef.current) return;
 		const reel = createReel(viewportRef.current, trackRef.current, {
 			speed,
 			paused,
+			axis,
 			onCopies: setCopies,
 		});
 		reelRef.current = reel;
 		return () => reel.destroy();
 		// Speed and pause flow through update(); recreating would reset the reel's position.
-	}, [items]);
+	}, [items, axis]);
 
 	useEffect(() => {
-		reelRef.current?.update({ speed, paused, onCopies: setCopies });
-	}, [speed, paused]);
+		reelRef.current?.update({ speed, paused, axis, onCopies: setCopies });
+	}, [speed, paused, axis]);
 
 	return (
 		<div data-slot="text-reel" className={cn(s.root(), className)}>

@@ -199,7 +199,7 @@ export function AgentScreen({
 								{agentName}
 							</span>
 							{recording ? (
-								<span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-destructive/10 py-0.5 pr-2 pl-1.5 font-medium text-xs text-destructive tabular-nums">
+								<span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-destructive/10 py-0.5 pr-2 pl-1.5 font-medium text-xs text-destructive-strong tabular-nums">
 									<span className="size-2 animate-pulse rounded-full bg-destructive" />
 									{fmt(secs)}
 								</span>

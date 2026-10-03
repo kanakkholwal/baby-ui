@@ -15,6 +15,7 @@ const items = ["Design", "Build", "Ship", "Iterate"];
 		defaultIndex={Number(props.defaultIndex ?? 0)}
 		intervalMs={Number(props.intervalMs ?? 1000)}
 		durationMs={Number(props.durationMs ?? 300)}
+		variant={p.variant ?? "slide"}
 		direction={p.direction ?? "up"}
 		size={p.size ?? "inherit"}
 		class="font-medium"

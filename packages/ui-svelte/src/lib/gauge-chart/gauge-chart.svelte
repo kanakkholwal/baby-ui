@@ -1,6 +1,6 @@
 <script lang="ts">
-import Counter from "../counter/counter.svelte";
 import { cn } from "../lib/cn";
+import RollingDigits from "../rolling-digits/rolling-digits.svelte";
 import GaugeNotch from "./gauge-notch.svelte";
 import {
 	activeCount,
@@ -9,6 +9,8 @@ import {
 	LINEAR_HEIGHT,
 	linearNotches,
 	NOTCH_TIMING,
+	RING_CIRCUMFERENCE,
+	RING_RADIUS,
 	scaleFill,
 } from "./geometry";
 import { type GaugeChartLayout, type GaugeChartTone, gaugeChart } from "./variants";
@@ -101,6 +103,18 @@ $effect.pre(() => {
 });
 const styles = $derived(gaugeChart({ layout, tone }));
 const text = $derived(formatter(value));
+// The ring sweeps from empty on mount; later changes ease along the dash.
+// svelte-ignore state_referenced_locally
+let swept = $state(!animate);
+$effect(() => {
+	if (swept) return;
+	const id = requestAnimationFrame(() => (swept = true));
+	return () => cancelAnimationFrame(id);
+});
+const ringArc = RING_CIRCUMFERENCE * 0.75;
+const share = $derived(
+	max > min ? Math.min(1, Math.max(0, (value - min) / (max - min))) : 0,
+);
 </script>
 
 {#snippet track()}
@@ -146,12 +160,41 @@ const text = $derived(formatter(value));
 	data-layout={layout}
 	class={cn(styles.root(), className)}
 >
-	{#if linear}
+	{#if layout === "ring"}
+		<svg viewBox="0 0 100 100" aria-hidden="true" class={styles.ring()}>
+			<circle
+				cx={50}
+				cy={50}
+				r={RING_RADIUS}
+				stroke-width={8}
+				stroke-linecap="round"
+				stroke-dasharray="{ringArc} {RING_CIRCUMFERENCE}"
+				class={styles.ringTrack()}
+			/>
+			<circle
+				cx={50}
+				cy={50}
+				r={RING_RADIUS}
+				stroke-width={8}
+				stroke-linecap="round"
+				stroke-dasharray="{ringArc} {RING_CIRCUMFERENCE}"
+				stroke-dashoffset={ringArc * (1 - (swept ? share : 0))}
+				stroke={tone === "scale" ? scaleFill(Math.max(0, Math.round(share * total) - 1), total) : undefined}
+				class={styles.ringActive()}
+			/>
+		</svg>
+		{#if showValue}
+			<div class={styles.center()}>
+				<RollingDigits variant="count" {value} format={formatter} size="sm" startOnView={false} class={cn("font-bold text-foreground", styles.value())} />
+				{#if label}<span class={styles.label()}>{label}</span>{/if}
+			</div>
+		{/if}
+	{:else if linear}
 		{#if showValue || label}
 			<div class={styles.header()}>
 				{#if label}<span class={styles.label()}>{label}</span>{:else}<span></span>{/if}
 				{#if showValue}
-					<Counter {value} format={formatter} size="sm" triggerOnView={false} class={styles.value()} />
+					<RollingDigits variant="count" {value} format={formatter} size="sm" startOnView={false} class={cn("font-bold text-foreground", styles.value())} />
 				{/if}
 			</div>
 		{/if}
@@ -160,7 +203,7 @@ const text = $derived(formatter(value));
 		{@render track()}
 		{#if showValue}
 			<div class={styles.center()} style:padding-top="{(geometry?.size ?? 0) * 0.08}px">
-				<Counter {value} format={formatter} size="md" triggerOnView={false} class={styles.value()} />
+				<RollingDigits variant="count" {value} format={formatter} size="md" startOnView={false} class={cn("font-bold text-foreground", styles.value())} />
 				{#if label}<span class={styles.label()}>{label}</span>{/if}
 			</div>
 		{/if}

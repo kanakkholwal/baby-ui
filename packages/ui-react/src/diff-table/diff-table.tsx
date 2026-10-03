@@ -192,8 +192,8 @@ export function DiffTable({
 
 				<div className="flex min-h-11 items-center justify-between border-border border-t px-3 py-2">
 					{accepted ? (
-						<span className="pop-in inline-flex items-center gap-1.5 rounded-full bg-success/10 py-1 pr-2.5 pl-1 font-medium text-xs text-success">
-							<span className="flex size-4.5 items-center justify-center rounded-full bg-success text-white dark:text-background">
+						<span className="pop-in inline-flex items-center gap-1.5 rounded-full bg-success/10 py-1 pr-2.5 pl-1 font-medium text-xs text-success-strong">
+							<span className="flex size-4.5 items-center justify-center rounded-full bg-success text-success-foreground">
 								<svg width="11" height="11" viewBox="0 0 24 24" fill="none" aria-hidden>
 									<path
 										d="M20 6 9 17l-5-5"

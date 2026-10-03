@@ -12,6 +12,11 @@ export async function signInWithProvider(_provider: string, _callbackURL: string
 	await roundTrip();
 }
 
+/** Whether the visitor holds a Pro seat; the Better Auth session answers this once it lands. */
+export function hasProAccess(): boolean {
+	return false;
+}
+
 export async function signOut(): Promise<void> {
 	await roundTrip(400);
 }

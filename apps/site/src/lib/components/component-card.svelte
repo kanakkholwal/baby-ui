@@ -2,7 +2,7 @@
 import { tv, type VariantProps } from "tailwind-variants";
 
 const preview = tv({
-	base: "grid min-w-0 shrink-0 grid-cols-[minmax(0,1fr)] place-items-center overflow-hidden bg-background bg-[radial-gradient(var(--border)_1px,transparent_1px)] [background-size:16px_16px] p-4",
+	base: "relative grid min-w-0 shrink-0 grid-cols-[minmax(0,1fr)] place-items-center overflow-hidden bg-background bg-[radial-gradient(var(--border)_1px,transparent_1px)] [background-size:16px_16px] p-4",
 	variants: {
 		frame: { sm: "h-44", md: "h-56", lg: "h-72", xl: "h-88" },
 		// A tile is the preview alone; a card insets it under the title and description.
@@ -18,13 +18,17 @@ export type CardFrame = NonNullable<VariantProps<typeof preview>["frame"]>;
 
 /** Each frame's height in px: the masonry places tiles from it, and `content-visibility` reserves it. */
 export const FRAME_PX: Record<CardFrame, number> = { sm: 176, md: 224, lg: 288, xl: 352 };
+// Email layouts are 600px wide plus the body's gutter; the thumbnail scales this down to fit.
+const EMAIL_PX = 640;
 const CARD_HEADER_PX = 96;
 </script>
 
 <script lang="ts">
 import { Badge, Spinner } from "@baby-ui/svelte";
+import { mode } from "mode-watcher";
 import { demos } from "#lib/demos.js";
 import { claim, type LiveSlot, watchLive } from "#lib/live-demo.js";
+import { prefs } from "#lib/preferences.svelte.js";
 import type { CardItem } from "#lib/registry.js";
 
 let {
@@ -50,7 +54,18 @@ $effect(() => {
 	return watchLive(stage, slot, activate, () => (live = false));
 });
 
-const demoPromise = $derived(live ? demos[item.slug]?.() : undefined);
+// Emails show their build-time render, so no demo mounts for them.
+const email = $derived(item.category === "emails");
+const demoPromise = $derived(live && !email ? demos[item.slug]?.() : undefined);
+let stageWidth = $state(0);
+let emailHeight = $state(0);
+const emailScale = $derived(stageWidth / EMAIL_PX);
+
+// The iframe takes the email's full height so it never scrolls; the tile clips it instead.
+function fitEmail(event: Event) {
+	if (!(event.currentTarget instanceof HTMLIFrameElement)) return;
+	emailHeight = event.currentTarget.contentDocument?.documentElement.scrollHeight ?? 0;
+}
 const demoProps = $derived(item.defaults);
 const intrinsic = $derived(FRAME_PX[frame] + (tile ? 0 : CARD_HEADER_PX));
 </script>
@@ -70,8 +85,24 @@ const intrinsic = $derived(FRAME_PX[frame] + (tile ? 0 : CARD_HEADER_PX));
 
 {#snippet stageContent()}
 	<!-- Fixed height: a demo resolving inside must never resize the card or shift the grid. -->
-	<div bind:this={stage} class={preview({ frame, tile })}>
-		{#if demoPromise}
+	<div bind:this={stage} bind:clientWidth={stageWidth} class={preview({ frame, tile })}>
+		{#if email}
+			<!-- The top of the email at reading width, scaled to the tile; static HTML, no scripts. -->
+			<iframe
+				src="/components/{item.category}/{item.slug}/email/{prefs.framework}.html"
+				title="{item.name} preview"
+				loading="lazy"
+				sandbox="allow-same-origin"
+				tabindex="-1"
+				aria-hidden="true"
+				onload={fitEmail}
+				style:width="{EMAIL_PX}px"
+				style:height="{Math.max(emailHeight, emailScale ? FRAME_PX[frame] / emailScale : 0)}px"
+				style:transform="scale({emailScale})"
+				style:color-scheme={mode.current === "dark" ? "dark" : "light"}
+				class="pointer-events-none absolute top-0 left-0 origin-top-left border-0 bg-transparent"
+			></iframe>
+		{:else if demoPromise}
 			{#await demoPromise}
 				<Spinner size="sm" label="Loading preview" class="text-muted-foreground" />
 			{:then mod}

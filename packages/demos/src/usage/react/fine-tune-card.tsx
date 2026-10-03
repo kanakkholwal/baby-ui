@@ -7,8 +7,8 @@ export function Example() {
 		<FineTuneCard
 			labels={{ title: "Button" }}
 			fields={[
-				{ key: "width", label: "W", value: 120, min: 40, max: 400 },
-				{ key: "radius", label: "Radius", value: 8, min: 0, max: 32 },
+				{ key: "width", value: 120, min: 40, max: 400 },
+				{ key: "radius", value: 8, min: 0, max: 32 },
 			]}
 			options={["Primary", "Secondary"]}
 		/>

@@ -11,4 +11,4 @@ opens a new column instead of shifting the rest. Rapid updates queue `stepMs` ap
 set `coalesce` to jump straight to the latest.
 
 The springs are sampled into CSS keyframes, so the bounce matches the original with no
-animation library. Ticker is the steadier odometer alternative.
+animation library. `variant="odometer"` turns digit strips instead, and `variant="count"` tweens the number.

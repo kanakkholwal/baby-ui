@@ -1,15 +1,23 @@
+import { TaskStepRows } from "./rows";
 import {
 	TASK_STEP_LABELS,
 	type TaskStatus,
+	type TaskStep,
+	type TaskStepDetail,
 	type TaskStepsSize,
+	type TaskStepsVariant,
 	taskSteps,
 } from "./variants";
 
-export type { TaskStatus, TaskStepsSize };
-export type TaskStep = { id: string; label: string; status: TaskStatus };
+export type { TaskStatus, TaskStep, TaskStepDetail, TaskStepsSize, TaskStepsVariant };
 
 export interface TaskStepsProps {
 	steps: TaskStep[];
+	variant?: TaskStepsVariant;
+	/** Rows: fired when a row expands or collapses. */
+	onToggle?: (id: string, open: boolean) => void;
+	/** Rows: shows a retry button on failed rows. */
+	onRetry?: (id: string) => void;
 	showConnector?: boolean;
 	compact?: boolean;
 	size?: TaskStepsSize;
@@ -20,6 +28,9 @@ export interface TaskStepsProps {
 
 export function TaskSteps({
 	steps,
+	variant = "timeline",
+	onToggle,
+	onRetry,
 	showConnector = true,
 	compact = false,
 	size = "md",
@@ -27,8 +38,23 @@ export function TaskSteps({
 	className,
 }: TaskStepsProps) {
 	const LABEL = { ...TASK_STEP_LABELS, ...labels };
+	if (variant !== "timeline")
+		return (
+			<TaskStepRows
+				steps={steps}
+				variant={variant}
+				labels={LABEL}
+				onToggle={onToggle}
+				onRetry={onRetry}
+				className={className}
+			/>
+		);
 	return (
-		<ol aria-live="polite" className={taskSteps({ size }).root({ className })}>
+		<ol
+			aria-live="polite"
+			data-slot="task-steps"
+			className={taskSteps({ size }).root({ className })}
+		>
 			{steps.map((step, i) => {
 				const styles = taskSteps({ size, compact, status: step.status });
 				return (

@@ -13,6 +13,7 @@ export interface TextTransitionPreset {
 		y?: string;
 		scale?: number;
 		blur?: string;
+		rotate?: string;
 	};
 }
 
@@ -56,6 +57,19 @@ export const TEXT_TRANSITION_PRESETS = {
 		durationMs: 420,
 		staggerMs: 60,
 		from: { opacity: 0, x: "16px", blur: "3px" },
+	},
+	"jump-in": {
+		target: "word",
+		durationMs: 500,
+		staggerMs: 50,
+		easing: "var(--ease-spring)",
+		from: { opacity: 0, y: "30px", rotate: "-30deg" },
+	},
+	"letter-drop": {
+		target: "character",
+		durationMs: 500,
+		staggerMs: 60,
+		from: { opacity: 0, y: "-1em" },
 	},
 	"line-by-line-slide": {
 		target: "word",
@@ -135,6 +149,12 @@ export const TEXT_TRANSITION_PRESETS = {
 		staggerMs: 60,
 		easing: SPRING_EASE,
 		from: { opacity: 0, scale: 0.85 },
+	},
+	"wave-drop": {
+		target: "character",
+		durationMs: 250,
+		staggerMs: 50,
+		from: { opacity: 0, y: "-12px", blur: "6px" },
 	},
 } satisfies Record<string, TextTransitionPreset>;
 

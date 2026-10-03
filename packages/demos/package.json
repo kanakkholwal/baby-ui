@@ -12,7 +12,8 @@
 		"./controls": {
 			"svelte": "./src/controls/spec-dials.svelte",
 			"types": "./src/controls/spec-dials.svelte"
-		}
+		},
+		"./preview-props": "./src/data/preview-props.ts"
 	},
 	"scripts": {
 		"check": "svelte-check --tsconfig ./tsconfig.json"

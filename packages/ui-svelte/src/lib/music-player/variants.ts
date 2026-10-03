@@ -2,7 +2,7 @@ import { tv, type VariantProps } from "tailwind-variants";
 
 export const musicPlayer = tv({
 	slots: {
-		root: "@container w-full rounded-2xl border border-border bg-card p-5 text-card-foreground",
+		root: "@container w-full rounded-2xl border border-border bg-background p-5 text-foreground",
 		frame: "grid items-center gap-5",
 		deck: "relative mx-auto aspect-square shrink-0",
 		disc: "absolute inset-0 overflow-hidden rounded-full border-foreground/10 bg-foreground shadow-lg [animation:spin_4s_linear_infinite] data-[playing=false]:[animation-play-state:paused] motion-reduce:[animation:none]",

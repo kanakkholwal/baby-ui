@@ -1,23 +1,33 @@
 <script lang="ts">
+import TaskStepRows from "./task-step-rows.svelte";
 import {
 	type TaskStatus as Status,
 	TASK_STEP_LABELS,
+	type TaskStep,
 	type TaskStepsSize,
+	type TaskStepsVariant,
 	taskSteps,
 } from "./variants";
 
 export type TaskStatus = Status;
-type Step = { id: string; label: string; status: TaskStatus };
 
 let {
 	steps,
+	variant = "timeline",
+	onToggle,
+	onRetry,
 	showConnector = true,
 	compact = false,
 	size = "md",
 	labels,
 	class: classProp,
 }: {
-	steps: Step[];
+	steps: TaskStep[];
+	variant?: TaskStepsVariant;
+	/** Rows: fired when a row expands or collapses. */
+	onToggle?: (id: string, open: boolean) => void;
+	/** Rows: shows a retry button on failed rows. */
+	onRetry?: (id: string) => void;
 	showConnector?: boolean;
 	compact?: boolean;
 	size?: TaskStepsSize;
@@ -29,7 +39,10 @@ let {
 const LABEL = $derived({ ...TASK_STEP_LABELS, ...labels });
 </script>
 
-<ol aria-live="polite" class={taskSteps({ size }).root({ class: classProp })}>
+{#if variant !== "timeline"}
+	<TaskStepRows {steps} {variant} labels={LABEL} {onToggle} {onRetry} class={classProp} />
+{:else}
+<ol aria-live="polite" data-slot="task-steps" class={taskSteps({ size }).root({ class: classProp })}>
 	{#each steps as step, i (step.id)}
 		{@const styles = taskSteps({ size, compact, status: step.status })}
 		<li class={styles.item()}>
@@ -63,3 +76,4 @@ const LABEL = $derived({ ...TASK_STEP_LABELS, ...labels });
 		</li>
 	{/each}
 </ol>
+{/if}

@@ -7,6 +7,7 @@ export type ReelOptions = {
 	/** Drift in px per 60fps frame while the page is still. */
 	speed: number;
 	paused: boolean;
+	axis: "x" | "y";
 	/** New copy count whenever the content or viewport resizes. */
 	onCopies: (count: number) => void;
 };
@@ -16,7 +17,7 @@ function wrap(min: number, max: number, value: number): number {
 	return ((((value - min) % range) + range) % range) + min;
 }
 
-/** Drives a vertical reel: steady drift, boosted and reversed by page scroll, paused offscreen. */
+/** Drives a reel on either axis: steady drift, boosted and reversed by page scroll, paused offscreen. */
 export function createReel(
 	viewport: HTMLElement,
 	track: HTMLElement,
@@ -37,9 +38,10 @@ export function createReel(
 
 	const measure = () => {
 		const content = track.firstElementChild as HTMLElement | null;
-		distance = content?.offsetHeight ?? 0;
-		if (distance)
-			opts.onCopies(Math.max(2, Math.ceil(viewport.offsetHeight / distance) + 2));
+		const x = opts.axis === "x";
+		distance = (x ? content?.offsetWidth : content?.offsetHeight) ?? 0;
+		const span = x ? viewport.offsetWidth : viewport.offsetHeight;
+		if (distance) opts.onCopies(Math.max(2, Math.ceil(span / distance) + 2));
 	};
 
 	const tick = (now: number) => {
@@ -49,7 +51,8 @@ export function createReel(
 		if (!distance || opts.paused || reduced.matches || !visible) return;
 		velocity += (target - velocity) * EASE;
 		y = wrap(-distance, 0, y + velocity * step);
-		track.style.transform = `translate3d(0, ${y}px, 0)`;
+		track.style.transform =
+			opts.axis === "x" ? `translate3d(${y}px, 0, 0)` : `translate3d(0, ${y}px, 0)`;
 	};
 
 	const onScroll = () => {

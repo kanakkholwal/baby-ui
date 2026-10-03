@@ -2,6 +2,7 @@
 
 import { type CSSProperties, useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "../lib/cn";
+import { typingStumbleSteps } from "./stumble";
 import { type TypingTextSize, typingText } from "./variants";
 
 export type { TypingTextSize };
@@ -22,9 +23,85 @@ export interface TypingTextProps {
 	grow?: boolean;
 	/** Hide the blinking cursor once typing completes. */
 	hideCursorOnComplete?: boolean;
+	/** Types like a person: wrong keys appear and get corrected. `delay` scales the pace. */
+	stumbles?: boolean;
 	onComplete?: () => void;
 	size?: TypingTextSize;
 	className?: string;
+}
+
+// The stumble frames are timed at a 32ms reference delay; `delay` scales them.
+function StumbleTyping({
+	text,
+	delay,
+	repeat,
+	waitMs,
+	grow,
+	hideCursorOnComplete,
+	onComplete,
+	size,
+	className,
+}: Required<Pick<TypingTextProps, "text" | "delay" | "repeat" | "waitMs" | "grow">> &
+	Pick<TypingTextProps, "hideCursorOnComplete" | "onComplete" | "size" | "className">) {
+	const [pass, setPass] = useState(0);
+	const [step, setStep] = useState(0);
+	const [reduced, setReduced] = useState(false);
+	const steps = useMemo(() => typingStumbleSteps(text, pass), [text, pass]);
+	const onDone = useRef(onComplete);
+	onDone.current = onComplete;
+	const blinkOn = useBlink(500);
+	const done = step >= steps.length;
+
+	useEffect(() => {
+		const query = matchMedia("(prefers-reduced-motion: reduce)");
+		setReduced(query.matches);
+		const update = () => setReduced(query.matches);
+		query.addEventListener("change", update);
+		return () => query.removeEventListener("change", update);
+	}, []);
+
+	useEffect(() => {
+		setPass(0);
+		setStep(0);
+	}, [text]);
+
+	useEffect(() => {
+		if (reduced) return;
+		if (done) {
+			onDone.current?.();
+			if (!repeat) return;
+			const id = setTimeout(() => {
+				setPass((p) => p + 1);
+				setStep(0);
+			}, waitMs);
+			return () => clearTimeout(id);
+		}
+		const id = setTimeout(
+			() => setStep((s) => s + 1),
+			(steps[step]?.wait ?? 0) * (delay / 32),
+		);
+		return () => clearTimeout(id);
+	}, [reduced, done, step, steps, repeat, waitMs, delay]);
+
+	const shown = reduced || done ? text : (steps[step]?.text ?? "");
+	const showCursor = !hideCursorOnComplete || !(done && !repeat);
+
+	return (
+		<div data-slot="typing-text" className={cn(typingText({ size }), className)}>
+			<span className="sr-only">{text}</span>
+			{!grow && (
+				<div aria-hidden className="invisible">
+					{text}
+				</div>
+			)}
+			<div aria-hidden className={cn(!grow && "absolute inset-0")}>
+				{shown}
+				{showCursor ? (
+					<span className={blinkOn || done ? "" : "opacity-0"}>|</span>
+				) : null}
+			</div>
+		</div>
+	);
 }
 
 function useBlink(intervalMs: number) {
@@ -45,10 +122,55 @@ export function TypingText({
 	fadeDurationMs = 300,
 	grow = false,
 	hideCursorOnComplete = false,
+	stumbles = false,
 	onComplete,
 	size = "md",
 	className,
 }: TypingTextProps) {
+	if (stumbles && !smooth)
+		return (
+			<StumbleTyping
+				text={text}
+				delay={delay}
+				repeat={repeat}
+				waitMs={waitMs}
+				grow={grow}
+				hideCursorOnComplete={hideCursorOnComplete}
+				onComplete={onComplete}
+				size={size}
+				className={className}
+			/>
+		);
+	return (
+		<PlainTyping
+			text={text}
+			delay={delay}
+			repeat={repeat}
+			waitMs={waitMs}
+			smooth={smooth}
+			fadeDurationMs={fadeDurationMs}
+			grow={grow}
+			hideCursorOnComplete={hideCursorOnComplete}
+			onComplete={onComplete}
+			size={size}
+			className={className}
+		/>
+	);
+}
+
+function PlainTyping({
+	text,
+	delay = 32,
+	repeat = true,
+	waitMs = 1000,
+	smooth = false,
+	fadeDurationMs = 300,
+	grow = false,
+	hideCursorOnComplete = false,
+	onComplete,
+	size = "md",
+	className,
+}: Omit<TypingTextProps, "stumbles">) {
 	const words = useMemo(() => text.split(/\s+/), [text]);
 	const total = smooth ? words.length : text.length;
 	const [index, setIndex] = useState(0);

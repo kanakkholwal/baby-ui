@@ -1,11 +1,11 @@
 "use client";
 
 import { Dialog as SheetPrimitive } from "@base-ui/react/dialog";
-import type { ComponentProps } from "react";
+import type { ComponentProps, ReactNode } from "react";
 import { cn } from "../lib/cn";
-import { type SheetSide, sheet } from "./variants";
+import { type SheetSide, type SheetVariant, sheet } from "./variants";
 
-export type { SheetSide };
+export type { SheetSide, SheetVariant };
 
 export const Sheet = SheetPrimitive.Root;
 
@@ -25,18 +25,29 @@ export function SheetTrigger({
 export function SheetContent({
 	className,
 	side = "right",
+	variant = "default",
+	children,
 	...props
-}: ComponentProps<typeof SheetPrimitive.Popup> & { side?: SheetSide }) {
-	const styles = sheet({ side });
+}: ComponentProps<typeof SheetPrimitive.Popup> & {
+	side?: SheetSide;
+	variant?: SheetVariant;
+	children?: ReactNode;
+}) {
+	const styles = sheet({ side, variant });
 	return (
 		<SheetPrimitive.Portal>
 			<SheetPrimitive.Backdrop data-slot="sheet-backdrop" className={styles.backdrop()} />
 			<SheetPrimitive.Popup
 				data-slot="sheet-content"
 				data-side={side}
+				data-variant={variant}
 				className={cn(styles.panel(), className)}
 				{...props}
-			/>
+			>
+				<div data-slot="sheet-body" className={styles.body()}>
+					{children}
+				</div>
+			</SheetPrimitive.Popup>
 		</SheetPrimitive.Portal>
 	);
 }

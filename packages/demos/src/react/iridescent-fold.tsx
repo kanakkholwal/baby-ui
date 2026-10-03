@@ -12,7 +12,8 @@ export function IridescentFoldDemo({ props }: { props: Props }) {
 		<div className="relative h-80 w-full max-w-2xl overflow-hidden rounded-xl border border-border">
 			<IridescentFold
 				position="absolute"
-				tone={p.tone ?? "spectrum"}
+				variant={p.variant ?? "foil"}
+				tone={p.tone ?? "holo"}
 				speed={p.speed ?? "normal"}
 				intensity={Number(props.intensity ?? 1)}
 				grain={Number(props.grain ?? 0)}

@@ -10,6 +10,12 @@ Seven parts, each a plain element that takes `class` and every other attribute:
 `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardAction`, `CardContent`
 and `CardFooter`.
 
+## Variants
+
+`default` sits on the page colour with a border. `secondary` is the borderless grey card step,
+for grouped or nested areas. `ghost` drops both fill and border, and `framed` wraps the body in
+the same inset rim as Dialog.
+
 ## Drop-in for shadcn
 
 The part names, the `data-slot` values and the class shape are shadcn/ui's. Adding

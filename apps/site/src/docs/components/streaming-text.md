@@ -6,9 +6,10 @@ category: agents
 tags: [streaming, answer, citations, sources, follow-ups, agent]
 ---
 
-Words reveal one at a time and stop, the same contract `ResponseStream` uses, so a real
-answer is never stuck replaying itself. Actions, the sources list and follow-up prompts
-fade in together once every word has revealed.
+Words reveal one at a time and stop, so a real answer is never stuck replaying itself.
+`content` takes a plain string for a bare stream, or tokens to place citation chips inline.
+Actions, the sources list and follow-up prompts fade in together once every word has
+revealed; `actions={false}` and `caret={false}` strip it back to just the text.
 
 ## Citations are structural, not styled text
 

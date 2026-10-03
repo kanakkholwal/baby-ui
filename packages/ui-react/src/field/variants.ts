@@ -5,7 +5,7 @@ export const field = tv({
 		set: "flex flex-col gap-6 has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3",
 		group:
 			"group/field-group @container/field-group flex w-full flex-col gap-7 *:data-[slot=field-group]:gap-4",
-		root: "group/field flex w-full gap-2 data-[invalid=true]:text-destructive",
+		root: "group/field flex w-full gap-2 data-[invalid=true]:text-destructive-strong",
 		content: "group/field-content flex flex-1 flex-col gap-1 leading-snug",
 		label: [
 			"group/field-label peer/field-label flex w-fit gap-2 leading-snug",
@@ -24,8 +24,7 @@ export const field = tv({
 		],
 		separator: "relative -my-2 h-5 text-muted-foreground text-xs",
 		separatorContent: "relative mx-auto block w-fit bg-background px-2",
-		error:
-			"font-normal text-[color-mix(in_oklch,var(--destructive)_75%,var(--foreground))] text-sm",
+		error: "font-normal text-destructive-strong text-sm",
 	},
 	variants: {
 		orientation: {

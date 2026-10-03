@@ -4,7 +4,7 @@ import ChartTooltipPanel from "../chart/chart-tooltip-panel.svelte";
 import { setActivePoint, useChart } from "../chart/context";
 import type { ActivePoint, Datum } from "../chart/core";
 import { CHART_DURATION, tween } from "../chart/motion";
-import Counter from "../counter/counter.svelte";
+import RollingDigits from "../rolling-digits/rolling-digits.svelte";
 import { bisector, LABEL_MIN_SPAN, type PieSlice, sliceDelay } from "./geometry";
 import PieSliceShape from "./pie-slice.svelte";
 import { PIE_INNER_RATIO, type PieHover, type PieVariant, pieChart } from "./variants";
@@ -165,11 +165,13 @@ setActivePoint({
 		style:width="{inner * 2}px"
 		style:height="{inner * 2}px"
 	>
-		<Counter
+		<RollingDigits
+			variant="count"
 			value={activeSlice ? activeSlice.value : total}
 			format={counterFormat}
 			durationMs={600}
-			triggerOnView={false}
+			startOnView={false}
+			class="font-bold text-foreground"
 			size="sm"
 		/>
 		<span class={styles.caption()}>{activeSlice ? activeSlice.label : centerLabel}</span>

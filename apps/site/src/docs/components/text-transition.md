@@ -1,6 +1,6 @@
 ---
 title: Text Transition
-description: "19 named text-reveal presets sharing one CSS animation engine."
+description: "22 named text-reveal presets sharing one CSS animation engine."
 component: text-transition
 category: text
 tags: [text, transition, reveal, animated, preset]
@@ -21,4 +21,4 @@ matching the rest of this library's motion.
 
 There's no built-in cycling. Pass a new `text` (or switch `variant`) and the animated
 units remount, replaying the entrance. Pair it with your own interval, or with
-`CycleText`, if you want auto-rotation.
+`TextLoop`, if you want auto-rotation.

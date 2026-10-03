@@ -20,14 +20,18 @@ import {
 } from "../collapsible/collapsible";
 import { cn } from "../lib/cn";
 import {
+	type ReasoningRow,
+	type ReasoningRowsKind,
 	type ReasoningStepStatus,
 	type ReasoningVariant,
 	reasoning,
 	reasoningExtras,
+	reasoningRows,
 	reasoningStep,
+	SOURCE_TONES,
 } from "./variants";
 
-export type { ReasoningStepStatus, ReasoningVariant };
+export type { ReasoningRow, ReasoningRowsKind, ReasoningStepStatus, ReasoningVariant };
 
 type ActiveStep = { id: string; label: string };
 
@@ -341,5 +345,143 @@ export function ReasoningStepImage({
 			<img src={src} alt={alt} width={220} height={140} className={styles.image()} />
 			{caption ? <figcaption className={styles.caption()}>{caption}</figcaption> : null}
 		</figure>
+	);
+}
+
+export interface ReasoningRowsProps {
+	rows: readonly ReasoningRow[];
+	kind?: ReasoningRowsKind;
+	/** Search: the query shown above the sources. */
+	query?: string;
+	/** Coding: the selected row's `primary`. Omit to let the rows own it. */
+	value?: string | null;
+	defaultValue?: string | null;
+	onValueChange?: (value: string | null) => void;
+	className?: string;
+}
+
+/** Trace rows for a Reasoning panel: ticking steps, linked search sources or selectable files. */
+export function ReasoningRows({
+	rows,
+	kind = "steps",
+	query,
+	value: valueProp,
+	defaultValue = null,
+	onValueChange,
+	className,
+}: ReasoningRowsProps) {
+	const [ownValue, setOwnValue] = useState(defaultValue);
+	const selected = valueProp === undefined ? ownValue : valueProp;
+	const s = reasoningRows({ kind });
+	const pick = (next: string | null) => {
+		if (valueProp === undefined) setOwnValue(next);
+		onValueChange?.(next);
+	};
+
+	return (
+		<div data-slot="reasoning-rows" className={cn(s.list(), className)}>
+			{query ? (
+				<div className={s.query()}>
+					<svg
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						strokeWidth="2"
+						strokeLinecap="round"
+						aria-hidden
+						className={s.glyph()}
+					>
+						<circle cx="11" cy="11" r="7" />
+						<path d="M21 21l-4.3-4.3" />
+					</svg>
+					{query}
+				</div>
+			) : null}
+			{rows.map((r, i) => {
+				const style = { animationDelay: `${i * 80}ms` };
+				const content = (
+					<>
+						{kind === "search" ? (
+							<span className={cn(s.source(), SOURCE_TONES[i % SOURCE_TONES.length])}>
+								<svg
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									strokeWidth="2.5"
+									aria-hidden
+									className="size-2.5"
+								>
+									<circle cx="12" cy="12" r="9" />
+									<path d="M3.5 12h17M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" />
+								</svg>
+							</span>
+						) : null}
+						{kind === "steps" ? (
+							r.status === "active" ? (
+								<span aria-hidden className={s.spinner()} />
+							) : (
+								<svg
+									viewBox="0 0 16 16"
+									fill="none"
+									stroke="currentColor"
+									strokeWidth="2"
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									aria-hidden
+									className={s.glyph()}
+								>
+									<path d="M3.5 8.4 6.4 11 12.5 4.5" />
+								</svg>
+							)
+						) : null}
+						<span className={s.label()}>{r.primary}</span>
+						{r.secondary ? (
+							<span className={cn(s.secondary(), r.mono && "font-mono")}>
+								{r.secondary}
+							</span>
+						) : null}
+						{r.add !== undefined ? (
+							<span className={s.diff()}>
+								<span className="text-success-strong">+{r.add}</span>{" "}
+								<span className="text-destructive-strong">-{r.del ?? 0}</span>
+							</span>
+						) : null}
+					</>
+				);
+				if (kind === "search")
+					return (
+						<a
+							key={`${i}-${r.primary}`}
+							href={r.href}
+							target="_blank"
+							rel="noreferrer"
+							style={style}
+							className={s.row()}
+						>
+							{content}
+						</a>
+					);
+				if (kind === "coding") {
+					const pressed = selected === r.primary;
+					return (
+						<button
+							key={`${i}-${r.primary}`}
+							type="button"
+							aria-pressed={pressed}
+							onClick={() => pick(pressed ? null : r.primary)}
+							style={style}
+							className={s.row()}
+						>
+							{content}
+						</button>
+					);
+				}
+				return (
+					<div key={`${i}-${r.primary}`} style={style} className={s.row()}>
+						{content}
+					</div>
+				);
+			})}
+		</div>
 	);
 }

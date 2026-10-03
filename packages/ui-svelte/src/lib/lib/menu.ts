@@ -24,7 +24,7 @@ export const menu = tv({
 		variant: {
 			default: { item: "text-foreground" },
 			destructive: {
-				item: "text-[var(--destructive)] data-[highlighted]:bg-[color-mix(in_oklch,var(--destructive)_10%,transparent)]",
+				item: "text-destructive-strong data-[highlighted]:bg-[color-mix(in_oklch,var(--destructive)_10%,transparent)]",
 			},
 		},
 	},

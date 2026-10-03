@@ -8,11 +8,11 @@ export function Example() {
 			rows={[
 				{
 					id: "1",
-					name: "Northwind Traders",
+					name: "Acme Corp",
 					tags: ["Retail"],
 					last: "3 days ago",
 					strength: "strong",
-					website: "northwindtraders.com",
+					website: "acme.com",
 				},
 				{
 					id: "2",

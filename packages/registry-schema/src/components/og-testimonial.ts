@@ -35,7 +35,7 @@ export const ogTestimonial = defineComponent({
 			name: "company",
 			type: "string",
 			description: "Joined to the role with a middle dot.",
-			default: "Northwind",
+			default: "Acme",
 			control: { kind: "text" },
 		},
 		{

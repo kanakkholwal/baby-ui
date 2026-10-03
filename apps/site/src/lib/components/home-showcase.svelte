@@ -18,7 +18,12 @@ type Cell = {
 const CELLS: Cell[] = [
 	{ slug: "area-chart", span: 7, class: "min-h-85 md:min-h-95" },
 	{ slug: "text-loop", span: 5, class: "min-h-85 md:min-h-95" },
-	{ slug: "task-rows", span: 5, class: "min-h-85 md:min-h-95" },
+	{
+		slug: "task-steps",
+		span: 5,
+		class: "min-h-85 md:min-h-95",
+		props: { variant: "capsules" },
+	},
 	{ slug: "webgl-liquid", span: 7, class: "min-h-85 md:min-h-95" },
 	{ slug: "circuit-board", span: 5, class: "min-h-85 md:min-h-80" },
 	{ slug: "week-calendar", span: 7, class: "min-h-85 md:min-h-80" },

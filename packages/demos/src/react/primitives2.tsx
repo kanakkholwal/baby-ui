@@ -5,7 +5,6 @@ import {
 	Collapsible,
 	CollapsibleContent,
 	CollapsibleTrigger,
-	Gauge,
 	Pagination,
 	PaginationContent,
 	PaginationEllipsis,
@@ -15,7 +14,6 @@ import {
 	PaginationPrevious,
 	paginationRange,
 	ScrollArea,
-	ScrubField,
 	Shortcut,
 	ShowMore,
 	Spinner,
@@ -216,24 +214,6 @@ export function TypographyDemo({ props }: { props: Props }) {
 	);
 }
 
-export function GaugeDemo({ props }: { props: Props }) {
-	const p = controlProps<ComponentProps<typeof Gauge>>(props);
-	return (
-		<div className="flex items-center gap-6">
-			<Gauge
-				value={Number(p.value ?? 68)}
-				size={Number(p.size ?? 96)}
-				thickness={Number(p.thickness ?? 8)}
-				tone={p.tone ?? "default"}
-				label="Performance score"
-			/>
-			<p className="max-w-40 text-muted-foreground text-xs">
-				A meter is a reading, not a task in progress.
-			</p>
-		</div>
-	);
-}
-
 export function PaginationDemo({ props }: { props: Props }) {
 	const [page, setPage] = useState(4);
 	useEffect(() => setPage(Number(props.page ?? 4)), [props.page]);
@@ -291,27 +271,6 @@ const REGIONS = [
 	"Toronto",
 	"Washington DC",
 ];
-
-export function ScrubFieldDemo({ props }: { props: Props }) {
-	const p = controlProps<ComponentProps<typeof ScrubField>>(props);
-	const [value, setValue] = useState(Number(props.defaultValue ?? 96));
-	useEffect(() => setValue(Number(props.defaultValue ?? 96)), [props.defaultValue]);
-	return (
-		<ScrubField
-			label={p.label || "W"}
-			value={value}
-			onValueChange={setValue}
-			min={Number(p.min ?? 0)}
-			max={Number(p.max ?? 999)}
-			step={Number(p.step ?? 1)}
-			largeStep={Number(p.largeStep ?? 10)}
-			suffix={p.suffix || "px"}
-			size={p.size ?? "md"}
-			tone={p.tone ?? "default"}
-			disabled={p.disabled ?? false}
-		/>
-	);
-}
 
 export function ScrollAreaDemo({ props }: { props: Props }) {
 	const p = controlProps<ComponentProps<typeof ScrollArea>>(props);

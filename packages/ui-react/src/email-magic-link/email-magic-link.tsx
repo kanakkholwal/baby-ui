@@ -11,14 +11,11 @@ import {
 	type EmailKeyValueRow,
 	EmailPanel,
 	EmailShell,
-	type EmailShellAccent,
 	type EmailShellSurface,
 	EmailText,
 } from "../email-kit/email-kit";
 import { emailLayout } from "../email-kit/variants";
-import { type EmailMagicLinkDesign, emailMagicLink } from "./variants";
-
-export type { EmailMagicLinkDesign };
+import { emailMagicLink } from "./variants";
 
 export interface EmailMagicLinkProps {
 	productName: string;
@@ -32,7 +29,7 @@ export interface EmailMagicLinkProps {
 	code?: string;
 	/** Where the request came from, e.g. device, location, time; helps spot a stranger's attempt. */
 	requestDetails?: EmailKeyValueRow[];
-	/** Absolute URL, about 32px tall. Falls back to the product name as text. */
+	/** Absolute PNG URL of a square mark, set beside the product name in header and footer. */
 	logoUrl?: string;
 	footerLinks?: EmailFooterLink[];
 	reason?: string;
@@ -45,13 +42,10 @@ export interface EmailMagicLinkProps {
 	detailsTitle?: string;
 	warningTitle?: string;
 	warningText?: string;
-	/** `classic` is a left-aligned card; `spotlight` centres everything around the code. */
-	design?: EmailMagicLinkDesign;
-	surface?: EmailShellSurface;
-	accent?: EmailShellAccent;
+	surface?: Exclude<EmailShellSurface, "stacked">;
 }
 
-/** Passwordless sign-in: a one-time link, an optional code, and who asked for it. */
+/** Passwordless sign-in, centred around the code in an accent panel. */
 export function EmailMagicLink({
 	productName,
 	signInUrl,
@@ -75,63 +69,44 @@ export function EmailMagicLink({
 	detailsTitle = "Request details",
 	warningTitle = "Didn't try to sign in?",
 	warningText = "You can safely ignore this email. Nobody can sign in without it.",
-	design = "classic",
 	surface = "card",
-	accent = "none",
 }: EmailMagicLinkProps) {
 	const s = emailLayout();
-	const m = emailMagicLink({ design });
-	const spotlight = design === "spotlight";
-	const footer = (
-		<EmailFooter
-			lines={companyLines}
-			links={footerLinks}
-			reason={reason}
-			layout={spotlight ? "row" : "plain"}
-			align={spotlight ? "left" : "center"}
-		/>
-	);
-	const details =
-		requestDetails.length > 0 ? (
-			<>
-				<EmailText className={s.sectionTitle()}>{detailsTitle}</EmailText>
-				<EmailKeyValue rows={requestDetails} density="compact" />
-			</>
-		) : null;
+	const m = emailMagicLink();
 	return (
 		<EmailShell
 			preview={preview}
 			surface={surface}
-			accent={accent}
-			footer={spotlight ? undefined : footer}
-			cardFooter={spotlight ? footer : undefined}
+			cardFooter={
+				<EmailFooter
+					lines={companyLines}
+					links={footerLinks}
+					reason={reason}
+					brand={productName}
+					logo={logoUrl}
+					layout="row"
+					align="left"
+				/>
+			}
 		>
-			<EmailHeader
-				brand={productName}
-				logo={logoUrl}
-				align={spotlight ? "center" : "left"}
-			/>
-			<EmailHeading align={spotlight ? "center" : "left"}>{heading}</EmailHeading>
+			<EmailHeader brand={productName} logo={logoUrl} align="center" />
+			<EmailHeading align="center">{heading}</EmailHeading>
 			<EmailText tone="muted" className={m.intro()}>
 				{intro}
 			</EmailText>
 			{code ? (
 				<Section className={s.section()}>
-					{spotlight ? (
-						<EmailPanel tone="accent">
-							<EmailText className={m.codeLabel()}>{codeLabel}</EmailText>
-							<EmailCode code={code} />
-						</EmailPanel>
-					) : (
+					<EmailPanel tone="accent">
+						<EmailText className={m.codeLabel()}>{codeLabel}</EmailText>
 						<EmailCode code={code} />
-					)}
+					</EmailPanel>
 				</Section>
 			) : null}
 			<Section className={s.action()}>
 				<EmailButton
 					href={signInUrl}
 					variant={code ? "secondary" : "primary"}
-					width={spotlight ? "full" : "auto"}
+					width="full"
 				>
 					{actionLabel}
 				</EmailButton>
@@ -139,9 +114,12 @@ export function EmailMagicLink({
 			<EmailText tone="muted" size="sm" className={m.expiry()}>
 				{expiryText}
 			</EmailText>
-			{details ? (
+			{requestDetails.length > 0 ? (
 				<Section className={s.section()}>
-					{spotlight ? <EmailPanel tone="outline">{details}</EmailPanel> : details}
+					<EmailPanel tone="outline">
+						<EmailText className={s.sectionTitle()}>{detailsTitle}</EmailText>
+						<EmailKeyValue rows={requestDetails} density="compact" />
+					</EmailPanel>
 				</Section>
 			) : null}
 			<Section className={s.section()}>

@@ -1,4 +1,4 @@
-import { BreadcrumbDemo, MessageDemo, RadioGroupDemo, ReasoningDemo, ResponseStreamDemo, SliderDemo, TabsDemo, TaskStepsDemo } from "./agentic";
+import { BreadcrumbDemo, MessageDemo, RadioGroupDemo, ReasoningDemo, SliderDemo, TabsDemo, TaskStepsDemo } from "./agentic";
 import { AnimatedGradientDemo } from "./animated-gradient";
 import { AreaChartDemo } from "./area-chart";
 import { AsciiEffectDemo } from "./ascii-effect";
@@ -42,7 +42,6 @@ import { ImageTrailDemo } from "./image-trail";
 import { InputGroupDemo } from "./input-group";
 import { InvoiceListDemo } from "./invoice-list";
 import { IridescentFoldDemo } from "./iridescent-fold";
-import { LayeredStackDemo } from "./layered-stack";
 import { LightCausticsDemo } from "./light-caustics";
 import { LiquidChromeDemo } from "./liquid-chrome";
 import { LiveLineChartDemo } from "./live-line-chart";
@@ -66,7 +65,7 @@ import { PixelImageTrailDemo } from "./pixel-image-trail";
 import { Pricing01Demo } from "./pricing-01";
 import { Pricing02Demo } from "./pricing-02";
 import { AccordionDemo, AlertDemo, AvatarDemo, BadgeDemo, CardDemo, CheckboxDemo, InputDemo, LabelDemo, ProgressDemo, SkeletonDemo, SwitchDemo, TextareaDemo } from "./primitives";
-import { CollapsibleDemo, GaugeDemo, PaginationDemo, ScrollAreaDemo, ScrubFieldDemo, ShortcutDemo, ShowMoreDemo, SpinnerDemo, ToggleDemo, ToggleGroupDemo, TypographyDemo } from "./primitives2";
+import { CollapsibleDemo, PaginationDemo, ScrollAreaDemo, ShortcutDemo, ShowMoreDemo, SpinnerDemo, ToggleDemo, ToggleGroupDemo, TypographyDemo } from "./primitives2";
 import { ProjectionLineDemo } from "./projection-line";
 import { PropertyPanelDemo } from "./property-panel";
 import { RadarChartDemo } from "./radar-chart";
@@ -80,11 +79,9 @@ import { ScatterChartDemo } from "./scatter-chart";
 import { ScoreCardDemo } from "./score-card";
 import { ScrollProgressDemo } from "./scroll-progress";
 import { ScrollTiltedGridDemo } from "./scroll-tilted-grid";
-import { ScrollVelocityDemo } from "./scroll-velocity";
 import { ShowcaseGridDemo } from "./showcase-grid";
 import { SidebarNavDemo } from "./sidebar-nav";
 import { SignatureDemo } from "./signature";
-import { SilkAuroraDemo } from "./silk-aurora";
 import { SpectralRibbonDemo } from "./spectral-ribbon";
 import { SplitFlapDisplayDemo } from "./split-flap-display";
 import { StarHistoryDemo } from "./star-history";
@@ -94,12 +91,10 @@ import { SunburstChartDemo } from "./sunburst-chart";
 import { SwappableDemo } from "./swappable";
 import { TableOfContentsDemo } from "./table-of-contents";
 import { TableDemo } from "./table";
-import { TaskRowsDemo } from "./task-rows";
-import { DiaTextDemo, MorphTextDemo, RevealTextDemo, RollingDigitsDemo, ShimmerTextDemo, TextInertiaDemo, TextLoopDemo, TypewriterDemo } from "./text-motion";
+import { DiaTextDemo, MorphTextDemo, RevealTextDemo, RollingDigitsDemo, ShimmerTextDemo, TextLoopDemo } from "./text-motion";
 import { TextRepelDemo } from "./text-repel";
-import { AnimatedGradientTextDemo, CounterDemo, CycleTextDemo, DoubleUnderlineDemo, GibberishTextDemo, GlitchTextDemo, JitterTextDemo, JumpingTextDemo, MetisTextDemo, MirrorTextDemo, RollTextDemo, StaggeredLetterDemo, TextExplodeIMessageDemo, TextTransitionDemo, TickerDemo, TypingTextDemo, WaveRevealDemo } from "./text";
+import { AnimatedGradientTextDemo, GibberishTextDemo, GlitchTextDemo, MirrorTextDemo, RollTextDemo, TextTransitionDemo, TypingTextDemo, UnderlineHoverTextDemo } from "./text";
 import { ThemeToggleDemo } from "./theme-toggle";
-import { ThinkingStateDemo } from "./thinking-state";
 import { ToolChipsDemo } from "./tool-chips";
 import { FileUploadDemo, MultiSelectDemo, NumberInputDemo } from "./utility-inputs";
 import { WebglLiquidDemo } from "./webgl-liquid";
@@ -107,7 +102,6 @@ import { WeekCalendarDemo } from "./week-calendar";
 import { WheelCarouselDemo } from "./wheel-carousel";
 import { WheelPickerDemo } from "./wheel-picker";
 import { AgentScreenDemo } from "./auto/agent-screen";
-import { ArtGalleryDemo } from "./auto/art-gallery";
 import { BoldCopyDemo } from "./auto/bold-copy";
 import { CaseStudyFlipStackDemo } from "./auto/case-study-flip-stack";
 import { CircuitBoardDemo } from "./auto/circuit-board";
@@ -118,9 +112,7 @@ import { CollectionSurferDemo } from "./auto/collection-surfer";
 import { ContextCardsDemo } from "./auto/context-cards";
 import { CubeTextDemo } from "./auto/cube-text";
 import { DitheredLogoDemo } from "./auto/dithered-logo";
-import { EyeTrackingDemo } from "./auto/eye-tracking";
 import { FilterTableDemo } from "./auto/filter-table";
-import { FisheyeInfiniteGridDemo } from "./auto/fisheye-infinite-grid";
 import { GithubCalendarDemo } from "./auto/github-calendar";
 import { GradientHero01Demo } from "./auto/gradient-hero-01";
 import { InfiniteImageFieldDemo } from "./auto/infinite-image-field";
@@ -154,10 +146,6 @@ import { SplitTextDemo } from "./auto/split-text";
 import { StatCardDemo } from "./auto/stat-card";
 import { StatCardMapDemo } from "./auto/stat-card-map";
 import { StatusMonitorDemo } from "./auto/status-monitor";
-import { SwapTextDemo } from "./auto/swap-text";
-import { TextBorderAnimationDemo } from "./auto/text-border-animation";
-import { TextFlipDemo } from "./auto/text-flip";
-import { UnderlineHoverTextDemo } from "./auto/underline-hover-text";
 import { UsageCardDemo } from "./auto/usage-card";
 
 type Props = Record<string, unknown>;
@@ -170,7 +158,6 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"animated-gradient": AnimatedGradientDemo,
 	"animated-gradient-text": AnimatedGradientTextDemo,
 	"area-chart": AreaChartDemo,
-	"art-gallery": ArtGalleryDemo,
 	"ascii-effect": AsciiEffectDemo,
 	attachment: AttachmentDemo,
 	"aurora-flow": AuroraFlowDemo,
@@ -210,9 +197,7 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"context-menu": ContextMenuDemo,
 	conversation: ConversationDemo,
 	"copy-button": CopyButtonDemo,
-	counter: CounterDemo,
 	"cube-text": CubeTextDemo,
-	"cycle-text": CycleTextDemo,
 	"data-table": DataTableDemo,
 	"date-field": DateFieldDemo,
 	"date-picker": DatePickerDemo,
@@ -224,13 +209,11 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"dithered-logo": DitheredLogoDemo,
 	"docs-nav": DocsNavDemo,
 	"dot-matrix-glow": DotMatrixGlowDemo,
-	"double-underline": DoubleUnderlineDemo,
 	"draggable-marquee": DraggableMarqueeDemo,
 	drawer: DrawerDemo,
 	"dropdown-menu": DropdownMenuDemo,
 	empty: EmptyDemo,
 	"error-boundary": ErrorBoundaryDemo,
-	"eye-tracking": EyeTrackingDemo,
 	field: FieldDemo,
 	"file-diff": FileDiffDemo,
 	"file-tree": FileTreeDemo,
@@ -238,14 +221,12 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"fill-button": FillButtonDemo,
 	"filter-table": FilterTableDemo,
 	"fine-tune-card": FineTuneCardDemo,
-	"fisheye-infinite-grid": FisheyeInfiniteGridDemo,
 	"flight-status-card": FlightStatusCardDemo,
 	flowchart: FlowchartDemo,
 	footer: FooterDemo,
 	form: FormDemo,
 	"fullscreen-nav": FullscreenNavDemo,
 	"funnel-chart": FunnelChartDemo,
-	gauge: GaugeDemo,
 	"gauge-chart": GaugeChartDemo,
 	"gibberish-text": GibberishTextDemo,
 	"github-calendar": GithubCalendarDemo,
@@ -264,10 +245,7 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"input-otp": InputOTPDemo,
 	"invoice-list": InvoiceListDemo,
 	"iridescent-fold": IridescentFoldDemo,
-	"jitter-text": JitterTextDemo,
-	"jumping-text": JumpingTextDemo,
 	label: LabelDemo,
-	"layered-stack": LayeredStackDemo,
 	"light-caustics": LightCausticsDemo,
 	"line-chart": LineChartDemo,
 	"liquid-chrome": LiquidChromeDemo,
@@ -281,7 +259,6 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"mask-text": MaskTextDemo,
 	"mega-navbar": MegaNavbarDemo,
 	message: MessageDemo,
-	"metis-text": MetisTextDemo,
 	"mirror-text": MirrorTextDemo,
 	"morph-text": MorphTextDemo,
 	"morphing-modal": MorphingModalDemo,
@@ -332,7 +309,6 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	reasoning: ReasoningDemo,
 	"recommendation-card": RecommendationCardDemo,
 	"records-table": RecordsTableDemo,
-	"response-stream": ResponseStreamDemo,
 	"responsive-dialog": ResponsiveDialogDemo,
 	"reveal-text": RevealTextDemo,
 	"ring-chart": RingChartDemo,
@@ -348,8 +324,6 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"scroll-reveal": ScrollRevealDemo,
 	"scroll-split-card": ScrollSplitCardDemo,
 	"scroll-tilted-grid": ScrollTiltedGridDemo,
-	"scroll-velocity": ScrollVelocityDemo,
-	"scrub-field": ScrubFieldDemo,
 	select: SelectDemo,
 	separator: SeparatorDemo,
 	sheet: SheetDemo,
@@ -359,14 +333,12 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"showcase-grid": ShowcaseGridDemo,
 	"sidebar-nav": SidebarNavDemo,
 	signature: SignatureDemo,
-	"silk-aurora": SilkAuroraDemo,
 	skeleton: SkeletonDemo,
 	slider: SliderDemo,
 	"spectral-ribbon": SpectralRibbonDemo,
 	spinner: SpinnerDemo,
 	"split-flap-display": SplitFlapDisplayDemo,
 	"split-text": SplitTextDemo,
-	"staggered-letter": StaggeredLetterDemo,
 	"star-history": StarHistoryDemo,
 	"stat-card": StatCardDemo,
 	"stat-card-map": StatCardMapDemo,
@@ -374,27 +346,19 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"sticky-scroll-cards": StickyScrollCardsDemo,
 	"streaming-text": StreamingTextDemo,
 	"sunburst-chart": SunburstChartDemo,
-	"swap-text": SwapTextDemo,
 	swappable: SwappableDemo,
 	switch: SwitchDemo,
 	table: TableDemo,
 	"table-of-contents": TableOfContentsDemo,
 	tabs: TabsDemo,
 	"tag-input": TagInputDemo,
-	"task-rows": TaskRowsDemo,
 	"task-steps": TaskStepsDemo,
-	"text-border-animation": TextBorderAnimationDemo,
-	"text-explode-imessage": TextExplodeIMessageDemo,
-	"text-flip": TextFlipDemo,
-	"text-inertia": TextInertiaDemo,
 	"text-loop": TextLoopDemo,
 	"text-reel": TextReelDemo,
 	"text-repel": TextRepelDemo,
 	"text-transition": TextTransitionDemo,
 	textarea: TextareaDemo,
 	"theme-toggle": ThemeToggleDemo,
-	"thinking-state": ThinkingStateDemo,
-	ticker: TickerDemo,
 	"time-picker": TimePickerDemo,
 	toast: ToastDemo,
 	toggle: ToggleDemo,
@@ -402,12 +366,10 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	tool: ToolDemo,
 	"tool-chips": ToolChipsDemo,
 	tooltip: TooltipDemo,
-	typewriter: TypewriterDemo,
 	"typing-text": TypingTextDemo,
 	typography: TypographyDemo,
 	"underline-hover-text": UnderlineHoverTextDemo,
 	"usage-card": UsageCardDemo,
-	"wave-reveal": WaveRevealDemo,
 	"webgl-liquid": WebglLiquidDemo,
 	"week-calendar": WeekCalendarDemo,
 	"wheel-carousel": WheelCarouselDemo,

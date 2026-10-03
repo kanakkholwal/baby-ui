@@ -5,10 +5,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "../avatar";
 import { Badge } from "../badge/badge";
 import { Bar, BarChart, BarTooltip, BarXAxis, BarYAxis } from "../bar-chart";
 import { ChartContainer, ChartTooltipContent } from "../chart";
-import { Counter } from "../counter";
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "../empty/empty";
 import { GithubCalendar } from "../github-calendar";
 import { cn } from "../lib/cn";
+import { RollingDigits } from "../rolling-digits/rolling-digits";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../tabs";
 import {
@@ -121,11 +121,13 @@ export function GithubStats({
 						<p className={styles.eyebrow()}>{labels.eyebrow}</p>
 						<p className={styles.hero()}>
 							{layout.animate ? (
-								<Counter
+								<RollingDigits
+									variant="count"
 									value={total}
 									format={(value) => formatCount(Math.round(value), locale)}
 									durationMs={900}
-									className={styles.heroValue()}
+									size="md"
+									className={cn("font-bold text-foreground", styles.heroValue())}
 								/>
 							) : (
 								<span className={styles.heroValue()}>{formatCount(total, locale)}</span>
@@ -232,11 +234,13 @@ export function GithubStats({
 						<dt className={styles.countLabel()}>{labels[key]}</dt>
 						<dd className="order-first">
 							{layout.animate ? (
-								<Counter
+								<RollingDigits
+									variant="count"
 									value={data.counts[key]}
 									format={(value) => formatCount(Math.round(value), locale)}
 									durationMs={1200}
-									className={styles.countValue()}
+									size="md"
+									className={cn("font-bold text-foreground", styles.countValue())}
 								/>
 							) : (
 								<span className={styles.countValue()}>

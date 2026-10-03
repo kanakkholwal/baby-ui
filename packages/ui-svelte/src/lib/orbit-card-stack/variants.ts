@@ -35,10 +35,11 @@ export const orbitCardStack = tv({
 				description: "text-base",
 			},
 		},
-		/** Open cards curve down and outward like a hand of cards, or sit in a near-flat row. */
+		/** Open cards curve like a hand of cards, sit in a near-flat row, or tile into a grid. */
 		layout: {
 			arc: {},
 			row: {},
+			grid: {},
 		},
 	},
 	defaultVariants: { size: "md", layout: "arc" },
@@ -51,8 +52,8 @@ export type OrbitCardStackLayout = NonNullable<
 
 export interface OrbitStackItem {
 	name: string;
-	role: string;
-	description: string;
+	role?: string;
+	description?: string;
 	image?: string;
 	/** Two letters for the badge; derived from `name` when omitted. */
 	initials?: string;
@@ -101,7 +102,18 @@ export function orbitTransform(
 	layout: OrbitCardStackLayout,
 	spread: number,
 	lift: number,
+	fit?: GridFit,
 ): string {
+	if (open && layout === "grid" && fit) {
+		const col = index % fit.cols;
+		const row = Math.floor(index / fit.cols);
+		const scale = fit.scale * (index === active ? 1.04 : 1);
+		// Cards scale from origin-bottom, so lift each one back by the height it lost.
+		const sink = ((1 - scale) * fit.cardH) / 2;
+		const x = (col - (fit.cols - 1) / 2) * fit.cellW;
+		const y = (row - (fit.rows - 1) / 2) * fit.cellH - sink;
+		return `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) scale(${scale})`;
+	}
 	if (open) {
 		const orbit = index - (total - 1) / 2;
 		const far = Math.abs(orbit);
@@ -122,4 +134,43 @@ export function nextIndex(key: string, index: number, total: number): number | u
 	if (key === "Home") return 0;
 	if (key === "End") return total - 1;
 	return undefined;
+}
+
+export type GridFit = {
+	cols: number;
+	rows: number;
+	scale: number;
+	cellW: number;
+	cellH: number;
+	cardH: number;
+};
+
+/** The column count that lets the open grid's cards scale largest inside the stage. */
+export function gridFit(
+	stageW: number,
+	stageH: number,
+	cardW: number,
+	cardH: number,
+	total: number,
+	gap = 12,
+): GridFit {
+	let best: GridFit = { cols: 1, rows: total, scale: 0, cellW: 0, cellH: 0, cardH };
+	for (let cols = 1; cols <= Math.max(1, total); cols++) {
+		const rows = Math.ceil(total / cols);
+		const scale = Math.min(
+			1,
+			(stageW - gap * (cols - 1)) / (cols * cardW),
+			(stageH - gap * (rows - 1)) / (rows * cardH),
+		);
+		if (scale > best.scale)
+			best = {
+				cols,
+				rows,
+				scale,
+				cellW: cardW * scale + gap,
+				cellH: cardH * scale + gap,
+				cardH,
+			};
+	}
+	return best;
 }

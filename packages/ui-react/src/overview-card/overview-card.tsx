@@ -13,9 +13,9 @@ import {
 } from "../card/card";
 import { ChartContainer } from "../chart/chart";
 import { type ChartStatus, type Datum, toDate } from "../chart/core";
-import { Counter } from "../counter/counter";
 import { cn } from "../lib/cn";
 import { Line, LineChart } from "../line-chart/line-chart";
+import { RollingDigits } from "../rolling-digits/rolling-digits";
 import { ToggleGroup, ToggleGroupItem } from "../toggle-group/toggle-group";
 import { type OverviewCardChart, type OverviewCardSize, overviewCard } from "./variants";
 
@@ -159,12 +159,14 @@ export function OverviewCard({
 			</CardHeader>
 			<CardContent className={styles.body()}>
 				<div className={styles.headline()}>
-					<Counter
+					<RollingDigits
+						variant="count"
 						value={shownValue}
 						format={number}
 						size="lg"
 						durationMs={400}
-						triggerOnView={false}
+						startOnView={false}
+						className="font-bold text-foreground"
 					/>
 					<span className={styles.label()}>{shownLabel}</span>
 					<Badge variant={up ? "success" : "destructive"} size="sm">

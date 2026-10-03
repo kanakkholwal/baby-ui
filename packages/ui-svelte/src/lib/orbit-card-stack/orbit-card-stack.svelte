@@ -5,6 +5,8 @@ import { cn } from "../lib/cn";
 import {
 	clampIndex,
 	DEFAULT_ORBIT_LABELS,
+	type GridFit,
+	gridFit,
 	initialsFor,
 	nextIndex,
 	type OrbitCardStackLabels,
@@ -58,6 +60,28 @@ const active = $derived(
 const isOpen = $derived(open ?? defaultOpen);
 const l = $derived({ ...DEFAULT_ORBIT_LABELS, ...labels });
 const s = $derived(orbitCardStack({ size, layout }));
+let fit = $state<GridFit>();
+
+$effect(() => {
+	const el = stage;
+	const total = count;
+	if (layout !== "grid" || !el) return;
+	const measure = () => {
+		const card = el.querySelector<HTMLElement>("[data-orbit-card]");
+		if (card)
+			fit = gridFit(
+				el.clientWidth,
+				el.clientHeight,
+				card.offsetWidth,
+				card.offsetHeight,
+				total,
+			);
+	};
+	measure();
+	const resize = new ResizeObserver(measure);
+	resize.observe(el);
+	return () => resize.disconnect();
+});
 
 function setOpen(next: boolean) {
 	if (next === isOpen) return;
@@ -106,7 +130,7 @@ function onkeydown(event: KeyboardEvent) {
 				tabindex={current ? 0 : -1}
 				aria-current={current ? "true" : undefined}
 				class={s.card()}
-				style="z-index: {current ? 80 : 50 - Math.abs(i - active)}; transform: {orbitTransform(i, count, active, isOpen, layout, spread, lift)}"
+				style="z-index: {current ? 80 : 50 - Math.abs(i - active)}; transform: {orbitTransform(i, count, active, isOpen, layout, spread, lift, fit)}"
 				onmouseenter={() => activate(i)}
 				onfocus={() => activate(i)}
 			>
@@ -141,9 +165,9 @@ function onkeydown(event: KeyboardEvent) {
 					</Button>
 				{/if}
 				<div class={s.body()}>
-					<p class={s.role()}>{item.role}</p>
+					{#if item.role}<p class={s.role()}>{item.role}</p>{/if}
 					<h3 class={s.name()}>{item.name}</h3>
-					<p class={s.description()}>{item.description}</p>
+					{#if item.description}<p class={s.description()}>{item.description}</p>{/if}
 					{#if item.stat}<div class={s.stat()}>{item.stat}</div>{/if}
 				</div>
 			</li>

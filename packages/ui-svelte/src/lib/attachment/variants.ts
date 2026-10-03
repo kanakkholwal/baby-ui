@@ -2,7 +2,7 @@ import { tv, type VariantProps } from "tailwind-variants";
 
 export const attachment = tv({
 	slots: {
-		root: "card-fade-up flex w-full items-center gap-3 rounded-xl border border-border bg-card p-2.5 transition-[border-color] duration-[var(--duration-dropdown)] ease-[var(--ease-out)]",
+		root: "card-fade-up flex w-full items-center gap-3 rounded-xl border border-border bg-background p-2.5 transition-[border-color] duration-[var(--duration-dropdown)] ease-[var(--ease-out)]",
 		tile: "grid size-9 shrink-0 place-items-center overflow-hidden rounded-lg border border-border bg-background text-muted-foreground transition-colors duration-[var(--duration-dropdown)]",
 		thumb: "size-full object-cover",
 		body: "min-w-0 flex-1",
@@ -25,8 +25,8 @@ export const attachment = tv({
 			ready: { progress: "grid-rows-[0fr] opacity-0 duration-[var(--duration-exit)]" },
 			error: {
 				root: "border-[color-mix(in_oklch,var(--destructive)_35%,transparent)]",
-				tile: "text-destructive",
-				meta: "text-destructive",
+				tile: "text-destructive-strong",
+				meta: "text-destructive-strong",
 				progress: "grid-rows-[0fr] opacity-0 duration-[var(--duration-exit)]",
 			},
 		},

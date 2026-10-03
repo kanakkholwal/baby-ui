@@ -164,8 +164,12 @@ function audit(slug, port, html, props) {
 		if (!/class="[^"]*dark_bg-/.test(tag))
 			fail.push(`background without dark twin: ${tag.slice(0, 100)}`);
 	for (const [tag] of html.matchAll(/<img\b[^>]*>/g)) {
-		if (!/\balt="[^"]+"/.test(tag)) fail.push(`img without alt: ${tag.slice(0, 80)}`);
-		if (!/\bsrc="https:\/\//.test(tag))
+		// Empty alt only for a declared decoration, e.g. the mark beside a written brand name.
+		const decorative = /\balt=""/.test(tag) && /\brole="presentation"/.test(tag);
+		if (!decorative && !/\balt="[^"]+"/.test(tag))
+			fail.push(`img without alt: ${tag.slice(0, 80)}`);
+		// Plain http only for the local dev server's own assets.
+		if (!/\bsrc="(https:\/\/|http:\/\/[a-z0-9.-]+\.localhost[:/])/.test(tag))
 			fail.push(`img src not absolute https: ${tag.slice(0, 80)}`);
 	}
 	for (const [, href] of html.matchAll(/<a\b[^>]*href="([^"]*)"/g))
@@ -191,7 +195,7 @@ const normalise = (text) =>
 // The site's own modules, so props and plain text match the live endpoint exactly.
 const shared = await bundle(
 	[
-		`export { previewProps } from ${str(posix(PREVIEW_PROPS))};`,
+		`export { previewProps, withSiteAssets } from ${str(posix(PREVIEW_PROPS))};`,
 		`export { defaultProps } from ${str(posix(join(ROOT, "packages/registry-schema/src/spec.ts")))};`,
 		`export { getSpec } from ${str(posix(SPECS))};`,
 		`export { emailPlainText } from ${str(posix(TEMPLATES))};`,
@@ -208,22 +212,20 @@ const shared = await bundle(
 	["@better-svelte-email/server"],
 );
 const plainText = shared.emailPlainText;
-// The default render per slug, plus one per extra `design` so every design passes the gates.
+// Deploys set BABY_UI_SITE_URL; locally, sample assets load from the portless dev server.
+const ASSET_ORIGIN = (
+	process.env.BABY_UI_SITE_URL ?? "http://site.baby-ui.localhost"
+).replace(/\/$/, "");
 const props = Object.fromEntries(
-	templates.flatMap(({ slug, pro }) => {
+	templates.map(({ slug, pro }) => {
 		const spec = pro
 			? shared.proSpecs.find((s) => s.slug === slug)
 			: shared.getSpec(slug);
 		const controls = spec ? shared.defaultProps(spec) : {};
 		const sample = pro ? shared.PRO_SAMPLES[slug] : undefined;
-		const base = shared.previewProps(slug, controls, sample);
-		const designs = (spec?.variants.design ?? []).filter((d) => d !== base.design);
 		return [
-			[slug, base],
-			...designs.map((design) => [
-				`${slug}@${design}`,
-				shared.previewProps(slug, { ...controls, design }, sample),
-			]),
+			slug,
+			shared.withSiteAssets(shared.previewProps(slug, controls, sample), ASSET_ORIGIN),
 		];
 	}),
 );

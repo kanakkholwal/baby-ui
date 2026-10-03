@@ -5,29 +5,10 @@ import { error } from "@sveltejs/kit";
 import { prepare } from "#lib/docs-nodes.js";
 import { highlight, langFor } from "#lib/highlight.js";
 import { componentCss, cssNames } from "#lib/registry-items.js";
+import { emailRender } from "#lib/server/emails.js";
 import { adjacentComponents, cardItems, findSpec, specs } from "#lib/server/registry.js";
 import { usageSnippet } from "#lib/usage.js";
 import type { EntryGenerator, PageServerLoad } from "./$types";
-
-type EmailRender = { html: string; text: string; bytes: number };
-// Written by `pnpm emails`: both ports rendered at build and gated for parity.
-type EmailRenders = { react: EmailRender; svelte: EmailRender };
-const emailRenders = {
-	...import.meta.glob<EmailRenders>("../../../../lib/generated/emails/*.json", {
-		import: "default",
-	}),
-	// Pro renders only reach a build that shows Pro; the literal keeps the glob tree-shakable.
-	...(__SHOW_PRO__
-		? import.meta.glob<EmailRenders>("../../../../lib/generated/emails-pro/*.json", {
-				import: "default",
-			})
-		: {}),
-};
-const emailRender = (slug: string) =>
-	emailRenders[`../../../../lib/generated/emails/${slug}.json`] ??
-	emailRenders[`../../../../lib/generated/emails-pro/${slug}.json`];
-// The kit has no layout of its own, so its page previews the welcome email built from it.
-const EMAIL_PREVIEW: Record<string, string> = { "email-kit": "email-welcome" };
 
 // Listed rather than crawled, so a component nothing links to still gets built. Charts are
 // crawled from /charts, which the reroute hook serves at their public URL.
@@ -83,9 +64,7 @@ export const load: PageServerLoad = async ({ params }) => {
 		}),
 	);
 
-	const emailSlug = EMAIL_PREVIEW[spec.slug] ?? spec.slug;
-	const email =
-		spec.category === "emails" ? ((await emailRender(emailSlug)?.()) ?? null) : null;
+	const email = spec.category === "emails" ? await emailRender(spec.slug) : null;
 
 	const prose = doc ? await prepare(doc.content) : null;
 	const related = specs
@@ -97,7 +76,7 @@ export const load: PageServerLoad = async ({ params }) => {
 		related: cardItems(related),
 		adjacent: adjacentComponents(spec.category, spec.slug),
 		ports,
-		email: email && { slug: emailSlug, react: email.react, svelte: email.svelte },
+		email: email && { slug: email.slug, react: email.react, svelte: email.svelte },
 		prose: prose?.content ?? null,
 		proseHeadings: prose?.headings ?? [],
 	};

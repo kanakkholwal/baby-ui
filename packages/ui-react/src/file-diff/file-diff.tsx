@@ -28,8 +28,8 @@ export function FileDiff({
 			<div className="flex items-center justify-between gap-3 border-border border-b bg-background/60 px-4 py-2.5">
 				<span className="truncate font-mono text-foreground text-xs">{filename}</span>
 				<span className="flex shrink-0 items-center gap-2 font-mono text-xs">
-					<span className="text-success">+{added}</span>
-					<span className="text-destructive">-{removed}</span>
+					<span className="text-success-strong">+{added}</span>
+					<span className="text-destructive-strong">-{removed}</span>
 				</span>
 			</div>
 

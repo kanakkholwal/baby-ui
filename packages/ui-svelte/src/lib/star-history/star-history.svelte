@@ -9,13 +9,13 @@ import {
 	XAxis,
 	YAxis,
 } from "../chart";
-import Counter from "../counter/counter.svelte";
 import Empty from "../empty/empty.svelte";
 import EmptyDescription from "../empty/empty-description.svelte";
 import EmptyHeader from "../empty/empty-header.svelte";
 import EmptyTitle from "../empty/empty-title.svelte";
 import { cn } from "../lib/cn";
 import { Line, LineChart } from "../line-chart";
+import RollingDigits from "../rolling-digits/rolling-digits.svelte";
 import Tabs from "../tabs/tabs.svelte";
 import TabsContent from "../tabs/tabs-content.svelte";
 import TabsList from "../tabs/tabs-list.svelte";
@@ -148,7 +148,7 @@ function fullDate(value: unknown): string {
 				</p>
 				<p class={styles.hero()}>
 					{#if layout.animate}
-						<Counter value={total} format={compact} durationMs={900} class={styles.heroValue()} />
+						<RollingDigits variant="count" value={total} format={compact} durationMs={900} size="md" class={cn("font-bold text-foreground", styles.heroValue())} />
 					{:else}
 						<span class={styles.heroValue()}>{compact(total)}</span>
 					{/if}

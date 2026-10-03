@@ -48,6 +48,8 @@ const LAYOUTS: { id: PageLayout; label: string; icon: Icon }[] = [
 	{ id: "playground", label: "Play", icon: IconAdjustmentsHorizontal },
 ];
 
+const currentLayout = $derived(LAYOUTS.find((layout) => layout.id === prefs.layout));
+
 // Resolving through LAYOUTS narrows the select's string back to a PageLayout without a cast.
 function pickLayout(next: string) {
 	const hit = LAYOUTS.find((layout) => layout.id === next);
@@ -56,13 +58,14 @@ function pickLayout(next: string) {
 </script>
 
 <Sheet bind:open={prefs.open}>
-	<SheetContent side="right" class="w-[min(20rem,100vw)] gap-0 p-0">
-		<SheetHeader class="h-12 shrink-0 border-border border-b px-4">
+	<SheetContent side="right" variant="framed" class="w-[min(20rem,100vw)]">
+		<SheetHeader class="shrink-0">
 			<SheetTitle>Settings</SheetTitle>
 			<SheetClose class="size-7 rounded-md" />
 		</SheetHeader>
 
-		<PropertyPanel class="[&>*]:px-1">
+		<!-- The groups pad themselves; pull them out to the body edge so labels align with the title. -->
+		<PropertyPanel class="-mx-4 -mt-2">
 			<PropertyPanelGroup>
 				<PropertyPanelGroupLabel>Appearance</PropertyPanelGroupLabel>
 				<PropertyPanelGroupContent>
@@ -99,7 +102,14 @@ function pickLayout(next: string) {
 							bind:value={() => prefs.layout, pickLayout}
 						>
 							<SelectTrigger size="sm" aria-label="Page layout" class="w-full">
-								<SelectValue />
+								{#if currentLayout}
+									<span class="flex min-w-0 items-center gap-1.5">
+										<currentLayout.icon size={14} class="shrink-0 text-muted-foreground" />
+										{currentLayout.label}
+									</span>
+								{:else}
+									<SelectValue />
+								{/if}
 							</SelectTrigger>
 							<SelectContent size="sm">
 								{#each LAYOUTS as layout (layout.id)}
@@ -132,13 +142,9 @@ function pickLayout(next: string) {
 							onPick={(id) => prefs.set("dialect", id)}
 						/>
 					</Field>
-					<p class="text-muted-foreground text-xs">Split and Play need a wide screen.</p>
 				</PropertyPanelGroupContent>
 			</PropertyPanelGroup>
 		</PropertyPanel>
 
-		<p class="mt-auto border-border border-t px-4 py-3 text-muted-foreground text-xs">
-			Saved in this browser and synced across open tabs.
-		</p>
 	</SheetContent>
 </Sheet>

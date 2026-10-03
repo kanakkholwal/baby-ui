@@ -113,7 +113,7 @@ export const CATEGORY: Record<Category, CategoryInfo> = {
 			"Transactional email templates for React Email and Svelte, themed from your tokens, tested for real inboxes.",
 		route: "top-level",
 		installDir: "emails",
-		preview: true,
+		preview: false,
 	},
 };
 

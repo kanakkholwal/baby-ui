@@ -20,7 +20,7 @@ export function Label({ children, className, required, disabled, ...rest }: Labe
 		>
 			{children}
 			{required ? (
-				<span aria-hidden className="text-[var(--destructive)]">
+				<span aria-hidden className="text-destructive-strong">
 					*
 				</span>
 			) : null}

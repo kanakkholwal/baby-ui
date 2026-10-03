@@ -11,6 +11,7 @@ import RollingDigit from "./rolling-digit.svelte";
 import {
 	type RollingDigitsDirection,
 	type RollingDigitsSize,
+	type RollingDigitsVariant,
 	rollingDigits,
 } from "./variants";
 
@@ -19,6 +20,8 @@ let {
 	pad,
 	locale,
 	format,
+	variant = "roll",
+	durationMs,
 	startOnView = true,
 	stepMs = 80,
 	coalesce = false,
@@ -45,6 +48,10 @@ let {
 	direction?: RollingDigitsDirection;
 	/** Travel of a rolling digit, in px. */
 	offset?: number;
+	/** `roll` springs each changed digit, `odometer` slides digit strips, `count` tweens the number. */
+	variant?: RollingDigitsVariant;
+	/** `odometer` and `count`: how long one change takes, in ms (500 and 1200 by default). */
+	durationMs?: number;
 	/** Fired when the display catches up with `value`. */
 	onAnimationComplete?: () => void;
 	size?: RollingDigitsSize;
@@ -127,9 +134,79 @@ $effect.pre(() => {
 		rendered = [...gone, ...next.map((c) => ({ ...c, entering: !before.has(c.key) }))];
 	});
 });
+
+const duration = $derived(durationMs ?? (variant === "count" ? 1200 : 500));
+// `count` hands `format` the raw tween value, so decimals survive; the others round first.
+const render = (n: number) =>
+	format ? format(n) : formatRollingDigits(n, { pad, locale });
+const chars = $derived([...target]);
+const ODOMETER_ROWS = Array.from({ length: 10 }, (_, i) => i);
+
+// Odometer strips start on 0 and roll to their digit once mounted, so the first value turns too.
+let mounted = $state(false);
+$effect(() => {
+	const frame = requestAnimationFrame(() => (mounted = true));
+	return () => cancelAnimationFrame(frame);
+});
+
+// `count`: tweens from the last shown number with an ease-out cubic.
+let counted = $state(0);
+let countFrom = 0;
+$effect(() => {
+	if (variant !== "count") return;
+	const to = armed ? value : 0;
+	const span = duration;
+	const start = untrack(() => countFrom);
+	if (matchMedia("(prefers-reduced-motion: reduce)").matches || start === to) {
+		counted = to;
+		countFrom = to;
+		return;
+	}
+	const began = performance.now();
+	let raf = 0;
+	const tick = (now: number) => {
+		const t = Math.min(1, (now - began) / span);
+		counted = start + (to - start) * (1 - (1 - t) ** 3);
+		countFrom = counted;
+		if (t < 1) raf = requestAnimationFrame(tick);
+	};
+	raf = requestAnimationFrame(tick);
+	return () => cancelAnimationFrame(raf);
+});
 </script>
 
-<span bind:this={root} data-slot="rolling-digits" class={cn(styles.root(), classProp)}>
+{#if variant !== "roll"}
+	<span
+		bind:this={root}
+		data-slot="rolling-digits"
+		data-variant={variant}
+		class={cn(styles.root(), classProp)}
+		style:--rd-duration="{duration}ms"
+	>
+		<span aria-live="polite" class={styles.srOnly()}>{variant === "count" ? render(armed ? value : 0) : target}</span>
+		{#if variant === "count"}
+			<span aria-hidden="true" class={digitClass}>{render(counted)}</span>
+		{:else}
+			<span aria-hidden="true" class={styles.cells()}>
+				<!-- Keyed from the right so digits keep their place when the value grows. -->
+				{#each chars as char, i (`${chars.length - i}-${/^[0-9]$/.test(char) ? "digit" : char}`)}
+					{#if /^[0-9]$/.test(char)}
+						<span class={cn(styles.odometerDigit(), digitClass)}>
+							<span class={styles.odometerTrack()} style:--rd-index={mounted ? char : 0}>
+								{#each ODOMETER_ROWS as row (row)}
+									<span class={styles.odometerRow()}>{row}</span>
+								{/each}
+							</span>
+						</span>
+					{:else}
+						<span class={digitClass}>{char}</span>
+					{/if}
+				{/each}
+			</span>
+		{/if}
+	</span>
+{:else}
+<span bind:this={root} data-slot="rolling-digits" data-variant={variant} class={cn(styles.root(), classProp)}>
 	<span aria-live="polite" class={styles.srOnly()}>{target}</span>
 	<span aria-hidden="true" class={styles.cells()}>
 		{#each rendered as cell (cell.key)}
@@ -160,3 +237,4 @@ $effect.pre(() => {
 		{/each}
 	</span>
 </span>
+{/if}

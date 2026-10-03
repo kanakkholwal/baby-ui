@@ -11,10 +11,10 @@ import {
 	XAxis,
 	YAxis,
 } from "../chart";
-import { Counter } from "../counter";
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "../empty/empty";
 import { cn } from "../lib/cn";
 import { Line, LineChart } from "../line-chart";
+import { RollingDigits } from "../rolling-digits/rolling-digits";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../tabs";
 import {
 	averagePerDay,
@@ -110,11 +110,13 @@ export function StarHistory({
 						</p>
 						<p className={styles.hero()}>
 							{layout.animate ? (
-								<Counter
+								<RollingDigits
+									variant="count"
 									value={total}
 									format={compact}
 									durationMs={900}
-									className={styles.heroValue()}
+									size="md"
+									className={cn("font-bold text-foreground", styles.heroValue())}
 								/>
 							) : (
 								<span className={styles.heroValue()}>{compact(total)}</span>

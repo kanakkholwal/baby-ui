@@ -47,6 +47,7 @@ const classes = $derived(textTransition({ variant }));
 		style:--tt-from-y={p.from.y ?? "0px"}
 		style:--tt-from-scale={p.from.scale ?? 1}
 		style:--tt-from-blur={p.from.blur ?? "0px"}
+		style:--tt-from-rotate={p.from.rotate ?? "0deg"}
 	>{content}</span>
 {/snippet}
 

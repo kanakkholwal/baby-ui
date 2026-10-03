@@ -1,5 +1,4 @@
 import { tv, type VariantProps } from "tailwind-variants";
-import { cardFrame } from "../card/variants";
 
 export const npmStats = tv({
 	slots: {
@@ -21,7 +20,7 @@ export const npmStats = tv({
 		chart: "min-w-0 px-5 pt-4 pb-6 md:px-7",
 		// A 1px gap over a border-coloured grid draws every divider, with no doubled edges.
 		counts: "grid grid-cols-3 gap-px border-border border-t bg-border",
-		count: "flex min-w-0 flex-col gap-1 bg-card px-6 py-5 md:px-8",
+		count: "flex min-w-0 flex-col gap-1 bg-background px-6 py-5 md:px-8",
 		countValue:
 			"font-heading font-semibold text-2xl text-foreground tabular-nums tracking-tight",
 		countLabel: "text-muted-foreground text-xs",
@@ -49,9 +48,9 @@ export const npmStats = tv({
 		 * `compact`: the total, two facts and the chart for a sidebar. `minimal`: no chrome.
 		 */
 		variant: {
-			default: { root: cardFrame({ variant: "default" }).root() },
+			default: { root: "rounded-2xl border border-border bg-background" },
 			compact: {
-				root: cardFrame({ variant: "default" }).root(),
+				root: "rounded-2xl border border-border bg-background",
 				head: "px-5 pt-5 md:px-5 md:pt-5",
 				heroValue: "text-4xl",
 				facts: "mt-4 px-5 md:px-5 [&>*:nth-child(n+3)]:hidden",

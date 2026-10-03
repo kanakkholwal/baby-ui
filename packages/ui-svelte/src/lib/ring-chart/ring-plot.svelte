@@ -3,7 +3,7 @@ import ChartTooltipContent from "../chart/chart-tooltip-content.svelte";
 import ChartTooltipPanel from "../chart/chart-tooltip-panel.svelte";
 import { setActivePoint, useChart } from "../chart/context";
 import type { ActivePoint, Datum } from "../chart/core";
-import Counter from "../counter/counter.svelte";
+import RollingDigits from "../rolling-digits/rolling-digits.svelte";
 import { RING_END, RING_START, type RingRow, ringLayout } from "./geometry";
 import Ring from "./ring.svelte";
 import { type RingCap, ringChart } from "./variants";
@@ -122,11 +122,13 @@ const centerRadius = $derived((layout.rings[0]?.inner ?? 0) - 8 * layout.scale);
 		style:width="{centerRadius * 2}px"
 		style:height="{centerRadius * 2}px"
 	>
-		<Counter
+		<RollingDigits
+			variant="count"
 			value={activeRow ? activeRow.value : total}
 			format={counterFormat}
 			durationMs={600}
-			triggerOnView={false}
+			startOnView={false}
+			class="font-bold text-foreground"
 			size="sm"
 		/>
 		<span class={styles.caption()}>{activeRow ? activeRow.label : centerLabel}</span>

@@ -143,7 +143,7 @@ function toggleRow(label: string) {
 											class={cn(
 												"truncate text-xs leading-[1.6]",
 												row.detailMono && "font-mono",
-												line.tone === "add" ? "text-success" : "text-muted-foreground",
+												line.tone === "add" ? "text-success-strong" : "text-muted-foreground",
 											)}
 										>
 											{line.text}
@@ -166,9 +166,9 @@ function toggleRow(label: string) {
 								style="animation-delay: calc(var(--stagger-step) * {steps.length + index});"
 							>
 								<span class="min-w-0 truncate">{diff.file}</span>
-								<span class="shrink-0 text-success tabular-nums">+{diff.add}</span>
+								<span class="shrink-0 text-success-strong tabular-nums">+{diff.add}</span>
 								{#if diff.del > 0}
-									<span class="shrink-0 text-destructive tabular-nums">−{diff.del}</span>
+									<span class="shrink-0 text-destructive-strong tabular-nums">−{diff.del}</span>
 								{/if}
 							</HoverCardTrigger>
 							{#if diff.lines?.length}
@@ -179,9 +179,9 @@ function toggleRow(label: string) {
 									<div class="flex items-center justify-between border-border border-b px-2.5 py-1.5 font-mono text-xs">
 										<span class="min-w-0 truncate text-muted-foreground">{diff.file}</span>
 										<span class="shrink-0 tabular-nums">
-											<span class="text-success">+{diff.add}</span>
+											<span class="text-success-strong">+{diff.add}</span>
 											{#if diff.del > 0}
-												<span class="text-destructive"> −{diff.del}</span>
+												<span class="text-destructive-strong"> −{diff.del}</span>
 											{/if}
 										</span>
 									</div>
@@ -191,9 +191,9 @@ function toggleRow(label: string) {
 												class={cn(
 													"flex gap-2 whitespace-pre px-2.5",
 													line.tone === "add"
-														? "bg-success/10 text-success"
+														? "bg-success/10 text-success-strong"
 														: line.tone === "del"
-															? "bg-destructive/10 text-destructive"
+															? "bg-destructive/10 text-destructive-strong"
 															: "text-muted-foreground",
 												)}
 											>

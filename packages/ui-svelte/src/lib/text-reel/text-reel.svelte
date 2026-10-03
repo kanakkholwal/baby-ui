@@ -2,13 +2,14 @@
 import { untrack } from "svelte";
 import { cn } from "../lib/cn";
 import { createReel } from "./reel";
-import { type TextReelSize, textReel } from "./variants";
+import { type TextReelOrientation, type TextReelSize, textReel } from "./variants";
 
 let {
 	items,
 	prefix,
 	speed = 0.6,
 	paused = false,
+	orientation = "vertical",
 	size = "md",
 	class: classProp,
 }: {
@@ -18,6 +19,7 @@ let {
 	/** Drift in px per frame while the page is still; scrolling boosts and steers it. */
 	speed?: number;
 	paused?: boolean;
+	orientation?: TextReelOrientation;
 	size?: TextReelSize;
 	class?: string;
 } = $props();
@@ -26,21 +28,23 @@ let viewport: HTMLDivElement | undefined = $state();
 let track: HTMLDivElement | undefined = $state();
 let copies = $state(2);
 let reel: ReturnType<typeof createReel> | undefined;
-const s = $derived(textReel({ size }));
+const s = $derived(textReel({ orientation, size }));
+const axis = $derived(orientation === "horizontal" ? "x" : "y");
 const onCopies = (count: number) => (copies = count);
 
 $effect(() => {
 	void items;
+	void axis;
 	const view = viewport;
 	const row = track;
 	if (!view || !row) return;
 	// Speed and pause flow through update(); recreating would reset the reel's position.
-	reel = untrack(() => createReel(view, row, { speed, paused, onCopies }));
+	reel = untrack(() => createReel(view, row, { speed, paused, axis, onCopies }));
 	return () => reel?.destroy();
 });
 
 $effect(() => {
-	reel?.update({ speed, paused, onCopies });
+	reel?.update({ speed, paused, axis, onCopies });
 });
 </script>
 

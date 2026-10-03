@@ -5,7 +5,7 @@ import type { PageServerLoad } from "./$types";
 const GRID = [
 	"area-chart",
 	"text-loop",
-	"task-rows",
+	"task-steps",
 	"webgl-liquid",
 	"circuit-board",
 	"week-calendar",
@@ -15,7 +15,7 @@ const GRID = [
 const NEW_PICKS = [
 	"swappable",
 	"color-picker",
-	"silk-aurora",
+	"aurora-flow",
 	"empty",
 	"wheel-picker",
 	"flowchart",

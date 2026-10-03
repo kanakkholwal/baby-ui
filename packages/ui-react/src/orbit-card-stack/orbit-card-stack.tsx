@@ -1,12 +1,14 @@
 "use client";
 
-import { type FocusEvent, type KeyboardEvent, useRef, useState } from "react";
+import { type FocusEvent, type KeyboardEvent, useEffect, useRef, useState } from "react";
 import { Badge } from "../badge/badge";
 import { Button } from "../button/button";
 import { cn } from "../lib/cn";
 import {
 	clampIndex,
 	DEFAULT_ORBIT_LABELS,
+	type GridFit,
+	gridFit,
 	initialsFor,
 	nextIndex,
 	type OrbitCardStackLabels,
@@ -71,6 +73,29 @@ export function OrbitCardStack({
 	const open = openProp ?? innerOpen;
 	const l = { ...DEFAULT_ORBIT_LABELS, ...labels };
 	const s = orbitCardStack({ size, layout });
+	const [fit, setFit] = useState<GridFit>();
+
+	useEffect(() => {
+		const el = stage.current;
+		if (layout !== "grid" || !el) return;
+		const measure = () => {
+			const card = el.querySelector<HTMLElement>("[data-orbit-card]");
+			if (card)
+				setFit(
+					gridFit(
+						el.clientWidth,
+						el.clientHeight,
+						card.offsetWidth,
+						card.offsetHeight,
+						count,
+					),
+				);
+		};
+		measure();
+		const resize = new ResizeObserver(measure);
+		resize.observe(el);
+		return () => resize.disconnect();
+	}, [layout, count]);
 
 	const setOpen = (next: boolean) => {
 		if (next === open) return;
@@ -121,7 +146,16 @@ export function OrbitCardStack({
 							className={s.card()}
 							style={{
 								zIndex: current ? 80 : 50 - Math.abs(i - active),
-								transform: orbitTransform(i, count, active, open, layout, spread, lift),
+								transform: orbitTransform(
+									i,
+									count,
+									active,
+									open,
+									layout,
+									spread,
+									lift,
+									fit,
+								),
 							}}
 							onMouseEnter={() => activate(i)}
 							onFocus={() => activate(i)}
@@ -161,9 +195,11 @@ export function OrbitCardStack({
 								</Button>
 							) : null}
 							<div className={s.body()}>
-								<p className={s.role()}>{item.role}</p>
+								{item.role ? <p className={s.role()}>{item.role}</p> : null}
 								<h3 className={s.name()}>{item.name}</h3>
-								<p className={s.description()}>{item.description}</p>
+								{item.description ? (
+									<p className={s.description()}>{item.description}</p>
+								) : null}
 								{item.stat ? <div className={s.stat()}>{item.stat}</div> : null}
 							</div>
 						</li>

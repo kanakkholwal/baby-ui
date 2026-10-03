@@ -37,33 +37,76 @@ export const PREVIEW_VIEWS: Partial<Record<Category, PreviewView[]>> = {
 	],
 };
 
-/** The OG PNG for `url()`: fetched once typing settles; the last image stays up until the
- * next one decodes. A null url pauses fetching. Create during component init. */
+type OgPngInput = {
+	slug: string;
+	entry: string;
+	controls: Record<string, unknown>;
+	/** The PNG view is open; until then the renderer only warms up. */
+	active: boolean;
+};
+
+/** The OG PNG, rasterised by takumi's WASM in a worker that warms on idle; renders once
+ * typing settles, keeping the last image up meanwhile. Create during component init. */
 export class OgPngPreview {
 	shown = $state("");
 	pending = $state(false);
+	error = $state("");
 
-	constructor(url: () => string | null) {
+	constructor(input: () => OgPngInput | null) {
+		// Safari has no requestIdleCallback; warming is idempotent, so re-runs cost nothing.
 		$effect(() => {
-			const next = url();
-			if (!next || next === this.shown) return;
+			if (!input()) return;
+			if (typeof requestIdleCallback === "function") {
+				const id = requestIdleCallback(() => void warm(), { timeout: 2000 });
+				return () => cancelIdleCallback(id);
+			}
+			const timer = setTimeout(() => void warm(), 200);
+			return () => clearTimeout(timer);
+		});
+		$effect(() => {
+			const next = input();
+			if (!next?.active) return;
+			const { slug, entry, controls } = next;
 			let cancelled = false;
-			const timer = setTimeout(() => {
+			const timer = setTimeout(async () => {
 				this.pending = true;
-				const image = new Image();
-				image.onload = image.onerror = () => {
+				try {
+					const url = await renderCard(slug, entry, controls);
 					if (cancelled) return;
-					this.pending = false;
-					if (image.naturalWidth) this.shown = next;
-				};
-				image.src = next;
-			}, 450);
+					this.shown = url;
+					this.error = "";
+				} catch (cause) {
+					if (!cancelled)
+						this.error = cause instanceof Error ? cause.message : String(cause);
+				} finally {
+					if (!cancelled) this.pending = false;
+				}
+			}, 300);
 			return () => {
 				cancelled = true;
 				clearTimeout(timer);
 			};
 		});
 	}
+}
+
+// Loaded on first use, so pages without an OG preview never fetch the renderer or the CSS.
+async function warm() {
+	const { warmOgRenderer } = await import("#lib/og/renderer.js");
+	await warmOgRenderer();
+}
+
+async function renderCard(
+	slug: string,
+	entry: string,
+	controls: Record<string, unknown>,
+) {
+	const [{ ogMarkup }, { renderOgPng }, { default: css }] = await Promise.all([
+		import("#lib/og/markup.js"),
+		import("#lib/og/renderer.js"),
+		import("../routes/layout.css?inline"),
+	]);
+	return renderOgPng(await ogMarkup(slug, entry, controls), css);
 }
 
 export type EmailRender = { html: string; text: string; bytes: number };

@@ -26,6 +26,14 @@ export const reasoning = tv({
 				content: "border-border/60 border-t pt-2.5",
 			},
 			card: { root: "rounded-2xl bg-card" },
+			// No chrome: a compact header over a thread line, for inline chat transcripts.
+			inline: {
+				root: "max-w-sm overflow-visible rounded-none",
+				trigger: "-mx-1.5 w-fit items-center rounded-md px-1.5 py-1",
+				icon: "mt-0",
+				chevron: "mt-0",
+				content: "mt-1 ml-[5px] border-border border-l px-0 pt-1 pb-1 pl-4",
+			},
 		},
 	},
 	defaultVariants: { variant: "outline" },
@@ -80,3 +88,50 @@ export const reasoningExtras = tv({
 		caption: "mt-1 text-xs text-muted-foreground",
 	},
 });
+
+export const reasoningRows = tv({
+	slots: {
+		list: "flex flex-col gap-1",
+		query: "flex h-6 items-center gap-2 px-1.5 text-muted-foreground text-xs",
+		row: "card-fade-up flex min-h-7 w-full items-center gap-2 rounded-md px-1.5 py-0.5 text-left",
+		label: "min-w-0 truncate font-medium text-foreground text-xs",
+		secondary: "shrink-0 text-muted-foreground text-xs",
+		diff: "shrink-0 font-mono text-xs tabular-nums",
+		glyph: "size-3.5 shrink-0 text-muted-foreground",
+		spinner:
+			"spinner size-3 shrink-0 rounded-full border-[1.5px] border-border border-t-muted-foreground",
+		source: "flex size-3.5 shrink-0 items-center justify-center rounded-full text-white",
+	},
+	variants: {
+		/** Steps tick off or spin; search rows link out to sources; coding rows select a file. */
+		kind: {
+			steps: {},
+			search: {
+				row: "transition-colors duration-(--duration-fast) hover:bg-foreground/[0.06]",
+			},
+			coding: {
+				row: "transition-colors duration-(--duration-fast) hover:bg-foreground/[0.06] aria-pressed:bg-muted",
+			},
+		},
+	},
+	defaultVariants: { kind: "steps" },
+});
+
+export type ReasoningRowsKind = NonNullable<VariantProps<typeof reasoningRows>["kind"]>;
+
+export type ReasoningRow = {
+	primary: string;
+	secondary?: string;
+	/** Sets `secondary` in the mono face, e.g. a path. */
+	mono?: boolean;
+	/** Coding rows: lines added and removed. */
+	add?: number;
+	del?: number;
+	/** Search rows: the source URL. */
+	href?: string;
+	/** Steps rows: spins instead of ticking. */
+	status?: "active";
+};
+
+/** Search source dot colours, cycled per row. */
+export const SOURCE_TONES = ["bg-info", "bg-warning", "bg-success"] as const;

@@ -12,12 +12,8 @@ import EmailKeyValue, {
 import EmailPanel from "../email-kit/email-panel.svelte";
 import EmailShell from "../email-kit/email-shell.svelte";
 import EmailText from "../email-kit/email-text.svelte";
-import {
-	type EmailShellAccent,
-	type EmailShellSurface,
-	emailLayout,
-} from "../email-kit/variants";
-import { type EmailMagicLinkDesign, emailMagicLink } from "./variants";
+import { type EmailShellSurface, emailLayout } from "../email-kit/variants";
+import { emailMagicLink } from "./variants";
 
 let {
 	productName,
@@ -42,9 +38,7 @@ let {
 	detailsTitle = "Request details",
 	warningTitle = "Didn't try to sign in?",
 	warningText = "You can safely ignore this email. Nobody can sign in without it.",
-	design = "classic",
 	surface = "card",
-	accent = "none",
 }: {
 	productName: string;
 	/** One-time sign-in link. */
@@ -57,7 +51,7 @@ let {
 	code?: string;
 	/** Where the request came from, e.g. device, location, time; helps spot a stranger's attempt. */
 	requestDetails?: EmailKeyValueRow[];
-	/** Absolute URL, about 32px tall. Falls back to the product name as text. */
+	/** Absolute PNG URL of a square mark, set beside the product name in header and footer. */
 	logoUrl?: string;
 	footerLinks?: EmailFooterLink[];
 	reason?: string;
@@ -70,67 +64,48 @@ let {
 	detailsTitle?: string;
 	warningTitle?: string;
 	warningText?: string;
-	/** `classic` is a left-aligned card; `spotlight` centres everything around the code. */
-	design?: EmailMagicLinkDesign;
-	surface?: EmailShellSurface;
-	accent?: EmailShellAccent;
+	surface?: Exclude<EmailShellSurface, "stacked">;
 } = $props();
 
 const s = emailLayout();
-const m = $derived(emailMagicLink({ design }));
-const spotlight = $derived(design === "spotlight");
+const m = emailMagicLink();
 </script>
 
-{#snippet footerBlock()}
-	<EmailFooter
-		lines={companyLines}
-		links={footerLinks}
-		{reason}
-		layout={spotlight ? "row" : "plain"}
-		align={spotlight ? "left" : "center"}
-	/>
-{/snippet}
-
-{#snippet details()}
-	<EmailText class={s.sectionTitle()}>{detailsTitle}</EmailText>
-	<EmailKeyValue rows={requestDetails} density="compact" />
-{/snippet}
-
-<EmailShell {preview} {surface} {accent}>
-	{#snippet footer()}{#if !spotlight}{@render footerBlock()}{/if}{/snippet}
-	{#snippet cardFooter()}{#if spotlight}{@render footerBlock()}{/if}{/snippet}
-	<EmailHeader brand={productName} logo={logoUrl} align={spotlight ? "center" : "left"} />
-	<EmailHeading align={spotlight ? "center" : "left"}>{heading}</EmailHeading>
+<EmailShell {preview} {surface}>
+	{#snippet cardFooter()}
+		<EmailFooter
+			lines={companyLines}
+			links={footerLinks}
+			{reason}
+			brand={productName}
+			logo={logoUrl}
+			layout="row"
+			align="left"
+		/>
+	{/snippet}
+	<EmailHeader brand={productName} logo={logoUrl} align="center" />
+	<EmailHeading align="center">{heading}</EmailHeading>
 	<EmailText tone="muted" class={m.intro()}>{intro}</EmailText>
 	{#if code}
 		<Section class={s.section()}>
-			{#if spotlight}
-				<EmailPanel tone="accent">
-					<EmailText class={m.codeLabel()}>{codeLabel}</EmailText>
-					<EmailCode {code} />
-				</EmailPanel>
-			{:else}
+			<EmailPanel tone="accent">
+				<EmailText class={m.codeLabel()}>{codeLabel}</EmailText>
 				<EmailCode {code} />
-			{/if}
+			</EmailPanel>
 		</Section>
 	{/if}
 	<Section class={s.action()}>
-		<EmailButton
-			href={signInUrl}
-			variant={code ? "secondary" : "primary"}
-			width={spotlight ? "full" : "auto"}
-		>
+		<EmailButton href={signInUrl} variant={code ? "secondary" : "primary"} width="full">
 			{actionLabel}
 		</EmailButton>
 	</Section>
 	<EmailText tone="muted" size="sm" class={m.expiry()}>{expiryText}</EmailText>
 	{#if requestDetails.length > 0}
 		<Section class={s.section()}>
-			{#if spotlight}
-				<EmailPanel tone="outline">{@render details()}</EmailPanel>
-			{:else}
-				{@render details()}
-			{/if}
+			<EmailPanel tone="outline">
+				<EmailText class={s.sectionTitle()}>{detailsTitle}</EmailText>
+				<EmailKeyValue rows={requestDetails} density="compact" />
+			</EmailPanel>
 		</Section>
 	{/if}
 	<Section class={s.section()}>

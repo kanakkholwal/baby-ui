@@ -8,19 +8,9 @@ export const emailReceipt = defineComponent({
 	category: "emails",
 	status: "beta",
 	variants: {
-		design: ["classic", "summary"],
 		surface: ["card", "plain"],
-		accent: ["none", "top"],
 	},
 	props: [
-		{
-			name: "design",
-			type: '"classic" | "summary"',
-			description:
-				"`classic` lists everything in rows; `summary` leads with a display headline, a tinted items panel and a brand bar footer.",
-			default: "summary",
-			control: { kind: "select", options: ["classic", "summary"] },
-		},
 		{
 			name: "productName",
 			type: "string",
@@ -29,7 +19,7 @@ export const emailReceipt = defineComponent({
 				kind: "text",
 			},
 			required: true,
-			default: "Northwind",
+			default: "Acme",
 		},
 		{
 			name: "receiptNumber",
@@ -137,7 +127,7 @@ export const emailReceipt = defineComponent({
 			name: "logoUrl",
 			type: "string",
 			description:
-				"Absolute URL, about 32px tall. Falls back to the product name as text.",
+				"Absolute PNG URL of a square mark, set beside the product name in the header and footer.",
 			control: {
 				kind: "none",
 			},
@@ -175,16 +165,6 @@ export const emailReceipt = defineComponent({
 				options: ["card", "plain"],
 			},
 			default: "card",
-		},
-		{
-			name: "accent",
-			type: '"none" | "top"',
-			description: "`top` adds a strip of the accent colour across the card.",
-			control: {
-				kind: "select",
-				options: ["none", "top"],
-			},
-			default: "none",
 		},
 	],
 	a11y: {

@@ -18,12 +18,14 @@ import {
 } from "#lib/registry.js";
 import { proSpecs } from "#lib/server/pro.js";
 
-/** Public specs, plus Pro specs when the private submodule is checked out and Pro is shown.
- * Preview categories (emails) ride the same flag until they launch. */
-export const specs: readonly ComponentSpec[] = [
-	...publicSpecs.filter((s) => __SHOW_PRO__ || !PREVIEW_CATEGORIES.includes(s.category)),
-	...proSpecs,
-];
+const proSlugs = new Set(proSpecs.map((s) => s.slug));
+
+/** Every spec the site shows: Pro and preview categories (emails) appear only with the flag.
+ * Pages, lists, search and the sitemap all read this, so a hidden spec 404s everywhere. */
+export const specs: readonly ComponentSpec[] = [...publicSpecs, ...proSpecs].filter(
+	(s) =>
+		__SHOW_PRO__ || (!proSlugs.has(s.slug) && !PREVIEW_CATEGORIES.includes(s.category)),
+);
 
 /** What the site lists: retired specs keep their page and registry item, nothing else. */
 export const liveSpecs: readonly ComponentSpec[] = specs.filter((s) => !s.retired);

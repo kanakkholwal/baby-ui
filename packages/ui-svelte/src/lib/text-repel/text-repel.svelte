@@ -1,6 +1,7 @@
 <script lang="ts">
 import { cn } from "../lib/cn";
 import {
+	createInertia,
 	letterOrigins,
 	repelAll,
 	type TextRepelMode,
@@ -48,14 +49,23 @@ $effect(() => {
 	return () => observer.disconnect();
 });
 
+const inertia = createInertia();
+$effect(() => () => inertia.destroy());
+
 function onMove(event: PointerEvent) {
 	if (!root || reduced) return;
 	const box = root.getBoundingClientRect();
 	const pointer = { x: event.clientX - box.left, y: event.clientY - box.top };
+	if (mode === "inertia") {
+		inertia.move(pointer, event.target, letters, strength);
+		return;
+	}
 	repelAll(letters.filter(Boolean), origins, pointer, radius, strength, mode);
 }
 
 function onLeave() {
+	inertia.leave();
+	if (mode === "inertia") return;
 	repelAll(letters.filter(Boolean), origins, null, radius, strength, mode);
 }
 </script>

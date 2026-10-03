@@ -12,10 +12,16 @@ import {
 import {
 	type RollingDigitsDirection,
 	type RollingDigitsSize,
+	type RollingDigitsVariant,
 	rollingDigits,
 } from "./variants";
 
-export type { RollingDigitsDirection, RollingDigitsLocale, RollingDigitsSize };
+export type {
+	RollingDigitsDirection,
+	RollingDigitsLocale,
+	RollingDigitsSize,
+	RollingDigitsVariant,
+};
 
 export interface RollingDigitsProps {
 	/** Rounded to an integer before formatting. */
@@ -34,6 +40,10 @@ export interface RollingDigitsProps {
 	direction?: RollingDigitsDirection;
 	/** Travel of a rolling digit, in px. */
 	offset?: number;
+	/** `roll` springs each changed digit, `odometer` slides digit strips, `count` tweens the number. */
+	variant?: RollingDigitsVariant;
+	/** `odometer` and `count`: how long one change takes, in ms (500 and 1200 by default). */
+	durationMs?: number;
 	/** Fired when the display catches up with `value`. */
 	onAnimationComplete?: () => void;
 	size?: RollingDigitsSize;
@@ -93,11 +103,57 @@ function Digit({
 	);
 }
 
+// `count`: tweens from the last shown number with an ease-out cubic, writing text directly.
+function CountTween({
+	to,
+	durationMs,
+	render,
+	className,
+}: {
+	to: number;
+	durationMs: number;
+	render: (value: number) => string;
+	className: string;
+}) {
+	const ref = useRef<HTMLSpanElement>(null);
+	const from = useRef(to);
+	useEffect(() => {
+		const el = ref.current;
+		if (!el) return;
+		const start = from.current;
+		if (matchMedia("(prefers-reduced-motion: reduce)").matches || start === to) {
+			el.textContent = render(to);
+			from.current = to;
+			return;
+		}
+		const began = performance.now();
+		let raf = 0;
+		const tick = (now: number) => {
+			const t = Math.min(1, (now - began) / durationMs);
+			const current = start + (to - start) * (1 - (1 - t) ** 3);
+			el.textContent = render(current);
+			from.current = current;
+			if (t < 1) raf = requestAnimationFrame(tick);
+		};
+		raf = requestAnimationFrame(tick);
+		return () => cancelAnimationFrame(raf);
+	}, [to, durationMs, render]);
+	return (
+		<span ref={ref} aria-hidden="true" className={className}>
+			{render(from.current)}
+		</span>
+	);
+}
+
+const ODOMETER_ROWS = Array.from({ length: 10 }, (_, i) => i);
+
 export function RollingDigits({
 	value,
 	pad,
 	locale,
 	format,
+	variant = "roll",
+	durationMs,
 	startOnView = true,
 	stepMs = 80,
 	coalesce = false,
@@ -174,10 +230,79 @@ export function RollingDigits({
 		setRendered([...gone, ...cells.map((c) => ({ ...c, entering: !before.has(c.key) }))]);
 	}
 
+	// Odometer strips start on 0 and roll to their digit once mounted, so the first value turns too.
+	const [mounted, setMounted] = useState(false);
+	useEffect(() => {
+		const frame = requestAnimationFrame(() => setMounted(true));
+		return () => cancelAnimationFrame(frame);
+	}, []);
+	const duration = durationMs ?? (variant === "count" ? 1200 : 500);
+	// `count` hands `format` the raw tween value, so decimals survive; the others round first.
+	const render = useMemo(
+		() => (n: number) => (format ? format(n) : formatRollingDigits(n, { pad, locale })),
+		[pad, locale, format],
+	);
+
+	if (variant !== "roll") {
+		const chars = [...target];
+		return (
+			<span
+				ref={rootRef}
+				data-slot="rolling-digits"
+				data-variant={variant}
+				className={cn(styles.root(), className)}
+				style={{ "--rd-duration": `${duration}ms` } as CSSProperties}
+			>
+				<span aria-live="polite" className={styles.srOnly()}>
+					{variant === "count" ? render(armed ? value : 0) : target}
+				</span>
+				{variant === "count" ? (
+					<CountTween
+						to={armed ? value : 0}
+						durationMs={duration}
+						render={render}
+						className={digitClassName ?? ""}
+					/>
+				) : (
+					<span aria-hidden="true" className={styles.cells()}>
+						{chars.map((char, i) => {
+							// Keyed from the right so digits keep their place when the value grows.
+							const key = chars.length - i;
+							if (!/^[0-9]$/.test(char))
+								return (
+									<span key={`${key}-${char}`} className={digitClassName}>
+										{char}
+									</span>
+								);
+							return (
+								<span
+									key={`${key}-digit`}
+									className={cn(styles.odometerDigit(), digitClassName)}
+								>
+									<span
+										className={styles.odometerTrack()}
+										style={{ "--rd-index": mounted ? char : 0 } as CSSProperties}
+									>
+										{ODOMETER_ROWS.map((row) => (
+											<span key={row} className={styles.odometerRow()}>
+												{row}
+											</span>
+										))}
+									</span>
+								</span>
+							);
+						})}
+					</span>
+				)}
+			</span>
+		);
+	}
+
 	return (
 		<span
 			ref={rootRef}
 			data-slot="rolling-digits"
+			data-variant={variant}
 			className={cn(styles.root(), className)}
 		>
 			<span aria-live="polite" className={styles.srOnly()}>

@@ -2,56 +2,68 @@
 
 import type { ReactNode } from "react";
 import { cn } from "../lib/cn";
-import { useCanvasEngine } from "../lib/use-canvas-engine";
+import { type CanvasEngine, useCanvasEngine } from "../lib/use-canvas-engine";
 import { type AuroraFlowOptions, mountAuroraFlow } from "./aurora";
+import { mountSilkAurora } from "./silk";
 import {
-	AURORA_FLOW_COLORS,
+	AURORA_FLOW_GRAIN,
 	AURORA_FLOW_SPEED,
 	type AuroraFlowPosition,
 	type AuroraFlowSpeed,
 	type AuroraFlowTone,
+	type AuroraFlowVariant,
+	auroraColors,
 	auroraFlow,
 } from "./variants";
 
-export type { AuroraFlowPosition, AuroraFlowSpeed, AuroraFlowTone };
+export type { AuroraFlowPosition, AuroraFlowSpeed, AuroraFlowTone, AuroraFlowVariant };
 
 export interface AuroraFlowProps {
+	variant?: AuroraFlowVariant;
 	tone?: AuroraFlowTone;
 	speed?: AuroraFlowSpeed;
 	position?: AuroraFlowPosition;
-	/** Veil and light strength, 0 to 2. */
+	/** Veil or ribbon strength, 0 to 2. */
 	intensity?: number;
-	/** Film grain, 0 to 1. */
+	/** Film grain, 0 to 1. Defaults per variant. */
 	grain?: number;
-	/** Flow direction in degrees. */
+	/** Veil: flow direction in degrees. */
 	direction?: number;
-	/** Veils bend toward the pointer. */
+	/** Veils bend, or ribbons lean, toward the pointer. */
 	interactive?: boolean;
 	className?: string;
 	children?: ReactNode;
 }
 
-/** Layered silk veils drifting in a WebGL field, coloured from theme tokens. */
-export function AuroraFlow({
+/** Silk light drifting in a WebGL field, as layered veils or three sheened ribbons, from theme tokens. */
+export function AuroraFlow({ variant = "veil", ...props }: AuroraFlowProps) {
+	// Each variant is its own shader, so a switch remounts the canvas.
+	return <AuroraField key={variant} variant={variant} {...props} />;
+}
+
+function AuroraField({
+	variant,
 	tone = "chart",
 	speed = "normal",
 	position = "absolute",
 	intensity = 1,
-	grain = 0.22,
+	grain,
 	direction = -18,
 	interactive = true,
 	className,
 	children,
-}: AuroraFlowProps) {
+}: AuroraFlowProps & { variant: AuroraFlowVariant }) {
+	const mount: CanvasEngine<AuroraFlowOptions> =
+		variant === "silk" ? mountSilkAurora : mountAuroraFlow;
 	const options: AuroraFlowOptions = {
-		colors: AURORA_FLOW_COLORS[tone],
+		colors: auroraColors(variant, tone),
 		speed: AURORA_FLOW_SPEED[speed],
 		intensity,
-		grain,
+		grain: grain ?? AURORA_FLOW_GRAIN[variant],
 		direction,
 		interactive,
 	};
-	const { root, canvas, webgl } = useCanvasEngine(mountAuroraFlow, options, [
+	const { root, canvas, webgl } = useCanvasEngine(mount, options, [
 		tone,
 		speed,
 		intensity,
@@ -59,10 +71,15 @@ export function AuroraFlow({
 		direction,
 		interactive,
 	]);
-	const s = auroraFlow({ tone, speed, position, webgl });
+	const s = auroraFlow({ variant, tone, speed, position, webgl });
 
 	return (
-		<div ref={root} data-slot="aurora-flow" className={cn(s.root(), className)}>
+		<div
+			ref={root}
+			data-slot="aurora-flow"
+			data-variant={variant}
+			className={cn(s.root(), className)}
+		>
 			<div aria-hidden className={s.fallback()} />
 			<canvas ref={canvas} aria-hidden className={s.canvas()} />
 			{children ? <div className={s.content()}>{children}</div> : null}

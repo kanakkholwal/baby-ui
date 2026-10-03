@@ -28,8 +28,10 @@ and inboxes that support `prefers-color-scheme` switch to the dark palette.
 </EmailShell>
 ```
 
-- `EmailShell` sets the column to 560px (`width="md"`) or 600px (`"lg"`), the widest any inbox
-  reliably shows.
+- `EmailShell` sets a 600px column, the widest any inbox reliably shows, with a 12px gutter so
+  phones keep the card near the edge.
+- `EmailHeader` sets a square mark beside the product name (`variant="lockup"`), or a wordmark
+  image alone (`"logo"`). Use PNG: Gmail and Outlook drop SVG.
 - `EmailCallout` tones are soft fills. The text still has to say what happened, because colour
   alone carries no meaning for screen readers or high-contrast modes.
 - `EmailFooter` takes the sender name and postal address. Anti-spam law in many regions requires

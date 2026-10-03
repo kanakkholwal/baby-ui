@@ -3,6 +3,7 @@
 import { type PointerEvent, useEffect, useRef } from "react";
 import { cn } from "../lib/cn";
 import {
+	createInertia,
 	letterOrigins,
 	repelAll,
 	type TextRepelMode,
@@ -36,7 +37,14 @@ export function TextRepel({
 	const letters = useRef<HTMLSpanElement[]>([]);
 	const origins = useRef<{ x: number; y: number }[]>([]);
 	const reduced = useRef(false);
+	const inertia = useRef<ReturnType<typeof createInertia>>(null);
 	const s = textRepel({ mode, size });
+
+	useEffect(() => {
+		const tracker = createInertia();
+		inertia.current = tracker;
+		return () => tracker.destroy();
+	}, []);
 	const chars = Array.from(text);
 
 	useEffect(() => {
@@ -58,6 +66,10 @@ export function TextRepel({
 		if (!node || reduced.current) return;
 		const box = node.getBoundingClientRect();
 		const pointer = { x: event.clientX - box.left, y: event.clientY - box.top };
+		if (mode === "inertia") {
+			inertia.current?.move(pointer, event.target, letters.current, strength);
+			return;
+		}
 		repelAll(
 			letters.current.filter(Boolean),
 			origins.current,
@@ -69,6 +81,8 @@ export function TextRepel({
 	}
 
 	function onLeave() {
+		inertia.current?.leave();
+		if (mode === "inertia") return;
 		repelAll(
 			letters.current.filter(Boolean),
 			origins.current,

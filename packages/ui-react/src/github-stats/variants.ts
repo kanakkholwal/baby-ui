@@ -1,5 +1,4 @@
 import { tv, type VariantProps } from "tailwind-variants";
-import { cardFrame } from "../card/variants";
 import type { GithubCalendarSize } from "../github-calendar/variants";
 import type { GITHUB_MIX_KEYS } from "./core";
 
@@ -26,7 +25,7 @@ export const githubStats = tv({
 		panel: "card-fade-up mt-0 min-w-0 outline-none",
 		// A 1px gap over a border-coloured grid draws every divider, with no doubled edges.
 		counts: "grid grid-cols-2 gap-px border-border border-t bg-border sm:grid-cols-4",
-		count: "flex min-w-0 flex-col gap-1 bg-card px-6 py-5 md:px-8",
+		count: "flex min-w-0 flex-col gap-1 bg-background px-6 py-5 md:px-8",
 		countValue:
 			"font-heading font-semibold text-2xl text-foreground tabular-nums tracking-tight",
 		countLabel: "text-muted-foreground text-xs",
@@ -60,9 +59,9 @@ export const githubStats = tv({
 		 * `compact`: the total, two facts and a small calendar for a sidebar. `minimal`: no chrome.
 		 */
 		variant: {
-			default: { root: cardFrame({ variant: "default" }).root() },
+			default: { root: "rounded-2xl border border-border bg-background" },
 			compact: {
-				root: cardFrame({ variant: "default" }).root(),
+				root: "rounded-2xl border border-border bg-background",
 				head: "px-5 pt-5 md:px-5 md:pt-5",
 				heroValue: "text-4xl",
 				insights: "mt-4 px-5 md:px-5 [&>*:nth-child(n+3)]:hidden",

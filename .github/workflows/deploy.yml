@@ -22,6 +22,8 @@ permissions:
 jobs:
   ci:
     uses: ./.github/workflows/ci.yml
+    # The Pro bundle job needs the private repo token.
+    secrets: inherit
 
   deploy:
     needs: ci
@@ -29,15 +31,33 @@ jobs:
     environment: production
     steps:
       - uses: actions/checkout@v6
+
+      # Production always bundles Pro; without the token this fails rather than ship without it.
+      - name: Check out Pro
+        uses: actions/checkout@v6
+        with:
+          repository: kanakkholwal/baby-ui-pro
+          token: ${{ secrets.PRO_REPO_TOKEN }}
+          path: pro
+          persist-credentials: false
+
       - uses: ./.github/actions/setup
         with:
           build-caches: "true"
+
+      - name: Install Pro
+        run: pnpm install --frozen-lockfile --dir pro
 
       # Rebuilt here rather than reused from CI: production URLs and keys are baked in.
       - name: Build site and registry
         run: pnpm build
         env:
           VITE_POSTHOG_KEY: ${{ vars.POSTHOG_KEY }}
+          # Pro is bundled but hidden until subscriptions and the account dashboard ship.
+          VITE_SHOW_PRO: "false"
+
+      - name: Pro bundled and hidden
+        run: node scripts/check-pro-bundle.mjs --expect=hidden
 
       - name: Worker bundle budget
         run: pnpm size
@@ -72,3 +92,16 @@ jobs:
             echo "$code  $url"
             [ "$code" = "200" ]
           done
+
+      # The flag-off site serves no Pro page and links to none.
+      - name: Pro pages stay dark
+        run: |
+          set -euo pipefail
+          for path in /pricing /checkout /dashboard /login; do
+            code=$(curl -sS -o /dev/null -w '%{http_code}' --retry 3 --retry-delay 5 "$BABY_UI_SITE_URL$path")
+            echo "$code  $path"
+            [ "$code" = "404" ]
+          done
+          if curl -sS "$BABY_UI_SITE_URL/" | grep -q 'href="/pricing"'; then
+            echo "The home page links to /pricing"; exit 1
+          fi

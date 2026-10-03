@@ -157,9 +157,9 @@ function apply() {
 		<div class="flex min-h-11 items-center justify-between border-border border-t px-3 py-2">
 			{#if accepted}
 				<span
-					class="pop-in inline-flex items-center gap-1.5 rounded-full bg-success/10 py-1 pr-2.5 pl-1 font-medium text-xs text-success"
+					class="pop-in inline-flex items-center gap-1.5 rounded-full bg-success/10 py-1 pr-2.5 pl-1 font-medium text-xs text-success-strong"
 				>
-					<span class="flex size-4.5 items-center justify-center rounded-full bg-success text-white dark:text-background">
+					<span class="flex size-4.5 items-center justify-center rounded-full bg-success text-success-foreground">
 						<svg width="11" height="11" viewBox="0 0 24 24" fill="none" aria-hidden="true">
 							<path
 								d="M20 6 9 17l-5-5"

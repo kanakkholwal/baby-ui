@@ -2,4 +2,6 @@
 import { UnderlineHoverText } from "@baby-ui/svelte";
 </script>
 
-<UnderlineHoverText text="Underline hover" tone="primary" />
+<p>
+	Read the <UnderlineHoverText as="a" href="/changelog" variant="draw" tone="primary">changelog</UnderlineHoverText>.
+</p>

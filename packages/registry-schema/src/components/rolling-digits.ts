@@ -1,16 +1,35 @@
 import { defineComponent } from "../index.ts";
 
+const VARIANTS = ["roll", "odometer", "count"];
 const DIRECTIONS = ["dynamic", "up", "down"];
 const SIZES = ["inherit", "sm", "md", "lg"];
 
 export const rollingDigits = defineComponent({
 	slug: "rolling-digits",
 	name: "Rolling Digits",
-	description: "A number whose changed digits spring in and out, one column at a time.",
+	description:
+		"An animated number: changed digits spring in and out, digit strips turn like an odometer, or the value counts up.",
 	category: "text",
 	status: "stable",
-	variants: { direction: DIRECTIONS, size: SIZES },
+	variants: { variant: VARIANTS, direction: DIRECTIONS, size: SIZES },
+	isUpdated: true,
 	props: [
+		{
+			name: "variant",
+			type: VARIANTS.map((v) => `"${v}"`).join(" | "),
+			description:
+				"`roll` springs each changed digit in and out; `odometer` slides each digit's 0 to 9 strip to its row; `count` tweens the whole number.",
+			default: "roll",
+			control: { kind: "select", options: VARIANTS },
+		},
+		{
+			name: "durationMs",
+			type: "number",
+			description:
+				"How long one change takes, in ms: 500 for `odometer`, 1200 for `count`.",
+			control: { kind: "number", min: 100, max: 3000, step: 100 },
+			showWhen: { variant: ["odometer", "count"] },
+		},
 		{
 			name: "value",
 			type: "number",
@@ -50,6 +69,7 @@ export const rollingDigits = defineComponent({
 			description: "Gap between queued steps when the value changes faster than a roll.",
 			default: 80,
 			control: { kind: "number", min: 0, max: 400, step: 20 },
+			showWhen: { variant: ["roll"] },
 		},
 		{
 			name: "coalesce",
@@ -57,6 +77,7 @@ export const rollingDigits = defineComponent({
 			description: "Jump to the latest value instead of stepping through each update.",
 			default: false,
 			control: { kind: "boolean" },
+			showWhen: { variant: ["roll"] },
 		},
 		{
 			name: "direction",
@@ -64,6 +85,7 @@ export const rollingDigits = defineComponent({
 			description: "Roll by whether a digit grew or shrank, or always one way.",
 			default: "dynamic",
 			control: { kind: "select", options: DIRECTIONS },
+			showWhen: { variant: ["roll"] },
 		},
 		{
 			name: "offset",
@@ -71,6 +93,7 @@ export const rollingDigits = defineComponent({
 			description: "Travel of a rolling digit, in px.",
 			default: 32,
 			control: { kind: "number", min: 8, max: 64, step: 4 },
+			showWhen: { variant: ["roll"] },
 		},
 		{
 			name: "onAnimationComplete",
