@@ -1,6 +1,6 @@
 <script lang="ts">
 import type { Snippet } from "svelte";
-import type { TrackEvent } from "$lib/analytics";
+import type { TrackEvent } from "#lib/analytics.js";
 import CopyButton from "./copy-button.svelte";
 import Tabs from "./tabs.svelte";
 

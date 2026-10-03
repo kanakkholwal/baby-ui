@@ -1,7 +1,7 @@
 <script lang="ts">
 import { IconFileCode } from "@baby-ui/icons";
-import type { TrackEvent } from "$lib/analytics";
-import { LANG_LABEL } from "$lib/highlight";
+import type { TrackEvent } from "#lib/analytics.js";
+import { LANG_LABEL } from "#lib/highlight.js";
 import CodeFrame from "./code-frame.svelte";
 
 type Panel = { id: string; label: string; code: string; html: string; lang: string };

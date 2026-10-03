@@ -1,17 +1,13 @@
-import { existsSync } from "node:fs";
-import { join, resolve } from "node:path";
+import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { flush, Output, ROOT, rel } from "./gen/core.mjs";
+import { isMainThread } from "node:worker_threads";
+import { flush, Output, rel } from "./gen/core.mjs";
 import { autoDemos } from "./gen/demos.mjs";
 import { emailTheme } from "./gen/email-theme.mjs";
 import { indexes } from "./gen/indexes.mjs";
+import { HAS_PRO } from "./gen/roots.mjs";
 import { sharedFiles } from "./gen/shared.mjs";
 import { usageFiles } from "./gen/usage.mjs";
-import { reportMemory } from "./lib/memory.mjs";
-import { watchAndRun } from "./lib/watch.mjs";
-
-// Per-root manifests and atomic-write temp files, rewritten by every run.
-const BOOKKEEPING = /(\.generated\.json|\.gitignore|\.tmp)$/;
 
 /** React is the source for every shared .ts; the Svelte port gets generated copies. */
 export const TARGETS = [
@@ -36,8 +32,6 @@ const PUBLIC_ROOTS = [
 	"packages/demos/src/svelte",
 	"packages/demos/src/usage",
 ];
-// The private Pro submodule joins in whenever it is checked out.
-const HAS_PRO = existsSync(join(ROOT, "pro/packages/react/src"));
 const PRO_ROOTS = HAS_PRO ? ["pro/packages/svelte/src/lib"] : [];
 
 /**
@@ -70,21 +64,11 @@ export function generate({ check = false, quiet = false } = {}) {
 	return result;
 }
 
-/** Folders whose edits can change generated output. */
-function watchRoots() {
-	return [
-		"packages/ui-react/src",
-		"packages/ui-svelte/src/lib",
-		"packages/registry-schema/src/components",
-		"packages/demos/src",
-		// tokens.css feeds the generated email theme.
-		"packages/tokens/src",
-		...(HAS_PRO ? ["pro/packages/react/src"] : []),
-	].map((path) => join(ROOT, path));
-}
-
+// A watch worker imports this module under the watcher's argv; only the real CLI runs below.
 const isMain =
-	process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+	isMainThread &&
+	process.argv[1] &&
+	resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 if (isMain) {
 	const args = new Set(process.argv.slice(2));
 	if (args.has("--list")) {
@@ -95,20 +79,6 @@ if (isMain) {
 		if (result.stale.length > 0 || result.conflicts.length > 0) process.exit(1);
 	} else {
 		// Conflicts are reported, never fatal here: `prepare` must not fail an install. --check fails.
-		let owned = new Set(generate().generated);
-		if (args.has("--watch")) {
-			watchAndRun({
-				roots: watchRoots(),
-				// Its own writes would retrigger it. A pruned file costs one extra run that writes nothing.
-				ignore: (path) => owned.has(path) || BOOKKEEPING.test(path),
-				run: () => {
-					owned = new Set(generate().generated);
-				},
-				onError: (error) =>
-					console.error(`gen failed, retrying on the next change: ${error.message}`),
-			});
-			console.log("gen: watching sources");
-			reportMemory((line) => console.log(`gen: ${line}`));
-		}
+		generate();
 	}
 }

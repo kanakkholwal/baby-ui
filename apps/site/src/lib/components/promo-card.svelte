@@ -1,6 +1,6 @@
 <script lang="ts">
 import { IconArrowUpRight } from "@baby-ui/icons";
-import type { Product } from "$lib/products";
+import type { Product } from "#lib/products.js";
 
 let { product }: { product: Product } = $props();
 </script>

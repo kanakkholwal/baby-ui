@@ -1,23 +1,29 @@
 ---
 title: Form
-description: shadcn-svelte's form parts on formsnap and Superforms. In React, use Field with react-hook-form.
+description: Field parts wired to TanStack Form, so ids, invalid state, errors and submit are handled for you.
 component: form
 category: base
-tags: [form, formsnap, superforms, validation, zod]
+tags: [form, tanstack form, validation, zod, standard schema]
 ---
 
-Svelte only. These are shadcn-svelte's form parts (`FormField`, `FormControl`, `FormLabel`,
-`FormDescription`, `FormFieldErrors`, `FormFieldset`, `FormLegend`, `FormElementField`,
-`FormButton`) on [formsnap](https://formsnap.dev) and
-[Superforms](https://superforms.rocks), so labels, descriptions, errors and `aria-invalid` are
-wired to the control for you.
+Built on [TanStack Form](https://tanstack.com/form) (`@tanstack/react-form` or
+`@tanstack/svelte-form`) and the [Field](/components/base/field) parts. You own the form
+instance and each control's value; the parts own the wiring:
 
-## React
+- `Form` submits through the form's `handleSubmit`, so validation runs first.
+- `FormField` wraps the field `form.Field` hands you and marks it invalid once it is touched and
+  failing. Submitting touches every field.
+- `FormLabel`, `FormDescription` and `FormFieldErrors` get their ids from the field.
+- `FormControl` passes `id`, `name`, `aria-invalid`, `aria-describedby` and the blur handler to your
+  control: a render function in React, a `child` snippet in Svelte.
+- `FormButton` shows Button's loading state while the form submits.
 
-shadcn no longer ships a React form component. Compose [Field](/components/base/field) with
-react-hook-form or TanStack Form instead; the Field page shows the pattern.
+## Validation
 
-## Server or SPA
+Any Standard Schema validator works, zod included. Pick when it runs per form or per field:
+`validators: { onChange, onBlur, onSubmit }`. The demo validates on blur and on submit.
 
-Pass the `form` your page's load function returns to `superForm()` when the form posts to an
-action. The demo runs in SPA mode, validating in the browser with the zod adapter.
+## Server actions
+
+Nothing here needs a framework. In SvelteKit or a React server action, post from `onSubmit` and
+map server errors back with `form.setErrorMap`.

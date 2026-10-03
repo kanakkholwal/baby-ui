@@ -1,6 +1,6 @@
 import { guides } from "virtual:docvia/source";
 import { error } from "@sveltejs/kit";
-import { guideMarkdown } from "$lib/markdown";
+import { guideMarkdown } from "#lib/markdown.js";
 import type { EntryGenerator, RequestHandler } from "./$types";
 
 export const prerender = true;

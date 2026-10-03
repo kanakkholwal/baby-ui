@@ -32,7 +32,7 @@ let contentEl = $state<HTMLElement | null>(null);
 		)}
 	>
 		{#if dialog.variant === "framed"}
-			<div class={cn(styles.body(), "p-5")}>
+			<div class={styles.body()}>
 				{@render children?.()}
 			</div>
 			{#if dialog.footer}

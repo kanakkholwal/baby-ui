@@ -147,7 +147,7 @@ function DocsNavList({
 			{pill ? (
 				<div
 					aria-hidden="true"
-					className={docsNav({ connector }).pill()}
+					className={docsNav({ connector, hovering: hovered !== null }).pill()}
 					style={{ transform: `translateY(${pill.top}px)`, height: pill.height }}
 				/>
 			) : null}

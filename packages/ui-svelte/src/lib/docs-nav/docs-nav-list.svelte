@@ -38,7 +38,7 @@ function onEnter(event: PointerEvent, index: number) {
 	{#if pill}
 		<div
 			aria-hidden="true"
-			class={docsNav({ connector }).pill()}
+			class={docsNav({ connector, hovering: hovered !== null }).pill()}
 			style:transform="translateY({pill.top}px)"
 			style:height="{pill.height}px"
 		></div>

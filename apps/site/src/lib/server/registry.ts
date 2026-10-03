@@ -15,8 +15,8 @@ import {
 	type NavCategory,
 	type SidebarGroup,
 	specHref,
-} from "$lib/registry";
-import { proSpecs } from "$lib/server/pro";
+} from "#lib/registry.js";
+import { proSpecs } from "#lib/server/pro.js";
 
 /** Public specs, plus Pro specs when the private submodule is checked out and Pro is shown.
  * Preview categories (emails) ride the same flag until they launch. */

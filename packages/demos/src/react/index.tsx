@@ -29,7 +29,7 @@ import { FineTuneCardDemo } from "./fine-tune-card";
 import { FlightStatusCardDemo } from "./flight-status-card";
 import { FlowchartDemo } from "./flowchart";
 import { FooterDemo } from "./footer";
-import { FieldDemo, NativeSelectDemo, SeparatorDemo } from "./forms";
+import { FieldDemo, FormDemo, NativeSelectDemo, SeparatorDemo } from "./forms";
 import { BentoGridDemo, ButtonDemo, FileTreeDemo, MorphingModalDemo } from "./foundations";
 import { FunnelChartDemo } from "./funnel-chart";
 import { GaugeChartDemo } from "./gauge-chart";
@@ -241,6 +241,7 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"flight-status-card": FlightStatusCardDemo,
 	flowchart: FlowchartDemo,
 	footer: FooterDemo,
+	form: FormDemo,
 	"fullscreen-nav": FullscreenNavDemo,
 	"funnel-chart": FunnelChartDemo,
 	gauge: GaugeDemo,

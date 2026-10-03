@@ -11,7 +11,7 @@ export const docsNav = tv({
 			"inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-foreground/[0.06] px-1 font-medium text-[10px] text-foreground/70 tabular-nums",
 		content: "px-0 pt-1 pb-1",
 		list: "relative",
-		pill: "pointer-events-none absolute right-0 rounded-md bg-foreground/[0.06] transition-[transform,height] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none",
+		pill: "pointer-events-none absolute right-0 rounded-md bg-foreground/[0.06] transition-[transform,height,opacity] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none",
 		row: "relative",
 		marker:
 			"pointer-events-none absolute duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none",
@@ -43,6 +43,8 @@ export const docsNav = tv({
 			},
 			false: {},
 		},
+		// The pill fades on leave but keeps its place, so the next hover still glides from it.
+		hovering: { true: { pill: "opacity-100" }, false: { pill: "opacity-0" } },
 		state: {
 			rest: { link: "text-foreground/70 hover:text-foreground" },
 			dimmed: { link: "text-foreground/70 opacity-60" },
@@ -72,7 +74,7 @@ export const docsNav = tv({
 		},
 		{ rungs: true, state: "active", class: { label: "translate-x-2" } },
 	],
-	defaultVariants: { connector: "tick", rungs: false, state: "rest" },
+	defaultVariants: { connector: "tick", rungs: false, hovering: false, state: "rest" },
 });
 
 export type DocsNavConnector = NonNullable<VariantProps<typeof docsNav>["connector"]>;

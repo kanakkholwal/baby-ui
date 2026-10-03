@@ -8,6 +8,7 @@ import Sheet from "../sheet/sheet.svelte";
 import SheetContent from "../sheet/sheet-content.svelte";
 import SheetHeader from "../sheet/sheet-header.svelte";
 import SheetTitle from "../sheet/sheet-title.svelte";
+import { currentHref, groupHrefs } from "./current";
 import MegaMenu from "./mega-menu.svelte";
 import type { MegaMenuGroup, MegaNavLink } from "./types";
 import { type MegaNavbarVariant, megaNavbar } from "./variants";
@@ -36,10 +37,7 @@ let {
 	class?: string;
 } = $props();
 
-function isCurrent(href: string) {
-	if (!active) return false;
-	return active === href || active.startsWith(`${href}/`);
-}
+const current = $derived(currentHref(groupHrefs(groups, links), active));
 
 let scrolled = $state(false);
 const styles = $derived(
@@ -97,8 +95,8 @@ const footerActions = $derived(mobileActions ?? actions);
 					href={link.href}
 					target={link.external ? "_blank" : undefined}
 					rel={link.external ? "noreferrer" : undefined}
-					aria-current={isCurrent(link.href) ? "page" : undefined}
-					class={styles.link({ current: isCurrent(link.href) })}
+					aria-current={link.href === current ? "page" : undefined}
+					class={styles.link({ current: link.href === current })}
 				>
 					{link.label}
 				</a>
@@ -191,8 +189,8 @@ const footerActions = $derived(mobileActions ?? actions);
 										target={item.external ? "_blank" : undefined}
 										rel={item.external ? "noreferrer" : undefined}
 										onclick={() => (mobileOpen = false)}
-										aria-current={isCurrent(item.href) ? "page" : undefined}
-										class={styles.mobileItem({ current: isCurrent(item.href) })}
+										aria-current={item.href === current ? "page" : undefined}
+										class={styles.mobileItem({ current: item.href === current })}
 									>
 										{#if item.icon}
 											<span class="shrink-0 text-muted-foreground [&_svg]:size-4">
@@ -225,8 +223,8 @@ const footerActions = $derived(mobileActions ?? actions);
 							target={link.external ? "_blank" : undefined}
 							rel={link.external ? "noreferrer" : undefined}
 							onclick={() => (mobileOpen = false)}
-							aria-current={isCurrent(link.href) ? "page" : undefined}
-							class={styles.mobileLink({ current: isCurrent(link.href) })}
+							aria-current={link.href === current ? "page" : undefined}
+							class={styles.mobileLink({ current: link.href === current })}
 						>
 							{link.label}
 						</a>

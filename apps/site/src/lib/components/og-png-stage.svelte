@@ -1,5 +1,5 @@
 <script lang="ts">
-import type { OgPngPreview } from "$lib/preview-modes.svelte";
+import type { OgPngPreview } from "#lib/preview-modes.svelte.js";
 
 let { preview, name }: { preview: OgPngPreview; name: string } = $props();
 </script>

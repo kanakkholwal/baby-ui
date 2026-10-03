@@ -108,7 +108,7 @@ export function DialogContent({
 				{dialog.variant === "framed" ? (
 					<>
 						{/* Inset frame: the body sits on a lighter surface, the footer in the rim below it. */}
-						<div className={cn(styles.body(), "p-5")}>{children}</div>
+						<div className={styles.body()}>{children}</div>
 						<div ref={dialog.setFooterEl} className="empty:hidden" />
 					</>
 				) : (

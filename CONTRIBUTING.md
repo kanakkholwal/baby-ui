@@ -1,0 +1,69 @@
+# Contributing
+
+## Setup
+
+Requirements: Node 22.17+, pnpm 11 (`corepack enable`), and Bun 1.3 (the registry build runs on
+it).
+
+```bash
+pnpm install   # also generates indexes and installs the pre-commit hook
+pnpm dev       # docs site at http://site.baby-ui.localhost
+```
+
+`pnpm playground` starts the isolated React and Svelte runners instead. Dev servers run
+through [portless](https://portless.sh), so they get named `*.baby-ui.localhost` URLs;
+`pnpm dev:list` and `pnpm dev:stop` show and clean them up.
+
+## Layout
+
+- `packages/ui-react`, `packages/ui-svelte`: the two ports. React is the source for shared
+  `.ts` (variants, logic); the Svelte copies are generated.
+- `packages/registry-schema`: one spec per component (props, files, dependencies).
+- `packages/demos`: demos and usage snippets for both ports.
+- `packages/registry-build`: turns specs and sources into the shadcn registry JSON.
+- `apps/site`: the docs site (SvelteKit). `apps/registry` serves the JSON.
+
+## Adding a component
+
+```bash
+pnpm component create my-component --category=base
+```
+
+Scaffolds both ports, the spec and a docs page. Edit sources only: indexes, shared copies,
+auto demos and usage are generated and gitignored.
+
+## The dev loop
+
+`pnpm dev` runs two watchers beside Vite, so adding or removing a component needs no restart:
+
+- `gen:watch` regenerates indexes, shared copies and demos, and reloads itself when the
+  generator's own code changes.
+- `registry:watch` rebuilds the registry JSON the site's Code tab reads.
+
+A generator error is logged and retried on the next save; the dev server keeps running. Each
+process logs its memory when it moves by 10%, and every registry rebuild prints its peak.
+
+## Checks
+
+| Command | Does |
+| --- | --- |
+| `pnpm fix` | Strips `.js` from relative imports, runs `biome check --write`, then the comment gate |
+| `pnpm lint` | The same checks, read-only, as CI runs them |
+| `pnpm test` | Script tests, chart core, registry-build |
+| `pnpm check` | Type-checks every package |
+| `pnpm build` | Site and registry build |
+
+The pre-commit hook (lefthook) runs the fixes on staged files and re-stages them; the comment
+gate can only block, since shortening a comment needs a person. Don't bypass it with
+`--no-verify`.
+
+## Conventions
+
+The house rules (shadcn API, Base UI and bits-ui primitives, motion contract, comment limits)
+are in [`.agents/rules.md`](.agents/rules.md); the look-and-motion contract is
+[`DESIGN.md`](DESIGN.md). React and Svelte change together in the same pull request.
+
+## Pull requests
+
+Branch from `main`, keep one change per PR, and make sure CI is green. Deployment is described
+in [`DEPLOYMENT.md`](DEPLOYMENT.md).

@@ -32,10 +32,10 @@ import {
 	Shortcut,
 } from "@baby-ui/svelte";
 import type { Component } from "svelte";
+import { track } from "#lib/analytics.js";
+import { CATEGORY_LABEL, type CatalogItem, loadCatalog } from "#lib/registry.js";
+import { scoreEntry } from "#lib/search-score.js";
 import { goto } from "$app/navigation";
-import { track } from "$lib/analytics";
-import { CATEGORY_LABEL, type CatalogItem, loadCatalog } from "$lib/registry";
-import { scoreEntry } from "$lib/search-score";
 
 let open = $state(false);
 let filter = $state("all");

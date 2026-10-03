@@ -13,8 +13,8 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from "@baby-ui/svelte";
-import { track } from "$lib/analytics";
-import type { PreviewView } from "$lib/preview-modes.svelte";
+import { track } from "#lib/analytics.js";
+import type { PreviewView } from "#lib/preview-modes.svelte.js";
 
 let {
 	viewport = $bindable(),

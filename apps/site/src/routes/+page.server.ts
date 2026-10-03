@@ -1,4 +1,4 @@
-import { cardItems, liveSpecs } from "$lib/server/registry";
+import { cardItems, liveSpecs } from "#lib/server/registry.js";
 import type { PageServerLoad } from "./$types";
 
 /** The showcase grid: one live panel per area, none repeating the hero. */

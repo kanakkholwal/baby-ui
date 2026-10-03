@@ -26,8 +26,8 @@ own it.
 
 ## How it works
 
-1. Point the shadcn CLI at the registry once. [Installation](/docs/installation) has the
-   `components.json` for both frameworks.
+1. Run `shadcn init` (or `shadcn-svelte init`) once. [Installation](/docs/installation) has
+   both.
 2. Add a component; its source, variants and any CSS it needs land in your project.
 3. Change anything. Tokens in [Theming](/docs/theming) restyle every component at once.
 

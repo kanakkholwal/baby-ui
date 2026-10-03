@@ -1,7 +1,7 @@
 <script lang="ts">
 import { DocsNav, type DocsNavConnector, type DocsNavSection } from "@baby-ui/svelte";
+import type { SidebarGroup } from "#lib/registry.js";
 import { page } from "$app/state";
-import type { SidebarGroup } from "$lib/registry";
 
 let {
 	groups,

@@ -56,5 +56,9 @@
 		"shiki": "catalog:",
 		"tailwind-merge": "catalog:",
 		"takumi-js": "^2.14.0"
+	},
+	"imports": {
+		"#lib": "./src/lib/index.js",
+		"#lib/*": "./src/lib/*"
 	}
 }

@@ -1,6 +1,7 @@
 <script lang="ts">
 import type { Snippet } from "svelte";
 import { cn } from "../lib/cn";
+import { currentHref, groupHrefs, isCurrentSection } from "./current";
 import type { MegaMenuGroup, MegaMenuItem } from "./types";
 import { type MegaNavbarVariant, megaNavbar } from "./variants";
 
@@ -34,10 +35,7 @@ let panels: (HTMLDivElement | undefined)[] = $state([]);
 let triggers: (HTMLButtonElement | undefined)[] = $state([]);
 let closeTimer: ReturnType<typeof setTimeout> | null = null;
 
-function isCurrent(href: string) {
-	if (!active) return false;
-	return active === href || active.startsWith(`${href}/`);
-}
+const current = $derived(currentHref(groupHrefs(groups), active));
 
 function measure() {
 	if (open < 0 || !row) return;
@@ -122,7 +120,7 @@ function show(i: number) {
 					requestAnimationFrame(() => panels[i]?.querySelector("a")?.focus());
 				}
 			}}
-			class={styles.trigger({ current: isOpen || isCurrent(group.href) })}
+			class={styles.trigger({ current: isOpen || isCurrentSection(group.href, active) })}
 		>
 			{group.label}
 			{@render chevronDown(styles.chevron({ open: isOpen }))}
@@ -154,7 +152,7 @@ function show(i: number) {
 								target={item.external ? "_blank" : undefined}
 								rel={item.external ? "noreferrer" : undefined}
 								onclick={() => (open = -1)}
-								aria-current={isCurrent(item.href) ? "page" : undefined}
+								aria-current={item.href === current ? "page" : undefined}
 								class={styles.item()}
 							>
 								{#if item.icon || itemIcon}
@@ -190,7 +188,7 @@ function show(i: number) {
 										target={link.external ? "_blank" : undefined}
 										rel={link.external ? "noreferrer" : undefined}
 										onclick={() => (open = -1)}
-										aria-current={isCurrent(link.href) ? "page" : undefined}
+										aria-current={link.href === current ? "page" : undefined}
 										class={styles.moreLink()}>{link.label}</a
 									>
 								</li>

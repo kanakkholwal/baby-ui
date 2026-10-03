@@ -1,6 +1,6 @@
 <script lang="ts">
-import { PMS } from "$lib/pm";
-import { type PackageManager, prefs } from "$lib/preferences.svelte";
+import { PMS } from "#lib/pm.js";
+import { type PackageManager, prefs } from "#lib/preferences.svelte.js";
 import Tabs from "./tabs.svelte";
 
 const tabs = PMS.map((id) => ({ id, label: id }));

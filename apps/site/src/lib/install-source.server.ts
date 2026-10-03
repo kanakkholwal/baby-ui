@@ -1,7 +1,7 @@
 import type { Framework } from "@baby-ui/registry-schema";
-import { highlight, langFor } from "$lib/highlight";
-import { componentCss, sourceFiles } from "$lib/registry-items";
-import type { InstallSource } from "$lib/source";
+import { highlight, langFor } from "#lib/highlight.js";
+import { componentCss, sourceFiles } from "#lib/registry-items.js";
+import type { InstallSource } from "#lib/source.js";
 
 /** Highlighted files for manual install; served as JSON so pages only pay for it on demand. */
 export async function installSource(

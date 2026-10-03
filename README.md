@@ -4,7 +4,7 @@
 
 <p align="center">
   Animated, accessible components for React and Svelte.<br />
-  Copy-paste, one token layer, zero runtime dependency.
+  One spec, two real ports, source you own.
 </p>
 
 <p align="center">
@@ -14,6 +14,35 @@
   <a href="LICENSE">Apache-2.0</a>
 </p>
 
+## Features
+
+- **240+ components, two ports.** Each one is built once from a shared spec and shipped as a
+  hand-written React port and Svelte port: same props, same motion, same accessibility.
+- **A shadcn drop-in.** The shadcn CLI copies source into your project; part names, `data-slot`s
+  and `variant`/`size` props match shadcn/ui and shadcn-svelte.
+- **Accessible by construction.** Interactive parts sit on Base UI (React) and bits-ui (Svelte),
+  the primitives shadcn itself uses.
+- **Motion that answers the hand.** Presses squish, popovers zoom from their trigger, panels grow
+  instead of popping. All CSS, all tokens, all honouring reduced motion.
+- **Your theme drives it.** Components read CSS variables and never name a colour.
+- **More than primitives.** Charts on d3 and SVG, blocks, text effects, backgrounds, agent UI,
+  OG images and emails.
+
+## Quick start
+
+In a project with Tailwind CSS v4 and `shadcn init` done:
+
+```bash
+npx shadcn@latest add https://baby-ui.pages.dev/r/button.json
+npx shadcn-svelte@latest add https://baby-ui.pages.dev/svelte/r/button.json
+```
+
+The [installation guide](https://baby-ui.nexonauts.com/docs/installation) covers a fresh
+project, and every component page has its command ready.
+
+## Contributing
+
+Setup, the dev loop and the checks are in [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 ## Star History
 
@@ -25,41 +54,7 @@
  </picture>
 </a>
 
-
-## What this is
-
-145+ components, each built once from a shared spec and shipped as a real React port and a
-real Svelte port: same props, same motion, same accessibility contract, no framework-specific
-compromise in either one. Installs like shadcn/ui: the CLI copies source into your project,
-nothing is imported at runtime.
-
-```bash
-npx shadcn@latest add https://baby-ui.pages.dev/r/button.json
-npx shadcn-svelte@latest add https://baby-ui.pages.dev/svelte/r/button.json
-```
-
-Base primitives on Base UI (React) and bits-ui (Svelte), charts on d3 and SVG, one CSS token
-layer for both ports, motion that respects `prefers-reduced-motion` throughout.
-
-## Development
-
-- `pnpm install`, then `pnpm dev` (root) starts the docs site; `pnpm playground` starts the
-  React/Svelte isolated runners. Every dev server runs through [portless](https://portless.sh),
-  so it's `site.baby-ui.localhost` and friends, not a port to remember.
-- Run them from the root: turbo starts `gen:watch` (and `registry:watch` for the site) beside
-  Vite, so adding or removing a component regenerates indexes and registry JSON live. A
-  generator error is logged and retried on the next save; the dev server keeps running.
-- Each dev process logs its own memory (`site memory`, `gen: memory`, `registry watcher: memory`)
-  when it moves by 10%, and every registry rebuild prints its peak.
-- `pnpm install` sets up a pre-commit hook (lefthook) that strips `.js` from relative imports,
-  runs `biome check --write` and the comment gate on staged files, then re-stages the fixes.
-  `pnpm fix` does the same across the repo; `pnpm lint` checks without writing, as CI does.
-- `pnpm dev:list` / `pnpm dev:stop` show and clean up running dev servers.
-- `pnpm check`, `pnpm lint`, `pnpm build` run the same gates CI does.
-- Agent and contributor rules live in [`.agents/rules.md`](.agents/rules.md); deployment
-  topology is in [`DEPLOYMENT.md`](DEPLOYMENT.md).
-
 ## License
 
-Apache-2.0, see [`LICENSE`](LICENSE). Ported component licenses are credited per-component
-in [`THIRD_PARTY_LICENSES.md`](THIRD_PARTY_LICENSES.md).
+Apache-2.0, see [`LICENSE`](LICENSE). Ported components credit their sources in
+[`THIRD_PARTY_LICENSES.md`](THIRD_PARTY_LICENSES.md).

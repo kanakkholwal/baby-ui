@@ -1,7 +1,7 @@
 import { TOP_LEVEL_CATEGORIES } from "@baby-ui/registry-schema";
 import { error } from "@sveltejs/kit";
-import { componentMarkdown } from "$lib/markdown";
-import { findSpec, specs } from "$lib/server/registry";
+import { componentMarkdown } from "#lib/markdown.js";
+import { findSpec, specs } from "#lib/server/registry.js";
 import type { EntryGenerator, RequestHandler } from "./$types";
 
 export const prerender = true;

@@ -1,14 +1,14 @@
 import { defaultProps } from "@baby-ui/registry-schema";
 import { pixelBasedPreset, Renderer } from "@better-svelte-email/server";
-import { error, json } from "@sveltejs/kit";
-import { proEmailSample, proEmailTemplates } from "$lib/pro";
-import { MAX_PROPS, safeUrls, sameOrigin } from "$lib/server/preview-guard";
-import { findSpec } from "$lib/server/registry";
+import { error } from "@sveltejs/kit";
+import { proEmailSample, proEmailTemplates } from "#lib/pro.js";
+import { MAX_PROPS, safeUrls, sameOrigin } from "#lib/server/preview-guard.js";
+import { findSpec } from "#lib/server/registry.js";
 import {
 	emailPlainText,
 	type TemplateModule,
 	templateLoader,
-} from "$lib/server/templates";
+} from "#lib/server/templates.js";
 import { previewProps } from "../../../../../../../packages/demos/src/data/preview-props";
 import { emailTailwindConfig } from "../../../../../../../packages/ui-svelte/src/lib/lib/email-theme";
 import type { RequestHandler } from "./$types";
@@ -54,7 +54,7 @@ export const GET: RequestHandler = async ({ params, url, request }) => {
 	} catch {
 		throw error(400, `Invalid props for "${params.slug}"`);
 	}
-	return json(
+	return Response.json(
 		{ html, text: emailPlainText(html), bytes: new TextEncoder().encode(html).length },
 		// private: a shared cache would replay the result to requests that skipped the origin check.
 		{ headers: { "cache-control": "private, max-age=3600" } },

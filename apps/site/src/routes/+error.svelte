@@ -7,8 +7,8 @@ import {
 	ShowcaseGrid,
 	ShowcasePanel,
 } from "@baby-ui/svelte";
+import { type CatalogItem, loadCatalog } from "#lib/registry.js";
 import { page } from "$app/state";
-import { type CatalogItem, loadCatalog } from "$lib/registry";
 
 const status = $derived(page.status);
 const notFound = $derived(status === 404);

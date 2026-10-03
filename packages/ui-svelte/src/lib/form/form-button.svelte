@@ -1,8 +1,16 @@
 <script lang="ts">
+import { useSelector } from "@tanstack/svelte-form";
 import type { ComponentProps } from "svelte";
 import Button from "../button/button.svelte";
+import { getForm } from "./context";
 
-let { ref = $bindable(null), ...rest }: ComponentProps<typeof Button> = $props();
+let {
+	ref = $bindable(null),
+	loading = false,
+	...rest
+}: ComponentProps<typeof Button> = $props();
+
+const submitting = useSelector(getForm().form.store, (state) => state.isSubmitting);
 </script>
 
-<Button bind:ref type="submit" {...rest} />
+<Button bind:ref type="submit" loading={loading || submitting.current} {...rest} />

@@ -1,8 +1,8 @@
 <script lang="ts">
 import { Button } from "@baby-ui/svelte";
-import ComponentCard from "$lib/components/component-card.svelte";
-import Seo from "$lib/components/seo.svelte";
-import { breadcrumbLd, collectionLd, metaDescription } from "$lib/seo";
+import ComponentCard from "#lib/components/component-card.svelte";
+import Seo from "#lib/components/seo.svelte";
+import { breadcrumbLd, collectionLd, metaDescription } from "#lib/seo.js";
 import type { PageProps } from "./$types";
 
 let { data }: PageProps = $props();

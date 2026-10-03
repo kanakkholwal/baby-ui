@@ -1,5 +1,5 @@
-import type { Handle } from "@sveltejs/kit";
-import { POSTHOG_REGION } from "$lib/analytics";
+import type { Handle } from "@sveltejs/kit/hooks";
+import { POSTHOG_REGION } from "#lib/analytics.js";
 
 const INGEST = `https://${POSTHOG_REGION}.i.posthog.com`;
 const FORWARDED = ["content-type", "content-encoding", "user-agent"];
@@ -17,6 +17,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 		if (value) headers.set(name, value);
 	}
 	const hasBody = request.method !== "GET" && request.method !== "HEAD";
+
 	const upstream = await fetch(
 		`${INGEST}${pathname.slice("/ingest".length)}${url.search}`,
 		{

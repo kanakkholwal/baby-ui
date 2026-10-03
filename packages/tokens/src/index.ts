@@ -9,7 +9,12 @@ export const easing = {
 
 /** Milliseconds, mirrored from motion.css. */
 export const duration = {
-	press: 140,
+	instant: 100,
+	fast: 150,
+	base: 200,
+	slow: 250,
+	press: 150,
+	backdrop: 150,
 	tooltip: 150,
 	dropdown: 150,
 	collapse: 200,

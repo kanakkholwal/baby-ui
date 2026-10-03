@@ -97,7 +97,7 @@ export function SheetClose({
 			data-slot="sheet-close"
 			aria-label={children ? undefined : "Close"}
 			className={cn(
-				"grid size-8 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-card hover:text-foreground",
+				"grid size-8 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground",
 				className,
 			)}
 			{...props}

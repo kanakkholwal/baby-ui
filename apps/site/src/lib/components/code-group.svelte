@@ -1,8 +1,8 @@
 <script lang="ts">
-import type { Panel } from "$lib/docs-nodes";
-import { LANG_LABEL } from "$lib/highlight";
-import { pmCommand } from "$lib/pm";
-import { prefs } from "$lib/preferences.svelte";
+import type { Panel } from "#lib/docs-nodes.js";
+import { LANG_LABEL } from "#lib/highlight.js";
+import { pmCommand } from "#lib/pm.js";
+import { prefs } from "#lib/preferences.svelte.js";
 import CopyButton from "./copy-button.svelte";
 import PmTabs from "./pm-tabs.svelte";
 import PmTerminal from "./pm-terminal.svelte";

@@ -1,5 +1,6 @@
 <script lang="ts">
 import {
+	Form,
 	FormButton,
 	FormControl,
 	FormField,
@@ -7,25 +8,36 @@ import {
 	FormLabel,
 } from "@baby-ui/svelte/form";
 import { Input } from "@baby-ui/svelte/input";
-import { defaults, superForm } from "sveltekit-superforms";
-import { zod4 } from "sveltekit-superforms/adapters";
+import { createForm } from "@tanstack/svelte-form";
 import { z } from "zod";
 
 const schema = z.object({ email: z.email("Enter a valid email.") });
-// Pass your page's `data.form` instead of defaults() when the form posts to an action.
-const form = superForm(defaults(zod4(schema)), { SPA: true, validators: zod4(schema) });
-const { form: formData, enhance } = form;
+
+const form = createForm(() => ({
+	defaultValues: { email: "" },
+	validators: { onSubmit: schema },
+	onSubmit: ({ value }) => console.log(value),
+}));
 </script>
 
-<form method="POST" use:enhance>
-	<FormField {form} name="email">
-		<FormControl>
-			{#snippet children({ props })}
+<Form {form}>
+	<form.Field name="email">
+		{#snippet children(field)}
+			<FormField {field}>
 				<FormLabel>Email</FormLabel>
-				<Input {...props} type="email" bind:value={$formData.email} />
-			{/snippet}
-		</FormControl>
-		<FormFieldErrors />
-	</FormField>
+				<FormControl>
+					{#snippet child({ props })}
+						<Input
+							{...props}
+							type="email"
+							value={field.state.value}
+							oninput={(e) => field.handleChange(e.currentTarget.value)}
+						/>
+					{/snippet}
+				</FormControl>
+				<FormFieldErrors />
+			</FormField>
+		{/snippet}
+	</form.Field>
 	<FormButton>Save</FormButton>
-</form>
+</Form>

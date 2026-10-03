@@ -66,11 +66,47 @@
 	--ease-out: var(--ease-out);
 	--ease-in-out: var(--ease-in-out);
 	--ease-drawer: var(--ease-drawer);
+	--ease-spring-snappy: var(--ease-spring-snappy);
+	--ease-spring-bouncy: var(--ease-spring-bouncy);
+
+	/* `duration-fast` etc.; the four tiers are the only speeds components use. */
+	--transition-duration-instant: var(--duration-instant);
+	--transition-duration-fast: var(--duration-fast);
+	--transition-duration-base: var(--duration-base);
+	--transition-duration-slow: var(--duration-slow);
+
+	/* Container padding by surface tier: `p-menu`, `p-popover`, `p-panel`, `py-section`. */
+	--spacing-menu: 0.25rem;
+	--spacing-popover: 0.75rem;
+	--spacing-panel: 1.5rem;
+	--spacing-section: 4rem;
 
 	/* Without these a bare `transition-colors` uses Tailwind's own curve, which
 	   is most hovers in the system quietly ignoring the motion layer. */
-	--default-transition-duration: 150ms;
+	--default-transition-duration: var(--duration-fast);
 	--default-transition-timing-function: var(--ease-out);
+}
+
+/* The type scale. UI text is xs, sm, base, lg; display is 2xl, 4xl, 6xl with tracking baked
+   in. Values match Tailwind's, so shadcn markup keeps its sizes. */
+@theme {
+	--text-xs: 0.75rem;
+	--text-xs--line-height: 1rem;
+	--text-sm: 0.875rem;
+	--text-sm--line-height: 1.25rem;
+	--text-base: 1rem;
+	--text-base--line-height: 1.5rem;
+	--text-lg: 1.125rem;
+	--text-lg--line-height: 1.75rem;
+	--text-2xl: 1.5rem;
+	--text-2xl--line-height: 2rem;
+	--text-2xl--letter-spacing: -0.015em;
+	--text-4xl: 2.25rem;
+	--text-4xl--line-height: 2.5rem;
+	--text-4xl--letter-spacing: -0.025em;
+	--text-6xl: 3.75rem;
+	--text-6xl--line-height: 1;
+	--text-6xl--letter-spacing: -0.035em;
 }
 
 @theme {

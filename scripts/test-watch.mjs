@@ -73,6 +73,26 @@ test("changes during a run queue exactly one follow-up, never an overlap", async
 	assert.equal(runs.length, 2);
 });
 
+test("each run receives the paths changed since the previous run", async () => {
+	const batches = [];
+	const { root, close } = fixture({ run: () => {} });
+	const watcher = watchAndRun({
+		roots: [root],
+		debounceMs: DEBOUNCE,
+		run: (changed) => {
+			batches.push([...changed].map((path) => path.slice(root.length + 1)).sort());
+		},
+	});
+	writeFileSync(join(root, "a.ts"), "a");
+	writeFileSync(join(root, "b.ts"), "b");
+	await wait(DEBOUNCE * 6);
+	writeFileSync(join(root, "c.ts"), "c");
+	await wait(DEBOUNCE * 6);
+	watcher.close();
+	close();
+	assert.deepEqual(batches, [["a.ts", "b.ts"], ["c.ts"]]);
+});
+
 test("ignored paths never schedule a run", async () => {
 	const { root, runs, close } = fixture({
 		ignore: (path) => path.endsWith("index.ts"),

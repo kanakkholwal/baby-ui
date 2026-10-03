@@ -100,6 +100,7 @@ export const megaNavbar = defineComponent({
 			files: [
 				{ path: "mega-navbar/mega-navbar.tsx", type: "registry:ui" },
 				{ path: "mega-navbar/variants.ts", type: "registry:ui" },
+				{ path: "mega-navbar/current.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "@base-ui/react", "tailwind-variants"],
@@ -112,6 +113,7 @@ export const megaNavbar = defineComponent({
 				{ path: "mega-navbar/mega-menu.svelte", type: "registry:ui" },
 				{ path: "mega-navbar/variants.ts", type: "registry:ui" },
 				{ path: "mega-navbar/types.ts", type: "registry:ui" },
+				{ path: "mega-navbar/current.ts", type: "registry:ui" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "bits-ui", "tailwind-variants"],

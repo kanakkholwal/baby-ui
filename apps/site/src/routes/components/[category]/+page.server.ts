@@ -8,8 +8,8 @@ import {
 	categoryHref,
 	isCollection,
 	TOP_LEVEL,
-} from "$lib/registry";
-import { cardItems, newFirst, specs } from "$lib/server/registry";
+} from "#lib/registry.js";
+import { cardItems, newFirst, specs } from "#lib/server/registry.js";
 import type { PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = ({ params }) => {

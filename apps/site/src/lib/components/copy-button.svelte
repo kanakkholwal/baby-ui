@@ -1,6 +1,6 @@
 <script lang="ts">
 import { IconCheck, IconCopy } from "@baby-ui/icons";
-import { type TrackEvent, track } from "$lib/analytics";
+import { type TrackEvent, track } from "#lib/analytics.js";
 
 let {
 	text,

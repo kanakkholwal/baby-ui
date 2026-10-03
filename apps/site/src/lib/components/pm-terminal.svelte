@@ -1,6 +1,6 @@
 <script lang="ts">
-import { type PmKind, pmCommand, pmVerb } from "$lib/pm";
-import { prefs } from "$lib/preferences.svelte";
+import { type PmKind, pmCommand, pmVerb } from "#lib/pm.js";
+import { prefs } from "#lib/preferences.svelte.js";
 import TextCascade from "./text-cascade.svelte";
 
 let {

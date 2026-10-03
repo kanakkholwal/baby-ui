@@ -6,6 +6,7 @@ import { Collapsible, CollapsibleContent } from "../collapsible/collapsible";
 import { cn } from "../lib/cn";
 import { NotchedShelf } from "../notched-shelf/notched-shelf";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "../sheet/sheet";
+import { currentHref, groupHrefs, isCurrentSection } from "./current";
 import { type MegaNavbarVariant, megaNavbar } from "./variants";
 
 export type { MegaNavbarVariant };
@@ -84,11 +85,6 @@ function MenuIcon({ className }: { className?: string }) {
 	);
 }
 
-function isCurrent(href: string, active?: string) {
-	if (!active) return false;
-	return active === href || active.startsWith(`${href}/`);
-}
-
 /** Desktop dropdowns sharing one panel that resizes and slides to centre under the open
  * trigger, so moving along the row reads as the panel morphing, not popovers swapping. */
 export function MegaMenu({
@@ -109,6 +105,7 @@ export function MegaMenu({
 	const [open, setOpen] = useState(-1);
 	const panelId = useId();
 	const styles = megaNavbar({ variant });
+	const current = currentHref(groupHrefs(groups), active);
 	// The notched shelf drops its panel a little further, clearing the wing curve.
 	const drop = variant === "notched" ? 10 : 8;
 	const [box, setBox] = useState({ width: 0, height: 0, left: 0 });
@@ -191,7 +188,7 @@ export function MegaMenu({
 							}
 						}}
 						className={styles.trigger({
-							current: isOpen || isCurrent(group.href, active),
+							current: isOpen || isCurrentSection(group.href, active),
 						})}
 					>
 						{group.label}
@@ -236,7 +233,7 @@ export function MegaMenu({
 											target={item.external ? "_blank" : undefined}
 											rel={item.external ? "noreferrer" : undefined}
 											onClick={() => setOpen(-1)}
-											aria-current={isCurrent(item.href, active) ? "page" : undefined}
+											aria-current={item.href === current ? "page" : undefined}
 											className={styles.item()}
 										>
 											{item.icon || itemIcon ? (
@@ -274,7 +271,7 @@ export function MegaMenu({
 													target={link.external ? "_blank" : undefined}
 													rel={link.external ? "noreferrer" : undefined}
 													onClick={() => setOpen(-1)}
-													aria-current={isCurrent(link.href, active) ? "page" : undefined}
+													aria-current={link.href === current ? "page" : undefined}
 													className={styles.moreLink()}
 												>
 													{link.label}
@@ -328,6 +325,7 @@ function MobileNav({
 }) {
 	const [openGroup, setOpenGroup] = useState(0);
 	const styles = megaNavbar({ variant });
+	const current = currentHref(groupHrefs(groups, links), active);
 
 	return (
 		<Sheet open={open} onOpenChange={onOpenChange}>
@@ -367,9 +365,9 @@ function MobileNav({
 													target={item.external ? "_blank" : undefined}
 													rel={item.external ? "noreferrer" : undefined}
 													onClick={() => onOpenChange(false)}
-													aria-current={isCurrent(item.href, active) ? "page" : undefined}
+													aria-current={item.href === current ? "page" : undefined}
 													className={styles.mobileItem({
-														current: isCurrent(item.href, active),
+														current: item.href === current,
 													})}
 												>
 													{item.icon ? (
@@ -406,8 +404,8 @@ function MobileNav({
 									target={link.external ? "_blank" : undefined}
 									rel={link.external ? "noreferrer" : undefined}
 									onClick={() => onOpenChange(false)}
-									aria-current={isCurrent(link.href, active) ? "page" : undefined}
-									className={styles.mobileLink({ current: isCurrent(link.href, active) })}
+									aria-current={link.href === current ? "page" : undefined}
+									className={styles.mobileLink({ current: link.href === current })}
 								>
 									{link.label}
 								</a>
@@ -471,6 +469,7 @@ export function MegaNavbar({
 		sticky,
 		surface: scrolled ? (blur ? "blurred" : "opaque") : "clear",
 	});
+	const current = currentHref(groupHrefs(groups, links), active);
 
 	const brandSlot = brand ? (
 		<span className="flex shrink-0 items-center gap-2.5 py-1 pr-2">{brand}</span>
@@ -483,8 +482,8 @@ export function MegaNavbar({
 						href={link.href}
 						target={link.external ? "_blank" : undefined}
 						rel={link.external ? "noreferrer" : undefined}
-						aria-current={isCurrent(link.href, active) ? "page" : undefined}
-						className={styles.link({ current: isCurrent(link.href, active) })}
+						aria-current={link.href === current ? "page" : undefined}
+						className={styles.link({ current: link.href === current })}
 					>
 						{link.label}
 					</a>

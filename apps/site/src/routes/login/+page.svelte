@@ -1,9 +1,9 @@
 <script lang="ts">
+import { sendMagicLink, signInWithProvider } from "#lib/account.js";
+import Logo from "#lib/components/logo.svelte";
+import Seo from "#lib/components/seo.svelte";
 import { goto } from "$app/navigation";
 import { page } from "$app/state";
-import { sendMagicLink, signInWithProvider } from "$lib/account";
-import Logo from "$lib/components/logo.svelte";
-import Seo from "$lib/components/seo.svelte";
 
 let { data } = $props();
 
@@ -42,7 +42,8 @@ async function provider(id: string) {
 	pendingProvider = id;
 	try {
 		await signInWithProvider(id, next);
-		await goto(next);
+		// goto rejects a path no route matches; a stale ?next= lands on the dashboard instead.
+		await goto(next).catch(() => goto("/dashboard"));
 	} finally {
 		pendingProvider = undefined;
 	}

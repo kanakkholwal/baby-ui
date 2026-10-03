@@ -1,4 +1,4 @@
-import { cardItems, liveSpecs, navCategories } from "$lib/server/registry";
+import { cardItems, liveSpecs, navCategories } from "#lib/server/registry.js";
 import type { LayoutServerLoad } from "./$types";
 
 const FOOTER_PICKS = [

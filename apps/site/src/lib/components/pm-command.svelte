@@ -1,8 +1,8 @@
 <script lang="ts">
-import type { TrackEvent } from "$lib/analytics";
-import type { PmKind } from "$lib/pm";
-import { pmCommand } from "$lib/pm";
-import { prefs } from "$lib/preferences.svelte";
+import type { TrackEvent } from "#lib/analytics.js";
+import type { PmKind } from "#lib/pm.js";
+import { pmCommand } from "#lib/pm.js";
+import { prefs } from "#lib/preferences.svelte.js";
 import CodeFrame from "./code-frame.svelte";
 import PmTabs from "./pm-tabs.svelte";
 import PmTerminal from "./pm-terminal.svelte";

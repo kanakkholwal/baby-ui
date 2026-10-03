@@ -5,11 +5,11 @@
 	"type": "module",
 	"packageManager": "pnpm@11.1.2",
 	"engines": {
-		"node": ">=22"
+		"node": ">=22.17"
 	},
 	"scripts": {
 		"gen": "node scripts/generate.mjs",
-		"gen:watch": "node scripts/generate.mjs --watch",
+		"gen:watch": "node scripts/gen-watch.mjs",
 		"registry:watch": "node scripts/registry-watch.mjs",
 		"emails": "node scripts/emails/render.mjs",
 		"prepare": "node scripts/generate.mjs",

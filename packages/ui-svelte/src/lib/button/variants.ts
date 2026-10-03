@@ -38,7 +38,7 @@ export const button = tv({
 			raw: "h-auto rounded-none border-0 p-0 active:scale-100",
 		},
 		size: {
-			xs: "h-6 gap-1.5 rounded-md px-2 text-[11px] active:scale-[var(--press-scale-sm)] [&_svg]:size-3",
+			xs: "h-6 gap-1.5 rounded-md px-2 text-xs active:scale-[var(--press-scale-sm)] [&_svg]:size-3",
 			sm: "h-8 gap-1.5 px-3 text-xs active:scale-[var(--press-scale-sm)] [&_svg]:size-3.5",
 			md: "h-9 px-4 [&_svg]:size-4",
 			lg: "h-10 px-5 active:scale-[var(--press-scale-lg)] [&_svg]:size-4",

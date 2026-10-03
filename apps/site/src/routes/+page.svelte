@@ -1,18 +1,18 @@
 <script lang="ts">
-import HomeCta from "$lib/components/home-cta.svelte";
-import HomeNew from "$lib/components/home-new.svelte";
-import HomeShowcase from "$lib/components/home-showcase.svelte";
-import InstallCommand from "$lib/components/install-command.svelte";
-import LandingHero from "$lib/components/landing-hero.svelte";
-import Seo from "$lib/components/seo.svelte";
-import SiteFooter from "$lib/components/site-footer.svelte";
-import { componentCountLabel } from "$lib/registry";
+import HomeCta from "#lib/components/home-cta.svelte";
+import HomeNew from "#lib/components/home-new.svelte";
+import HomeShowcase from "#lib/components/home-showcase.svelte";
+import InstallCommand from "#lib/components/install-command.svelte";
+import LandingHero from "#lib/components/landing-hero.svelte";
+import Seo from "#lib/components/seo.svelte";
+import SiteFooter from "#lib/components/site-footer.svelte";
+import { componentCountLabel } from "#lib/registry.js";
 import {
 	DEFAULT_KEYWORDS,
 	organizationLd,
 	softwareApplicationLd,
 	websiteLd,
-} from "$lib/seo";
+} from "#lib/seo.js";
 import type { PageProps } from "./$types";
 
 let { data }: PageProps = $props();

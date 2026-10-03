@@ -29,7 +29,7 @@ const styles = $derived(dialogFrame({ variant: dialog.variant }));
 	>
 		{#if dialog.variant === "framed"}
 			<!-- Inset frame: the body sits on a lighter surface, the footer in the rim below it. -->
-			<div class={cn(styles.body(), "p-5")}>
+			<div class={styles.body()}>
 				{@render children?.()}
 			</div>
 			{#if dialog.footer}

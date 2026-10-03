@@ -1,8 +1,8 @@
 <script lang="ts">
 import { IconBrandGithub } from "@baby-ui/icons";
 import { Button } from "@baby-ui/svelte";
+import Logo from "#lib/components/logo.svelte";
 import { page } from "$app/state";
-import Logo from "$lib/components/logo.svelte";
 import ShowcaseDots from "./showcase-dots.svelte";
 
 const RESOURCES = [

@@ -6,7 +6,7 @@ declare global {
 		// interface Locals {}
 		/** From the root +layout.server.ts, so every page has it. */
 		interface PageData {
-			categories?: import("$lib/registry").NavCategory[];
+			categories?: import("#lib/registry.js").NavCategory[];
 			total?: number;
 			footerPicks?: { slug: string; name: string; href: string }[];
 		}

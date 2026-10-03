@@ -1,8 +1,8 @@
 <script lang="ts">
-import ComponentCard from "$lib/components/component-card.svelte";
-import Seo from "$lib/components/seo.svelte";
-import { CATEGORY_LABEL, componentCountLabel } from "$lib/registry";
-import { breadcrumbLd, collectionLd } from "$lib/seo";
+import ComponentCard from "#lib/components/component-card.svelte";
+import Seo from "#lib/components/seo.svelte";
+import { CATEGORY_LABEL, componentCountLabel } from "#lib/registry.js";
+import { breadcrumbLd, collectionLd } from "#lib/seo.js";
 import type { PageProps } from "./$types";
 
 let { data }: PageProps = $props();

@@ -13,42 +13,47 @@ import { Alert, AlertDescription, AlertTitle } from "@baby-ui/svelte";
 import { Renderer } from "@docvia/renderer-svelte";
 import { registry } from "docvia/registry";
 import type { Snippet } from "svelte";
-import { page } from "$app/state";
-import { track } from "$lib/analytics";
-import CodeBlock from "$lib/components/code-block.svelte";
-import ComponentCard from "$lib/components/component-card.svelte";
-import ControlsPanel from "$lib/components/controls-panel.svelte";
-import DemoPreview from "$lib/components/demo-preview.svelte";
-import EmailFrame from "$lib/components/email-frame.svelte";
-import InstallBlock from "$lib/components/install-block.svelte";
-import MobileNavDrawer from "$lib/components/mobile-nav-drawer.svelte";
-import OgPngStage from "$lib/components/og-png-stage.svelte";
-import OutlineToggle from "$lib/components/outline-toggle.svelte";
-import PageMenu from "$lib/components/page-menu.svelte";
-import PreviewToolbar from "$lib/components/preview-toolbar.svelte";
-import ProInstallGate from "$lib/components/pro-install-gate.svelte";
-import PropsRail from "$lib/components/props-rail.svelte";
-import PropsTable from "$lib/components/props-table.svelte";
+import { track } from "#lib/analytics.js";
+import CodeBlock from "#lib/components/code-block.svelte";
+import ComponentCard from "#lib/components/component-card.svelte";
+import ControlsPanel from "#lib/components/controls-panel.svelte";
+import DemoPreview from "#lib/components/demo-preview.svelte";
+import EmailFrame from "#lib/components/email-frame.svelte";
+import InstallBlock from "#lib/components/install-block.svelte";
+import MobileNavDrawer from "#lib/components/mobile-nav-drawer.svelte";
+import OgPngStage from "#lib/components/og-png-stage.svelte";
+import OutlineToggle from "#lib/components/outline-toggle.svelte";
+import PageMenu from "#lib/components/page-menu.svelte";
+import PreviewToolbar from "#lib/components/preview-toolbar.svelte";
+import ProInstallGate from "#lib/components/pro-install-gate.svelte";
+import PropsRail from "#lib/components/props-rail.svelte";
+import PropsTable from "#lib/components/props-table.svelte";
 import SegmentControl, {
 	type SegmentOption,
-} from "$lib/components/segment-control.svelte";
-import Seo from "$lib/components/seo.svelte";
-import Tabs from "$lib/components/tabs.svelte";
-import { demos } from "$lib/demos";
-import type { Heading } from "$lib/docs-nodes";
-import { OUTLINE_PANEL, outlineSidebar } from "$lib/docs-sidebar.svelte";
-import { prefs } from "$lib/preferences.svelte";
-import { EmailPreview, OgPngPreview, PREVIEW_VIEWS } from "$lib/preview-modes.svelte";
-import { productFor } from "$lib/products";
+} from "#lib/components/segment-control.svelte";
+import Seo from "#lib/components/seo.svelte";
+import Tabs from "#lib/components/tabs.svelte";
+import { demos } from "#lib/demos.js";
+import type { Heading } from "#lib/docs-nodes.js";
+import { OUTLINE_PANEL, outlineSidebar } from "#lib/docs-sidebar.svelte.js";
+import { prefs } from "#lib/preferences.svelte.js";
+import { EmailPreview, OgPngPreview, PREVIEW_VIEWS } from "#lib/preview-modes.svelte.js";
+import { productFor } from "#lib/products.js";
 import {
 	CATEGORY_LABEL,
 	categoryHref,
 	defaultProps,
 	specHref,
 	TOP_LEVEL,
-} from "$lib/registry";
-import { breadcrumbLd, componentKeywords, componentLd, metaDescription } from "$lib/seo";
-import { installSourceUrl } from "$lib/source";
+} from "#lib/registry.js";
+import {
+	breadcrumbLd,
+	componentKeywords,
+	componentLd,
+	metaDescription,
+} from "#lib/seo.js";
+import { installSourceUrl } from "#lib/source.js";
+import { page } from "$app/state";
 import type { PageProps } from "./$types";
 
 let { data }: PageProps = $props();

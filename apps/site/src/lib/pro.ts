@@ -23,20 +23,21 @@ const first = <T>(globbed: Lazy<T>) => Object.values(globbed)[0]?.();
 /** Pro demos by slug, following the public `<slug>-demo.svelte` convention. */
 export const proDemos: Record<string, DemoLoader> = bySlug(
 	__SHOW_PRO__
-		? (import.meta.glob("$pro/demos/src/svelte/*-demo.svelte") as Record<
-				string,
-				DemoLoader
-			>)
+		? (import.meta.glob(
+				"../../../../pro/packages/demos/src/svelte/*-demo.svelte",
+			) as Record<string, DemoLoader>)
 		: {},
 	"-demo.svelte",
 );
 
 const screens: Lazy<{ default: AnyComponent }> = __SHOW_PRO__
-	? import.meta.glob<{ default: AnyComponent }>("$pro/demos/src/screens/*-screen.svelte")
+	? import.meta.glob<{ default: AnyComponent }>(
+			"../../../../pro/packages/demos/src/screens/*-screen.svelte",
+		)
 	: {};
 // biome-ignore lint/suspicious/noExplicitAny: typed in the Pro repo
 const screenSample: Lazy<Record<string, any>> = __SHOW_PRO__
-	? import.meta.glob("$pro/demos/src/screens/sample.ts")
+	? import.meta.glob("../../../../pro/packages/demos/src/screens/sample.ts")
 	: {};
 
 /** A Pro screen and its sample data, or undefined when this build has no Pro. */
@@ -48,19 +49,24 @@ export async function proScreen(name: string) {
 }
 
 export const proEmailTemplates: Lazy<Template> = __SHOW_PRO__
-	? import.meta.glob<Template>("$pro/svelte/src/lib/email-*/email-*.svelte")
+	? import.meta.glob<Template>(
+			"../../../../pro/packages/svelte/src/lib/email-*/email-*.svelte",
+		)
 	: {};
 export const proOgTemplates: Lazy<Template> = __SHOW_PRO__
-	? import.meta.glob<Template>("$pro/svelte/src/lib/og-*/og-*.svelte")
+	? import.meta.glob<Template>("../../../../pro/packages/svelte/src/lib/og-*/og-*.svelte")
 	: {};
 
 const emailSamples: Lazy<Samples> = __SHOW_PRO__
-	? import.meta.glob<Samples>("$pro/demos/src/data/email-samples.ts", {
-			import: "EMAIL_SAMPLES",
-		})
+	? import.meta.glob<Samples>(
+			"../../../../pro/packages/demos/src/data/email-samples.ts",
+			{
+				import: "EMAIL_SAMPLES",
+			},
+		)
 	: {};
 const ogSamples: Lazy<Samples> = __SHOW_PRO__
-	? import.meta.glob<Samples>("$pro/demos/src/data/og-samples.ts", {
+	? import.meta.glob<Samples>("../../../../pro/packages/demos/src/data/og-samples.ts", {
 			import: "OG_SAMPLES",
 		})
 	: {};

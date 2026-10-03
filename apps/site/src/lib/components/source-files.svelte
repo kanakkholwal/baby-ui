@@ -1,5 +1,5 @@
 <script lang="ts">
-import type { TrackEvent } from "$lib/analytics";
+import type { TrackEvent } from "#lib/analytics.js";
 import CodeBlock from "./code-block.svelte";
 
 type Variant = { code: string; lang: string; html: string };

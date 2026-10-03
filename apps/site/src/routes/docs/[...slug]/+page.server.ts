@@ -1,6 +1,6 @@
 import { guides } from "virtual:docvia/source";
 import { error } from "@sveltejs/kit";
-import { prepare } from "$lib/docs-nodes";
+import { prepare } from "#lib/docs-nodes.js";
 import type { PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async ({ params }) => {

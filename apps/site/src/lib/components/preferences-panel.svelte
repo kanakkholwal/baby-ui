@@ -17,7 +17,7 @@ import {
 	SheetHeader,
 	SheetTitle,
 } from "@baby-ui/svelte";
-import { type Dialect, type PageLayout, prefs, THEMES } from "$lib/preferences.svelte";
+import { type Dialect, type PageLayout, prefs, THEMES } from "#lib/preferences.svelte.js";
 import SegmentControl from "./segment-control.svelte";
 
 const FRAMEWORKS: { id: Framework; label: string; icon: Icon }[] = [

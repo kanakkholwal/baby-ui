@@ -1,6 +1,6 @@
 import { rerouteTopLevel } from "@baby-ui/registry-schema/categories";
-import type { Reroute } from "@sveltejs/kit";
-import { isCollection } from "$lib/registry";
+import type { Reroute } from "@sveltejs/kit/hooks";
+import { isCollection } from "#lib/registry.js";
 
 // Top-level categories (`/charts/*`) and collection listings (`/forms`) share the components
 // page templates; collection items keep their category URLs.

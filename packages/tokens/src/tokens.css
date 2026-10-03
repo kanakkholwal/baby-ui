@@ -1,15 +1,20 @@
 /* Base values first, shadcn semantics mapped onto them, so a consumer's shadcn theme
    still fits while our own extensions stay available. */
 
+/* Surfaces are distinct steps so nesting reads without borders: card sits on the page, popover
+   rises off it, muted sits in. Chroma stays at or under 0.004 so accent themes read true. */
 :root {
-	--background: oklch(99% 0 0);
-	--foreground: oklch(15% 0 0);
-	--card: oklch(97% 0 0);
-	--muted-foreground: oklch(50% 0 0);
-	--border: oklch(15% 0 0 / 0.06);
+	--background: oklch(100% 0 0);
+	--foreground: oklch(16% 0.002 265);
+	--card: oklch(97.5% 0.001 265);
+	--popover: oklch(100% 0 0);
+	--muted: oklch(95.3% 0.002 265);
+	--muted-foreground: oklch(50% 0.004 265);
+	--border: oklch(16% 0.002 265 / 0.08);
+	--segment: oklch(100% 0 0);
 
-	--border-strong: oklch(15% 0 0 / 0.12);
-	/* The Blue theme's ramp: white text 4.93:1, 4.53:1 as a ring on --card. */
+	--border-strong: oklch(16% 0.002 265 / 0.14);
+	/* The Blue theme's ramp: white text 4.93:1, 4.6:1 as a ring on --card. */
 	--accent: oklch(55% 0.18 255);
 	--accent-fg: oklch(99% 0 0);
 	--neon: oklch(80% 0.22 145);
@@ -19,9 +24,9 @@
 	--success: oklch(48% 0.118 155);
 	--warning: oklch(50% 0.14 75);
 	--info: oklch(49% 0.16 255);
-	--glass-bg: oklch(99% 0 0 / 0.55);
+	--glass-bg: oklch(100% 0 0 / 0.55);
 	--glass-border: oklch(15% 0 0 / 0.08);
-	--gradient-bg: linear-gradient(135deg, oklch(99% 0 0) 0%, oklch(96% 0.008 210) 100%);
+	--gradient-bg: linear-gradient(135deg, oklch(100% 0 0) 0%, oklch(96% 0.008 210) 100%);
 	--gradient-accent: linear-gradient(
 		to right,
 		oklch(72% 0.18 195) 0%,
@@ -31,8 +36,10 @@
 
 	--surface-shadow:
 		0 2px 4px 0 rgb(0 0 0 / 0.04), 0 1px 2px 0 rgb(0 0 0 / 0.06), 0 0 1px 0 rgb(0 0 0 / 0.06);
+	/* The ring is the overlay's edge on a white page; overlays carry no CSS border. */
 	--overlay-shadow:
-		0 2px 8px 0 rgb(0 0 0 / 0.06), 0 -6px 12px 0 rgb(0 0 0 / 0.03), 0 14px 28px 0 rgb(0 0 0 / 0.08);
+		0 0 0 1px oklch(16% 0.002 265 / 0.06), 0 2px 8px 0 rgb(0 0 0 / 0.06),
+		0 -6px 12px 0 rgb(0 0 0 / 0.03), 0 14px 28px 0 rgb(0 0 0 / 0.08);
 	--field-shadow: none;
 	--thumb-shadow:
 		0 0 5px 0 rgb(0 0 0 / 0.02), 0 2px 10px 0 rgb(0 0 0 / 0.06), 0 0 1px 0 rgb(0 0 0 / 0.3);
@@ -62,13 +69,16 @@
 }
 
 .dark {
-	--background: #151515;
-	--foreground: oklch(96% 0 0);
-	--card: #1c1c1c;
-	--muted-foreground: oklch(62% 0 0);
-	--border: rgb(255 255 255 / 0.05);
+	--background: oklch(17% 0.002 265);
+	--foreground: oklch(96% 0.001 265);
+	--card: oklch(21% 0.003 265);
+	--popover: oklch(24.5% 0.004 265);
+	--muted: oklch(27% 0.004 265);
+	--muted-foreground: oklch(66% 0.004 265);
+	--border: oklch(100% 0 0 / 0.07);
+	--segment: oklch(30% 0.004 265);
 
-	--border-strong: rgb(255 255 255 / 0.1);
+	--border-strong: oklch(100% 0 0 / 0.12);
 	--accent: oklch(70% 0.15 255);
 	--accent-fg: #151515;
 	--danger: oklch(69% 0.2 25);
@@ -77,11 +87,11 @@
 	--success: oklch(70% 0.18 155);
 	--warning: oklch(78% 0.18 75);
 	--info: oklch(70% 0.15 255);
-	--glass-bg: rgb(28 28 28 / 0.55);
+	--glass-bg: oklch(17% 0.002 265 / 0.55);
 	--glass-border: rgb(255 255 255 / 0.08);
-	--gradient-bg: linear-gradient(135deg, oklch(19% 0 0) 0%, oklch(22% 0.008 210) 100%);
-	/* Shadows vanish on dark, so surfaces lift with a hairline instead. */
-	--surface-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.05);
+	--gradient-bg: linear-gradient(135deg, oklch(17% 0.002 265) 0%, oklch(21% 0.008 210) 100%);
+	/* Surfaces lift by lightness on dark; only overlays keep a hairline over similar steps. */
+	--surface-shadow: none;
 	--overlay-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.08), 0 14px 28px 0 rgb(0 0 0 / 0.4);
 	--thumb-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.4);
 
@@ -109,13 +119,11 @@
 :root,
 .dark {
 	--card-foreground: var(--foreground);
-	--popover: var(--card);
 	--popover-foreground: var(--foreground);
 	--primary: var(--accent);
 	--primary-foreground: var(--accent-fg);
-	--secondary: var(--card);
+	--secondary: var(--muted);
 	--secondary-foreground: var(--foreground);
-	--muted: var(--card);
 	--accent-foreground: var(--accent-fg);
 	--destructive: var(--danger);
 	--input: var(--border);
@@ -129,7 +137,6 @@
 	--overlay: var(--popover);
 	--default: color-mix(in oklab, var(--foreground) 6%, transparent);
 	--default-hover: color-mix(in oklab, var(--foreground) 10%, transparent);
-	--segment: var(--background);
 
 	/* Toward --foreground, not the label colour: darker in light, lighter in dark, so text
 	   contrast rises on hover (white on a lightened blue fell to 4.05:1). */

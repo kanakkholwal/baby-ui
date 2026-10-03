@@ -1,7 +1,7 @@
 <script lang="ts">
 import { IconArrowRight } from "@baby-ui/icons";
 import { Button } from "@baby-ui/svelte";
-import type { CardItem } from "$lib/registry";
+import type { CardItem } from "#lib/registry.js";
 import ComponentCard from "./component-card.svelte";
 
 let { items, count }: { items: CardItem[]; count: number } = $props();

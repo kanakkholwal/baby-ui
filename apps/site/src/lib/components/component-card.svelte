@@ -1,8 +1,8 @@
 <script lang="ts">
 import { Badge, Spinner } from "@baby-ui/svelte";
-import { demos } from "$lib/demos";
-import { claim, type LiveSlot, watchLive } from "$lib/live-demo";
-import type { CardItem } from "$lib/registry";
+import { demos } from "#lib/demos.js";
+import { claim, type LiveSlot, watchLive } from "#lib/live-demo.js";
+import type { CardItem } from "#lib/registry.js";
 
 let { item }: { item: CardItem } = $props();
 

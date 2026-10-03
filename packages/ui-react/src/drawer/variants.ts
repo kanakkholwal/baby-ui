@@ -2,18 +2,18 @@ import { tv, type VariantProps } from "tailwind-variants";
 
 // vaul and vaul-svelte both set data-vaul-drawer-direction, so side classes are written in full.
 
-/** `framed` is this repo's original rim + inset-surface treatment (default); `default` is
- * shadcn/ui's own flat vaul baseline (a single bg-background surface, no rim split). */
+/** `framed` is a card-step rim around a popover-step inset surface; `default` is shadcn/ui's
+ * flat vaul baseline on a single popover surface. */
 export const drawerFrame = tv({
 	slots: {
 		overlay: "fixed inset-0 z-50 bg-black/40 backdrop-blur-[2px]",
 		// vaul eases with cubic-bezier(0.32, 0.72, 0, 1), our `--ease-drawer`; only the surface is ours.
 		panel: [
-			"group/drawer fixed z-50 flex flex-col border border-border text-foreground shadow-2xl outline-none",
-			"data-[vaul-drawer-direction=bottom]:inset-x-0 data-[vaul-drawer-direction=bottom]:bottom-0 data-[vaul-drawer-direction=bottom]:mx-auto data-[vaul-drawer-direction=bottom]:max-h-[92dvh] data-[vaul-drawer-direction=bottom]:w-full data-[vaul-drawer-direction=bottom]:max-w-2xl data-[vaul-drawer-direction=bottom]:rounded-t-3xl data-[vaul-drawer-direction=bottom]:border-b-0",
-			"data-[vaul-drawer-direction=top]:inset-x-0 data-[vaul-drawer-direction=top]:top-0 data-[vaul-drawer-direction=top]:mx-auto data-[vaul-drawer-direction=top]:max-h-[92dvh] data-[vaul-drawer-direction=top]:w-full data-[vaul-drawer-direction=top]:max-w-2xl data-[vaul-drawer-direction=top]:rounded-b-3xl data-[vaul-drawer-direction=top]:border-t-0",
-			"data-[vaul-drawer-direction=left]:inset-y-0 data-[vaul-drawer-direction=left]:left-0 data-[vaul-drawer-direction=left]:h-full data-[vaul-drawer-direction=left]:w-80 data-[vaul-drawer-direction=left]:max-w-[85vw] data-[vaul-drawer-direction=left]:rounded-r-3xl data-[vaul-drawer-direction=left]:border-l-0",
-			"data-[vaul-drawer-direction=right]:inset-y-0 data-[vaul-drawer-direction=right]:right-0 data-[vaul-drawer-direction=right]:h-full data-[vaul-drawer-direction=right]:w-80 data-[vaul-drawer-direction=right]:max-w-[85vw] data-[vaul-drawer-direction=right]:rounded-l-3xl data-[vaul-drawer-direction=right]:border-r-0",
+			"group/drawer fixed z-50 flex flex-col text-foreground shadow-overlay outline-none",
+			"data-[vaul-drawer-direction=bottom]:inset-x-0 data-[vaul-drawer-direction=bottom]:bottom-0 data-[vaul-drawer-direction=bottom]:mx-auto data-[vaul-drawer-direction=bottom]:max-h-[92dvh] data-[vaul-drawer-direction=bottom]:w-full data-[vaul-drawer-direction=bottom]:max-w-2xl data-[vaul-drawer-direction=bottom]:rounded-t-3xl",
+			"data-[vaul-drawer-direction=top]:inset-x-0 data-[vaul-drawer-direction=top]:top-0 data-[vaul-drawer-direction=top]:mx-auto data-[vaul-drawer-direction=top]:max-h-[92dvh] data-[vaul-drawer-direction=top]:w-full data-[vaul-drawer-direction=top]:max-w-2xl data-[vaul-drawer-direction=top]:rounded-b-3xl",
+			"data-[vaul-drawer-direction=left]:inset-y-0 data-[vaul-drawer-direction=left]:left-0 data-[vaul-drawer-direction=left]:h-full data-[vaul-drawer-direction=left]:w-80 data-[vaul-drawer-direction=left]:max-w-[85vw] data-[vaul-drawer-direction=left]:rounded-r-3xl",
+			"data-[vaul-drawer-direction=right]:inset-y-0 data-[vaul-drawer-direction=right]:right-0 data-[vaul-drawer-direction=right]:h-full data-[vaul-drawer-direction=right]:w-80 data-[vaul-drawer-direction=right]:max-w-[85vw] data-[vaul-drawer-direction=right]:rounded-l-3xl",
 		],
 		// vaul's own [data-vaul-handle] CSS is a 5px x 32px horizontal bar meant for bottom/top,
 		// so left/right rotate it to a vertical bar pinned to the free edge.
@@ -40,16 +40,16 @@ export const drawerFrame = tv({
 	variants: {
 		variant: {
 			framed: {
-				panel: "bg-background p-1",
+				panel: "bg-card p-1",
 				surface: [
-					"rounded-[20px] bg-card p-5",
+					"rounded-[20px] bg-popover p-panel",
 					"group-data-[vaul-drawer-direction=bottom]/drawer:rounded-b-none group-data-[vaul-drawer-direction=top]/drawer:rounded-t-none",
 					"group-data-[vaul-drawer-direction=left]/drawer:rounded-l-none group-data-[vaul-drawer-direction=right]/drawer:rounded-r-none",
 				].join(" "),
 			},
 			default: {
-				panel: "bg-background",
-				surface: "p-5",
+				panel: "bg-popover",
+				surface: "p-panel",
 			},
 		},
 	},

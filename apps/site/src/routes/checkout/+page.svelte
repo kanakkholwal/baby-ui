@@ -1,7 +1,7 @@
 <script lang="ts">
+import { createCheckout, redeemCode } from "#lib/account.js";
+import Seo from "#lib/components/seo.svelte";
 import { page } from "$app/state";
-import { createCheckout, redeemCode } from "$lib/account";
-import Seo from "$lib/components/seo.svelte";
 
 let { data } = $props();
 

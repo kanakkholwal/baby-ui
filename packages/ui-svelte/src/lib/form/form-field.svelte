@@ -1,34 +1,56 @@
-<script lang="ts" generics="T extends Record<string, unknown>, U extends FormPath<T>">
-import * as FormPrimitive from "formsnap";
+<script lang="ts">
+import type { AnyFieldApi } from "@tanstack/svelte-form";
 import type { HTMLAttributes } from "svelte/elements";
-import type { FormPath } from "sveltekit-superforms";
+import Field from "../field/field.svelte";
+import type { FieldOrientation } from "../field/variants";
 import { cn } from "../lib/cn";
-import { type FormSpacing, form as formStyles } from "./variants";
+import { setFormField } from "./context";
+import {
+	type FormSpacing,
+	formFieldIds,
+	formFieldState,
+	form as formStyles,
+} from "./variants";
 
 let {
 	ref = $bindable(null),
-	class: classProp,
-	form,
-	name,
+	field,
+	orientation = "vertical",
 	spacing = "comfortable",
-	children: childrenProp,
+	class: classProp,
+	children,
 	...rest
-}: FormPrimitive.FieldProps<T, U> &
-	Omit<HTMLAttributes<HTMLDivElement>, "children"> & {
-		ref?: HTMLDivElement | null;
-		spacing?: FormSpacing;
-	} = $props();
+}: HTMLAttributes<HTMLDivElement> & {
+	ref?: HTMLDivElement | null;
+	field: AnyFieldApi;
+	orientation?: FieldOrientation;
+	spacing?: FormSpacing;
+} = $props();
+
+const uid = $props.id();
+const ids = formFieldIds(uid);
+const state = $derived(formFieldState(field.state.meta));
+
+setFormField({
+	get field() {
+		return field;
+	},
+	ids,
+	get invalid() {
+		return state.invalid;
+	},
+	get errors() {
+		return state.errors;
+	},
+});
 </script>
 
-<FormPrimitive.Field {form} {name}>
-	{#snippet children({ constraints, errors, tainted, value })}
-		<div
-			bind:this={ref}
-			data-slot="form-item"
-			class={cn(formStyles({ spacing }).item(), classProp)}
-			{...rest}
-		>
-			{@render childrenProp?.({ constraints, errors, tainted, value: value as T[U] })}
-		</div>
-	{/snippet}
-</FormPrimitive.Field>
+<Field
+	bind:ref
+	data-invalid={state.invalid}
+	{orientation}
+	class={cn(formStyles({ spacing }).field(), classProp)}
+	{...rest}
+>
+	{@render children?.()}
+</Field>

@@ -2,14 +2,14 @@
 import { IconList } from "@baby-ui/icons";
 import { Renderer } from "@docvia/renderer-svelte";
 import { registry } from "docvia/registry";
-import DocsIntroCover from "$lib/components/docs-intro-cover.svelte";
-import MobileNavDrawer from "$lib/components/mobile-nav-drawer.svelte";
-import OutlineToggle from "$lib/components/outline-toggle.svelte";
-import PageMenu from "$lib/components/page-menu.svelte";
-import PropsRail from "$lib/components/props-rail.svelte";
-import Seo from "$lib/components/seo.svelte";
-import { OUTLINE_PANEL, outlineSidebar } from "$lib/docs-sidebar.svelte";
-import { articleLd, breadcrumbLd } from "$lib/seo";
+import DocsIntroCover from "#lib/components/docs-intro-cover.svelte";
+import MobileNavDrawer from "#lib/components/mobile-nav-drawer.svelte";
+import OutlineToggle from "#lib/components/outline-toggle.svelte";
+import PageMenu from "#lib/components/page-menu.svelte";
+import PropsRail from "#lib/components/props-rail.svelte";
+import Seo from "#lib/components/seo.svelte";
+import { OUTLINE_PANEL, outlineSidebar } from "#lib/docs-sidebar.svelte.js";
+import { articleLd, breadcrumbLd } from "#lib/seo.js";
 import type { PageProps } from "./$types";
 
 let { data }: PageProps = $props();

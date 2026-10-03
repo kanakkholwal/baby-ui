@@ -3,8 +3,8 @@ import SpecDials from "@baby-ui/demos/controls";
 import { IconAdjustmentsHorizontal } from "@baby-ui/icons";
 import type { ComponentSpec } from "@baby-ui/registry-schema";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@baby-ui/svelte";
-import { track } from "$lib/analytics";
-import { defaultProps } from "$lib/registry";
+import { track } from "#lib/analytics.js";
+import { defaultProps } from "#lib/registry.js";
 
 let {
 	spec,

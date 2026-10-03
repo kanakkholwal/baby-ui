@@ -1,5 +1,5 @@
 // Client-safe: the zod-free categories entry plus types only from the schema. Anything that reads
-// the spec list lives in $lib/server/registry.ts and reaches pages as load data.
+// the spec list lives in #lib/server/registry.ts and reaches pages as load data.
 import type { ComponentSpec } from "@baby-ui/registry-schema";
 import {
 	CATEGORIES,

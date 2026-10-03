@@ -1,8 +1,8 @@
 <script lang="ts">
 import { untrack } from "svelte";
+import { openBillingPortal, rotateLicenseKey, signOut } from "#lib/account.js";
+import Seo from "#lib/components/seo.svelte";
 import { goto } from "$app/navigation";
-import { openBillingPortal, rotateLicenseKey, signOut } from "$lib/account";
-import Seo from "$lib/components/seo.svelte";
 
 let { data } = $props();
 

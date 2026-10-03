@@ -12,18 +12,37 @@
 	/* Colour and fill changes: plain `ease` reads calmer than a strong ease-out. */
 	--ease-smooth: ease;
 
-	/* Anchored surfaces 150ms in, modals and sheets 250ms, height changes 200ms. */
-	--duration-press: 140ms;
-	--duration-tooltip: 150ms;
-	--duration-dropdown: 150ms;
-	--duration-collapse: 200ms;
-	--duration-overlay: 250ms;
+	/* Springs sampled into linear(); each settles over the paired --duration-spring-*. */
+	--ease-spring-snappy: linear(
+		0, 0.049, 0.158, 0.285, 0.412, 0.526, 0.624, 0.706, 0.772, 0.825, 0.867, 0.899, 0.924,
+		0.943, 0.957, 0.968, 0.976, 0.983, 0.987, 0.991, 0.993, 0.995, 0.996, 0.997, 1
+	);
+	--ease-spring-bouncy: linear(
+		0, 0.044, 0.149, 0.283, 0.424, 0.558, 0.676, 0.776, 0.856, 0.916, 0.961, 0.992, 1.011,
+		1.022, 1.027, 1.028, 1.027, 1.023, 1.019, 1.015, 1.012, 1.008, 1.006, 1.004, 1
+	);
+	--duration-spring-snappy: 400ms;
+	--duration-spring-bouncy: 600ms;
+
+	/* The only four speeds; every role below is one of them. Raw duration-300 etc. is a bug. */
+	--duration-instant: 100ms;
+	--duration-fast: 150ms;
+	--duration-base: 200ms;
+	--duration-slow: 250ms;
+
+	--duration-press: var(--duration-fast);
+	--duration-tooltip: var(--duration-fast);
+	--duration-dropdown: var(--duration-fast);
+	/* Scrims fade on the fast tier both ways, so an overlay never just appears. */
+	--duration-backdrop: var(--duration-fast);
+	--duration-collapse: var(--duration-base);
+	--duration-overlay: var(--duration-slow);
 	/* vaul's drag drawer only. Sheets use --duration-overlay in, --duration-panel-exit out. */
 	--duration-drawer: 500ms;
 	/* Leaving is never the moment the user waits on, so every exit undercuts its entrance. */
-	--duration-exit: 100ms;
-	/* An edge panel travels its full size, so it leaves over 200ms, not 100ms. */
-	--duration-panel-exit: 200ms;
+	--duration-exit: var(--duration-instant);
+	/* An edge panel travels its full size, so it leaves on the base tier, not instant. */
+	--duration-panel-exit: var(--duration-base);
 
 	--stagger-step: 45ms;
 

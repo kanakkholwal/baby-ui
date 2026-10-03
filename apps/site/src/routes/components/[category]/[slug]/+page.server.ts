@@ -2,11 +2,11 @@ import { components, docviaSource } from "virtual:docvia/source";
 import type { Framework } from "@baby-ui/registry-schema";
 import { FRAMEWORKS, TOP_LEVEL_CATEGORIES } from "@baby-ui/registry-schema";
 import { error } from "@sveltejs/kit";
-import { prepare } from "$lib/docs-nodes";
-import { highlight, langFor } from "$lib/highlight";
-import { componentCss, cssNames } from "$lib/registry-items";
-import { adjacentComponents, cardItems, findSpec, specs } from "$lib/server/registry";
-import { usageSnippet } from "$lib/usage";
+import { prepare } from "#lib/docs-nodes.js";
+import { highlight, langFor } from "#lib/highlight.js";
+import { componentCss, cssNames } from "#lib/registry-items.js";
+import { adjacentComponents, cardItems, findSpec, specs } from "#lib/server/registry.js";
+import { usageSnippet } from "#lib/usage.js";
 import type { EntryGenerator, PageServerLoad } from "./$types";
 
 type EmailRender = { html: string; text: string; bytes: number };

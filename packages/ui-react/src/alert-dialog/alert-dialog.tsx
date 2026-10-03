@@ -98,7 +98,7 @@ export function AlertDialogContent({
 			>
 				{dialog.variant === "framed" ? (
 					<>
-						<div className={cn(styles.body(), "p-5")}>{children}</div>
+						<div className={styles.body()}>{children}</div>
 						<div ref={dialog.setFooterEl} className="empty:hidden" />
 					</>
 				) : (

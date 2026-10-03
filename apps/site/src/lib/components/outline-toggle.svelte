@@ -1,5 +1,5 @@
 <script lang="ts">
-import { outlineSidebar } from "$lib/docs-sidebar.svelte";
+import { outlineSidebar } from "#lib/docs-sidebar.svelte.js";
 import SidebarToggleIcon from "./sidebar-toggle-icon.svelte";
 </script>
 

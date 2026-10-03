@@ -1,8 +1,8 @@
 <script lang="ts">
 import { IconAlignLeft } from "@baby-ui/icons";
 import { TableOfContents } from "@baby-ui/svelte";
-import type { Heading } from "$lib/docs-nodes";
-import { productFor } from "$lib/products";
+import type { Heading } from "#lib/docs-nodes.js";
+import { productFor } from "#lib/products.js";
 import PromoCard from "./promo-card.svelte";
 
 let {

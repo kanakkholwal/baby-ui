@@ -9,10 +9,6 @@
 			"svelte": "./src/svelte/index.ts",
 			"types": "./src/svelte/index.ts"
 		},
-		"./svelte/kit": {
-			"svelte": "./src/svelte/kit.ts",
-			"types": "./src/svelte/kit.ts"
-		},
 		"./controls": {
 			"svelte": "./src/controls/spec-dials.svelte",
 			"types": "./src/controls/spec-dials.svelte"
@@ -26,8 +22,8 @@
 		"@baby-ui/registry-schema": "workspace:*",
 		"@internationalized/date": "catalog:",
 		"@baby-ui/svelte": "workspace:*",
-		"formsnap": "catalog:",
-		"sveltekit-superforms": "catalog:",
+		"@tanstack/react-form": "catalog:",
+		"@tanstack/svelte-form": "catalog:",
 		"topojson-client": "catalog:",
 		"world-atlas": "catalog:",
 		"zod": "catalog:"

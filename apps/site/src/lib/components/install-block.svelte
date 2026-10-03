@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Skeleton } from "@baby-ui/svelte";
-import { track } from "$lib/analytics";
-import type { InstallSource } from "$lib/source";
+import { track } from "#lib/analytics.js";
+import type { InstallSource } from "#lib/source.js";
 import CodeBlock from "./code-block.svelte";
 import InstallCommand from "./install-command.svelte";
 import PmCommand from "./pm-command.svelte";

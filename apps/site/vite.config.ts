@@ -119,8 +119,6 @@ export default defineConfig(({ command, mode, isPreview }) => {
 			// Resolves `docvia/registry` to the registry alone; docvia() only serves the full source.
 			docviaSourcePlugin(),
 			sveltekit({
-				// The optional private checkout; only $lib/pro.ts and $lib/server/pro.ts glob it.
-				alias: { $pro: "../../pro/packages" },
 				// The fullscreen-nav demo ships placeholder anchors like #product,
 				// which have no target on the page that previews them. Warn, do not fail.
 				prerender: { handleMissingId: "warn" },

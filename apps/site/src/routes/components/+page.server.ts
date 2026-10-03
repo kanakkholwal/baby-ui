@@ -1,4 +1,4 @@
-import { cardItems, newFirst, newItems, sidebarGroups } from "$lib/server/registry";
+import { cardItems, newFirst, newItems, sidebarGroups } from "#lib/server/registry.js";
 import type { PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = () => ({

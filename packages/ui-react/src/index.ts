@@ -213,6 +213,8 @@ export { type FlowchartOption, type FlowchartConditionRow, type StepNode, type F
 export { flowchartCanvas, type FlowchartBackground } from "./flowchart/variants";
 export { type FooterLink, type FooterColumn, type FooterSocialLink, type FooterProps, Footer } from "./footer/footer";
 export { footer, type FooterLayout } from "./footer/variants";
+export { Form, FormField, FormLabel, FormControl, FormDescription, FormFieldErrors, FormButton } from "./form/form";
+export { form, type FormSpacing, type FormControlProps, type FormFieldMeta, formFieldState, formFieldIds } from "./form/variants";
 export { type NavLink, type FullscreenNavProps, FullscreenNav } from "./fullscreen-nav/fullscreen-nav";
 export { fullscreenNav, type FullscreenNavVariant, type FullscreenNavAlign, type FullscreenNavSize, linkIndex, linkDelay, panelDelay } from "./fullscreen-nav/variants";
 export { type FunnelChartProps, FunnelChart } from "./funnel-chart/funnel-chart";
@@ -301,6 +303,7 @@ export { marker, type MarkerVariant, type MarkerTone, type MarkerShape, MARKER_S
 export { type MaskTextProps, MaskText } from "./mask-text/mask-text";
 export { maskText, type MaskTextSize } from "./mask-text/variants";
 export { type MegaNavLink, type MegaMenuItem, type MegaMenuGroup, MegaMenu, type MegaNavbarProps, MegaNavbar } from "./mega-navbar/mega-navbar";
+export { isCurrentSection, groupHrefs, currentHref } from "./mega-navbar/current";
 export { megaNavbar, type MegaNavbarVariant } from "./mega-navbar/variants";
 export { type MessageGroupProps, MessageGroup, type MessageProps, Message, MessageAvatar, MessageContent, type MessageBubbleProps, MessageBubble, MessageHeader, MessageFooter, MessageTyping } from "./message/message";
 export { message, type MessageAlign, type MessageMotion, messageBubble, type MessageBubbleVariant } from "./message/variants";

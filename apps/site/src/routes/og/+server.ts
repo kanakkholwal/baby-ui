@@ -1,7 +1,7 @@
 import { render } from "svelte/server";
 import { googleFonts } from "takumi-js/helpers";
 import { ImageResponse } from "takumi-js/response";
-import OgTemplate from "$lib/components/og-template.svelte";
+import OgTemplate from "#lib/components/og-template.svelte";
 import layoutCss from "../layout.css?inline";
 import type { RequestHandler } from "./$types";
 

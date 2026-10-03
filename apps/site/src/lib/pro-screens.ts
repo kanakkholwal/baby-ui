@@ -1,5 +1,5 @@
 import { error } from "@sveltejs/kit";
-import { proScreen } from "$lib/pro";
+import { proScreen } from "#lib/pro.js";
 
 /** The named screen and the Pro sample module, or a 404 when this build has no Pro. */
 export async function loadProScreen(

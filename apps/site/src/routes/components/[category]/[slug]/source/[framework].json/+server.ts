@@ -1,7 +1,7 @@
 import { FRAMEWORKS, type Framework } from "@baby-ui/registry-schema";
-import { error, json } from "@sveltejs/kit";
-import { installSource } from "$lib/install-source.server";
-import { findSpec, specs } from "$lib/server/registry";
+import { error } from "@sveltejs/kit";
+import { installSource } from "#lib/install-source.server.js";
+import { findSpec, specs } from "#lib/server/registry.js";
 import type { EntryGenerator, RequestHandler } from "./$types";
 
 export const prerender = true;
@@ -23,5 +23,5 @@ export const GET: RequestHandler = async ({ params }) => {
 	const spec = findSpec(params.category, params.slug);
 	const framework = params.framework as Framework;
 	if (!spec?.impl[framework] || spec.tier === "pro") throw error(404);
-	return json(await installSource(spec.slug, framework));
+	return Response.json(await installSource(spec.slug, framework));
 };

@@ -1,8 +1,8 @@
 import { guides } from "virtual:docvia/source";
 import { CATEGORIES, docsPath } from "@baby-ui/registry-schema";
-import { COLLECTIONS, categoryHref } from "$lib/registry";
-import { absoluteUrl, SITE_URL } from "$lib/seo";
-import { liveSpecs as specs } from "$lib/server/registry";
+import { COLLECTIONS, categoryHref } from "#lib/registry.js";
+import { absoluteUrl, SITE_URL } from "#lib/seo.js";
+import { liveSpecs as specs } from "#lib/server/registry.js";
 import type { RequestHandler } from "./$types";
 
 export const prerender = true;

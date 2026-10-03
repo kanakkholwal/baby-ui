@@ -11,7 +11,8 @@ Any agent (Claude Code, Codex, Cursor, Copilot) should read this file first.
   package to a private file, shims, copies, catch-all exports, deep paths into another
   package). Use the standard API of the tool or package; if none fits, stop and ask.
 - **HARD RULE:** no absolute paths in imports, globs or config (no drive paths, no root
-  `"/src/..."`). Relative paths or a configured alias (`$lib`, `$pro`, `@baby-ui/*`) only.
+  `"/src/..."`). Relative paths or a configured alias (`#lib` in apps/site, a package.json
+  subpath import that needs the file extension; `$pro`; `@baby-ui/*`) only.
 - Never use `.js` extensions in relative imports (`scripts/check-import-extensions.mjs`).
 - Never write custom CSS when Tailwind utilities and CSS variables can do it. Custom CSS is
   for keyframes, `::backdrop`, pseudo-element thumbs, scrollbars, and nothing else.
@@ -208,8 +209,8 @@ Plan and bklit motion numbers: `.notes/10-charts-plan.md`.
 Paste the outputs. The lefthook pre-commit runs the same fixes on staged files; never bypass it
 with `--no-verify`. If `apps/site` `pnpm dev` is running, adapter-cloudflare fails with EBUSY
 on `.svelte-kit/cloudflare`; say so rather than working around it.
-adapter-cloudflare 7 leaks one workerd per in-place Vite restart (vite.config edits); restart
-`pnpm dev` after editing it. Fixed upstream in adapter 8, which needs SvelteKit 3.
+The Cloudflare adapter only loads for `build` and `preview`: the site reads no bindings, so dev
+runs without workerd. Add it to dev again if a route ever reads `platform`.
 
 ## Places
 

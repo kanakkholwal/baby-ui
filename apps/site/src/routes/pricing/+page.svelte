@@ -1,7 +1,7 @@
 <script lang="ts">
+import Seo from "#lib/components/seo.svelte";
+import { breadcrumbLd, type JsonLd, SITE_NAME } from "#lib/seo.js";
 import { goto } from "$app/navigation";
-import Seo from "$lib/components/seo.svelte";
-import { breadcrumbLd, type JsonLd, SITE_NAME } from "$lib/seo";
 
 let { data } = $props();
 

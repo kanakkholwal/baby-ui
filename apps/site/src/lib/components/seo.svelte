@@ -1,6 +1,4 @@
 <script lang="ts">
-import { dev } from "$app/environment";
-import { page } from "$app/state";
 import {
 	absoluteUrl,
 	DEFAULT_KEYWORDS,
@@ -9,7 +7,9 @@ import {
 	ogImageUrl,
 	SITE_NAME,
 	SITE_URL,
-} from "$lib/seo";
+} from "#lib/seo.js";
+import { dev } from "$app/env";
+import { page } from "$app/state";
 
 let {
 	title,
@@ -22,18 +22,19 @@ let {
 	noindex = false,
 	jsonLd = [],
 	markdown,
+
+	/** Defaults to the branded OG card for this title/description. */
+	/** Schema.org nodes for this page, emitted as one @graph. */
+	/** Path of the page's markdown twin, advertised to crawlers and LLM tools. */
 }: {
 	title: string;
 	description: string;
 	keywords?: string[];
 	tag?: string;
-	/** Defaults to the branded OG card for this title/description. */
 	image?: string;
 	type?: "website" | "article";
 	noindex?: boolean;
-	/** Schema.org nodes for this page, emitted as one @graph. */
 	jsonLd?: JsonLd[];
-	/** Path of the page's markdown twin, advertised to crawlers and LLM tools. */
 	markdown?: string;
 } = $props();
 

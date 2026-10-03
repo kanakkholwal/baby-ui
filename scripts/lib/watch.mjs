@@ -2,8 +2,8 @@ import { watch } from "node:fs";
 import { join } from "node:path";
 
 /**
- * Reruns `run` once changes under `roots` go quiet. Runs never overlap (a change mid-run queues
- * one more), and a failing run goes to `onError` while the watcher keeps going.
+ * Reruns `run(changed)` once changes under `roots` go quiet, with the paths changed since the last
+ * run. Runs never overlap (a change mid-run queues one more); a failure goes to `onError`.
  */
 export function watchAndRun({
 	roots,
@@ -15,6 +15,7 @@ export function watchAndRun({
 	let timer;
 	let running = false;
 	let queued = false;
+	let changed = new Set();
 
 	const execute = async () => {
 		if (running) {
@@ -22,8 +23,10 @@ export function watchAndRun({
 			return;
 		}
 		running = true;
+		const batch = changed;
+		changed = new Set();
 		try {
-			await run();
+			await run(batch);
 		} catch (error) {
 			onError(error);
 		} finally {
@@ -41,7 +44,9 @@ export function watchAndRun({
 
 	const watchers = roots.map((root) =>
 		watch(root, { recursive: true }, (_event, file) => {
-			if (file && ignore(join(root, file))) return;
+			const path = file ? join(root, file) : root;
+			if (file && ignore(path)) return;
+			changed.add(path);
 			schedule();
 		}).on("error", onError),
 	);

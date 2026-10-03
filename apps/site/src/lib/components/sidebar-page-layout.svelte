@@ -1,11 +1,11 @@
 <script lang="ts">
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@baby-ui/svelte";
 import { type Snippet, untrack } from "svelte";
+import { docsSidebar, outlineSidebar } from "#lib/docs-sidebar.svelte.js";
+import { mobileNav } from "#lib/mobile-nav.svelte.js";
+import { prefs } from "#lib/preferences.svelte.js";
+import { type SidebarGroup, siteNav } from "#lib/registry.js";
 import { page } from "$app/state";
-import { docsSidebar, outlineSidebar } from "$lib/docs-sidebar.svelte";
-import { mobileNav } from "$lib/mobile-nav.svelte";
-import { prefs } from "$lib/preferences.svelte";
-import { type SidebarGroup, siteNav } from "$lib/registry";
 import SiteSidebar from "./site-sidebar.svelte";
 
 let { groups, children }: { groups: SidebarGroup[]; children: Snippet } = $props();

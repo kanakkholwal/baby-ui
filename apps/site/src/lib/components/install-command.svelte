@@ -1,6 +1,6 @@
 <script lang="ts">
-import origins from "$lib/generated/origins.json";
-import { prefs } from "$lib/preferences.svelte";
+import origins from "#lib/generated/origins.json";
+import { prefs } from "#lib/preferences.svelte.js";
 import PmCommand from "./pm-command.svelte";
 
 let { slug, cascade = false }: { slug: string; cascade?: boolean } = $props();

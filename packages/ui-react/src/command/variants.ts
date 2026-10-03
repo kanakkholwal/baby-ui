@@ -21,13 +21,13 @@ export const commandFrame = tv({
 			"w-full min-w-0 bg-transparent text-foreground outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
 		count: "hidden",
 		// Caps in a hint depress while their key is held, so the footer answers the keyboard.
-		kbd: "inline-flex h-5 min-w-5 shrink-0 items-center justify-center gap-0.5 rounded-md border border-border bg-background px-1.5 font-medium font-sans text-[11px] text-muted-foreground transition-[translate,background-color,color] duration-100 ease-[var(--ease-out)] data-[pressed]:translate-y-px data-[pressed]:bg-foreground/[0.08] data-[pressed]:text-foreground motion-reduce:transition-none",
+		kbd: "inline-flex h-5 min-w-5 shrink-0 items-center justify-center gap-0.5 rounded-md bg-foreground/[0.06] px-1.5 font-medium font-sans text-muted-foreground text-xs transition-[translate,background-color,color] duration-instant ease-[var(--ease-out)] data-[pressed]:translate-y-px data-[pressed]:bg-foreground/[0.08] data-[pressed]:text-foreground motion-reduce:transition-none",
 		// ToggleGroup brings a rim and a pressed fill; the sliding pill replaces both.
 		filters: "relative flex shrink-0 items-center border-0 bg-transparent p-0",
-		pill: "pointer-events-none absolute top-0 left-0 data-[ready]:transition-[translate,width,height] data-[ready]:duration-250 data-[ready]:ease-[var(--ease-out)] motion-reduce:transition-none",
+		pill: "pointer-events-none absolute top-0 left-0 data-[ready]:transition-[translate,width,height] data-[ready]:duration-slow data-[ready]:ease-[var(--ease-out)] motion-reduce:transition-none",
 		filter: [
 			"relative z-10 inline-flex shrink-0 cursor-default items-center justify-center gap-1.5 font-medium text-muted-foreground outline-none data-[pressed]:bg-transparent data-[state=on]:bg-transparent",
-			"transition-[color,background-color] duration-150 ease-[var(--ease-out)] hover:text-foreground",
+			"transition-[color,background-color] duration-fast ease-[var(--ease-out)] hover:text-foreground",
 			"focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none [&_svg]:size-4 [&_svg]:shrink-0",
 		],
 		list: "scroll-area relative min-h-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-contain",
@@ -44,7 +44,7 @@ export const commandFrame = tv({
 		],
 		// One marker for the active row. It snaps: arrow keys repeat too fast for motion to help.
 		marker:
-			"pointer-events-none absolute top-0 left-0 data-[glide]:transition-[translate,width,height] data-[glide]:duration-150 data-[glide]:ease-[var(--ease-out)] motion-reduce:transition-none",
+			"pointer-events-none absolute top-0 left-0 data-[glide]:transition-[translate,width,height] data-[glide]:duration-fast data-[glide]:ease-[var(--ease-out)] motion-reduce:transition-none",
 		empty: "text-center text-muted-foreground text-sm",
 		shortcut: "ml-auto shrink-0 text-muted-foreground text-xs tracking-widest",
 		separator: "-mx-1 h-px border-0 bg-border",
@@ -59,7 +59,7 @@ export const commandFrame = tv({
 		 */
 		variant: {
 			default: {
-				panel: "rounded-xl border border-border bg-popover shadow-lg",
+				panel: "rounded-xl bg-popover shadow-overlay",
 				body: "rounded-xl bg-popover p-1",
 				inputWrap: "mx-1 mt-1 h-8 rounded-lg border border-input/30 bg-input/30 px-2",
 				inputIcon: "opacity-50",
@@ -76,46 +76,47 @@ export const commandFrame = tv({
 				footer: "border-border border-t px-3 py-2",
 			},
 			framed: {
-				panel: "rounded-2xl border border-border bg-background p-1 shadow-2xl",
+				panel: "rounded-2xl bg-card p-1 shadow-overlay",
 				header: "pt-1.5 pb-2",
-				body: "rounded-[11px] bg-card",
+				body: "rounded-[11px] bg-popover",
 				inputWrap: "border-border border-b px-3",
 				input: "h-12 text-sm",
 				count:
-					"block min-w-[2ch] shrink-0 text-right font-mono text-[11px] text-muted-foreground tabular-nums",
+					"block min-w-[2ch] shrink-0 text-right font-mono text-muted-foreground text-xs tabular-nums",
 				list: "py-1.5",
-				groupHeading: "px-4 pt-2 pb-1 font-semibold text-[11px] uppercase tracking-wider",
+				groupHeading: "px-4 pt-2 pb-1 font-semibold text-xs uppercase tracking-wide",
 				group:
-					"[&_[cmdk-group-heading]]:px-4 [&_[cmdk-group-heading]]:pt-2 [&_[cmdk-group-heading]]:pb-1 [&_[cmdk-group-heading]]:font-semibold [&_[cmdk-group-heading]]:text-[11px] [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-wider [&_[cmdk-group-items]]:px-1.5",
+					"[&_[cmdk-group-heading]]:px-4 [&_[cmdk-group-heading]]:pt-2 [&_[cmdk-group-heading]]:pb-1 [&_[cmdk-group-heading]]:font-semibold [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-wide [&_[cmdk-group-items]]:px-1.5",
 				groupItems: "px-1.5",
 				item: [
 					"justify-between gap-3 rounded-lg px-2.5 py-2 text-muted-foreground",
-					"transition-[color,scale] [transition-duration:100ms,250ms] ease-[var(--ease-out-quart)] active:scale-[var(--press-scale-row)] motion-reduce:transition-none",
+					"transition-[color,scale] [transition-duration:var(--duration-instant),var(--duration-slow)] ease-[var(--ease-out-quart)] active:scale-[var(--press-scale-row)] motion-reduce:transition-none",
 					'data-[selected=""]:text-foreground data-[selected=true]:text-foreground',
 				],
 				marker: "rounded-md bg-foreground/[0.06]",
 				empty: "px-4 py-10",
-				footer: "border-border border-t px-4 py-2 text-[11px]",
+				footer: "border-border border-t px-4 py-2",
 			},
 			launcher: {
 				popup: "w-[min(42rem,calc(100vw-2rem))]",
-				panel: "rounded-3xl border border-border bg-popover p-3 shadow-2xl",
+				panel: "rounded-3xl bg-card p-3 shadow-overlay",
 				body: "gap-3",
 				bar: "flex-wrap sm:flex-nowrap",
-				inputWrap:
-					"h-11 min-w-48 flex-1 rounded-full border border-border bg-background px-4",
+				inputWrap: "h-11 min-w-48 flex-1 rounded-full bg-popover px-4",
 				input: "h-11 text-sm",
-				filters: "gap-0.5 rounded-full border border-border bg-background p-1",
-				pill: "rounded-full bg-foreground/[0.08]",
+				filters: "gap-0.5 rounded-full bg-popover p-1",
+				pill: "rounded-full bg-foreground/[0.06]",
 				filter:
 					"size-9 rounded-full data-[pressed]:text-foreground data-[state=on]:text-foreground",
-				list: "rounded-2xl border border-border bg-background p-1.5",
+				list: "rounded-2xl bg-popover p-1.5",
+				// Hints read as plain text on the frame; a held key still darkens.
+				kbd: "h-auto min-w-0 bg-transparent px-0",
 				group:
 					"[&_[cmdk-group-heading]]:px-2.5 [&_[cmdk-group-heading]]:pt-2 [&_[cmdk-group-heading]]:pb-1.5",
 				groupHeading: "px-2.5 pt-2 pb-1.5",
 				item: [
-					"gap-3 rounded-xl px-2.5 py-2.5 font-medium text-[15px] text-muted-foreground",
-					"transition-[color,scale] [transition-duration:100ms,160ms] ease-[var(--ease-out)] active:scale-[0.99] motion-reduce:transition-none",
+					"gap-3 rounded-xl px-2.5 py-2.5 text-muted-foreground text-sm",
+					"transition-[color,scale] [transition-duration:var(--duration-instant),var(--duration-fast)] ease-[var(--ease-out)] active:scale-[0.99] motion-reduce:transition-none",
 					'data-[selected=""]:text-foreground data-[selected=true]:text-foreground',
 				],
 				marker: "rounded-xl bg-foreground/[0.06]",
@@ -124,7 +125,7 @@ export const commandFrame = tv({
 			},
 			spotlight: {
 				popup: "w-[min(46rem,calc(100vw-2rem))]",
-				panel: "rounded-2xl border border-border bg-popover p-2 shadow-2xl",
+				panel: "rounded-2xl bg-popover p-2 shadow-overlay",
 				filters: "gap-1 self-start px-1 pt-1",
 				pill: "rounded-full bg-primary/15",
 				filter:
@@ -138,7 +139,7 @@ export const commandFrame = tv({
 					"[&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:pt-2 [&_[cmdk-group-heading]]:pb-1",
 				groupHeading: "px-3 pt-2 pb-1",
 				item: [
-					"gap-3 rounded-lg px-3 py-2.5 text-[15px] transition-[scale] duration-150 ease-[var(--ease-out)] active:scale-[0.99] motion-reduce:transition-none",
+					"gap-3 rounded-lg px-3 py-2.5 text-base transition-[scale] duration-fast ease-[var(--ease-out)] active:scale-[0.99] motion-reduce:transition-none",
 					"[&_svg:not([class*='size-'])]:size-[18px] [&_svg]:text-foreground",
 				],
 				marker: "rounded-lg bg-foreground/[0.08]",

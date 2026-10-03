@@ -120,8 +120,6 @@ const SHADCN_NAMES: Record<string, ShadcnName[]> = {
 	],
 	badge: [{ from: "./variants", name: "badge", as: "badgeVariants" }],
 	toggle: [{ from: "./variants", name: "toggleButton", as: "toggleVariants" }],
-	// shadcn-svelte re-exports formsnap's Control as `Form.Control`.
-	form: [{ from: "./control", name: "FormControl", as: "Control" }],
 };
 
 function shadcnNames(lines: string[], folder: string, framework: Framework): string[] {

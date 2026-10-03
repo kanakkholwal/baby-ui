@@ -1,18 +1,12 @@
 <script lang="ts">
-import * as FormPrimitive from "formsnap";
-import { cn } from "../lib/cn";
-import { form } from "./variants";
+import type { ComponentProps } from "svelte";
+import FieldDescription from "../field/field-description.svelte";
+import { getFormField } from "./context";
 
-let {
-	ref = $bindable(null),
-	class: classProp,
-	...rest
-}: Omit<FormPrimitive.DescriptionProps, "child"> = $props();
+let { ref = $bindable(null), ...rest }: ComponentProps<typeof FieldDescription> =
+	$props();
+
+const context = getFormField();
 </script>
 
-<FormPrimitive.Description
-	bind:ref
-	data-slot="form-description"
-	class={cn(form().description(), classProp)}
-	{...rest}
-/>
+<FieldDescription bind:ref id={context.ids.description} {...rest} />

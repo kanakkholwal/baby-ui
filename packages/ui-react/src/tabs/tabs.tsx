@@ -166,7 +166,7 @@ export function TabsList({ className, children, ...props }: ComponentProps<"div"
 			className={cn(
 				"relative isolate flex w-full min-w-0 max-w-full items-center",
 				edges.overflow && tabs.variant === "pill" && "rounded-full bg-card",
-				edges.overflow && tabs.variant === "segment" && "rounded-lg bg-card",
+				edges.overflow && tabs.variant === "segment" && "rounded-lg bg-muted",
 			)}
 		>
 			{edges.overflow ? (

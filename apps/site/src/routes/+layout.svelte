@@ -2,13 +2,13 @@
 import "./layout.css";
 import { ModeWatcher } from "mode-watcher";
 import { onMount } from "svelte";
+import { initAnalytics, setAnalyticsContext, track } from "#lib/analytics.js";
+import NavProgress from "#lib/components/nav-progress.svelte";
+import PreferencesPanel from "#lib/components/preferences-panel.svelte";
+import SiteHeader from "#lib/components/site-header.svelte";
+import { prefs } from "#lib/preferences.svelte.js";
 import { afterNavigate, beforeNavigate } from "$app/navigation";
 import { page } from "$app/state";
-import { initAnalytics, setAnalyticsContext, track } from "$lib/analytics";
-import NavProgress from "$lib/components/nav-progress.svelte";
-import PreferencesPanel from "$lib/components/preferences-panel.svelte";
-import SiteHeader from "$lib/components/site-header.svelte";
-import { prefs } from "$lib/preferences.svelte";
 
 let { children } = $props();
 
@@ -30,10 +30,15 @@ onMount(() => {
 
 // The landing view is sent by initAnalytics; client-side route changes are ours to send.
 const changesPage = (from?: URL, to?: URL) => from?.pathname !== to?.pathname;
-beforeNavigate(({ from, to, willUnload }) => {
+
+beforeNavigate(({ from, to, willUnload, shallow }) => {
+	if (shallow) return;
 	if (!willUnload && changesPage(from?.url, to?.url)) track("$pageleave");
 });
-afterNavigate(({ from, to, type }) => {
+
+afterNavigate(({ from, to, type, shallow }) => {
+	if (shallow) return;
+
 	// Read `page`: on the first ("enter") navigation, `to.route` and `to.params` are empty.
 	const onComponent = page.route.id === "/components/[category]/[slug]";
 	setAnalyticsContext({

@@ -1,7 +1,7 @@
 <script lang="ts">
 import { IconArrowRight } from "@baby-ui/icons";
 import { Button, ShowcaseGrid, type ShowcaseSpan } from "@baby-ui/svelte";
-import type { CardItem } from "$lib/registry";
+import type { CardItem } from "#lib/registry.js";
 import ShowcasePanel from "./showcase-panel.svelte";
 
 let { items }: { items: CardItem[] } = $props();

@@ -34,21 +34,21 @@ import {
 	TooltipTrigger,
 } from "@baby-ui/svelte";
 import { mode, setMode } from "mode-watcher";
-import { page } from "$app/state";
-import Logo from "$lib/components/logo.svelte";
-import SidebarToggleIcon from "$lib/components/sidebar-toggle-icon.svelte";
-import SiteSearch from "$lib/components/site-search.svelte";
-import { docsSidebar } from "$lib/docs-sidebar.svelte";
-import { GITHUB_URL, githubStars } from "$lib/github-stars";
-import { mobileNav } from "$lib/mobile-nav.svelte";
-import { prefs } from "$lib/preferences.svelte";
+import Logo from "#lib/components/logo.svelte";
+import SidebarToggleIcon from "#lib/components/sidebar-toggle-icon.svelte";
+import SiteSearch from "#lib/components/site-search.svelte";
+import { docsSidebar } from "#lib/docs-sidebar.svelte.js";
+import { GITHUB_URL, githubStars } from "#lib/github-stars.js";
+import { mobileNav } from "#lib/mobile-nav.svelte.js";
+import { prefs } from "#lib/preferences.svelte.js";
 import {
 	COLLECTIONS,
 	categoryHref,
 	type NavIcon,
 	siteNav,
 	TOP_LEVEL,
-} from "$lib/registry";
+} from "#lib/registry.js";
+import { page } from "$app/state";
 
 const NAV = $derived(siteNav(page.data.categories ?? []));
 
