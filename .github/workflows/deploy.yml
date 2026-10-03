@@ -22,7 +22,7 @@ permissions:
 jobs:
   ci:
     uses: ./.github/workflows/ci.yml
-    # The Pro bundle job needs the private repo deploy key.
+    # The Pro bundle job needs the private repo token.
     secrets: inherit
 
   deploy:
@@ -32,13 +32,13 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      # Production always bundles Pro; without the deploy key this fails rather than ship without it.
+      # Production always bundles Pro; without the token this fails rather than ship without it.
       - name: Check out Pro
         uses: actions/checkout@v6
         with:
           repository: kanakkholwal/baby-ui-pro
-          # token: ${{ secrets.PRO_REPO_TOKEN }}
-          ssh-key: ${{ secrets.PRO_REPO_SSH_KEY }}
+          token: ${{ secrets.PRO_REPO_TOKEN }}
+          # ssh-key: ${{ secrets.PRO_REPO_SSH_KEY }}
           path: pro
           persist-credentials: false
 

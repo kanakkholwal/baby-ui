@@ -76,13 +76,13 @@ jobs:
       matrix:
         show-pro: ["true", "false"]
     env:
-      # HAS_PRO: ${{ secrets.PRO_REPO_TOKEN != '' }}
-      HAS_PRO: ${{ secrets.PRO_REPO_SSH_KEY != '' }}
+      HAS_PRO: ${{ secrets.PRO_REPO_TOKEN != '' }}
+      # HAS_PRO: ${{ secrets.PRO_REPO_SSH_KEY != '' }}
       VITE_SHOW_PRO: ${{ matrix.show-pro }}
     steps:
-      - name: Skip without the Pro deploy key
+      - name: Skip without the Pro token
         if: env.HAS_PRO != 'true'
-        run: echo "::notice::PRO_REPO_SSH_KEY is not set (forks, Dependabot); Pro bundle checks skipped."
+        run: echo "::notice::PRO_REPO_TOKEN is not set (forks, Dependabot); Pro bundle checks skipped."
 
       - if: env.HAS_PRO == 'true'
         uses: actions/checkout@v6
@@ -92,8 +92,8 @@ jobs:
         uses: actions/checkout@v6
         with:
           repository: kanakkholwal/baby-ui-pro
-          # token: ${{ secrets.PRO_REPO_TOKEN }}
-          ssh-key: ${{ secrets.PRO_REPO_SSH_KEY }}
+          token: ${{ secrets.PRO_REPO_TOKEN }}
+          # ssh-key: ${{ secrets.PRO_REPO_SSH_KEY }}
           path: pro
           persist-credentials: false
 
