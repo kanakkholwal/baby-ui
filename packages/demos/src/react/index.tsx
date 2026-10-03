@@ -68,6 +68,7 @@ import { Pricing02Demo } from "./pricing-02";
 import { AccordionDemo, AlertDemo, AvatarDemo, BadgeDemo, CardDemo, CheckboxDemo, InputDemo, LabelDemo, ProgressDemo, SkeletonDemo, SwitchDemo, TextareaDemo } from "./primitives";
 import { CollapsibleDemo, GaugeDemo, PaginationDemo, ScrollAreaDemo, ScrubFieldDemo, ShortcutDemo, ShowMoreDemo, SpinnerDemo, ToggleDemo, ToggleGroupDemo, TypographyDemo } from "./primitives2";
 import { ProjectionLineDemo } from "./projection-line";
+import { PropertyPanelDemo } from "./property-panel";
 import { RadarChartDemo } from "./radar-chart";
 import { RecommendationCardDemo } from "./recommendation-card";
 import { RecordsTableDemo } from "./records-table";
@@ -323,6 +324,7 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"pricing-02": Pricing02Demo,
 	progress: ProgressDemo,
 	"projection-line": ProjectionLineDemo,
+	"property-panel": PropertyPanelDemo,
 	question: QuestionDemo,
 	"radar-chart": RadarChartDemo,
 	"radio-group": RadioGroupDemo,

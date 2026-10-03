@@ -3,9 +3,9 @@ import { tv, type VariantProps } from "tailwind-variants";
 export const pieChart = tv({
 	slots: {
 		slice:
-			"cursor-pointer outline-none transition-opacity duration-150 ease-[cubic-bezier(0,0,0.58,1)]",
+			"cursor-pointer outline-none transition-opacity duration-(--duration-fast) ease-[cubic-bezier(0,0,0.58,1)]",
 		label:
-			"pointer-events-none fill-foreground stroke-background font-medium text-[11px] tabular-nums transition-opacity duration-300 [paint-order:stroke] [stroke-width:3px]",
+			"pointer-events-none fill-foreground stroke-background font-medium text-xs tabular-nums transition-opacity duration-300 [paint-order:stroke] [stroke-width:3px]",
 		center:
 			"pointer-events-none absolute flex flex-col items-center justify-center text-center",
 		caption: "max-w-full truncate text-muted-foreground text-xs",

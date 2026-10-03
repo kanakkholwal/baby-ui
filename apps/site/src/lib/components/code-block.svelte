@@ -1,5 +1,6 @@
 <script lang="ts">
 import { IconFileCode } from "@baby-ui/icons";
+import { TabsContent } from "@baby-ui/svelte";
 import type { TrackEvent } from "#lib/analytics.js";
 import { LANG_LABEL } from "#lib/highlight.js";
 import CodeFrame from "./code-frame.svelte";
@@ -39,7 +40,6 @@ $effect(() => {
 	if (!all.some((p) => p.id === active)) active = all[0]?.id ?? "";
 });
 const current = $derived(all.find((p) => p.id === active) ?? all[0]);
-const activeIndex = $derived(all.findIndex((p) => p.id === active));
 const tabs = $derived(
 	panels ? panels.map((p) => ({ id: p.id, label: p.label })) : undefined,
 );
@@ -76,23 +76,10 @@ const BODY =
 	{/snippet}
 
 	{#if panels}
-		<!-- Panels left of the active one rest off to the left, the rest off to the right,
-		     so a switch slides the incoming text in from its own side. -->
-		{#each all as panel, i (panel.id)}
-			{@const shift = i === activeIndex ? 0 : i < activeIndex ? -1 : 1}
-			<div
-				role="tabpanel"
-				id="panel-{panel.id}"
-				aria-labelledby="tab-{panel.id}"
-				inert={shift !== 0}
-				style:max-height={maxHeight}
-				class={[
-					BODY,
-					shift === 0 ? "relative" : "pointer-events-none absolute inset-0 invisible",
-				]}
-			>
-				{@html panel.html}
-			</div>
+		{#each all as panel (panel.id)}
+			<TabsContent value={panel.id} class="mt-0">
+				<div style:max-height={maxHeight} class={BODY}>{@html panel.html}</div>
+			</TabsContent>
 		{/each}
 	{:else if collapsible}
 		<!-- max-height animates between two lengths, so the open end is the measured content. -->

@@ -79,16 +79,16 @@ const TOOL_GLYPHS: Record<RecordsToolKind, ReactNode> = {
 function ConfigRow({ label, children }: { label: string; children: ReactNode }) {
 	return (
 		<div className="relative flex h-8 items-center justify-between">
-			<span className="text-[13px] text-muted-foreground">{label}</span>
+			<span className="text-sm text-muted-foreground">{label}</span>
 			{children}
 		</div>
 	);
 }
 
 const ACTION_ROW =
-	"flex h-8 items-center gap-2.5 rounded-md px-1.5 text-left text-[13px] text-foreground transition-colors hover:bg-foreground/[0.06]";
+	"flex h-8 items-center gap-2.5 rounded-md px-1.5 text-left text-sm text-foreground transition-colors hover:bg-foreground/[0.06]";
 const PICKER_TRIGGER =
-	"h-7 w-auto min-w-0 gap-1.5 border-none bg-transparent px-1.5 font-medium text-[13px] text-foreground hover:bg-foreground/[0.06]";
+	"h-7 w-auto min-w-0 gap-1.5 border-none bg-transparent px-1.5 font-medium text-sm text-foreground hover:bg-foreground/[0.06]";
 
 export interface ConfigPopoverProps {
 	title: string;
@@ -127,7 +127,7 @@ export function ConfigPopover({
 
 	return (
 		<div data-slot="records-table-config-popover">
-			<div className="pb-2 font-medium text-[13.5px] text-foreground">{title}</div>
+			<div className="pb-2 font-medium text-sm text-foreground">{title}</div>
 
 			<ConfigRow label={labels.type}>
 				<Select
@@ -195,7 +195,7 @@ export function ConfigPopover({
 								<path d="M12 8h.01M11 12h1v4h1" />
 							</Icon>
 						</HoverCardTrigger>
-						<HoverCardContent side="top" className="w-56 text-[12px] leading-relaxed">
+						<HoverCardContent side="top" className="w-56 text-xs leading-relaxed">
 							{labels.groundingHelp}
 						</HoverCardContent>
 					</HoverCard>
@@ -206,20 +206,20 @@ export function ConfigPopover({
 				<Popover>
 					<PopoverTrigger
 						aria-label={labels.inputs}
-						className="flex h-7 max-w-[220px] items-center gap-1.5 rounded-md px-1.5 text-[13px] text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground"
+						className="flex h-7 max-w-[220px] items-center gap-1.5 rounded-md px-1.5 text-sm text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground"
 					>
 						{column.inputs.length ? (
 							<span className="flex min-w-0 items-center gap-1">
 								{column.inputs.slice(0, 2).map((input) => (
 									<span
 										key={input}
-										className="max-w-[92px] truncate rounded-[5px] bg-primary/10 px-1.5 py-0.5 font-medium text-[12px] text-primary"
+										className="max-w-[92px] truncate rounded-[5px] bg-primary/10 px-1.5 py-0.5 font-medium text-xs text-primary"
 									>
 										{input}
 									</span>
 								))}
 								{column.inputs.length > 2 ? (
-									<span className="font-medium text-[11px] text-muted-foreground">
+									<span className="font-medium text-xs text-muted-foreground">
 										+{column.inputs.length - 2}
 									</span>
 								) : null}
@@ -229,7 +229,7 @@ export function ConfigPopover({
 						)}
 					</PopoverTrigger>
 					<PopoverContent align="start" className="w-56 p-1.5">
-						<div className="px-1.5 pt-0.5 pb-1 font-medium text-[11.5px] text-muted-foreground">
+						<div className="px-1.5 pt-0.5 pb-1 font-medium text-xs text-muted-foreground">
 							{labels.useValuesFrom}
 						</div>
 						<div className="flex flex-col gap-0.5">
@@ -250,11 +250,11 @@ export function ConfigPopover({
 			</ConfigRow>
 
 			{column.prompt ? (
-				<div className="mt-2 min-h-[64px] rounded-lg border border-border bg-muted p-3 text-[13px] leading-relaxed">
+				<div className="mt-2 min-h-[64px] rounded-lg border border-border bg-muted p-3 text-sm leading-relaxed">
 					<span className="text-foreground">
 						{column.prompt.before}
 						{column.prompt.chip ? (
-							<span className="rounded-[5px] bg-primary/10 px-1.5 py-0.5 font-medium text-[12px] text-primary">
+							<span className="rounded-[5px] bg-primary/10 px-1.5 py-0.5 font-medium text-xs text-primary">
 								{column.prompt.chip}
 							</span>
 						) : null}
@@ -305,7 +305,7 @@ export function ConfigPopover({
 					<span className="flex-1">{labels.moreSettings}</span>
 					<span
 						className={cn(
-							"text-muted-foreground transition-transform duration-150 motion-reduce:transition-none",
+							"text-muted-foreground transition-transform duration-(--duration-fast) motion-reduce:transition-none",
 							moreOpen && "rotate-90",
 						)}
 					>
@@ -335,7 +335,7 @@ export function ConfigPopover({
 			>
 				<div className="min-h-0 overflow-hidden">
 					<div className="mt-2 border-border border-t pt-2">
-						<div className="pb-1 font-medium text-[11.5px] text-muted-foreground">
+						<div className="pb-1 font-medium text-xs text-muted-foreground">
 							{labels.behavior}
 						</div>
 						{behaviour.map((key) => (

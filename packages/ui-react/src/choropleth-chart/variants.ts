@@ -6,8 +6,7 @@ export const choroplethChart = tv({
 		feature: "stroke-background [stroke-width:0.5] [vector-effect:non-scaling-stroke]",
 		graticule:
 			"fill-none stroke-border [stroke-width:0.5] [vector-effect:non-scaling-stroke]",
-		legend:
-			"flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-muted-foreground",
+		legend: "flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground",
 		swatch: "size-2.5 shrink-0 rounded-[3px]",
 		scale: "flex items-center gap-1.5 tabular-nums",
 		controls: "absolute top-2 right-2 z-10 flex flex-col gap-1",

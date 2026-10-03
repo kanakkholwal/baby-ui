@@ -4,7 +4,7 @@ export const heatmapChart = tv({
 	slots: {
 		cell: "cursor-pointer outline-none",
 		overlay: "pointer-events-none fill-foreground/10",
-		axis: "fill-muted-foreground text-[10px]",
+		axis: "fill-muted-foreground text-xs",
 		active: "pointer-events-none fill-none stroke-foreground",
 		legend: "flex items-center gap-1.5 text-muted-foreground text-xs",
 		swatch:

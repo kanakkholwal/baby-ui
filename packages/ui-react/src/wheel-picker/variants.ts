@@ -7,7 +7,7 @@ export const wheelPicker = tv({
 		lens: "pointer-events-none absolute inset-x-1 top-1/2 h-(--wheel-h) -translate-y-1/2 rounded-xl bg-foreground/[0.05]",
 		viewport:
 			"relative h-[calc(var(--wheel-h)*var(--wheel-rows))] cursor-grab touch-pan-y snap-y snap-mandatory overflow-y-scroll overscroll-contain rounded-xl py-[calc(var(--wheel-h)*(var(--wheel-rows)-1)/2)] outline-none [perspective:calc(var(--wheel-h)*21)] [scrollbar-width:none] select-none [mask-image:linear-gradient(to_bottom,transparent_0%,rgb(0_0_0/0.14)_10%,rgb(0_0_0/0.4)_20%,rgb(0_0_0/0.72)_28%,black_38%,black_62%,rgb(0_0_0/0.72)_72%,rgb(0_0_0/0.4)_80%,rgb(0_0_0/0.14)_90%,transparent_100%)] focus-visible:ring-2 focus-visible:ring-ring/60 data-[dragging]:cursor-grabbing data-[dragging]:snap-none data-[disabled]:pointer-events-none data-[disabled]:opacity-45 [&::-webkit-scrollbar]:hidden",
-		item: "flex h-(--wheel-h) snap-center items-center justify-center px-1 font-medium text-[17px] tabular-nums leading-none [backface-visibility:hidden]",
+		item: "flex h-(--wheel-h) snap-center items-center justify-center px-1 font-medium text-lg tabular-nums leading-none [backface-visibility:hidden]",
 		label: "truncate data-[disabled]:opacity-40",
 	},
 	variants: {

@@ -42,7 +42,7 @@ function SpinnerRing({ active, children }: { active?: boolean; children?: number
 					/>
 				) : null}
 			</svg>
-			<span className="relative font-semibold text-[10.5px] text-foreground tabular-nums">
+			<span className="relative font-semibold text-xs text-foreground tabular-nums">
 				{children}
 			</span>
 		</span>
@@ -205,10 +205,10 @@ export function TaskRows({
 							<span className="flex size-6 shrink-0 items-center justify-center">
 								{badgeFor(row)}
 							</span>
-							<span className="min-w-0 flex-1 truncate font-medium text-[13px] text-foreground">
+							<span className="min-w-0 flex-1 truncate font-medium text-sm text-foreground">
 								{row.label}
 							</span>
-							<span className="text-[12.5px] text-muted-foreground tabular-nums">
+							<span className="text-xs text-muted-foreground tabular-nums">
 								{row.amount}
 							</span>
 							{pillFor(row)}
@@ -225,7 +225,7 @@ export function TaskRows({
 									strokeLinejoin="round"
 									aria-hidden
 									style={{ transform: open ? "rotate(180deg)" : undefined }}
-									className="size-3.5 transition-transform duration-300 ease-[var(--ease-out)] motion-reduce:transition-none"
+									className="size-3.5 transition-transform duration-(--duration-slow) ease-[var(--ease-out)] motion-reduce:transition-none"
 								>
 									<path d="M6 9l6 6 6-6" />
 								</svg>
@@ -233,7 +233,7 @@ export function TaskRows({
 						</button>
 
 						<div
-							className="grid transition-[grid-template-rows,opacity] duration-300 ease-[var(--ease-out)]"
+							className="grid transition-[grid-template-rows,opacity] duration-(--duration-slow) ease-[var(--ease-out)]"
 							style={{ gridTemplateRows: open ? "1fr" : "0fr", opacity: open ? 1 : 0 }}
 						>
 							<div className="overflow-hidden">
@@ -242,10 +242,8 @@ export function TaskRows({
 									<div className="flex flex-col gap-1.5">
 										{row.details.map((d) => (
 											<div key={d.label} className="flex items-center justify-between">
-												<span className="text-[12px] text-muted-foreground">
-													{d.label}
-												</span>
-												<span className="font-mono text-[11.5px] text-muted-foreground tabular-nums">
+												<span className="text-xs text-muted-foreground">{d.label}</span>
+												<span className="font-mono text-xs text-muted-foreground tabular-nums">
 													{d.meta}
 												</span>
 											</div>

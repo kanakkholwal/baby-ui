@@ -32,7 +32,7 @@ const lines = $derived(code.replace(/\n$/, "").split("\n"));
 >
 	<div class="flex min-h-8 items-center gap-2 px-1 pb-1">
 		<span
-			class="inline-flex h-5 shrink-0 items-center rounded border border-border bg-background px-1.5 font-mono font-semibold text-[10px] text-muted-foreground uppercase tracking-wider"
+			class="inline-flex h-5 shrink-0 items-center rounded border border-border bg-background px-1.5 font-mono font-semibold text-xs text-muted-foreground uppercase tracking-wider"
 		>
 			{language}
 		</span>
@@ -45,14 +45,14 @@ const lines = $derived(code.replace(/\n$/, "").split("\n"));
 		{#if html}
 			<div
 				style:max-height={maxHeight}
-				class="scroll-area overflow-auto py-4 font-mono text-[13px] leading-[1.7] [&_.line]:px-5 [&_code]:block [&_pre]:!m-0 [&_pre]:!bg-transparent [&_pre]:!p-0 [&_pre>code:not(:has(.line))]:px-5"
+				class="scroll-area overflow-auto py-4 font-mono text-sm leading-[1.7] [&_.line]:px-5 [&_code]:block [&_pre]:!m-0 [&_pre]:!bg-transparent [&_pre]:!p-0 [&_pre>code:not(:has(.line))]:px-5"
 			>
 				{@html html}
 			</div>
 		{:else}
 		<pre
 			style:max-height={maxHeight}
-			class="scroll-area overflow-auto py-4 font-mono text-[13px] leading-[1.7]"><code
+			class="scroll-area overflow-auto py-4 font-mono text-sm leading-[1.7]"><code
 				>{#each lines as line, i (i)}<span class="flex px-5"
 						>{#if showLineNumbers}<span
 								aria-hidden="true"

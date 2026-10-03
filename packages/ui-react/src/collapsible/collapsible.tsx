@@ -42,17 +42,18 @@ export function CollapsibleTrigger({
 		<CollapsiblePrimitive.Trigger
 			data-slot="collapsible-trigger"
 			className={cn(
-				"flex w-full items-center gap-2 rounded-lg px-1 py-1.5 text-left font-medium text-foreground text-sm transition-colors hover:text-muted-foreground",
-				"[&>svg]:transition-[transform,scale,translate,rotate] [&>svg]:duration-[var(--duration-exit)] [&>svg]:ease-[var(--ease-out)] [&[data-panel-open]>svg]:rotate-90 [&[data-panel-open]>svg]:duration-[var(--duration-overlay)] motion-reduce:[&>svg]:transition-none",
+				"group/collapsible-trigger flex w-full items-center gap-2 rounded-lg px-1 py-1.5 text-left font-medium text-foreground text-sm transition-colors hover:text-muted-foreground",
 				className,
 			)}
 			{...props}
 		>
+			{/* Only the chevron turns; an icon passed as children stays put. */}
 			<svg
 				viewBox="0 0 16 16"
 				fill="none"
 				aria-hidden
-				className="size-3.5 shrink-0 text-muted-foreground"
+				data-slot="collapsible-icon"
+				className="size-3.5 shrink-0 text-muted-foreground transition-[rotate] duration-(--duration-exit) ease-(--ease-out) group-data-[panel-open]/collapsible-trigger:rotate-90 group-data-[panel-open]/collapsible-trigger:duration-(--duration-overlay) motion-reduce:transition-none"
 			>
 				<path
 					d="m6 4 4 4-4 4"

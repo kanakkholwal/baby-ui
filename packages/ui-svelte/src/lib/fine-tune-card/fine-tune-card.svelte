@@ -120,9 +120,9 @@ function selectType(value: string) {
 
 <div data-slot="fine-tune-card" class={cn(classes.root(), classProp)}>
 	<div class="flex items-center justify-between border-border border-b px-3 py-2">
-		<span class="font-medium text-[13px] text-foreground">{text.title}</span>
+		<span class="font-medium text-sm text-foreground">{text.title}</span>
 		{#if edited}
-			<span class="pop-in flex items-center gap-1.5 font-medium text-[12px] text-success">
+			<span class="pop-in flex items-center gap-1.5 font-medium text-xs text-success">
 				<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 					<path d="M20 6 9 17l-5-5" />
 				</svg>
@@ -135,17 +135,17 @@ function selectType(value: string) {
 						<path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8z" />
 					</svg>
 				</span>
-				<span class="reasoning-shimmer text-[12px] font-medium">{text.adjust}</span>
+				<span class="reasoning-shimmer text-xs font-medium">{text.adjust}</span>
 			</span>
 		{/if}
 	</div>
 
 	<div class="flex flex-col gap-2 border-border border-b px-3 py-2.5">
-		<p class="font-medium text-[12.5px] text-foreground">{text.layout}</p>
+		<p class="font-medium text-xs text-foreground">{text.layout}</p>
 		<div class="relative grid grid-cols-3 rounded-lg bg-input p-0.5">
 			<span
 				aria-hidden="true"
-				class="absolute inset-y-0.5 rounded-md bg-card shadow-sm transition-transform duration-300 ease-[var(--ease-out)]"
+				class="absolute inset-y-0.5 rounded-md bg-card shadow-sm transition-transform duration-(--duration-slow) ease-[var(--ease-out)]"
 				style="width: calc((100% - 4px) / 3); left: 2px; transform: translateX({current.segment * 100}%);"
 			></span>
 			{#each SEGMENTS as s, i (s)}
@@ -155,7 +155,7 @@ function selectType(value: string) {
 					aria-pressed={i === current.segment}
 					onclick={() => selectSeg(i)}
 					class={cn(
-						"relative z-10 flex h-6 items-center justify-center transition-colors duration-200",
+						"relative z-10 flex h-6 items-center justify-center transition-colors duration-(--duration-base)",
 						i === current.segment ? "text-primary" : "text-muted-foreground",
 					)}
 				>
@@ -183,12 +183,12 @@ function selectType(value: string) {
 
 	{#if options.length > 0}
 		<div class="flex items-center justify-between px-3 py-2">
-			<span class="text-[12px] text-muted-foreground">{text.type}</span>
+			<span class="text-xs text-muted-foreground">{text.type}</span>
 			<Select
 				bind:value={() => current.type, selectType}
 				items={options.map((item) => ({ value: item, label: item }))}
 			>
-				<SelectTrigger class="h-6.5 w-30 rounded-lg px-2 text-[12px]">
+				<SelectTrigger class="h-6.5 w-30 rounded-lg px-2 text-xs">
 					<SelectValue placeholder={text.placeholder} />
 				</SelectTrigger>
 				<SelectContent align="end">

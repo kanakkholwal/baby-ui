@@ -2,12 +2,16 @@ import { defineComponent } from "../index.ts";
 
 export const field = defineComponent({
 	slug: "field",
+	isUpdated: true,
 	name: "Field",
 	description:
 		"Label, control, description and error laid out as one accessible unit, with shadcn's exact part names.",
 	category: "base",
 	status: "stable",
-	variants: { orientation: ["vertical", "horizontal", "responsive"] },
+	variants: {
+		orientation: ["vertical", "horizontal", "responsive"],
+		size: ["default", "sm"],
+	},
 	props: [
 		{
 			name: "orientation",
@@ -16,6 +20,14 @@ export const field = defineComponent({
 				"Stack the label over the control, set them side by side, or switch at the field group's @md width.",
 			default: "vertical",
 			control: { kind: "select", options: ["vertical", "horizontal", "responsive"] },
+		},
+		{
+			name: "size",
+			type: '"default" | "sm"',
+			description:
+				'Field, FieldSet and FieldGroup. `sm` is the compact inspector density: tighter rows and, when horizontal, a fixed muted label column. Pair it with FieldLegend `variant="eyebrow"`.',
+			default: "default",
+			control: { kind: "select", options: ["default", "sm"] },
 		},
 		{
 			name: "errors",

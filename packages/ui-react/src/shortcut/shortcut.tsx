@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { cn } from "../lib/cn";
 import {
 	isApplePlatform,
+	joinCaps,
 	matchesShortcut,
 	parseShortcut,
 	shortcutBlocked,
@@ -18,7 +19,7 @@ export interface ShortcutProps {
 	shortcut: string;
 	size?: ShortcutSize;
 	variant?: ShortcutVariant;
-	/** One cap reading "⌘K" instead of a cap per key. */
+	/** One cap: glyphs run together (⇧⌘K), word keys take a `+` (Ctrl+K). */
 	joined?: boolean;
 	/** Runs on the key combo. Without it, the enclosing button or link is clicked. */
 	onTrigger?: (event: KeyboardEvent) => void;
@@ -63,7 +64,7 @@ export function Shortcut({
 		>
 			<span className="sr-only">{parsed?.spoken ?? shortcut}</span>
 			{(joined
-				? [(parsed?.caps ?? [shortcut]).join("")]
+				? [joinCaps(parsed?.caps ?? [shortcut])]
 				: (parsed?.caps ?? [shortcut])
 			).map((cap, i) => (
 				<kbd key={`${cap}-${i}`} aria-hidden className={shortcutCap({ variant, size })}>

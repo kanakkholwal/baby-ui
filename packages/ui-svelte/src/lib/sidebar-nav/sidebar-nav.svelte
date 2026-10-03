@@ -160,7 +160,7 @@ function onGlideOver(group: string, event: MouseEvent) {
 	>
 		<span
 			aria-hidden="true"
-			class="pointer-events-none absolute inset-x-0 rounded-lg bg-foreground/[0.06] top-0 transition-[transform,height,opacity] duration-150 ease-[var(--ease-out)] motion-reduce:transition-none"
+			class="pointer-events-none absolute inset-x-0 rounded-lg bg-foreground/[0.06] top-0 transition-[transform,height,opacity] duration-(--duration-fast) ease-[var(--ease-out)] motion-reduce:transition-none"
 			style:transform="translateY({glideBox[group]?.top ?? 0}px)"
 			style:height="{glideBox[group]?.height ?? 0}px"
 			style:opacity={glideVisible[group] ? 1 : 0}
@@ -177,7 +177,7 @@ function onGlideOver(group: string, event: MouseEvent) {
 		aria-current={active ? "page" : undefined}
 		title={collapsed ? label : undefined}
 		class={cn(
-			"relative z-10 mx-2 flex h-8 items-center rounded-lg px-2 text-left transition-[background-color,transform] duration-150 active:scale-[0.98]",
+			"relative z-10 mx-2 flex h-8 items-center rounded-lg px-2 text-left transition-[background-color,transform] duration-(--duration-fast) active:scale-[0.98]",
 			active && "bg-foreground/[0.06]",
 		)}
 	>
@@ -186,7 +186,7 @@ function onGlideOver(group: string, event: MouseEvent) {
 		</span>
 		<span
 			class={cn(
-				"ml-1.5 min-w-0 flex-1 truncate text-[14px] font-medium transition-[opacity,transform] duration-150 motion-reduce:transition-none",
+				"ml-1.5 min-w-0 flex-1 truncate text-sm font-medium transition-[opacity,transform] duration-(--duration-fast) motion-reduce:transition-none",
 				active ? "text-foreground" : "text-muted-foreground",
 				collapsed && "translate-x-2 opacity-0",
 			)}
@@ -196,7 +196,7 @@ function onGlideOver(group: string, event: MouseEvent) {
 		{#if count}
 			<span
 				class={cn(
-					"mr-2 shrink-0 text-[12px] font-medium text-muted-foreground tabular-nums transition-opacity duration-150 motion-reduce:transition-none",
+					"mr-2 shrink-0 text-xs font-medium text-muted-foreground tabular-nums transition-opacity duration-(--duration-fast) motion-reduce:transition-none",
 					collapsed && "opacity-0",
 				)}
 			>
@@ -222,18 +222,18 @@ function onGlideOver(group: string, event: MouseEvent) {
 				<DropdownMenuTrigger
 					aria-hidden={collapsed}
 					tabindex={collapsed ? -1 : 0}
-					class="absolute top-1 right-12 left-2 flex h-8 items-center rounded-lg px-2 text-left transition-[background-color,transform] duration-100 hover:bg-foreground/[0.06] active:scale-[0.99]"
+					class="absolute top-1 right-12 left-2 flex h-8 items-center rounded-lg px-2 text-left transition-[background-color,transform] duration-(--duration-instant) hover:bg-foreground/[0.06] active:scale-[0.99]"
 				>
 					<span
 						class={cn(
-							"flex size-5 shrink-0 items-center justify-center text-foreground transition-opacity duration-150",
+							"flex size-5 shrink-0 items-center justify-center text-foreground transition-opacity duration-(--duration-fast)",
 							collapsed && "opacity-0",
 						)}
 					>
 						{#if logo}
 							{@render logo()}
 						{:else}
-							<Avatar aria-hidden="true" shape="square" class="size-5 rounded-[5px] bg-foreground font-semibold text-[10px]">
+							<Avatar aria-hidden="true" shape="square" class="size-5 rounded-[5px] bg-foreground font-semibold text-xs">
 								<AvatarImage src={workspace.image} alt="" />
 								<AvatarFallback class="text-background">{workspace.monogram}</AvatarFallback>
 							</Avatar>
@@ -241,7 +241,7 @@ function onGlideOver(group: string, event: MouseEvent) {
 					</span>
 					<span
 						class={cn(
-							"ml-1.5 min-w-0 flex-1 truncate text-[14px] font-medium text-muted-foreground transition-[opacity,transform] duration-150 motion-reduce:transition-none",
+							"ml-1.5 min-w-0 flex-1 truncate text-sm font-medium text-muted-foreground transition-[opacity,transform] duration-(--duration-fast) motion-reduce:transition-none",
 							collapsed && "translate-x-2 opacity-0",
 						)}
 					>
@@ -249,7 +249,7 @@ function onGlideOver(group: string, event: MouseEvent) {
 					</span>
 					<span
 						class={cn(
-							"ml-1 flex shrink-0 text-muted-foreground transition-opacity duration-150",
+							"ml-1 flex shrink-0 text-muted-foreground transition-opacity duration-(--duration-fast)",
 							collapsed && "opacity-0",
 						)}
 					>
@@ -258,11 +258,11 @@ function onGlideOver(group: string, event: MouseEvent) {
 				</DropdownMenuTrigger>
 				<DropdownMenuContent align="start" class="w-64">
 					<DropdownMenuItem class="h-10 gap-1.5">
-						<Avatar aria-hidden="true" shape="square" class="size-6 rounded-md bg-foreground font-semibold text-[11px]">
+						<Avatar aria-hidden="true" shape="square" class="size-6 rounded-md bg-foreground font-semibold text-xs">
 							<AvatarImage src={workspace.image} alt="" />
 							<AvatarFallback class="text-background">{workspace.monogram}</AvatarFallback>
 						</Avatar>
-						<span class="min-w-0 flex-1 truncate font-medium text-[13.5px] text-foreground">
+						<span class="min-w-0 flex-1 truncate font-medium text-sm text-foreground">
 							{workspace.name}
 						</span>
 						<span class="shrink-0 text-foreground">{@render checkIcon()}</span>
@@ -276,7 +276,7 @@ function onGlideOver(group: string, event: MouseEvent) {
 										{@render action.icon()}
 									</span>
 								{/if}
-								<span class="min-w-0 flex-1 truncate text-[13.5px]">{action.label}</span>
+								<span class="min-w-0 flex-1 truncate text-sm">{action.label}</span>
 							</DropdownMenuItem>
 						{/each}
 					{/if}
@@ -294,7 +294,7 @@ function onGlideOver(group: string, event: MouseEvent) {
 									/>
 								</svg>
 							</span>
-							<span class="min-w-0 flex-1 truncate text-[13.5px]">{labels.signOut}</span>
+							<span class="min-w-0 flex-1 truncate text-sm">{labels.signOut}</span>
 						</DropdownMenuItem>
 					{/if}
 				</DropdownMenuContent>
@@ -307,7 +307,7 @@ function onGlideOver(group: string, event: MouseEvent) {
 				tabindex={collapsed ? -1 : 0}
 				onclick={() => setCollapsed(true)}
 				class={cn(
-					"absolute top-1 right-2 flex size-8 items-center justify-center rounded-lg text-muted-foreground transition-[opacity,background-color,color] duration-150 hover:bg-foreground/[0.06] hover:text-foreground",
+					"absolute top-1 right-2 flex size-8 items-center justify-center rounded-lg text-muted-foreground transition-[opacity,background-color,color] duration-(--duration-fast) hover:bg-foreground/[0.06] hover:text-foreground",
 					collapsed && "pointer-events-none opacity-0",
 				)}
 			>
@@ -320,7 +320,7 @@ function onGlideOver(group: string, event: MouseEvent) {
 				tabindex={collapsed ? 0 : -1}
 				onclick={() => setCollapsed(false)}
 				class={cn(
-					"absolute top-0.5 left-2 flex size-9 items-center justify-center rounded-lg text-muted-foreground transition-[opacity,background-color,color] duration-150 hover:bg-foreground/[0.06] hover:text-foreground",
+					"absolute top-0.5 left-2 flex size-9 items-center justify-center rounded-lg text-muted-foreground transition-[opacity,background-color,color] duration-(--duration-fast) hover:bg-foreground/[0.06] hover:text-foreground",
 					!collapsed && "pointer-events-none opacity-0",
 				)}
 			>
@@ -343,7 +343,7 @@ function onGlideOver(group: string, event: MouseEvent) {
 		{@render glideList("rail", "", navRows as unknown as Snippet)}
 
 		<div class="mt-3 min-h-0 flex-1 overflow-y-auto">
-			<div class={cn("relative mx-2 mb-1 h-8 transition-opacity duration-150", collapsed && "opacity-0")} inert={collapsed}>
+			<div class={cn("relative mx-2 mb-1 h-8 transition-opacity duration-(--duration-fast)", collapsed && "opacity-0")} inert={collapsed}>
 				<button
 					type="button"
 					aria-expanded={recentsOpen}
@@ -351,11 +351,11 @@ function onGlideOver(group: string, event: MouseEvent) {
 					tabindex={searchOpen ? -1 : 0}
 					onclick={() => (recentsOpen = !recentsOpen)}
 					class={cn(
-						"absolute inset-0 flex items-center gap-1.5 rounded-lg px-2 font-medium text-[12.5px] text-muted-foreground transition-[opacity,transform,background-color] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] hover:bg-foreground/[0.06]",
+						"absolute inset-0 flex items-center gap-1.5 rounded-lg px-2 font-medium text-xs text-muted-foreground transition-[opacity,transform,background-color] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] hover:bg-foreground/[0.06]",
 						searchOpen ? "pointer-events-none -translate-x-1 opacity-0" : "translate-x-0 opacity-100",
 					)}
 				>
-					<span class="shrink-0 transition-transform duration-150 motion-reduce:transition-none" style:transform={recentsOpen ? "" : "rotate(-90deg)"}>
+					<span class="shrink-0 transition-transform duration-(--duration-fast) motion-reduce:transition-none" style:transform={recentsOpen ? "" : "rotate(-90deg)"}>
 						{@render chevronDownIcon()}
 					</span>
 					<span>{labels.recents}</span>
@@ -396,7 +396,7 @@ function onGlideOver(group: string, event: MouseEvent) {
 						}}
 						placeholder={labels.search}
 						aria-label={labels.searchInput}
-						class="ml-1.5 min-w-0 flex-1 bg-transparent text-[13px] font-medium text-foreground outline-none placeholder:text-muted-foreground"
+						class="ml-1.5 min-w-0 flex-1 bg-transparent text-sm font-medium text-foreground outline-none placeholder:text-muted-foreground"
 					/>
 					<button
 						type="button"
@@ -405,7 +405,7 @@ function onGlideOver(group: string, event: MouseEvent) {
 							searchOpen = false;
 							query = "";
 						}}
-						class="flex size-8 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-[background-color,color,transform] duration-150 hover:bg-foreground/[0.06] hover:text-foreground active:scale-[0.96]"
+						class="flex size-8 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-[background-color,color,transform] duration-(--duration-fast) hover:bg-foreground/[0.06] hover:text-foreground active:scale-[0.96]"
 					>
 						{@render crossIcon()}
 					</button>
@@ -417,7 +417,7 @@ function onGlideOver(group: string, event: MouseEvent) {
 					{@const active = item.label === activeTitle}
 					{@const shown = matches(item)}
 					<div
-						class="grid transition-[grid-template-rows,opacity] duration-200 ease-[var(--ease-out)] motion-reduce:transition-none"
+						class="grid transition-[grid-template-rows,opacity] duration-(--duration-base) ease-[var(--ease-out)] motion-reduce:transition-none"
 						style:grid-template-rows={shown ? "1fr" : "0fr"}
 						style:opacity={shown ? 1 : 0}
 						inert={!shown}
@@ -429,11 +429,11 @@ function onGlideOver(group: string, event: MouseEvent) {
 								title={item.label}
 								onclick={() => pick(item)}
 								class={cn(
-									"relative z-10 mx-2 mb-px flex h-8 items-center rounded-lg px-2 text-left transition-[background-color,transform] duration-150 active:scale-[0.98]",
+									"relative z-10 mx-2 mb-px flex h-8 items-center rounded-lg px-2 text-left transition-[background-color,transform] duration-(--duration-fast) active:scale-[0.98]",
 									active && "bg-foreground/[0.06]",
 								)}
 							>
-								<span class={cn("min-w-0 flex-1 truncate text-[14px] font-medium", active ? "text-foreground" : "text-muted-foreground")}>
+								<span class={cn("min-w-0 flex-1 truncate text-sm font-medium", active ? "text-foreground" : "text-muted-foreground")}>
 									{item.label}
 								</span>
 							</button>
@@ -441,12 +441,12 @@ function onGlideOver(group: string, event: MouseEvent) {
 					</div>
 				{/each}
 				{#if query && matchCount === 0}
-					<div class="mx-2 px-2 py-2 text-[12.5px] text-muted-foreground">{labels.noResults}</div>
+					<div class="mx-2 px-2 py-2 text-xs text-muted-foreground">{labels.noResults}</div>
 				{/if}
 			{/snippet}
 			<div
 				class={cn(
-					"grid transition-[grid-template-rows,opacity] duration-200 ease-[var(--ease-out)] motion-reduce:transition-none",
+					"grid transition-[grid-template-rows,opacity] duration-(--duration-base) ease-[var(--ease-out)] motion-reduce:transition-none",
 					collapsed && "opacity-0",
 				)}
 				style:grid-template-rows={recentsOpen ? "1fr" : "0fr"}
@@ -459,11 +459,11 @@ function onGlideOver(group: string, event: MouseEvent) {
 		</div>
 
 		{#if onFooterClick}
-			<div class={cn("mx-2 mt-3 border-border border-t pt-3 transition-opacity duration-150 motion-reduce:transition-none", collapsed && "opacity-0")} inert={collapsed}>
+			<div class={cn("mx-2 mt-3 border-border border-t pt-3 transition-opacity duration-(--duration-fast) motion-reduce:transition-none", collapsed && "opacity-0")} inert={collapsed}>
 				<button
 					type="button"
 					onclick={onFooterClick}
-					class="flex h-8 w-full items-center justify-center gap-1.5 rounded-md bg-foreground/[0.06] font-medium text-[12.5px] text-foreground transition-[background-color,transform] duration-150 hover:bg-foreground/[0.1] active:scale-[0.98]"
+					class="flex h-8 w-full items-center justify-center gap-1.5 rounded-md bg-foreground/[0.06] font-medium text-xs text-foreground transition-[background-color,transform] duration-(--duration-fast) hover:bg-foreground/[0.1] active:scale-[0.98]"
 				>
 					{#if footerIcon}{@render footerIcon()}{/if}
 					{footerLabel}

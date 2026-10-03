@@ -166,9 +166,9 @@ export function FineTuneCard({
 	return (
 		<div data-slot="fine-tune-card" className={cn(root(), className)}>
 			<div className="flex items-center justify-between border-border border-b px-3 py-2">
-				<span className="font-medium text-[13px] text-foreground">{text.title}</span>
+				<span className="font-medium text-sm text-foreground">{text.title}</span>
 				{edited ? (
-					<span className="pop-in flex items-center gap-1.5 font-medium text-[12px] text-success">
+					<span className="pop-in flex items-center gap-1.5 font-medium text-xs text-success">
 						<svg
 							width="10"
 							height="10"
@@ -197,19 +197,17 @@ export function FineTuneCard({
 								<path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8z" />
 							</svg>
 						</span>
-						<span className="reasoning-shimmer text-[12px] font-medium">
-							{text.adjust}
-						</span>
+						<span className="reasoning-shimmer text-xs font-medium">{text.adjust}</span>
 					</span>
 				)}
 			</div>
 
 			<div className="flex flex-col gap-2 border-border border-b px-3 py-2.5">
-				<p className="font-medium text-[12.5px] text-foreground">{text.layout}</p>
+				<p className="font-medium text-xs text-foreground">{text.layout}</p>
 				<div className="relative grid grid-cols-3 rounded-lg bg-input p-0.5">
 					<span
 						aria-hidden
-						className="absolute inset-y-0.5 rounded-md bg-card shadow-sm transition-transform duration-300 ease-[var(--ease-out)]"
+						className="absolute inset-y-0.5 rounded-md bg-card shadow-sm transition-transform duration-(--duration-slow) ease-[var(--ease-out)]"
 						style={{
 							width: "calc((100% - 4px) / 3)",
 							left: 2,
@@ -224,7 +222,7 @@ export function FineTuneCard({
 							aria-pressed={i === state.segment}
 							onClick={() => selectSeg(i)}
 							className={cn(
-								"relative z-10 flex h-6 items-center justify-center transition-colors duration-200",
+								"relative z-10 flex h-6 items-center justify-center transition-colors duration-(--duration-base)",
 								i === state.segment ? "text-primary" : "text-muted-foreground",
 							)}
 						>
@@ -256,9 +254,9 @@ export function FineTuneCard({
 
 			{options.length > 0 ? (
 				<div className="flex items-center justify-between px-3 py-2">
-					<span className="text-[12px] text-muted-foreground">{text.type}</span>
+					<span className="text-xs text-muted-foreground">{text.type}</span>
 					<Select value={state.type} onValueChange={selectType}>
-						<SelectTrigger className="h-6.5 w-30 rounded-lg px-2 text-[12px]">
+						<SelectTrigger className="h-6.5 w-30 rounded-lg px-2 text-xs">
 							<SelectValue placeholder={text.placeholder} />
 						</SelectTrigger>
 						<SelectContent align="end">

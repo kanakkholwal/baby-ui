@@ -149,7 +149,7 @@ export function CollabCard({
 						{CORNERS.map((pos) => (
 							<span key={pos} aria-hidden className={cn(styles.handle(), pos)} />
 						))}
-						<h2 className="font-(family-name:--font-heading) font-medium text-[17.5cqi] leading-[0.92] tracking-[-0.035em]">
+						<h2 className="font-(family-name:--font-heading) font-medium text-[17.5cqi] leading-[0.92] tracking-tight">
 							{greeting}
 						</h2>
 					</div>

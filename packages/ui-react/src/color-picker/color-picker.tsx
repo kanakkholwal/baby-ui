@@ -1,6 +1,11 @@
 "use client";
 
-import type { ReactNode, PointerEvent as ReactPointerEvent } from "react";
+import type {
+	ChangeEvent,
+	KeyboardEvent,
+	ReactNode,
+	PointerEvent as ReactPointerEvent,
+} from "react";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "../input-group/input-group";
 import { cn } from "../lib/cn";
@@ -39,8 +44,8 @@ export interface ColorPickerProps {
 	onValueChange: (value: string) => void;
 	onFormatChange?: (format: ColorFormat) => void;
 	/**
-	 * `inline` full picker, `field` swatch + hex field, `area` saturation square,
-	 * `slider` hue strip, `swatch` one disc, `swatches` a row of discs to choose from.
+	 * `field` (default) swatch + hex field, `row` labelled panel row, `inline` full picker,
+	 * `area` saturation square, `slider` hue strip, `swatch` one disc, `swatches` discs to pick.
 	 */
 	variant?: ColorPickerVariant;
 	/** Size of the field, area, slider and discs; the inline panel keeps its width. */
@@ -84,7 +89,7 @@ export function ColorPicker({
 	className,
 	onValueChange,
 	onFormatChange,
-	variant = "inline",
+	variant = "field",
 	size = "md",
 	invalid = false,
 	disabled = false,
@@ -385,7 +390,7 @@ export function ColorPicker({
 	const picker = (
 		<div
 			className={cn(
-				"w-60 select-none overflow-hidden rounded-xl border border-border bg-popover",
+				"w-60 select-none overflow-hidden rounded-xl bg-popover shadow-(--overlay-shadow)",
 				variant === "inline" && className,
 			)}
 		>
@@ -400,7 +405,7 @@ export function ColorPicker({
 				<div className="min-w-0 flex-1 space-y-1.5">
 					{track}
 					<div className="flex items-center gap-1 rounded-md border border-border bg-background px-1.5 transition-[border-color,box-shadow] focus-within:border-ring focus-within:ring-2 focus-within:ring-ring">
-						<span className="font-mono text-[0.78rem] text-muted-foreground">#</span>
+						<span className="font-mono text-xs text-muted-foreground">#</span>
 						<input
 							id={`${uid}-hex`}
 							value={hex.replace(/^#/, "")}
@@ -409,7 +414,7 @@ export function ColorPicker({
 							spellCheck={false}
 							autoComplete="off"
 							onChange={(e) => typeHex(e.currentTarget.value)}
-							className="h-6 min-w-0 flex-1 bg-transparent font-mono text-[0.78rem] text-foreground uppercase outline-none"
+							className="h-6 min-w-0 flex-1 bg-transparent font-mono text-xs text-foreground uppercase outline-none"
 						/>
 					</div>
 				</div>
@@ -423,7 +428,7 @@ export function ColorPicker({
 							type="button"
 							onClick={() => pickFormat(option)}
 							aria-pressed={format === option}
-							className="h-5 flex-1 rounded font-mono text-[10px] text-muted-foreground uppercase transition-colors aria-pressed:bg-background aria-pressed:text-foreground"
+							className="h-5 flex-1 rounded font-mono text-xs text-muted-foreground uppercase transition-colors aria-pressed:bg-background aria-pressed:text-foreground"
 						>
 							{option}
 						</button>
@@ -434,7 +439,7 @@ export function ColorPicker({
 					<div key={channel.key} className="flex items-center gap-2">
 						<label
 							htmlFor={`${uid}-${channel.key}`}
-							className="w-3 shrink-0 font-mono text-[11px] text-muted-foreground"
+							className="w-3 shrink-0 font-mono text-xs text-muted-foreground"
 						>
 							{channel.label}
 						</label>
@@ -449,7 +454,7 @@ export function ColorPicker({
 							onChange={(e) => setChannel(channel.key, e.currentTarget.value)}
 							className="color-slider h-1 flex-1"
 						/>
-						<span className="w-9 shrink-0 text-right font-mono text-[10px] text-foreground tabular-nums">
+						<span className="w-9 shrink-0 text-right font-mono text-xs text-foreground tabular-nums">
 							{channel.value}
 							{channel.unit}
 						</span>
@@ -532,6 +537,7 @@ export function ColorPicker({
 
 	return (
 		<HexField
+			row={variant === "row"}
 			value={preview}
 			onValueChange={apply}
 			size={size}
@@ -549,8 +555,9 @@ export function ColorPicker({
 	);
 }
 
-/** The `field` variant: a swatch that opens the picker beside a hex input you can type into. */
+/** `field`: a swatch that opens the picker beside a hex input. `row`: label, hex, then swatch. */
 function HexField({
+	row,
 	value,
 	onValueChange,
 	size,
@@ -564,6 +571,7 @@ function HexField({
 	className,
 	children,
 }: {
+	row: boolean;
 	className?: string;
 	value: string;
 	onValueChange: (value: string) => void;
@@ -582,9 +590,67 @@ function HexField({
 	const [draft, setDraft] = useState<string | null>(null);
 	const parsed = draft === null ? value : parseHex(draft);
 
+	const ownId = useId();
+	const inputId = id ?? ownId;
+
 	function commit(next: string) {
 		setDraft(null);
 		if (next !== value) onValueChange(next);
+	}
+
+	const hexProps = {
+		id: inputId,
+		name,
+		disabled,
+		spellCheck: false,
+		autoComplete: "off",
+		value: draft ?? value.toUpperCase(),
+		onChange: (e: ChangeEvent<HTMLInputElement>) => setDraft(e.currentTarget.value),
+		onBlur: () => (parsed ? commit(parsed) : setDraft(null)),
+		onKeyDown: (e: KeyboardEvent<HTMLInputElement>) => {
+			const step = hexKeyStep(e.key);
+			if (e.key === "Enter" && parsed) commit(parsed);
+			else if (e.key === "Escape") setDraft(null);
+			else if (step !== null) {
+				e.preventDefault();
+				commit(stepHex(parsed ?? value, step));
+			}
+		},
+	};
+
+	const swatchPicker = (align: "start" | "end") => (
+		<Popover open={open} onOpenChange={onOpenChange}>
+			<PopoverTrigger
+				disabled={disabled}
+				aria-label={`Pick ${label.toLowerCase()}`}
+				className={s.trigger()}
+			>
+				<span
+					aria-hidden
+					className={s.swatch()}
+					style={{ backgroundColor: parsed ?? value }}
+				/>
+			</PopoverTrigger>
+			<PopoverContent align={align} className={s.content()}>
+				{children}
+			</PopoverContent>
+		</Popover>
+	);
+
+	if (row) {
+		return (
+			<div data-slot="color-picker-row" className={cn(s.row(), className)}>
+				<label htmlFor={inputId} className={s.rowLabel()}>
+					{label}
+				</label>
+				<input
+					{...hexProps}
+					aria-invalid={invalid || parsed === null || undefined}
+					className={s.rowHex()}
+				/>
+				{swatchPicker("end")}
+			</div>
+		);
 	}
 
 	return (
@@ -593,44 +659,11 @@ function HexField({
 			data-slot="color-picker-field"
 			className={cn(s.field(), className)}
 		>
-			<InputGroupAddon>
-				<Popover open={open} onOpenChange={onOpenChange}>
-					<PopoverTrigger
-						disabled={disabled}
-						aria-label={`Pick ${label.toLowerCase()}`}
-						className={s.trigger()}
-					>
-						<span
-							aria-hidden
-							className={s.swatch()}
-							style={{ backgroundColor: parsed ?? value }}
-						/>
-					</PopoverTrigger>
-					<PopoverContent align="start" className={s.content()}>
-						{children}
-					</PopoverContent>
-				</Popover>
-			</InputGroupAddon>
+			<InputGroupAddon>{swatchPicker("start")}</InputGroupAddon>
 			<InputGroupInput
-				id={id}
-				name={name}
-				disabled={disabled}
+				{...hexProps}
 				aria-label={label}
 				invalid={invalid || parsed === null}
-				spellCheck={false}
-				autoComplete="off"
-				value={draft ?? value.toUpperCase()}
-				onChange={(e) => setDraft(e.currentTarget.value)}
-				onBlur={() => (parsed ? commit(parsed) : setDraft(null))}
-				onKeyDown={(e) => {
-					const step = hexKeyStep(e.key);
-					if (e.key === "Enter" && parsed) commit(parsed);
-					else if (e.key === "Escape") setDraft(null);
-					else if (step !== null) {
-						e.preventDefault();
-						commit(stepHex(parsed ?? value, step));
-					}
-				}}
 				className={s.hexInput()}
 			/>
 		</InputGroup>

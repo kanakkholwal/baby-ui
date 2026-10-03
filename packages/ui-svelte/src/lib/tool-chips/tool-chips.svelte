@@ -51,7 +51,7 @@ function toggleRow(label: string) {
 		type="button"
 		aria-expanded={open}
 		onclick={() => (open = !open)}
-		class="-mx-1.5 flex w-fit items-center gap-1.5 rounded-md px-1.5 py-1 text-[12.5px] text-muted-foreground transition-colors duration-100 hover:bg-foreground/[0.06]"
+		class="-mx-1.5 flex w-fit items-center gap-1.5 rounded-md px-1.5 py-1 text-xs text-muted-foreground transition-colors duration-(--duration-instant) hover:bg-foreground/[0.06]"
 	>
 		<svg
 			width="12"
@@ -63,7 +63,7 @@ function toggleRow(label: string) {
 			stroke-linecap="round"
 			stroke-linejoin="round"
 			aria-hidden="true"
-			class="transition-transform duration-200"
+			class="transition-transform duration-(--duration-base)"
 			style:transform={open ? "rotate(0deg)" : "rotate(-90deg)"}
 		>
 			<path d="M6 9l6 6 6-6" />
@@ -72,7 +72,7 @@ function toggleRow(label: string) {
 	</button>
 
 	<div
-		class="grid transition-[grid-template-rows,opacity] duration-300"
+		class="grid transition-[grid-template-rows,opacity] duration-(--duration-slow)"
 		style:grid-template-rows={open ? "1fr" : "0fr"}
 		style:opacity={open ? 1 : 0}
 	>
@@ -85,13 +85,13 @@ function toggleRow(label: string) {
 							type="button"
 							aria-expanded={rowOpen}
 							onclick={() => toggleRow(row.label)}
-							class="group/row -mx-[3px] flex h-7 w-[calc(100%+6px)] min-w-0 items-center gap-2 rounded-md px-[3px] text-left transition-colors duration-100 hover:bg-foreground/[0.06]"
+							class="group/row -mx-[3px] flex h-7 w-[calc(100%+6px)] min-w-0 items-center gap-2 rounded-md px-[3px] text-left transition-colors duration-(--duration-instant) hover:bg-foreground/[0.06]"
 						>
 							<span class="relative flex size-4 shrink-0 items-center justify-center text-muted-foreground">
 								<span
 									aria-hidden="true"
 									class={cn(
-										"transition-opacity duration-100 group-hover/row:opacity-0",
+										"transition-opacity duration-(--duration-instant) group-hover/row:opacity-0",
 										rowOpen && "opacity-0",
 									)}
 								>
@@ -112,7 +112,7 @@ function toggleRow(label: string) {
 									stroke-linejoin="round"
 									aria-hidden="true"
 									class={cn(
-										"absolute transition-[opacity,transform] duration-150 group-hover/row:opacity-100",
+										"absolute transition-[opacity,transform] duration-(--duration-fast) group-hover/row:opacity-100",
 										rowOpen ? "opacity-100" : "opacity-0",
 									)}
 									style:transform={rowOpen ? "rotate(0deg)" : "rotate(-90deg)"}
@@ -120,10 +120,10 @@ function toggleRow(label: string) {
 									<path d="M6 9l6 6 6-6" />
 								</svg>
 							</span>
-							<span class="shrink-0 font-medium text-[12.5px] text-foreground">{row.label}</span>
+							<span class="shrink-0 font-medium text-xs text-foreground">{row.label}</span>
 							<span
 								class={cn(
-									"inline-flex h-5.5 min-w-0 flex-1 cursor-pointer items-center truncate rounded-full bg-input px-1.5 text-[11.5px] text-muted-foreground shadow-xs transition-colors duration-100 hover:bg-foreground/[0.06]",
+									"inline-flex h-5.5 min-w-0 flex-1 cursor-pointer items-center truncate rounded-full bg-input px-1.5 text-xs text-muted-foreground shadow-xs transition-colors duration-(--duration-instant) hover:bg-foreground/[0.06]",
 									row.mono && "font-mono",
 								)}
 							>
@@ -132,7 +132,7 @@ function toggleRow(label: string) {
 						</button>
 
 						<div
-							class="grid transition-[grid-template-rows,opacity] duration-300 ease-[var(--ease-out)]"
+							class="grid transition-[grid-template-rows,opacity] duration-(--duration-slow) ease-[var(--ease-out)]"
 							style:grid-template-rows={rowOpen ? "1fr" : "0fr"}
 							style:opacity={rowOpen ? 1 : 0}
 						>
@@ -141,7 +141,7 @@ function toggleRow(label: string) {
 									{#each row.detail as line (line.text)}
 										<span
 											class={cn(
-												"truncate text-[11.5px] leading-[1.6]",
+												"truncate text-xs leading-[1.6]",
 												row.detailMono && "font-mono",
 												line.tone === "add" ? "text-success" : "text-muted-foreground",
 											)}
@@ -162,7 +162,7 @@ function toggleRow(label: string) {
 						<HoverCard>
 							<HoverCardTrigger
 								aria-label={`Show diff for ${diff.file}`}
-								class="card-fade-up inline-flex h-7 max-w-full items-center gap-2 rounded-full bg-card px-2 font-mono text-[11.5px] text-foreground shadow-sm transition-colors duration-100 hover:bg-foreground/[0.06]"
+								class="card-fade-up inline-flex h-7 max-w-full items-center gap-2 rounded-full bg-card px-2 font-mono text-xs text-foreground shadow-sm transition-colors duration-(--duration-instant) hover:bg-foreground/[0.06]"
 								style="animation-delay: calc(var(--stagger-step) * {steps.length + index});"
 							>
 								<span class="min-w-0 truncate">{diff.file}</span>
@@ -176,7 +176,7 @@ function toggleRow(label: string) {
 									align="start"
 									class="w-72 overflow-hidden rounded-[10px] border-none p-0 shadow-2xl"
 								>
-									<div class="flex items-center justify-between border-border border-b px-2.5 py-1.5 font-mono text-[11px]">
+									<div class="flex items-center justify-between border-border border-b px-2.5 py-1.5 font-mono text-xs">
 										<span class="min-w-0 truncate text-muted-foreground">{diff.file}</span>
 										<span class="shrink-0 tabular-nums">
 											<span class="text-success">+{diff.add}</span>
@@ -185,7 +185,7 @@ function toggleRow(label: string) {
 											{/if}
 										</span>
 									</div>
-									<div class="py-1 font-mono text-[11px] leading-[1.8]">
+									<div class="py-1 font-mono text-xs leading-[1.8]">
 										{#each diff.lines as line, lineIndex (lineIndex)}
 											<div
 												class={cn(
@@ -209,7 +209,7 @@ function toggleRow(label: string) {
 						</HoverCard>
 					{/each}
 					{#if hiddenDiffCount > 0}
-						<span class="inline-flex h-7 items-center rounded-full px-1.5 font-mono text-[11.5px] text-muted-foreground">
+						<span class="inline-flex h-7 items-center rounded-full px-1.5 font-mono text-xs text-muted-foreground">
 							+{hiddenDiffCount} more
 						</span>
 					{/if}

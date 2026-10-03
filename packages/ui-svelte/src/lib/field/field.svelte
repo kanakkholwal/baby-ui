@@ -1,17 +1,19 @@
 <script lang="ts">
 import type { HTMLAttributes } from "svelte/elements";
 import { cn } from "../lib/cn";
-import { type FieldOrientation, field } from "./variants";
+import { type FieldOrientation, type FieldSize, field } from "./variants";
 
 let {
 	ref = $bindable(null),
 	class: classProp,
 	orientation = "vertical",
+	size = "default",
 	children,
 	...rest
 }: HTMLAttributes<HTMLDivElement> & {
 	ref?: HTMLDivElement | null;
 	orientation?: FieldOrientation;
+	size?: FieldSize;
 } = $props();
 </script>
 
@@ -20,7 +22,8 @@ let {
 	role="group"
 	data-slot="field"
 	data-orientation={orientation}
-	class={cn(field({ orientation }).root(), classProp)}
+	data-size={size}
+	class={cn(field({ orientation, size }).root(), classProp)}
 	{...rest}
 >
 	{@render children?.()}

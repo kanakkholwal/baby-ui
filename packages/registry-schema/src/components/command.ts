@@ -3,7 +3,7 @@ import { defineComponent } from "../index.ts";
 export const command = defineComponent({
 	slug: "command",
 	isNew: true,
-	name: "Command Palette",
+	name: "Command",
 	description: "Searchable action list driven entirely from the keyboard.",
 	category: "base",
 	status: "stable",

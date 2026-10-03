@@ -101,7 +101,7 @@ export function FilterTable({
 							aria-pressed={active}
 							onClick={() => setFilter(f.key)}
 							className={cn(
-								"flex h-[26px] shrink-0 items-center gap-1.5 rounded-full px-2.5 text-[12px] font-medium transition-[background-color,box-shadow,color] duration-200",
+								"flex h-[26px] shrink-0 items-center gap-1.5 rounded-full px-2.5 text-xs font-medium transition-[background-color,box-shadow,color] duration-(--duration-base)",
 								active
 									? "bg-card text-foreground shadow-sm"
 									: "text-muted-foreground hover:bg-foreground/[0.06]",
@@ -111,7 +111,7 @@ export function FilterTable({
 							{f.label}
 							<span
 								className={cn(
-									"rounded-[4px] px-1 text-[10.5px] tabular-nums",
+									"rounded-[4px] px-1 text-xs tabular-nums",
 									active ? "bg-input text-muted-foreground" : "text-muted-foreground",
 								)}
 							>
@@ -132,7 +132,7 @@ export function FilterTable({
 				<div className="min-w-[420px]">
 					<div
 						className={cn(
-							"grid border-border border-b text-[12.5px] font-medium text-muted-foreground",
+							"grid border-border border-b text-xs font-medium text-muted-foreground",
 							GRID_COLS,
 						)}
 					>
@@ -152,7 +152,7 @@ export function FilterTable({
 						return (
 							<div
 								key={row.task}
-								className="grid transition-[grid-template-rows,opacity] duration-300 ease-[var(--ease-out)]"
+								className="grid transition-[grid-template-rows,opacity] duration-(--duration-slow) ease-[var(--ease-out)]"
 								style={{
 									gridTemplateRows: shown ? "1fr" : "0fr",
 									opacity: shown ? 1 : 0,
@@ -161,7 +161,7 @@ export function FilterTable({
 								<div className="overflow-hidden">
 									<div
 										className={cn(
-											"grid border-border border-b text-[13px] transition-colors duration-100 hover:bg-foreground/[0.06]",
+											"grid border-border border-b text-sm transition-colors duration-(--duration-instant) hover:bg-foreground/[0.06]",
 											GRID_COLS,
 										)}
 									>

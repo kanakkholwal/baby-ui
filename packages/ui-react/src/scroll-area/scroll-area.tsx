@@ -87,12 +87,12 @@ export function ScrollArea({
 			<span
 				aria-hidden
 				style={{ opacity: atTop ? 0 : 1 }}
-				className="pointer-events-none absolute inset-x-0 top-0 h-6 bg-gradient-to-b from-background to-transparent transition-opacity duration-150"
+				className="pointer-events-none absolute inset-x-0 top-0 h-6 bg-gradient-to-b from-background to-transparent transition-opacity duration-(--duration-fast)"
 			/>
 			<span
 				aria-hidden
 				style={{ opacity: atBottom ? 0 : 1 }}
-				className="pointer-events-none absolute inset-x-0 bottom-0 h-6 bg-gradient-to-t from-background to-transparent transition-opacity duration-150"
+				className="pointer-events-none absolute inset-x-0 bottom-0 h-6 bg-gradient-to-t from-background to-transparent transition-opacity duration-(--duration-fast)"
 			/>
 		</ScrollAreaPrimitive.Root>
 	);

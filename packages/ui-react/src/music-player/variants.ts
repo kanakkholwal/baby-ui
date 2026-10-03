@@ -26,7 +26,7 @@ export const musicPlayer = tv({
 		artist: "truncate text-muted-foreground text-sm",
 		scrub: "flex flex-col",
 		times:
-			"-mt-2 flex justify-between font-mono text-[11px] text-muted-foreground tabular-nums",
+			"-mt-2 flex justify-between font-mono text-xs text-muted-foreground tabular-nums",
 		controls: "flex items-center justify-between gap-3",
 		transport: "flex items-center gap-1",
 		volume: "flex w-32 items-center gap-1",

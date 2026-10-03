@@ -1,14 +1,18 @@
 <script lang="ts">
+import { Tabs, TabsList, TabsTrigger } from "@baby-ui/svelte";
 import { PMS } from "#lib/pm.js";
-import { type PackageManager, prefs } from "#lib/preferences.svelte.js";
-import Tabs from "./tabs.svelte";
+import { prefs } from "#lib/preferences.svelte.js";
 
-const tabs = PMS.map((id) => ({ id, label: id }));
+function choose(next: string) {
+	const pm = PMS.find((id) => id === next);
+	if (pm) prefs.set("pm", pm);
+}
 </script>
 
-<Tabs
-	{tabs}
-	bind:active={() => prefs.pm, (next) => prefs.set("pm", next as PackageManager)}
-	variant="segment"
-	controls={null}
-/>
+<Tabs bind:value={() => prefs.pm, choose} variant="segment" size="sm">
+	<TabsList aria-label="Package manager">
+		{#each PMS as pm (pm)}
+			<TabsTrigger value={pm}>{pm}</TabsTrigger>
+		{/each}
+	</TabsList>
+</Tabs>

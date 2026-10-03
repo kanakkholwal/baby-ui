@@ -5,19 +5,19 @@ export const colorPicker = defineComponent({
 	isNew: true,
 	name: "Color Picker",
 	description:
-		"Every colour control in one: the full picker, a swatch + hex field, a saturation area, a hue slider, a swatch and a swatch picker.",
+		"Every colour control in one: a swatch + hex field, a labelled panel row, the full picker, a saturation area, a hue slider, a swatch and a swatch picker.",
 	category: "base",
 	status: "stable",
 	props: [
 		{
 			name: "variant",
-			type: '"inline" | "field" | "area" | "slider" | "swatch" | "swatches"',
+			type: '"field" | "row" | "inline" | "area" | "slider" | "swatch" | "swatches"',
 			description:
-				"inline: the full picker. field: type a hex or press its swatch for the picker. area: the saturation square. slider: the hue strip. swatch: one colour disc. swatches: pick from `swatches`.",
-			default: "inline",
+				"field: type a hex or press its swatch for the picker. row: a full-width label, hex and swatch row for settings panels. inline: the full picker. area: the saturation square. slider: the hue strip. swatch: one colour disc. swatches: pick from `swatches`.",
+			default: "field",
 			control: {
 				kind: "select",
-				options: ["inline", "field", "area", "slider", "swatch", "swatches"],
+				options: ["field", "row", "inline", "area", "slider", "swatch", "swatches"],
 			},
 		},
 		{
@@ -32,7 +32,7 @@ export const colorPicker = defineComponent({
 			name: "invalid",
 			type: "boolean",
 			description:
-				"Field variant: marks the hex input invalid from outside, e.g. a form error.",
+				"Field and row variants: mark the hex input invalid from outside, e.g. a form error.",
 			default: "false",
 			control: { kind: "boolean" },
 		},
@@ -73,7 +73,7 @@ export const colorPicker = defineComponent({
 		{
 			name: "open",
 			type: "boolean",
-			description: "Popover open state (field variant). Bindable in Svelte.",
+			description: "Popover open state (field and row variants). Bindable in Svelte.",
 			control: { kind: "none" },
 		},
 		{
@@ -97,8 +97,8 @@ export const colorPicker = defineComponent({
 			"Tab reaches the area, the hue strip, the hex field, each channel slider and each preset",
 			"Arrow keys move the area (saturation across, brightness up and down) and the hue strip; Shift moves by 10",
 			"Swatches: one tab stop; arrow keys move and choose, as native radios do",
-			"Field variant: type a hex and press Enter; arrows step it by 1, Page keys by 16; Escape reverts",
-			"Field variant: Enter or Space on the swatch opens the picker, Escape closes it and returns focus",
+			"Field and row variants: type a hex and press Enter; arrows step it by 1, Page keys by 16; Escape reverts",
+			"Field and row variants: Enter or Space on the swatch opens the picker, Escape closes it and returns focus",
 		],
 		notes: [
 			"The area and the hue strip are sliders with spoken values, so the area and slider variants work without a pointer.",

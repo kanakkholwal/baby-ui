@@ -1,5 +1,11 @@
 <script lang="ts">
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@baby-ui/svelte";
+import {
+	Button,
+	Drawer,
+	DrawerContent,
+	DrawerHeader,
+	DrawerTitle,
+} from "@baby-ui/svelte";
 import type { Snippet } from "svelte";
 
 let {
@@ -17,27 +23,31 @@ let {
 } = $props();
 
 let open = $state(false);
+const close = () => (open = false);
+
+// Any link inside navigates (often to an anchor on this page), so the sheet gets out of the way.
+function closeOnLink(event: MouseEvent) {
+	if (event.target instanceof Element && event.target.closest("a[href]")) close();
+}
 </script>
 
-<button
-	type="button"
-	onclick={() => (open = true)}
-	class={[
-		"inline-flex h-8 items-center gap-1.5 rounded-lg border border-border bg-card/40 px-3 font-medium text-muted-foreground text-xs transition-colors hover:border-border-strong hover:text-foreground",
-		triggerClass,
-	]}
->
+<Button variant="outline" size="sm" onclick={() => (open = true)} class={triggerClass}>
 	{@render icon?.()}
 	{label}
-</button>
+</Button>
 
 <Drawer bind:open>
 	<DrawerContent>
 		<DrawerHeader>
 			<DrawerTitle>{title}</DrawerTitle>
 		</DrawerHeader>
-		<div class="scrollbar-hide max-h-[70dvh] overflow-y-auto px-1 pb-2">
-			{@render children({ close: () => (open = false) })}
+		<!-- -mx-1 px-1: focus rings get room without shifting the list off the title's edge. -->
+		<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -- delegation only; the links handle keys -->
+		<div
+			class="scrollbar-hide -mx-1 mt-3 max-h-[70dvh] overflow-y-auto px-1 pb-[max(0.5rem,env(safe-area-inset-bottom))]"
+			onclick={closeOnLink}
+		>
+			{@render children({ close })}
 		</div>
 	</DrawerContent>
 </Drawer>

@@ -66,20 +66,6 @@
 	--ease-out: var(--ease-out);
 	--ease-in-out: var(--ease-in-out);
 	--ease-drawer: var(--ease-drawer);
-	--ease-spring-snappy: var(--ease-spring-snappy);
-	--ease-spring-bouncy: var(--ease-spring-bouncy);
-
-	/* `duration-fast` etc.; the four tiers are the only speeds components use. */
-	--transition-duration-instant: var(--duration-instant);
-	--transition-duration-fast: var(--duration-fast);
-	--transition-duration-base: var(--duration-base);
-	--transition-duration-slow: var(--duration-slow);
-
-	/* Container padding by surface tier: `p-menu`, `p-popover`, `p-panel`, `py-section`. */
-	--spacing-menu: 0.25rem;
-	--spacing-popover: 0.75rem;
-	--spacing-panel: 1.5rem;
-	--spacing-section: 4rem;
 
 	/* Without these a bare `transition-colors` uses Tailwind's own curve, which
 	   is most hovers in the system quietly ignoring the motion layer. */

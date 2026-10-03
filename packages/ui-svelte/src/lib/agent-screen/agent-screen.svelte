@@ -76,7 +76,7 @@ function endRecording() {
 	<div class="absolute inset-0 grid place-items-center bg-black">
 		<div class="flex flex-col items-center gap-3">
 			<Spinner size="lg" class="text-white" label="Connecting to agent's screen" />
-			<span class="text-[12.5px] text-white/70 font-medium">
+			<span class="text-xs text-white/70 font-medium">
 				Connecting to agent's screen
 			</span>
 		</div>
@@ -89,7 +89,7 @@ function endRecording() {
 		disabled={loading}
 		onclick={() => (open = true)}
 		class={cn(
-			"group/screen relative aspect-[2964/1856] w-full overflow-hidden rounded-2xl bg-muted text-left shadow-sm transition-shadow duration-150",
+			"group/screen relative aspect-[2964/1856] w-full overflow-hidden rounded-2xl bg-muted text-left shadow-sm transition-shadow duration-(--duration-fast)",
 			!loading && "cursor-pointer hover:shadow-md",
 		)}
 	>
@@ -118,13 +118,13 @@ function endRecording() {
 				{/if}
 			</div>
 			<div
-				class="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors duration-150 group-hover/screen:bg-black/20"
+				class="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors duration-(--duration-fast) group-hover/screen:bg-black/20"
 			>
 				<span
 					aria-hidden="true"
 					class={cn(
 						button({ variant: "default", size: "sm" }),
-						"translate-y-1 opacity-0 transition duration-150 group-hover/screen:translate-y-0 group-hover/screen:opacity-100",
+						"translate-y-1 opacity-0 transition duration-(--duration-fast) group-hover/screen:translate-y-0 group-hover/screen:opacity-100",
 					)}
 				>
 					Open
@@ -133,7 +133,7 @@ function endRecording() {
 		{/if}
 	</button>
 
-	<p class="mt-2.5 truncate px-0.5 font-medium text-[13px] text-foreground">
+	<p class="mt-2.5 truncate px-0.5 font-medium text-sm text-foreground">
 		{agentName}'s screen
 	</p>
 
@@ -143,10 +143,10 @@ function endRecording() {
 		>
 			<div class="flex h-11 shrink-0 items-center justify-between gap-3 px-1.5">
 				<div class="flex min-w-0 items-center gap-2">
-					<span class="truncate font-semibold text-[13px] text-foreground">{agentName}</span>
+					<span class="truncate font-semibold text-sm text-foreground">{agentName}</span>
 					{#if recording}
 						<span
-							class="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-destructive/10 py-0.5 pr-2 pl-1.5 font-medium text-[11.5px] text-destructive tabular-nums"
+							class="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-destructive/10 py-0.5 pr-2 pl-1.5 font-medium text-xs text-destructive tabular-nums"
 						>
 							<span class="size-2 animate-pulse rounded-full bg-destructive"></span>
 							{fmt(secs)}

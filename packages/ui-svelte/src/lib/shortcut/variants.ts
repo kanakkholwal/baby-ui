@@ -15,8 +15,8 @@ export const shortcutCap = tv({
 			outline: "border border-border-strong text-foreground",
 		},
 		size: {
-			sm: "h-4 min-w-4 px-1 text-[10px]",
-			md: "h-5 min-w-5 px-1.5 text-[11px]",
+			sm: "h-4 min-w-4 px-1 text-xs",
+			md: "h-5 min-w-5 px-1.5 text-xs",
 			lg: "h-6 min-w-6 px-2 text-xs",
 			xl: "h-7 min-w-7 px-2.5 text-sm",
 		},

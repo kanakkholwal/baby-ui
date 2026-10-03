@@ -107,6 +107,7 @@ function EyeIcon({ off }: { off: boolean }) {
 export function FieldDemo({ props }: { props: Props }) {
 	const p = controlProps<ComponentProps<typeof Field>>(props);
 	const orientation = p.orientation ?? "vertical";
+	const size = p.size ?? "default";
 	const [values, setValues] = useState<SignupValues>({
 		name: "",
 		email: "",
@@ -133,11 +134,17 @@ export function FieldDemo({ props }: { props: Props }) {
 
 	return (
 		<form className="w-full max-w-sm" noValidate onSubmit={submit}>
-			<FieldSet>
-				<FieldLegend>Create your account</FieldLegend>
+			<FieldSet size={size}>
+				<FieldLegend variant={size === "sm" ? "eyebrow" : "legend"}>
+					Create your account
+				</FieldLegend>
 				<FieldDescription>Free for personal projects. No card needed.</FieldDescription>
-				<FieldGroup>
-					<Field orientation={orientation} data-invalid={errors.name ? true : undefined}>
+				<FieldGroup size={size}>
+					<Field
+						orientation={orientation}
+						size={size}
+						data-invalid={errors.name ? true : undefined}
+					>
 						<FieldLabel htmlFor="signup-name">Full name</FieldLabel>
 						<Input
 							id="signup-name"
@@ -149,7 +156,11 @@ export function FieldDemo({ props }: { props: Props }) {
 						/>
 						<FieldError id="signup-name-error" errors={[{ message: errors.name }]} />
 					</Field>
-					<Field orientation={orientation} data-invalid={errors.email ? true : undefined}>
+					<Field
+						orientation={orientation}
+						size={size}
+						data-invalid={errors.email ? true : undefined}
+					>
 						<FieldLabel htmlFor="signup-email">Work email</FieldLabel>
 						<InputGroup>
 							<InputGroupAddon>
@@ -202,7 +213,11 @@ export function FieldDemo({ props }: { props: Props }) {
 							errors={[{ message: errors.password }]}
 						/>
 					</Field>
-					<Field orientation={orientation} data-invalid={errors.role ? true : undefined}>
+					<Field
+						orientation={orientation}
+						size={size}
+						data-invalid={errors.role ? true : undefined}
+					>
 						<FieldLabel htmlFor="signup-role">Role</FieldLabel>
 						<NativeSelect
 							id="signup-role"

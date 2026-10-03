@@ -7,15 +7,14 @@ export const tool = tv({
 			"flex w-full items-center gap-2 px-3 py-2 text-left text-sm outline-none transition-colors hover:bg-foreground/[0.03] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
 		icon: "grid size-4 shrink-0 place-items-center",
 		name: "flex-1 font-mono text-foreground text-xs",
-		label: "shrink-0 text-[11px]",
+		label: "shrink-0 text-xs",
 		chevron:
 			"size-3.5 shrink-0 text-muted-foreground transition-[transform,scale,translate,rotate] duration-[var(--duration-exit)] ease-[var(--ease-out)] motion-reduce:transition-none",
 		panel:
 			"grid grid-rows-[0fr] transition-[grid-template-rows] duration-[var(--duration-exit)] ease-[var(--ease-out)] motion-reduce:transition-none",
 		body: "flex flex-col gap-2 border-border/60 border-t p-3",
-		heading:
-			"mb-1 font-medium text-[10px] text-muted-foreground uppercase tracking-wider",
-		code: "overflow-x-auto rounded-lg bg-background p-2 font-mono text-[11px]",
+		heading: "mb-1 font-medium text-xs text-muted-foreground uppercase tracking-wider",
+		code: "overflow-x-auto rounded-lg bg-background p-2 font-mono text-xs",
 	},
 	variants: {
 		status: {

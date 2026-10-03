@@ -22,7 +22,8 @@ $effect(() => {
 <ColorPicker
 	bind:value
 	bind:format
-	variant={p.variant ?? "inline"}
+	variant={p.variant ?? "field"}
+	class={p.variant === "row" ? "max-w-64" : undefined}
 	size={p.size ?? "md"}
 	invalid={p.invalid ?? false}
 	{recent}

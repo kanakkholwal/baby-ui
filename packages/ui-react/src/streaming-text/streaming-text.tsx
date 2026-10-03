@@ -21,7 +21,7 @@ function SourceChip({ source }: { source?: StreamingSource }) {
 			href={source.href}
 			target="_blank"
 			rel="noreferrer"
-			className="pop-in mr-1 inline-flex h-4.5 translate-y-[-1px] items-center gap-1 rounded-[5px] bg-muted px-[3px] align-middle font-mono text-[10.5px] text-muted-foreground shadow-xs transition-colors duration-150 hover:bg-foreground/[0.06] hover:text-foreground"
+			className="pop-in mr-1 inline-flex h-4.5 translate-y-[-1px] items-center gap-1 rounded-[5px] bg-muted px-[3px] align-middle font-mono text-xs text-muted-foreground shadow-xs transition-colors duration-(--duration-fast) hover:bg-foreground/[0.06] hover:text-foreground"
 		>
 			<img src={source.image} alt="" className="size-3 rounded-[3px]" />
 			<span>{source.domain}</span>
@@ -30,7 +30,7 @@ function SourceChip({ source }: { source?: StreamingSource }) {
 }
 
 const ACTION_ICON =
-	"flex size-6 items-center justify-center rounded-md text-muted-foreground transition-colors duration-100 hover:bg-foreground/[0.06] hover:text-foreground";
+	"flex size-6 items-center justify-center rounded-md text-muted-foreground transition-colors duration-(--duration-instant) hover:bg-foreground/[0.06] hover:text-foreground";
 
 export interface StreamingTextProps {
 	layout?: StreamingTextLayout;
@@ -225,7 +225,7 @@ export function StreamingText({
 						type="button"
 						aria-expanded={sourcesOpen}
 						onClick={() => setSourcesOpen((v) => !v)}
-						className="ml-1.5 flex items-center gap-1.5 rounded-md px-1 py-0.5 text-left transition-colors duration-150 hover:bg-foreground/[0.06]"
+						className="ml-1.5 flex items-center gap-1.5 rounded-md px-1 py-0.5 text-left transition-colors duration-(--duration-fast) hover:bg-foreground/[0.06]"
 					>
 						<span className="flex -space-x-1">
 							{sources.map((source) => (
@@ -237,7 +237,7 @@ export function StreamingText({
 								/>
 							))}
 						</span>
-						<span className="text-[12px] text-muted-foreground">
+						<span className="text-xs text-muted-foreground">
 							{sourcesLabel ??
 								`${sources.length} source${sources.length === 1 ? "" : "s"}`}
 						</span>
@@ -247,7 +247,7 @@ export function StreamingText({
 
 			{sources.length ? (
 				<div
-					className="grid transition-[grid-template-rows,opacity] duration-300 ease-[var(--ease-out)]"
+					className="grid transition-[grid-template-rows,opacity] duration-(--duration-slow) ease-[var(--ease-out)]"
 					style={{
 						gridTemplateRows: done && sourcesOpen ? "1fr" : "0fr",
 						opacity: done && sourcesOpen ? 1 : 0,
@@ -261,11 +261,11 @@ export function StreamingText({
 									href={source.href}
 									target="_blank"
 									rel="noreferrer"
-									className="flex items-center gap-2 rounded-md px-1.5 py-1 text-[12px] text-muted-foreground transition-colors duration-150 hover:bg-foreground/[0.06] hover:text-foreground"
+									className="flex items-center gap-2 rounded-md px-1.5 py-1 text-xs text-muted-foreground transition-colors duration-(--duration-fast) hover:bg-foreground/[0.06] hover:text-foreground"
 								>
 									<img src={source.image} alt="" className="size-4 rounded-[4px]" />
 									<span>{source.name}</span>
-									<span className="ml-auto font-mono text-[10.5px] text-muted-foreground/70">
+									<span className="ml-auto font-mono text-xs text-muted-foreground/70">
 										{source.domain}
 									</span>
 								</a>
@@ -280,16 +280,14 @@ export function StreamingText({
 					className="mt-2.5 transition-opacity duration-400"
 					style={{ opacity: done ? 1 : 0, pointerEvents: done ? "auto" : "none" }}
 				>
-					<p className="font-medium text-[12px] text-muted-foreground">
-						{followUpsLabel}
-					</p>
+					<p className="font-medium text-xs text-muted-foreground">{followUpsLabel}</p>
 					<div className="mt-0.5 flex flex-col">
 						{followUps.map((label, i) => (
 							<button
 								key={label}
 								type="button"
 								onClick={() => onFollowUp?.(label, i)}
-								className="-mx-1.5 flex items-center gap-2 rounded-md border-border border-b px-1.5 py-1.5 text-left text-[12.5px] text-foreground transition-colors duration-100 last:border-0 hover:bg-foreground/[0.06]"
+								className="-mx-1.5 flex items-center gap-2 rounded-md border-border border-b px-1.5 py-1.5 text-left text-xs text-foreground transition-colors duration-(--duration-instant) last:border-0 hover:bg-foreground/[0.06]"
 							>
 								<svg
 									viewBox="0 0 24 24"

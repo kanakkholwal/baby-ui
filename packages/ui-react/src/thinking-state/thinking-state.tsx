@@ -88,7 +88,7 @@ export function ThinkingState({
 					setTouched(true);
 					setManual(!expanded);
 				}}
-				className="-mx-1.5 flex w-fit items-center gap-2 rounded-md px-1.5 py-1 transition-colors duration-100 hover:bg-foreground/[0.06]"
+				className="-mx-1.5 flex w-fit items-center gap-2 rounded-md px-1.5 py-1 transition-colors duration-(--duration-instant) hover:bg-foreground/[0.06]"
 			>
 				<span aria-hidden className="flex shrink-0 text-muted-foreground">
 					{icon ?? (
@@ -99,11 +99,11 @@ export function ThinkingState({
 				</span>
 				<span role="status" className="contents">
 					{thinking ? (
-						<span className="reasoning-shimmer whitespace-nowrap font-medium text-[13px]">
+						<span className="reasoning-shimmer whitespace-nowrap font-medium text-sm">
 							{activeLabel}
 						</span>
 					) : (
-						<span className="fade-in whitespace-nowrap font-medium text-[13px] text-muted-foreground">
+						<span className="fade-in whitespace-nowrap font-medium text-sm text-muted-foreground">
 							{doneLabel}
 						</span>
 					)}
@@ -117,7 +117,7 @@ export function ThinkingState({
 					strokeLinejoin="round"
 					aria-hidden
 					style={{ transform: expanded ? "rotate(180deg)" : undefined }}
-					className="size-3.5 shrink-0 text-muted-foreground transition-transform duration-200 ease-[var(--ease-out)] motion-reduce:transition-none"
+					className="size-3.5 shrink-0 text-muted-foreground transition-transform duration-(--duration-base) ease-[var(--ease-out)] motion-reduce:transition-none"
 				>
 					<path d="m4 6 4 4 4-4" />
 				</svg>
@@ -125,7 +125,7 @@ export function ThinkingState({
 
 			<div
 				id={id}
-				className="grid transition-[grid-template-rows,opacity] duration-300 ease-[var(--ease-out)]"
+				className="grid transition-[grid-template-rows,opacity] duration-(--duration-slow) ease-[var(--ease-out)]"
 				style={{ gridTemplateRows: expanded ? "1fr" : "0fr", opacity: expanded ? 1 : 0 }}
 			>
 				<div className="overflow-hidden">
@@ -184,7 +184,7 @@ export function ThinkingState({
 										{r.secondary ? (
 											<span
 												className={cn(
-													"shrink-0 text-[11px] text-muted-foreground",
+													"shrink-0 text-xs text-muted-foreground",
 													r.mono && "font-mono",
 												)}
 											>
@@ -192,7 +192,7 @@ export function ThinkingState({
 											</span>
 										) : null}
 										{r.add !== undefined ? (
-											<span className="shrink-0 font-mono text-[11px] tabular-nums">
+											<span className="shrink-0 font-mono text-xs tabular-nums">
 												<span className="text-success">+{r.add}</span>{" "}
 												<span className="text-destructive">-{r.del}</span>
 											</span>
@@ -211,7 +211,7 @@ export function ThinkingState({
 											style={animation}
 											className={cn(
 												row(),
-												"card-fade-up transition-colors duration-150 hover:bg-foreground/[0.06]",
+												"card-fade-up transition-colors duration-(--duration-fast) hover:bg-foreground/[0.06]",
 											)}
 										>
 											{content}
@@ -229,7 +229,7 @@ export function ThinkingState({
 											style={animation}
 											className={cn(
 												row(),
-												"card-fade-up transition-colors duration-150",
+												"card-fade-up transition-colors duration-(--duration-fast)",
 												selected ? "bg-muted" : "hover:bg-foreground/[0.06]",
 											)}
 										>

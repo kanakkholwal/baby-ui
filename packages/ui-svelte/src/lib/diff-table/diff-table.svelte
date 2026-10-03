@@ -73,7 +73,7 @@ function apply() {
 	<span
 		aria-hidden="true"
 		class={cn(
-			"flex size-4.5 shrink-0 items-center justify-center rounded-[5px] transition-[background-color,transform] duration-150",
+			"flex size-4.5 shrink-0 items-center justify-center rounded-[5px] transition-[background-color,transform] duration-(--duration-fast)",
 			markClass,
 		)}
 		style:transform={isIncluded ? "scale(1)" : "scale(0.92)"}
@@ -95,9 +95,9 @@ function apply() {
 <div data-slot="diff-table" class={cn("w-full", classProp)}>
 	<div class="relative overflow-hidden rounded-2xl bg-card shadow-sm">
 		<div class="flex items-center justify-between border-border border-b px-3 py-2">
-			<span class="font-medium text-[12.5px] text-foreground">{title}</span>
+			<span class="font-medium text-xs text-foreground">{title}</span>
 			{#if !accepted}
-				<span class="text-[11px] text-muted-foreground">Click rows to toggle</span>
+				<span class="text-xs text-muted-foreground">Click rows to toggle</span>
 			{/if}
 		</div>
 
@@ -110,7 +110,7 @@ function apply() {
 			<thead>
 				<tr class="border-border border-b">
 					{#each ["Field", "Category", "Detail"] as heading (heading)}
-						<th class="px-3 py-1.5 font-medium text-[12px] text-muted-foreground">{heading}</th>
+						<th class="px-3 py-1.5 font-medium text-xs text-muted-foreground">{heading}</th>
 					{/each}
 				</tr>
 			</thead>
@@ -133,17 +133,17 @@ function apply() {
 								}
 							: undefined}
 						class={cn(
-							"card-fade-up border-border border-b transition-colors duration-150 last:border-0 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-inset",
+							"card-fade-up border-border border-b transition-colors duration-(--duration-fast) last:border-0 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-inset",
 							interactive && "cursor-pointer hover:brightness-[0.985]",
 							classes.row,
 						)}
 						style="animation-delay: calc(var(--stagger-step) * {index});"
 					>
-						<td class={cn("px-3 py-2 text-[13px]", classes.label)}>{row.label}</td>
+						<td class={cn("px-3 py-2 text-sm", classes.label)}>{row.label}</td>
 						<td class="px-3 py-2">
 							<Badge variant="secondary" size="sm" dot>{row.category}</Badge>
 						</td>
-						<td class={cn("px-3 py-2 text-[12.5px]", classes.detail)}>
+						<td class={cn("px-3 py-2 text-xs", classes.detail)}>
 							<span class="flex items-center justify-between gap-2">
 								<span class="min-w-0 truncate">{row.detail}</span>
 								{@render checkMark(rowIncluded, classes.mark)}
@@ -157,7 +157,7 @@ function apply() {
 		<div class="flex min-h-11 items-center justify-between border-border border-t px-3 py-2">
 			{#if accepted}
 				<span
-					class="pop-in inline-flex items-center gap-1.5 rounded-full bg-success/10 py-1 pr-2.5 pl-1 font-medium text-[12.5px] text-success"
+					class="pop-in inline-flex items-center gap-1.5 rounded-full bg-success/10 py-1 pr-2.5 pl-1 font-medium text-xs text-success"
 				>
 					<span class="flex size-4.5 items-center justify-center rounded-full bg-success text-white dark:text-background">
 						<svg width="11" height="11" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -173,7 +173,7 @@ function apply() {
 					{total} {total === 1 ? "edit" : "edits"} applied
 				</span>
 			{:else}
-				<span class="text-[11.5px] text-muted-foreground tabular-nums">
+				<span class="text-xs text-muted-foreground tabular-nums">
 					{removals} {removals === 1 ? "removal" : "removals"} · {additions}
 					{additions === 1 ? "addition" : "additions"}
 				</span>

@@ -6,7 +6,7 @@ import { tagToneClass } from "./variants";
 function Tag({ name }: { name: string }) {
 	return (
 		<span
-			className={`inline-flex h-5.5 shrink-0 items-center rounded-md px-1.5 font-medium text-[11.5px] ${tagToneClass(name)}`}
+			className={`inline-flex h-5.5 shrink-0 items-center rounded-md px-1.5 font-medium text-xs ${tagToneClass(name)}`}
 		>
 			{name}
 		</span>
@@ -76,7 +76,7 @@ export function TagList({ tags }: { tags: string[] }) {
 				))}
 				<span
 					data-more-measure
-					className="inline-flex h-5.5 items-center rounded-md px-1.5 text-[11px]"
+					className="inline-flex h-5.5 items-center rounded-md px-1.5 text-xs"
 				>
 					+{tags.length}
 				</span>
@@ -85,7 +85,7 @@ export function TagList({ tags }: { tags: string[] }) {
 				<Tag key={tag} name={tag} />
 			))}
 			{hiddenCount > 0 ? (
-				<span className="shrink-0 text-[11px] text-muted-foreground">+{hiddenCount}</span>
+				<span className="shrink-0 text-xs text-muted-foreground">+{hiddenCount}</span>
 			) : null}
 		</div>
 	);

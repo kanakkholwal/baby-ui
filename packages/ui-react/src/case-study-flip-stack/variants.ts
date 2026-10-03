@@ -18,7 +18,7 @@ export const caseStudyFlipStack = tv({
 		copy: "flex min-w-0 flex-col p-5 @xl:p-10",
 		number: "font-medium text-2xl leading-none tracking-tighter @xl:text-4xl",
 		eyebrow:
-			"mb-2 font-semibold text-[10px] uppercase tracking-[0.16em] opacity-70 @xl:mb-4 @xl:text-xs",
+			"mb-2 font-semibold text-xs uppercase tracking-widest opacity-70 @xl:mb-4 @xl:text-xs",
 		title:
 			"max-w-[16ch] text-balance font-semibold text-2xl leading-[0.96] tracking-tighter @xl:text-4xl",
 		description:

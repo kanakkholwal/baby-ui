@@ -7,7 +7,7 @@ export const morphText = tv({
 		sizer: "invisible col-start-1 row-start-1 whitespace-nowrap",
 		stage: "relative col-start-1 row-start-1 whitespace-nowrap",
 		item: "absolute top-0 left-0 origin-bottom-left whitespace-nowrap",
-		subtext: "morph-text-subtext mt-8 text-muted-foreground uppercase tracking-[0.2em]",
+		subtext: "morph-text-subtext mt-8 text-muted-foreground uppercase tracking-widest",
 		filter: "pointer-events-none absolute size-0",
 	},
 	variants: {

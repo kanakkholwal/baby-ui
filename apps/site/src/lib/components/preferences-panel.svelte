@@ -1,6 +1,7 @@
 <script lang="ts">
 import type { Icon } from "@baby-ui/icons";
 import {
+	IconAdjustmentsHorizontal,
 	IconBrandJavascript,
 	IconBrandReact,
 	IconBrandSvelte,
@@ -11,6 +12,12 @@ import {
 } from "@baby-ui/icons";
 import type { Framework } from "@baby-ui/registry-schema";
 import {
+	Field,
+	FieldLabel,
+	PropertyPanel,
+	PropertyPanelGroup,
+	PropertyPanelGroupContent,
+	PropertyPanelGroupLabel,
 	Sheet,
 	SheetClose,
 	SheetContent,
@@ -33,6 +40,7 @@ const DIALECTS: { id: Dialect; label: string; icon: Icon }[] = [
 const LAYOUTS: { id: PageLayout; label: string; icon: Icon }[] = [
 	{ id: "stacked", label: "Stacked", icon: IconLayoutRows },
 	{ id: "split", label: "Split", icon: IconLayoutColumns },
+	{ id: "playground", label: "Play", icon: IconAdjustmentsHorizontal },
 ];
 </script>
 
@@ -43,58 +51,70 @@ const LAYOUTS: { id: PageLayout; label: string; icon: Icon }[] = [
 			<SheetClose class="size-7 rounded-md" />
 		</SheetHeader>
 
-		<div class="flex flex-col divide-y divide-border">
-			<div class="flex flex-col gap-2 px-4 py-3">
-				<span class="text-foreground text-xs">Theme</span>
-				<div class="flex flex-wrap gap-2">
-					{#each THEMES as theme (theme.id)}
-						<button
-							type="button"
-							onclick={() => prefs.set("theme", theme.id)}
-							aria-pressed={prefs.theme === theme.id}
-							aria-label={theme.name}
-							title={theme.name}
-							style:background={theme.swatch}
-							class="grid size-6 shrink-0 place-items-center rounded-full text-white ring-offset-2 ring-offset-background transition-[box-shadow,scale] hover:scale-110 aria-pressed:ring-2 aria-pressed:ring-foreground/40"
-						>
-							{#if prefs.theme === theme.id}
-								<IconCheck size={10} />
-							{/if}
-						</button>
-					{/each}
-				</div>
-			</div>
+		<PropertyPanel class="[&>*]:px-1">
+			<PropertyPanelGroup>
+				<PropertyPanelGroupLabel>Appearance</PropertyPanelGroupLabel>
+				<PropertyPanelGroupContent>
+					<Field orientation="horizontal" size="sm" class="items-start">
+						<FieldLabel class="pt-1">Theme</FieldLabel>
+						<div role="group" aria-label="Theme" class="flex flex-wrap gap-2">
+							{#each THEMES as theme (theme.id)}
+								<button
+									type="button"
+									onclick={() => prefs.set("theme", theme.id)}
+									aria-pressed={prefs.theme === theme.id}
+									aria-label={theme.name}
+									title={theme.name}
+									style:background={theme.swatch}
+									class="grid size-6 shrink-0 place-items-center rounded-full text-white ring-offset-2 ring-offset-background transition-[box-shadow,scale] hover:scale-110 aria-pressed:ring-2 aria-pressed:ring-foreground/40"
+								>
+									{#if prefs.theme === theme.id}
+										<IconCheck size={10} />
+									{/if}
+								</button>
+							{/each}
+						</div>
+					</Field>
+				</PropertyPanelGroupContent>
+			</PropertyPanelGroup>
 
-			<div class="flex items-center justify-between gap-3 px-4 py-2.5">
-				<span class="flex flex-col">
-					<span class="text-foreground text-xs">Page layout</span>
-					<span class="text-[11px] text-muted-foreground">Split needs a wide screen</span>
-				</span>
-				<SegmentControl
-					options={LAYOUTS}
-					current={prefs.layout}
-					onPick={(id) => prefs.set("layout", id)}
-				/>
-			</div>
-
-			<div class="flex items-center justify-between gap-3 px-4 py-2.5">
-				<span class="text-foreground text-xs">Framework</span>
-				<SegmentControl
-					options={FRAMEWORKS}
-					current={prefs.framework}
-					onPick={(id) => prefs.set("framework", id)}
-				/>
-			</div>
-
-			<div class="flex items-center justify-between gap-3 px-4 py-2.5">
-				<span class="text-foreground text-xs">Language</span>
-				<SegmentControl
-					options={DIALECTS}
-					current={prefs.dialect}
-					onPick={(id) => prefs.set("dialect", id)}
-				/>
-			</div>
-		</div>
+			<PropertyPanelGroup>
+				<PropertyPanelGroupLabel>Components</PropertyPanelGroupLabel>
+				<PropertyPanelGroupContent>
+					<Field orientation="horizontal" size="sm">
+						<FieldLabel>Layout</FieldLabel>
+						<SegmentControl
+							size="sm"
+							label="Page layout"
+							options={LAYOUTS}
+							current={prefs.layout}
+							onPick={(id) => prefs.set("layout", id)}
+						/>
+					</Field>
+					<Field orientation="horizontal" size="sm">
+						<FieldLabel>Framework</FieldLabel>
+						<SegmentControl
+							size="sm"
+							label="Framework"
+							options={FRAMEWORKS}
+							current={prefs.framework}
+							onPick={(id) => prefs.set("framework", id)}
+						/>
+					</Field>
+					<Field orientation="horizontal" size="sm">
+						<FieldLabel>Language</FieldLabel>
+						<SegmentControl
+							size="sm"
+							label="Language"
+							options={DIALECTS}
+							current={prefs.dialect}
+							onPick={(id) => prefs.set("dialect", id)}
+						/>
+					</Field>
+					<p class="text-[11px] text-muted-foreground">Split and Play need a wide screen.</p>
+				</PropertyPanelGroupContent>
+			</PropertyPanelGroup>
+		</PropertyPanel>
 
 		<p class="mt-auto border-border border-t px-4 py-3 text-[11px] text-muted-foreground">
 			Saved in this browser and synced across open tabs.

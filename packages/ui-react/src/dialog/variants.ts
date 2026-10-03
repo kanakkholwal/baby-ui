@@ -25,7 +25,7 @@ export const dialogFrame = tv({
 			"starting:data-[state=open]:opacity-0 starting:data-[state=open]:scale-[var(--modal-enter-scale)]",
 			"motion-reduce:transition-none",
 		],
-		panel: "rounded-2xl shadow-overlay",
+		panel: "rounded-2xl shadow-(--overlay-shadow)",
 		// The icon-only close in the corner; a close with children styles itself.
 		close:
 			"absolute top-3 right-3 grid size-8 place-items-center rounded-md text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring",
@@ -34,13 +34,13 @@ export const dialogFrame = tv({
 	},
 	variants: {
 		variant: {
-			// The rim is the card step and the body rises off it as the popover step.
+			// The rim is the card surface; a hairline, not a lighter shade, lifts the body off it.
 			framed: {
 				panel: "bg-card p-1",
 				footer: "px-2 pt-2 pb-1",
-				body: "rounded-[11px] bg-popover p-panel",
+				body: "rounded-[11px] border border-border bg-popover p-5",
 			},
-			default: { panel: "bg-popover p-panel", footer: "pt-6", body: "" },
+			default: { panel: "bg-popover p-6", footer: "pt-6", body: "" },
 		},
 	},
 	defaultVariants: { variant: "default" },

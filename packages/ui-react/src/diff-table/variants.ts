@@ -3,8 +3,8 @@ import { tv, type VariantProps } from "tailwind-variants";
 export const diffRow = tv({
 	slots: {
 		row: "",
-		label: "font-medium tabular-nums transition-colors duration-200",
-		detail: "transition-colors duration-200",
+		label: "font-medium tabular-nums transition-colors duration-(--duration-base)",
+		detail: "transition-colors duration-(--duration-base)",
 		// White on the dark-mode status fills is under 3:1.
 		mark: "text-white dark:text-background",
 	},

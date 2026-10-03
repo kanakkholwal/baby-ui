@@ -51,16 +51,18 @@ export const slider = defineComponent({
 			name: "variant",
 			type: VARIANTS.map((v) => `"${v}"`).join(" | "),
 			description:
-				"Look. `inline`, `fluid`, `wave` and `ruler` take one value (a range falls back to `track`); only `default` goes vertical.",
+				"Look. `inline`, `fluid`, `wave` and `ruler` take one value (a range falls back to `track`); `default`, `track` and `bubble` also go vertical.",
 			default: "default",
 			control: { kind: "select", options: VARIANTS },
 		},
 		{
 			name: "orientation",
 			type: '"horizontal" | "vertical"',
-			description: "Layout and which arrow keys move the thumb.",
+			description:
+				"Layout and which arrow keys move the thumb. `default`, `track` and `bubble` only; the others carry text, bars or a scale.",
 			default: "horizontal",
 			control: { kind: "select", options: ["horizontal", "vertical"] },
+			showWhen: { variant: ["default", "track", "bubble"] },
 		},
 		{
 			name: "size",
@@ -69,6 +71,7 @@ export const slider = defineComponent({
 				"Scale of the `default`, `track`, `inline`, `bubble` and `fluid` looks.",
 			default: "md",
 			control: { kind: "select", options: ["sm", "md", "lg"] },
+			showWhen: { variant: ["default", "track", "inline", "bubble", "fluid"] },
 		},
 		{
 			name: "showValue",

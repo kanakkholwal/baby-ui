@@ -2,10 +2,11 @@ import { tv, type VariantProps } from "tailwind-variants";
 
 export const barChart = tv({
 	slots: {
-		bar: "transition-opacity duration-150 ease-[cubic-bezier(0.42,0,0.58,1)]",
+		bar: "transition-opacity duration-(--duration-fast) ease-[cubic-bezier(0.42,0,0.58,1)]",
 		band: "pointer-events-none fill-foreground/[0.05]",
-		category: "fill-muted-foreground text-[11px] transition-[opacity,fill] duration-150",
-		tick: "fill-muted-foreground text-[11px] tabular-nums",
+		category:
+			"fill-muted-foreground text-xs transition-[opacity,fill] duration-(--duration-fast)",
+		tick: "fill-muted-foreground text-xs tabular-nums",
 		side: "pointer-events-none",
 		lid: "pointer-events-none",
 		glass: "pointer-events-none",

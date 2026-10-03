@@ -83,7 +83,7 @@ $effect(() => {
 					</p>
 				{/if}
 				{#if showCount}
-					<p class="ml-auto shrink-0 font-mono text-[11px] text-muted-foreground tabular-nums">
+					<p class="ml-auto shrink-0 font-mono text-muted-foreground text-xs tabular-nums">
 						{value.length}{maxlength ? `/${maxlength}` : ""}
 					</p>
 				{/if}

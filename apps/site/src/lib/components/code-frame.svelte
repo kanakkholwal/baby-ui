@@ -1,8 +1,8 @@
 <script lang="ts">
+import { Tabs, TabsList, TabsTrigger } from "@baby-ui/svelte";
 import type { Snippet } from "svelte";
 import type { TrackEvent } from "#lib/analytics.js";
 import CopyButton from "./copy-button.svelte";
-import Tabs from "./tabs.svelte";
 
 type Tab = { id: string; label: string };
 
@@ -27,13 +27,20 @@ let {
 
 <!-- The inset frame: a tinted outer card, a header in its padding, and the code on
      an inner surface whose radius is the outer one minus border and inset. -->
-<div class={["min-w-0 max-w-full rounded-xl border border-border bg-card p-1 text-foreground", classProp]}>
+<Tabs
+	bind:value={active}
+	variant="segment"
+	size="sm"
+	class="min-w-0 max-w-full rounded-xl border border-border bg-card p-1 text-foreground {classProp ?? ''}"
+>
 	<div class="flex min-h-8 items-center gap-2 px-1 pb-1">
 		{#if tabs?.length}
-			<!-- Long file lists scroll inside the header instead of widening the frame. -->
-			<div class="scrollbar-hide min-w-0 flex-1 overflow-x-auto">
-				<Tabs {tabs} bind:active variant="segment" />
-			</div>
+			<!-- Long file lists scroll with edge arrows inside the header instead of widening it. -->
+			<TabsList aria-label="Files" class="min-w-0 flex-1">
+				{#each tabs as tab (tab.id)}
+					<TabsTrigger value={tab.id}>{tab.label}</TabsTrigger>
+				{/each}
+			</TabsList>
 		{:else if title}
 			{@render title()}
 		{/if}
@@ -42,4 +49,4 @@ let {
 	<div class="relative overflow-hidden rounded-[calc(var(--radius-xl)-1px-0.25rem)] bg-background">
 		{@render children()}
 	</div>
-</div>
+</Tabs>

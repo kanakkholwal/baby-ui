@@ -302,14 +302,19 @@ const RUNTIMES = [
 export function SelectDemo({ props }: { props: Props }) {
 	const pValue = controlProps<ComponentProps<typeof SelectValue>>(props);
 	const pContent = controlProps<ComponentProps<typeof SelectContent>>(props);
+	const pTrigger = controlProps<ComponentProps<typeof SelectTrigger>>(props);
 	const [value, setValue] = useState("edge");
 	return (
 		<div className="w-64">
 			<Select value={value} onValueChange={setValue} items={RUNTIMES}>
-				<SelectTrigger aria-label="Runtime">
+				<SelectTrigger
+					aria-label="Runtime"
+					variant={pTrigger.variant}
+					size={pTrigger.size}
+				>
 					<SelectValue placeholder={pValue.placeholder || "Select an option"} />
 				</SelectTrigger>
-				<SelectContent side={pContent.side ?? "bottom"}>
+				<SelectContent side={pContent.side ?? "bottom"} size={pTrigger.size}>
 					{RUNTIMES.map((runtime) => (
 						<SelectItem
 							key={runtime.value}

@@ -51,7 +51,7 @@ let {
 	min?: number;
 	max?: number;
 	step?: number;
-	/** Only `default` supports vertical; the other variants render horizontal. */
+	/** `default`, `track` and `bubble` go vertical; the other variants render horizontal. */
 	orientation?: "horizontal" | "vertical";
 	/** Accessible name; also the header title when `showValue` is on. */
 	label?: string;

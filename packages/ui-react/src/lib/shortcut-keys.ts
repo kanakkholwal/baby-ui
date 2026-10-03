@@ -131,6 +131,16 @@ export function parseShortcut(value: string, apple = true): ParsedShortcut | und
 	return out.key ? out : undefined;
 }
 
+/** One-cap text: glyphs run together as Apple menus print them (⇧⌘K); a word key takes a `+` (Ctrl+K, ⌘+Esc). */
+export function joinCaps(caps: readonly string[]): string {
+	const glyph = (cap = "") => [...cap].length === 1;
+	return caps.reduce(
+		(text, cap, i) =>
+			i === 0 ? cap : `${text}${glyph(caps[i - 1]) && glyph(cap) ? "" : "+"}${cap}`,
+		"",
+	);
+}
+
 export function matchesShortcut(event: KeyboardEvent, parsed: ParsedShortcut): boolean {
 	return (
 		event.key.toLowerCase() === parsed.key &&

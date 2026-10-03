@@ -63,10 +63,10 @@ const uid = $props.id();
 	{/if}
 	<span class={slots.label()}>{r.primary}</span>
 	{#if r.secondary}
-		<span class={cn("shrink-0 text-[11px] text-muted-foreground", r.mono && "font-mono")}>{r.secondary}</span>
+		<span class={cn("shrink-0 text-xs text-muted-foreground", r.mono && "font-mono")}>{r.secondary}</span>
 	{/if}
 	{#if r.add !== undefined}
-		<span class="shrink-0 font-mono text-[11px] tabular-nums">
+		<span class="shrink-0 font-mono text-xs tabular-nums">
 			<span class="text-success">+{r.add}</span> <span class="text-destructive">-{r.del}</span>
 		</span>
 	{/if}
@@ -81,7 +81,7 @@ const uid = $props.id();
 			touched = true;
 			manual = !expanded;
 		}}
-		class="-mx-1.5 flex w-fit items-center gap-2 rounded-md px-1.5 py-1 transition-colors duration-100 hover:bg-foreground/[0.06]"
+		class="-mx-1.5 flex w-fit items-center gap-2 rounded-md px-1.5 py-1 transition-colors duration-(--duration-instant) hover:bg-foreground/[0.06]"
 	>
 		<span aria-hidden="true" class="flex shrink-0 text-muted-foreground">
 			{#if icon}
@@ -94,9 +94,9 @@ const uid = $props.id();
 		</span>
 		<span role="status" class="contents">
 			{#if thinking}
-				<span class="reasoning-shimmer whitespace-nowrap font-medium text-[13px]">{activeLabel}</span>
+				<span class="reasoning-shimmer whitespace-nowrap font-medium text-sm">{activeLabel}</span>
 			{:else}
-				<span class="fade-in whitespace-nowrap font-medium text-[13px] text-muted-foreground">{doneLabel}</span>
+				<span class="fade-in whitespace-nowrap font-medium text-sm text-muted-foreground">{doneLabel}</span>
 			{/if}
 		</span>
 		<svg
@@ -108,7 +108,7 @@ const uid = $props.id();
 			stroke-linejoin="round"
 			aria-hidden="true"
 			style="transform: {expanded ? 'rotate(180deg)' : 'none'}"
-			class="size-3.5 shrink-0 text-muted-foreground transition-transform duration-200 ease-[var(--ease-out)] motion-reduce:transition-none"
+			class="size-3.5 shrink-0 text-muted-foreground transition-transform duration-(--duration-base) ease-[var(--ease-out)] motion-reduce:transition-none"
 		>
 			<path d="m4 6 4 4 4-4" />
 		</svg>
@@ -116,7 +116,7 @@ const uid = $props.id();
 
 	<div
 		id={uid}
-		class="grid transition-[grid-template-rows,opacity] duration-300 ease-[var(--ease-out)]"
+		class="grid transition-[grid-template-rows,opacity] duration-(--duration-slow) ease-[var(--ease-out)]"
 		style="grid-template-rows: {expanded ? '1fr' : '0fr'}; opacity: {expanded ? 1 : 0}"
 	>
 		<div class="overflow-hidden">
@@ -143,7 +143,7 @@ const uid = $props.id();
 								target="_blank"
 								rel="noreferrer"
 								style="animation-delay: {i * 80}ms"
-								class={cn(slots.row(), "card-fade-up transition-colors duration-150 hover:bg-foreground/[0.06]")}
+								class={cn(slots.row(), "card-fade-up transition-colors duration-(--duration-fast) hover:bg-foreground/[0.06]")}
 							>
 								{@render rowContent(r, i)}
 							</a>
@@ -153,7 +153,7 @@ const uid = $props.id();
 								aria-pressed={selectedRow === r.primary}
 								onclick={() => (selectedRow = selectedRow === r.primary ? null : r.primary)}
 								style="animation-delay: {i * 80}ms"
-								class={cn(slots.row(), "card-fade-up transition-colors duration-150", selectedRow === r.primary ? "bg-muted" : "hover:bg-foreground/[0.06]")}
+								class={cn(slots.row(), "card-fade-up transition-colors duration-(--duration-fast)", selectedRow === r.primary ? "bg-muted" : "hover:bg-foreground/[0.06]")}
 							>
 								{@render rowContent(r, i)}
 							</button>

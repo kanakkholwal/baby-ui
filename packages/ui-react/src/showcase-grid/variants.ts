@@ -24,7 +24,7 @@ export const showcasePanel = tv({
 		content:
 			"relative z-2 flex flex-1 items-center justify-center p-4 md:absolute md:inset-0 md:overflow-hidden md:p-5",
 		actions:
-			"absolute top-3 right-3 z-10 flex items-center gap-1.5 opacity-0 transition-opacity duration-150 group-focus-within/panel:opacity-100 group-hover/panel:opacity-100 pointer-coarse:opacity-100 motion-reduce:transition-none",
+			"absolute top-3 right-3 z-10 flex items-center gap-1.5 opacity-0 transition-opacity duration-(--duration-fast) group-focus-within/panel:opacity-100 group-hover/panel:opacity-100 pointer-coarse:opacity-100 motion-reduce:transition-none",
 	},
 	variants: {
 		span: {

@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Slider } from "@baby-ui/svelte";
+import { Slider, sliderLayout } from "@baby-ui/svelte";
 import type { ComponentProps } from "svelte";
 import { controlProps } from "../data/preview-props";
 import { SLIDER_MARKS, SLIDER_PRESETS } from "../data/slider";
@@ -9,10 +9,10 @@ const p = $derived(controlProps<ComponentProps<typeof Slider>>(props));
 
 let variant = $derived(p.variant ?? "default");
 let preset = $derived(SLIDER_PRESETS[variant] ?? SLIDER_PRESETS.default);
-let orientation = $derived(
-	variant === "default" ? (p.orientation ?? "horizontal") : "horizontal",
-);
 let range = $derived(Boolean(props.range));
+let orientation = $derived(
+	sliderLayout(variant, p.orientation ?? "horizontal", range).orientation,
+);
 let value = $state<number | number[]>(50);
 
 $effect(() => {

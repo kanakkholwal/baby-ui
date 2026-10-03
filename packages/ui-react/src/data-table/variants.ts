@@ -8,7 +8,7 @@ export const dataTable = tv({
 		search: "w-full sm:w-64",
 		// A refetch dims the current rows instead of blanking them.
 		frame:
-			"relative min-w-0 [&_tbody]:transition-opacity [&_tbody]:duration-200 data-[fetching=true]:[&_tbody]:opacity-60",
+			"relative min-w-0 [&_tbody]:transition-opacity [&_tbody]:duration-(--duration-base) data-[fetching=true]:[&_tbody]:opacity-60",
 		// The Table container becomes the scroll element; give it a max height to scroll rows.
 		viewport: "overflow-auto overscroll-contain",
 		table: "table-fixed",
@@ -25,7 +25,7 @@ export const dataTable = tv({
 		headInner: "flex min-w-0 items-center gap-0.5",
 		grip: [
 			"-ms-1.5 grid h-6 w-4 shrink-0 cursor-grab touch-none select-none place-items-center rounded-md text-muted-foreground/70",
-			"opacity-0 outline-none transition-opacity duration-150 group-hover/head:opacity-100 [@media(hover:none)]:opacity-100",
+			"opacity-0 outline-none transition-opacity duration-(--duration-fast) group-hover/head:opacity-100 [@media(hover:none)]:opacity-100",
 			"hover:text-foreground focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-ring",
 			"active:cursor-grabbing data-[dragging=true]:opacity-100",
 		],
@@ -35,7 +35,7 @@ export const dataTable = tv({
 		icon: "size-3.5 shrink-0",
 		resizer: [
 			"absolute inset-y-0 end-0 z-[2] w-2 cursor-col-resize touch-none select-none",
-			"after:absolute after:inset-y-2 after:end-0 after:w-px after:bg-border after:transition-colors after:duration-150",
+			"after:absolute after:inset-y-2 after:end-0 after:w-px after:bg-border after:transition-colors after:duration-(--duration-fast)",
 			"hover:after:bg-primary data-[resizing=true]:after:inset-y-0 data-[resizing=true]:after:bg-primary",
 		],
 		row: "group/row",

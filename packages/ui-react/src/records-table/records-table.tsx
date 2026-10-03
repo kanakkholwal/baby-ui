@@ -78,7 +78,7 @@ function useControllable<T>(
 
 function CalcCell({ label }: { label: string }) {
 	return (
-		<span className="inline-flex items-center gap-1.5 text-[13px] text-muted-foreground">
+		<span className="inline-flex items-center gap-1.5 text-sm text-muted-foreground">
 			{label}
 			<span className="size-1.5 animate-pulse rounded-full bg-muted-foreground motion-reduce:animate-none" />
 		</span>
@@ -277,7 +277,7 @@ export function RecordsTable({
 				{...aiProps(key)}
 				className={cn(
 					headerCell(),
-					"relative border-border border-r border-b bg-card text-left font-medium text-[12.5px] text-muted-foreground",
+					"relative border-border border-r border-b bg-card text-left font-medium text-xs text-muted-foreground",
 					openColumn === key && "bg-primary/[0.04]",
 					key === "ai" && aiCell(),
 				)}
@@ -311,7 +311,7 @@ export function RecordsTable({
 								setSort(nextSort(sort, sortKey));
 							}}
 							className={cn(
-								"shrink-0 cursor-pointer text-muted-foreground transition-[opacity,rotate] duration-150 motion-reduce:transition-none",
+								"shrink-0 cursor-pointer text-muted-foreground transition-[opacity,rotate] duration-(--duration-fast) motion-reduce:transition-none",
 								sort.key === sortKey
 									? "opacity-100"
 									: "opacity-0 hover:opacity-60 focus-visible:opacity-60",
@@ -473,7 +473,7 @@ export function RecordsTable({
 								>
 									<td {...td("company")}>
 										<div className="flex min-w-0 items-center gap-2">
-											<span className="w-4 shrink-0 text-[11px] text-muted-foreground tabular-nums">
+											<span className="w-4 shrink-0 text-xs text-muted-foreground tabular-nums">
 												{index + 1}
 											</span>
 											<Checkbox
@@ -485,7 +485,7 @@ export function RecordsTable({
 											<Avatar
 												aria-hidden
 												shape="square"
-												className="size-5 rounded-[5px] bg-muted text-[10px]"
+												className="size-5 rounded-[5px] bg-muted text-xs"
 											>
 												<AvatarImage src={row.logo} alt="" />
 												<AvatarFallback>{row.name.charAt(0)}</AvatarFallback>

@@ -19,6 +19,7 @@ export const progress = defineComponent({
 			description: "Completion from 0 to 100. Ignored when indeterminate.",
 			default: 40,
 			control: { kind: "number", min: 0, max: 100, step: 1 },
+			showWhen: { indeterminate: [false] },
 		},
 		{
 			name: "indeterminate",

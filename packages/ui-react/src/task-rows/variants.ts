@@ -3,7 +3,7 @@ import { tv, type VariantProps } from "tailwind-variants";
 export const taskRows = tv({
 	slots: {
 		root: "flex w-full flex-col",
-		item: "self-stretch overflow-hidden transition-[border-radius,background-color] duration-300 hover:bg-muted",
+		item: "self-stretch overflow-hidden transition-[border-radius,background-color] duration-(--duration-slow) hover:bg-foreground/[0.06]",
 		statusDot:
 			"pop-in flex size-5.5 shrink-0 items-center justify-center rounded-full text-white",
 	},

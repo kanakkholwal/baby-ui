@@ -195,7 +195,7 @@ function updateCondition(
 	<div class="flex flex-col gap-1.5 px-3 py-2.5">
 		{#each node.conditions ?? [] as row (row.id)}
 			<div class="flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1.5">
-				<span class="w-8 shrink-0 text-[12.5px] text-muted-foreground">{row.connector}</span>
+				<span class="w-8 shrink-0 text-xs text-muted-foreground">{row.connector}</span>
 				<Badge variant="secondary" size="sm">{row.source}</Badge>
 				<ConditionChip
 					value={row.property}
@@ -203,7 +203,7 @@ function updateCondition(
 					width="w-36"
 					onChange={(v) => updateCondition(node.id, row, "property", v)}
 				/>
-				<span class="text-[12.5px] text-muted-foreground">{row.comparator ?? "is"}</span>
+				<span class="text-xs text-muted-foreground">{row.comparator ?? "is"}</span>
 				<ConditionChip
 					value={row.value}
 					options={row.valueOptions}
@@ -231,8 +231,8 @@ function updateCondition(
 			{/if}
 		</span>
 		<span class="min-w-0 text-left">
-			<span class="block truncate font-semibold text-[13px] text-foreground leading-tight">{node.title}</span>
-			<span class="mt-0.5 block text-[12px] text-muted-foreground leading-snug">{node.caption}</span>
+			<span class="block truncate font-semibold text-sm text-foreground leading-tight">{node.title}</span>
+			<span class="mt-0.5 block text-xs text-muted-foreground leading-snug">{node.caption}</span>
 		</span>
 	</div>
 {/snippet}
@@ -250,7 +250,7 @@ function updateCondition(
 				fill="none"
 				stroke={isLit(edge) ? "var(--primary)" : "var(--border)"}
 				stroke-width="1.25"
-				class="transition-[stroke] duration-150"
+				class="transition-[stroke] duration-(--duration-fast)"
 			/>
 		{/each}
 	</svg>
@@ -269,14 +269,14 @@ function updateCondition(
 		>
 			{#if node.kindLabel}
 				<span
-					class="inline-flex h-6 items-center rounded-md px-2 font-medium text-[11.5px]"
+					class="inline-flex h-6 items-center rounded-md px-2 font-medium text-xs"
 					style="background: {mix(node.hue, 14, 'var(--background)')}; color: {mix(node.hue, 80, 'var(--foreground)')};"
 				>
 					{node.kindLabel}
 				</span>
 			{/if}
 			{#if node.conditions}
-				<div class="w-full rounded-2xl bg-card shadow-sm transition-shadow duration-150 hover:shadow-md">
+				<div class="w-full rounded-2xl bg-card shadow-sm transition-shadow duration-(--duration-fast) hover:shadow-md">
 					{@render conditionRows(node)}
 				</div>
 			{:else}
@@ -290,7 +290,7 @@ function updateCondition(
 					}}
 					aria-pressed={active}
 					class={cn(
-						"w-full cursor-pointer rounded-2xl bg-card text-left outline-none transition-shadow duration-150 focus-visible:shadow-[0_0_0_1.5px_var(--primary)]",
+						"w-full cursor-pointer rounded-2xl bg-card text-left outline-none transition-shadow duration-(--duration-fast) focus-visible:shadow-[0_0_0_1.5px_var(--primary)]",
 						active ? "shadow-[0_0_0_1.5px_var(--primary),0_2px_10px_rgba(0,0,0,0.045)]" : "shadow-sm hover:shadow-md",
 					)}
 				>

@@ -16,9 +16,9 @@ export const calendar = tv({
 		// Month and year open their grids; the chevron turns with the grid it opened.
 		captionButton: [
 			"group/caption inline-flex h-7 select-none items-center gap-1 rounded-md px-1.5 font-medium text-foreground text-sm outline-none",
-			"transition-[background-color,color,scale] duration-150 ease-[var(--ease-out)] hover:bg-foreground/[0.06] active:scale-[var(--press-scale-sm)]",
+			"transition-[background-color,color,scale] duration-(--duration-fast) ease-[var(--ease-out)] hover:bg-foreground/[0.06] active:scale-[var(--press-scale-sm)]",
 			"focus-visible:ring-2 focus-visible:ring-ring aria-expanded:bg-foreground/[0.06] motion-reduce:transition-none",
-			"[&>svg]:size-3.5 [&>svg]:text-muted-foreground [&>svg]:transition-[rotate] [&>svg]:duration-200 [&>svg]:ease-[var(--ease-out)] aria-expanded:[&>svg]:rotate-180",
+			"[&>svg]:size-3.5 [&>svg]:text-muted-foreground [&>svg]:transition-[rotate] [&>svg]:duration-(--duration-base) [&>svg]:ease-[var(--ease-out)] aria-expanded:[&>svg]:rotate-180",
 		],
 		captionYear:
 			"text-muted-foreground tabular-nums hover:text-foreground aria-expanded:text-foreground",
@@ -30,8 +30,8 @@ export const calendar = tv({
 		choices:
 			"calendar-choices-in absolute inset-0 grid min-w-0 grid-cols-4 grid-rows-3 place-items-center",
 		choice: [
-			"calendar-choice-in flex h-7 min-w-12 select-none items-center justify-center rounded-md px-2 text-[13px] text-foreground tabular-nums outline-none",
-			"transition-[background-color,color,scale] [transition-duration:100ms,100ms,250ms] ease-[var(--ease-out)] hover:bg-foreground/[0.06] active:scale-[var(--press-scale-sm)]",
+			"calendar-choice-in flex h-7 min-w-12 select-none items-center justify-center rounded-md px-2 text-sm text-foreground tabular-nums outline-none",
+			"transition-[background-color,color,scale] [transition-duration:var(--duration-instant),var(--duration-instant),var(--duration-slow)] ease-[var(--ease-out)] hover:bg-foreground/[0.06] active:scale-[var(--press-scale-sm)]",
 			"focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-40 motion-reduce:active:scale-100",
 			"data-[current]:font-medium data-[current]:text-primary data-[selected]:bg-primary data-[selected]:font-medium data-[selected]:text-primary-foreground data-[selected]:hover:bg-primary-hover",
 		],
@@ -48,7 +48,7 @@ export const calendar = tv({
 		// Cells are round and squish on press; today is a soft primary tint, selected a fill.
 		day: [
 			"flex size-(--cell-size) w-full select-none flex-col items-center justify-center gap-1 whitespace-nowrap rounded-full p-0 font-medium text-sm leading-none tabular-nums",
-			"outline-none transition-[color,background-color,scale] [transition-duration:100ms,100ms,250ms] ease-[var(--ease-out)] hover:bg-foreground/[0.06]",
+			"outline-none transition-[color,background-color,scale] [transition-duration:var(--duration-instant),var(--duration-instant),var(--duration-slow)] ease-[var(--ease-out)] hover:bg-foreground/[0.06]",
 			"active:scale-95 focus-visible:ring-2 focus-visible:ring-ring motion-reduce:active:scale-100",
 			"data-[today]:bg-primary/10 data-[today]:text-primary data-[today]:hover:bg-primary/15",
 			"data-[outside-month]:text-muted-foreground data-[outside-month]:opacity-50",
@@ -65,7 +65,7 @@ export const calendar = tv({
 			"[&:has([data-range-end])]:rounded-e-full [&:has([data-range-end])]:bg-foreground/[0.06]",
 			"first:[&:has([data-range-middle])]:rounded-s-full last:[&:has([data-range-middle])]:rounded-e-full",
 			// The previewed end: a fainter track that fades as it follows the pointer.
-			"transition-[background-color] duration-150 ease-[var(--ease-out)] motion-reduce:transition-none",
+			"transition-[background-color] duration-(--duration-fast) ease-[var(--ease-out)] motion-reduce:transition-none",
 			"[&:has([data-highlighted]:not([data-selected]))]:bg-foreground/[0.04]",
 			"first:[&:has([data-highlighted])]:rounded-s-full last:[&:has([data-highlighted])]:rounded-e-full",
 		],

@@ -6,12 +6,12 @@ export const fileUpload = tv({
 		zone: [
 			"group/zone relative flex w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border border-border border-dashed bg-background text-center outline-none",
 			"transition-[border-color,background-color] duration-[var(--duration-press)] ease-[var(--ease-out)] motion-reduce:transition-none",
-			"hover:border-border-strong hover:bg-foreground/[0.02] focus-visible:ring-2 focus-visible:ring-ring",
-			"data-[dragging=true]:border-foreground/40 data-[dragging=true]:bg-foreground/[0.04]",
+			"hover:border-border-strong hover:bg-foreground/[0.03] focus-visible:ring-2 focus-visible:ring-ring",
+			"data-[dragging=true]:border-foreground/40 data-[dragging=true]:bg-foreground/[0.05]",
 			"disabled:cursor-not-allowed disabled:opacity-50",
 		],
 		zoneIcon:
-			"flex items-center justify-center rounded-full border border-border bg-card text-muted-foreground [&_svg]:size-4",
+			"flex items-center justify-center rounded-full border border-border bg-background text-muted-foreground shadow-sm dark:bg-muted [&_svg]:size-4",
 		zoneTitle: "font-medium text-foreground",
 		zoneHint: "text-muted-foreground text-xs",
 		list: "flex flex-col gap-2",

@@ -35,7 +35,7 @@ function CheckMark({ included, className }: { included: boolean; className: stri
 		<span
 			aria-hidden
 			className={cn(
-				"flex size-4.5 shrink-0 items-center justify-center rounded-[5px] transition-[background-color,transform] duration-150",
+				"flex size-4.5 shrink-0 items-center justify-center rounded-[5px] transition-[background-color,transform] duration-(--duration-fast)",
 				className,
 			)}
 			style={{ transform: included ? "scale(1)" : "scale(0.92)" }}
@@ -118,11 +118,9 @@ export function DiffTable({
 		<div data-slot="diff-table" className={cn("w-full", className)}>
 			<div className="relative overflow-hidden rounded-2xl bg-card shadow-sm">
 				<div className="flex items-center justify-between border-border border-b px-3 py-2">
-					<span className="font-medium text-[12.5px] text-foreground">{title}</span>
+					<span className="font-medium text-xs text-foreground">{title}</span>
 					{!accepted ? (
-						<span className="text-[11px] text-muted-foreground">
-							Click rows to toggle
-						</span>
+						<span className="text-xs text-muted-foreground">Click rows to toggle</span>
 					) : null}
 				</div>
 
@@ -137,7 +135,7 @@ export function DiffTable({
 							{["Field", "Category", "Detail"].map((heading) => (
 								<th
 									key={heading}
-									className="px-3 py-1.5 font-medium text-[12px] text-muted-foreground"
+									className="px-3 py-1.5 font-medium text-xs text-muted-foreground"
 								>
 									{heading}
 								</th>
@@ -168,21 +166,19 @@ export function DiffTable({
 											: undefined
 									}
 									className={cn(
-										"card-fade-up border-border border-b transition-colors duration-150 last:border-0 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-inset",
+										"card-fade-up border-border border-b transition-colors duration-(--duration-fast) last:border-0 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-inset",
 										interactive && "cursor-pointer hover:brightness-[0.985]",
 										classes.row,
 									)}
 									style={{ animationDelay: `calc(var(--stagger-step) * ${index})` }}
 								>
-									<td className={cn("px-3 py-2 text-[13px]", classes.label)}>
-										{row.label}
-									</td>
+									<td className={cn("px-3 py-2 text-sm", classes.label)}>{row.label}</td>
 									<td className="px-3 py-2">
 										<Badge variant="secondary" size="sm" dot>
 											{row.category}
 										</Badge>
 									</td>
-									<td className={cn("px-3 py-2 text-[12.5px]", classes.detail)}>
+									<td className={cn("px-3 py-2 text-xs", classes.detail)}>
 										<span className="flex items-center justify-between gap-2">
 											<span className="min-w-0 truncate">{row.detail}</span>
 											<CheckMark included={included_} className={classes.mark} />
@@ -196,7 +192,7 @@ export function DiffTable({
 
 				<div className="flex min-h-11 items-center justify-between border-border border-t px-3 py-2">
 					{accepted ? (
-						<span className="pop-in inline-flex items-center gap-1.5 rounded-full bg-success/10 py-1 pr-2.5 pl-1 font-medium text-[12.5px] text-success">
+						<span className="pop-in inline-flex items-center gap-1.5 rounded-full bg-success/10 py-1 pr-2.5 pl-1 font-medium text-xs text-success">
 							<span className="flex size-4.5 items-center justify-center rounded-full bg-success text-white dark:text-background">
 								<svg width="11" height="11" viewBox="0 0 24 24" fill="none" aria-hidden>
 									<path
@@ -212,7 +208,7 @@ export function DiffTable({
 						</span>
 					) : (
 						<>
-							<span className="text-[11.5px] text-muted-foreground tabular-nums">
+							<span className="text-xs text-muted-foreground tabular-nums">
 								{removals} {removals === 1 ? "removal" : "removals"} · {additions}{" "}
 								{additions === 1 ? "addition" : "additions"}
 							</span>

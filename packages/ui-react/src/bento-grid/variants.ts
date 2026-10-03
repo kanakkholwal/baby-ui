@@ -4,7 +4,7 @@ import { tv, type VariantProps } from "tailwind-variants";
 export const bentoCell = tv({
 	base: [
 		"group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card p-5",
-		"transition-[transform,scale,translate,border-color] duration-200 ease-[var(--ease-out)]",
+		"transition-[transform,scale,translate,border-color] duration-(--duration-base) ease-[var(--ease-out)]",
 		"hover:-translate-y-0.5 hover:border-ring motion-reduce:hover:translate-y-0",
 	],
 	variants: {

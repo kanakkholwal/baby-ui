@@ -20,7 +20,7 @@ let {
 	props: Record<string, unknown>;
 	/** Replaces the demo (the OG pages' rendered PNG); the frame stays the same. */
 	content?: Snippet;
-	/** Caps the canvas; taller demos scroll inside it instead of pushing the page down. */
+	/** The canvas grows to its demo up to this cap, then scrolls inside. */
 	maxHeight?: string;
 	class?: string;
 } = $props();

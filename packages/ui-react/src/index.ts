@@ -188,7 +188,7 @@ export { type EyeTrackingProps, EyeTracking } from "./eye-tracking/eye-tracking"
 export { type EyeTrackingOptions, mountEyeTracking } from "./eye-tracking/eyes";
 export { eyeTracking, type EyeTrackingVariant, type EyeTrackingSize } from "./eye-tracking/variants";
 export { FieldSet, FieldLegend, FieldGroup, Field, FieldContent, FieldLabel, FieldTitle, FieldDescription, FieldSeparator, FieldError } from "./field/field";
-export { field, type FieldOrientation, fieldLegend, type FieldLegendVariant, type FieldErrorEntry, fieldErrorMessages } from "./field/variants";
+export { field, type FieldOrientation, type FieldSize, fieldLegend, type FieldLegendVariant, type FieldErrorEntry, fieldErrorMessages } from "./field/variants";
 export { type DiffLine, type FileDiffProps, FileDiff } from "./file-diff/file-diff";
 export { type DiffLineKind } from "./file-diff/variants";
 export { type FileTreeProps, FileTree } from "./file-tree/file-tree";
@@ -410,6 +410,10 @@ export { progress, type ProgressSize, type ProgressTone, type ProgressVariant, P
 export { type ProjectionLineProps, ProjectionLine } from "./projection-line/projection-line";
 export { type ProjectionPoint, type ProjectionMode, type ProjectionMethod, buildProjection, bezierPath, projectionExtent, visibleEndX } from "./projection-line/geometry";
 export { projectionLine, type ProjectionLineVariant, type ProjectionLineCurve } from "./projection-line/variants";
+export { type PropertyPanelProps, PropertyPanel, type PropertyPanelGroupProps, PropertyPanelGroup, PropertyPanelGroupLabel, PropertyPanelGroupAction, PropertyPanelGroupContent } from "./property-panel/property-panel";
+export { type PropertyPanelControlsProps, PropertyPanelControls, PropertyPanelRow } from "./property-panel/property-panel-controls";
+export { type PropertyOption, type PropertyControl, type PropertySchema, type PropertyValues, type PropertyValue, type PropertyField, type PropertyFolder, type PropertyNode, propertyLabel, propertyNodes, type PropertyGroup, propertyGroups, propertyDefaults, getPropertyValue, setPropertyValue } from "./property-panel/schema";
+export { propertyPanel, type PropertyPanelVariant } from "./property-panel/variants";
 export { type QuestionOption, type QuestionItem, type QuestionAnswer, type QuestionAnswers, type QuestionProps, Question } from "./question/question";
 export { question, type QuestionLayout } from "./question/variants";
 export { type RadarChartProps, RadarChart, type RadarGridProps, RadarGrid, RadarAxis, RadarLabels, type RadarAreaProps, RadarArea, RadarTooltip } from "./radar-chart/radar-chart";
@@ -469,6 +473,7 @@ export { scrollVelocity, type ScrollVelocityLayout, type ScrollVelocityDirection
 export { type ScrubFieldProps, ScrubField } from "./scrub-field/scrub-field";
 export { scrubField, type ScrubFieldSize, type ScrubFieldTone, snapToStep } from "./scrub-field/variants";
 export { Select, SelectValue, SelectTrigger, SelectContent, SelectItem, SelectGroup, SelectLabel, SelectSeparator } from "./select/select";
+export { selectTrigger, selectContent, type SelectContentSize, type SelectTriggerVariant, type SelectTriggerSize } from "./select/variants";
 export { type SeparatorProps, Separator } from "./separator/separator";
 export { separator, type SeparatorVariant } from "./separator/variants";
 export { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetFooter, SheetTitle, SheetDescription, SheetClose } from "./sheet/sheet";
@@ -491,7 +496,7 @@ export { silkAurora, type SilkAuroraTone, type SilkAuroraSpeed, type SilkAuroraP
 export { type SkeletonProps, Skeleton } from "./skeleton/skeleton";
 export { skeleton, type SkeletonShape } from "./skeleton/variants";
 export { type SliderProps, Slider } from "./slider/slider";
-export { SLIDER_SINGLE_THUMB_VARIANTS, sliderLayout, SLIDER_WAVE_BARS, type SliderWaveBar, sliderWaveBars, sliderThumbCenter, sliderInlineSplit, SLIDER_RULER_GAP, SLIDER_RULER_MAJOR_EVERY, type SliderRulerTick, sliderRulerTicks, sliderRulerOffset, sliderRulerValueAt } from "./slider/core";
+export { SLIDER_SINGLE_THUMB_VARIANTS, SLIDER_VERTICAL_VARIANTS, sliderLayout, SLIDER_WAVE_BARS, type SliderWaveBar, sliderWaveBars, sliderThumbCenter, sliderInlineSplit, SLIDER_RULER_GAP, SLIDER_RULER_MAJOR_EVERY, type SliderRulerTick, sliderRulerTicks, sliderRulerOffset, sliderRulerValueAt } from "./slider/core";
 export { slider, type SliderSize, type SliderVariant, type SliderMark, sliderPercent } from "./slider/variants";
 export { type SpectralRibbonProps, SpectralRibbon } from "./spectral-ribbon/spectral-ribbon";
 export { type SpectralRibbonOptions, mountSpectralRibbon } from "./spectral-ribbon/ribbon";
@@ -574,7 +579,7 @@ export { type TimeValue, type TimePickerLabels, TIME_PICKER_LABELS, type TimePar
 export { type TimePickerSize, timePicker } from "./time-picker/variants";
 export { type ToasterProps, toast, Toaster } from "./toast/toaster";
 export { type ToggleProps, Toggle } from "./toggle/toggle";
-export { toggleButton, type ToggleSize } from "./toggle/variants";
+export { toggleButton, type ToggleVariant, type ToggleSize } from "./toggle/variants";
 export { ToggleGroup, ToggleGroupItem } from "./toggle-group/toggle-group";
 export { toggleGroup, type ToggleGroupVariant, type ToggleGroupSize } from "./toggle-group/variants";
 export { type ToolProps, Tool } from "./tool/tool";

@@ -23,7 +23,7 @@ export const fullscreenNav = tv({
 			"motion-reduce:transition-opacity motion-reduce:!delay-0 motion-reduce:starting:translate-y-0 motion-reduce:data-[state=closed]:translate-y-0",
 		],
 		row: [
-			"flex items-baseline gap-4 rounded-lg transition-opacity duration-150",
+			"flex items-baseline gap-4 rounded-lg transition-opacity duration-(--duration-fast)",
 			"group-has-[a:hover]/nav:opacity-45 hover:!opacity-100 group-has-[:focus-visible]/nav:opacity-45 group-focus-visible/link:!opacity-100",
 			"group-focus-visible/link:ring-2 group-focus-visible/link:ring-ring group-focus-visible/link:ring-offset-4 group-focus-visible/link:ring-offset-background",
 		],

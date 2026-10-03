@@ -6,9 +6,9 @@ export const docsNav = tv({
 		section: "border-border/60 border-t py-2 first:border-t-0 first:pt-0",
 		// pl-1.5: the trigger's chevron (14px) and gap (8px) land the label on the rows' pl-7.
 		trigger:
-			"h-8 w-full justify-start gap-1.5 pr-3 pl-1.5 font-semibold text-[11px] text-muted-foreground uppercase tracking-wider hover:text-foreground",
+			"h-8 w-full justify-start gap-1.5 pr-3 pl-1.5 font-semibold text-xs text-muted-foreground uppercase tracking-wider hover:text-foreground",
 		count:
-			"inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-foreground/[0.06] px-1 font-medium text-[10px] text-foreground/70 tabular-nums",
+			"inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-foreground/[0.06] px-1 font-medium text-xs text-foreground/70 tabular-nums",
 		content: "px-0 pt-1 pb-1",
 		list: "relative",
 		pill: "pointer-events-none absolute right-0 rounded-md bg-foreground/[0.06] transition-[transform,height,opacity] duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none",
@@ -16,10 +16,10 @@ export const docsNav = tv({
 		marker:
 			"pointer-events-none absolute duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none",
 		rail: "pointer-events-none absolute top-1/2 bottom-0 left-3 border-foreground/20 border-l",
-		link: "relative z-[1] flex items-center justify-between gap-2 py-1.5 pr-3 pl-7 text-sm outline-none transition-[color,opacity] duration-150 focus-visible:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset motion-reduce:transition-none",
+		link: "relative z-[1] flex items-center justify-between gap-2 py-1.5 pr-3 pl-7 text-sm outline-none transition-[color,opacity] duration-(--duration-fast) focus-visible:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset motion-reduce:transition-none",
 		label:
 			"truncate transition-transform duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none",
-		badge: "rounded border border-border px-1 py-px text-[10px] text-muted-foreground",
+		badge: "rounded border border-border px-1 py-px text-xs text-muted-foreground",
 	},
 	variants: {
 		connector: {

@@ -1,7 +1,7 @@
 import { tv, type VariantProps } from "tailwind-variants";
 
 export const badge = tv({
-	base: "inline-flex shrink-0 items-center gap-1.5 rounded-md border font-medium whitespace-nowrap transition-colors duration-150",
+	base: "inline-flex shrink-0 items-center gap-1.5 rounded-md border font-medium whitespace-nowrap transition-colors duration-(--duration-fast)",
 	variants: {
 		variant: {
 			default: "border-transparent bg-primary text-primary-foreground",
@@ -16,7 +16,7 @@ export const badge = tv({
 			info: "border-transparent bg-[color-mix(in_oklch,var(--info)_15%,transparent)] text-[color-mix(in_oklch,var(--info)_75%,var(--foreground))]",
 		},
 		size: {
-			sm: "h-5 px-1.5 text-[11px]",
+			sm: "h-5 px-1.5 text-xs",
 			md: "h-6 px-2 text-xs",
 			lg: "h-7 px-2.5 text-sm",
 			xl: "h-8 px-3 text-sm",

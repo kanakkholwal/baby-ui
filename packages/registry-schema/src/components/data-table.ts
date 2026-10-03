@@ -30,6 +30,7 @@ export const dataTable = defineComponent({
 				"Demo only, server layout: the first request fails or comes back empty.",
 			default: "normal",
 			control: { kind: "select", options: SIMULATE },
+			showWhen: { layout: ["server"] },
 		},
 		{
 			name: "variant",

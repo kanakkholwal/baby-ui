@@ -42,7 +42,7 @@ export interface SliderProps
 	onValueCommit?: (value: number | number[]) => void;
 	/** Accessible name; also the header title when `showValue` is on. */
 	label?: string;
-	/** Only `default` supports vertical; the other variants render horizontal. */
+	/** `default`, `track` and `bubble` go vertical; the other variants render horizontal. */
 	orientation?: "horizontal" | "vertical";
 	/** `inline`, `fluid`, `wave` and `ruler` are single-thumb; a range falls back to `track`. */
 	variant?: SliderVariant;

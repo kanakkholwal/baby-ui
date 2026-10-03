@@ -2,7 +2,8 @@ import { tv, type VariantProps } from "tailwind-variants";
 
 export const seriesMarker = tv({
 	slots: {
-		layer: "transition-[opacity,filter] duration-150 ease-[cubic-bezier(0.42,0,0.58,1)]",
+		layer:
+			"transition-[opacity,filter] duration-(--duration-fast) ease-[cubic-bezier(0.42,0,0.58,1)]",
 		dot: "",
 		ring: "fill-none",
 	},

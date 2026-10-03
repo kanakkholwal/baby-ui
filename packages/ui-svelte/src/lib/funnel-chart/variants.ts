@@ -2,14 +2,14 @@ import { tv, type VariantProps } from "tailwind-variants";
 
 export const funnelChart = tv({
 	slots: {
-		cell: "cursor-pointer transition-opacity duration-150 ease-[cubic-bezier(0,0,0.58,1)]",
+		cell: "cursor-pointer transition-opacity duration-(--duration-fast) ease-[cubic-bezier(0,0,0.58,1)]",
 		ring: "[transform-box:fill-box] [transform-origin:center]",
 		band: "fill-foreground/[0.03]",
 		rule: "stroke-border",
 		labels: "pointer-events-none absolute flex items-center",
 		value: "whitespace-nowrap font-semibold text-foreground text-sm tabular-nums",
 		percent:
-			"rounded-full bg-foreground px-2.5 py-0.5 font-bold text-[11px] text-background tabular-nums shadow-sm",
+			"rounded-full bg-foreground px-2.5 py-0.5 font-bold text-xs text-background tabular-nums shadow-sm",
 		name: "line-clamp-2 max-w-full text-center font-medium text-muted-foreground text-xs [overflow-wrap:anywhere]",
 		mark: "",
 	},

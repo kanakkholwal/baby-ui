@@ -1,8 +1,13 @@
 <script lang="ts">
 import SpecDials from "@baby-ui/demos/controls";
-import { IconAdjustmentsHorizontal } from "@baby-ui/icons";
+import { IconAdjustmentsHorizontal, IconRefresh } from "@baby-ui/icons";
 import type { ComponentSpec } from "@baby-ui/registry-schema";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@baby-ui/svelte";
+import {
+	Button,
+	Collapsible,
+	CollapsibleContent,
+	CollapsibleTrigger,
+} from "@baby-ui/svelte";
 import { track } from "#lib/analytics.js";
 import { defaultProps } from "#lib/registry.js";
 
@@ -10,11 +15,14 @@ let {
 	spec,
 	values = $bindable(),
 	defaultOpen = false,
+	docked = false,
 }: {
 	spec: ComponentSpec;
 	values: Record<string, unknown>;
 	/** Closed by default so a first visit sees the component, not a wall of dials. */
 	defaultOpen?: boolean;
+	/** Always open beside the preview, filling its column and scrolling on its own. */
+	docked?: boolean;
 } = $props();
 
 // svelte-ignore state_referenced_locally
@@ -32,6 +40,25 @@ $effect(() => {
 });
 </script>
 
+{#if docked}
+	<section aria-label="Controls" class="flex h-full min-h-0 flex-col rounded-xl border border-border bg-card">
+		<div class="flex h-10 shrink-0 items-center justify-between gap-2 border-border border-b px-3">
+			<p class="flex items-center gap-2 font-medium text-foreground text-sm">
+				<IconAdjustmentsHorizontal size={16} class="text-muted-foreground" />
+				Controls
+			</p>
+			<Button variant="ghost" size="xs" onclick={() => (values = defaultProps(spec))}>
+				<IconRefresh />
+				Reset
+			</Button>
+		</div>
+		<div class="scrollbar-hide min-h-0 flex-1 overflow-y-auto p-3">
+			{#key spec.slug}
+				<SpecDials {spec} bind:values />
+			{/key}
+		</div>
+	</section>
+{:else}
 <!-- The inset frame, same treatment as Card's `framed` variant and CodeBlock: a rim in
      bg-background around a bg-card body, so it reads as its own surface, not a plain box. -->
 <Collapsible bind:open class="mt-4 rounded-2xl border border-border bg-background p-1">
@@ -47,3 +74,4 @@ $effect(() => {
 		</div>
 	</CollapsibleContent>
 </Collapsible>
+{/if}

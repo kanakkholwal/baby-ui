@@ -50,7 +50,7 @@ export interface ComposerProps {
 }
 
 const ACTIONS_TRIGGER =
-	"flex size-8 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors duration-100 hover:bg-foreground/[0.06] hover:text-foreground data-[popup-open]:bg-foreground/[0.06] data-[popup-open]:text-foreground [&>svg]:transition-transform [&>svg]:duration-150 [&>svg]:ease-[var(--ease-out)] data-[popup-open]:[&>svg]:rotate-45";
+	"flex size-8 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors duration-(--duration-instant) hover:bg-foreground/[0.06] hover:text-foreground data-[popup-open]:bg-foreground/[0.06] data-[popup-open]:text-foreground [&>svg]:transition-transform [&>svg]:duration-(--duration-fast) [&>svg]:ease-[var(--ease-out)] data-[popup-open]:[&>svg]:rotate-45";
 
 /** Controlled/uncontrolled `value` and `model`, same contract as Select/Accordion elsewhere in this registry. */
 export function Composer({

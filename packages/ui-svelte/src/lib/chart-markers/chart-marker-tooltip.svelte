@@ -36,7 +36,7 @@ const matches = $derived.by(() => {
 			<div class={styles.tooltipRow()}>
 				<span
 					aria-hidden="true"
-					class="mt-0.5 grid size-4 shrink-0 place-items-center rounded-full border border-border-strong bg-card text-[10px]"
+					class="mt-0.5 grid size-4 shrink-0 place-items-center rounded-full border border-border-strong bg-card text-xs"
 					style:background={marker.color}
 				>
 					{#if marker.icon}

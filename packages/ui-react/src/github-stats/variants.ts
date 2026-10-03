@@ -52,7 +52,7 @@ export const githubStats = tv({
 		more: "w-fit rounded-sm text-muted-foreground text-xs outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring",
 		orgs: "mt-1 flex flex-wrap items-center gap-x-3 gap-y-2 text-muted-foreground text-xs",
 		org: "inline-flex items-center gap-1.5 rounded-sm text-foreground text-sm outline-none hover:underline focus-visible:ring-2 focus-visible:ring-ring",
-		orgAvatar: "size-5 rounded-[5px] text-[10px]",
+		orgAvatar: "size-5 rounded-[5px] text-xs",
 	},
 	variants: {
 		/**

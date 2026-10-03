@@ -32,6 +32,7 @@ export const message = defineComponent({
 				"On `Message`. Play the entrance. Set false for history already on screen, so only newly arriving messages animate.",
 			default: true,
 			control: { kind: "boolean" },
+			showWhen: { motion: ["spring", "fade"] },
 		},
 		{
 			name: "motion",

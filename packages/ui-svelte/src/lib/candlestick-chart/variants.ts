@@ -2,7 +2,8 @@ import { tv, type VariantProps } from "tailwind-variants";
 
 export const candlestick = tv({
 	slots: {
-		candle: "transition-opacity duration-150 ease-[cubic-bezier(0.42,0,0.58,1)]",
+		candle:
+			"transition-opacity duration-(--duration-fast) ease-[cubic-bezier(0.42,0,0.58,1)]",
 		wick: "fill-none stroke-(--candle) [stroke-linecap:round]",
 		body: "stroke-(--candle)",
 	},

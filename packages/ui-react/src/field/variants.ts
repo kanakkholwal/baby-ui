@@ -45,16 +45,37 @@ export const field = tv({
 				],
 			},
 		},
+		// `sm` is the compact inspector density: settings sheets and property panels.
+		size: {
+			default: {},
+			sm: { set: "gap-2.5", group: "gap-2.5", root: "gap-1.5 text-xs" },
+		},
 	},
-	defaultVariants: { orientation: "vertical" },
+	compoundVariants: [
+		{
+			orientation: "horizontal",
+			size: "sm",
+			class: {
+				root: "*:data-[slot=field-label]:w-20 *:data-[slot=field-label]:flex-none *:data-[slot=field-label]:truncate *:data-[slot=field-label]:text-muted-foreground *:data-[slot=field-label]:text-xs",
+			},
+		},
+	],
+	defaultVariants: { orientation: "vertical", size: "default" },
 });
 
 export type FieldOrientation = NonNullable<VariantProps<typeof field>["orientation"]>;
+export type FieldSize = NonNullable<VariantProps<typeof field>["size"]>;
 
 /** A section heading, or a label-sized caption over a group of controls. */
 export const fieldLegend = tv({
 	base: "mb-3 font-medium text-foreground",
-	variants: { variant: { legend: "text-base", label: "text-sm" } },
+	variants: {
+		variant: {
+			legend: "text-base",
+			label: "text-sm",
+			eyebrow: "mb-2 text-muted-foreground text-xs uppercase tracking-wider",
+		},
+	},
 	defaultVariants: { variant: "legend" },
 });
 

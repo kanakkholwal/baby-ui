@@ -6,17 +6,29 @@ import {
 	type FieldErrorEntry,
 	type FieldLegendVariant,
 	type FieldOrientation,
+	type FieldSize,
 	field,
 	fieldErrorMessages,
 	fieldLegend,
 } from "./variants";
 
-export type { FieldErrorEntry, FieldLegendVariant, FieldOrientation };
+export type { FieldErrorEntry, FieldLegendVariant, FieldOrientation, FieldSize };
 
 const s = field();
 
-export function FieldSet({ className, ...props }: ComponentProps<"fieldset">) {
-	return <fieldset data-slot="field-set" className={cn(s.set(), className)} {...props} />;
+export function FieldSet({
+	className,
+	size = "default",
+	...props
+}: ComponentProps<"fieldset"> & { size?: FieldSize }) {
+	return (
+		<fieldset
+			data-slot="field-set"
+			data-size={size}
+			className={cn(field({ size }).set(), className)}
+			{...props}
+		/>
+	);
 }
 
 export function FieldLegend({
@@ -34,22 +46,35 @@ export function FieldLegend({
 	);
 }
 
-export function FieldGroup({ className, ...props }: ComponentProps<"div">) {
-	return <div data-slot="field-group" className={cn(s.group(), className)} {...props} />;
+export function FieldGroup({
+	className,
+	size = "default",
+	...props
+}: ComponentProps<"div"> & { size?: FieldSize }) {
+	return (
+		<div
+			data-slot="field-group"
+			data-size={size}
+			className={cn(field({ size }).group(), className)}
+			{...props}
+		/>
+	);
 }
 
 export function Field({
 	className,
 	orientation = "vertical",
+	size = "default",
 	...props
-}: ComponentProps<"div"> & { orientation?: FieldOrientation }) {
+}: ComponentProps<"div"> & { orientation?: FieldOrientation; size?: FieldSize }) {
 	return (
 		// biome-ignore lint/a11y/useSemanticElements: shadcn's markup; a fieldset would add a border and legend semantics
 		<div
 			role="group"
 			data-slot="field"
 			data-orientation={orientation}
-			className={cn(field({ orientation }).root(), className)}
+			data-size={size}
+			className={cn(field({ orientation, size }).root(), className)}
 			{...props}
 		/>
 	);

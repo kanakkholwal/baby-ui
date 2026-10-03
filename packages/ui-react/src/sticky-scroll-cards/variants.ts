@@ -6,7 +6,7 @@ export const stickyScrollCards = tv({
 		stack:
 			"relative flex w-full flex-col items-center [view-timeline-name:--sticky-scroll]",
 		hint: "pointer-events-none absolute top-6 left-1/2 flex -translate-x-1/2 flex-col items-center gap-3",
-		hintText: "text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground",
+		hintText: "text-xs font-medium uppercase tracking-widest text-muted-foreground",
 		hintLine: "h-12 w-px bg-gradient-to-b from-foreground/30 to-transparent",
 		section: "sticky top-0 grid w-full place-items-center",
 		card: "sticky-scroll-card relative m-0 origin-top rotate-[var(--sticky-scroll-rotate)] overflow-hidden motion-reduce:rotate-none rounded-md border border-border bg-card text-card-foreground shadow-xl",
@@ -39,7 +39,7 @@ export const stickyScrollCards = tv({
 				card: "p-2.5 pb-0",
 				image: "rounded-sm",
 				caption:
-					"grid h-11 place-items-center px-4 text-[11px] font-medium uppercase tracking-[0.18em] text-muted-foreground",
+					"grid h-11 place-items-center px-4 text-xs font-medium uppercase tracking-widest text-muted-foreground",
 			},
 			plain: {
 				caption:

@@ -5,6 +5,15 @@ import type { ComponentProps, ReactNode } from "react";
 import { ANCHORED } from "../lib/anchor";
 import { cn } from "../lib/cn";
 import { menu } from "../lib/menu";
+import {
+	type SelectContentSize,
+	type SelectTriggerSize,
+	type SelectTriggerVariant,
+	selectContent,
+	selectTrigger,
+} from "./variants";
+
+export type { SelectTriggerSize, SelectTriggerVariant };
 
 export function Select({
 	value,
@@ -48,17 +57,19 @@ export function SelectValue({
 export function SelectTrigger({
 	className,
 	children,
+	variant = "default",
+	size = "default",
 	...props
-}: ComponentProps<typeof SelectPrimitive.Trigger>) {
+}: ComponentProps<typeof SelectPrimitive.Trigger> & {
+	variant?: SelectTriggerVariant;
+	size?: SelectTriggerSize;
+}) {
 	return (
 		<SelectPrimitive.Trigger
 			data-slot="select-trigger"
-			className={cn(
-				"inline-flex h-9 w-full items-center justify-between gap-2 rounded-lg border border-input bg-background px-3 text-foreground text-sm outline-none transition-colors",
-				"hover:border-border-strong focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring",
-				"data-[popup-open]:border-ring disabled:cursor-not-allowed disabled:opacity-50",
-				className,
-			)}
+			data-variant={variant}
+			data-size={size}
+			className={cn(selectTrigger({ variant, size }), className)}
 			{...props}
 		>
 			{children}
@@ -90,12 +101,16 @@ export function SelectContent({
 	side = "bottom",
 	sideOffset = 6,
 	alignItemWithTrigger = false,
+	size,
 	...props
 }: ComponentProps<typeof SelectPrimitive.Popup> &
 	Pick<
 		ComponentProps<typeof SelectPrimitive.Positioner>,
 		"align" | "alignOffset" | "side" | "sideOffset" | "alignItemWithTrigger"
-	>) {
+	> & {
+		/** Match the trigger's `size`. */
+		size?: SelectContentSize;
+	}) {
 	return (
 		<SelectPrimitive.Portal>
 			<SelectPrimitive.Positioner
@@ -108,11 +123,13 @@ export function SelectContent({
 			>
 				<SelectPrimitive.Popup
 					data-slot="select-content"
+					data-size={size}
 					className={cn(
 						ANCHORED,
 						menu().surface(),
 						// After the surface: a select matches its trigger, never the menus' min width.
 						"static z-50 max-h-[min(16rem,var(--available-height))] w-[var(--anchor-width)] min-w-0 overflow-x-hidden overflow-y-auto scroll-area",
+						selectContent({ size }),
 						className,
 					)}
 					{...props}

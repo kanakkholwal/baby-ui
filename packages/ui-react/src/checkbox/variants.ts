@@ -5,9 +5,9 @@ export const checkbox = tv({
 		box: [
 			// The primary fill pops in from the centre rather than cross-fading.
 			"relative grid place-items-center border-2 border-muted-foreground/50 bg-background",
-			"transition-[border-color,scale] duration-150 ease-[var(--ease-out)] active:scale-[var(--press-scale-icon)]",
+			"transition-[border-color,scale] duration-(--duration-fast) ease-[var(--ease-out)] active:scale-[var(--press-scale-icon)]",
 			"before:pointer-events-none before:absolute before:-inset-0.5 before:rounded-[inherit] before:bg-primary",
-			"before:scale-70 before:opacity-0 before:transition-[scale,opacity] before:[transition-duration:100ms,200ms] before:ease-linear",
+			"before:scale-70 before:opacity-0 before:transition-[scale,opacity] before:[transition-duration:var(--duration-instant),var(--duration-base)] before:ease-linear",
 			"hover:border-muted-foreground",
 			"data-[checked]:border-primary data-[checked]:before:scale-100 data-[checked]:before:opacity-100",
 			"data-[indeterminate]:border-primary data-[indeterminate]:before:scale-100 data-[indeterminate]:before:opacity-100",

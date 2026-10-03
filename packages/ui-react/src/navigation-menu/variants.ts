@@ -6,7 +6,7 @@ export const navigationMenuTriggerStyle = tv({
 	base: [
 		"group/navigation-menu-trigger inline-flex w-max items-center justify-center rounded-lg font-medium outline-none",
 		// bg-muted matches card and popover surfaces, so the fill is a foreground tint like ghost buttons.
-		"transition-[color,background-color,scale] [transition-duration:100ms,100ms,250ms] ease-[var(--ease-out-quart)]",
+		"transition-[color,background-color,scale] [transition-duration:var(--duration-instant),var(--duration-instant),var(--duration-slow)] ease-[var(--ease-out-quart)]",
 		"hover:bg-foreground/[0.06] focus-visible:ring-2 focus-visible:ring-ring active:scale-[var(--press-scale-sm)]",
 		"data-[state=open]:bg-foreground/[0.06] data-[popup-open]:bg-foreground/[0.06]",
 		"disabled:pointer-events-none disabled:opacity-50 motion-reduce:transition-none",
@@ -42,7 +42,7 @@ export const navigationMenu = tv({
 		// The panel's rows follow the menu row contract: tint on hover and focus, squish on press.
 		link: [
 			"flex flex-col gap-0.5 rounded-md p-2 text-sm outline-none",
-			"transition-[background-color,scale] [transition-duration:100ms,250ms] ease-[var(--ease-out-quart)]",
+			"transition-[background-color,scale] [transition-duration:var(--duration-instant),var(--duration-slow)] ease-[var(--ease-out-quart)]",
 			"hover:bg-foreground/[0.06] focus:bg-foreground/[0.06] active:scale-[var(--press-scale-row)]",
 			"data-[active]:bg-foreground/[0.06] aria-[current=page]:bg-foreground/[0.06] motion-reduce:transition-none",
 		],

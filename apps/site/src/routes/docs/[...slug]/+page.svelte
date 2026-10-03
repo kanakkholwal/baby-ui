@@ -40,8 +40,9 @@ const path = $derived(data.slug === "index" ? "/docs" : `/docs/${data.slug}`);
 	]}
 />
 
-{#snippet railContent(heading = true)}
-	<PropsRail slug={data.slug} outline={data.headings} {heading} />
+<!-- The drawer copy drops the heading (the drawer has a title) and the promo card. -->
+{#snippet railContent(inRail = true)}
+	<PropsRail slug={data.slug} outline={data.headings} heading={inRail} promo={inRail} />
 {/snippet}
 
 <!-- Centred at a reading width, so the spare column width falls evenly on both sides. -->
@@ -66,7 +67,7 @@ const path = $derived(data.slug === "index" ? "/docs" : `/docs/${data.slug}`);
 			<MobileNavDrawer label="On this page" title="On this page">
 				{#snippet icon()}<IconList size={14} />{/snippet}
 				{#snippet children()}
-					<div class="mx-auto w-full max-w-md">{@render railContent(false)}</div>
+					{@render railContent(false)}
 				{/snippet}
 			</MobileNavDrawer>
 		</div>

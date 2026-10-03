@@ -36,7 +36,7 @@ function Meter({ signal, tone }: { signal: number; tone: string }) {
 			{[0, 1, 2].map((bar) => (
 				<span
 					key={bar}
-					className="h-2.5 w-1 rounded-full transition-colors duration-300"
+					className="h-2.5 w-1 rounded-full transition-colors duration-(--duration-slow)"
 					style={{ background: bar < signal ? tone : "var(--border-strong)" }}
 				/>
 			))}
@@ -69,22 +69,22 @@ export function RecommendationCard({ title, options, labels }: RecommendationCar
 			className="w-full max-w-sm overflow-hidden rounded-2xl bg-card shadow-sm"
 		>
 			<div className="p-4">
-				<span className="font-medium text-[14px] text-foreground">{title}</span>
+				<span className="font-medium text-sm text-foreground">{title}</span>
 				<p
 					key={active.key}
-					className="fade-in mt-1.5 min-h-12 text-[13px] text-muted-foreground leading-relaxed"
+					className="fade-in mt-1.5 min-h-12 text-sm text-muted-foreground leading-relaxed"
 				>
 					{active.body}
 				</p>
 			</div>
 
 			<div
-				className="grid transition-[grid-template-rows,opacity] duration-300 ease-[var(--ease-out)]"
+				className="grid transition-[grid-template-rows,opacity] duration-(--duration-slow) ease-[var(--ease-out)]"
 				style={{ gridTemplateRows: open ? "1fr" : "0fr", opacity: open ? 1 : 0 }}
 			>
 				<div className="overflow-hidden">
 					<div className="border-border border-t bg-card px-2 py-2">
-						<p className="px-1.5 pb-1 font-medium text-[11px] text-muted-foreground">
+						<p className="px-1.5 pb-1 font-medium text-xs text-muted-foreground">
 							{t.otherOptions}
 						</p>
 						{others.map(({ option, index }) => (
@@ -95,13 +95,13 @@ export function RecommendationCard({ title, options, labels }: RecommendationCar
 									setSelected(index);
 									setAccepted(false);
 								}}
-								className="flex w-full items-center gap-2.5 rounded-lg px-1.5 py-1.5 text-left transition-colors duration-100 hover:bg-foreground/[0.06]"
+								className="flex w-full items-center gap-2.5 rounded-lg px-1.5 py-1.5 text-left transition-colors duration-(--duration-instant) hover:bg-foreground/[0.06]"
 							>
 								<Meter signal={option.signal} tone={option.tone} />
-								<span className="min-w-0 flex-1 truncate text-[12.5px] text-foreground">
+								<span className="min-w-0 flex-1 truncate text-xs text-foreground">
 									{option.short}
 								</span>
-								<span className="shrink-0 text-[11px] text-muted-foreground">
+								<span className="shrink-0 text-xs text-muted-foreground">
 									{option.label}
 								</span>
 							</button>
@@ -113,7 +113,7 @@ export function RecommendationCard({ title, options, labels }: RecommendationCar
 			<div className="flex items-center justify-between gap-3 border-border border-t bg-card px-4 py-3">
 				<span className="flex items-center gap-2">
 					<Meter signal={active.signal} tone={active.tone} />
-					<span className="font-medium text-[12.5px] text-muted-foreground">
+					<span className="font-medium text-xs text-muted-foreground">
 						{active.label}
 					</span>
 				</span>
@@ -124,7 +124,7 @@ export function RecommendationCard({ title, options, labels }: RecommendationCar
 						size="sm"
 						aria-expanded={open}
 						onClick={() => setOpen((current) => !current)}
-						className="px-2.5 text-[12.5px]"
+						className="px-2.5 text-xs"
 					>
 						{t.alternatives}
 					</Button>
@@ -132,7 +132,7 @@ export function RecommendationCard({ title, options, labels }: RecommendationCar
 						variant={accepted ? "success" : active.ctaVariant}
 						size="sm"
 						onClick={() => setAccepted(true)}
-						className="text-[12.5px]"
+						className="text-xs"
 					>
 						{accepted ? t.accepted : active.cta}
 					</Button>

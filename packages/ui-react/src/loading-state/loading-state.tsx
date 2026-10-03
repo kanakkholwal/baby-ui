@@ -75,10 +75,10 @@ export function LoadingState({ label, variant = "drive", videoSrc }: LoadingStat
 	const pattern = PATTERNS[surfer ? "drive" : variant];
 
 	const labelEl = (
-		<span className="reasoning-shimmer font-medium text-[13px]">{resolvedLabel}</span>
+		<span className="reasoning-shimmer font-medium text-sm">{resolvedLabel}</span>
 	);
 	const elapsedEl = (
-		<span className="font-mono text-[12px] text-muted-foreground tabular-nums">
+		<span className="font-mono text-xs text-muted-foreground tabular-nums">
 			{elapsed}
 		</span>
 	);
@@ -109,7 +109,7 @@ export function LoadingState({ label, variant = "drive", videoSrc }: LoadingStat
 						) : (
 							<div className="flex h-full w-full flex-col items-center justify-center gap-1.5">
 								<LoaderGrid {...PATTERNS.drive} />
-								<span className="px-3 text-center font-mono text-[10px] text-muted-foreground">
+								<span className="px-3 text-center font-mono text-xs text-muted-foreground">
 									Video unavailable
 								</span>
 							</div>

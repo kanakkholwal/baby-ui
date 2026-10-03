@@ -12,7 +12,7 @@ export const scrubField = tv({
 		// Cursor, tint and the double chevron all say "drag me"; it turns primary mid-drag.
 		label: [
 			"flex shrink-0 cursor-ew-resize touch-none select-none items-center gap-1 border-input border-e font-medium text-muted-foreground outline-none",
-			"transition-colors duration-150 hover:bg-foreground/[0.06] hover:text-foreground focus-visible:bg-foreground/[0.06] focus-visible:text-foreground",
+			"transition-colors duration-(--duration-fast) hover:bg-foreground/[0.06] hover:text-foreground focus-visible:bg-foreground/[0.06] focus-visible:text-foreground",
 			"group-data-[scrubbing]/scrub:bg-primary/10 group-data-[scrubbing]/scrub:text-primary motion-reduce:transition-none",
 		],
 		grip: "size-3 shrink-0 opacity-60",

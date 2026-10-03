@@ -30,6 +30,7 @@ let { props = {} }: { props?: Record<string, unknown> } = $props();
 const p = $derived(controlProps<ComponentProps<typeof Field>>(props));
 
 const orientation = $derived(p.orientation ?? "vertical");
+const size = $derived(p.size ?? "default");
 
 let values = $state<SignupValues>({ name: "", email: "", password: "", role: "" });
 let errors = $state<SignupErrors>({});
@@ -47,11 +48,11 @@ async function submit(event: SubmitEvent) {
 </script>
 
 <form class="w-full max-w-sm" novalidate onsubmit={submit}>
-	<FieldSet>
-		<FieldLegend>Create your account</FieldLegend>
+	<FieldSet {size}>
+		<FieldLegend variant={size === "sm" ? "eyebrow" : "legend"}>Create your account</FieldLegend>
 		<FieldDescription>Free for personal projects. No card needed.</FieldDescription>
-		<FieldGroup>
-			<Field {orientation} data-invalid={errors.name ? true : undefined}>
+		<FieldGroup {size}>
+			<Field {orientation} {size} data-invalid={errors.name ? true : undefined}>
 				<FieldLabel for="signup-name">Full name</FieldLabel>
 				<Input
 					id="signup-name"
@@ -62,7 +63,7 @@ async function submit(event: SubmitEvent) {
 				/>
 				<FieldError id="signup-name-error" errors={[{ message: errors.name }]} />
 			</Field>
-			<Field {orientation} data-invalid={errors.email ? true : undefined}>
+			<Field {orientation} {size} data-invalid={errors.email ? true : undefined}>
 				<FieldLabel for="signup-email">Work email</FieldLabel>
 				<InputGroup>
 					<InputGroupAddon>
@@ -83,7 +84,7 @@ async function submit(event: SubmitEvent) {
 				</InputGroup>
 				<FieldError id="signup-email-error" errors={[{ message: errors.email }]} />
 			</Field>
-			<Field {orientation} data-invalid={errors.password ? true : undefined}>
+			<Field {orientation} {size} data-invalid={errors.password ? true : undefined}>
 				<FieldLabel for="signup-password">Password</FieldLabel>
 				<InputGroup>
 					<InputGroupInput
@@ -112,7 +113,7 @@ async function submit(event: SubmitEvent) {
 				<FieldDescription id="signup-password-hint">At least 8 characters.</FieldDescription>
 				<FieldError id="signup-password-error" errors={[{ message: errors.password }]} />
 			</Field>
-			<Field {orientation} data-invalid={errors.role ? true : undefined}>
+			<Field {orientation} {size} data-invalid={errors.role ? true : undefined}>
 				<FieldLabel for="signup-role">Role</FieldLabel>
 				<NativeSelect
 					id="signup-role"

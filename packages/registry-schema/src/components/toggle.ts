@@ -6,6 +6,7 @@ export const toggle = defineComponent({
 	description: "Two-state button that stays pressed, for formatting and view switches.",
 	category: "base",
 	status: "stable",
+	variants: { variant: ["default", "outline"], size: ["sm", "md", "lg", "xl"] },
 	props: [
 		{
 			name: "pressed",
@@ -13,6 +14,14 @@ export const toggle = defineComponent({
 			description: "Pressed state. Bindable.",
 			default: false,
 			control: { kind: "boolean" },
+		},
+		{
+			name: "variant",
+			type: '"default" | "outline"',
+			description:
+				"`outline` keeps a field-style border at rest, so the toggle reads as a button.",
+			default: "default",
+			control: { kind: "select", options: ["default", "outline"] },
 		},
 		{
 			name: "size",
@@ -32,7 +41,7 @@ export const toggle = defineComponent({
 			name: "label",
 			type: "string",
 			description: "Accessible name when the content is an icon.",
-			default: "Bold",
+			default: "Bookmark",
 			control: { kind: "none" },
 		},
 	],

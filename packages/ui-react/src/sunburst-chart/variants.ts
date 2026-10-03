@@ -9,7 +9,7 @@ export const sunburstChart = tv({
 		segment: "transition-opacity duration-[160ms] ease-[cubic-bezier(0,0,0.58,1)]",
 		path: "stroke-background [stroke-linejoin:round] [stroke-width:1px]",
 		label:
-			"pointer-events-none fill-foreground stroke-background font-semibold text-[11px] [paint-order:stroke] [stroke-linejoin:round] [stroke-width:2.5px]",
+			"pointer-events-none fill-foreground stroke-background font-semibold text-xs [paint-order:stroke] [stroke-linejoin:round] [stroke-width:2.5px]",
 		hub: "stroke-background [stroke-width:1px]",
 		center:
 			"pointer-events-none absolute flex flex-col items-center justify-center overflow-hidden text-center",

@@ -5,7 +5,7 @@ import { type CardVariant, cardFrame } from "./variants";
 export type { CardVariant };
 
 const LIFT =
-	"transition-[transform,scale,translate,border-color] duration-200 ease-[var(--ease-out)] hover:-translate-y-0.5 hover:border-border-strong motion-reduce:hover:translate-y-0";
+	"transition-[transform,scale,translate,border-color] duration-(--duration-base) ease-[var(--ease-out)] hover:-translate-y-0.5 hover:border-border-strong motion-reduce:hover:translate-y-0";
 
 /** Slot names and class shape follow shadcn/ui, so this drops into an existing project. */
 export function Card({

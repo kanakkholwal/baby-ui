@@ -9,13 +9,13 @@ export const orbitCardStack = tv({
 			"relative grid aspect-[1.36] w-full place-items-center overflow-hidden rounded-[1.35rem] border border-border bg-muted",
 		portraitImage: "size-full object-cover",
 		monogram: "font-semibold text-4xl text-muted-foreground tracking-tight",
-		initials: "absolute right-3 bottom-3 tracking-[0.18em]",
+		initials: "absolute right-3 bottom-3 tracking-widest",
 		link: "absolute top-6 right-6 rounded-full shadow-lg",
 		body: "px-2 pt-5 pb-2",
-		role: "font-semibold text-[0.7rem] text-muted-foreground uppercase tracking-[0.18em]",
-		name: "mt-2 font-semibold leading-none tracking-[-0.04em]",
+		role: "font-semibold text-xs text-muted-foreground uppercase tracking-widest",
+		name: "mt-2 font-semibold leading-none tracking-tighter",
 		description: "mt-3 font-medium text-muted-foreground leading-[1.42]",
-		stat: "mt-4 border-border border-t pt-3 font-bold text-[0.68rem] text-muted-foreground uppercase tracking-[0.2em]",
+		stat: "mt-4 border-border border-t pt-3 font-bold text-xs text-muted-foreground uppercase tracking-widest",
 	},
 	variants: {
 		size: {
@@ -32,7 +32,7 @@ export const orbitCardStack = tv({
 			lg: {
 				stage: "h-[34rem] [--orbit-card-w:21rem]",
 				name: "text-[2rem]",
-				description: "text-[0.98rem]",
+				description: "text-base",
 			},
 		},
 		/** Open cards curve down and outward like a hand of cards, or sit in a near-flat row. */

@@ -8,7 +8,23 @@ export const select = defineComponent({
 		"Listbox that matches its trigger width, keeps the selected option in view and flips when needed.",
 	category: "base",
 	status: "stable",
+	variants: { variant: ["default", "ghost"], size: ["xs", "sm", "default"] },
 	props: [
+		{
+			name: "variant",
+			type: '"default" | "ghost"',
+			description:
+				"SelectTrigger: a bordered field, or ghost (text and chevron) for a compact switch beside a heading.",
+			default: "default",
+			control: { kind: "select", options: ["default", "ghost"] },
+		},
+		{
+			name: "size",
+			type: '"xs" | "sm" | "default"',
+			description: "SelectTrigger: height and text size.",
+			default: "default",
+			control: { kind: "select", options: ["xs", "sm", "default"] },
+		},
 		{
 			name: "value",
 			type: "string",
@@ -73,6 +89,7 @@ export const select = defineComponent({
 			entry: "Select",
 			files: [
 				{ path: "select/select.tsx", type: "registry:ui" },
+				{ path: "select/variants.ts", type: "registry:ui" },
 				{ path: "lib/anchor.ts", type: "registry:lib" },
 				{ path: "lib/menu.ts", type: "registry:lib" },
 				{ path: "lib/cn.ts", type: "registry:lib" },
@@ -90,6 +107,7 @@ export const select = defineComponent({
 				{ path: "select/select-group.svelte", type: "registry:ui" },
 				{ path: "select/select-label.svelte", type: "registry:ui" },
 				{ path: "select/select-separator.svelte", type: "registry:ui" },
+				{ path: "select/variants.ts", type: "registry:ui" },
 				{ path: "lib/anchor.ts", type: "registry:lib" },
 				{ path: "lib/menu.ts", type: "registry:lib" },
 				{ path: "lib/cn.ts", type: "registry:lib" },

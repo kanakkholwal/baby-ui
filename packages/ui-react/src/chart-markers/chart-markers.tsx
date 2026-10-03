@@ -455,7 +455,7 @@ export function ChartMarkerTooltip({
 				<div key={marker.title} className={styles.tooltipRow()}>
 					<span
 						aria-hidden="true"
-						className="mt-0.5 grid size-4 shrink-0 place-items-center rounded-full border border-border-strong bg-card text-[10px]"
+						className="mt-0.5 grid size-4 shrink-0 place-items-center rounded-full border border-border-strong bg-card text-xs"
 						style={marker.color ? { background: marker.color } : undefined}
 					>
 						<MarkerFace marker={marker} />

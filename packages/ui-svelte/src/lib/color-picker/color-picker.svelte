@@ -42,7 +42,7 @@ let {
 		"#e5e7eb",
 	],
 	label = "Colour",
-	variant = "inline",
+	variant = "field",
 	size = "md",
 	invalid = false,
 	disabled = false,
@@ -59,8 +59,8 @@ let {
 	swatches?: string[];
 	label?: string;
 	/**
-	 * `inline` full picker, `field` swatch + hex field, `area` saturation square,
-	 * `slider` hue strip, `swatch` one disc, `swatches` a row of discs to choose from.
+	 * `field` (default) swatch + hex field, `row` labelled panel row, `inline` full picker,
+	 * `area` saturation square, `slider` hue strip, `swatch` one disc, `swatches` discs to pick.
 	 */
 	variant?: ColorPickerVariant;
 	/** Size of the field, area, slider and discs; the inline panel keeps its width. */
@@ -333,7 +333,7 @@ const FORMATS: ColorFormat[] = ["hsv", "hsl", "rgb"];
 {#snippet picker()}
 	<div
 		class={cn(
-			"w-60 select-none overflow-hidden rounded-xl border border-border bg-popover",
+			"w-60 select-none overflow-hidden rounded-xl bg-popover shadow-(--overlay-shadow)",
 			variant === "inline" && classProp,
 		)}
 	>
@@ -350,7 +350,7 @@ const FORMATS: ColorFormat[] = ["hsv", "hsl", "rgb"];
 				<div
 					class="flex items-center gap-1 rounded-md border border-border bg-background px-1.5 transition-[border-color,box-shadow] focus-within:border-ring focus-within:ring-2 focus-within:ring-ring"
 				>
-					<span class="font-mono text-[0.78rem] text-muted-foreground">#</span>
+					<span class="font-mono text-xs text-muted-foreground">#</span>
 					<input
 						id="{uid}-hex"
 						value={hex.replace(/^#/, "")}
@@ -359,7 +359,7 @@ const FORMATS: ColorFormat[] = ["hsv", "hsl", "rgb"];
 						spellcheck="false"
 						autocomplete="off"
 						oninput={(e) => typeHex(e.currentTarget.value)}
-						class="h-6 min-w-0 flex-1 bg-transparent font-mono text-[0.78rem] text-foreground uppercase outline-none"
+						class="h-6 min-w-0 flex-1 bg-transparent font-mono text-xs text-foreground uppercase outline-none"
 					/>
 				</div>
 			</div>
@@ -372,7 +372,7 @@ const FORMATS: ColorFormat[] = ["hsv", "hsl", "rgb"];
 						type="button"
 						onclick={() => (format = option)}
 						aria-pressed={format === option}
-						class="h-5 flex-1 rounded font-mono text-[10px] text-muted-foreground uppercase transition-colors aria-pressed:bg-background aria-pressed:text-foreground"
+						class="h-5 flex-1 rounded font-mono text-xs text-muted-foreground uppercase transition-colors aria-pressed:bg-background aria-pressed:text-foreground"
 					>
 						{option}
 					</button>
@@ -381,7 +381,7 @@ const FORMATS: ColorFormat[] = ["hsv", "hsl", "rgb"];
 
 			{#each CHANNELS as channel (channel.key)}
 				<div class="flex items-center gap-2">
-					<label for="{uid}-{channel.key}" class="w-3 shrink-0 font-mono text-[11px] text-muted-foreground">
+					<label for="{uid}-{channel.key}" class="w-3 shrink-0 font-mono text-xs text-muted-foreground">
 						{channel.label}
 					</label>
 					<input
@@ -395,7 +395,7 @@ const FORMATS: ColorFormat[] = ["hsv", "hsl", "rgb"];
 						oninput={(e) => setChannel(channel.key, e.currentTarget.value)}
 						class="color-slider h-1 flex-1"
 					/>
-					<span class="w-9 shrink-0 text-right font-mono text-[10px] text-foreground tabular-nums">
+					<span class="w-9 shrink-0 text-right font-mono text-xs text-foreground tabular-nums">
 						{channel.value}{channel.unit}
 					</span>
 				</div>
@@ -497,31 +497,53 @@ const FORMATS: ColorFormat[] = ["hsv", "hsl", "rgb"];
 		{/each}
 	</fieldset>
 {:else}
-	<!-- The field variant: a swatch that opens the picker beside a hex input you can type into. -->
-	<InputGroup {size} data-slot="color-picker-field" class={cn(s.field(), classProp)}>
-		<InputGroupAddon>
-			<Popover bind:open onOpenChange={(next) => onOpenChange?.(next)}>
-				<PopoverTrigger {disabled} aria-label="Pick {label.toLowerCase()}" class={s.trigger()}>
-					<span aria-hidden="true" class={s.swatch()} style:background-color={parsed ?? preview}></span>
-				</PopoverTrigger>
-				<PopoverContent align="start" class={s.content()}>
-					{@render picker()}
-				</PopoverContent>
-			</Popover>
-		</InputGroupAddon>
-		<InputGroupInput
-			{id}
-			{name}
-			{disabled}
-			aria-label={label}
-			invalid={invalid || parsed === null}
-			spellcheck={false}
-			autocomplete="off"
-			value={draft ?? preview.toUpperCase()}
-			oninput={(e) => (draft = e.currentTarget.value)}
-			onblur={() => (parsed ? commitHex(parsed) : (draft = null))}
-			onkeydown={hexKeydown}
-			class={s.hexInput()}
-		/>
-	</InputGroup>
+	{#snippet swatchPicker(align: "start" | "end")}
+		<Popover bind:open onOpenChange={(next) => onOpenChange?.(next)}>
+			<PopoverTrigger {disabled} aria-label="Pick {label.toLowerCase()}" class={s.trigger()}>
+				<span aria-hidden="true" class={s.swatch()} style:background-color={parsed ?? preview}></span>
+			</PopoverTrigger>
+			<PopoverContent {align} class={s.content()}>
+				{@render picker()}
+			</PopoverContent>
+		</Popover>
+	{/snippet}
+	{#if variant === "row"}
+		<!-- The row variant: label, then the hex you can type into, then the swatch for the picker. -->
+		<div data-slot="color-picker-row" class={cn(s.row(), classProp)}>
+			<label for={id ?? `${uid}-hex`} class={s.rowLabel()}>{label}</label>
+			<input
+				id={id ?? `${uid}-hex`}
+				{name}
+				{disabled}
+				aria-invalid={invalid || parsed === null || undefined}
+				spellcheck={false}
+				autocomplete="off"
+				value={draft ?? preview.toUpperCase()}
+				oninput={(e) => (draft = e.currentTarget.value)}
+				onblur={() => (parsed ? commitHex(parsed) : (draft = null))}
+				onkeydown={hexKeydown}
+				class={s.rowHex()}
+			/>
+			{@render swatchPicker("end")}
+		</div>
+	{:else}
+		<!-- The field variant: a swatch that opens the picker beside a hex input you can type into. -->
+		<InputGroup {size} data-slot="color-picker-field" class={cn(s.field(), classProp)}>
+			<InputGroupAddon>{@render swatchPicker("start")}</InputGroupAddon>
+			<InputGroupInput
+				{id}
+				{name}
+				{disabled}
+				aria-label={label}
+				invalid={invalid || parsed === null}
+				spellcheck={false}
+				autocomplete="off"
+				value={draft ?? preview.toUpperCase()}
+				oninput={(e) => (draft = e.currentTarget.value)}
+				onblur={() => (parsed ? commitHex(parsed) : (draft = null))}
+				onkeydown={hexKeydown}
+				class={s.hexInput()}
+			/>
+		</InputGroup>
+	{/if}
 {/if}

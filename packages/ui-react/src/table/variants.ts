@@ -3,14 +3,14 @@ import { tv, type VariantProps } from "tailwind-variants";
 export const table = tv({
 	slots: {
 		container: "relative w-full overflow-x-auto",
-		root: "w-full caption-bottom text-[13px]",
+		root: "w-full caption-bottom text-sm",
 		header: "",
 		body: "",
 		footer: "font-medium text-muted-foreground",
 		row: "transition-colors",
 		head: "text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0",
 		cell: "align-middle text-foreground [&:has([role=checkbox])]:pr-0",
-		caption: "mt-4 text-[13px] text-muted-foreground",
+		caption: "mt-4 text-sm text-muted-foreground",
 	},
 	variants: {
 		variant: {

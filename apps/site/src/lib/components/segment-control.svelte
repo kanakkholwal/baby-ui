@@ -9,18 +9,20 @@ export type SegmentOption<T extends string = string> = {
 </script>
 
 <script lang="ts" generics="T extends string">
-import { ToggleGroup, ToggleGroupItem } from "@baby-ui/svelte";
+import { ToggleGroup, ToggleGroupItem, type ToggleGroupSize } from "@baby-ui/svelte";
 
 let {
 	options,
 	current,
 	onPick,
 	label = "Options",
+	size = "md",
 }: {
 	options: SegmentOption<T>[];
 	current: T;
 	onPick: (id: T) => void;
 	label?: string;
+	size?: ToggleGroupSize;
 } = $props();
 
 // Resolving through `options` narrows the group's string back to T without a cast.
@@ -31,7 +33,7 @@ function pick(next: string | string[]) {
 </script>
 
 <!-- Clicking the pressed item clears a single group; a segment always keeps one choice. -->
-<ToggleGroup bind:value={() => current, pick} {label}>
+<ToggleGroup bind:value={() => current, pick} {label} {size}>
 	{#each options as option (option.id)}
 		{@const Glyph = option.icon}
 		<ToggleGroupItem value={option.id} class="pointer-coarse:h-8">

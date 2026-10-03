@@ -12,7 +12,7 @@ export const markdown = tv({
 	variants: {
 		size: {
 			sm: { root: "gap-2 text-xs", h2: "text-base", h3: "text-sm", code: "text-xs" },
-			md: { root: "gap-3 text-sm", h2: "text-lg", h3: "text-base", code: "text-[13px]" },
+			md: { root: "gap-3 text-sm", h2: "text-lg", h3: "text-base", code: "text-sm" },
 			lg: { root: "gap-4 text-base", h2: "text-xl", h3: "text-lg", code: "text-sm" },
 		},
 	},

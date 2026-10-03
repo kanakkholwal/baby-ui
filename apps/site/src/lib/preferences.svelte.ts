@@ -5,8 +5,8 @@ import { persisted } from "./persisted-state.svelte";
 
 export type Dialect = "ts" | "js";
 export type PackageManager = "bun" | "npm" | "pnpm" | "yarn";
-/** Component pages: preview above the docs, or a sticky preview column beside them. */
-export type PageLayout = "stacked" | "split";
+/** Component pages: preview above the docs, a sticky preview beside them, or a full-width workbench. */
+export type PageLayout = "stacked" | "split" | "playground";
 
 /** `ink` replaces the ring colour where the fill is too light to read as one. */
 type Ramp = { primary: string; fg: string; ink?: string };

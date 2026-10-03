@@ -201,7 +201,7 @@ const footerCell = $derived(
 		inert={key === "ai" && !showAiColumn}
 		class={cn(
 			classes.headerCell(),
-			"relative border-border border-r border-b bg-card text-left font-medium text-[12.5px] text-muted-foreground",
+			"relative border-border border-r border-b bg-card text-left font-medium text-xs text-muted-foreground",
 			openColumn === key && "bg-primary/[0.04]",
 			key === "ai" && classes.aiCell(),
 		)}
@@ -252,7 +252,7 @@ const footerCell = $derived(
 						setSort(nextSort(sort, sortKey));
 					}}
 					class={cn(
-						"shrink-0 cursor-pointer text-muted-foreground transition-[opacity,rotate] duration-150 motion-reduce:transition-none",
+						"shrink-0 cursor-pointer text-muted-foreground transition-[opacity,rotate] duration-(--duration-fast) motion-reduce:transition-none",
 						sort.key === sortKey ? "opacity-100" : "opacity-0 hover:opacity-60 focus-visible:opacity-60",
 						sort.key === sortKey && sort.dir === -1 && "rotate-180",
 					)}
@@ -279,7 +279,7 @@ const footerCell = $derived(
 {/snippet}
 
 {#snippet calcCell()}
-	<span class="inline-flex items-center gap-1.5 text-[13px] text-muted-foreground">
+	<span class="inline-flex items-center gap-1.5 text-sm text-muted-foreground">
 		{text.calculating}
 		<span class="size-1.5 animate-pulse rounded-full bg-muted-foreground motion-reduce:animate-none"></span>
 	</span>
@@ -364,13 +364,13 @@ const footerCell = $derived(
 					>
 						<td style={pinStyle("company")} class={td("company")}>
 							<div class="flex min-w-0 items-center gap-2">
-								<span class="w-4 shrink-0 text-[11px] text-muted-foreground tabular-nums">{index + 1}</span>
+								<span class="w-4 shrink-0 text-xs text-muted-foreground tabular-nums">{index + 1}</span>
 								<Checkbox
 									bind:checked={() => isSelected, () => setSelected(toggleIn(selected, row.id))}
 									aria-label={text.selectRow(row.name)}
 									class="shrink-0"
 								/>
-								<Avatar aria-hidden="true" shape="square" class="size-5 rounded-[5px] bg-muted text-[10px]">
+								<Avatar aria-hidden="true" shape="square" class="size-5 rounded-[5px] bg-muted text-xs">
 									<AvatarImage src={row.logo} alt="" />
 									<AvatarFallback>{row.name.charAt(0)}</AvatarFallback>
 								</Avatar>

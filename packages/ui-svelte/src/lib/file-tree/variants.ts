@@ -24,7 +24,7 @@ export const fileTree = tv({
 				spacer: "size-3",
 			},
 			md: {
-				root: "text-[13px]",
+				root: "text-sm",
 				row: "gap-1.5 rounded-md py-1 pr-2",
 				chevron: "size-3.5",
 				spacer: "size-3.5",

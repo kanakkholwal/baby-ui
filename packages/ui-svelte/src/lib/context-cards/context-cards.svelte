@@ -32,9 +32,9 @@ $effect(() => {
 	{...rest}
 >
 	<div class="fade-in flex items-center gap-2 px-0.5">
-		<span class="text-[13px] font-semibold text-foreground">{header}</span>
+		<span class="text-sm font-semibold text-foreground">{header}</span>
 		<span
-			class="inline-flex h-5 items-center rounded-md bg-muted px-1.5 text-[11.5px] font-medium text-muted-foreground shadow-xs tabular-nums"
+			class="inline-flex h-5 items-center rounded-md bg-muted px-1.5 text-xs font-medium text-muted-foreground shadow-xs tabular-nums"
 		>
 			{count}
 		</span>
@@ -47,7 +47,7 @@ $effect(() => {
 			style={`animation-delay: calc(var(--stagger-step) * ${i})`}
 		>
 			<div class="flex items-center gap-2.5 border-border border-b px-3 py-2">
-				<span class="flex min-w-0 items-center gap-1.5 text-[13px] font-medium text-foreground">
+				<span class="flex min-w-0 items-center gap-1.5 text-sm font-medium text-foreground">
 					<svg
 						width="11"
 						height="11"
@@ -62,16 +62,16 @@ $effect(() => {
 					</svg>
 					<span class="truncate">{chunk.title}</span>
 				</span>
-				<span class="ml-auto shrink-0 text-[12px] text-muted-foreground tabular-nums">
+				<span class="ml-auto shrink-0 text-xs text-muted-foreground tabular-nums">
 					{chunk.chars}
 				</span>
 			</div>
-			<p class="px-3 pt-2 pb-1 text-[12.5px] text-muted-foreground leading-relaxed">
+			<p class="px-3 pt-2 pb-1 text-xs text-muted-foreground leading-relaxed">
 				{chunk.body}
 			</p>
 			<div class="px-3 pb-3">
 				<span
-					class="inline-flex h-6 items-center gap-1.5 rounded-full bg-muted px-2 text-[12px] text-muted-foreground transition-[opacity,transform,background-color] duration-300 ease-[var(--ease-out)] hover:bg-foreground/[0.06]"
+					class="inline-flex h-6 items-center gap-1.5 rounded-full bg-muted px-2 text-xs text-muted-foreground transition-[opacity,transform,background-color] duration-(--duration-slow) ease-[var(--ease-out)] hover:bg-foreground/[0.06]"
 					style={`opacity: ${chipsShown ? 1 : 0}; transform: scale(${chipsShown ? 1 : 0.95}); transition-delay: ${i * 80}ms`}
 				>
 					<span class={contextChunkBadge({ tone: chunk.tone })}>

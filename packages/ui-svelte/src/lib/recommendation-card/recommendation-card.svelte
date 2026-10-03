@@ -38,7 +38,7 @@ const others = $derived(
 	<span class="flex items-end gap-0.5">
 		{#each [0, 1, 2] as bar (bar)}
 			<span
-				class="h-2.5 w-1 rounded-full transition-colors duration-300"
+				class="h-2.5 w-1 rounded-full transition-colors duration-(--duration-slow)"
 				style={`background: ${bar < signal ? tone : "var(--border-strong)"}`}
 			></span>
 		{/each}
@@ -47,21 +47,21 @@ const others = $derived(
 
 <div data-slot="recommendation-card" class="w-full max-w-sm overflow-hidden rounded-2xl bg-card shadow-sm">
 	<div class="p-4">
-		<span class="font-medium text-[14px] text-foreground">{title}</span>
+		<span class="font-medium text-sm text-foreground">{title}</span>
 		{#key active.key}
-			<p class="fade-in mt-1.5 min-h-12 text-[13px] text-muted-foreground leading-relaxed">
+			<p class="fade-in mt-1.5 min-h-12 text-sm text-muted-foreground leading-relaxed">
 				{@render active.body()}
 			</p>
 		{/key}
 	</div>
 
 	<div
-		class="grid transition-[grid-template-rows,opacity] duration-300 ease-[var(--ease-out)]"
+		class="grid transition-[grid-template-rows,opacity] duration-(--duration-slow) ease-[var(--ease-out)]"
 		style={`grid-template-rows: ${open ? "1fr" : "0fr"}; opacity: ${open ? 1 : 0}`}
 	>
 		<div class="overflow-hidden">
 			<div class="border-border border-t bg-card px-2 py-2">
-				<p class="px-1.5 pb-1 font-medium text-[11px] text-muted-foreground">{t.otherOptions}</p>
+				<p class="px-1.5 pb-1 font-medium text-xs text-muted-foreground">{t.otherOptions}</p>
 				{#each others as { option, index } (option.key)}
 					<button
 						type="button"
@@ -69,11 +69,11 @@ const others = $derived(
 							selected = index;
 							accepted = false;
 						}}
-						class="flex w-full items-center gap-2.5 rounded-lg px-1.5 py-1.5 text-left transition-colors duration-100 hover:bg-foreground/[0.06]"
+						class="flex w-full items-center gap-2.5 rounded-lg px-1.5 py-1.5 text-left transition-colors duration-(--duration-instant) hover:bg-foreground/[0.06]"
 					>
 						{@render meter(option.signal, option.tone)}
-						<span class="min-w-0 flex-1 truncate text-[12.5px] text-foreground">{option.short}</span>
-						<span class="shrink-0 text-[11px] text-muted-foreground">{option.label}</span>
+						<span class="min-w-0 flex-1 truncate text-xs text-foreground">{option.short}</span>
+						<span class="shrink-0 text-xs text-muted-foreground">{option.label}</span>
 					</button>
 				{/each}
 			</div>
@@ -83,7 +83,7 @@ const others = $derived(
 	<div class="flex items-center justify-between gap-3 border-border border-t bg-card px-4 py-3">
 		<span class="flex items-center gap-2">
 			{@render meter(active.signal, active.tone)}
-			<span class="font-medium text-[12.5px] text-muted-foreground">{active.label}</span>
+			<span class="font-medium text-xs text-muted-foreground">{active.label}</span>
 		</span>
 
 		<span class="-mr-0.5 flex items-center gap-2">
@@ -92,7 +92,7 @@ const others = $derived(
 				size="sm"
 				aria-expanded={open}
 				onclick={() => (open = !open)}
-				class="px-2.5 text-[12.5px]"
+				class="px-2.5 text-xs"
 			>
 				{t.alternatives}
 			</Button>
@@ -100,7 +100,7 @@ const others = $derived(
 				variant={accepted ? "success" : active.ctaVariant}
 				size="sm"
 				onclick={() => (accepted = true)}
-				class="text-[12.5px]"
+				class="text-xs"
 			>
 				{accepted ? t.accepted : active.cta}
 			</Button>

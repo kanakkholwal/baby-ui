@@ -48,7 +48,7 @@ const anchor = $derived.by(() => {
 {#if cursor}
 	<rect
 		data-slot="bar-cursor"
-		class={cn(styles.band(), "transition-opacity duration-150")}
+		class={cn(styles.band(), "transition-opacity duration-(--duration-fast)")}
 		x={vertical ? start - pad : 0}
 		y={vertical ? 0 : start - pad}
 		width={vertical ? step : chart.innerWidth}

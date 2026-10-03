@@ -34,7 +34,8 @@ export const shortcut = defineComponent({
 		{
 			name: "joined",
 			type: "boolean",
-			description: "One cap reading ⌘K instead of a cap per key.",
+			description:
+				"One cap instead of a cap per key: glyphs run together (⇧⌘K), word keys take a + (Ctrl+K).",
 			default: false,
 			control: { kind: "boolean" },
 		},

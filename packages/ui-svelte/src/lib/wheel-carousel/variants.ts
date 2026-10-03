@@ -12,7 +12,7 @@ export const wheelCarousel = tv({
 		list: "relative h-full min-w-0 flex-1 overflow-hidden outline-none mask-[linear-gradient(to_bottom,transparent,black_30%,black_70%,transparent)]",
 		marker:
 			"absolute top-1/2 z-10 size-4 -translate-x-full -translate-y-1/2 rounded-full bg-primary",
-		item: "absolute top-1/2 origin-left whitespace-nowrap font-medium leading-none tracking-[-0.01em] text-muted-foreground transition-colors duration-150 data-[selected]:text-foreground",
+		item: "absolute top-1/2 origin-left whitespace-nowrap font-medium leading-none text-muted-foreground transition-colors duration-(--duration-fast) data-[selected]:text-foreground",
 	},
 	variants: {
 		photoSide: {

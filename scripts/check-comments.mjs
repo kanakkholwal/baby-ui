@@ -8,7 +8,8 @@ const DIRECTIVE =
 	/^\s*(\/\/|\/\*)\s*(biome-ignore|eslint-|@ts-|svelte-ignore|prettier-ignore|oxlint-|#!|<reference)/;
 const LICENSE = /^\s*(\/\/|\/\*|\*)\s*(Copyright|SPDX-|Licensed under|MIT License)/i;
 const ALLOWED_DIVIDER = /^\s*\/\/ --- .+ --- ?$/;
-const BANNER = /(.)\1{5,}/;
+// Punctuation runs only: a number like 1.1800000001 is not a divider.
+const BANNER = /([^\p{L}\p{N}\s])\1{5,}/u;
 const MAX_LINES = 2;
 
 /** Whole-line comments only; a trailing comment is one line by definition. */

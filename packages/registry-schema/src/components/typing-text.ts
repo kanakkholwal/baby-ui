@@ -39,6 +39,7 @@ export const typingText = defineComponent({
 				"Time to hold before the next cycle. Only applies when `repeat` is true.",
 			default: 1000,
 			control: { kind: "number", min: 0, max: 4000, step: 100 },
+			showWhen: { repeat: [true] },
 		},
 		{
 			name: "smooth",
@@ -54,6 +55,7 @@ export const typingText = defineComponent({
 				"How long each word's fade-in takes, in ms. Only applies when `smooth` is true.",
 			default: 300,
 			control: { kind: "number", min: 50, max: 1000, step: 50 },
+			showWhen: { smooth: [true] },
 		},
 		{
 			name: "grow",

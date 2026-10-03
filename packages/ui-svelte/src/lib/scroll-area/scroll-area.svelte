@@ -70,11 +70,11 @@ $effect(() => {
 	<span
 		aria-hidden="true"
 		style:opacity={atTop ? 0 : 1}
-		class="pointer-events-none absolute inset-x-0 top-0 h-6 bg-gradient-to-b from-background to-transparent transition-opacity duration-150"
+		class="pointer-events-none absolute inset-x-0 top-0 h-6 bg-gradient-to-b from-background to-transparent transition-opacity duration-(--duration-fast)"
 	></span>
 	<span
 		aria-hidden="true"
 		style:opacity={atBottom ? 0 : 1}
-		class="pointer-events-none absolute inset-x-0 bottom-0 h-6 bg-gradient-to-t from-background to-transparent transition-opacity duration-150"
+		class="pointer-events-none absolute inset-x-0 bottom-0 h-6 bg-gradient-to-t from-background to-transparent transition-opacity duration-(--duration-fast)"
 	></span>
 </ScrollAreaPrimitive.Root>

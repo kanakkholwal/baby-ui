@@ -124,7 +124,7 @@ export function Question({
 						{item.title}
 					</p>
 					{multipleQuestions ? (
-						<span className="shrink-0 text-[11px] text-muted-foreground tabular-nums">
+						<span className="shrink-0 text-xs text-muted-foreground tabular-nums">
 							{currentStep + 1}/{questions.length}
 						</span>
 					) : null}
@@ -221,7 +221,7 @@ export function Question({
 									key={q.id}
 									aria-hidden
 									className={cn(
-										"size-1.5 rounded-full bg-foreground transition-[opacity,scale] duration-200 ease-[var(--ease-out)]",
+										"size-1.5 rounded-full bg-foreground transition-[opacity,scale] duration-(--duration-base) ease-[var(--ease-out)]",
 										i === currentStep ? "scale-100 opacity-100" : "scale-75 opacity-35",
 									)}
 								/>

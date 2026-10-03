@@ -12,12 +12,12 @@ export const collectionSurfer = tv({
 			"absolute inset-0 flex items-center justify-center [perspective-origin:10%_10%] [perspective:2000px]",
 		track:
 			"relative size-0 [transform-style:preserve-3d] [translate:calc(var(--cs-shift,0)*var(--cs-w)*-0.8)_calc(var(--cs-shift,0)*var(--cs-w)*0.28)_calc(var(--cs-shift,0)*var(--cs-w)*0.96)]",
-		card: "group absolute top-0 left-0 h-[calc(var(--cs-w)*4/3)] w-(--cs-w) transition-[scale,transform] duration-300 ease-(--ease-spring) [rotate:y_-50deg] [transform-style:preserve-3d] [translate:calc(var(--i)*var(--cs-w)*0.8)_calc(var(--i)*var(--cs-w)*-0.28)_calc(var(--i)*var(--cs-w)*-0.96)] motion-reduce:transition-none",
+		card: "group absolute top-0 left-0 h-[calc(var(--cs-w)*4/3)] w-(--cs-w) transition-[scale,transform] duration-(--duration-slow) ease-(--ease-spring) [rotate:y_-50deg] [transform-style:preserve-3d] [translate:calc(var(--i)*var(--cs-w)*0.8)_calc(var(--i)*var(--cs-w)*-0.28)_calc(var(--i)*var(--cs-w)*-0.96)] motion-reduce:transition-none",
 		number:
 			"absolute -top-5 -left-3 font-mono text-xs opacity-50 transition-opacity group-hover:opacity-100",
 		frame: "size-full overflow-hidden bg-muted shadow-2xl",
 		image:
-			"size-full object-cover brightness-75 transition-[filter] duration-300 group-hover:brightness-100",
+			"size-full object-cover brightness-75 transition-[filter] duration-(--duration-slow) group-hover:brightness-100",
 	},
 	variants: {
 		variant: {

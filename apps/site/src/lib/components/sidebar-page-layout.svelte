@@ -19,8 +19,11 @@ const drawerLinks = $derived([
 		.filter((link) => link.featured)
 		.map(({ href, label }) => ({ href, label, match: [href] })),
 ]);
-// Split gives a component page's preview half the content area; other pages keep the rail.
-const split = $derived(prefs.layout === "split" && Boolean(page.params.slug));
+// Split and playground float the rail over a component page so its preview gets the width.
+const componentPage = $derived(page.route.id === "/components/[category]/[slug]");
+const split = $derived(prefs.layout === "split" && componentPage);
+const playground = $derived(prefs.layout === "playground" && componentPage);
+const floating = $derived(split || playground);
 // Transitions start after mount, so a stored "closed" doesn't animate on load.
 let ready = $state(false);
 $effect(() => {
@@ -69,6 +72,29 @@ $effect(() => {
 	});
 });
 
+// Floating over the page, the rail closes like a popover: a press outside it, or Escape.
+$effect(() => {
+	if (!floating || !docsSidebar.current) return;
+	const xl = matchMedia("(min-width: 1280px)");
+	const onPointer = (event: PointerEvent) => {
+		const inside =
+			event.target instanceof Element &&
+			event.target.closest('#docs-sidebar, [aria-controls="docs-sidebar"]');
+		if (xl.matches && !inside) docsSidebar.current = false;
+	};
+	const onKey = (event: KeyboardEvent) => {
+		if (xl.matches && event.key === "Escape" && !event.defaultPrevented) {
+			docsSidebar.current = false;
+		}
+	};
+	document.addEventListener("pointerdown", onPointer);
+	document.addEventListener("keydown", onKey);
+	return () => {
+		document.removeEventListener("pointerdown", onPointer);
+		document.removeEventListener("keydown", onKey);
+	};
+});
+
 const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 function active(match: string[]) {
@@ -85,12 +111,16 @@ function active(match: string[]) {
 		"grid min-w-0 grid-cols-[minmax(0,1fr)] px-4 [--right-sidebar-width:20rem] md:gap-4 md:px-6 xl:gap-8 xl:px-8",
 		"md:grid-cols-[15rem_minmax(0,1fr)] md:[[data-left-rail=closed]_&]:grid-cols-[0rem_minmax(0,1fr)]",
 		split
-			? "xl:grid-cols-[15rem_minmax(0,1fr)_minmax(0,1fr)]! xl:[[data-left-rail=closed]_&]:grid-cols-[0rem_minmax(0,1fr)_minmax(0,1fr)]!"
-			: // The right column is closed unless opened, so prerendered HTML matches the default.
+			? // The rail floats over the page in split, so the two halves get the full width.
+				"xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]!"
+			: playground
+				? "xl:grid-cols-[minmax(0,1fr)]!"
+				: // The right column is closed unless opened, so prerendered HTML matches the default.
 				"xl:grid-cols-[15rem_minmax(0,1fr)_0rem] xl:[[data-left-rail=closed]_&]:grid-cols-[0rem_minmax(0,1fr)_0rem] xl:[[data-right-col=open]_&]:grid-cols-[15rem_minmax(0,1fr)_20rem] xl:[[data-left-rail=closed][data-right-col=open]_&]:grid-cols-[0rem_minmax(0,1fr)_20rem]",
 	]}
 >
-	<div class="hidden min-w-0 md:block">
+	<!-- Floating, the wrapper drops out of the grid; its fixed panel overlays the page instead. -->
+	<div class={["hidden min-w-0 md:block", floating && "xl:contents"]}>
 		<!-- Closed: 15rem panel plus the widest page gutter, so it clears the viewport edge. -->
 		<div
 			id="docs-sidebar"
@@ -99,6 +129,12 @@ function active(match: string[]) {
 				"scrollbar-hide fixed top-(--header-h) bottom-0 w-60 overflow-y-auto bg-background py-6 pr-4",
 				"ease-[var(--ease-drawer)] in-data-[ready]:transition-[translate] motion-reduce:transition-none",
 				"translate-x-0 duration-[var(--duration-drawer)] [[data-left-rail=closed]_&]:-translate-x-[17rem] [[data-left-rail=closed]_&]:duration-[var(--duration-overlay)]",
+				floating && [
+					"xl:left-0 xl:z-30 xl:w-80 xl:bg-background/70 xl:pr-16 xl:pl-8 xl:backdrop-blur-xl",
+					// Fades into the page on the right and at the bottom, so the overlay has no hard edge.
+					"xl:[mask-composite:intersect] xl:[mask-image:linear-gradient(to_right,black_70%,transparent),linear-gradient(to_bottom,black_88%,transparent)]",
+					"xl:[[data-left-rail=closed]_&]:-translate-x-full",
+				],
 			]}
 		>
 			<SiteSidebar {groups} connector="curve" rungs />

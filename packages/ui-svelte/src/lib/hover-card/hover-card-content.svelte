@@ -19,7 +19,7 @@ let {
 		data-slot="hover-card-content"
 		class={cn(
 			ANCHORED,
-			"static z-50 w-64 rounded-xl border border-border bg-popover p-3 text-sm shadow-2xl",
+			"static z-50 w-64 rounded-xl bg-popover p-3 text-sm shadow-(--overlay-shadow)",
 			classProp,
 		)}
 	/>

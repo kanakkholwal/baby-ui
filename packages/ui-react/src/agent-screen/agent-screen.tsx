@@ -41,7 +41,7 @@ function ConnectingScreen() {
 		<div className="absolute inset-0 grid place-items-center bg-black">
 			<div className="flex flex-col items-center gap-3">
 				<Spinner size="lg" className="text-white" label="Connecting to agent's screen" />
-				<span className="text-[12.5px] text-white/70 font-medium">
+				<span className="text-xs text-white/70 font-medium">
 					Connecting to agent&apos;s screen
 				</span>
 			</div>
@@ -163,7 +163,7 @@ export function AgentScreen({
 				disabled={loading}
 				onClick={() => setOpen(true)}
 				className={cn(
-					"group/screen relative aspect-[2964/1856] w-full overflow-hidden rounded-2xl bg-muted text-left shadow-sm transition-shadow duration-150",
+					"group/screen relative aspect-[2964/1856] w-full overflow-hidden rounded-2xl bg-muted text-left shadow-sm transition-shadow duration-(--duration-fast)",
 					!loading && "cursor-pointer hover:shadow-md",
 				)}
 			>
@@ -172,12 +172,12 @@ export function AgentScreen({
 				) : (
 					<>
 						<Screen streamSrc={streamSrc} />
-						<div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors duration-150 group-hover/screen:bg-black/20">
+						<div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors duration-(--duration-fast) group-hover/screen:bg-black/20">
 							<span
 								aria-hidden
 								className={cn(
 									button({ variant: "default", size: "sm" }),
-									"translate-y-1 opacity-0 transition duration-150 group-hover/screen:translate-y-0 group-hover/screen:opacity-100",
+									"translate-y-1 opacity-0 transition duration-(--duration-fast) group-hover/screen:translate-y-0 group-hover/screen:opacity-100",
 								)}
 							>
 								Open
@@ -187,7 +187,7 @@ export function AgentScreen({
 				)}
 			</button>
 
-			<p className="mt-2.5 truncate px-0.5 font-medium text-[13px] text-foreground">
+			<p className="mt-2.5 truncate px-0.5 font-medium text-sm text-foreground">
 				{agentName}&apos;s screen
 			</p>
 
@@ -195,11 +195,11 @@ export function AgentScreen({
 				<DialogContent className="flex max-h-[90vh] w-[min(960px,92vw)] max-w-none flex-col gap-0 overflow-hidden rounded-2xl bg-card p-2 pt-0">
 					<div className="flex h-11 shrink-0 items-center justify-between gap-3 px-1.5">
 						<div className="flex min-w-0 items-center gap-2">
-							<span className="truncate font-semibold text-[13px] text-foreground">
+							<span className="truncate font-semibold text-sm text-foreground">
 								{agentName}
 							</span>
 							{recording ? (
-								<span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-destructive/10 py-0.5 pr-2 pl-1.5 font-medium text-[11.5px] text-destructive tabular-nums">
+								<span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-destructive/10 py-0.5 pr-2 pl-1.5 font-medium text-xs text-destructive tabular-nums">
 									<span className="size-2 animate-pulse rounded-full bg-destructive" />
 									{fmt(secs)}
 								</span>

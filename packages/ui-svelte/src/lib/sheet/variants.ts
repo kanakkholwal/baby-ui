@@ -12,7 +12,7 @@ export const sheet = tv({
 		],
 		// Only the closed state translates, so the open state needs no competing utility.
 		panel: [
-			"fixed z-50 flex flex-col gap-4 overflow-y-auto bg-popover p-panel shadow-overlay",
+			"fixed z-50 flex flex-col gap-4 overflow-y-auto bg-popover p-6 shadow-(--overlay-shadow)",
 			"transition-transform duration-[var(--duration-overlay)] ease-[var(--ease-drawer)]",
 			"data-[state=closed]:duration-[var(--duration-panel-exit)]",
 			"data-[state=closed]:data-[side=left]:-translate-x-full",

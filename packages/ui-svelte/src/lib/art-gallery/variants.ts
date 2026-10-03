@@ -6,11 +6,11 @@ export const artGallery = tv({
 		canvas:
 			"absolute inset-0 size-full transition-opacity duration-[var(--duration-overlay)] ease-[var(--ease-out)]",
 		status: "absolute inset-0 grid place-items-center",
-		hint: "pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 font-mono text-[10px] text-muted-foreground/70 uppercase tracking-[0.2em]",
+		hint: "pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 font-mono text-xs text-muted-foreground/70 uppercase tracking-widest",
 		fallback:
 			"grid h-full auto-rows-max grid-cols-2 gap-3 overflow-auto p-3 sm:grid-cols-3",
 		fallbackImage: "aspect-square w-full rounded-md object-cover",
-		fallbackCaption: "mt-1 flex justify-between gap-2 font-mono text-[10px] uppercase",
+		fallbackCaption: "mt-1 flex justify-between gap-2 font-mono text-xs uppercase",
 	},
 	variants: {
 		lens: {

@@ -114,7 +114,8 @@ export function ColorPickerDemo({ props }: { props: Props }) {
 			onValueChange={setValue}
 			format={format}
 			onFormatChange={setFormat}
-			variant={p.variant ?? "inline"}
+			variant={p.variant ?? "field"}
+			className={p.variant === "row" ? "max-w-64" : undefined}
 			size={p.size ?? "md"}
 			invalid={p.invalid ?? false}
 			recent={recent}

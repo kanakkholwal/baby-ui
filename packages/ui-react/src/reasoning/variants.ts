@@ -44,7 +44,7 @@ export const reasoningStep = tv({
 		glyph: "pop-in flex size-3 items-center justify-center",
 		connector: "my-1 w-px flex-1 rounded-full transition-colors duration-500",
 		body: "min-w-0 flex-1",
-		label: "text-[13px] leading-5 transition-colors duration-300",
+		label: "text-sm leading-5 transition-colors duration-(--duration-slow)",
 		description: "mt-0.5 text-muted-foreground text-xs leading-5",
 	},
 	variants: {
@@ -77,6 +77,6 @@ export const reasoningExtras = tv({
 		source: "pop-in rounded-full text-foreground/70",
 		figure: "pop-in mt-2",
 		image: "w-full max-w-[220px] rounded-lg border border-border object-cover",
-		caption: "mt-1 text-[11px] text-muted-foreground",
+		caption: "mt-1 text-xs text-muted-foreground",
 	},
 });

@@ -2,7 +2,8 @@ import { tv, type VariantProps } from "tailwind-variants";
 
 export const scatterPoint = tv({
 	slots: {
-		point: "transition-[opacity,filter] duration-150 ease-[cubic-bezier(0.42,0,0.58,1)]",
+		point:
+			"transition-[opacity,filter] duration-(--duration-fast) ease-[cubic-bezier(0.42,0,0.58,1)]",
 		mark: "fill-(--point) stroke-background [transform-box:fill-box] [transform-origin:center] data-active:scale-[1.35]",
 	},
 	variants: {

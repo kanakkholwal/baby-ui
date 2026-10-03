@@ -26,6 +26,7 @@ import {
 } from "@baby-ui/react";
 import { type ComponentProps, useEffect, useState } from "react";
 import { controlProps } from "../data/preview-props";
+import { ALIGNMENTS, TEXT_MARKS, TOGGLE_BOOKMARK } from "../data/toggle";
 
 type Props = Record<string, unknown>;
 
@@ -48,70 +49,47 @@ export function SpinnerDemo({ props }: { props: Props }) {
 	);
 }
 
-const MARKS = [
-	{
-		id: "bold",
-		label: "Bold",
-		path: "M5 3h4.5a2.5 2.5 0 0 1 0 5H5zm0 5h5a2.5 2.5 0 0 1 0 5H5z",
-	},
-	{ id: "italic", label: "Italic", path: "M10 3H6.5m3 10H6m4-10L8 13" },
-	{
-		id: "underline",
-		label: "Underline",
-		path: "M4.5 2.5v5a3.5 3.5 0 0 0 7 0v-5M4 13.5h8",
-	},
-];
-
 export function ToggleDemo({ props }: { props: Props }) {
 	const p = controlProps<ComponentProps<typeof Toggle>>(props);
 	const [pressed, setPressed] = useState(false);
-	const [on, setOn] = useState<Record<string, boolean>>({});
 	useEffect(() => setPressed(Boolean(props.pressed)), [props.pressed]);
-	const size = p.size ?? "md";
 
 	return (
-		<div className="inline-flex items-center gap-1 rounded-xl border border-border p-1">
-			{MARKS.map((mark) => (
-				<Toggle
-					key={mark.id}
-					size={mark.id === "bold" ? size : "md"}
-					label={mark.label}
-					disabled={mark.id === "bold" && (p.disabled ?? false)}
-					pressed={mark.id === "bold" ? pressed : Boolean(on[mark.id])}
-					onPressedChange={(next) =>
-						mark.id === "bold"
-							? setPressed(next)
-							: setOn((prev) => ({ ...prev, [mark.id]: next }))
-					}
-				>
-					<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-4">
-						<path
-							d={mark.path}
-							stroke="currentColor"
-							strokeWidth="1.4"
-							strokeLinecap="round"
-							strokeLinejoin="round"
-						/>
-					</svg>
-				</Toggle>
-			))}
-		</div>
+		<Toggle
+			pressed={pressed}
+			onPressedChange={setPressed}
+			variant={p.variant ?? "default"}
+			size={p.size ?? "md"}
+			disabled={p.disabled ?? false}
+		>
+			{/* The outline fills once pressed, so the state reads from the glyph as well as the fill. */}
+			<svg
+				viewBox="0 0 16 16"
+				fill="none"
+				aria-hidden
+				className="size-4 fill-transparent transition-[fill] duration-(--duration-fast) in-aria-pressed:fill-current"
+			>
+				<path
+					d={TOGGLE_BOOKMARK.path}
+					stroke="currentColor"
+					strokeWidth="1.4"
+					strokeLinecap="round"
+					strokeLinejoin="round"
+				/>
+			</svg>
+			{TOGGLE_BOOKMARK.label}
+		</Toggle>
 	);
 }
-
-const VIEWS = [
-	{ value: "list", label: "List" },
-	{ value: "grid", label: "Grid" },
-	{ value: "board", label: "Board" },
-];
 
 export function ToggleGroupDemo({ props }: { props: Props }) {
 	const p = controlProps<ComponentProps<typeof ToggleGroup>>(props);
 	const type = p.type ?? "single";
-	const [value, setValue] = useState<string | string[]>(
-		type === "multiple" ? ["grid"] : "grid",
-	);
-	useEffect(() => setValue(type === "multiple" ? ["grid"] : "grid"), [type]);
+	// One choice suits alignment; formatting marks combine.
+	const multiple = type === "multiple";
+	const glyphs = multiple ? TEXT_MARKS : ALIGNMENTS;
+	const [value, setValue] = useState<string | string[]>(multiple ? ["bold"] : "left");
+	useEffect(() => setValue(multiple ? ["bold"] : "left"), [multiple]);
 	return (
 		<ToggleGroup
 			value={value}
@@ -120,11 +98,24 @@ export function ToggleGroupDemo({ props }: { props: Props }) {
 			variant={p.variant ?? "default"}
 			size={p.size ?? "md"}
 			disabled={p.disabled ?? false}
-			label="View"
+			label={multiple ? "Text formatting" : "Text alignment"}
 		>
-			{VIEWS.map((view) => (
-				<ToggleGroupItem key={view.value} value={view.value}>
-					{view.label}
+			{glyphs.map((glyph) => (
+				<ToggleGroupItem
+					key={glyph.value}
+					value={glyph.value}
+					aria-label={glyph.label}
+					className="aspect-square px-0"
+				>
+					<svg viewBox="0 0 16 16" fill="none" aria-hidden>
+						<path
+							d={glyph.path}
+							stroke="currentColor"
+							strokeWidth="1.4"
+							strokeLinecap="round"
+							strokeLinejoin="round"
+						/>
+					</svg>
 				</ToggleGroupItem>
 			))}
 		</ToggleGroup>

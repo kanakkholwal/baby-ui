@@ -74,18 +74,19 @@ export function AccordionTrigger({
 			<AccordionPrimitive.Trigger
 				data-slot="accordion-trigger"
 				className={cn(
-					"flex flex-1 items-center justify-between gap-4 px-4 py-3 text-left font-medium text-foreground text-sm outline-none transition-colors hover:bg-foreground/[0.03] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset disabled:pointer-events-none disabled:opacity-50",
-					"[&>svg]:transition-[transform,scale,translate,rotate] [&>svg]:duration-[var(--duration-exit)] [&>svg]:ease-[var(--ease-out)] [&[data-panel-open]>svg]:rotate-180 [&[data-panel-open]>svg]:duration-[var(--duration-overlay)] motion-reduce:[&>svg]:transition-none",
+					"group/accordion-trigger flex flex-1 items-center justify-between gap-4 px-4 py-3 text-left font-medium text-foreground text-sm outline-none transition-colors hover:bg-foreground/[0.03] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset disabled:pointer-events-none disabled:opacity-50",
 					className,
 				)}
 				{...props}
 			>
 				{children}
+				{/* Only the chevron turns; a leading icon passed as children stays put. */}
 				<svg
 					viewBox="0 0 16 16"
 					fill="none"
 					aria-hidden
-					className="size-4 shrink-0 text-muted-foreground"
+					data-slot="accordion-icon"
+					className="size-4 shrink-0 text-muted-foreground transition-[rotate] duration-(--duration-exit) ease-(--ease-out) group-data-[panel-open]/accordion-trigger:rotate-180 group-data-[panel-open]/accordion-trigger:duration-(--duration-overlay) motion-reduce:transition-none"
 				>
 					<path
 						d="m4 6 4 4 4-4"

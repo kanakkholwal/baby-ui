@@ -58,7 +58,7 @@ function toggle(row: TaskRow) {
 				/>
 			{/if}
 		</svg>
-		<span class="relative font-semibold text-[10.5px] text-foreground tabular-nums">{step}</span>
+		<span class="relative font-semibold text-xs text-foreground tabular-nums">{step}</span>
 	</span>
 {/snippet}
 
@@ -125,8 +125,8 @@ function toggle(row: TaskRow) {
 				<span class="flex size-6 shrink-0 items-center justify-center">
 					{@render badgeFor(row)}
 				</span>
-				<span class="min-w-0 flex-1 truncate font-medium text-[13px] text-foreground">{row.label}</span>
-				<span class="text-[12.5px] text-muted-foreground tabular-nums">{row.amount}</span>
+				<span class="min-w-0 flex-1 truncate font-medium text-sm text-foreground">{row.label}</span>
+				<span class="text-xs text-muted-foreground tabular-nums">{row.amount}</span>
 				{@render pillFor(row)}
 				<span aria-hidden="true" class="-ml-2 flex size-7 shrink-0 items-center justify-center rounded-full text-muted-foreground">
 					<svg
@@ -138,7 +138,7 @@ function toggle(row: TaskRow) {
 						stroke-linejoin="round"
 						aria-hidden="true"
 						style="transform: {open ? 'rotate(180deg)' : 'none'}"
-						class="size-3.5 transition-transform duration-300 ease-[var(--ease-out)] motion-reduce:transition-none"
+						class="size-3.5 transition-transform duration-(--duration-slow) ease-[var(--ease-out)] motion-reduce:transition-none"
 					>
 						<path d="M6 9l6 6 6-6" />
 					</svg>
@@ -146,7 +146,7 @@ function toggle(row: TaskRow) {
 			</button>
 
 			<div
-				class="grid transition-[grid-template-rows,opacity] duration-300 ease-[var(--ease-out)]"
+				class="grid transition-[grid-template-rows,opacity] duration-(--duration-slow) ease-[var(--ease-out)]"
 				style="grid-template-rows: {open ? '1fr' : '0fr'}; opacity: {open ? 1 : 0}"
 			>
 				<div class="overflow-hidden">
@@ -155,8 +155,8 @@ function toggle(row: TaskRow) {
 						<div class="flex flex-col gap-1.5">
 							{#each row.details as d (d.label)}
 								<div class="flex items-center justify-between">
-									<span class="text-[12px] text-muted-foreground">{d.label}</span>
-									<span class="font-mono text-[11.5px] text-muted-foreground tabular-nums">{d.meta}</span>
+									<span class="text-xs text-muted-foreground">{d.label}</span>
+									<span class="font-mono text-xs text-muted-foreground tabular-nums">{d.meta}</span>
 								</div>
 							{/each}
 						</div>

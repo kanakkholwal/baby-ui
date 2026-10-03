@@ -21,13 +21,13 @@ export const commandFrame = tv({
 			"w-full min-w-0 bg-transparent text-foreground outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
 		count: "hidden",
 		// Caps in a hint depress while their key is held, so the footer answers the keyboard.
-		kbd: "inline-flex h-5 min-w-5 shrink-0 items-center justify-center gap-0.5 rounded-md bg-foreground/[0.06] px-1.5 font-medium font-sans text-muted-foreground text-xs transition-[translate,background-color,color] duration-instant ease-[var(--ease-out)] data-[pressed]:translate-y-px data-[pressed]:bg-foreground/[0.08] data-[pressed]:text-foreground motion-reduce:transition-none",
+		kbd: "inline-flex h-5 min-w-5 shrink-0 items-center justify-center gap-0.5 rounded-md bg-foreground/[0.06] px-1.5 font-medium font-sans text-muted-foreground text-xs transition-[translate,background-color,color] duration-(--duration-instant) ease-[var(--ease-out)] data-[pressed]:translate-y-px data-[pressed]:bg-foreground/[0.08] data-[pressed]:text-foreground motion-reduce:transition-none",
 		// ToggleGroup brings a rim and a pressed fill; the sliding pill replaces both.
 		filters: "relative flex shrink-0 items-center border-0 bg-transparent p-0",
-		pill: "pointer-events-none absolute top-0 left-0 data-[ready]:transition-[translate,width,height] data-[ready]:duration-slow data-[ready]:ease-[var(--ease-out)] motion-reduce:transition-none",
+		pill: "pointer-events-none absolute top-0 left-0 data-[ready]:transition-[translate,width,height] data-[ready]:duration-(--duration-slow) data-[ready]:ease-[var(--ease-out)] motion-reduce:transition-none",
 		filter: [
-			"relative z-10 inline-flex shrink-0 cursor-default items-center justify-center gap-1.5 font-medium text-muted-foreground outline-none data-[pressed]:bg-transparent data-[state=on]:bg-transparent",
-			"transition-[color,background-color] duration-fast ease-[var(--ease-out)] hover:text-foreground",
+			"relative z-10 inline-flex shrink-0 cursor-pointer items-center justify-center gap-1.5 font-medium text-muted-foreground outline-none data-[pressed]:bg-transparent data-[state=on]:bg-transparent",
+			"transition-[color,background-color] duration-(--duration-fast) ease-[var(--ease-out)] hover:text-foreground",
 			"focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none [&_svg]:size-4 [&_svg]:shrink-0",
 		],
 		list: "scroll-area relative min-h-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-contain",
@@ -44,7 +44,7 @@ export const commandFrame = tv({
 		],
 		// One marker for the active row. It snaps: arrow keys repeat too fast for motion to help.
 		marker:
-			"pointer-events-none absolute top-0 left-0 data-[glide]:transition-[translate,width,height] data-[glide]:duration-fast data-[glide]:ease-[var(--ease-out)] motion-reduce:transition-none",
+			"pointer-events-none absolute top-0 left-0 data-[glide]:transition-[translate,width,height] data-[glide]:duration-(--duration-fast) data-[glide]:ease-[var(--ease-out)] motion-reduce:transition-none",
 		empty: "text-center text-muted-foreground text-sm",
 		shortcut: "ml-auto shrink-0 text-muted-foreground text-xs tracking-widest",
 		separator: "-mx-1 h-px border-0 bg-border",
@@ -59,7 +59,7 @@ export const commandFrame = tv({
 		 */
 		variant: {
 			default: {
-				panel: "rounded-xl bg-popover shadow-overlay",
+				panel: "rounded-xl bg-popover shadow-(--overlay-shadow)",
 				body: "rounded-xl bg-popover p-1",
 				inputWrap: "mx-1 mt-1 h-8 rounded-lg border border-input/30 bg-input/30 px-2",
 				inputIcon: "opacity-50",
@@ -76,9 +76,9 @@ export const commandFrame = tv({
 				footer: "border-border border-t px-3 py-2",
 			},
 			framed: {
-				panel: "rounded-2xl bg-card p-1 shadow-overlay",
+				panel: "rounded-2xl bg-card p-1 shadow-(--overlay-shadow)",
 				header: "pt-1.5 pb-2",
-				body: "rounded-[11px] bg-popover",
+				body: "rounded-[11px] border border-border bg-popover",
 				inputWrap: "border-border border-b px-3",
 				input: "h-12 text-sm",
 				count:
@@ -99,16 +99,18 @@ export const commandFrame = tv({
 			},
 			launcher: {
 				popup: "w-[min(42rem,calc(100vw-2rem))]",
-				panel: "rounded-3xl bg-card p-3 shadow-overlay",
+				// The popover is the lifted frame; input, tray and list recess into the page colour.
+				panel: "rounded-3xl bg-popover p-3 shadow-(--overlay-shadow)",
 				body: "gap-3",
 				bar: "flex-wrap sm:flex-nowrap",
-				inputWrap: "h-11 min-w-48 flex-1 rounded-full bg-popover px-4",
+				inputWrap:
+					"h-11 min-w-48 flex-1 rounded-full border border-border bg-background px-4",
 				input: "h-11 text-sm",
-				filters: "gap-0.5 rounded-full bg-popover p-1",
+				filters: "gap-0.5 rounded-full border border-border bg-background p-1",
 				pill: "rounded-full bg-foreground/[0.06]",
 				filter:
 					"size-9 rounded-full data-[pressed]:text-foreground data-[state=on]:text-foreground",
-				list: "rounded-2xl bg-popover p-1.5",
+				list: "rounded-2xl border border-border bg-background p-1.5",
 				// Hints read as plain text on the frame; a held key still darkens.
 				kbd: "h-auto min-w-0 bg-transparent px-0",
 				group:
@@ -125,7 +127,7 @@ export const commandFrame = tv({
 			},
 			spotlight: {
 				popup: "w-[min(46rem,calc(100vw-2rem))]",
-				panel: "rounded-2xl bg-popover p-2 shadow-overlay",
+				panel: "rounded-2xl bg-popover p-2 shadow-(--overlay-shadow)",
 				filters: "gap-1 self-start px-1 pt-1",
 				pill: "rounded-full bg-primary/15",
 				filter:
@@ -139,7 +141,7 @@ export const commandFrame = tv({
 					"[&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:pt-2 [&_[cmdk-group-heading]]:pb-1",
 				groupHeading: "px-3 pt-2 pb-1",
 				item: [
-					"gap-3 rounded-lg px-3 py-2.5 text-base transition-[scale] duration-fast ease-[var(--ease-out)] active:scale-[0.99] motion-reduce:transition-none",
+					"gap-3 rounded-lg px-3 py-2.5 text-base transition-[scale] duration-(--duration-fast) ease-[var(--ease-out)] active:scale-[0.99] motion-reduce:transition-none",
 					"[&_svg:not([class*='size-'])]:size-[18px] [&_svg]:text-foreground",
 				],
 				marker: "rounded-lg bg-foreground/[0.08]",

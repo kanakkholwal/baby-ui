@@ -11,7 +11,7 @@ export const breadcrumb = tv({
 		separator: "text-muted-foreground [&>svg]:size-3.5",
 		// A DropdownMenuTrigger around it sets aria-expanded while its menu is open.
 		ellipsis: [
-			"grid size-7 place-items-center rounded-md text-muted-foreground transition-[color,background-color,scale] duration-150 ease-[var(--ease-out)]",
+			"grid size-7 place-items-center rounded-md text-muted-foreground transition-[color,background-color,scale] duration-(--duration-fast) ease-[var(--ease-out)]",
 			"hover:bg-foreground/[0.06] hover:text-foreground in-[[aria-expanded=true]]:bg-foreground/[0.06] in-[[aria-expanded=true]]:text-foreground",
 			"in-[button:active]:scale-[var(--press-scale-icon)] motion-reduce:transition-none [&>svg]:size-4",
 		],

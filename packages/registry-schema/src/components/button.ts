@@ -25,6 +25,12 @@ export const button = defineComponent({
 			"warning_soft",
 			"info",
 			"info_soft",
+			"default_surface",
+			"secondary_surface",
+			"destructive_surface",
+			"success_surface",
+			"warning_surface",
+			"info_surface",
 			"dark",
 			"light",
 			"raw",
@@ -46,9 +52,9 @@ export const button = defineComponent({
 	props: [
 		{
 			name: "variant",
-			type: '"default" | "default_soft" | "secondary" | "outline" | "ghost" | "link" | "destructive" | "destructive_soft" | "success" | "success_soft" | "warning" | "warning_soft" | "info" | "info_soft" | "dark" | "light" | "raw"',
+			type: '"default" | "default_soft" | "secondary" | "outline" | "ghost" | "link" | "destructive" | "destructive_soft" | "success" | "success_soft" | "warning" | "warning_soft" | "info" | "info_soft" | "default_surface" | "secondary_surface" | "destructive_surface" | "success_surface" | "warning_surface" | "info_surface" | "dark" | "light" | "raw"',
 			description:
-				"Visual weight. The `_soft` family is a tinted fill for secondary emphasis.",
+				"Visual weight. The `_soft` family is a tinted fill for secondary emphasis; the `_surface` family is a raised fill with a sheen, a lit edge and a soft drop.",
 			default: "default",
 			control: {
 				kind: "select",
@@ -67,6 +73,12 @@ export const button = defineComponent({
 					"warning_soft",
 					"info",
 					"info_soft",
+					"default_surface",
+					"secondary_surface",
+					"destructive_surface",
+					"success_surface",
+					"warning_surface",
+					"info_surface",
 					"dark",
 					"light",
 					"raw",

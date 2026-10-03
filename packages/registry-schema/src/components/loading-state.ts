@@ -32,6 +32,7 @@ export const loadingState = defineComponent({
 			description:
 				'`surfer` only: the looping video URL. Falls back to a "Video unavailable" placeholder without one.',
 			control: { kind: "text" },
+			showWhen: { variant: ["surfer"] },
 		},
 	],
 	motion: {

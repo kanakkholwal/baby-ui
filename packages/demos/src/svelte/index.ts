@@ -167,6 +167,7 @@ export const demos: Record<string, DemoLoader> = {
 	"pricing-02": () => import("./pricing-02-demo.svelte"),
 	progress: () => import("./progress-demo.svelte"),
 	"projection-line": () => import("./projection-line-demo.svelte"),
+	"property-panel": () => import("./property-panel-demo.svelte"),
 	question: () => import("./question-demo.svelte"),
 	"radar-chart": () => import("./radar-chart-demo.svelte"),
 	"radio-group": () => import("./radio-group-demo.svelte"),

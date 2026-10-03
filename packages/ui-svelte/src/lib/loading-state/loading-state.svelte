@@ -73,11 +73,11 @@ const elapsed = $derived.by(() => {
 {/snippet}
 
 {#snippet labelText()}
-	<span class="reasoning-shimmer font-medium text-[13px]">{resolvedLabel}</span>
+	<span class="reasoning-shimmer font-medium text-sm">{resolvedLabel}</span>
 {/snippet}
 
 {#snippet elapsedText()}
-	<span class="font-mono text-[12px] text-muted-foreground tabular-nums">{elapsed}</span>
+	<span class="font-mono text-xs text-muted-foreground tabular-nums">{elapsed}</span>
 {/snippet}
 
 {#if surfer}
@@ -103,7 +103,7 @@ const elapsed = $derived.by(() => {
 				{:else}
 					<div class="flex h-full w-full flex-col items-center justify-center gap-1.5">
 						{@render grid(PATTERNS.drive)}
-						<span class="px-3 text-center font-mono text-[10px] text-muted-foreground">
+						<span class="px-3 text-center font-mono text-xs text-muted-foreground">
 							Video unavailable
 						</span>
 					</div>

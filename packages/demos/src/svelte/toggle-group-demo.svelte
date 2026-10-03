@@ -2,14 +2,19 @@
 import { ToggleGroup, ToggleGroupItem } from "@baby-ui/svelte";
 import type { ComponentProps } from "svelte";
 import { controlProps } from "../data/preview-props";
+import { ALIGNMENTS, TEXT_MARKS } from "../data/toggle";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
 const p = $derived(controlProps<ComponentProps<typeof ToggleGroup>>(props));
 
-let value = $state<string | string[]>("grid");
+// One choice suits alignment; formatting marks combine.
+const multiple = $derived(p.type === "multiple");
+const glyphs = $derived(multiple ? TEXT_MARKS : ALIGNMENTS);
+
+let value = $state<string | string[]>("left");
 
 $effect(() => {
-	value = p.type === "multiple" ? ["grid"] : "grid";
+	value = multiple ? ["bold"] : "left";
 });
 </script>
 
@@ -19,9 +24,19 @@ $effect(() => {
 	variant={p.variant ?? "default"}
 	size={p.size ?? "md"}
 	disabled={p.disabled ?? false}
-	label="View"
+	label={multiple ? "Text formatting" : "Text alignment"}
 >
-	<ToggleGroupItem value="list">List</ToggleGroupItem>
-	<ToggleGroupItem value="grid">Grid</ToggleGroupItem>
-	<ToggleGroupItem value="board">Board</ToggleGroupItem>
+	{#each glyphs as glyph (glyph.value)}
+		<ToggleGroupItem value={glyph.value} aria-label={glyph.label} class="aspect-square px-0">
+			<svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+				<path
+					d={glyph.path}
+					stroke="currentColor"
+					stroke-width="1.4"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				/>
+			</svg>
+		</ToggleGroupItem>
+	{/each}
 </ToggleGroup>

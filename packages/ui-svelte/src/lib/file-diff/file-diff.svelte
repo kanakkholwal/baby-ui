@@ -25,13 +25,13 @@ const MARK = { add: "+", remove: "-", context: " " };
 <div class={cn("overflow-hidden rounded-xl border border-border bg-card", classProp)}>
 	<div class="flex items-center justify-between gap-3 border-border border-b bg-background/60 px-4 py-2.5">
 		<span class="truncate font-mono text-foreground text-xs">{filename}</span>
-		<span class="flex shrink-0 items-center gap-2 font-mono text-[11px]">
+		<span class="flex shrink-0 items-center gap-2 font-mono text-xs">
 			<span class="text-success">+{added}</span>
 			<span class="text-destructive">-{removed}</span>
 		</span>
 	</div>
 
-	<div class="overflow-x-auto font-mono text-[13px] leading-relaxed">
+	<div class="overflow-x-auto font-mono text-sm leading-relaxed">
 		{#each lines as line, i (i)}
 			<div class={diffRow({ kind: line.kind })}>
 				{#if showLineNumbers}

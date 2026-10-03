@@ -36,7 +36,8 @@ export const empty = defineComponent({
 		{
 			name: "tone",
 			type: '"neutral" | "primary" | "success" | "warning" | "destructive" | "info"',
-			description: 'EmptyMedia with variant="icon": the tile\'s colour.',
+			description:
+				'EmptyMedia: the icon tile\'s colour with variant="icon", or the bare glyph\'s colour with variant="default".',
 			default: "neutral",
 			control: {
 				kind: "select",

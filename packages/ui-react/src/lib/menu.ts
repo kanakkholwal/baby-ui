@@ -3,7 +3,7 @@ import { tv, type VariantProps } from "tailwind-variants";
 /** Surface and rows shared by DropdownMenu, ContextMenu and Select in both ports. */
 export const menu = tv({
 	slots: {
-		surface: "min-w-44 rounded-xl bg-popover p-menu shadow-overlay",
+		surface: "min-w-44 rounded-xl bg-popover p-1 shadow-(--overlay-shadow)",
 		item: [
 			"relative flex w-full cursor-default select-none items-center justify-between gap-2 rounded-md px-2.5 py-1.5",
 			// The fill follows the pointer at once; a press squishes to 0.98 and eases back over 250ms.

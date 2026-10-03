@@ -35,7 +35,7 @@ export function CodeBlock({
 			)}
 		>
 			<div className="flex min-h-8 items-center gap-2 px-1 pb-1">
-				<span className="inline-flex h-5 shrink-0 items-center rounded border border-border bg-background px-1.5 font-mono font-semibold text-[10px] text-muted-foreground uppercase tracking-wider">
+				<span className="inline-flex h-5 shrink-0 items-center rounded border border-border bg-background px-1.5 font-mono font-semibold text-xs text-muted-foreground uppercase tracking-wider">
 					{language}
 				</span>
 				{filename ? (
@@ -51,13 +51,13 @@ export function CodeBlock({
 				{html ? (
 					<div
 						style={{ maxHeight }}
-						className="scroll-area overflow-auto py-4 font-mono text-[13px] leading-[1.7] [&_.line]:px-5 [&_code]:block [&_pre]:!m-0 [&_pre]:!bg-transparent [&_pre]:!p-0 [&_pre>code:not(:has(.line))]:px-5"
+						className="scroll-area overflow-auto py-4 font-mono text-sm leading-[1.7] [&_.line]:px-5 [&_code]:block [&_pre]:!m-0 [&_pre]:!bg-transparent [&_pre]:!p-0 [&_pre>code:not(:has(.line))]:px-5"
 						dangerouslySetInnerHTML={{ __html: html }}
 					/>
 				) : (
 					<pre
 						style={{ maxHeight }}
-						className="scroll-area overflow-auto py-4 font-mono text-[13px] leading-[1.7]"
+						className="scroll-area overflow-auto py-4 font-mono text-sm leading-[1.7]"
 					>
 						<code>
 							{lines.map((line, i) => (

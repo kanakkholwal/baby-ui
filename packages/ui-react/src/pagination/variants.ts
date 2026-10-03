@@ -5,7 +5,7 @@ export const pagination = tv({
 	slots: {
 		link: [
 			"grid place-items-center rounded-lg text-muted-foreground tabular-nums outline-none",
-			"transition-[color,background-color,scale] [transition-duration:150ms,150ms,250ms] ease-[var(--ease-out-quart)]",
+			"transition-[color,background-color,scale] [transition-duration:var(--duration-fast),var(--duration-fast),var(--duration-slow)] ease-[var(--ease-out-quart)]",
 			"hover:bg-foreground/[0.06] hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring active:scale-[var(--press-scale-icon)]",
 			"aria-[current=page]:bg-foreground/[0.08] aria-[current=page]:font-medium aria-[current=page]:text-foreground",
 			"disabled:pointer-events-none disabled:opacity-40 motion-reduce:transition-none",

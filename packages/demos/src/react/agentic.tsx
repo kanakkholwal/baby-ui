@@ -30,6 +30,7 @@ import {
 	ReasoningSteps,
 	ResponseStream,
 	Slider,
+	sliderLayout,
 	Tabs,
 	TabsContent,
 	TabsList,
@@ -125,9 +126,8 @@ export function SliderDemo({ props }: { props: Props }) {
 	const p = controlProps<ComponentProps<typeof Slider>>(props);
 	const variant = p.variant ?? "default";
 	const preset = SLIDER_PRESETS[variant] ?? SLIDER_PRESETS.default;
-	const orientation =
-		variant === "default" ? (p.orientation ?? "horizontal") : "horizontal";
 	const range = Boolean(props.range);
+	const { orientation } = sliderLayout(variant, p.orientation ?? "horizontal", range);
 	const [value, setValue] = useState<number | number[]>(50);
 	useEffect(() => {
 		setValue(range ? [25, 75] : Number(props.value ?? 50));

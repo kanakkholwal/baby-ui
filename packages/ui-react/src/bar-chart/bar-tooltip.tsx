@@ -48,7 +48,7 @@ export function BarTooltip({ content, cursor = true, className }: BarTooltipProp
 			{cursor ? (
 				<rect
 					data-slot="bar-cursor"
-					className={cn(styles.band(), "transition-opacity duration-150")}
+					className={cn(styles.band(), "transition-opacity duration-(--duration-fast)")}
 					x={vertical ? start - pad : 0}
 					y={vertical ? 0 : start - pad}
 					width={vertical ? step : chart.innerWidth}

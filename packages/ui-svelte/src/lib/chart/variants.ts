@@ -35,7 +35,7 @@ export type ChartGridVariant = NonNullable<VariantProps<typeof chartGrid>["varia
 
 export const chartAxis = tv({
 	slots: {
-		tick: "fill-muted-foreground text-[11px] tabular-nums",
+		tick: "fill-muted-foreground text-xs tabular-nums",
 		line: "stroke-border-strong",
 	},
 	variants: {
@@ -78,7 +78,7 @@ export const chartLegend = tv({
 		root: "flex flex-wrap items-center gap-1.5",
 		swatch:
 			"size-2.5 shrink-0 rounded-[3px] border-2 border-(--swatch) bg-(--swatch) transition-colors",
-		item: "transition-opacity duration-150",
+		item: "transition-opacity duration-(--duration-fast)",
 		label:
 			"inline-flex h-7 items-center gap-1.5 px-2 font-medium text-muted-foreground text-xs",
 	},
@@ -102,7 +102,7 @@ export const chartReferenceArea = tv({
 	slots: {
 		area: "transition-opacity duration-[420ms] ease-[cubic-bezier(0,0,0.58,1)]",
 		edge: "fill-none [stroke-dasharray:4_4]",
-		label: "font-medium text-[11px]",
+		label: "font-medium text-xs",
 	},
 	variants: {
 		tone: {
@@ -154,7 +154,7 @@ export type ChartBackgroundVariant = NonNullable<
 
 export const chartSelection = tv({
 	slots: {
-		root: "pointer-events-none transition-opacity duration-150 ease-[cubic-bezier(0,0,0.58,1)]",
+		root: "pointer-events-none transition-opacity duration-(--duration-fast) ease-[cubic-bezier(0,0,0.58,1)]",
 		area: "fill-foreground/[0.06]",
 		edge: "fill-none stroke-muted-foreground",
 	},

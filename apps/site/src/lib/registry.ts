@@ -44,8 +44,10 @@ export type CardItem = {
 	name: string;
 	description: string;
 	href: string;
+	category: Category;
 	tier: ComponentSpec["tier"];
 	isNew: boolean;
+	isUpdated: boolean;
 	defaults: Record<string, unknown>;
 };
 
@@ -370,7 +372,7 @@ export type SearchItem = {
 	keywords: string;
 };
 
-/** Flat index for the command palette. */
+/** Flat index for the site search. */
 export function searchItems(catalog: CatalogItem[]): SearchItem[] {
 	return catalog
 		.map((s) => ({

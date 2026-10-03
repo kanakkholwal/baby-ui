@@ -87,7 +87,7 @@ export function Textarea({
 						</p>
 					) : null}
 					{showCount ? (
-						<p className="ml-auto shrink-0 font-mono text-[11px] text-muted-foreground tabular-nums">
+						<p className="ml-auto shrink-0 font-mono text-muted-foreground text-xs tabular-nums">
 							{String(value ?? "").length}
 							{maxLength ? `/${maxLength}` : ""}
 						</p>

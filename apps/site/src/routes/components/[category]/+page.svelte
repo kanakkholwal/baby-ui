@@ -1,6 +1,6 @@
 <script lang="ts">
-import { Button } from "@baby-ui/svelte";
-import ComponentCard from "#lib/components/component-card.svelte";
+import CardGallery from "#lib/components/card-gallery.svelte";
+import GalleryIntro from "#lib/components/gallery-intro.svelte";
 import Seo from "#lib/components/seo.svelte";
 import { breadcrumbLd, collectionLd, metaDescription } from "#lib/seo.js";
 import type { PageProps } from "./$types";
@@ -11,6 +11,9 @@ const label = $derived(data.label);
 const path = $derived(data.path);
 const topLevel = $derived(data.topLevel);
 const heading = $derived(topLevel ? label : `${label} Components`);
+const back = $derived(
+	topLevel ? undefined : { label: "Components", href: "/components" },
+);
 const description = $derived(
 	metaDescription(data.blurb, "For React and Svelte, via the shadcn CLI."),
 );
@@ -40,44 +43,43 @@ const description = $derived(
 />
 
 <main class="min-w-0 py-8 xl:col-span-2">
-	{#if !topLevel}
-	<nav aria-label="Breadcrumb" class="flex items-center gap-1.5 text-sm">
-		<a href="/components" class="text-muted-foreground transition-colors hover:text-foreground">
-			Components
-		</a>
-		<span class="text-muted-foreground">/</span>
-		<span class="font-medium text-foreground">{label}</span>
-	</nav>
-	{/if}
-
-	<h1 class="mt-4 font-semibold text-3xl text-foreground tracking-tight">{label}</h1>
-	<p class="mt-2 max-w-2xl text-muted-foreground">{data.blurb}</p>
-
+	<!-- The page header is the first gallery's opening tile. -->
 	{#if data.groups}
-		<nav aria-label="Jump to section" class="mt-5 flex flex-wrap gap-1.5">
-			{#each data.groups as group (group.id)}
-				<Button href="#{group.id}" variant="outline" size="sm">{group.label}</Button>
-			{/each}
-		</nav>
-
-		{#each data.groups as group (group.id)}
-			<section id={group.id} class="mt-12 scroll-mt-[calc(var(--header-h)+1.5rem)]">
-				<div class="flex items-baseline gap-2">
-					<h2 class="font-semibold text-foreground text-lg tracking-tight">{group.label}</h2>
-					<span class="text-muted-foreground text-sm tabular-nums">{group.items.length}</span>
-				</div>
-				<div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-					{#each group.items as item (item.slug)}
-						<ComponentCard {item} />
-					{/each}
-				</div>
+		{#each data.groups as group, index (group.id)}
+			{@const opening = index === 0}
+			<section
+				id={group.id}
+				class={[opening ? "mt-2" : "mt-12", "scroll-mt-[calc(var(--header-h)+1.5rem)]"]}
+			>
+				{#if !opening}
+					<div class="mb-4 flex items-baseline gap-2">
+						<h2 class="font-semibold text-foreground text-lg tracking-tight">{group.label}</h2>
+						<span class="text-muted-foreground text-sm tabular-nums">{group.items.length}</span>
+					</div>
+				{/if}
+				{#if opening}
+					<CardGallery items={group.items}>
+						{#snippet lead()}
+							<GalleryIntro
+								title={label}
+								description={data.blurb}
+								items={data.items}
+								{back}
+							/>
+						{/snippet}
+					</CardGallery>
+				{:else}
+					<CardGallery items={group.items} />
+				{/if}
 			</section>
 		{/each}
 	{:else}
-		<div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-			{#each data.items as item (item.slug)}
-				<ComponentCard {item} />
-			{/each}
+		<div class="mt-2">
+			<CardGallery items={data.items}>
+				{#snippet lead()}
+					<GalleryIntro title={label} description={data.blurb} items={data.items} {back} />
+				{/snippet}
+			</CardGallery>
 		</div>
 	{/if}
 </main>

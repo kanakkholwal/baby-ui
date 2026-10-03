@@ -9,7 +9,20 @@ import {
 	IconList,
 } from "@baby-ui/icons";
 import type { Framework } from "@baby-ui/registry-schema";
-import { Alert, AlertDescription, AlertTitle } from "@baby-ui/svelte";
+import {
+	Alert,
+	AlertDescription,
+	AlertTitle,
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+	Tabs,
+	TabsContent,
+	TabsList,
+	TabsTrigger,
+} from "@baby-ui/svelte";
 import { Renderer } from "@docvia/renderer-svelte";
 import { registry } from "docvia/registry";
 import type { Snippet } from "svelte";
@@ -28,11 +41,7 @@ import PreviewToolbar from "#lib/components/preview-toolbar.svelte";
 import ProInstallGate from "#lib/components/pro-install-gate.svelte";
 import PropsRail from "#lib/components/props-rail.svelte";
 import PropsTable from "#lib/components/props-table.svelte";
-import SegmentControl, {
-	type SegmentOption,
-} from "#lib/components/segment-control.svelte";
 import Seo from "#lib/components/seo.svelte";
-import Tabs from "#lib/components/tabs.svelte";
 import { demos } from "#lib/demos.js";
 import type { Heading } from "#lib/docs-nodes.js";
 import { OUTLINE_PANEL, outlineSidebar } from "#lib/docs-sidebar.svelte.js";
@@ -72,8 +81,10 @@ $effect(() => {
 	return () => query.removeEventListener("change", sync);
 });
 
-// Split pins the stage in the right column; below xl the page stays stacked either way.
+// Split pins the stage in the right column; playground gives it the full width above the docs.
+// Below xl the page stays stacked either way.
 const split = $derived(prefs.layout === "split" && wide);
+const playground = $derived(prefs.layout === "playground" && wide);
 
 // Framework and language are global preferences, set from the header settings drawer.
 const framework = $derived(prefs.framework);
@@ -131,12 +142,15 @@ const port = $derived(data.ports.find((p) => p.framework === framework) ?? data.
 const adjacent = $derived(data.adjacent);
 const hasControls = $derived(data.spec.props.some((p) => p.control.kind !== "none"));
 const related = $derived(data.related);
-// In split the stage is pinned beside the page, so its tab becomes the controls, or goes.
+// In split the stage is pinned beside the page, so its tab becomes the controls, or goes;
+// playground docks both above, leaving Usage.
 const tabs = $derived(
 	[
-		!split
-			? { id: "preview", label: "Preview" }
-			: hasControls && { id: "preview", label: "Controls" },
+		playground
+			? false
+			: !split
+				? { id: "preview", label: "Preview" }
+				: hasControls && { id: "preview", label: "Controls" },
 		{ id: "usage", label: "Usage" },
 	].filter((t): t is { id: string; label: string } => Boolean(t)),
 );
@@ -144,7 +158,7 @@ const tabs = $derived(
 $effect(() => {
 	if (!tabs.some((t) => t.id === tab)) tab = tabs[0]?.id ?? "usage";
 });
-const FRAMEWORKS: SegmentOption<Framework>[] = [
+const FRAMEWORKS: { id: Framework; label: string; icon: typeof IconBrandReact }[] = [
 	{ id: "svelte", label: "Svelte", icon: IconBrandSvelte },
 	{ id: "react", label: "React", icon: IconBrandReact },
 ];
@@ -220,7 +234,13 @@ const categoryTrail = $derived(
 	]}
 />
 
-<main class="@container min-w-0 pt-8 pb-16 md:pt-12">
+<!-- Stacked caps at a readable width and centres like the docs; split keeps its half column. -->
+<main
+	class={[
+		"@container min-w-0 pt-8 pb-16 md:pt-12",
+		!split && !playground && "mx-auto w-full max-w-5xl",
+	]}
+>
 	<div id="overview" class="scroll-mt-[calc(var(--header-h)+1.5rem)]">
 		<nav aria-label="Breadcrumb" class="flex items-center gap-1.5 text-sm">
 			<a
@@ -263,7 +283,7 @@ const categoryTrail = $derived(
 					markdownUrl="{specHref(data.spec)}.md"
 					copyText={data.spec.description}
 				/>
-				{#if !split}<OutlineToggle />{/if}
+				{#if !split && !playground}<OutlineToggle />{/if}
 			</div>
 		</div>
 
@@ -271,45 +291,66 @@ const categoryTrail = $derived(
 			{data.spec.description}
 		</p>
 
-		<div class={["mt-5", !split && "xl:hidden"]}>
+		<div class={["mt-5", !split && !playground && "xl:hidden"]}>
 			<MobileNavDrawer label="On this page" title="On this page">
 				{#snippet icon()}<IconList size={14} />{/snippet}
 				{#snippet children()}
-					<div class="mx-auto w-full max-w-md">
-						<PropsRail slug={data.spec.slug} {outline} heading={false} promo={false} />
-					</div>
+					<PropsRail slug={data.spec.slug} {outline} heading={false} promo={false} />
 				{/snippet}
 			</MobileNavDrawer>
 		</div>
 	</div>
 
-	<section id="preview" class="mt-10 scroll-mt-[calc(var(--header-h)+1.5rem)]">
-		<div class="flex flex-wrap items-center justify-between gap-3">
-			<Tabs
-				{tabs}
-				bind:active={
-					() => tab,
-					(next) => {
-						tab = next;
-						track("component_tab_selected", { tab: next });
-					}
+	{#if playground}
+		<!-- The workbench: a viewport-tall stage with the controls docked beside it. -->
+		<section
+			id="preview"
+			class={[
+				"mt-8 grid h-[calc(100dvh-var(--header-h)-4rem)] min-h-[32rem] scroll-mt-[calc(var(--header-h)+1.5rem)] gap-3",
+				hasControls && "grid-cols-[minmax(0,1fr)_20rem]",
+			]}
+		>
+			<div class="min-h-0">{@render previewStage(true)}</div>
+			{#if hasControls}<ControlsPanel spec={data.spec} bind:values docked />{/if}
+		</section>
+	{/if}
+
+	<!-- Playground centres the docs under its full-width workbench. -->
+	<div class={playground ? "mx-auto w-full max-w-5xl" : undefined}>
+	<section
+		id={playground ? "usage" : "preview"}
+		class="mt-10 scroll-mt-[calc(var(--header-h)+1.5rem)]"
+	>
+		<Tabs
+			bind:value={
+				() => tab,
+				(next) => {
+					tab = next;
+					track("component_tab_selected", { tab: next });
 				}
-				variant="underline"
-				class="min-w-0 flex-1"
-			/>
-		</div>
-		<div id="panel-{tab}" role="tabpanel" aria-labelledby="tab-{tab}" class="mt-4">
-			{#if tab === "preview"}
-				{#if !split}
-					<div class="overflow-x-auto">
-						{@render previewStage()}
-					</div>
+			}
+			variant="underline"
+		>
+			<TabsList aria-label="Component views">
+				{#each tabs as item (item.id)}
+					<TabsTrigger value={item.id}>{item.label}</TabsTrigger>
+				{/each}
+			</TabsList>
+			<!-- Only the open view renders: the demo is heavy and the usage block is highlighted. -->
+			<TabsContent value="preview">
+				{#if tab === "preview"}
+					{#if !split}
+						<div class="overflow-x-auto">
+							{@render previewStage()}
+						</div>
+					{/if}
+					{#if hasControls}
+						<ControlsPanel spec={data.spec} bind:values defaultOpen={split} />
+					{/if}
 				{/if}
-				{#if hasControls}
-					<ControlsPanel spec={data.spec} bind:values defaultOpen={split} />
-				{/if}
-			{:else if tab === "usage"}
-				{#if usage}
+			</TabsContent>
+			<TabsContent value="usage">
+				{#if tab === "usage" && usage}
 					<CodeBlock
 						code={usage.code}
 						html={usage.html}
@@ -318,18 +359,40 @@ const categoryTrail = $derived(
 						analytics={{ event: "usage_copied" }}
 					/>
 				{/if}
-			{/if}
-		</div>
+			</TabsContent>
+		</Tabs>
 	</section>
 
 	<section id="installation" class="mt-16 scroll-mt-[calc(var(--header-h)+1.5rem)]">
-		<div class="flex flex-wrap items-center justify-between gap-3">
+		<!-- The framework switch reads as part of the heading: "Installation · Svelte". -->
+		<div class="flex flex-wrap items-center gap-1.5">
 			<h2 class="font-semibold text-foreground text-xl tracking-tight">Installation</h2>
-			<SegmentControl
-				options={FRAMEWORKS}
-				current={framework}
-				onPick={(id) => prefs.set("framework", id)}
-			/>
+			<Select
+				bind:value={
+					() => framework,
+					(next) => {
+						const pick = FRAMEWORKS.find((f) => f.id === next);
+						if (pick) prefs.set("framework", pick.id);
+					}
+				}
+				items={FRAMEWORKS.map((f) => ({ value: f.id, label: f.label }))}
+			>
+				<SelectTrigger variant="ghost" size="xs" aria-label="Framework">
+					{@const Icon = FRAMEWORKS.find((f) => f.id === framework)?.icon}
+					{#if Icon}<Icon size={12} />{/if}
+					<SelectValue />
+				</SelectTrigger>
+				<SelectContent align="end" size="xs">
+					{#each FRAMEWORKS as option (option.id)}
+						<SelectItem value={option.id} label={option.label}>
+							<span class="flex items-center gap-1.5">
+								<option.icon size={12} />
+								{option.label}
+							</span>
+						</SelectItem>
+					{/each}
+				</SelectContent>
+			</Select>
 		</div>
 		<div class="mt-4">
 			{#if data.spec.tier === "pro"}
@@ -457,6 +520,7 @@ const categoryTrail = $derived(
 			View this page as Markdown
 		</a>
 	</div>
+	</div>
 </main>
 
 {#snippet previewStage(fill = false)}
@@ -475,7 +539,7 @@ const categoryTrail = $derived(
 					demo={demos[data.spec.slug]}
 					props={values}
 					content={stage as Snippet | undefined}
-					maxHeight={fill ? undefined : "min(55vh, 34rem)"}
+					maxHeight={fill ? undefined : "calc(100dvh - var(--header-h) - 4rem)"}
 					class={fill ? "h-full flex-1" : undefined}
 				/>
 			{/key}
@@ -531,7 +595,7 @@ const categoryTrail = $derived(
 			</div>
 		</div>
 	</aside>
-{:else}
+{:else if !playground}
 	<aside aria-label="On this page" class="hidden min-w-0 xl:block">
 		<div
 			id="outline-sidebar"

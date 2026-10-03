@@ -29,7 +29,7 @@ export const circuitNode = tv({
 	slots: {
 		node: "circuit-board-node origin-center [transform-box:fill-box]",
 		box: "stroke-2",
-		label: "fill-muted-foreground font-medium text-[12px]",
+		label: "fill-muted-foreground font-medium text-xs",
 	},
 	variants: {
 		status: {

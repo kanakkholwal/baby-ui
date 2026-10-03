@@ -48,6 +48,7 @@ export const revealText = defineComponent({
 			description: 'With trigger="view": reveal only the first time.',
 			default: true,
 			control: { kind: "boolean" },
+			showWhen: { trigger: ["view"] },
 		},
 		{
 			name: "revealed",

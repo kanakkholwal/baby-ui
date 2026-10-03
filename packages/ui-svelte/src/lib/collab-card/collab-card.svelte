@@ -117,7 +117,7 @@ const CORNERS = [
 				{#each CORNERS as pos (pos)}
 					<span aria-hidden="true" class={cn(styles.handle(), pos)}></span>
 				{/each}
-				<h2 class="font-(family-name:--font-heading) font-medium text-[17.5cqi] leading-[0.92] tracking-[-0.035em]">
+				<h2 class="font-(family-name:--font-heading) font-medium text-[17.5cqi] leading-[0.92] tracking-tight">
 					{greeting}
 				</h2>
 			</div>

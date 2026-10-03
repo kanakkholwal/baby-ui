@@ -75,6 +75,8 @@ export const ComponentSpecSchema = z.object({
 	retired: z.boolean().default(false),
 	/** Badged "New" and listed first; clear it once the component has settled. */
 	isNew: z.boolean().default(false),
+	/** Badged "Updated" after a user-facing change, unless `isNew` is set; clear it with the next release. */
+	isUpdated: z.boolean().default(false),
 
 	props: z.array(PropSpecSchema).default([]),
 	/** Named variant axes, e.g. `{ variant: ["default","ghost"], size: ["sm","lg"] }`. */

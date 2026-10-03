@@ -91,6 +91,12 @@ export const emptyMedia = tv({
 			tone: "info",
 			class: "bg-[color-mix(in_oklch,var(--info)_12%,transparent)] text-[var(--info)]",
 		},
+		// A bare glyph takes the tone as its colour, so `tone` is never a dead prop.
+		{ variant: "default", tone: "primary", class: "text-primary" },
+		{ variant: "default", tone: "success", class: "text-[var(--success)]" },
+		{ variant: "default", tone: "warning", class: "text-[var(--warning)]" },
+		{ variant: "default", tone: "destructive", class: "text-[var(--destructive)]" },
+		{ variant: "default", tone: "info", class: "text-[var(--info)]" },
 	],
 	defaultVariants: { variant: "default", tone: "neutral" },
 });

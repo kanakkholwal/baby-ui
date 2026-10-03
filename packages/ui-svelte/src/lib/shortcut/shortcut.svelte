@@ -2,6 +2,7 @@
 import { cn } from "../lib/cn";
 import {
 	isApplePlatform,
+	joinCaps,
 	matchesShortcut,
 	parseShortcut,
 	shortcutBlocked,
@@ -21,7 +22,7 @@ let {
 	shortcut: string;
 	size?: ShortcutSize;
 	variant?: ShortcutVariant;
-	/** One cap reading "⌘K" instead of a cap per key. */
+	/** One cap: glyphs run together (⇧⌘K), word keys take a `+` (Ctrl+K). */
 	joined?: boolean;
 	/** Runs on the key combo. Without it, the enclosing button or link is clicked. */
 	ontrigger?: (event: KeyboardEvent) => void;
@@ -37,7 +38,7 @@ $effect(() => {
 const parsed = $derived(parseShortcut(shortcut, apple));
 const caps = $derived.by(() => {
 	const all = parsed?.caps ?? [shortcut];
-	return joined ? [all.join("")] : all;
+	return joined ? [joinCaps(all)] : all;
 });
 
 $effect(() => {

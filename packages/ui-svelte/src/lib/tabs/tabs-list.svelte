@@ -87,7 +87,7 @@ const ARROW =
 	class={cn(
 		"relative isolate flex w-full min-w-0 max-w-full items-center",
 		edges.overflow && tabs.variant === "pill" && "rounded-full bg-card",
-		edges.overflow && tabs.variant === "segment" && "rounded-lg bg-muted",
+		edges.overflow && tabs.variant === "segment" && "rounded-lg bg-card",
 	)}
 >
 	{#if edges.overflow}

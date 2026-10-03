@@ -30,7 +30,7 @@ export const multiSelect = tv({
 		item: "justify-start gap-2 text-foreground",
 		box: [
 			"flex size-4 shrink-0 items-center justify-center rounded-[4px] border border-input",
-			"transition-[background-color,border-color] duration-150 ease-[var(--ease-smooth)] motion-reduce:transition-none",
+			"transition-[background-color,border-color] duration-(--duration-fast) ease-[var(--ease-smooth)] motion-reduce:transition-none",
 			"data-[checked=true]:border-primary data-[checked=true]:bg-primary data-[checked=true]:text-primary-foreground",
 		],
 		check: "menu-check size-3 shrink-0",

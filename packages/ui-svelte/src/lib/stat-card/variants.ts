@@ -3,9 +3,9 @@ import { tv, type VariantProps } from "tailwind-variants";
 export const statCard = tv({
 	slots: {
 		root: "w-full gap-0 overflow-hidden py-0",
-		header: "flex items-start justify-between gap-3 px-4 pt-3 pb-1",
+		header: "flex items-start justify-between gap-3 px-5 pt-4 pb-1",
 		title: "font-medium text-muted-foreground text-sm",
-		body: "flex flex-col gap-3 px-4 pb-0",
+		body: "flex flex-col gap-3 px-5 pb-0",
 		headline: "flex flex-col gap-1 tabular-nums",
 		label: "text-muted-foreground text-xs",
 		chart: "-mx-4 relative",

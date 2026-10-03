@@ -78,7 +78,7 @@ function ConditionChip({
 	return (
 		<span data-ui className="relative inline-flex min-w-0">
 			<Select value={value} onValueChange={onValueChange}>
-				<SelectTrigger className="h-6 min-w-0 gap-1 rounded-md border-none bg-input px-1.5 font-medium text-[12px] text-foreground [&>svg]:size-3">
+				<SelectTrigger className="h-6 min-w-0 gap-1 rounded-md border-none bg-input px-1.5 font-medium text-xs text-foreground [&>svg]:size-3">
 					{dot ? <span className="size-1.5 shrink-0 rounded-full bg-current" /> : null}
 					<SelectValue>{current?.label ?? value}</SelectValue>
 				</SelectTrigger>
@@ -88,7 +88,7 @@ function ConditionChip({
 							<span className="flex min-w-0 flex-1 items-center justify-between gap-2">
 								<span className="truncate">{option.label}</span>
 								{option.tag ? (
-									<span className="shrink-0 text-[11px] text-muted-foreground">
+									<span className="shrink-0 text-xs text-muted-foreground">
 										{option.tag}
 									</span>
 								) : null}
@@ -126,7 +126,7 @@ function ConditionRows({
 					key={row.id}
 					className="flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1.5"
 				>
-					<span className="w-8 shrink-0 text-[12.5px] text-muted-foreground">
+					<span className="w-8 shrink-0 text-xs text-muted-foreground">
 						{row.connector}
 					</span>
 					<Badge variant="secondary" size="sm">
@@ -138,9 +138,7 @@ function ConditionRows({
 						onValueChange={(v) => update(row.id, "property", v)}
 						width="w-36"
 					/>
-					<span className="text-[12.5px] text-muted-foreground">
-						{row.comparator ?? "is"}
-					</span>
+					<span className="text-xs text-muted-foreground">{row.comparator ?? "is"}</span>
 					<ConditionChip
 						value={row.value}
 						options={row.valueOptions}
@@ -168,10 +166,10 @@ function StepBody({ node }: { node: StepNode }) {
 				{node.icon ?? <BoltIcon />}
 			</span>
 			<span className="min-w-0 text-left">
-				<span className="block truncate font-semibold text-[13px] text-foreground leading-tight">
+				<span className="block truncate font-semibold text-sm text-foreground leading-tight">
 					{node.title}
 				</span>
-				<span className="mt-0.5 block text-[12px] text-muted-foreground leading-snug">
+				<span className="mt-0.5 block text-xs text-muted-foreground leading-snug">
 					{node.caption}
 				</span>
 			</span>
@@ -367,7 +365,7 @@ export function Flowchart({
 						fill="none"
 						stroke={isLit(edge) ? "var(--primary)" : "var(--border)"}
 						strokeWidth="1.25"
-						className="transition-[stroke] duration-150"
+						className="transition-[stroke] duration-(--duration-fast)"
 					/>
 				))}
 			</svg>
@@ -395,7 +393,7 @@ export function Flowchart({
 					>
 						{node.kindLabel ? (
 							<span
-								className="inline-flex h-6 items-center rounded-md px-2 font-medium text-[11.5px]"
+								className="inline-flex h-6 items-center rounded-md px-2 font-medium text-xs"
 								style={{
 									background: mix(node.hue, 14, "var(--background)"),
 									color: mix(node.hue, 80, "var(--foreground)"),
@@ -405,7 +403,7 @@ export function Flowchart({
 							</span>
 						) : null}
 						{node.conditions ? (
-							<div className="w-full rounded-2xl bg-card shadow-sm transition-shadow duration-150 hover:shadow-md">
+							<div className="w-full rounded-2xl bg-card shadow-sm transition-shadow duration-(--duration-fast) hover:shadow-md">
 								<ConditionRows
 									nodeId={node.id}
 									conditions={node.conditions}
@@ -423,7 +421,7 @@ export function Flowchart({
 								}}
 								aria-pressed={active}
 								className={cn(
-									"w-full cursor-pointer rounded-2xl bg-card text-left outline-none transition-shadow duration-150 focus-visible:shadow-[0_0_0_1.5px_var(--primary)]",
+									"w-full cursor-pointer rounded-2xl bg-card text-left outline-none transition-shadow duration-(--duration-fast) focus-visible:shadow-[0_0_0_1.5px_var(--primary)]",
 									active
 										? "shadow-[0_0_0_1.5px_var(--primary),0_2px_10px_rgba(0,0,0,0.045)]"
 										: "shadow-sm hover:shadow-md",

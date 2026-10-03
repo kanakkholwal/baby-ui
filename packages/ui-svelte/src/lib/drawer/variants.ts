@@ -9,7 +9,7 @@ export const drawerFrame = tv({
 		overlay: "fixed inset-0 z-50 bg-black/40 backdrop-blur-[2px]",
 		// vaul eases with cubic-bezier(0.32, 0.72, 0, 1), our `--ease-drawer`; only the surface is ours.
 		panel: [
-			"group/drawer fixed z-50 flex flex-col text-foreground shadow-overlay outline-none",
+			"group/drawer fixed z-50 flex flex-col text-foreground shadow-(--overlay-shadow) outline-none",
 			"data-[vaul-drawer-direction=bottom]:inset-x-0 data-[vaul-drawer-direction=bottom]:bottom-0 data-[vaul-drawer-direction=bottom]:mx-auto data-[vaul-drawer-direction=bottom]:max-h-[92dvh] data-[vaul-drawer-direction=bottom]:w-full data-[vaul-drawer-direction=bottom]:max-w-2xl data-[vaul-drawer-direction=bottom]:rounded-t-3xl",
 			"data-[vaul-drawer-direction=top]:inset-x-0 data-[vaul-drawer-direction=top]:top-0 data-[vaul-drawer-direction=top]:mx-auto data-[vaul-drawer-direction=top]:max-h-[92dvh] data-[vaul-drawer-direction=top]:w-full data-[vaul-drawer-direction=top]:max-w-2xl data-[vaul-drawer-direction=top]:rounded-b-3xl",
 			"data-[vaul-drawer-direction=left]:inset-y-0 data-[vaul-drawer-direction=left]:left-0 data-[vaul-drawer-direction=left]:h-full data-[vaul-drawer-direction=left]:w-80 data-[vaul-drawer-direction=left]:max-w-[85vw] data-[vaul-drawer-direction=left]:rounded-r-3xl",
@@ -42,14 +42,14 @@ export const drawerFrame = tv({
 			framed: {
 				panel: "bg-card p-1",
 				surface: [
-					"rounded-[20px] bg-popover p-panel",
+					"rounded-[20px] border border-border bg-popover p-5",
 					"group-data-[vaul-drawer-direction=bottom]/drawer:rounded-b-none group-data-[vaul-drawer-direction=top]/drawer:rounded-t-none",
 					"group-data-[vaul-drawer-direction=left]/drawer:rounded-l-none group-data-[vaul-drawer-direction=right]/drawer:rounded-r-none",
 				].join(" "),
 			},
 			default: {
 				panel: "bg-popover",
-				surface: "p-panel",
+				surface: "p-5",
 			},
 		},
 	},

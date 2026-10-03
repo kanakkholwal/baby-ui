@@ -94,7 +94,7 @@ export function ToolChips({
 				type="button"
 				aria-expanded={isOpen}
 				onClick={() => setOpen(!isOpen)}
-				className="-mx-1.5 flex w-fit items-center gap-1.5 rounded-md px-1.5 py-1 text-[12.5px] text-muted-foreground transition-colors duration-100 hover:bg-foreground/[0.06]"
+				className="-mx-1.5 flex w-fit items-center gap-1.5 rounded-md px-1.5 py-1 text-xs text-muted-foreground transition-colors duration-(--duration-instant) hover:bg-foreground/[0.06]"
 			>
 				<svg
 					width="12"
@@ -106,7 +106,7 @@ export function ToolChips({
 					strokeLinecap="round"
 					strokeLinejoin="round"
 					aria-hidden
-					className="transition-transform duration-200"
+					className="transition-transform duration-(--duration-base)"
 					style={{ transform: isOpen ? "rotate(0deg)" : "rotate(-90deg)" }}
 				>
 					<path d="M6 9l6 6 6-6" />
@@ -115,7 +115,7 @@ export function ToolChips({
 			</button>
 
 			<div
-				className="grid transition-[grid-template-rows,opacity] duration-300"
+				className="grid transition-[grid-template-rows,opacity] duration-(--duration-slow)"
 				style={{ gridTemplateRows: isOpen ? "1fr" : "0fr", opacity: isOpen ? 1 : 0 }}
 			>
 				<div className="-mx-1 overflow-hidden px-1.5 pb-1">
@@ -132,13 +132,13 @@ export function ToolChips({
 										type="button"
 										aria-expanded={rowOpen}
 										onClick={() => toggleRow(row.label)}
-										className="group/row -mx-[3px] flex h-7 w-[calc(100%+6px)] min-w-0 items-center gap-2 rounded-md px-[3px] text-left transition-colors duration-100 hover:bg-foreground/[0.06]"
+										className="group/row -mx-[3px] flex h-7 w-[calc(100%+6px)] min-w-0 items-center gap-2 rounded-md px-[3px] text-left transition-colors duration-(--duration-instant) hover:bg-foreground/[0.06]"
 									>
 										<span className="relative flex size-4 shrink-0 items-center justify-center text-muted-foreground">
 											<span
 												aria-hidden
 												className={cn(
-													"transition-opacity duration-100 group-hover/row:opacity-0",
+													"transition-opacity duration-(--duration-instant) group-hover/row:opacity-0",
 													rowOpen && "opacity-0",
 												)}
 											>
@@ -155,7 +155,7 @@ export function ToolChips({
 												strokeLinejoin="round"
 												aria-hidden
 												className={cn(
-													"absolute transition-[opacity,transform] duration-150 group-hover/row:opacity-100",
+													"absolute transition-[opacity,transform] duration-(--duration-fast) group-hover/row:opacity-100",
 													rowOpen ? "opacity-100" : "opacity-0",
 												)}
 												style={{ transform: rowOpen ? "rotate(0deg)" : "rotate(-90deg)" }}
@@ -163,12 +163,12 @@ export function ToolChips({
 												<path d="M6 9l6 6 6-6" />
 											</svg>
 										</span>
-										<span className="shrink-0 font-medium text-[12.5px] text-foreground">
+										<span className="shrink-0 font-medium text-xs text-foreground">
 											{row.label}
 										</span>
 										<span
 											className={cn(
-												"h-5.5 min-w-0 flex-1 cursor-pointer truncate rounded-full bg-input px-1.5 text-[11.5px] text-muted-foreground shadow-xs transition-colors duration-100 hover:bg-foreground/[0.06]",
+												"h-5.5 min-w-0 flex-1 cursor-pointer truncate rounded-full bg-input px-1.5 text-xs text-muted-foreground shadow-xs transition-colors duration-(--duration-instant) hover:bg-foreground/[0.06]",
 												"inline-flex items-center",
 												row.mono && "font-mono",
 											)}
@@ -178,7 +178,7 @@ export function ToolChips({
 									</button>
 
 									<div
-										className="grid transition-[grid-template-rows,opacity] duration-300 ease-[var(--ease-out)]"
+										className="grid transition-[grid-template-rows,opacity] duration-(--duration-slow) ease-[var(--ease-out)]"
 										style={{
 											gridTemplateRows: rowOpen ? "1fr" : "0fr",
 											opacity: rowOpen ? 1 : 0,
@@ -190,7 +190,7 @@ export function ToolChips({
 													<span
 														key={line.text}
 														className={cn(
-															"truncate text-[11.5px] leading-[1.6]",
+															"truncate text-xs leading-[1.6]",
 															row.detailMono && "font-mono",
 															line.tone === "add"
 																? "text-success"
@@ -214,7 +214,7 @@ export function ToolChips({
 								<HoverCard key={diff.file}>
 									<HoverCardTrigger
 										aria-label={`Show diff for ${diff.file}`}
-										className="card-fade-up inline-flex h-7 max-w-full items-center gap-2 rounded-full bg-card px-2 font-mono text-[11.5px] text-foreground shadow-sm transition-colors duration-100 hover:bg-foreground/[0.06]"
+										className="card-fade-up inline-flex h-7 max-w-full items-center gap-2 rounded-full bg-card px-2 font-mono text-xs text-foreground shadow-sm transition-colors duration-(--duration-instant) hover:bg-foreground/[0.06]"
 										style={{
 											animationDelay: `calc(var(--stagger-step) * ${steps.length + index})`,
 										}}
@@ -234,7 +234,7 @@ export function ToolChips({
 											align="start"
 											className="w-72 overflow-hidden rounded-[10px] border-none p-0 shadow-2xl"
 										>
-											<div className="flex items-center justify-between border-border border-b px-2.5 py-1.5 font-mono text-[11px]">
+											<div className="flex items-center justify-between border-border border-b px-2.5 py-1.5 font-mono text-xs">
 												<span className="min-w-0 truncate text-muted-foreground">
 													{diff.file}
 												</span>
@@ -245,7 +245,7 @@ export function ToolChips({
 													) : null}
 												</span>
 											</div>
-											<div className="py-1 font-mono text-[11px] leading-[1.8]">
+											<div className="py-1 font-mono text-xs leading-[1.8]">
 												{diff.lines.map((line, lineIndex) => (
 													<div
 														key={`${lineIndex}-${line.text}`}
@@ -274,7 +274,7 @@ export function ToolChips({
 								</HoverCard>
 							))}
 							{hiddenDiffCount > 0 ? (
-								<span className="inline-flex h-7 items-center rounded-full px-1.5 font-mono text-[11.5px] text-muted-foreground">
+								<span className="inline-flex h-7 items-center rounded-full px-1.5 font-mono text-xs text-muted-foreground">
 									+{hiddenDiffCount} more
 								</span>
 							) : null}

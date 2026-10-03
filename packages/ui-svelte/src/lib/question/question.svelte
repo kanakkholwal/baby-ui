@@ -98,7 +98,7 @@ function queueAutoAdvance() {
 				<div class="flex items-start gap-2">
 					<p class="min-w-0 flex-1 font-medium text-foreground text-sm">{item.title}</p>
 					{#if multipleQuestions}
-						<span class="shrink-0 text-[11px] text-muted-foreground tabular-nums">{currentStep + 1}/{questions.length}</span>
+						<span class="shrink-0 text-xs text-muted-foreground tabular-nums">{currentStep + 1}/{questions.length}</span>
 					{/if}
 				</div>
 				{#if item.description}
@@ -127,7 +127,7 @@ function queueAutoAdvance() {
 						<span
 							aria-hidden="true"
 							class={cn(
-								"size-1.5 rounded-full bg-foreground transition-[opacity,scale] duration-200 ease-[var(--ease-out)]",
+								"size-1.5 rounded-full bg-foreground transition-[opacity,scale] duration-(--duration-base) ease-[var(--ease-out)]",
 								i === currentStep ? "scale-100 opacity-100" : "scale-75 opacity-35",
 							)}
 						></span>

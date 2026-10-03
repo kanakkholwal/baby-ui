@@ -6,7 +6,7 @@ export const button = tv({
 		"whitespace-nowrap rounded-lg border border-transparent font-medium text-sm",
 		// Colour answers at once; the squish settles slower so it reads soft, not twitchy.
 		"transition-[transform,scale,translate,background-color,border-color,color,box-shadow]",
-		"[transition-duration:250ms,250ms,250ms,100ms,100ms,100ms,100ms] ease-[var(--ease-smooth)]",
+		"[transition-duration:var(--duration-slow),var(--duration-slow),var(--duration-slow),var(--duration-instant),var(--duration-instant),var(--duration-instant),var(--duration-instant)] ease-[var(--ease-smooth)]",
 		"active:scale-[var(--press-scale)]",
 		"outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
 		"disabled:pointer-events-none disabled:opacity-50",
@@ -33,6 +33,19 @@ export const button = tv({
 			warning_soft: "border-warning/10 bg-warning/10 text-warning hover:bg-warning/15",
 			info: "bg-info text-white hover:bg-info/90 dark:text-[#151515]",
 			info_soft: "border-info/10 bg-info/10 text-info hover:bg-info/15",
+			// Raised surfaces: each tone sets --surface; the shared recipe below mixes the sheen,
+			// edges, ring and shadow from it, so they follow the theme's accent.
+			default_surface: "text-primary-foreground [--surface:var(--primary)]",
+			secondary_surface: [
+				"text-foreground",
+				"[background:linear-gradient(var(--background),color-mix(in_oklab,var(--background)_94%,var(--foreground)))_padding-box,linear-gradient(color-mix(in_oklab,var(--foreground)_5%,var(--background)),color-mix(in_oklab,var(--foreground)_14%,var(--background)))_border-box]",
+				"shadow-[0_0_0_1px_color-mix(in_oklab,var(--foreground)_7%,transparent),inset_0_-3px_6px_-3px_color-mix(in_oklab,var(--foreground)_8%,transparent),0_1px_2px_0_rgb(0_0_0/0.06),0_2px_4px_0_rgb(0_0_0/0.04)]",
+				"hover:brightness-[0.98] dark:hover:brightness-110",
+			],
+			destructive_surface: "text-destructive-foreground [--surface:var(--destructive)]",
+			success_surface: "text-white [--surface:var(--success)] dark:text-[#151515]",
+			warning_surface: "text-white [--surface:var(--warning)] dark:text-[#151515]",
+			info_surface: "text-white [--surface:var(--info)] dark:text-[#151515]",
 			dark: "bg-foreground text-background hover:bg-foreground/90",
 			light: "bg-white text-black hover:bg-white/90 dark:bg-black dark:text-white",
 			raw: "h-auto rounded-none border-0 p-0 active:scale-100",
@@ -51,6 +64,36 @@ export const button = tv({
 			"icon-xl": "size-12 p-0 active:scale-[var(--press-scale-lg)] [&_svg]:size-5",
 		},
 	},
+	compoundVariants: [
+		{
+			// Sheen over a top-to-bottom fill, a lit top edge falling to a darker one, a ring and a
+			// soft drop. Hover lifts brightness, which transitions where a gradient swap would snap.
+			variant: [
+				"default_surface",
+				"destructive_surface",
+				"success_surface",
+				"warning_surface",
+				"info_surface",
+			],
+			class: [
+				"[background:linear-gradient(rgb(255_255_255/0.12),transparent_50%)_padding-box,linear-gradient(var(--surface),color-mix(in_oklab,var(--surface)_86%,black))_padding-box,linear-gradient(color-mix(in_oklab,var(--surface)_68%,white),color-mix(in_oklab,var(--surface)_78%,black))_border-box]",
+				"shadow-[0_0_0_1px_color-mix(in_oklab,var(--surface)_62%,black),inset_0_-3px_6px_-3px_color-mix(in_oklab,var(--surface)_40%,black),0_1px_1px_0_color-mix(in_oklab,var(--surface)_14%,transparent),0_2px_4px_0_color-mix(in_oklab,var(--surface)_18%,transparent)]",
+				"hover:brightness-[1.06]",
+			],
+		},
+		{
+			variant: [
+				"default_surface",
+				"secondary_surface",
+				"destructive_surface",
+				"success_surface",
+				"warning_surface",
+				"info_surface",
+			],
+			class:
+				"transition-[transform,scale,translate,background-color,border-color,color,box-shadow,filter]",
+		},
+	],
 	defaultVariants: { variant: "default", size: "md" },
 });
 

@@ -1,15 +1,19 @@
 # Fixes what it can in the staged files and re-stages them; CI runs the same gates read-only.
+# Jobs run in order and all of them run, so one commit attempt reports every failure.
 pre-commit:
-  piped: true
   jobs:
     - name: import extensions
       glob: "*.{ts,tsx,svelte,mjs,js}"
       run: node scripts/check-import-extensions.mjs --write {staged_files}
       stage_fixed: true
+      fail_text: "Relative imports need no file extension. Run `pnpm fix`, then stage and commit again."
+    # --staged lets biome read the list from git: a large commit's file list overflows cmd.exe.
     - name: biome
       glob: "*.{js,jsx,mjs,cjs,ts,tsx,json,jsonc,svelte}"
-      run: pnpm exec biome check --write --no-errors-on-unmatched --files-ignore-unknown=true --colors=off {staged_files}
+      run: pnpm exec biome check --write --staged --no-errors-on-unmatched --files-ignore-unknown=true --colors=off
       stage_fixed: true
+      fail_text: "Biome found lint errors it cannot fix (listed above). Fix them, or run `pnpm fix`, then stage and commit again."
     - name: comments
       glob: "*.{ts,tsx,js,jsx,mjs,svelte}"
       run: node scripts/check-comments.mjs {staged_files}
+      fail_text: "Comments must be 2 lines or fewer, with no banners or blank lines (listed above). Shorten them, then stage and commit again."

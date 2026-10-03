@@ -58,9 +58,9 @@ const behaviour: (keyof Omit<RecordsColumnSettings, "grounding">)[] = [
 ];
 const typeItems = NEW_PROPERTY_TYPES.map((type) => ({ value: type, label: type }));
 const actionRow =
-	"flex h-8 items-center gap-2.5 rounded-md px-1.5 text-left text-[13px] text-foreground transition-colors hover:bg-foreground/[0.06]";
+	"flex h-8 items-center gap-2.5 rounded-md px-1.5 text-left text-sm text-foreground transition-colors hover:bg-foreground/[0.06]";
 const pickerTrigger =
-	"h-7 w-auto min-w-0 gap-1.5 border-none bg-transparent px-1.5 font-medium text-[13px] text-foreground hover:bg-foreground/[0.06]";
+	"h-7 w-auto min-w-0 gap-1.5 border-none bg-transparent px-1.5 font-medium text-sm text-foreground hover:bg-foreground/[0.06]";
 </script>
 
 {#snippet icon(size: number, d: string[], circles: [number, number, number][] = [])}
@@ -71,10 +71,10 @@ const pickerTrigger =
 {/snippet}
 
 <div data-slot="records-table-config-popover">
-	<div class="pb-2 font-medium text-[13.5px] text-foreground">{title}</div>
+	<div class="pb-2 font-medium text-sm text-foreground">{title}</div>
 
 	<div class="relative flex h-8 items-center justify-between">
-		<span class="text-[13px] text-muted-foreground">{labels.type}</span>
+		<span class="text-sm text-muted-foreground">{labels.type}</span>
 		<Select
 			bind:value={() => column.type, (v) => onChange({ type: v as RecordsColumnType })}
 			items={typeItems}
@@ -97,7 +97,7 @@ const pickerTrigger =
 	</div>
 
 	<div class="relative flex h-8 items-center justify-between">
-		<span class="text-[13px] text-muted-foreground">{labels.tool}</span>
+		<span class="text-sm text-muted-foreground">{labels.tool}</span>
 		<Select
 			bind:value={() => column.tool, (tool) => onChange({ tool, toolKind: "model" })}
 			items={modelOptions.map((model) => ({ value: model, label: model }))}
@@ -123,7 +123,7 @@ const pickerTrigger =
 	</div>
 
 	<div class="relative flex h-8 items-center justify-between">
-		<span class="text-[13px] text-muted-foreground">{labels.grounding}</span>
+		<span class="text-sm text-muted-foreground">{labels.grounding}</span>
 		<span class="flex items-center gap-2">
 			<Switch
 				aria-label={labels.grounding}
@@ -136,7 +136,7 @@ const pickerTrigger =
 				>
 					{@render icon(13, ["M12 8h.01M11 12h1v4h1"], [[12, 12, 9]])}
 				</HoverCardTrigger>
-				<HoverCardContent side="top" class="w-56 text-[12px] leading-relaxed">
+				<HoverCardContent side="top" class="w-56 text-xs leading-relaxed">
 					{labels.groundingHelp}
 				</HoverCardContent>
 			</HoverCard>
@@ -144,21 +144,21 @@ const pickerTrigger =
 	</div>
 
 	<div class="relative flex h-8 items-center justify-between">
-		<span class="text-[13px] text-muted-foreground">{labels.inputs}</span>
+		<span class="text-sm text-muted-foreground">{labels.inputs}</span>
 		<Popover>
 			<PopoverTrigger
 				aria-label={labels.inputs}
-				class="flex h-7 max-w-[220px] items-center gap-1.5 rounded-md px-1.5 text-[13px] text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground"
+				class="flex h-7 max-w-[220px] items-center gap-1.5 rounded-md px-1.5 text-sm text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground"
 			>
 				{#if column.inputs.length}
 					<span class="flex min-w-0 items-center gap-1">
 						{#each column.inputs.slice(0, 2) as input (input)}
-							<span class="max-w-[92px] truncate rounded-[5px] bg-primary/10 px-1.5 py-0.5 font-medium text-[12px] text-primary">
+							<span class="max-w-[92px] truncate rounded-[5px] bg-primary/10 px-1.5 py-0.5 font-medium text-xs text-primary">
 								{input}
 							</span>
 						{/each}
 						{#if column.inputs.length > 2}
-							<span class="font-medium text-[11px] text-muted-foreground">+{column.inputs.length - 2}</span>
+							<span class="font-medium text-xs text-muted-foreground">+{column.inputs.length - 2}</span>
 						{/if}
 					</span>
 				{:else}
@@ -166,7 +166,7 @@ const pickerTrigger =
 				{/if}
 			</PopoverTrigger>
 			<PopoverContent align="start" class="w-56 p-1.5">
-				<div class="px-1.5 pt-0.5 pb-1 font-medium text-[11.5px] text-muted-foreground">{labels.useValuesFrom}</div>
+				<div class="px-1.5 pt-0.5 pb-1 font-medium text-xs text-muted-foreground">{labels.useValuesFrom}</div>
 				<div class="flex flex-col gap-0.5">
 					{#each inputOptions as option (option)}
 						<Checkbox
@@ -184,9 +184,9 @@ const pickerTrigger =
 	</div>
 
 	{#if column.prompt}
-		<div class="mt-2 min-h-[64px] rounded-lg border border-border bg-muted p-3 text-[13px] leading-relaxed">
+		<div class="mt-2 min-h-[64px] rounded-lg border border-border bg-muted p-3 text-sm leading-relaxed">
 			<span class="text-foreground">
-				{column.prompt.before}{#if column.prompt.chip}<span class="rounded-[5px] bg-primary/10 px-1.5 py-0.5 font-medium text-[12px] text-primary">{column.prompt.chip}</span>{/if}{column.prompt.after}
+				{column.prompt.before}{#if column.prompt.chip}<span class="rounded-[5px] bg-primary/10 px-1.5 py-0.5 font-medium text-xs text-primary">{column.prompt.chip}</span>{/if}{column.prompt.after}
 			</span>
 		</div>
 	{/if}
@@ -208,7 +208,7 @@ const pickerTrigger =
 				{@render icon(15, ["M12 2v3M12 19v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1 7 17M17 7l2.1-2.1"], [[12, 12, 3]])}
 			</span>
 			<span class="flex-1">{labels.moreSettings}</span>
-			<span class={cn("text-muted-foreground transition-transform duration-150 motion-reduce:transition-none", moreOpen && "rotate-90")}>
+			<span class={cn("text-muted-foreground transition-transform duration-(--duration-fast) motion-reduce:transition-none", moreOpen && "rotate-90")}>
 				{@render icon(12, ["M9 6l6 6-6 6"])}
 			</span>
 		</button>
@@ -233,10 +233,10 @@ const pickerTrigger =
 	>
 		<div class="min-h-0 overflow-hidden">
 			<div class="mt-2 border-border border-t pt-2">
-				<div class="pb-1 font-medium text-[11.5px] text-muted-foreground">{labels.behavior}</div>
+				<div class="pb-1 font-medium text-xs text-muted-foreground">{labels.behavior}</div>
 				{#each behaviour as key (key)}
 					<div class="relative flex h-8 items-center justify-between">
-						<span class="text-[13px] text-muted-foreground">{labels[key]}</span>
+						<span class="text-sm text-muted-foreground">{labels[key]}</span>
 						<Switch
 							aria-label={labels[key]}
 							bind:checked={() => column[key], (on) => onChange({ [key]: on })}

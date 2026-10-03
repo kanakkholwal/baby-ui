@@ -1,5 +1,5 @@
 ---
-title: Command Palette
+title: Command
 description: Command, CommandDialog, CommandHeader, CommandInput, CommandList, CommandGroup and CommandItem, driven entirely from the keyboard.
 component: command
 category: base

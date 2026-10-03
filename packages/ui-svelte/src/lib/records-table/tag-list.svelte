@@ -49,7 +49,7 @@ const hiddenCount = $derived(tags.length - visibleCount);
 </script>
 
 {#snippet tag(name: string)}
-	<span class={`inline-flex h-5.5 shrink-0 items-center rounded-md px-1.5 font-medium text-[11.5px] ${tagToneClass(name)}`}>
+	<span class={`inline-flex h-5.5 shrink-0 items-center rounded-md px-1.5 font-medium text-xs ${tagToneClass(name)}`}>
 		{name}
 	</span>
 {/snippet}
@@ -59,7 +59,7 @@ const hiddenCount = $derived(tags.length - visibleCount);
 		{#each tags as name (name)}
 			<span data-tag-measure>{@render tag(name)}</span>
 		{/each}
-		<span data-more-measure class="inline-flex h-5.5 items-center rounded-md px-1.5 text-[11px]">
+		<span data-more-measure class="inline-flex h-5.5 items-center rounded-md px-1.5 text-xs">
 			+{tags.length}
 		</span>
 	</div>
@@ -67,6 +67,6 @@ const hiddenCount = $derived(tags.length - visibleCount);
 		{@render tag(name)}
 	{/each}
 	{#if hiddenCount > 0}
-		<span class="shrink-0 text-[11px] text-muted-foreground">+{hiddenCount}</span>
+		<span class="shrink-0 text-xs text-muted-foreground">+{hiddenCount}</span>
 	{/if}
 </div>

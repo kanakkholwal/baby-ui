@@ -198,7 +198,7 @@ export function Calendar({
 						defaults.week_number_header,
 					),
 					week_number: cn(
-						"text-[0.8rem] text-muted-foreground select-none",
+						"text-xs text-muted-foreground select-none",
 						defaults.week_number,
 					),
 					day: cn(styles.cell(), styles.rangeCell(), defaults.day),

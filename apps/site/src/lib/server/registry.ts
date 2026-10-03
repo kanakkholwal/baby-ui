@@ -63,8 +63,10 @@ export function cardItem(spec: ComponentSpec): CardItem {
 		name: spec.name,
 		description: spec.description,
 		href: specHref(spec),
+		category: spec.category,
 		tier: spec.tier,
 		isNew: spec.isNew,
+		isUpdated: spec.isUpdated && !spec.isNew,
 		defaults: defaultProps(spec),
 	};
 }

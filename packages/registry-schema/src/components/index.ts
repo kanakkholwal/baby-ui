@@ -164,6 +164,7 @@ import { pricing01 } from "./pricing-01.ts";
 import { pricing02 } from "./pricing-02.ts";
 import { progress } from "./progress.ts";
 import { projectionLine } from "./projection-line.ts";
+import { propertyPanel } from "./property-panel.ts";
 import { question } from "./question.ts";
 import { radarChart } from "./radar-chart.ts";
 import { radioGroup } from "./radio-group.ts";
@@ -420,6 +421,7 @@ export const specs: ComponentSpec[] = [
 	pricing02,
 	progress,
 	projectionLine,
+	propertyPanel,
 	question,
 	radarChart,
 	radioGroup,

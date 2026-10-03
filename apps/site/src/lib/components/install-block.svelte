@@ -1,12 +1,11 @@
 <script lang="ts">
-import { Skeleton } from "@baby-ui/svelte";
+import { Skeleton, Tabs, TabsContent, TabsList, TabsTrigger } from "@baby-ui/svelte";
 import { track } from "#lib/analytics.js";
 import type { InstallSource } from "#lib/source.js";
 import CodeBlock from "./code-block.svelte";
 import InstallCommand from "./install-command.svelte";
 import PmCommand from "./pm-command.svelte";
 import SourceFiles from "./source-files.svelte";
-import Tabs from "./tabs.svelte";
 
 let {
 	slug,
@@ -42,10 +41,6 @@ const classes = $derived(css.filter((name) => name.startsWith(".")));
 const keyframes = $derived(css.length - classes.length);
 
 let mode = $state("cli");
-const tabs = [
-	{ id: "cli", label: "CLI" },
-	{ id: "manual", label: "Manual" },
-];
 const manual = (step: string) => ({
 	event: "install_copied",
 	props: { item: slug, method: "manual", step },
@@ -53,8 +48,7 @@ const manual = (step: string) => ({
 </script>
 
 <Tabs
-	{tabs}
-	bind:active={
+	bind:value={
 		() => mode,
 		(next) => {
 			mode = next;
@@ -62,12 +56,13 @@ const manual = (step: string) => ({
 		}
 	}
 	variant="segment"
-	controls="install"
-	class="self-start"
-/>
-
-<div class="mt-4" role="tabpanel" id="install-{mode}" aria-labelledby="tab-{mode}">
-	{#if mode === "cli"}
+	size="sm"
+>
+	<TabsList aria-label="Install method" class="self-start">
+		<TabsTrigger value="cli">CLI</TabsTrigger>
+		<TabsTrigger value="manual">Manual</TabsTrigger>
+	</TabsList>
+	<TabsContent value="cli">
 		<InstallCommand {slug} />
 		<p class="mt-2 text-muted-foreground text-xs leading-relaxed">
 			{#if css.length}
@@ -81,7 +76,10 @@ const manual = (step: string) => ({
 				Writes no CSS of its own: Tailwind utilities and the shared motion tokens.
 			{/if}
 		</p>
-	{:else}
+	</TabsContent>
+	<!-- Manual fetches the source, so it renders only once opened. -->
+	<TabsContent value="manual">
+		{#if mode === "manual"}
 		<ol class="flex flex-col gap-6">
 			{#if dependencies.length}
 				<li>
@@ -138,5 +136,6 @@ const manual = (step: string) => ({
 				</p>
 			</li>
 		</ol>
-	{/if}
-</div>
+		{/if}
+	</TabsContent>
+</Tabs>

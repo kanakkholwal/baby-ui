@@ -9,7 +9,7 @@ export const liveLine = tv({
 		dot: "fill-current stroke-background [stroke-width:2]",
 		ring: "fill-none stroke-current [stroke-width:1.5]",
 		badge: "fill-popover/95 stroke-border",
-		badgeText: "fill-popover-foreground font-medium font-mono text-[11px] tabular-nums",
+		badgeText: "fill-popover-foreground font-medium font-mono text-xs tabular-nums",
 		arrow: "fill-current",
 	},
 	variants: {
@@ -42,8 +42,9 @@ export type LiveLineTint = NonNullable<VariantProps<typeof liveLine>["tint"]>;
 
 export const liveAxis = tv({
 	slots: {
-		tick: "fill-muted-foreground text-[11px] tabular-nums",
-		timeLabel: "transition-opacity duration-150 ease-[cubic-bezier(0,0,0.58,1)]",
+		tick: "fill-muted-foreground text-xs tabular-nums",
+		timeLabel:
+			"transition-opacity duration-(--duration-fast) ease-[cubic-bezier(0,0,0.58,1)]",
 	},
 	variants: {
 		position: {
