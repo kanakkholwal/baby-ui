@@ -69,6 +69,7 @@
 	--font-sans: var(--font-body);
 	--font-heading: var(--font-heading);
 	--font-mono: var(--font-mono);
+	--font-serif: var(--font-serif);
 
 	--ease-out: var(--ease-out);
 	--ease-in-out: var(--ease-in-out);

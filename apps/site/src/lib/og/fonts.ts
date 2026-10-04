@@ -1,6 +1,7 @@
 import interExt from "@fontsource-variable/inter/files/inter-latin-ext-wght-normal.woff2";
 import inter from "@fontsource-variable/inter/files/inter-latin-wght-normal.woff2";
 import mono from "@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2";
+import serif from "@fontsource-variable/newsreader/files/newsreader-latin-wght-normal.woff2";
 import satoshi500 from "../../../../../packages/tokens/fonts/satoshi-500.woff2";
 import satoshi700 from "../../../../../packages/tokens/fonts/satoshi-700.woff2";
 import satoshi900 from "../../../../../packages/tokens/fonts/satoshi-900.woff2";
@@ -14,4 +15,5 @@ export const OG_FONT_FILES: { name: string; url: string; weight?: number }[] = [
 	{ name: "Satoshi", url: satoshi700, weight: 700 },
 	{ name: "Satoshi", url: satoshi900, weight: 900 },
 	{ name: "JetBrains Mono Variable", url: mono },
+	{ name: "Newsreader Variable", url: serif },
 ];

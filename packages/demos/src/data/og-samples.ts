@@ -1,4 +1,12 @@
 const VIBRANT = "https://cdn.vibrant.design/favicons";
+// Simple Icons serves one glyph per brand; a trailing colour recolours it (CORS-enabled).
+const brand = (slug: string, colour?: string) =>
+	`https://cdn.simpleicons.org/${slug}${colour ? `/${colour}` : ""}`;
+const lucide = (name: string) =>
+	`https://unpkg.com/lucide-static@0.544.0/icons/${name}.svg`;
+// randomuser.me rather than pravatar: the browser renderer's wsrv.nl fallback refuses pravatar.
+const portrait = (kind: "men" | "women", n: number) =>
+	`https://randomuser.me/api/portraits/${kind}/${n}.jpg`;
 
 const CODE_SVELTE = [
 	'import { Dialog } from "#lib/ui/dialog";',
@@ -41,7 +49,7 @@ export const OG_DOCS_SNIPPETS = {
 };
 
 export const OG_BLOG_POST = {
-	author: { name: "Kanak Kholwal", avatar: "https://i.pravatar.cc/160?img=12" },
+	author: { name: "Kanak Kholwal", avatar: portrait("men", 32) },
 	date: "Sep 26, 2026",
 	readingTime: "6 min read",
 };
@@ -80,11 +88,11 @@ export const OG_CHANGELOG = {
 };
 
 export const OG_GITHUB_REPO = {
-	avatar: "https://i.pravatar.cc/120?img=15",
+	avatar: portrait("men", 45),
 	stars: "12.4k",
 	forks: "684",
 	issues: "23",
-	contributors: [3, 5, 8, 12, 16].map((n) => `https://i.pravatar.cc/120?img=${n}`),
+	contributors: [12, 44, 21, 68, 9].map((n, i) => portrait(i % 2 ? "women" : "men", n)),
 	contributorCount: "+128",
 };
 
@@ -124,7 +132,9 @@ export const OG_TILTED_SCREEN = {
 
 export const OG_SPOTLIGHT = {
 	logo: `${VIBRANT}/hm5yvaq.png`,
-	images: [5, 9, 12, 16, 20, 25, 32, 44].map((n) => `https://i.pravatar.cc/240?img=${n}`),
+	images: [5, 9, 12, 16, 20, 25, 32, 44].map((n, i) =>
+		portrait(i % 2 ? "men" : "women", n),
+	),
 };
 
 export const OG_EDITORIAL_BIO = {
@@ -154,6 +164,21 @@ export const OG_SAMPLE_BY_PROPS: Record<
 		props.mode === "dark"
 			? { name: "Cursor", logo: `${VIBRANT}/kjqdvvk.png` }
 			: { name: "Natural" },
+	"og-statement": (props) => ({
+		logo: brand("figma", props.mode === "dark" ? "white" : undefined),
+	}),
+	"og-guides": (props) => ({
+		logo: brand("shadcnui", props.mode === "light" ? "black" : "white"),
+	}),
+	"og-paper-window": (props) => ({
+		logo: brand("notion", props.mode === "dark" ? "white" : undefined),
+	}),
+	"og-hairlines": (props) => ({
+		logo: brand("nextdotjs", props.mode === "dark" ? "white" : undefined),
+	}),
+	"og-halo": (props) => ({
+		logo: brand("vercel", props.mode === "light" ? "white" : "black"),
+	}),
 	"og-docs-page": (props) =>
 		props.motif === "terminal"
 			? { snippet: OG_DOCS_SNIPPETS.svelte.shell, filename: "zsh" }
@@ -177,12 +202,12 @@ export const OG_PRICING = {
 };
 
 export const OG_JOB_POSTING = {
-	logo: "https://i.pravatar.cc/160?img=30",
+	logo: portrait("men", 30),
 };
 
 export const OG_PODCAST_EPISODE = {
 	cover: "https://picsum.photos/id/1082/800/800",
-	guest: { name: "Ada Park", avatar: "https://i.pravatar.cc/160?img=32" },
+	guest: { name: "Ada Park", avatar: portrait("women", 32) },
 };
 
 export const OG_PRODUCT_SHOP = {
@@ -194,7 +219,7 @@ export const OG_TESTIMONIAL = {
 	author: {
 		name: "Maya Chen",
 		role: "Head of Design",
-		avatar: "https://i.pravatar.cc/200?img=47",
+		avatar: portrait("women", 47),
 	},
 };
 
@@ -207,24 +232,68 @@ export const OG_STATS_METRICS = {
 	sparkline: [12, 15, 14, 19, 22, 21, 26, 30, 29, 35, 38, 44],
 };
 
+export const OG_CTA_PILL = { logo: brand("cloudflare", "white") };
+export const OG_PROMPT = { logo: brand("replit") };
+export const OG_PROMPT_PHOTO = {
+	image: "https://picsum.photos/id/1056/1400/900",
+	chips: ["Template", "Blocks", "Vite + React"],
+};
+export const OG_PAPER_WINDOW = {
+	logo: brand("notion"),
+	image: "https://picsum.photos/id/1032/1400/900",
+};
+export const OG_STATEMENT = { logo: brand("figma") };
+export const OG_GUIDES = { logo: brand("shadcnui", "white") };
+export const OG_HALO = { logo: brand("vercel", "black") };
+export const OG_TAGLINE = { logo: brand("supabase") };
+export const OG_HAIRLINES = { logo: brand("nextdotjs") };
+export const OG_APP_TILE = { logo: brand("raycast") };
+export const OG_APP_ICON = { logo: brand("linear", "white") };
+export const OG_BIG_ICON = {
+	logo: brand("lucide"),
+	icon: lucide("ghost"),
+	pattern: [
+		"search",
+		"bell",
+		"camera",
+		"heart",
+		"folder",
+		"calendar",
+		"map-pin",
+		"settings",
+	].map(lucide),
+};
+
 export const OG_SAMPLES: Record<string, Record<string, unknown>> = {
+	"og-app-icon": OG_APP_ICON,
+	"og-app-tile": OG_APP_TILE,
+	"og-big-icon": OG_BIG_ICON,
 	"og-blog-post": OG_BLOG_POST,
 	"og-changelog": OG_CHANGELOG,
+	"og-cta-pill": OG_CTA_PILL,
 	"og-docs-page": OG_DOCS_PAGE,
 	"og-editorial-bio": OG_EDITORIAL_BIO,
 	"og-github-repo": OG_GITHUB_REPO,
+	"og-guides": OG_GUIDES,
+	"og-hairlines": OG_HAIRLINES,
+	"og-halo": OG_HALO,
 	"og-job-posting": OG_JOB_POSTING,
 	"og-newsletter-issue": OG_NEWSLETTER_ISSUE,
+	"og-paper-window": OG_PAPER_WINDOW,
 	"og-podcast-episode": OG_PODCAST_EPISODE,
 	"og-pricing": OG_PRICING,
 	"og-product-launch": OG_PRODUCT_LAUNCH,
 	"og-product-shop": OG_PRODUCT_SHOP,
+	"og-prompt": OG_PROMPT,
+	"og-prompt-photo": OG_PROMPT_PHOTO,
 	"og-scatter": OG_SCATTER,
 	"og-showcase": OG_SHOWCASE,
 	"og-soft-focus": OG_SOFT_FOCUS,
 	"og-split": OG_SPLIT,
 	"og-spotlight": OG_SPOTLIGHT,
+	"og-statement": OG_STATEMENT,
 	"og-stats-metrics": OG_STATS_METRICS,
+	"og-tagline": OG_TAGLINE,
 	"og-testimonial": OG_TESTIMONIAL,
 	"og-tilted-screen": OG_TILTED_SCREEN,
 };

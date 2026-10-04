@@ -1,5 +1,6 @@
 @import "@fontsource-variable/inter";
 @import "@fontsource-variable/jetbrains-mono";
+@import "@fontsource-variable/newsreader";
 @import "@baby-ui/tokens/theme.css";
 @source "../../../../packages/ui-svelte/src/lib";
 /* Shared .ts files (variants, cores) are generated into ui-svelte and gitignored there, which

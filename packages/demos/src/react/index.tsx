@@ -119,22 +119,34 @@ import { GradientHero01Demo } from "./auto/gradient-hero-01";
 import { InfiniteImageFieldDemo } from "./auto/infinite-image-field";
 import { MagnetLinesDemo } from "./auto/magnet-lines";
 import { MaskTextDemo } from "./auto/mask-text";
+import { OgAppIconDemo } from "./auto/og-app-icon";
+import { OgAppTileDemo } from "./auto/og-app-tile";
+import { OgBigIconDemo } from "./auto/og-big-icon";
 import { OgBlogPostDemo } from "./auto/og-blog-post";
 import { OgChangelogDemo } from "./auto/og-changelog";
+import { OgCtaPillDemo } from "./auto/og-cta-pill";
 import { OgDocsPageDemo } from "./auto/og-docs-page";
 import { OgEditorialBioDemo } from "./auto/og-editorial-bio";
 import { OgGithubRepoDemo } from "./auto/og-github-repo";
+import { OgGuidesDemo } from "./auto/og-guides";
+import { OgHairlinesDemo } from "./auto/og-hairlines";
+import { OgHaloDemo } from "./auto/og-halo";
 import { OgJobPostingDemo } from "./auto/og-job-posting";
+import { OgPaperWindowDemo } from "./auto/og-paper-window";
 import { OgPodcastEpisodeDemo } from "./auto/og-podcast-episode";
 import { OgPricingDemo } from "./auto/og-pricing";
 import { OgProductLaunchDemo } from "./auto/og-product-launch";
 import { OgProductShopDemo } from "./auto/og-product-shop";
+import { OgPromptDemo } from "./auto/og-prompt";
+import { OgPromptPhotoDemo } from "./auto/og-prompt-photo";
 import { OgScatterDemo } from "./auto/og-scatter";
 import { OgShowcaseDemo } from "./auto/og-showcase";
 import { OgSoftFocusDemo } from "./auto/og-soft-focus";
 import { OgSplitDemo } from "./auto/og-split";
 import { OgSpotlightDemo } from "./auto/og-spotlight";
+import { OgStatementDemo } from "./auto/og-statement";
 import { OgStatsMetricsDemo } from "./auto/og-stats-metrics";
+import { OgTaglineDemo } from "./auto/og-tagline";
 import { OgTestimonialDemo } from "./auto/og-testimonial";
 import { OgTiltedScreenDemo } from "./auto/og-tilted-screen";
 import { OgWordmarkDemo } from "./auto/og-wordmark";
@@ -270,23 +282,35 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"notched-shelf": NotchedShelfDemo,
 	"npm-stats": NpmStatsDemo,
 	"number-input": NumberInputDemo,
+	"og-app-icon": OgAppIconDemo,
+	"og-app-tile": OgAppTileDemo,
+	"og-big-icon": OgBigIconDemo,
 	"og-blog-post": OgBlogPostDemo,
 	"og-changelog": OgChangelogDemo,
+	"og-cta-pill": OgCtaPillDemo,
 	"og-docs-page": OgDocsPageDemo,
 	"og-editorial-bio": OgEditorialBioDemo,
 	"og-github-repo": OgGithubRepoDemo,
+	"og-guides": OgGuidesDemo,
+	"og-hairlines": OgHairlinesDemo,
+	"og-halo": OgHaloDemo,
 	"og-job-posting": OgJobPostingDemo,
 	"og-newsletter-issue": OgNewsletterIssueDemo,
+	"og-paper-window": OgPaperWindowDemo,
 	"og-podcast-episode": OgPodcastEpisodeDemo,
 	"og-pricing": OgPricingDemo,
 	"og-product-launch": OgProductLaunchDemo,
 	"og-product-shop": OgProductShopDemo,
+	"og-prompt": OgPromptDemo,
+	"og-prompt-photo": OgPromptPhotoDemo,
 	"og-scatter": OgScatterDemo,
 	"og-showcase": OgShowcaseDemo,
 	"og-soft-focus": OgSoftFocusDemo,
 	"og-split": OgSplitDemo,
 	"og-spotlight": OgSpotlightDemo,
+	"og-statement": OgStatementDemo,
 	"og-stats-metrics": OgStatsMetricsDemo,
+	"og-tagline": OgTaglineDemo,
 	"og-testimonial": OgTestimonialDemo,
 	"og-tilted-screen": OgTiltedScreenDemo,
 	"og-wordmark": OgWordmarkDemo,

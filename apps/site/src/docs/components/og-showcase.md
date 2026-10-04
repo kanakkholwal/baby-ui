@@ -15,12 +15,13 @@ you pass fewer. Phone-ratio screenshots look best.
 Register each font under the family name your `--font-*` tokens use; on a mismatch takumi
 silently falls back to the first font and the PNG stops matching the page.
 
-Install the renderer once: `pnpm add takumi-js`. Point `og:image` at the route with the page's
-fields in the query string.
-
-SvelteKit, `src/routes/og/product/+server.ts`:
+```bash
+# pm: add takumi-js
+```
 
 ```ts
+// tab: Svelte
+// src/routes/og/product/+server.ts
 import { render } from "svelte/server";
 import { googleFonts } from "takumi-js/helpers";
 import { ImageResponse } from "takumi-js/response";
@@ -38,10 +39,10 @@ export async function GET({ url }) {
 }
 ```
 
-Next.js has no inline CSS import, so compile your stylesheet once (add it to your build script):
-`npx @tailwindcss/cli -i app/globals.css -o og.css`. Then `app/og/product/route.tsx`:
-
 ```tsx
+// tab: React
+// app/og/product/route.tsx
+// Next.js has no inline CSS import: compile once with `npx @tailwindcss/cli -i app/globals.css -o og.css`.
 import { readFile } from "node:fs/promises";
 import { googleFonts } from "takumi-js/helpers";
 import { ImageResponse } from "takumi-js/response";

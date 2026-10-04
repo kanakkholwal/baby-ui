@@ -69,10 +69,11 @@
 	/* One knob: controls and fields use it as is, cards +6px, dialogs +10px. */
 	--radius: 0.625rem;
 
-	/* All three are self-hosted: Inter and JetBrains Mono via fontsource, Satoshi vendored. */
+	/* All self-hosted: Inter, JetBrains Mono and Newsreader via fontsource, Satoshi vendored. */
 	--font-heading: "Satoshi", "Inter Variable", ui-sans-serif, system-ui, sans-serif;
 	--font-body: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
 	--font-mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, monospace;
+	--font-serif: "Newsreader Variable", ui-serif, Georgia, serif;
 }
 
 .dark {

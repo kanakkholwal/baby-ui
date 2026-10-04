@@ -121,23 +121,35 @@ import { navigationMenu } from "./navigation-menu.ts";
 import { notchedShelf } from "./notched-shelf.ts";
 import { npmStatsBlock } from "./npm-stats.ts";
 import { numberInput } from "./number-input.ts";
+import { ogAppIcon } from "./og-app-icon.ts";
+import { ogAppTile } from "./og-app-tile.ts";
+import { ogBigIcon } from "./og-big-icon.ts";
 import { ogBlogPost } from "./og-blog-post.ts";
 import { ogChangelog } from "./og-changelog.ts";
+import { ogCtaPill } from "./og-cta-pill.ts";
 import { ogDocsPage } from "./og-docs-page.ts";
 import { ogEditorialBio } from "./og-editorial-bio.ts";
 import { ogGithubRepo } from "./og-github-repo.ts";
+import { ogGuides } from "./og-guides.ts";
+import { ogHairlines } from "./og-hairlines.ts";
+import { ogHalo } from "./og-halo.ts";
 import { ogJobPosting } from "./og-job-posting.ts";
 import { ogNewsletterIssue } from "./og-newsletter-issue.ts";
+import { ogPaperWindow } from "./og-paper-window.ts";
 import { ogPodcastEpisode } from "./og-podcast-episode.ts";
 import { ogPricing } from "./og-pricing.ts";
 import { ogProductLaunch } from "./og-product-launch.ts";
 import { ogProductShop } from "./og-product-shop.ts";
+import { ogPromptPhoto } from "./og-prompt-photo.ts";
+import { ogPrompt } from "./og-prompt.ts";
 import { ogScatter } from "./og-scatter.ts";
 import { ogShowcase } from "./og-showcase.ts";
 import { ogSoftFocus } from "./og-soft-focus.ts";
 import { ogSplit } from "./og-split.ts";
 import { ogSpotlight } from "./og-spotlight.ts";
+import { ogStatement } from "./og-statement.ts";
 import { ogStatsMetrics } from "./og-stats-metrics.ts";
+import { ogTagline } from "./og-tagline.ts";
 import { ogTestimonial } from "./og-testimonial.ts";
 import { ogTiltedScreen } from "./og-tilted-screen.ts";
 import { ogWordmark } from "./og-wordmark.ts";
@@ -353,23 +365,35 @@ export const specs: ComponentSpec[] = [
 	notchedShelf,
 	npmStatsBlock,
 	numberInput,
+	ogAppIcon,
+	ogAppTile,
+	ogBigIcon,
 	ogBlogPost,
 	ogChangelog,
+	ogCtaPill,
 	ogDocsPage,
 	ogEditorialBio,
 	ogGithubRepo,
+	ogGuides,
+	ogHairlines,
+	ogHalo,
 	ogJobPosting,
 	ogNewsletterIssue,
+	ogPaperWindow,
 	ogPodcastEpisode,
 	ogPricing,
 	ogProductLaunch,
 	ogProductShop,
+	ogPromptPhoto,
+	ogPrompt,
 	ogScatter,
 	ogShowcase,
 	ogSoftFocus,
 	ogSplit,
 	ogSpotlight,
+	ogStatement,
 	ogStatsMetrics,
+	ogTagline,
 	ogTestimonial,
 	ogTiltedScreen,
 	ogWordmark,

@@ -47,6 +47,7 @@
 		"@docvia/source": "^0.4.0",
 		"@fontsource-variable/inter": "catalog:",
 		"@fontsource-variable/jetbrains-mono": "catalog:",
+		"@fontsource-variable/newsreader": "catalog:",
 		"@shikijs/langs": "catalog:",
 		"@shikijs/themes": "catalog:",
 		"clsx": "catalog:",

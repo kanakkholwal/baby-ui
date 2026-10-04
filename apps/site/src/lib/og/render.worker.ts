@@ -17,6 +17,35 @@ const loadFonts = () =>
 		})),
 	));
 
+// A transparent 1x1 PNG, so one unreachable image blanks out instead of failing the whole card.
+const BLANK = Uint8Array.from(
+	atob(
+		"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
+	),
+	(c) => c.charCodeAt(0),
+);
+
+// A host without CORS headers retries through wsrv.nl, a free image CDN that adds them; no image
+// request ever reaches our own Worker, which is what keeps this render off its daily quota.
+async function fetchImage(url: string, init?: RequestInit): Promise<Response> {
+	const response =
+		(await tryFetch(url, init)) ??
+		(await tryFetch(`https://wsrv.nl/?url=${encodeURIComponent(url)}`, init));
+	if (response) return response;
+	console.warn(`OG preview: could not load ${url}`);
+	return new Response(BLANK, { headers: { "content-type": "image/png" } });
+}
+
+// A CORS refusal surfaces as a network error, so both it and a bad status read as "no image".
+async function tryFetch(url: string, init?: RequestInit): Promise<Response | null> {
+	try {
+		const response = await fetch(url, init);
+		return response.ok ? response : null;
+	} catch {
+		return null;
+	}
+}
+
 // One throwaway pixel compiles the WASM and instantiates the renderer before a real card asks.
 const warm = () =>
 	(warmed ??= loadFonts().then((faces) =>
@@ -41,6 +70,7 @@ addEventListener("message", async (event: MessageEvent<OgRequest>) => {
 			height: request.height,
 			css: request.css,
 			fonts: await loadFonts(),
+			images: { fetch: fetchImage },
 		});
 		const bytes = png.slice().buffer;
 		reply({ id: request.id, type: "done", png: bytes }, [bytes]);

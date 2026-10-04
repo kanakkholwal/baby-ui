@@ -1,5 +1,5 @@
 <script lang="ts">
-import { IconArrowLeft, IconTerminal2 } from "@baby-ui/icons";
+import { IconArrowLeft, IconShuffle, IconTerminal2 } from "@baby-ui/icons";
 import { Badge, Button } from "@baby-ui/svelte";
 import type { CardItem } from "#lib/registry.js";
 import { goto } from "$app/navigation";
@@ -53,7 +53,10 @@ function surprise() {
 		</h1>
 		<p class="text-pretty text-base text-muted-foreground leading-relaxed">{description}</p>
 		<div class="mt-1 flex flex-wrap items-center gap-2">
-			<Button variant="outline" size="sm" onclick={surprise}>Surprise me</Button>
+			<Button variant="outline" size="sm" onclick={surprise}>
+				<IconShuffle />
+				Surprise me
+			</Button>
 			<Button href="/docs/installation" size="sm">
 				<IconTerminal2 />
 				Install
