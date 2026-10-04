@@ -83,6 +83,7 @@ export function MultiSelect({
 				{shown.map((option) => (
 					<Badge
 						key={option.value}
+						variant="secondary"
 						size={size === "sm" ? "sm" : "md"}
 						className={s.chip()}
 					>

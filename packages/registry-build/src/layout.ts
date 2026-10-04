@@ -37,11 +37,16 @@ export function installLayout(
 		aliasExtensions,
 	} = FRAMEWORK[framework];
 	// Sources sit one folder deep, so `../x/y` always means `<srcDir>/x/y`.
-	const withExtension = (rest: string) => {
+	const isFolder = (rest: string) => {
 		const abs = resolve(srcDir, rest);
-		if (existsSync(abs)) return statSync(abs).isDirectory() ? `${rest}/index.js` : rest;
-		return `${rest}.js`;
+		return existsSync(abs) && statSync(abs).isDirectory();
 	};
+	const withExtension = (rest: string) => {
+		if (isFolder(rest)) return `${rest}/index.js`;
+		return existsSync(resolve(srcDir, rest)) ? rest : `${rest}.js`;
+	};
+	// shadcn resolves an import with no exact file by basename, turning `chart` into `chart/chart`.
+	const toBarrel = (rest: string) => (isFolder(rest) ? `${rest}/index` : rest);
 	const componentsTarget = uiTarget.replace(/\/ui$/, "");
 	const alias = (dir: string) => (dir === "ui" ? uiAlias : `${componentsAlias}/${dir}`);
 	const display = (source: string) =>
@@ -82,7 +87,7 @@ export function installLayout(
 					let next = spec.replace(/\.js$/, "");
 					if (next.startsWith("../")) {
 						const raw = next.slice("../".length);
-						const rest = aliasExtensions ? withExtension(raw) : raw;
+						const rest = aliasExtensions ? withExtension(raw) : toBarrel(raw);
 						next = raw.startsWith("lib/")
 							? `${libAlias}/${rest.slice("lib/".length)}`
 							: `${alias(folderDir.get(raw.split("/")[0] ?? "") ?? "ui")}/${rest}`;

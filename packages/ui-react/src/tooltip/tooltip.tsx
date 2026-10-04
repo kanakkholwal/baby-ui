@@ -1,7 +1,13 @@
 "use client";
 
 import { Tooltip as TooltipPrimitive } from "@base-ui/react/tooltip";
-import { type ComponentProps, createContext, type ReactNode, useContext } from "react";
+import {
+	type ComponentProps,
+	createContext,
+	isValidElement,
+	type ReactNode,
+	useContext,
+} from "react";
 import { ANCHORED } from "../lib/anchor";
 import { cn } from "../lib/cn";
 
@@ -28,15 +34,21 @@ export function Tooltip({
 
 export function TooltipTrigger({
 	className,
+	render,
 	...props
 }: ComponentProps<typeof TooltipPrimitive.Trigger>) {
 	const delay = useContext(DelayCtx);
+	// Base UI joins a render element's class after ours without merging, so `grid` lost to `inline-flex`.
+	const rendered = isValidElement<{ className?: string }>(render)
+		? render.props.className
+		: undefined;
 
 	return (
 		<TooltipPrimitive.Trigger
 			data-slot="tooltip-trigger"
 			delay={delay}
-			className={cn("inline-flex", className)}
+			render={render}
+			className={cn("inline-flex", className, rendered)}
 			{...props}
 		/>
 	);

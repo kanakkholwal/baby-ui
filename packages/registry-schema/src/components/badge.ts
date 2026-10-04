@@ -8,6 +8,7 @@ const VARIANTS = [
 	"warning",
 	"destructive",
 	"info",
+	"gold",
 ];
 
 export const badge = defineComponent({
@@ -23,8 +24,8 @@ export const badge = defineComponent({
 			name: "variant",
 			type: VARIANTS.map((v) => `"${v}"`).join(" | "),
 			description:
-				"Semantic colour. `success`, `warning` and `destructive` carry meaning, not decoration.",
-			default: "secondary",
+				"Semantic colour. `success`, `warning` and `destructive` carry meaning, not decoration; `gold` marks premium items with a passing shine.",
+			default: "default",
 			control: { kind: "select", options: VARIANTS },
 		},
 		{
@@ -42,6 +43,13 @@ export const badge = defineComponent({
 			control: { kind: "boolean" },
 		},
 	],
+	motion: {
+		springs: [],
+		reducedMotion: "`gold` keeps its tint and drops the shine.",
+		behaviour: [
+			"`gold`: a highlight sweeps across in about 1.4s, then rests before the next pass.",
+		],
+	},
 	a11y: {
 		keyboard: [],
 		notes: [

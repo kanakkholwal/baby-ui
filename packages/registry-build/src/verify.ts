@@ -138,3 +138,85 @@ export async function verifyComponentDocs(
 	}
 	return { errors, missing };
 }
+
+const NAMED_IMPORT =
+	/import\s+(?:type\s+)?(?:(\w+)\s*,\s*)?(?:\{([^}]*)\})?\s*(?:(\w+)\s+)?from\s+["'](@\/[^"']+)["']/g;
+const DECLARED =
+	/export\s+(?:declare\s+)?(?:async\s+)?(?:function\*?|const|let|var|class|interface|type|enum)\s+(\w+)/g;
+const LISTED = /export\s+(?:type\s+)?\{([^}]*)\}(?:\s*from\s+["']([^"']+)["'])?/g;
+const STAR = /export\s+\*\s+from\s+["']([^"']+)["']/g;
+
+const names = (list: string) =>
+	list
+		.split(",")
+		.map((part) => part.replace(/^\s*type\s+/, "").trim())
+		.filter(Boolean)
+		.map(
+			(part) =>
+				part
+					.split(/\s+as\s+/)
+					.pop()
+					?.trim() ?? part,
+		);
+
+/**
+ * Every named import between shipped React files must resolve to an emitted file that exports
+ * it, or a consumer's `tsc` fails after install even though our monorepo builds.
+ */
+export function verifyEmittedImports(
+	items: { name: string; files: { target?: string; content?: string }[] }[],
+): string[] {
+	const files = new Map<string, string>();
+	for (const item of items)
+		for (const file of item.files)
+			if (file.target) files.set(file.target, file.content ?? "");
+
+	const find = (path: string) =>
+		[`${path}.tsx`, `${path}.ts`, `${path}/index.ts`, `${path}/index.tsx`, path].find(
+			(p) => files.has(p),
+		);
+	const exportsOf = (target: string, seen = new Set<string>()): Set<string> => {
+		const out = new Set<string>();
+		if (seen.has(target)) return out;
+		seen.add(target);
+		const source = files.get(target) ?? "";
+		for (const [, name = ""] of source.matchAll(DECLARED)) out.add(name);
+		if (/export\s+default\b/.test(source)) out.add("default");
+		for (const [, list = ""] of source.matchAll(LISTED))
+			for (const n of names(list)) out.add(n);
+		for (const [, from = ""] of source.matchAll(STAR)) {
+			const dir = target.slice(0, target.lastIndexOf("/"));
+			const next = find(`${dir}/${from.replace(/^\.\//, "")}`);
+			if (next) for (const n of exportsOf(next, seen)) out.add(n);
+		}
+		return out;
+	};
+
+	const errors: string[] = [];
+	for (const item of items)
+		for (const file of item.files) {
+			for (const [, first, list, only, spec = ""] of (file.content ?? "").matchAll(
+				NAMED_IMPORT,
+			)) {
+				const path = spec.replace(/^@\//, "");
+				const target = find(path);
+				// The shadcn CLI resolves a bare folder by basename, so `chart` would become `chart/chart`.
+				if (target?.startsWith(`${path}/index.`)) {
+					errors.push(
+						`${item.name} ${file.target}: "${spec}" is a folder; import "${spec}/index"`,
+					);
+					continue;
+				}
+				if (!target) {
+					errors.push(`${item.name} ${file.target}: "${spec}" matches no shipped file`);
+					continue;
+				}
+				const wanted = [...names(list ?? ""), ...(first || only ? ["default"] : [])];
+				const available = exportsOf(target);
+				for (const name of wanted)
+					if (!available.has(name))
+						errors.push(`${item.name} ${file.target}: "${spec}" has no export "${name}"`);
+			}
+		}
+	return [...new Set(errors)];
+}

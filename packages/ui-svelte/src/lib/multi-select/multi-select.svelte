@@ -90,7 +90,7 @@ function removeLast() {
 		class={cn(s.root(), classProp)}
 	>
 		{#each shown as option (option.value)}
-			<Badge size={chipSize} class={s.chip()}>
+			<Badge variant="secondary" size={chipSize} class={s.chip()}>
 				<span class={s.chipLabel()}>{option.label}</span>
 				<button
 					type="button"

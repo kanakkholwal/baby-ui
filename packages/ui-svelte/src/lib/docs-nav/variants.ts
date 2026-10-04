@@ -19,7 +19,7 @@ export const docsNav = tv({
 		link: "relative z-[1] flex items-center justify-between gap-2 py-1.5 pr-3 pl-7 text-sm outline-none transition-[color,opacity] duration-(--duration-fast) focus-visible:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset motion-reduce:transition-none",
 		label:
 			"truncate transition-transform duration-[var(--duration-dropdown)] ease-[var(--ease-out)] motion-reduce:transition-none",
-		badge: "rounded border border-border px-1 py-px text-xs text-muted-foreground",
+		badge: "h-4.5 rounded px-1 text-[11px]",
 	},
 	variants: {
 		connector: {

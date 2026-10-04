@@ -3,7 +3,8 @@ import type { Framework } from "@baby-ui/registry-schema";
 import { getSpec, specs } from "@baby-ui/registry-schema/components";
 import { buildItem } from "./build";
 import { installLayout } from "./layout";
-import { verifyRegistryDependencies } from "./verify";
+import { buildThemeItems } from "./theme";
+import { verifyEmittedImports, verifyRegistryDependencies } from "./verify";
 
 const layouts = {
 	react: installLayout("react", specs),
@@ -80,6 +81,37 @@ describe("shipped imports point at the other item's folder", () => {
 		expect(shipped("../chart")).toBe("$COMPONENTS$/charts/chart/index.js");
 	});
 
+	test("a folder import names its barrel, so the CLI cannot swap it for a same-named file", async () => {
+		const item = await built("npm-stats", "react");
+		const all = item.files.flatMap((f) => imports(f.content));
+		expect(all).toContain("@/components/charts/chart/index");
+		expect(all).not.toContain("@/components/charts/chart");
+	});
+
+	test("every shipped React import names a file that exports what it imports", async () => {
+		const items = await Promise.all(
+			specs
+				.filter((s) => s.tier !== "pro")
+				.map((s) => buildItem(s, "react", layouts.react)),
+		);
+		expect(verifyEmittedImports(items.filter((item) => item !== null))).toEqual([]);
+	});
+
+	test("a bare folder import is flagged", () => {
+		const item = (target: string, content: string) => ({
+			name: target,
+			files: [{ target, content }],
+		});
+		const errors = verifyEmittedImports([
+			item("components/charts/chart/index.ts", 'export { Chart } from "./chart";'),
+			item(
+				"components/blocks/x/x.tsx",
+				'import { Chart } from "@/components/charts/chart";',
+			),
+		]);
+		expect(errors[0]).toContain("is a folder");
+	});
+
 	test("same-folder imports stay relative", () => {
 		const source = 'import { button } from "./variants";';
 		expect(layouts.react.rewriteImports(source)).toBe(source);
@@ -113,6 +145,22 @@ describe("installs are complete", () => {
 		"every %s sibling import is a declared registryDependency",
 		async (framework) => {
 			expect(await verifyRegistryDependencies([...specs], framework)).toEqual([]);
+		},
+	);
+});
+
+describe("theme installs on a project that never ran shadcn init", () => {
+	test.each(["react", "svelte"] as const)(
+		"%s theme carries the colour utilities and radius scale",
+		async (framework) => {
+			const theme = (await buildThemeItems(framework)).find(
+				(item) => item.name === "theme",
+			);
+			const vars = theme?.cssVars?.theme ?? {};
+			expect(vars["color-popover"]).toBe("var(--popover)");
+			expect(vars["color-primary-foreground"]).toBe("var(--primary-foreground)");
+			expect(vars["color-ring"]).toBe("var(--ring)");
+			expect(vars["radius-sm"]).toBe("calc(var(--radius) - 4px)");
 		},
 	);
 });

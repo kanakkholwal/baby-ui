@@ -107,6 +107,36 @@
 	backdrop-filter: blur(var(--morph-blur, 8px));
 }
 
+/* Badge `gold`: a highlight sweeps across, then rests before the next pass. */
+.badge-shine {
+	background-image: linear-gradient(
+		110deg,
+		transparent 35%,
+		color-mix(in oklch, white 60%, transparent) 50%,
+		transparent 65%
+	);
+	background-size: 250% 100%;
+	background-repeat: no-repeat;
+	animation: badge-shine 3.2s var(--ease-in-out) infinite;
+}
+
+@keyframes badge-shine {
+	from {
+		background-position: 150% 0;
+	}
+	45%,
+	to {
+		background-position: -50% 0;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.badge-shine {
+		animation: none;
+		background-image: none;
+	}
+}
+
 /* Shared by both skeleton ports. */
 .skeleton-shimmer {
 	background-image: linear-gradient(

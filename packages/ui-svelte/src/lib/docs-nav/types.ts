@@ -1,8 +1,12 @@
+import type { BadgeVariant } from "../badge/variants";
+
 export interface DocsNavItem {
 	href: string;
 	label: string;
 	/** Small pill after the label, e.g. a status like "beta". */
 	badge?: string;
+	/** Badge colour; the Badge default when omitted. */
+	badgeVariant?: BadgeVariant;
 }
 
 export interface DocsNavSection {

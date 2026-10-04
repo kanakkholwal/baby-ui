@@ -66,7 +66,12 @@ export function TagInput({
 			className={cn(s.root(), className)}
 		>
 			{tags.map((tag) => (
-				<Badge key={tag} size={size === "sm" ? "sm" : "md"} className={s.chip()}>
+				<Badge
+					key={tag}
+					variant="secondary"
+					size={size === "sm" ? "sm" : "md"}
+					className={s.chip()}
+				>
 					<span className={s.chipLabel()}>{tag}</span>
 					<button
 						type="button"

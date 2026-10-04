@@ -72,9 +72,7 @@ const intrinsic = $derived(FRAME_PX[frame] + (tile ? 0 : CARD_HEADER_PX));
 
 {#snippet badges()}
 	{#if item.tier === "pro"}
-		<span class="rounded-full bg-foreground px-1.5 py-px font-medium text-[10px] text-background">
-			Pro
-		</span>
+		<Badge size="sm" variant="gold">Pro</Badge>
 	{/if}
 	{#if item.isNew}
 		<Badge size="sm" variant="info">New</Badge>

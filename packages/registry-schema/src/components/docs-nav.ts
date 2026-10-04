@@ -13,7 +13,7 @@ export const docsNav = defineComponent({
 			name: "sections",
 			type: "DocsNavSection[]",
 			description:
-				"Sections of links: id, label, optional count, items with href, label and badge.",
+				"Sections of links: id, label, optional count, items with href, label, badge and badgeVariant.",
 			required: true,
 			control: { kind: "none" },
 		},
@@ -100,7 +100,7 @@ export const docsNav = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
-			registryDependencies: ["collapsible"],
+			registryDependencies: ["badge", "collapsible"],
 		},
 		svelte: {
 			entry: "DocsNav",
@@ -113,7 +113,7 @@ export const docsNav = defineComponent({
 				{ path: "lib/cn.ts", type: "registry:lib" },
 			],
 			dependencies: ["clsx", "tailwind-merge", "tailwind-variants"],
-			registryDependencies: ["collapsible"],
+			registryDependencies: ["badge", "collapsible"],
 		},
 	},
 	keywords: ["docs", "sidebar", "navigation", "table of contents", "tree", "nav"],

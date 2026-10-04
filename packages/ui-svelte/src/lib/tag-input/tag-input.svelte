@@ -59,7 +59,7 @@ function onkeydown(event: KeyboardEvent) {
 	class={cn(s.root(), classProp)}
 >
 	{#each tags as tag (tag)}
-		<Badge size={size === "sm" ? "sm" : "md"} class={s.chip()}>
+		<Badge variant="secondary" size={size === "sm" ? "sm" : "md"} class={s.chip()}>
 			<span class={s.chipLabel()}>{tag}</span>
 			<button
 				type="button"

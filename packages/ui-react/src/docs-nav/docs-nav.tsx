@@ -1,6 +1,8 @@
 "use client";
 
 import { type MouseEvent, type PointerEvent, useEffect, useRef, useState } from "react";
+import { Badge } from "../badge/badge";
+import type { BadgeVariant } from "../badge/variants";
 import {
 	Collapsible,
 	CollapsibleContent,
@@ -17,6 +19,8 @@ export interface DocsNavItem {
 	label: string;
 	/** Small pill after the label, e.g. a status like "beta". */
 	badge?: string;
+	/** Badge colour; the Badge default when omitted. */
+	badgeVariant?: BadgeVariant;
 }
 
 export interface DocsNavSection {
@@ -173,7 +177,11 @@ function DocsNavList({
 							className={styles.link()}
 						>
 							<span className={styles.label()}>{item.label}</span>
-							{item.badge ? <span className={styles.badge()}>{item.badge}</span> : null}
+							{item.badge ? (
+								<Badge size="sm" variant={item.badgeVariant} className={styles.badge()}>
+									{item.badge}
+								</Badge>
+							) : null}
 						</a>
 					</div>
 				);

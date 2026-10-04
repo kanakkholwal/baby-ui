@@ -28,7 +28,12 @@ import { buildThemeItems } from "./theme";
 import { buildThemeCss } from "./theme-css";
 import { jsPath, saveTranspileCache, toJavaScript } from "./tojs";
 import { buildUsage, verifyUsage } from "./usage";
-import { verifyComponentDocs, verifyRegistryDependencies, verifySprings } from "./verify";
+import {
+	verifyComponentDocs,
+	verifyEmittedImports,
+	verifyRegistryDependencies,
+	verifySprings,
+} from "./verify";
 
 /** `--dev` (the dev watcher): a spec still waiting for its doc page warns instead of failing. */
 const DEV = process.argv.includes("--dev");
@@ -104,6 +109,14 @@ async function main() {
 	const releasedSpecs = publicSpecs.filter(
 		(spec) => SHOW_PRO || !PREVIEW_CATEGORIES.includes(spec.category),
 	);
+
+	const reactItems = await Promise.all(publicSpecs.map((spec) => itemFor(spec, "react")));
+	const importErrors = verifyEmittedImports(reactItems.filter((item) => item !== null));
+	if (importErrors.length) {
+		console.error("registry-build failed:");
+		for (const e of importErrors) console.error(`  - ${e}`);
+		process.exit(1);
+	}
 
 	for (const framework of FRAMEWORKS as readonly Framework[]) {
 		const { routePrefix } = FRAMEWORK[framework];

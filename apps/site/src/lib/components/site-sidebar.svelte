@@ -1,5 +1,10 @@
 <script lang="ts">
-import { DocsNav, type DocsNavConnector, type DocsNavSection } from "@baby-ui/svelte";
+import {
+	DocsNav,
+	type DocsNavConnector,
+	type DocsNavItem,
+	type DocsNavSection,
+} from "@baby-ui/svelte";
 import type { SidebarGroup } from "#lib/registry.js";
 import { page } from "$app/state";
 
@@ -14,6 +19,15 @@ let {
 	rungs?: boolean;
 	onNavigate?: () => void;
 } = $props();
+
+// Pro outranks New, New outranks a status; Pro alone gets the gold shine.
+function navBadge(
+	item: SidebarGroup["items"][number],
+): Pick<DocsNavItem, "badge" | "badgeVariant"> {
+	if (item.tier === "pro") return { badge: "Pro", badgeVariant: "gold" };
+	if (item.isNew) return { badge: "New" };
+	return { badge: item.status !== "stable" ? item.status : undefined };
+}
 
 const GUIDES: DocsNavSection = {
 	id: "guides",
@@ -34,14 +48,7 @@ const sections = $derived<DocsNavSection[]>([
 		items: group.items.map((item) => ({
 			href: item.href,
 			label: item.name,
-			badge:
-				item.tier === "pro"
-					? "Pro"
-					: item.isNew
-						? "New"
-						: item.status !== "stable"
-							? item.status
-							: undefined,
+			...navBadge(item),
 		})),
 	})),
 ]);

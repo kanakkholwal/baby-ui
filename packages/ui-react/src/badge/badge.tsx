@@ -1,18 +1,28 @@
-import type { ReactNode } from "react";
+import type { ComponentProps } from "react";
 import { cn } from "../lib/cn";
 import { type BadgeSize, type BadgeVariant, badge } from "./variants";
 
-export interface BadgeProps {
-	children?: ReactNode;
-	className?: string;
+export interface BadgeProps extends ComponentProps<"span"> {
 	variant?: BadgeVariant;
 	size?: BadgeSize;
 	dot?: boolean;
 }
 
-export function Badge({ children, className, variant, size, dot = false }: BadgeProps) {
+export function Badge({
+	children,
+	className,
+	variant = "default",
+	size = "md",
+	dot = false,
+	...props
+}: BadgeProps) {
 	return (
-		<span className={cn(badge({ variant, size }), className)} data-variant={variant}>
+		<span
+			data-slot="badge"
+			data-variant={variant}
+			className={cn(badge({ variant, size }), className)}
+			{...props}
+		>
 			{dot ? <span className="size-1.5 shrink-0 rounded-full bg-current" /> : null}
 			{children}
 		</span>

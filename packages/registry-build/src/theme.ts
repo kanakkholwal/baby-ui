@@ -187,6 +187,8 @@ export async function buildThemeItems(framework: Framework): Promise<RegistryIte
 		description: "The full palette, radius and type stack, replacing shadcn's defaults.",
 		registryDependencies: [tokensUrl(framework)],
 		cssVars: {
+			// The whole @theme block, so bg-popover and friends exist even without `shadcn init`.
+			theme: { ...theme.theme },
 			light: pick(palette.light, standard),
 			dark: pick(palette.dark, standard),
 		},

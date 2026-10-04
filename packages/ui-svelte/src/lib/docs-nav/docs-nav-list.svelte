@@ -1,4 +1,5 @@
 <script lang="ts">
+import Badge from "../badge/badge.svelte";
 import type { DocsNavItem } from "./types";
 import { type DocsNavConnector, docsNav, markerWidth, rowState } from "./variants";
 
@@ -65,7 +66,9 @@ function onEnter(event: PointerEvent, index: number) {
 			>
 				<span class={styles.label()}>{item.label}</span>
 				{#if item.badge}
-					<span class={styles.badge()}>{item.badge}</span>
+					<Badge size="sm" variant={item.badgeVariant} class={styles.badge()}>
+						{item.badge}
+					</Badge>
 				{/if}
 			</a>
 		</div>
