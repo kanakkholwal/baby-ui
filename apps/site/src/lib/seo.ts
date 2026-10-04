@@ -135,11 +135,54 @@ export function breadcrumbLd(trail: { name: string; path: string }[]): JsonLd {
 	};
 }
 
+/** A free in-browser tool, so search engines can list it as an app rather than a page. */
+export function webApplicationLd(params: {
+	name: string;
+	description: string;
+	path: string;
+	features: string[];
+	keywords: string[];
+}): JsonLd {
+	return {
+		"@type": "WebApplication",
+		"@id": site(`${params.path}#app`),
+		name: params.name,
+		description: params.description,
+		url: site(params.path),
+		applicationCategory: "DesignApplication",
+		operatingSystem: "Web",
+		browserRequirements: "Requires JavaScript and a modern browser",
+		isAccessibleForFree: true,
+		offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+		featureList: params.features,
+		keywords: params.keywords.join(", "),
+		screenshot: site(`/og?title=${encodeURIComponent(params.name)}`),
+		isPartOf: { "@id": WEBSITE_ID },
+		publisher: { "@id": ORGANIZATION_ID },
+	};
+}
+
+/** Search phrases for a category page: its name in the forms people type, for both frameworks. */
+export function categoryKeywords(label: string): string[] {
+	const name = label.toLowerCase();
+	return [
+		name,
+		`${name} components`,
+		`react ${name}`,
+		`svelte ${name}`,
+		`tailwind ${name}`,
+		`shadcn ${name}`,
+		`animated ${name}`,
+		"react components",
+		"svelte components",
+	];
+}
+
 export function collectionLd(params: {
 	name: string;
 	description: string;
 	path: string;
-	items: { name: string; path: string }[];
+	items: { name: string; path: string; description?: string }[];
 }): JsonLd {
 	return {
 		"@type": "CollectionPage",
@@ -155,6 +198,7 @@ export function collectionLd(params: {
 				position: i + 1,
 				name: item.name,
 				url: site(item.path),
+				...(item.description ? { description: item.description } : {}),
 			})),
 		},
 	};

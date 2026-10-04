@@ -45,7 +45,21 @@ notices are reproduced here as those licenses require.
 - Source: https://github.com/aidan-neel/sivir-ui
 - License: MIT
 
+## solar-icons
+
+- Source: https://github.com/saoudi-h/solar-icons
+- License: MIT
+
 ## swapy
 
 - Source: https://github.com/TahaSh/swapy
 - License: MIT
+
+## Icon sets
+
+Artwork used by the site and the demos, not by any component.
+
+### Solar icon set by 480 Design
+
+- Source: https://www.figma.com/community/file/1166831539721848736
+- License: CC BY 4.0

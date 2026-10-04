@@ -3585,3 +3585,95 @@
 		animation: none !important;
 	}
 }
+
+/* OrbitHero: the old ring fades out as the new one fades in, each item --orbit-delay late. */
+.orbit-hero-in {
+	animation: orbit-hero-in 400ms cubic-bezier(0.23, 1, 0.32, 1) var(--orbit-delay, 0ms) both;
+}
+
+/* Hidden at rest, so a ring whose exit never ran (a backgrounded tab) stays out of view. */
+.orbit-hero-out {
+	opacity: 0;
+	animation: orbit-hero-out 400ms cubic-bezier(0.55, 0, 1, 0.45) var(--orbit-delay, 0ms) both;
+}
+
+.orbit-hero-label-in {
+	animation: orbit-hero-label-in 360ms cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+.orbit-hero-label-out {
+	opacity: 0;
+	animation: orbit-hero-label-out 240ms cubic-bezier(0.55, 0, 1, 0.45) both;
+}
+
+.orbit-hero-ripple {
+	opacity: 0;
+	animation: orbit-hero-ripple 1050ms cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+@keyframes orbit-hero-in {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes orbit-hero-out {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
+
+@keyframes orbit-hero-label-in {
+	from {
+		opacity: 0;
+		translate: 0 var(--orbit-from, 100%);
+	}
+	to {
+		opacity: 1;
+		translate: 0 0;
+	}
+}
+
+@keyframes orbit-hero-label-out {
+	from {
+		opacity: 1;
+		translate: 0 0;
+	}
+	to {
+		opacity: 0;
+		translate: 0 var(--orbit-to, -100%);
+	}
+}
+
+@keyframes orbit-hero-ripple {
+	from {
+		opacity: 0.82;
+		scale: 0.84;
+	}
+	to {
+		opacity: 0;
+		scale: 4.4;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.orbit-hero-in,
+	.orbit-hero-out,
+	.orbit-hero-label-in,
+	.orbit-hero-label-out {
+		--orbit-from: 0;
+		--orbit-to: 0;
+		animation-duration: 120ms;
+		animation-delay: 0ms;
+	}
+
+	.orbit-hero-ripple {
+		animation: none;
+	}
+}

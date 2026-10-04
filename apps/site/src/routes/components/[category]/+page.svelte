@@ -2,7 +2,12 @@
 import CardGallery from "#lib/components/card-gallery.svelte";
 import GalleryIntro from "#lib/components/gallery-intro.svelte";
 import Seo from "#lib/components/seo.svelte";
-import { breadcrumbLd, collectionLd, metaDescription } from "#lib/seo.js";
+import {
+	breadcrumbLd,
+	categoryKeywords,
+	collectionLd,
+	metaDescription,
+} from "#lib/seo.js";
 import type { PageProps } from "./$types";
 
 let { data }: PageProps = $props();
@@ -14,22 +19,30 @@ const heading = $derived(topLevel ? label : `${label} Components`);
 const back = $derived(
 	topLevel ? undefined : { label: "Components", href: "/components" },
 );
+const count = $derived(data.items.length);
 const description = $derived(
-	metaDescription(data.blurb, "For React and Svelte, via the shadcn CLI."),
+	metaDescription(
+		data.blurb,
+		`${count} components for React and Svelte, via the shadcn CLI.`,
+	),
 );
 </script>
 
 <Seo
 	title="{heading} for React & Svelte"
 	{description}
-	tag="Category"
-	keywords={[label.toLowerCase(), "react components", "svelte components"]}
+	tag="{count} components"
+	keywords={categoryKeywords(label)}
 	jsonLd={[
 		collectionLd({
 			name: heading,
 			description,
 			path,
-			items: data.items.map((i) => ({ name: i.name, path: i.href })),
+			items: data.items.map((i) => ({
+				name: i.name,
+				path: i.href,
+				description: i.description,
+			})),
 		}),
 		breadcrumbLd(
 			topLevel
@@ -82,4 +95,20 @@ const description = $derived(
 			</CardGallery>
 		</div>
 	{/if}
+
+	<section aria-labelledby="category-about" class="mt-16 max-w-2xl text-muted-foreground text-sm leading-relaxed">
+		<h2 id="category-about" class="font-medium text-base text-foreground">About {heading}</h2>
+		<p class="mt-2">
+			{count} {heading} for React and Svelte, each with a TypeScript and a JavaScript
+			version. They install as source with the shadcn CLI, take their colours from your theme
+			tokens, and respect reduced motion and keyboard use.
+		</p>
+		<p class="mt-2">
+			Start with <a href={data.items[0]?.href} class="font-medium text-foreground underline underline-offset-4"
+				>{data.items[0]?.name}</a
+			>, or read the <a href="/docs/installation" class="font-medium text-foreground underline underline-offset-4"
+				>install guide</a
+			>.
+		</p>
+	</section>
 </main>

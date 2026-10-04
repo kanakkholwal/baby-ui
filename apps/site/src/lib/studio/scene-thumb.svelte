@@ -25,7 +25,7 @@ $effect(() => {
 			live = true;
 			claim(slot);
 		},
-		() => (live = false),
+		{ deactivate: () => (live = false) },
 	);
 	return () => {
 		stop();

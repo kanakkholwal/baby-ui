@@ -3,6 +3,7 @@ import { CATEGORIES, docsPath } from "@baby-ui/registry-schema";
 import { COLLECTIONS, categoryHref } from "#lib/registry.js";
 import { absoluteUrl, SITE_URL } from "#lib/seo.js";
 import { liveSpecs as specs } from "#lib/server/registry.js";
+import { STUDIOS } from "#lib/studio/studios.js";
 import type { RequestHandler } from "./$types";
 
 export const prerender = true;
@@ -14,6 +15,10 @@ function url(path: string, priority: string): string {
 
 export const GET: RequestHandler = async () => {
 	const staticPages = [url("/", "1.0"), url("/components", "0.9")];
+	const studioPages = [
+		url("/studio", "0.8"),
+		...STUDIOS.map((studio) => url(studio.href, "0.8")),
+	];
 
 	const categoryPages = [
 		...CATEGORIES.filter((c) => specs.some((s) => s.category === c)).map((c) =>
@@ -34,9 +39,13 @@ export const GET: RequestHandler = async () => {
 		.filter((page) => !page.data.draft)
 		.map((page) => url(page.url, "0.5"));
 
-	const body = [...staticPages, ...categoryPages, ...componentPages, ...docPages].join(
-		"",
-	);
+	const body = [
+		...staticPages,
+		...studioPages,
+		...categoryPages,
+		...componentPages,
+		...docPages,
+	].join("");
 
 	return new Response(
 		`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${body}</urlset>`,

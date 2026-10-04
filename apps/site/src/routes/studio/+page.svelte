@@ -1,7 +1,7 @@
 <script lang="ts">
 import Seo from "#lib/components/seo.svelte";
 import { demos } from "#lib/demos.js";
-import { breadcrumbLd } from "#lib/seo.js";
+import { breadcrumbLd, collectionLd } from "#lib/seo.js";
 import LiveComponent from "#lib/studio/live-component.svelte";
 import { STUDIOS } from "#lib/studio/studios.js";
 import type { PageProps } from "./$types";
@@ -13,16 +13,34 @@ const iconFor = (slug: string) => STUDIOS.find((studio) => studio.slug === slug)
 </script>
 
 <Seo
-	title="Studio"
-	description="Visual tools for Baby UI: tune a component live, preview it in context, then copy the React or Svelte code."
-	keywords={["ui studio", "background generator", "chart builder", "svelte", "react"]}
-	jsonLd={[breadcrumbLd([{ name: "Studio", path: "/studio" }])]}
+	title="Free design tools: OG image, chart and background generators"
+	description="Free in-browser design tools: an Open Graph image generator, a chart maker and an animated background generator. Tune live, then copy React or Svelte code."
+	tag="Free tools"
+	keywords={[
+		"free design tools",
+		"og image generator",
+		"chart maker",
+		"animated background generator",
+		"ui playground",
+		"react components",
+		"svelte components",
+	]}
+	jsonLd={[
+		collectionLd({
+			name: "Baby UI Studio",
+			description: "Free in-browser design tools for React and Svelte.",
+			path: "/studio",
+			items: STUDIOS.map((s) => ({ name: s.name, path: s.href, description: s.seo.description })),
+		}),
+		breadcrumbLd([{ name: "Studio", path: "/studio" }]),
+	]}
 />
 
 <main class="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6">
 	<h1 class="font-semibold text-3xl text-foreground tracking-tight">Studio</h1>
 	<p class="mt-2 max-w-xl text-muted-foreground">
-		Tune a component live, see it in context, then copy the React or Svelte code.
+		Free design tools: an OG image generator, a chart maker and an animated background
+		generator. Tune live, see it in context, then copy the React or Svelte code.
 	</p>
 	<ul class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 		{#each data.studios as studio (studio.slug)}

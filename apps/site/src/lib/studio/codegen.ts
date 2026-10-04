@@ -63,3 +63,23 @@ export function backgroundCode({
 		"",
 	].join("\n");
 }
+
+/** An OG template with the props that differ from its defaults, ready to hand to takumi. */
+export function ogTemplateCode({
+	framework,
+	entry,
+	importLine,
+	props,
+}: {
+	framework: Framework;
+	entry: string;
+	importLine: string;
+	props: Values;
+}): string {
+	const attrs = Object.entries(props).map(([name, value]) =>
+		attribute(name, value, framework),
+	);
+	const tag = attrs.length ? `<${entry}\n\t${attrs.join("\n\t")}\n/>` : `<${entry} />`;
+	if (framework === "react") return [importLine, "", tag, ""].join("\n");
+	return ['<script lang="ts">', importLine, "</script>", "", tag, ""].join("\n");
+}

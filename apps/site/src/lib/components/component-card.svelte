@@ -1,4 +1,6 @@
 <script lang="ts" module>
+import type { DemoLoader } from "@baby-ui/demos/svelte";
+import { SvelteMap } from "svelte/reactivity";
 import { tv, type VariantProps } from "tailwind-variants";
 
 const preview = tv({
@@ -21,11 +23,15 @@ export const FRAME_PX: Record<CardFrame, number> = { sm: 176, md: 224, lg: 288, 
 // Email layouts are 600px wide plus the body's gutter; the thumbnail scales this down to fit.
 const EMAIL_PX = 640;
 const CARD_HEADER_PX = 96;
+
+// Loaded demo modules by slug, so a card scrolled back into view remounts without a spinner.
+const loaded = new SvelteMap<string, Awaited<ReturnType<DemoLoader>>>();
 </script>
 
 <script lang="ts">
 import { Badge, Spinner } from "@baby-ui/svelte";
 import { mode } from "mode-watcher";
+import { untrack } from "svelte";
 import { demos } from "#lib/demos.js";
 import { claim, type LiveSlot, watchLive } from "#lib/live-demo.js";
 import { prefs } from "#lib/preferences.svelte.js";
@@ -48,15 +54,25 @@ function activate() {
 	claim(slot);
 }
 
-// Live after resting in view while idle; released once far out of view.
+// Live after resting in view while idle, at once if its module is loaded; the pool evicts.
 $effect(() => {
 	if (!stage) return;
-	return watchLive(stage, slot, activate, () => (live = false));
+	const slug = item.slug;
+	return watchLive(stage, slot, activate, { ready: () => loaded.has(slug) });
 });
 
 // Emails show their build-time render, so no demo mounts for them.
 const email = $derived(item.category === "emails");
-const demoPromise = $derived(live && !email ? demos[item.slug]?.() : undefined);
+const cached = $derived(loaded.get(item.slug));
+// Untracked, so filling the cache mid-load doesn't swap the resolving branch for a remount.
+const demoPromise = $derived.by(() => {
+	const slug = item.slug;
+	if (!live || email || untrack(() => loaded.has(slug))) return undefined;
+	return demos[slug]?.().then((mod) => {
+		loaded.set(slug, mod);
+		return mod;
+	});
+});
 let stageWidth = $state(0);
 let emailHeight = $state(0);
 const emailScale = $derived(stageWidth / EMAIL_PX);
@@ -106,15 +122,20 @@ const intrinsic = $derived(FRAME_PX[frame] + (tile ? 0 : CARD_HEADER_PX));
 			{#await demoPromise}
 				<Spinner size="sm" label="Loading preview" class="text-muted-foreground" />
 			{:then mod}
-				{@const Demo = mod.default}
-				<!-- w-full: as a shrink-to-fit grid item, w-full demos (every chart) resolved to 0. -->
-				<div
-					class="pointer-events-none flex w-full scale-90 justify-center opacity-90 transition-opacity duration-[var(--duration-dropdown)] ease-[var(--ease-out)] group-hover/card:opacity-100 motion-reduce:transition-none"
-				>
-					<Demo props={demoProps} />
-				</div>
+				{@render demoView(mod.default)}
 			{/await}
+		{:else if live && cached}
+			{@render demoView(cached.default)}
 		{/if}
+	</div>
+{/snippet}
+
+{#snippet demoView(Demo: Awaited<ReturnType<DemoLoader>>["default"])}
+	<!-- w-full: as a shrink-to-fit grid item, w-full demos (every chart) resolved to 0. -->
+	<div
+		class="pointer-events-none flex w-full scale-90 justify-center opacity-90 transition-opacity duration-[var(--duration-dropdown)] ease-[var(--ease-out)] group-hover/card:opacity-100 motion-reduce:transition-none"
+	>
+		<Demo props={demoProps} />
 	</div>
 {/snippet}
 

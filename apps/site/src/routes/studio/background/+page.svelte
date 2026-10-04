@@ -91,8 +91,14 @@ import CodeBlock from "#lib/components/code-block.svelte";
 import InstallCommand from "#lib/components/install-command.svelte";
 import ProInstallGate from "#lib/components/pro-install-gate.svelte";
 import SegmentControl, { type SegmentOption } from "#lib/components/segment-control.svelte";
-import Seo from "#lib/components/seo.svelte";
-import { breadcrumbLd } from "#lib/seo.js";
+import StudioAbout from "#lib/studio/studio-about.svelte";
+import StudioSeo from "#lib/studio/studio-seo.svelte";
+import {
+	startStudioSession,
+	trackStudio,
+	trackStudioSettled,
+} from "#lib/studio/studio-events.js";
+import { STUDIOS } from "#lib/studio/studios.js";
 import { backgroundCode, changedProps } from "#lib/studio/codegen.js";
 import { LiveCode } from "#lib/studio/live-code.svelte.js";
 import LiveComponent from "#lib/studio/live-component.svelte";
@@ -103,6 +109,7 @@ import { page } from "$app/state";
 import type { PageProps } from "./$types";
 
 let { data }: PageProps = $props();
+const aboutStudio = STUDIOS.find((s) => s.slug === "background");
 
 const FRAMES: SegmentOption<Frame>[] = [
 	{ id: "hero", label: "Hero", icon: IconDeviceDesktop },
@@ -152,30 +159,52 @@ const changed = $derived(current ? changedProps(values, current.defaults) : {});
 const locked = $derived(current?.spec.tier === "pro" && !hasProAccess());
 const s = $derived(studio({ frame, layout, tone }));
 
-function pick(next: string) {
+function pick(next: string, via: "list" | "select" | "shuffle" = "list") {
 	if (next === current?.spec.slug) return;
 	slug = next;
 	values = {};
 	seed++;
+	const tier = data.backgrounds.find((b) => b.spec.slug === next)?.spec.tier ?? "free";
+	trackStudio("item_picked", { studio: "background", slug: next, tier, via });
 }
 
 function shuffle() {
 	const others = data.backgrounds.filter((b) => b.spec.slug !== current?.spec.slug);
 	const next = others[Math.floor(Math.random() * others.length)];
-	if (next) pick(next.spec.slug);
+	if (next) pick(next.spec.slug, "shuffle");
 }
 
 function remixCurrent() {
 	if (!current) return;
 	values = remix(current.spec, values);
 	seed++;
+	trackStudio("remixed", { studio: "background", slug: current.spec.slug });
 }
 
 function reset() {
 	values = {};
 	scrim = 0;
 	seed++;
+	if (current) trackStudio("reset", { studio: "background", slug: current.spec.slug });
 }
+
+function openCode() {
+	codeOpen = true;
+	if (current)
+		trackStudio("code_opened", { studio: "background", slug: current.spec.slug, locked });
+}
+
+onMount(() => startStudioSession("background"));
+$effect(() => {
+	const target = current;
+	const names = Object.keys(changed);
+	if (!target || !names.length) return;
+	trackStudioSettled("bg-props", "props_changed", {
+		studio: "background",
+		slug: target.spec.slug,
+		props: names,
+	});
+});
 
 const isFrame = (value: string | null): value is Frame => FRAMES.some((f) => f.id === value);
 const isLayout = (value: string | null): value is Layout =>
@@ -224,6 +253,7 @@ let copyTimer: ReturnType<typeof setTimeout>;
 async function copyLink() {
 	await navigator.clipboard.writeText(window.location.href);
 	linkCopied = true;
+	if (current) trackStudio("link_copied", { studio: "background", slug: current.spec.slug });
 	clearTimeout(copyTimer);
 	copyTimer = setTimeout(() => (linkCopied = false), 1600);
 }
@@ -246,17 +276,7 @@ const code = new LiveCode(() => ({
 }));
 </script>
 
-<Seo
-	title="Background studio"
-	description="Tune Baby UI's animated backgrounds live, preview them behind real content at hero, card and phone sizes, and copy the React or Svelte code."
-	keywords={["background generator", "animated background", "gradient background", "svelte", "react"]}
-	jsonLd={[
-		breadcrumbLd([
-			{ name: "Studio", path: "/studio" },
-			{ name: "Background", path: "/studio/background" },
-		]),
-	]}
-/>
+<StudioSeo slug="background" crumb="Background" />
 
 {#if current}
 	<main class="flex flex-col p-3 lg:h-[calc(100dvh-var(--header-h))]">
@@ -323,7 +343,7 @@ const code = new LiveCode(() => ({
 						<div class="lg:hidden">
 							<Select
 								items={data.backgrounds.map((b) => ({ value: b.spec.slug, label: b.spec.name }))}
-								bind:value={() => current.spec.slug, pick}
+								bind:value={() => current.spec.slug, (next) => pick(next, "select")}
 							>
 								<SelectTrigger size="sm" aria-label="Background" class="w-44">
 									<SelectValue />
@@ -357,7 +377,7 @@ const code = new LiveCode(() => ({
 							{#if linkCopied}<IconCheck />{:else}<IconCopy />{/if}
 							<span class="hidden sm:inline">{linkCopied ? "Link copied" : "Copy link"}</span>
 						</Button>
-						<Button size="sm" onclick={() => (codeOpen = true)}>
+						<Button size="sm" onclick={openCode}>
 							<IconFileCode />
 							Get code
 						</Button>
@@ -480,3 +500,5 @@ const code = new LiveCode(() => ({
 		</SheetContent>
 	</Sheet>
 {/if}
+
+{#if aboutStudio}<StudioAbout studio={aboutStudio} />{/if}

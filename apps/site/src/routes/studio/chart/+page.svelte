@@ -85,9 +85,15 @@ import CodeBlock from "#lib/components/code-block.svelte";
 import InstallCommand from "#lib/components/install-command.svelte";
 import ProInstallGate from "#lib/components/pro-install-gate.svelte";
 import SegmentControl, { type SegmentOption } from "#lib/components/segment-control.svelte";
-import Seo from "#lib/components/seo.svelte";
 import { demos } from "#lib/demos.js";
-import { breadcrumbLd } from "#lib/seo.js";
+import StudioAbout from "#lib/studio/studio-about.svelte";
+import StudioSeo from "#lib/studio/studio-seo.svelte";
+import {
+	startStudioSession,
+	trackStudio,
+	trackStudioSettled,
+} from "#lib/studio/studio-events.js";
+import { STUDIOS } from "#lib/studio/studios.js";
 import {
 	badDates,
 	type ChartDataset,
@@ -115,6 +121,7 @@ import { page } from "$app/state";
 import type { PageProps } from "./$types";
 
 let { data }: PageProps = $props();
+const aboutStudio = STUDIOS.find((s) => s.slug === "chart");
 
 const FRAMES: SegmentOption<Frame>[] = [
 	{ id: "wide", label: "Wide", icon: IconDeviceDesktop },
@@ -190,13 +197,28 @@ function pick(next: string) {
 	picked = next;
 	values = {};
 	seed++;
+	const tier = data.kinds.find((k) => k.spec.slug === next)?.spec.tier ?? "free";
+	trackStudio("item_picked", { studio: "chart", slug: next, tier, via: "list" });
 }
 
 function reset() {
 	values = {};
 	datasets[shape] = clone(SAMPLES[shape]);
 	seed++;
+	trackStudio("reset", { studio: "chart", slug });
 }
+
+function openCode() {
+	codeOpen = true;
+	trackStudio("code_opened", { studio: "chart", slug, locked });
+}
+
+onMount(() => startStudioSession("chart"));
+$effect(() => {
+	const names = Object.keys(changed);
+	if (!names.length) return;
+	trackStudioSettled("chart-props", "props_changed", { studio: "chart", slug, props: names });
+});
 
 // New values within the current spread, so the shape changes but the scale still reads.
 function randomise() {
@@ -307,6 +329,7 @@ let copyTimer: ReturnType<typeof setTimeout>;
 async function copyLink() {
 	await navigator.clipboard.writeText(window.location.href);
 	linkCopied = true;
+	trackStudio("link_copied", { studio: "chart", slug });
 	clearTimeout(copyTimer);
 	copyTimer = setTimeout(() => (linkCopied = false), 1600);
 }
@@ -335,17 +358,7 @@ const panels = $derived(sample ? sample.panels : live.panels);
 const allCharts = $derived([...data.kinds, ...data.samples]);
 </script>
 
-<Seo
-	title="Chart studio"
-	description="Build any Baby UI chart: edit or paste the data for area, line, bar, scatter, pie, funnel, ring and radar charts, tune every option live, and copy React or Svelte code."
-	keywords={["chart builder", "chart generator", "svelte chart", "react chart", "d3 chart"]}
-	jsonLd={[
-		breadcrumbLd([
-			{ name: "Studio", path: "/studio" },
-			{ name: "Chart", path: "/studio/chart" },
-		]),
-	]}
-/>
+<StudioSeo slug="chart" crumb="Chart" />
 
 {#snippet kindRow(item: { spec: { slug: string; name: string; description: string; tier?: string } })}
 	<li>
@@ -439,7 +452,7 @@ const allCharts = $derived([...data.kinds, ...data.samples]);
 							{#if linkCopied}<IconCheck />{:else}<IconCopy />{/if}
 							<span class="hidden sm:inline">{linkCopied ? "Link copied" : "Copy link"}</span>
 						</Button>
-						<Button size="sm" onclick={() => (codeOpen = true)}>
+						<Button size="sm" onclick={openCode}>
 							<IconFileCode />
 							Get code
 						</Button>
@@ -719,3 +732,5 @@ const allCharts = $derived([...data.kinds, ...data.samples]);
 		</SheetContent>
 	</Sheet>
 {/if}
+
+{#if aboutStudio}<StudioAbout studio={aboutStudio} />{/if}

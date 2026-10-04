@@ -56,12 +56,7 @@ export class OgPngPreview {
 		// Safari has no requestIdleCallback; warming is idempotent, so re-runs cost nothing.
 		$effect(() => {
 			if (!input()) return;
-			if (typeof requestIdleCallback === "function") {
-				const id = requestIdleCallback(() => void warm(), { timeout: 2000 });
-				return () => cancelIdleCallback(id);
-			}
-			const timer = setTimeout(() => void warm(), 200);
-			return () => clearTimeout(timer);
+			return warmOgSoon();
 		});
 		$effect(() => {
 			const next = input();
@@ -101,12 +96,27 @@ async function renderCard(
 	entry: string,
 	controls: Record<string, unknown>,
 ) {
-	const [{ ogMarkup }, { renderOgPng }, { default: css }] = await Promise.all([
-		import("#lib/og/markup.js"),
+	const { ogMarkup } = await import("#lib/og/markup.js");
+	return renderOgHtml(await ogMarkup(slug, entry, controls));
+}
+
+/** Rasterises any 1200x630 card markup with the site's CSS; resolves to an object URL. */
+export async function renderOgHtml(html: string): Promise<string> {
+	const [{ renderOgPng }, { default: css }] = await Promise.all([
 		import("#lib/og/renderer.js"),
 		import("../routes/layout.css?inline"),
 	]);
-	return renderOgPng(await ogMarkup(slug, entry, controls), css);
+	return renderOgPng(html, css);
+}
+
+/** Starts the OG worker once the browser is idle; safe to call repeatedly. */
+export function warmOgSoon(): () => void {
+	if (typeof requestIdleCallback === "function") {
+		const id = requestIdleCallback(() => void warm(), { timeout: 2000 });
+		return () => cancelIdleCallback(id);
+	}
+	const timer = setTimeout(() => void warm(), 200);
+	return () => clearTimeout(timer);
 }
 
 export type EmailRender = { html: string; text: string; bytes: number };

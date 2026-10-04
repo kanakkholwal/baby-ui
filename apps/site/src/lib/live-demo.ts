@@ -2,7 +2,7 @@
 export type LiveSlot = { visible: boolean; release: () => void };
 
 // Bounded pool of mounted demos. Past the cap, the oldest off-screen demo gives up its slot,
-// so scrolling never keeps more than a screenful of live demos.
+// so scrolling never keeps more than a screenful of live demos (or WebGL contexts).
 const pool: LiveSlot[] = [];
 
 export function claim(slot: LiveSlot) {
@@ -30,13 +30,20 @@ const offIdle = (id: number) =>
 		? cancelIdleCallback(id)
 		: window.clearTimeout(id);
 
+type WatchOptions = {
+	/** Unmounts once far out of view; without it only the pool cap evicts. */
+	deactivate?: () => void;
+	/** True when the demo's module is already loaded, so it mounts without the rest delay. */
+	ready?: () => boolean;
+};
+
 /** Calls `activate` once `el` rests in view for 300ms and the browser is idle, so a fast
- * scroll mounts nothing; calls `deactivate` once it is far out of view. Returns a cleanup. */
+ * scroll mounts nothing. Returns a cleanup. */
 export function watchLive(
 	el: HTMLElement,
 	slot: LiveSlot,
 	activate: () => void,
-	deactivate: () => void,
+	{ deactivate, ready }: WatchOptions = {},
 ): () => void {
 	let timer: number | undefined;
 	let idle: number | undefined;
@@ -50,24 +57,27 @@ export function watchLive(
 			slot.visible = Boolean(entry?.isIntersecting);
 			cancel();
 			if (!slot.visible) return;
-			timer = window.setTimeout(() => (idle = onIdle(activate)), 300);
+			if (ready?.()) activate();
+			else timer = window.setTimeout(() => (idle = onIdle(activate)), 300);
 		},
 		{ threshold: 0.25 },
 	);
-	const far = new IntersectionObserver(
-		([entry]) => {
-			if (entry?.isIntersecting) return;
-			deactivate();
-			drop(slot);
-		},
-		{ rootMargin: "600px 0px" },
-	);
+	const far = deactivate
+		? new IntersectionObserver(
+				([entry]) => {
+					if (entry?.isIntersecting) return;
+					deactivate();
+					drop(slot);
+				},
+				{ rootMargin: "600px 0px" },
+			)
+		: undefined;
 	seen.observe(el);
-	far.observe(el);
+	far?.observe(el);
 	return () => {
 		cancel();
 		seen.disconnect();
-		far.disconnect();
+		far?.disconnect();
 		drop(slot);
 	};
 }

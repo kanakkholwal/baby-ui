@@ -154,6 +154,7 @@ import { ogTestimonial } from "./og-testimonial.ts";
 import { ogTiltedScreen } from "./og-tilted-screen.ts";
 import { ogWordmark } from "./og-wordmark.ts";
 import { orbitCardStack } from "./orbit-card-stack.ts";
+import { orbitHero } from "./orbit-hero.ts";
 import { overviewCard } from "./overview-card.ts";
 import { pagination } from "./pagination.ts";
 import { particleText } from "./particle-text.ts";
@@ -398,6 +399,7 @@ export const specs: ComponentSpec[] = [
 	ogTiltedScreen,
 	ogWordmark,
 	orbitCardStack,
+	orbitHero,
 	overviewCard,
 	pagination,
 	particleText,

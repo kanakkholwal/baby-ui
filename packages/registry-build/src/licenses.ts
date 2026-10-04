@@ -1,5 +1,14 @@
 import type { ComponentSpec } from "@baby-ui/registry-schema";
 
+// CC BY needs credit wherever the glyphs ship: @baby-ui/icons and the Orbit Hero demo data.
+const ICON_SETS = [
+	{
+		name: "Solar icon set by 480 Design",
+		url: "https://www.figma.com/community/file/1166831539721848736",
+		license: "CC BY 4.0",
+	},
+];
+
 /** Third-party notices must live at repo root, not only in a ported component's header. */
 export function buildThirdPartyLicenses(specs: ComponentSpec[]): string {
 	const bySource = new Map<string, NonNullable<ComponentSpec["licenseOrigin"]>>();
@@ -32,5 +41,20 @@ export function buildThirdPartyLicenses(specs: ComponentSpec[]): string {
 	}
 
 	if (bySource.size === 0) lines.push("No third-party-derived components yet.", "");
+
+	lines.push(
+		"## Icon sets",
+		"",
+		"Artwork used by the site and the demos, not by any component.",
+		"",
+	);
+	for (const set of ICON_SETS)
+		lines.push(
+			`### ${set.name}`,
+			"",
+			`- Source: ${set.url}`,
+			`- License: ${set.license}`,
+			"",
+		);
 	return lines.join("\n");
 }

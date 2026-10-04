@@ -56,6 +56,7 @@ import { NotchedShelfDemo } from "./notched-shelf";
 import { NpmStatsDemo } from "./npm-stats";
 import { ClickSparkDemo, DraggableMarqueeDemo, TextReelDemo } from "./obsidian";
 import { OgNewsletterIssueDemo } from "./og-newsletter-issue";
+import { OrbitHeroDemo } from "./orbit-hero";
 import { ComboboxDemo, ContextMenuDemo, DropdownMenuDemo, HoverCardDemo, PopoverDemo, SelectDemo, TooltipDemo } from "./overlays";
 import { OverviewCardDemo } from "./overview-card";
 import { DateFieldDemo, DatePickerDemo, DateRangePickerDemo, TimePickerDemo } from "./pickers";
@@ -315,6 +316,7 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	"og-tilted-screen": OgTiltedScreenDemo,
 	"og-wordmark": OgWordmarkDemo,
 	"orbit-card-stack": OrbitCardStackDemo,
+	"orbit-hero": OrbitHeroDemo,
 	"overview-card": OverviewCardDemo,
 	pagination: PaginationDemo,
 	"particle-text": ParticleTextDemo,
