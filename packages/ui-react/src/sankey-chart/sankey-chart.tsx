@@ -219,6 +219,7 @@ function SankeyPlot({
 	const [lengths, setLengths] = useState<number[]>([]);
 	const [entered, setEntered] = useState(!animate);
 	const [settled, setSettled] = useState(!animate);
+	// biome-ignore lint/correctness/useExhaustiveDependencies: epoch is a content key, so equal data does not re-run; links.length, nodes.length left out on purpose, the listed values decide when it runs.
 	useLayoutEffect(() => {
 		if (!animate || prefersReducedMotion() || links.length === 0) {
 			setEntered(true);
@@ -278,6 +279,7 @@ function SankeyPlot({
 		return null;
 	}, [activeLink, hoveredNodeData, margin.left, margin.top]);
 	const name = (index: number) => data.nodes[index]?.name ?? "";
+	// biome-ignore lint/correctness/useExhaustiveDependencies: data only invalidate it on change; name left out on purpose, the listed values decide when it runs.
 	const activeValue = useMemo(
 		() => ({
 			active: activePoint,
@@ -378,6 +380,7 @@ function SankeyPlot({
 							};
 							return (
 								<path
+									// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 									key={`${epoch}-${l.source}-${l.target}-${i}`}
 									ref={(node) => {
 										pathRefs.current[i] = node;
@@ -403,6 +406,7 @@ function SankeyPlot({
 							const nodeDelay = SANKEY_TIMING.node(i, nodeCount);
 							return (
 								<g
+									// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 									key={`${epoch}-${n.name}-${i}`}
 									data-slot="sankey-node"
 									onPointerEnter={() => {

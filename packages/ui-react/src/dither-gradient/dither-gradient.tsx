@@ -54,6 +54,7 @@ export function DitherGradient({
 		return () => engine.current?.destroy();
 	}, []);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: re-run triggers the body never reads: tone, matrix, angle and more.
 	useEffect(() => {
 		engine.current?.update(latest.current);
 	}, [tone, matrix, angle, speed, pixelSize]);

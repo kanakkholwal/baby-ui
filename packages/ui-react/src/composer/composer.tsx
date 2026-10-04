@@ -98,6 +98,7 @@ export function Composer({
 		el.style.height = `${next}px`;
 	}, [minRows, maxRows, lineHeight]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: re-run triggers the body never reads: currentValue.
 	useLayoutEffect(resize, [resize, currentValue]);
 
 	function setValue(next: string) {

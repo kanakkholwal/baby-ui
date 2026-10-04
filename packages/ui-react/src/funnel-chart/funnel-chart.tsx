@@ -202,6 +202,7 @@ function FunnelPlot({
 	const enterTotal = (n - 1) * STAGE_STAGGER + LABEL_DELAY + CHART_DURATION.enter;
 	const signature = data.map((s) => `${s.label}:${s.value}`).join("|");
 	const [elapsed, setElapsed] = useState(animate ? 0 : Number.POSITIVE_INFINITY);
+	// biome-ignore lint/correctness/useExhaustiveDependencies: signature is a content key, so equal data does not re-run; enterTotal left out on purpose, the listed values decide when it runs.
 	useLayoutEffect(() => {
 		if (!animate) {
 			setElapsed(Number.POSITIVE_INFINITY);
@@ -223,6 +224,7 @@ function FunnelPlot({
 			? { x: 0, y: cell.offset, width: frame.width, height: cell.size }
 			: { x: cell.offset, y: 0, width: cell.size, height: frame.height };
 	const activeCell = activeIndex !== null ? cells[activeIndex] : undefined;
+	// biome-ignore lint/correctness/useExhaustiveDependencies: frame.width only invalidate it on change; cellRect left out on purpose, the listed values decide when it runs.
 	const activePoint = useMemo<ActivePoint | null>(() => {
 		if (!activeCell || activeIndex === null) return null;
 		const r = cellRect(activeCell);
@@ -321,6 +323,7 @@ function FunnelPlot({
 								) : null}
 								{cell.rings.map((ring, i) => (
 									<Ring
+										// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 										key={i}
 										ring={ring}
 										color={

@@ -232,6 +232,7 @@ export function CommandFilters({
 	const [box, setBox] = useState<PillBox | null>(null);
 	const [ready, setReady] = useState(false);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: re-run triggers the body never reads: value, children.
 	useLayoutEffect(() => {
 		setBox(pressedBox(pill.current?.parentElement));
 	}, [value, children]);
@@ -314,6 +315,7 @@ export function CommandList({
 	const [box, setBox] = useState<PillBox | null>(null);
 	const [glide, setGlide] = useState(false);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: re-run triggers the body never reads: activeValue, children.
 	useEffect(() => {
 		const row = el.current?.querySelector<HTMLElement>('[data-selected="true"]');
 		setBox(row ? offsetBox(row) : null);

@@ -55,6 +55,7 @@ export function GradientHero01({
 							const variant = i === 0 ? "default" : "outline";
 							return action.href !== undefined ? (
 								<Button
+									// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 									key={i}
 									href={action.href}
 									variant={variant}
@@ -66,6 +67,7 @@ export function GradientHero01({
 								</Button>
 							) : (
 								<Button
+									// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 									key={i}
 									variant={variant}
 									size="lg"

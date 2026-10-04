@@ -500,6 +500,7 @@ export function DataTableContent<TData extends RowData>({
 	const loadMoreArmed =
 		canLoadMore && status.hasMore && !status.fetching && !status.loading;
 	// Re-armed after every page, so a page too short to fill the view loads the next at once.
+	// biome-ignore lint/correctness/useExhaustiveDependencies: re-run triggers the body never reads: rows.length.
 	useEffect(() => {
 		const sentinel = sentinelRef.current;
 		if (!loadMoreArmed || !sentinel) return;
@@ -690,6 +691,7 @@ export function DataTableContent<TData extends RowData>({
 					)}
 					{showSkeleton &&
 						Array.from({ length: skeletonRows }, (_, i) => (
+							// biome-ignore lint/suspicious/noArrayIndexKey: generated from a count, so position is the identity.
 							<TableRow key={i} aria-hidden className="hover:bg-transparent">
 								{columns.map((column) => (
 									<TableCell key={column.id}>

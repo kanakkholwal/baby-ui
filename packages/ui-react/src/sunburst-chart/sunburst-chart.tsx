@@ -291,6 +291,7 @@ function SunburstPlot({
 	const enterTotal = labelsDelay + CHART_DURATION.enter;
 	const signature = arcs.map((a) => `${a.id}:${a.value}`).join("|");
 	const [elapsed, setElapsed] = useState(animate ? 0 : enterTotal);
+	// biome-ignore lint/correctness/useExhaustiveDependencies: signature is a content key, so equal data does not re-run; enterTotal left out on purpose, the listed values decide when it runs.
 	useLayoutEffect(() => {
 		if (!animate) {
 			setElapsed(Number.POSITIVE_INFINITY);

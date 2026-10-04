@@ -215,6 +215,7 @@ function usePreviews(files: UploadFile[]): Record<string, string> {
 	const cache = useRef(new Map<string, string>());
 	const ids = files.map((f) => f.id).join("|");
 	// Keyed by the id list, not array identity, so progress updates keep the same URLs.
+	// biome-ignore lint/correctness/useExhaustiveDependencies: ids only invalidate it on change; files left out on purpose, the listed values decide when it runs.
 	const previews = useMemo(() => {
 		const next = new Map<string, string>();
 		for (const item of files) {

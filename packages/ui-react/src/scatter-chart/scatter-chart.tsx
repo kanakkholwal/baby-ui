@@ -508,6 +508,7 @@ export function Scatter({ dataKey, fill, size = "md", shape, className }: Scatte
 					(highlighted !== null && highlighted !== dataKey);
 				const styles = scatterPoint({ size, shape: resolvedShape, dimmed });
 				return (
+					// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 					<g key={index} className={styles.point()}>
 						<g
 							ref={(el) => {

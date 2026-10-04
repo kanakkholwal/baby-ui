@@ -219,9 +219,11 @@ export function ChartFrame({
 				</thead>
 				<tbody>
 					{table.rows.map((row, index) => (
+						// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 						<tr key={index}>
 							<th scope="row">{row.header}</th>
 							{row.cells.map((cell, i) => (
+								// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 								<td key={i}>{cell}</td>
 							))}
 						</tr>

@@ -180,6 +180,7 @@ export function ColorPicker({
 		apply(next);
 	}
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: applyHsv left out on purpose, the listed values decide when it runs.
 	const readSquare = useCallback(
 		(clientX: number, clientY: number) => {
 			const rect = square.current?.getBoundingClientRect();
@@ -193,6 +194,7 @@ export function ColorPicker({
 		[hue],
 	);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: applyHsv left out on purpose, the listed values decide when it runs.
 	const readStrip = useCallback(
 		(clientX: number) => {
 			const rect = strip.current?.getBoundingClientRect();

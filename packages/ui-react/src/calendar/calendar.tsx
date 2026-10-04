@@ -436,6 +436,7 @@ function CalendarChooser() {
 				}));
 
 	// Focus lands on the chosen cell when the view opens; paging leaves it on the nav.
+	// biome-ignore lint/correctness/useExhaustiveDependencies: re-run triggers the body never reads: view.
 	useEffect(() => {
 		const node = root.current;
 		const target =

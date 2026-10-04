@@ -147,6 +147,7 @@ export function StatusMonitor({
 							const when = formatTimestamp(item.timestamp, locale);
 							const name = l[item.status];
 							return (
+								// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 								<Tooltip key={i} delay={150}>
 									<TooltipTrigger
 										data-bar=""

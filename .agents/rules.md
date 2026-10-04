@@ -202,6 +202,27 @@ Plan and bklit motion numbers: `.notes/10-charts-plan.md`.
 - Active datum, hidden series, selection and status are controlled props with
   uncontrolled defaults. Never port from bklit `packages/studio` (proprietary).
 
+## Consumer installs (every new or changed component)
+
+Found installing into a fresh TanStack Start + Tailwind v4 app with no `shadcn init` (2026-10-04).
+Each one passed our own gates and still broke the consumer.
+
+- A React import of another item's folder ships as `…/<folder>/index`, never the bare folder:
+  the shadcn CLI resolves a bare folder by basename (`chart` became `chart/chart`). `layout.ts`
+  emits it; `verifyEmittedImports` fails the registry build otherwise.
+- Every named import between shipped files must name a file that exports it
+  (`verifyEmittedImports`). Never rely on the monorepo's `tsc` alone.
+- `@baby-ui/theme` alone must give a project with no `shadcn init` every utility components use
+  (`bg-popover`, `text-primary-foreground`, `ring-ring`, the radius scale): it ships the whole
+  `@theme` block. Never assume shadcn's own setup ran.
+- Shipped source must pass Biome `recommended` with the `react` domain on, as consumers have it
+  (react is a dependency there, only a devDependency here). Index keys and effect deps get a real
+  fix or a `biome-ignore` with the reason.
+- A Base UI `render` element's `className` is merged through `cn` with ours; Base UI only joins
+  the strings, so our defaults would beat the consumer's.
+- Never hide an exiting element only by its exit animation: backgrounded tabs never run it. Exits
+  rest hidden, and only the latest exit is kept (TextLoop stacked every item after a hidden tab).
+
 ## Gates before saying done
 
 `pnpm fix` (writes) then `pnpm lint` (biome + comment + import gates, read-only) · `pnpm test`

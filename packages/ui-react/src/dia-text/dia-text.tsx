@@ -86,6 +86,7 @@ export function DiaText({
 		return () => observer.disconnect();
 	}, [triggerOnView]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: re-run triggers the body never reads: texts.
 	useLayoutEffect(() => {
 		const node = measureRef.current;
 		if (!(node && multi)) return setWidths([]);
@@ -128,6 +129,7 @@ export function DiaText({
 			{multi ? (
 				<span ref={measureRef} aria-hidden="true" className={styles.measure()}>
 					{texts.map((t, i) => (
+						// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 						<span key={i} className="inline-block">
 							{t}
 						</span>

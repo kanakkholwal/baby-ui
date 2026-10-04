@@ -52,7 +52,8 @@ let roll = $state<Roll>({ index, step: index, snap: false });
 
 $effect.pre(() => {
 	if (shown.index === index) return;
-	leaving.push(shown);
+	// Only the latest exit runs: queued ones would stack visibly after a backgrounded tab.
+	leaving = [shown];
 	shown = { index, key: shown.key + 1 };
 });
 

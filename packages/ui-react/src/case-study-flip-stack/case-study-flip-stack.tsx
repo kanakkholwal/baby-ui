@@ -128,6 +128,7 @@ export function CaseStudyFlipStack({
 							const { stack, restY, restS } = flipCardOffsets(i, total);
 							return (
 								<article
+									// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 									key={`${i}-${item.title}`}
 									data-active={i === active || undefined}
 									className={s.article()}

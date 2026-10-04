@@ -79,6 +79,7 @@ export function DitheredLogo({
 		return () => engine.current?.destroy();
 	}, []);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: re-run triggers the body never reads: src, variant, tone and more.
 	useEffect(() => {
 		engine.current?.update(latest.current);
 	}, [

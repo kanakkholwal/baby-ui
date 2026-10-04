@@ -190,6 +190,7 @@ export function SeriesBar({
 	const visible = layout.keys.filter((k) => !hidden.has(k));
 	const index = Math.max(0, visible.indexOf(dataKey));
 	const below = layout.stacked ? visible.slice(0, index) : [];
+	// biome-ignore lint/correctness/useExhaustiveDependencies: below.join("|") is a content key, so equal data does not recompute; below left out on purpose, the listed values decide when it runs.
 	const stackTop = useMemo(
 		() => (layout.stacked && !hidden.has(dataKey) ? stackMax(data, dataKey, below) : 0),
 		[layout.stacked, hidden, data, dataKey, below.join("|")],
@@ -217,6 +218,7 @@ export function SeriesBar({
 
 	const keyOf = (datum: Datum, i: number) => String(toDate(datum[xKey]).getTime() || i);
 	const order = data.map(keyOf);
+	// biome-ignore lint/correctness/useExhaustiveDependencies: below.join("|") is a content key, so equal data does not recompute; below, keyOf left out on purpose, the listed values decide when it runs.
 	const targets = useMemo(() => {
 		const map = new Map<string, Segment>();
 		data.forEach((datum, i) => {

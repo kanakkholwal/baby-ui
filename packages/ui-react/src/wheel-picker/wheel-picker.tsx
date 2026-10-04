@@ -172,10 +172,12 @@ export function WheelPickerColumn({
 		});
 	};
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: h, rows only re-run it on change; jumpToRaw, base left out on purpose, the listed values decide when it runs.
 	useLayoutEffect(() => {
 		jumpToRaw(base + latest.current.active);
 	}, [h, rows]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: goTo left out on purpose, the listed values decide when it runs.
 	useEffect(() => {
 		if (value === undefined || drag.current) return;
 		const index = items.findIndex((item) => item.value === value);
@@ -321,6 +323,7 @@ export function WheelPickerColumn({
 					return (
 						// biome-ignore lint/a11y/useFocusableInteractive: the listbox owns focus via aria-activedescendant.
 						<div
+							// biome-ignore lint/suspicious/noArrayIndexKey: generated from a count, so position is the identity.
 							key={raw}
 							id={`${id}-${raw}`}
 							role="option"

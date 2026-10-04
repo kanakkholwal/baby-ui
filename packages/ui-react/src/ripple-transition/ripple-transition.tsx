@@ -77,6 +77,7 @@ export function RippleTransition({
 		if (reduced) setShown(value);
 	}, [reduced, value]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: re-run triggers the body never reads: value, shown.
 	useLayoutEffect(() => {
 		if (!moving || !root.current) return;
 		placeRipple(root.current, pending.current);
@@ -118,6 +119,7 @@ export function RippleTransition({
 				const state = layerState(i, value, shown, moving);
 				return (
 					<div
+						// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 						key={`${i}-${image.src}`}
 						aria-hidden={i === value ? undefined : true}
 						className={s.layer({ state })}
@@ -136,6 +138,7 @@ export function RippleTransition({
 				<div key={`${shown}-${value}`} aria-hidden className={s.rings()}>
 					{Array.from({ length: RIPPLE_TRANSITION_RING_COUNT[rings] }, (_, i) => (
 						<span
+							// biome-ignore lint/suspicious/noArrayIndexKey: generated from a count, so position is the identity.
 							key={i}
 							className={s.ring()}
 							style={{ animationDelay: `${Math.round(i * duration * 0.08)}ms` }}

@@ -149,6 +149,7 @@ export function Pricing02({
 										>
 											{chars.map((char, i) => (
 												<span
+													// biome-ignore lint/suspicious/noArrayIndexKey: characters of one string never reorder, so position is the identity.
 													key={`${current?.value}-${i}-${char}`}
 													data-animate={moved ? "" : undefined}
 													className={s.digit()}

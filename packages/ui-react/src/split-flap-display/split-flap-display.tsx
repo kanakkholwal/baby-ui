@@ -175,6 +175,7 @@ export function SplitFlapDisplay({
 			>
 				{Array.from({ length: extent.rows }, (_, r) => (
 					<div
+						// biome-ignore lint/suspicious/noArrayIndexKey: generated from a count, so position is the identity.
 						key={r}
 						className={styles.rowShell()}
 						data-open={r < rows.length || undefined}
@@ -187,6 +188,7 @@ export function SplitFlapDisplay({
 								<div className={styles.cells()}>
 									{Array.from({ length: extent.cols }, (_, c) => (
 										<span
+											// biome-ignore lint/suspicious/noArrayIndexKey: generated from a count, so position is the identity.
 											key={c}
 											className={styles.cellShell()}
 											data-open={c < cols || undefined}

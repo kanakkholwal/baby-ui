@@ -58,6 +58,7 @@ export function ScrollReveal({
 				<div className="flex h-fit w-full flex-wrap justify-center gap-x-[0.35em] p-8">
 					{words.map((word, index) => (
 						<span
+							// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 							key={`${index}-${word}`}
 							data-blur={blur}
 							className="scroll-reveal-word"
@@ -73,6 +74,7 @@ export function ScrollReveal({
 				</div>
 			</div>
 			{words.map((_, index) => (
+				// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 				<div key={index} className="h-32" aria-hidden />
 			))}
 		</div>

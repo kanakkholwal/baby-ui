@@ -326,6 +326,7 @@ function HeatmapPlot({
 			: highlightedLevel === null || cell.level === highlightedLevel;
 	const dimming = activeCell !== undefined || highlightedLevel !== null;
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: offsetX, gap only invalidate it on change; at left out on purpose, the listed values decide when it runs.
 	const activePoint = useMemo<ActivePoint | null>(() => {
 		if (!activeCell) return null;
 		const p = at(activeCell);
@@ -381,6 +382,7 @@ function HeatmapPlot({
 					{weekdays.map((date, row) =>
 						row % 2 === 1 ? (
 							<text
+								// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 								key={row}
 								x={offsetX - 6}
 								y={HEATMAP_MARGIN.top + row * (size + gap) + size / 2}

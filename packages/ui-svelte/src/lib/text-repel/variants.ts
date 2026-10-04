@@ -122,7 +122,7 @@ export function createInertia() {
 		) {
 			if (last) velocity = { x: pointer.x - last.x, y: pointer.y - last.y };
 			last = pointer;
-			const index = letters.findIndex((el) => el === target);
+			const index = target instanceof HTMLElement ? letters.indexOf(target) : -1;
 			const el = letters[index];
 			if (!el || el === current) return;
 			current = el;

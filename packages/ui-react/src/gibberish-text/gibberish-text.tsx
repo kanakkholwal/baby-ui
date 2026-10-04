@@ -56,6 +56,7 @@ export function GibberishText({
 	return (
 		<span data-slot="gibberish-text">
 			{text.split("").map((letter, index) => (
+				// biome-ignore lint/suspicious/noArrayIndexKey: characters of one string never reorder, so position is the identity.
 				<Letter key={index} letter={letter} speedMs={speedMs} className={letterClass} />
 			))}
 		</span>

@@ -132,6 +132,7 @@ export function MegaMenu({
 		});
 	}
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: measure left out on purpose, the listed values decide when it runs.
 	useEffect(() => {
 		if (open < 0) return;
 		measure(open);
@@ -460,6 +461,7 @@ export function MegaNavbar({
 	}, [sticky]);
 
 	// Navigating from inside the sheet should leave it closed.
+	// biome-ignore lint/correctness/useExhaustiveDependencies: re-run triggers the body never reads: active.
 	useEffect(() => {
 		setMobileOpen(false);
 	}, [active]);

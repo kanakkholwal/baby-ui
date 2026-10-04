@@ -216,6 +216,7 @@ export function Flowchart({
 		moved: boolean;
 	} | null>(null);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: re-run triggers the body never reads: steps.
 	useLayoutEffect(() => {
 		const canvas = canvasRef.current;
 		if (!canvas) return;

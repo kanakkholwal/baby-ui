@@ -121,6 +121,7 @@ export function CollabCard({
 				<ul className="m-0 flex list-none items-center p-0" aria-hidden>
 					{presenceColors.map((color, index) => (
 						<li
+							// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 							key={`${color}-${index}`}
 							className={cn("relative size-[3.25cqi] shrink-0", index > 0 && OVERLAP)}
 							style={{ zIndex: index + 1 }}

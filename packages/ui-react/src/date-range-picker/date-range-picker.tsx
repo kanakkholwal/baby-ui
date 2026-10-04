@@ -96,6 +96,7 @@ export function DateRangePickerPresets({
 	const [ready, setReady] = useState(false);
 	const pressedKey = presets.find((p) => sameRange(selected, p.range(today)))?.label;
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: pressedKey, presets is a content key, so equal data does not re-run.
 	useLayoutEffect(() => {
 		setBox(pressedBox(rail.current));
 	}, [pressedKey, presets]);

@@ -54,7 +54,8 @@ export function TextLoop({
 	const [shown, setShown] = useState<Shown>({ index, key: 0 });
 	const [leaving, setLeaving] = useState<Shown[]>([]);
 	if (shown.index !== index) {
-		setLeaving((current) => [...current, shown]);
+		// Only the latest exit runs: queued ones would stack visibly after a backgrounded tab.
+		setLeaving([shown]);
 		setShown({ index, key: shown.key + 1 });
 	}
 
@@ -112,6 +113,7 @@ export function TextLoop({
 							}}
 						>
 							{[...items, items[0]].map((text, i) => (
+								// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 								<span key={i} className={styles.stackItem()}>
 									{text}
 								</span>

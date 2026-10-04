@@ -104,6 +104,7 @@ export function TextRepel({
 			<span className={s.srOnly()}>{text}</span>
 			{chars.map((c, i) => (
 				<span
+					// biome-ignore lint/suspicious/noArrayIndexKey: characters of one string never reorder, so position is the identity.
 					key={i}
 					ref={(el) => {
 						if (el) letters.current[i] = el;

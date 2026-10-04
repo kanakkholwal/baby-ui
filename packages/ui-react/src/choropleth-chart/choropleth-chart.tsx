@@ -331,6 +331,7 @@ function MapPlot({
 	const layerRef = useRef<SVGGElement>(null);
 	const [dragging, setDragging] = useState(false);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: re-run triggers the body never reads: data.
 	useLayoutEffect(() => {
 		const layer = layerRef.current;
 		if (!layer) return;
@@ -445,6 +446,7 @@ function MapPlot({
 				y: activeFeature.centroid[1] * zoom.k + zoom.y,
 			}
 		: null;
+	// biome-ignore lint/correctness/useExhaustiveDependencies: anchor left out on purpose, the listed values decide when it runs.
 	const activePoint = useMemo<ActivePoint | null>(
 		() =>
 			activeFeature && activeIndex !== null && anchor

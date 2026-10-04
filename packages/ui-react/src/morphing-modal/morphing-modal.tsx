@@ -86,8 +86,8 @@ export function MorphingModal({
 		triggerRef.current?.focus();
 	}
 
-	// Drives the native dialog + FLIP animation from resolved open state, so a
-	// controlled `open` prop and the internal trigger/close click both funnel here.
+	// A controlled `open` and the trigger/close clicks all drive the dialog and FLIP from here.
+	// biome-ignore lint/correctness/useExhaustiveDependencies: runClose, runOpen left out on purpose, the listed values decide when it runs.
 	useEffect(() => {
 		if (isOpen === wasOpen.current) return;
 		wasOpen.current = isOpen;

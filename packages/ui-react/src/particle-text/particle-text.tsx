@@ -67,6 +67,7 @@ export function ParticleText({
 		return () => field.current?.destroy();
 	}, []);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: re-run triggers the body never reads: text, fontSize, particleSize and more.
 	useEffect(() => {
 		field.current?.update(latest.current);
 	}, [text, fontSize, particleSize, density, strength, radius, returnSpeed, shape]);

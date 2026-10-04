@@ -645,6 +645,7 @@ function BarSkeleton() {
 							: i * step + (step - width) / 2;
 						return orientation === "vertical" ? (
 							<rect
+								// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 								key={i}
 								className={styles.skeleton()}
 								x={start}
@@ -655,6 +656,7 @@ function BarSkeleton() {
 							/>
 						) : (
 							<rect
+								// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 								key={i}
 								className={styles.skeleton()}
 								x={0}

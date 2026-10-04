@@ -30,6 +30,7 @@ function LoaderGrid({ delays, duration, round }: Pattern) {
 		<span aria-hidden className="grid shrink-0 grid-cols-[repeat(3,4px)] gap-[1.5px]">
 			{delays.map((delay, index) => (
 				<span
+					// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 					key={index}
 					className={cn(
 						"size-[4px] bg-foreground",

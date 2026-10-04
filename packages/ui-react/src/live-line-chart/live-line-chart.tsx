@@ -275,6 +275,7 @@ function LivePlot({
 	children?: ReactNode;
 }) {
 	const clipId = `${useId().replace(/:/g, "")}-live`;
+	// biome-ignore lint/correctness/useExhaustiveDependencies: marginProp left out on purpose, the listed values decide when it runs.
 	const margin = useMemo(
 		() => ({ ...DEFAULT_LIVE_MARGIN, ...marginProp }),
 		[marginProp?.top, marginProp?.right, marginProp?.bottom, marginProp?.left],
@@ -306,6 +307,7 @@ function LivePlot({
 	// Carries the clock across restarts on new data, so slow frames lose no easing time.
 	const lastTick = useRef<number | null>(null);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: re-run triggers the body never reads: target, value.
 	useEffect(() => {
 		if (!onScreen) {
 			lastTick.current = null;
@@ -397,6 +399,7 @@ function LivePlot({
 
 	const scrubTime = cursorX === null ? null : xScale.invert(cursorX).getTime() / 1000;
 	const scrubIndex = scrubTime === null ? null : nearestPointIndex(data, scrubTime);
+	// biome-ignore lint/correctness/useExhaustiveDependencies: activeIndex, setActive left out on purpose, the listed values decide when it runs.
 	useEffect(() => {
 		if (scrubIndex !== null && scrubIndex !== activeIndex) setActive(scrubIndex, false);
 	}, [scrubIndex]);

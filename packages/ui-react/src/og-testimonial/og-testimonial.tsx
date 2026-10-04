@@ -59,6 +59,7 @@ export function OgTestimonial({
 						{ogTestimonialStars(rating).map((state, i) => (
 							<svg
 								aria-hidden="true"
+								// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 								key={i}
 								width="22"
 								height="22"

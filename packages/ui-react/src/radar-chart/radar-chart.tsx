@@ -329,10 +329,12 @@ export function RadarGrid({ showLevels = true, className }: RadarGridProps) {
 	return (
 		<g data-slot="radar-grid" className={className}>
 			{Array.from({ length: levels }, (_, i) => (
+				// biome-ignore lint/suspicious/noArrayIndexKey: generated from a count, so position is the identity.
 				<RadarRing key={`ring-${i}`} index={i} />
 			))}
 			{showLevels
 				? Array.from({ length: levels }, (_, i) => (
+						// biome-ignore lint/suspicious/noArrayIndexKey: generated from a count, so position is the identity.
 						<RadarLevel key={`level-${i}`} index={i} />
 					))
 				: null}

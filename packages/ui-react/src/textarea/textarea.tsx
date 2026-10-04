@@ -39,8 +39,8 @@ export function Textarea({
 	const id = idProp ?? autoId;
 	const ref = useRef<HTMLTextAreaElement>(null);
 
-	// Height follows content, never eases: easing lags behind the character just typed.
-	// useLayoutEffect, not useEffect: a post-paint resize would show one frame at the old height.
+	// Layout effect, no easing: height must match the text before paint and never lag a keystroke.
+	// biome-ignore lint/correctness/useExhaustiveDependencies: re-run triggers the body never reads: value.
 	useLayoutEffect(() => {
 		const el = ref.current;
 		if (!autoGrow || !el) return;

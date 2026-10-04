@@ -92,6 +92,7 @@ export function StreamingText({
 	const doneRef = useRef(false);
 	const { root, text } = streamingText({ layout, size });
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: re-run triggers the body never reads: count.
 	useEffect(() => {
 		if (done) return;
 		const id = setTimeout(
@@ -121,15 +122,15 @@ export function StreamingText({
 	return (
 		<div data-slot="streaming-text" className={cn(root(), className)}>
 			<p aria-busy={!done || undefined} className={text()}>
-				{content
-					.slice(0, count)
-					.map((token, i) =>
-						token.cite !== undefined ? (
-							<SourceChip key={`${token.text}-${i}`} source={sources[token.cite]} />
-						) : (
-							<span key={`${token.text}-${i}`}>{token.text} </span>
-						),
-					)}
+				{content.slice(0, count).map((token, i) =>
+					token.cite !== undefined ? (
+						// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
+						<SourceChip key={`${token.text}-${i}`} source={sources[token.cite]} />
+					) : (
+						// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
+						<span key={`${token.text}-${i}`}>{token.text} </span>
+					),
+				)}
 				{caret && !done ? (
 					<span
 						aria-hidden

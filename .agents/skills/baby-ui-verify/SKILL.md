@@ -31,6 +31,26 @@ pnpm size
 running in apps/site. Prerendered output in `.svelte-kit/output` is still complete; say
 so in the report instead of killing the user's processes.
 
+## 2b. Consumer install (each new or changed component)
+
+The cases in `.agents/rules.md` "Consumer installs". Static part, always:
+
+```bash
+pnpm --filter @baby-ui/registry-build test   # emitted imports, barrels, theme utilities
+npx biome lint <changed ui-react folders>    # with the react domain on, as consumers have it
+```
+
+Real install, once per batch (procedure in the `isolated-registry-install-tests` memory: build
+with `BABY_UI_REGISTRY_OUT` + a localhost URL into a temp dir, serve it, never write localhost
+into `apps/site/static`):
+
+- Fresh Vite + React 19 + Tailwind v4 app with only `@import "tailwindcss"` and no `shadcn init`.
+- `npx shadcn add @baby-ui/theme @baby-ui/<slug>` (and its registry dependencies' blocks).
+- `tsc --noEmit` clean with no hand edits; Biome `recommended` clean on `src/components`.
+- Open it: surfaces have their colour (popover, primary fill), focus rings show.
+- Same for Svelte with `shadcn-svelte add` and `svelte-check`.
+- Stop the server and delete the temp app afterwards.
+
 ## 3. Runtime checks (headless Edge, no browser download)
 
 Serve `.svelte-kit/output` with a static server, then run from the session scratchpad:

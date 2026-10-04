@@ -35,6 +35,7 @@ export function ClickSpark({
 	const sparksRef = useRef<ReturnType<typeof createSparks>>(null);
 	const options = { count, size, radius, durationMs };
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: options left out on purpose, the listed values decide when it runs.
 	useEffect(() => {
 		if (!canvasRef.current) return;
 		const sparks = createSparks(canvasRef.current, scope, options);

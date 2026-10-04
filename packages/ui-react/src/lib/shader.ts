@@ -144,6 +144,7 @@ export function mountShader<N extends string>(
 			release();
 			return false;
 		}
+		// biome-ignore lint/correctness/useHookAtTopLevel: WebGL's useProgram, not a React hook.
 		context.useProgram(program);
 		context.bindBuffer(context.ARRAY_BUFFER, buffer);
 		context.bufferData(

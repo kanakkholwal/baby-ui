@@ -125,6 +125,7 @@ export function ChartContainer({
 export function ChartStyle({ id, config }: { id: string; config: ChartConfig }) {
 	const css = chartStyleCss(id, config);
 	if (!css) return null;
+	// biome-ignore lint/security/noDangerouslySetInnerHtml: built from the config's colours, not user HTML.
 	return <style dangerouslySetInnerHTML={{ __html: css }} />;
 }
 

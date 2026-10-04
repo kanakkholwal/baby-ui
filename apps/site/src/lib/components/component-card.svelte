@@ -64,7 +64,9 @@ const emailScale = $derived(stageWidth / EMAIL_PX);
 // The iframe takes the email's full height so it never scrolls; the tile clips it instead.
 function fitEmail(event: Event) {
 	if (!(event.currentTarget instanceof HTMLIFrameElement)) return;
-	emailHeight = event.currentTarget.contentDocument?.documentElement.scrollHeight ?? 0;
+	const root = event.currentTarget.contentDocument?.documentElement;
+	if (root) root.style.scrollbarWidth = "none";
+	emailHeight = root?.scrollHeight ?? 0;
 }
 const demoProps = $derived(item.defaults);
 const intrinsic = $derived(FRAME_PX[frame] + (tile ? 0 : CARD_HEADER_PX));

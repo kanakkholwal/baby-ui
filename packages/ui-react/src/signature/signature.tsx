@@ -80,6 +80,7 @@ export function Signature({
 				>
 					{chars.map((char, i) => (
 						<tspan
+							// biome-ignore lint/suspicious/noArrayIndexKey: characters of one string never reorder, so position is the identity.
 							key={`${char}-${i}`}
 							className={s.glyph()}
 							style={{ "--signature-i": i } as CSSProperties}

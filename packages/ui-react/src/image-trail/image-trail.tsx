@@ -48,6 +48,7 @@ export function ImageTrail({
 		return () => trail.current?.destroy();
 	}, []);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: re-run triggers the body never reads: threshold, duration.
 	useEffect(() => {
 		trail.current?.update(latest.current);
 	}, [threshold, duration]);
@@ -58,6 +59,7 @@ export function ImageTrail({
 			<div aria-hidden className={s.layer()}>
 				{images.map((src, i) => (
 					<img
+						// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 						key={i}
 						data-slot="image-trail-item"
 						src={src}

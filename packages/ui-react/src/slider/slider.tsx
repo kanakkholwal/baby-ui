@@ -284,6 +284,7 @@ export function Slider({
 					<div aria-hidden="true" className={styles.overlay()}>
 						{sliderWaveBars(percent, dragging).map((bar, i) => (
 							<span
+								// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 								key={i}
 								data-filled={bar.filled || undefined}
 								className={styles.bar()}
@@ -299,6 +300,7 @@ export function Slider({
 				) : null}
 				{values.map((v, index) => (
 					<SliderPrimitive.Thumb
+						// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 						key={index}
 						index={index}
 						getAriaLabel={label ? () => label : undefined}

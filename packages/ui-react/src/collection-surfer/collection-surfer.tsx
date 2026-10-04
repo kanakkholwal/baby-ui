@@ -119,6 +119,7 @@ export function CollectionSurfer({
 					<div className={s.track()}>
 						{[...items, ...items].map((item, i) => (
 							<div
+								// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 								key={`${i}-${item.src}`}
 								data-surf-card=""
 								aria-hidden={i >= count || undefined}

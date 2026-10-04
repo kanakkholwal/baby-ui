@@ -182,6 +182,7 @@ function DatePill({ active, instant }: { active: ActivePoint | null; instant: bo
 						<div ref={dayRef} className="flex flex-col">
 							{days.map((d, i) => (
 								<span
+									// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 									key={i}
 									className="flex h-6 items-center justify-center tabular-nums"
 								>

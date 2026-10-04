@@ -72,6 +72,7 @@ export function LiveXAxis({
 				const px = (i / (count - 1)) * innerWidth;
 				return (
 					<text
+						// biome-ignore lint/suspicious/noArrayIndexKey: generated from a count, so position is the identity.
 						key={i}
 						className={cn(styles.tick(), styles.timeLabel())}
 						x={px}
@@ -183,6 +184,7 @@ export function LiveYAxis({
 	const prev = useRef<Map<string, number>>(new Map());
 	const [leaving, setLeaving] = useState<{ key: string; value: number }[]>([]);
 	const timers = useRef<number[]>([]);
+	// biome-ignore lint/correctness/useExhaustiveDependencies: signature is a content key, so equal data does not re-run; ticks.map left out on purpose, the listed values decide when it runs.
 	useEffect(() => {
 		const current = new Set(ticks.map((t) => t.key));
 		const gone = [...prev.current]
@@ -208,6 +210,7 @@ export function LiveYAxis({
 	);
 
 	const tx = position === "left" ? -8 : innerWidth + 8;
+	// biome-ignore lint/correctness/useExhaustiveDependencies: signature is a content key, so equal data does not recompute; ticks.map left out on purpose, the listed values decide when it runs.
 	const presentKeys = useMemo(() => new Set(ticks.map((t) => t.key)), [signature]);
 	return (
 		<g data-slot="chart-live-y-axis" className={className}>

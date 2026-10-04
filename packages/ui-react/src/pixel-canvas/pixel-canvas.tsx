@@ -54,6 +54,7 @@ export function PixelCanvas({
 		return () => engine.current?.destroy();
 	}, []);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: re-run triggers the body never reads: variant, tone, gap and more.
 	useEffect(() => {
 		engine.current?.update(latest.current);
 	}, [variant, tone, gap, decay, radius]);

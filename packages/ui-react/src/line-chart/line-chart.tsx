@@ -259,6 +259,7 @@ export function ProfitLossLine({
 		>
 			{segments.map((segment, i) => (
 				<path
+					// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 					key={`${i}-${segment.positive}`}
 					data-sign={segment.positive ? "positive" : "negative"}
 					d={linePath(

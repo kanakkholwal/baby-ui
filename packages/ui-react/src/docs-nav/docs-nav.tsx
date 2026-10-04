@@ -78,6 +78,7 @@ export function DocsNav({
 		onOpenChange?.(list);
 	};
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: re-run triggers the body never reads: current.
 	useEffect(() => {
 		revealCurrent(root.current);
 	}, [current]);

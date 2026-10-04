@@ -34,6 +34,7 @@ export function MirrorText({
 			<span className="sr-only">{text}</span>
 			{Array.from({ length: LAYER_COUNT }, (_, index) => (
 				<div
+					// biome-ignore lint/suspicious/noArrayIndexKey: generated from a count, so position is the identity.
 					key={index}
 					aria-hidden
 					className={cn("h-[0.6em] overflow-hidden", layer())}

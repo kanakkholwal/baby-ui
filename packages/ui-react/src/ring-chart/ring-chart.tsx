@@ -352,10 +352,12 @@ function Ring({
 		else spring.current?.set(target);
 	}, [active, pushed, instant]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: re-run triggers the body never reads: ring, row, round.
 	useLayoutEffect(() => {
 		apply();
 	}, [ring, row, round, apply]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: signature is a content key, so equal data does not re-run.
 	useLayoutEffect(() => {
 		if (!animate) {
 			expand.current = 1;

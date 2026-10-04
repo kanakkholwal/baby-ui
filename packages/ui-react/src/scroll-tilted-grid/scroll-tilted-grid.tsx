@@ -54,6 +54,7 @@ export function ScrollTiltedGrid({
 	const tiles = Array.from({ length: Math.max(1, repeat) }, () => images).flat();
 	const count = tiles.length;
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: re-run triggers the body never reads: size.
 	useEffect(() => {
 		if (!root.current || count === 0) return;
 		return scrubTiles(root.current);
@@ -70,6 +71,7 @@ export function ScrollTiltedGrid({
 			<div className={s.grid()}>
 				{tiles.map((image, i) => (
 					<figure
+						// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 						key={i}
 						data-scroll-tilted-tile=""
 						className={scrollTiltedGrid({ side: i % 2 ? "right" : "left" }).figure()}

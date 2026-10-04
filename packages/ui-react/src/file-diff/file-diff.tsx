@@ -35,6 +35,7 @@ export function FileDiff({
 
 			<div className="overflow-x-auto font-mono text-sm leading-relaxed">
 				{lines.map((line, i) => (
+					// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 					<div key={i} className={diffRow({ kind: line.kind })}>
 						{showLineNumbers ? (
 							<span

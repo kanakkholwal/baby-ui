@@ -123,6 +123,7 @@ export function RevealText({
 		<span className={styles.srOnly()}>{lines.join(" ")}</span>,
 		<span aria-hidden="true">
 			{units.map((line, l) => (
+				// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 				<span key={l} className={styles.line()}>
 					{line.map((unit) => (
 						<span key={unit.key} className={styles.mask()}>

@@ -248,6 +248,7 @@ export function ToolChips({
 											<div className="py-1 font-mono text-xs leading-[1.8]">
 												{diff.lines.map((line, lineIndex) => (
 													<div
+														// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 														key={`${lineIndex}-${line.text}`}
 														className={cn(
 															"flex gap-2 whitespace-pre px-2.5",

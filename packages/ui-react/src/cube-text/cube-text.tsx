@@ -36,11 +36,13 @@ export function CubeText({
 			<span className="sr-only">{text}</span>
 			<span aria-hidden="true">
 				{words.map((glyphs, w) => (
+					// biome-ignore lint/suspicious/noArrayIndexKey: characters of one string never reorder, so position is the identity.
 					<span key={w}>
 						{w > 0 ? " " : null}
 						<span className={s.word()}>
 							{glyphs.map((glyph, g) => (
 								<span
+									// biome-ignore lint/suspicious/noArrayIndexKey: characters of one string never reorder, so position is the identity.
 									key={g}
 									data-char={glyph.char}
 									className={s.char()}

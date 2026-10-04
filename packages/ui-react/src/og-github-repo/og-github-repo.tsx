@@ -57,8 +57,10 @@ export function OgGithubRepo({
 		<div data-slot="og-github-repo" className={cn(s.root(), className)}>
 			<div className={s.heatmap()}>
 				{OG_GITHUB_REPO_WEEKS.map((week, w) => (
+					// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 					<div key={`w${w}`} className={s.week()}>
 						{week.map((level, d) => (
+							// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 							<span key={`d${d}`} className={cn(s.cell(), ogGithubRepoCell({ level }))} />
 						))}
 					</div>
@@ -101,6 +103,7 @@ export function OgGithubRepo({
 						<span className={s.stack()}>
 							{faces.map((src, i) => (
 								<img
+									// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 									key={`${i}-${src}`}
 									src={src}
 									alt=""

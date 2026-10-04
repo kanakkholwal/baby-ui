@@ -63,6 +63,7 @@ export function TextTransition({
 	} else if (preset.target === "word") {
 		const words = text.trim().split(/\s+/);
 		nodes = words.map((word, index) => (
+			// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 			<Fragment key={`${text}-${variant}-${index}-${word}`}>
 				{index > 0 ? " " : null}
 				<span
@@ -76,9 +77,11 @@ export function TextTransition({
 	} else {
 		nodes = [...text].map((char, index) =>
 			char.trim() === "" ? (
+				// biome-ignore lint/suspicious/noArrayIndexKey: characters of one string never reorder, so position is the identity.
 				<Fragment key={`${text}-${variant}-${index}`}>{char}</Fragment>
 			) : (
 				<span
+					// biome-ignore lint/suspicious/noArrayIndexKey: characters of one string never reorder, so position is the identity.
 					key={`${text}-${variant}-${index}`}
 					className="text-transition-unit inline-block"
 					style={unitStyle(preset, index)}

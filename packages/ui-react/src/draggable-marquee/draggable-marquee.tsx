@@ -43,6 +43,7 @@ export function DraggableMarquee({
 	const s = draggableMarquee({ gap, direction });
 	const options = { speed, direction, pauseOnHover, friction, onCopies: setCopies };
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: options left out on purpose, the listed values decide when it runs.
 	useEffect(() => {
 		if (!rootRef.current || !trackRef.current) return;
 		const marquee = createMarquee(rootRef.current, trackRef.current, options);
@@ -68,6 +69,7 @@ export function DraggableMarquee({
 			<div ref={trackRef} className={s.track()}>
 				{Array.from({ length: copies }, (_, copy) => (
 					<div
+						// biome-ignore lint/suspicious/noArrayIndexKey: generated from a count, so position is the identity.
 						key={copy}
 						aria-hidden={copy > 0 || undefined}
 						inert={copy > 0}

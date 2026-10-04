@@ -136,6 +136,7 @@ export function DateSegments({
 				if (segment.part === "literal") {
 					return (
 						<span
+							// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 							key={i}
 							aria-hidden="true"
 							data-segment="literal"

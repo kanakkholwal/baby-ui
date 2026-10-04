@@ -43,6 +43,7 @@ export function SplitText({
 					const shift = offset(index, activeIndex);
 					return (
 						<div
+							// biome-ignore lint/suspicious/noArrayIndexKey: characters of one string never reorder, so position is the identity.
 							key={`${letter}-${index}`}
 							onMouseEnter={() => {
 								clearTimeout(timer.current);

@@ -113,6 +113,7 @@ export function OgPodcastEpisode({
 					</div>
 					<div className={s.wave()}>
 						{bars.map((h, i) => (
+							// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 							<div key={i} className={s.bar()} style={{ height: `${h}px` }} />
 						))}
 					</div>

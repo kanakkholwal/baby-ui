@@ -34,6 +34,7 @@ export function OgEditorialBio({
 			<div className={s.crossY()} />
 			<div className={s.lines()}>
 				{shown.map((line, i) => (
+					// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 					<span key={`${i}-${line}`} className={cn(s.line(), i % 2 === 1 && s.indent())}>
 						{line}
 					</span>

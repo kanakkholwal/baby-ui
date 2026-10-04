@@ -116,6 +116,7 @@ export function ChartBrush({
 		return scaleTime().domain([min, maxTime]).range([0, inner]);
 	}, [data, xKey, inner]);
 	const keys = dataKeys.filter((key) => !hidden.has(key));
+	// biome-ignore lint/correctness/useExhaustiveDependencies: keys.join("|") is a content key, so equal data does not recompute; keys left out on purpose, the listed values decide when it runs.
 	const yScale = useMemo(() => {
 		const top = max(data, (d) =>
 			max(keys, (k) => (typeof d[k] === "number" ? (d[k] as number) : 0)),

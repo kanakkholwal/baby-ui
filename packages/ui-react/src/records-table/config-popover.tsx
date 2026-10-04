@@ -51,6 +51,7 @@ export function GlyphIcon({ glyphs, size = 14 }: { glyphs: Glyph[]; size?: numbe
 				{glyphs.map((g, i) => {
 					const { kind, ...attrs } = g;
 					const Tag = kind;
+					// biome-ignore lint/suspicious/noArrayIndexKey: characters of one string never reorder, so position is the identity.
 					return <Tag key={i} {...attrs} />;
 				})}
 			</Icon>

@@ -74,6 +74,7 @@ export function PixelImageTrail({
 		return () => trail.current?.destroy();
 	}, []);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: re-run triggers the body never reads: pixelSize, radius, fadeDuration and more.
 	useEffect(() => {
 		trail.current?.update(latest.current);
 	}, [pixelSize, radius, fadeDuration, maxPixels, initialPixels, variant]);

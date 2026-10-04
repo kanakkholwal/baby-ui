@@ -166,6 +166,7 @@ function RollSwap({
 				<span aria-hidden className={tilt(layer).layer()}>
 					{chars.map((c, i) => (
 						<span
+							// biome-ignore lint/suspicious/noArrayIndexKey: characters of one string never reorder, so position is the identity.
 							key={`${i}-${c}`}
 							className={tilt(layer).char()}
 							style={{ "--i": i, "--n": chars.length } as React.CSSProperties}

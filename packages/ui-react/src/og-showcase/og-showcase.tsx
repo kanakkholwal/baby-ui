@@ -38,6 +38,7 @@ export function OgShowcase({
 							style={{ left: col.left, top: col.top }}
 						>
 							{col.heights.map((height, i) => (
+								// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 								<div key={`${height}-${i}`} className={s.frame()} style={{ height }}>
 									<img
 										src={pics[(c * 3 + i) % pics.length]}

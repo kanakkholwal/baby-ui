@@ -70,6 +70,7 @@ export function ScrollSplitCard({
 							const v = scrollSplitCard({ size, tone, position });
 							return (
 								<div
+									// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 									key={`${i}-${card.title}`}
 									className={s.piece()}
 									style={

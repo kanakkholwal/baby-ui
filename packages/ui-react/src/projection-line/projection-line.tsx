@@ -47,6 +47,7 @@ export function ProjectionLine({
 	const extent = useMemo(() => projectionExtent(data), [data]);
 	const extentKey = extent ? `${extent.x.join()}|${extent.y.join()}` : "";
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: extentKey is a content key, so equal data does not re-run; extent left out on purpose, the listed values decide when it runs.
 	useLayoutEffect(() => {
 		if (!extent) return;
 		return register(id, extent);

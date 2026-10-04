@@ -97,6 +97,7 @@ export function WheelCarousel({
 		onSelect,
 	};
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: activeIndex, defaultIndex, options left out on purpose, the listed values decide when it runs.
 	useEffect(() => {
 		if (!stageRef.current || !listRef.current) return;
 		const wheel = createWheel(
@@ -114,6 +115,7 @@ export function WheelCarousel({
 		wheelRef.current?.update(options);
 	});
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: re-run triggers the body never reads: items.
 	useEffect(() => {
 		wheelRef.current?.refresh();
 	}, [items]);
@@ -185,6 +187,7 @@ export function WheelCarousel({
 					{items.map((item, index) => (
 						// biome-ignore lint/a11y/useFocusableInteractive: aria-activedescendant keeps focus on the listbox
 						<div
+							// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 							key={index}
 							id={`${id}-${index}`}
 							role="option"

@@ -1,5 +1,6 @@
 import { FRAMEWORKS } from "@baby-ui/registry-schema";
 import { error } from "@sveltejs/kit";
+import { previewHtml } from "#lib/email-preview.js";
 import { emailRender } from "#lib/server/emails.js";
 import { findSpec, specs } from "#lib/server/registry.js";
 import type { EntryGenerator, RequestHandler } from "./$types";
@@ -24,7 +25,7 @@ export const GET: RequestHandler = async ({ params }) => {
 	const render = spec?.category === "emails" ? await emailRender(spec.slug) : null;
 	const port = framework && render?.[framework];
 	if (!port) throw error(404, `No ${params.framework} email named "${params.slug}"`);
-	return new Response(port.html, {
+	return new Response(previewHtml(port.html), {
 		headers: { "content-type": "text/html; charset=utf-8" },
 	});
 };

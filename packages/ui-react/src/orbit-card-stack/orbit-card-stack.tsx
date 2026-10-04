@@ -139,6 +139,7 @@ export function OrbitCardStack({
 					const initials = initialsFor(item);
 					return (
 						<li
+							// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 							key={`${item.name}-${i}`}
 							data-orbit-card=""
 							tabIndex={current ? 0 : -1}

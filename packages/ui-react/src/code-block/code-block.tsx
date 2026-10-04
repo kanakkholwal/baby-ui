@@ -52,6 +52,7 @@ export function CodeBlock({
 					<div
 						style={{ maxHeight }}
 						className="scroll-area overflow-auto py-4 font-mono text-sm leading-[1.7] [&_.line]:px-5 [&_code]:block [&_pre]:!m-0 [&_pre]:!bg-transparent [&_pre]:!p-0 [&_pre>code:not(:has(.line))]:px-5"
+						// biome-ignore lint/security/noDangerouslySetInnerHtml: `html` is the caller's own highlighter output, by contract.
 						dangerouslySetInnerHTML={{ __html: html }}
 					/>
 				) : (
@@ -61,6 +62,7 @@ export function CodeBlock({
 					>
 						<code>
 							{lines.map((line, i) => (
+								// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 								<span key={i} className="flex px-5">
 									{showLineNumbers ? (
 										<span

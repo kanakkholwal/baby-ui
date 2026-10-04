@@ -70,6 +70,7 @@ function Code({
 		<span className={s.code()} aria-hidden>
 			{[...code].map((char, i) => (
 				<svg
+					// biome-ignore lint/suspicious/noArrayIndexKey: characters of one string never reorder, so position is the identity.
 					key={`${char}-${i}`}
 					aria-hidden
 					viewBox={`0 0 ${MATRIX_WIDTH} ${MATRIX_HEIGHT}`}

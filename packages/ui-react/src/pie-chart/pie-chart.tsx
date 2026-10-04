@@ -186,6 +186,7 @@ function PiePlot({
 		prevSignature.current = signature;
 		setEpoch((e) => e + 1);
 	}, [signature]);
+	// biome-ignore lint/correctness/useExhaustiveDependencies: epoch is a content key, so equal data does not re-run.
 	useLayoutEffect(() => {
 		if (!animate || slices.length === 0) {
 			setSettled(true);
@@ -411,10 +412,12 @@ function Slice({
 		}
 	}, [active, hover, hoverOffset, outer, instant]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: re-run triggers the body never reads: inner, outer, slice and more.
 	useLayoutEffect(() => {
 		draw();
 	}, [inner, outer, slice, cornerRadius, draw]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: epoch is a content key, so equal data does not re-run.
 	useLayoutEffect(() => {
 		let playback: Playback | null = null;
 		if (!animate) {

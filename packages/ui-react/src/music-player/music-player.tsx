@@ -120,6 +120,7 @@ export function MusicPlayer({
 	const length = Math.max(0, duration);
 	const at = Math.min(length, Math.max(0, position));
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: re-run triggers the body never reads: src.
 	useEffect(() => {
 		const el = audio.current;
 		if (!el) return;
@@ -127,10 +128,12 @@ export function MusicPlayer({
 		else el.pause();
 	}, [playing, src]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: re-run triggers the body never reads: src.
 	useEffect(() => {
 		if (audio.current) audio.current.volume = level;
 	}, [level, src]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: re-run triggers the body never reads: src.
 	useEffect(() => {
 		const el = audio.current;
 		if (el && Math.abs(el.currentTime - at) > SEEK_TOLERANCE) el.currentTime = at;

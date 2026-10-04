@@ -110,6 +110,7 @@ export function HoverTransition({
 				</div>
 				{layers.map((layer, i) => (
 					<div
+						// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 						key={i}
 						data-exposed={i === firstHover && active ? "true" : undefined}
 						aria-hidden={i === firstHover && active ? undefined : true}

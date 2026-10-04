@@ -571,6 +571,7 @@ export function VideoPlayerContent({
 	const hlsTarget = useRef(hlsRef);
 	hlsTarget.current = hlsRef;
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: re-run triggers the body never reads: attempt.
 	useEffect(() => {
 		if (!element || !hlsSrc) return;
 		let instance: Hls | null = null;
@@ -817,6 +818,7 @@ export function VideoPlayerTimeRange({
 function TickingText({ text, className }: { text: string; className: string }) {
 	const chars = [...text];
 	return chars.map((char, i) => (
+		// biome-ignore lint/suspicious/noArrayIndexKey: characters of one string never reorder, so position is the identity.
 		<span key={`${chars.length - i}:${char}`} className={className}>
 			{char}
 		</span>

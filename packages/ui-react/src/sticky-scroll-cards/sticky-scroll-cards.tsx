@@ -40,6 +40,7 @@ export function StickyScrollCards({
 	const stack = useRef<HTMLDivElement>(null);
 	const s = stickyScrollCards({ size, variant });
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: re-run triggers the body never reads: size.
 	useEffect(() => {
 		if (!root.current || !stack.current) return;
 		return scrubStack(root.current, stack.current);
@@ -63,6 +64,7 @@ export function StickyScrollCards({
 				{cards.map((card, i) => {
 					const layout = cardLayout(i, cards.length, tilt);
 					return (
+						// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 						<div key={`${card.src}-${i}`} className={s.section()}>
 							<figure
 								className={s.card()}

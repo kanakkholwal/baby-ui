@@ -68,6 +68,14 @@
 			}
 		},
 		{
+			"includes": ["packages/ui-react/src/**"],
+			"linter": {
+				"domains": {
+					"react": "recommended"
+				}
+			}
+		},
+		{
 			"includes": ["packages/demos/src/usage/react/**"],
 			"linter": {
 				"rules": {

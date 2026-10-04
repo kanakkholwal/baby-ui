@@ -108,6 +108,7 @@ export function LogoCarousel({
 		>
 			{columns.map((col, i) => (
 				<LogoColumn
+					// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 					key={i}
 					logos={col}
 					activeIndex={col.length > 0 ? (indices[i] ?? 0) % col.length : 0}

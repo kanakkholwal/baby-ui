@@ -55,6 +55,7 @@ export function OgDocsPage({
 				{crumbs.length ? (
 					<div className={s.crumbs()}>
 						{crumbs.map((crumb, i) => (
+							// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 							<span key={`${i}-${crumb}`} className="flex items-center gap-3">
 								{i > 0 ? (
 									<svg
@@ -93,6 +94,7 @@ export function OgDocsPage({
 								const command = shell && line.startsWith("$ ");
 								const muted = shell ? !command : /^\s*(\/\/|#)/.test(line);
 								return (
+									// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 									<div key={`${i}-${line}`} className={s.line()}>
 										<span className={s.gutter()}>{i + 1}</span>
 										{command ? <span className={s.prompt()}>$</span> : null}

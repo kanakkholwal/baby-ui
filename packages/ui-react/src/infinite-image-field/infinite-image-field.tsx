@@ -76,6 +76,7 @@ function ItemList({ items }: { items: InfiniteImageItem[] }) {
 	return (
 		<ul className="sr-only">
 			{items.map((item, index) => (
+				// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 				<li key={`${index}-${item.src}`}>
 					{item.title ? `${item.title}: ` : ""}
 					{item.alt}
@@ -123,6 +124,7 @@ function DriftField({
 		return () => engine.current?.destroy();
 	}, []);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: re-run triggers the body never reads: items, shape, layout and more.
 	useEffect(() => {
 		engine.current?.update(latest.current);
 	}, [items, shape, layout, imageWidth, imageHeight, gap, maxSpeed, smoothing]);
@@ -178,6 +180,7 @@ function FisheyeField({
 		return () => engine.current?.destroy();
 	}, []);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: re-run triggers the body never reads: items, captions, imageWidth and more.
 	useEffect(() => {
 		engine.current?.update(latest.current);
 	}, [items, captions, imageWidth, imageHeight, gap, lens, inertia]);
@@ -219,6 +222,7 @@ function GalleryField({
 	const s = infiniteImageField({ variant: "gallery", size });
 	const options = { cellSize, dragZoom, lens };
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: options left out on purpose, the listed values decide when it runs.
 	useEffect(() => {
 		if (!rootRef.current || !canvasRef.current) return;
 		setPhase("loading");
@@ -263,6 +267,7 @@ function GalleryField({
 			{phase === "fallback" ? (
 				<div className={s.fallback()}>
 					{items.map((item, index) => (
+						// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 						<figure key={`${index}-${item.src}`}>
 							<img src={item.src} alt={item.alt} className={s.fallbackImage()} />
 							<figcaption className={s.fallbackCaption()}>

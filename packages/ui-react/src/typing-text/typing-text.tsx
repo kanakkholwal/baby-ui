@@ -60,6 +60,7 @@ function StumbleTyping({
 		return () => query.removeEventListener("change", update);
 	}, []);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: re-run triggers the body never reads: text.
 	useEffect(() => {
 		setPass(0);
 		setStep(0);
@@ -180,6 +181,7 @@ function PlainTyping({
 	onCompleteRef.current = onComplete;
 	const blinkOn = useBlink(500);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: re-run triggers the body never reads: text.
 	useEffect(() => {
 		setIndex(0);
 		setDirection(1);
@@ -235,6 +237,7 @@ function PlainTyping({
 					<span className="flex flex-wrap whitespace-pre">
 						{words.map((word, i) => (
 							<span
+								// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 								key={i}
 								className={cn(
 									"transition-opacity duration-[var(--tt-fade-duration,300ms)] ease-[var(--ease-in-out)]",

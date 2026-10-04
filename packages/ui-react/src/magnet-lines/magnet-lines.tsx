@@ -45,6 +45,7 @@ export function MagnetLines({
 		};
 	}, []);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: re-run triggers the body never reads: baseAngle, r, c and more.
 	useEffect(() => {
 		engine.current?.update(latest.current);
 	}, [baseAngle, r, c, size]);
@@ -64,6 +65,7 @@ export function MagnetLines({
 			}
 		>
 			{Array.from({ length: r * c }, (_, i) => (
+				// biome-ignore lint/suspicious/noArrayIndexKey: generated from a count, so position is the identity.
 				<span key={i} data-slot="magnet-lines-line" className={s.line()} />
 			))}
 		</div>

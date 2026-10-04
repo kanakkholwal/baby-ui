@@ -66,6 +66,7 @@ export function ScrollProgress({
 	const ticks = (tick: string) => (
 		<div className={styles.ticks()}>
 			{Array.from({ length: tickCount }, (_, i) => (
+				// biome-ignore lint/suspicious/noArrayIndexKey: generated from a count, so position is the identity.
 				<span key={i} className={tick} />
 			))}
 		</div>

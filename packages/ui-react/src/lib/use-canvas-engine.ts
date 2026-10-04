@@ -22,6 +22,7 @@ export function useCanvasEngine<O>(
 	const latest = useRef(options);
 	latest.current = options;
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: mount left out on purpose, the listed values decide when it runs.
 	useEffect(() => {
 		if (!root.current || !canvas.current) return;
 		const mounted = mount(root.current, canvas.current, latest.current, setWebgl);
@@ -35,6 +36,7 @@ export function useCanvasEngine<O>(
 	// `deps` are the option inputs; the engine reads the current values through `latest`.
 	useEffect(() => {
 		engine.current?.update(latest.current);
+		// biome-ignore lint/correctness/useExhaustiveDependencies: the list is built by the caller on purpose.
 	}, deps);
 
 	return { root, canvas, webgl };

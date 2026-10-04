@@ -40,6 +40,7 @@ export function CircularText({
 			const angle = (360 / characters.length) * index;
 			return (
 				<span
+					// biome-ignore lint/suspicious/noArrayIndexKey: characters of one string never reorder, so position is the identity.
 					key={`${index}-${char}`}
 					className="absolute inset-0 flex items-center justify-center font-medium"
 					style={{ transform: `rotate(${angle}deg) translateY(-${radius}px)` }}

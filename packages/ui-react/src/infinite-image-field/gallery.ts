@@ -143,6 +143,7 @@ export function createGallery(
 	context.attachShader(program, vs);
 	context.attachShader(program, fs);
 	context.linkProgram(program);
+	// biome-ignore lint/correctness/useHookAtTopLevel: WebGL's useProgram, not a React hook.
 	context.useProgram(program);
 	const buffer = context.createBuffer();
 	context.bindBuffer(context.ARRAY_BUFFER, buffer);

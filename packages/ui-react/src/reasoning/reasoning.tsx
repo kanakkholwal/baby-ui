@@ -451,6 +451,7 @@ export function ReasoningRows({
 				if (kind === "search")
 					return (
 						<a
+							// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 							key={`${i}-${r.primary}`}
 							href={r.href}
 							target="_blank"
@@ -465,6 +466,7 @@ export function ReasoningRows({
 					const pressed = selected === r.primary;
 					return (
 						<button
+							// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 							key={`${i}-${r.primary}`}
 							type="button"
 							aria-pressed={pressed}
@@ -477,6 +479,7 @@ export function ReasoningRows({
 					);
 				}
 				return (
+					// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 					<div key={`${i}-${r.primary}`} style={style} className={s.row()}>
 						{content}
 					</div>

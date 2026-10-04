@@ -249,6 +249,7 @@ function Group({
 		const timer = setTimeout(() => enter.set(1), index * GROUP_STAGGER);
 		return () => clearTimeout(timer);
 	}, [visible, animate, index, enter]);
+	// biome-ignore lint/correctness/useExhaustiveDependencies: badge.jump, multiple, paint left out on purpose, the listed values decide when it runs.
 	useLayoutEffect(() => {
 		paint();
 		badge.jump(multiple ? 1 : 0);
@@ -328,6 +329,7 @@ function Group({
 					<div ref={dotRef} className={styles.dot()} style={{ opacity: 0 }} />
 					{group.items.map((marker, i) => (
 						<FanItem
+							// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 							key={`${marker.title}-${i}`}
 							marker={marker}
 							index={i}

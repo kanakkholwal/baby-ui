@@ -35,6 +35,7 @@ export function TextReel({
 	const s = textReel({ orientation, size });
 	const axis = orientation === "horizontal" ? "x" : "y";
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: items only re-run it on change; paused, speed left out on purpose, the listed values decide when it runs.
 	useEffect(() => {
 		if (!viewportRef.current || !trackRef.current) return;
 		const reel = createReel(viewportRef.current, trackRef.current, {
@@ -58,8 +59,10 @@ export function TextReel({
 			<div ref={viewportRef} className={s.viewport()}>
 				<div ref={trackRef} className={s.track()}>
 					{Array.from({ length: copies }, (_, copy) => (
+						// biome-ignore lint/suspicious/noArrayIndexKey: generated from a count, so position is the identity.
 						<div key={copy} aria-hidden={copy > 0 || undefined} className={s.copy()}>
 							{items.map((item, i) => (
+								// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 								<div key={i} className={s.item()}>
 									{item}
 								</div>

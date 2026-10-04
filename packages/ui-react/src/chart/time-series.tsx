@@ -188,11 +188,13 @@ export function useAnimatedDomain(
 		[animate],
 	);
 	useEffect(() => () => playback.current?.stop(), []);
+	// biome-ignore lint/correctness/useExhaustiveDependencies: advance, move, target left out on purpose, the listed values decide when it runs.
 	useEffect(() => {
 		if (phase === "gridTweenReady") move(target, () => advance("done"));
 		else if (phase === "gridTweenLoading") move(LOADING_DOMAIN, () => advance("done"));
 		// Only the phase change starts a lifecycle tween; target changes are handled below.
 	}, [phase]);
+	// biome-ignore lint/correctness/useExhaustiveDependencies: move, phase left out on purpose, the listed values decide when it runs.
 	useEffect(() => {
 		if (phase === "ready") move(target);
 		else if (phase === "revealing") {

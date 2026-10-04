@@ -74,6 +74,7 @@ export function OgProductShop({
 									{ogProductStars(rating).map((state, i) => (
 										<svg
 											aria-hidden="true"
+											// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 											key={i}
 											width="30"
 											height="30"

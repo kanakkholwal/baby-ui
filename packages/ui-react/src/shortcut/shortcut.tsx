@@ -67,6 +67,7 @@ export function Shortcut({
 				? [joinCaps(parsed?.caps ?? [shortcut])]
 				: (parsed?.caps ?? [shortcut])
 			).map((cap, i) => (
+				// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
 				<kbd key={`${cap}-${i}`} aria-hidden className={shortcutCap({ variant, size })}>
 					{cap}
 				</kbd>

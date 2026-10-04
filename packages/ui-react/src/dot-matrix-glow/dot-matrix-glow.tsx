@@ -79,6 +79,7 @@ export function DotMatrixGlow({
 		return () => engine.current?.destroy();
 	}, []);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: re-run triggers the body never reads: shape, size, tone and more.
 	useEffect(() => {
 		engine.current?.update(latest.current);
 	}, [shape, size, tone, gap, dotSize, glowRadius, ripple, ambient]);

@@ -16,6 +16,7 @@ const frameWidth = tv({
 
 <script lang="ts">
 import { mode } from "mode-watcher";
+import { previewHtml } from "#lib/email-preview.js";
 
 let {
 	html,
@@ -39,11 +40,26 @@ let {
 let frame = $state<HTMLIFrameElement>();
 let height = $state(640);
 
+let watched: ResizeObserver | undefined;
+
 // No allow-scripts: same-origin only lets the page read the email's height, never run its code.
-// body, not the root: the root never reports less than the iframe's current height.
+// The body's bottom plus its margin: the root never reports less than the iframe's own height.
 function fit() {
+	const doc = frame?.contentDocument;
+	const body = doc?.body;
+	if (!doc || !body) return;
+	const margin = Number.parseFloat(doc.defaultView?.getComputedStyle(body).marginBottom ?? "0");
+	height = Math.max(320, Math.ceil(body.getBoundingClientRect().bottom + margin));
+}
+
+// Images and fonts settle after load, so the email body is watched as well as the frame.
+function load() {
+	fit();
+	watched?.disconnect();
 	const body = frame?.contentDocument?.body;
-	if (body) height = Math.max(320, body.scrollHeight);
+	if (!body) return;
+	watched = new ResizeObserver(fit);
+	watched.observe(body);
 }
 
 // Width changes reflow the email, so the height follows them instead of clipping or gapping.
@@ -51,7 +67,10 @@ $effect(() => {
 	if (!frame) return;
 	const observer = new ResizeObserver(fit);
 	observer.observe(frame);
-	return () => observer.disconnect();
+	return () => {
+		observer.disconnect();
+		watched?.disconnect();
+	};
 });
 
 // Gmail clips anything past 102KB behind "View entire message".
@@ -68,10 +87,10 @@ const CLIP = 102 * 1024;
 		<!-- color-scheme on the element sets prefers-color-scheme inside, so the email follows the site theme. -->
 		<iframe
 			bind:this={frame}
-			srcdoc={html}
+			srcdoc={previewHtml(html)}
 			{title}
 			sandbox="allow-same-origin"
-			onload={fit}
+			onload={load}
 			style:height="{height}px"
 			style:color-scheme={mode.current === "dark" ? "dark" : "light"}
 			class={frameWidth({ viewport })}
