@@ -43,6 +43,8 @@
 		"d3-sankey": "catalog:",
 		"d3-scale": "catalog:",
 		"d3-shape": "catalog:",
+		"hls.js": "catalog:",
+		"media-chrome": "catalog:",
 		"svelte": "catalog:",
 		"svelte-sonner": "catalog:",
 		"swapy": "catalog:",

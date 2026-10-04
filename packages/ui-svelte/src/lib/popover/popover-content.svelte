@@ -8,11 +8,15 @@ let {
 	class: classProp,
 	sideOffset = 4,
 	align = "center",
+	container,
 	...rest
-}: PopoverPrimitive.ContentProps = $props();
+}: PopoverPrimitive.ContentProps & {
+	/** Portal target; defaults to the body. Pass a fullscreen element so the popover stays visible. */
+	container?: HTMLElement | null;
+} = $props();
 </script>
 
-<PopoverPrimitive.Portal>
+<PopoverPrimitive.Portal to={container ?? "body"}>
 	<PopoverPrimitive.Content
 		{sideOffset}
 		{align}

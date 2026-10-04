@@ -219,6 +219,7 @@ import { typingText } from "./typing-text.ts";
 import { typography } from "./typography.ts";
 import { underlineHoverText } from "./underline-hover-text.ts";
 import { usageCard } from "./usage-card.ts";
+import { videoPlayer } from "./video-player.ts";
 import { webglLiquid } from "./webgl-liquid.ts";
 import { weekCalendar } from "./week-calendar.ts";
 import { wheelCarousel } from "./wheel-carousel.ts";
@@ -451,6 +452,7 @@ export const specs: ComponentSpec[] = [
 	typography,
 	underlineHoverText,
 	usageCard,
+	videoPlayer,
 	webglLiquid,
 	weekCalendar,
 	wheelCarousel,

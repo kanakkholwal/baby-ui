@@ -97,6 +97,7 @@ import { AnimatedGradientTextDemo, GibberishTextDemo, GlitchTextDemo, MirrorText
 import { ThemeToggleDemo } from "./theme-toggle";
 import { ToolChipsDemo } from "./tool-chips";
 import { FileUploadDemo, MultiSelectDemo, NumberInputDemo } from "./utility-inputs";
+import { VideoPlayerDemo } from "./video-player";
 import { WebglLiquidDemo } from "./webgl-liquid";
 import { WeekCalendarDemo } from "./week-calendar";
 import { WheelCarouselDemo } from "./wheel-carousel";
@@ -370,6 +371,7 @@ export const demos: Record<string, (p: { props: Props }) => React.ReactElement> 
 	typography: TypographyDemo,
 	"underline-hover-text": UnderlineHoverTextDemo,
 	"usage-card": UsageCardDemo,
+	"video-player": VideoPlayerDemo,
 	"webgl-liquid": WebglLiquidDemo,
 	"week-calendar": WeekCalendarDemo,
 	"wheel-carousel": WheelCarouselDemo,

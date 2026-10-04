@@ -31,14 +31,16 @@ export function PopoverContent({
 	side = "bottom",
 	sideOffset = 4,
 	anchor,
+	container,
 	...props
 }: ComponentProps<typeof PopoverPrimitive.Popup> &
 	Pick<
 		ComponentProps<typeof PopoverPrimitive.Positioner>,
 		"align" | "alignOffset" | "side" | "sideOffset" | "anchor"
-	>) {
+	> &
+	Pick<ComponentProps<typeof PopoverPrimitive.Portal>, "container">) {
 	return (
-		<PopoverPrimitive.Portal>
+		<PopoverPrimitive.Portal container={container}>
 			<PopoverPrimitive.Positioner
 				anchor={anchor}
 				align={align}

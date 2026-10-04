@@ -16,3 +16,6 @@ export const BRANDS = [
 	{ name: "Supabase", logo: "https://cdn.simpleicons.org/supabase" },
 	{ name: "Cloudflare", logo: "https://cdn.simpleicons.org/cloudflare" },
 ];
+
+/** Mux's public HLS test stream (Big Buck Bunny) with several renditions; served with CORS headers. */
+export const SAMPLE_VIDEO = "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8";
