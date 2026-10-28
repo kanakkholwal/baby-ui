@@ -6,15 +6,12 @@
    which Tailwind honours; their React sources sit in the same folder and are scanned. */
 @source "../../../../components";
 /* Only what the site renders: both ports' demos (React through the preview island); usage stays code. */
-@source "../../../../packages/demos/src/svelte";
-@source "../../../../packages/demos/src/react";
-@source "../../../../packages/demos/src/controls";
-@source "../../../../packages/demos/src/data";
+@source "../../../../packages/demos/src";
+@source not "../../../../packages/demos/src/**/usage*";
 /* The private Pro submodule; Tailwind skips these paths when it is not checked out. */
 @source "../../../../pro/components";
-@source "../../../../pro/packages/demos/src/svelte";
-@source "../../../../pro/packages/demos/src/react";
-@source "../../../../pro/packages/demos/src/screens";
+@source "../../../../pro/packages/demos/src";
+@source not "../../../../pro/packages/demos/src/**/usage*";
 
 /* Fontaine's metric-matched fallbacks sit behind each web font, so swapping them in keeps line
    boxes the same size. Site only: the registry theme ships the plain stacks. */

@@ -4,10 +4,10 @@
 	"private": true,
 	"type": "module",
 	"exports": {
-		"./react": "./src/react/index.tsx",
+		"./react": "./src/react.tsx",
 		"./svelte": {
-			"svelte": "./src/svelte/index.ts",
-			"types": "./src/svelte/index.ts"
+			"svelte": "./src/svelte.ts",
+			"types": "./src/svelte.ts"
 		},
 		"./controls": {
 			"svelte": "./src/controls/spec-dials.svelte",

@@ -46,10 +46,8 @@ function bothPorts() {
 				),
 			].map((m) => m[1]),
 		);
-	const svelte = keys("packages/demos/src/svelte/index.ts");
-	return [...keys("packages/demos/src/react/index.tsx")]
-		.filter((s) => svelte.has(s))
-		.sort();
+	const svelte = keys("packages/demos/src/svelte.ts");
+	return [...keys("packages/demos/src/react.tsx")].filter((s) => svelte.has(s)).sort();
 }
 
 /** Each spec's initial dial values, as the site's controls send them; demos expect them. */

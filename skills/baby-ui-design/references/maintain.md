@@ -10,7 +10,7 @@ Read `.agents/rules.md` first; it outranks this file.
   - lists every shipped file;
   - prop descriptions start with the part name (`FileUploadItem: ...`);
   - motion and a11y match what ships.
-- Demos (`packages/demos`):
+- Demos (`packages/demos/src/<slug>/`: `demo.*` and `usage.*` per port):
   - each control dial changes the demo (`pnpm probe <slug> --dials`);
   - sample data lives only here.
 - Docs (`components/<slug>/index.md`): show the composed API, list states, and add a migration note when an API breaks.

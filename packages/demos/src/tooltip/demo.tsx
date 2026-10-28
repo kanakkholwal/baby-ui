@@ -1,0 +1,53 @@
+"use client";
+
+import { Tooltip, TooltipContent, TooltipTrigger } from "@baby-ui/react";
+import type { ComponentProps } from "react";
+import { controlProps } from "../data/preview-props";
+
+type Props = Record<string, unknown>;
+
+const ACTIONS = [
+	{
+		id: "copy",
+		hint: "Copy to clipboard",
+		path: "M6 6V4.5A1.5 1.5 0 0 1 7.5 3h4A1.5 1.5 0 0 1 13 4.5v4A1.5 1.5 0 0 1 11.5 10H10M4.5 6h4A1.5 1.5 0 0 1 10 7.5v4A1.5 1.5 0 0 1 8.5 13h-4A1.5 1.5 0 0 1 3 11.5v-4A1.5 1.5 0 0 1 4.5 6",
+	},
+	{
+		id: "share",
+		hint: "Copy a public link",
+		path: "M8 10.5V3m0 0L5.5 5.5M8 3l2.5 2.5M3.5 10v2A1.5 1.5 0 0 0 5 13.5h6a1.5 1.5 0 0 0 1.5-1.5v-2",
+	},
+	{
+		id: "delete",
+		hint: "Move to trash",
+		path: "M3.5 4.5h9M6.5 4.5V3h3v1.5M5 4.5l.5 8h5l.5-8",
+	},
+];
+
+export function TooltipDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof Tooltip>>(props);
+	const pContent = controlProps<ComponentProps<typeof TooltipContent>>(props);
+	const label = typeof props.label === "string" ? props.label : undefined;
+	return (
+		<div className="inline-flex items-center gap-1 rounded-xl border border-border p-1">
+			{ACTIONS.map((action) => (
+				<Tooltip key={action.id} delay={Number(p.delay ?? 400)}>
+					<TooltipTrigger className="grid size-8 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground">
+						<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-4">
+							<path
+								d={action.path}
+								stroke="currentColor"
+								strokeWidth="1.3"
+								strokeLinecap="round"
+								strokeLinejoin="round"
+							/>
+						</svg>
+					</TooltipTrigger>
+					<TooltipContent side={pContent.side ?? "top"}>
+						{action.id === "copy" ? label || action.hint : action.hint}
+					</TooltipContent>
+				</Tooltip>
+			))}
+		</div>
+	);
+}

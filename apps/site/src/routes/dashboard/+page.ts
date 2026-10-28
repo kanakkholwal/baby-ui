@@ -1,7 +1,7 @@
-import { loadProScreen } from "#lib/pro-screens.js";
+import { redirect } from "@sveltejs/kit";
 import type { PageLoad } from "./$types";
 
-// Rendered on request: these pages 404 in builds without Pro, which prerendering would fail on.
 export const prerender = false;
 
-export const load: PageLoad = () => loadProScreen("dashboard");
+// The dashboard split into /account and /account/downloads; old links land on the first.
+export const load: PageLoad = () => redirect(308, "/account");

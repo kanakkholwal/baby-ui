@@ -2,6 +2,7 @@
 import { sendMagicLink, signInWithProvider } from "#lib/account.js";
 import Logo from "#lib/components/logo.svelte";
 import Seo from "#lib/components/seo.svelte";
+import { safeNext, session } from "#lib/session.svelte.js";
 import { goto } from "$app/navigation";
 import { page } from "$app/state";
 
@@ -11,15 +12,12 @@ const RESEND_COOLDOWN_MS = 30_000;
 
 let status = $state<"idle" | "sending" | "sent" | "error">("idle");
 let email = $state("");
+let newsletter = $state(false);
 let now = $state(Date.now());
 let resendAvailableAt = $state<number>();
 let pendingProvider = $state<string>();
 
-// Only same-origin paths, so the link can't bounce a signed-in visitor off-site.
-const next = $derived.by(() => {
-	const raw = page.url.searchParams.get("next") ?? "";
-	return raw.startsWith("/") && !raw.startsWith("//") ? raw : "/dashboard";
-});
+const next = $derived(safeNext(page.url.searchParams.get("next")));
 
 $effect(() => {
 	const tick = setInterval(() => (now = Date.now()), 1000);
@@ -33,6 +31,8 @@ async function send(address = email) {
 		resendAvailableAt = Date.now() + RESEND_COOLDOWN_MS;
 		now = Date.now();
 		status = "sent";
+		// No inbox to open locally, so the sent link counts as followed.
+		session.signIn(address, newsletter);
 	} catch {
 		status = "error";
 	}
@@ -42,8 +42,9 @@ async function provider(id: string) {
 	pendingProvider = id;
 	try {
 		await signInWithProvider(id, next);
-		// goto rejects a path no route matches; a stale ?next= lands on the dashboard instead.
-		await goto(next).catch(() => goto("/dashboard"));
+		session.signIn(email || `you@${id}.local`, newsletter);
+		// goto rejects a path no route matches; a stale ?next= lands on the account instead.
+		await goto(next).catch(() => goto("/account"));
 	} finally {
 		pendingProvider = undefined;
 	}
@@ -52,22 +53,24 @@ async function provider(id: string) {
 
 <Seo
 	title="Sign in"
-	description="Sign in to Baby UI Pro with a magic link to get your registry token, licence and invoices."
+	description="Sign in to Baby UI Pro for your downloads, access key and invoices."
 	noindex
 />
 
 {#snippet brand()}
-	<Logo class="size-5 text-foreground" />
-	Baby UI
+	<Logo class="size-6 text-foreground" />
+	<span class="font-display font-semibold">Baby UI</span>
 {/snippet}
 
 {#snippet legal()}
-	No licence yet? <a href="/pricing">See Pro plans</a>.
+	No account yet? Signing in creates one, with any email address. Want Pro? See
+	<a href="/pricing">Pricing</a>.
 {/snippet}
 
 <data.Screen
 	{status}
 	bind:email
+	bind:newsletter
 	{now}
 	{resendAvailableAt}
 	{pendingProvider}

@@ -27,7 +27,7 @@ export default defineConfig({
 	// Registering these is what fills `virtual:docvia/registry`.
 	components: {
 		"button-demo": {
-			path: "../../packages/demos/src/svelte/button-demo.svelte",
+			path: "../../packages/demos/src/button/demo.svelte",
 			hydrate: true,
 		},
 		"code-block": {

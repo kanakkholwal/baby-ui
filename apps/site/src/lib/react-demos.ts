@@ -10,7 +10,7 @@ export const reactDemos: DemoSource = async () => {
 	if (import.meta.env.SSR) return {};
 	// The optional Pro checkout; matches nothing in a public one. Its map is lazy per slug too.
 	const proModules = import.meta.glob<{ demos: Record<string, DemoLoader> }>(
-		"../../../../pro/packages/demos/src/react/index.tsx",
+		"../../../../pro/packages/demos/src/react.tsx",
 	);
 	const [{ demos }, ...pro] = await Promise.all([
 		import("@baby-ui/demos/react"),

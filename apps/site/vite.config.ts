@@ -65,8 +65,8 @@ export default defineConfig(({ command, mode, isPreview }) => {
 			// React previews import their demos lazily, so the scanner crawls them up front; otherwise
 			// the first React preview finds new deps, re-bundles and reloads the page.
 			entries: [
-				"../../packages/demos/src/react/**/*.tsx",
-				"../../pro/packages/demos/src/react/**/*.tsx",
+				"../../packages/demos/src/*/demo*.tsx",
+				"../../pro/packages/demos/src/*/demo.tsx",
 			],
 			include: [
 				"@shikijs/langs/bash",

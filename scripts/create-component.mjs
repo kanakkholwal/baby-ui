@@ -188,7 +188,7 @@ async function main() {
 	);
 	await write(resolve(REPO_ROOT, `components/${slug}/index.md`), docsTemplate());
 
-	// Both demos, both usage snippets and every index are generated.
+	// Both demos (`<slug>/demo.auto.*`), both usage snippets and every index are generated.
 	generate({ quiet: true });
 
 	console.log(`
@@ -201,7 +201,8 @@ you still need to:
   - Add licenseOrigin only if the code is ported, naming the real source and copyright.
   - Demos and usage are generated (spec demo: auto). Add object/array sample props as an
     export named ${slug.toUpperCase().replaceAll("-", "_")} in packages/demos/src/data/samples.ts; write hand demos
-    only when the preview needs state or composition (a hand-written file always wins).
+    (packages/demos/src/${slug}/demo.tsx, demo.svelte) only when the preview needs state or
+    composition; a hand-written file always wins over the generated demo.auto.*.
   - Write the docs prose in components/${slug}/index.md.
   - Run the gate suite: node scripts/check-comments.mjs --all, biome check --write .,
     pnpm --filter @baby-ui/components check, then demos and site checks one at a time.

@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import type { ComponentSpec, Framework } from "@baby-ui/registry-schema";
@@ -5,8 +6,8 @@ import { REPO_ROOT } from "./config";
 import type { InstallLayout } from "./layout";
 import { toJavaScript } from "./tojs";
 
-const USAGE_DIR = resolve(REPO_ROOT, "packages/demos/src/usage");
-const PRO_USAGE_DIR = resolve(REPO_ROOT, "pro/packages/demos/src/usage");
+const DEMOS_DIR = resolve(REPO_ROOT, "packages/demos/src");
+const PRO_DEMOS_DIR = resolve(REPO_ROOT, "pro/packages/demos/src");
 
 const EXT: Record<Framework, string> = { react: "tsx", svelte: "svelte" };
 /** `@baby-ui/react/chart` names another item, so one snippet can import a chart and its base.
@@ -20,8 +21,11 @@ const PACKAGE: Record<Framework, RegExp> = {
 	svelte: /@baby-ui\/svelte/g,
 };
 
+/** `<slug>/usage.*` beside the demo; the generated `usage.auto.*` when none is hand-written. */
 export function usagePath(slug: string, framework: Framework, pro = false): string {
-	return resolve(pro ? PRO_USAGE_DIR : USAGE_DIR, framework, `${slug}.${EXT[framework]}`);
+	const dir = resolve(pro ? PRO_DEMOS_DIR : DEMOS_DIR, slug);
+	const hand = resolve(dir, `usage.${EXT[framework]}`);
+	return existsSync(hand) ? hand : resolve(dir, `usage.auto.${EXT[framework]}`);
 }
 
 /** Snippets import the workspace package so they type-check; readers need the installed path. */

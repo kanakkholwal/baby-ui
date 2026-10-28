@@ -12,7 +12,7 @@ export function sourceRoots() {
 		"packages/demos/src",
 		// tokens.css feeds the generated email theme.
 		"packages/tokens/src",
-		...(HAS_PRO ? ["pro/components"] : []),
+		...(HAS_PRO ? ["pro/components", "pro/packages/demos/src"] : []),
 	].map((path) => join(ROOT, path));
 }
 

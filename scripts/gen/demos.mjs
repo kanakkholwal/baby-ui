@@ -1,4 +1,4 @@
-import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { ROOT } from "./core.mjs";
 import { exportsOf } from "./exports.mjs";
@@ -30,8 +30,12 @@ export function autoSpecs() {
 
 const FRAMES = {
 	og: {
-		svelte: ['import OgFrame from "../og-frame.svelte";', "<OgFrame>", "</OgFrame>"],
-		react: ['import { OgFrame } from "../og-frame";', "<OgFrame>", "</OgFrame>"],
+		svelte: [
+			'import OgFrame from "../shared/og-frame.svelte";',
+			"<OgFrame>",
+			"</OgFrame>",
+		],
+		react: ['import { OgFrame } from "../shared/og-frame";', "<OgFrame>", "</OgFrame>"],
 	},
 };
 function frameFor(frame, port) {
@@ -39,28 +43,21 @@ function frameFor(frame, port) {
 	if (FRAMES[frame]) return FRAMES[frame][port];
 	return port === "svelte"
 		? [
-				'import DemoFrame from "../demo-frame.svelte";',
+				'import DemoFrame from "../shared/demo-frame.svelte";',
 				`<DemoFrame size="${frame}">`,
 				"</DemoFrame>",
 			]
 		: [
-				'import { DemoFrame } from "../demo-frame";',
+				'import { DemoFrame } from "../shared/demo-frame";',
 				`<DemoFrame size="${frame}">`,
 				"</DemoFrame>",
 			];
 }
 
-/** Writes both demos for auto specs without a hand-written one in that port. The sample is also
+/** Writes `<slug>/demo.auto.*` for auto specs without a hand-written `<slug>/demo.*` in that port. The sample is also
  * assigned to `Partial<Props>`, so a sample that drifts from the component fails the typecheck. */
 export function autoDemos(output, report) {
 	const sampleNames = new Set(exportsOf(SAMPLES).map((n) => n.name));
-	const handReact = new Set(
-		readdirSync(join(DEMOS, "react"))
-			.filter((f) => f.endsWith(".tsx") && f !== "index.tsx")
-			.flatMap((f) =>
-				exportsOf(join(DEMOS, "react", f)).map((n) => n.name.toLowerCase()),
-			),
-	);
 	report.autoSvelte = [];
 	report.autoReact = [];
 	for (const spec of autoSpecs()) {
@@ -73,16 +70,16 @@ export function autoDemos(output, report) {
 		];
 		const sampleLine = hasSample ? "" : "const sample = {};";
 
-		if (!existsSync(join(DEMOS, "svelte", `${spec.slug}-demo.svelte`))) {
+		if (!existsSync(join(DEMOS, spec.slug, "demo.svelte"))) {
 			const [frameImport, open, close] = frameFor(spec.frame, "svelte");
-			const path = join(DEMOS, "svelte/auto", `${spec.slug}-demo.svelte`);
+			const path = join(DEMOS, spec.slug, "demo.auto.svelte");
 			output.add(
 				path,
 				[
 					'<script lang="ts">',
 					`import { ${spec.svelte} } from "@baby-ui/svelte";`,
 					'import type { ComponentProps } from "svelte";',
-					`import { ${imports.join(", ")} } from "../../data/samples";`,
+					`import { ${imports.join(", ")} } from "../data/samples";`,
 					frameImport,
 					"",
 					"let { props = {} }: { props?: Record<string, unknown> } = $props();",
@@ -102,21 +99,21 @@ export function autoDemos(output, report) {
 			);
 			report.autoSvelte.push([
 				spec.slug,
-				`() => import("./auto/${spec.slug}-demo.svelte")`,
+				`() => import("./${spec.slug}/demo.auto.svelte")`,
 			]);
 		}
 
 		const demoName = `${pascal(spec.slug)}Demo`;
-		if (!handReact.has(demoName.toLowerCase())) {
+		if (!existsSync(join(DEMOS, spec.slug, "demo.tsx"))) {
 			const [frameImport, open, close] = frameFor(spec.frame, "react");
 			output.add(
-				join(DEMOS, "react/auto", `${spec.slug}.tsx`),
+				join(DEMOS, spec.slug, "demo.auto.tsx"),
 				[
 					'"use client";',
 					"",
 					`import { ${spec.react} } from "@baby-ui/react";`,
 					'import type { ComponentProps } from "react";',
-					`import { ${imports.join(", ")} } from "../../data/samples";`,
+					`import { ${imports.join(", ")} } from "../data/samples";`,
 					frameImport,
 					"",
 					`type Props = ComponentProps<typeof ${spec.react}>;`,
@@ -136,7 +133,7 @@ export function autoDemos(output, report) {
 					.filter((line, i, all) => line !== "" || all[i - 1] !== "")
 					.join("\n"),
 			);
-			report.autoReact.push([spec.slug, demoName, `./auto/${spec.slug}`]);
+			report.autoReact.push([spec.slug, demoName, `./${spec.slug}/demo.auto`]);
 		}
 	}
 }

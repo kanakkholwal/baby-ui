@@ -1,10 +1,10 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { previousFor, ROOT } from "./core.mjs";
+import { ROOT } from "./core.mjs";
 import { autoSpecs } from "./demos.mjs";
 import { specFiles } from "./specs.mjs";
 
-const USAGE = join(ROOT, "packages/demos/src/usage");
+const DEMOS = join(ROOT, "packages/demos/src");
 
 /** Each spec block by slug, read once per run. */
 function specBlocks() {
@@ -41,11 +41,10 @@ function jsx(name, value) {
 }
 
 /**
- * Usage snippets for auto-demo components that have no hand-written one: the entry component
- * with its required props (spec defaults), as real files so tsc and svelte-check check them.
+ * `<slug>/usage.auto.*` for auto-demo components without a hand-written `<slug>/usage.*`: the
+ * entry component with its required props (spec defaults), as real files so tsc checks them.
  */
 export function usageFiles(output, report) {
-	const generated = previousFor(USAGE);
 	report.usageMissing = [];
 	const blocks = specBlocks();
 	for (const spec of autoSpecs()) {
@@ -54,8 +53,8 @@ export function usageFiles(output, report) {
 		if (missing.length) {
 			// Only worth reporting when no hand-written usage covers the gap.
 			const hand = [
-				join(USAGE, "react", `${spec.slug}.tsx`),
-				join(USAGE, "svelte", `${spec.slug}.svelte`),
+				join(DEMOS, spec.slug, "usage.tsx"),
+				join(DEMOS, spec.slug, "usage.svelte"),
 			];
 			if (hand.some((path) => !existsSync(path)))
 				report.usageMissing.push(`${spec.slug}: ${missing.join(", ")}`);
@@ -75,7 +74,7 @@ export function usageFiles(output, report) {
 		const reactTag = tag(spec.react, "\t\t");
 		const files = [
 			[
-				join(USAGE, "react", `${spec.slug}.tsx`),
+				join(DEMOS, spec.slug, "usage.auto.tsx"),
 				[
 					`import { ${spec.react} } from "@baby-ui/react";`,
 					"",
@@ -88,7 +87,7 @@ export function usageFiles(output, report) {
 				].join("\n"),
 			],
 			[
-				join(USAGE, "svelte", `${spec.slug}.svelte`),
+				join(DEMOS, spec.slug, "usage.auto.svelte"),
 				[
 					'<script lang="ts">',
 					`import { ${spec.svelte} } from "@baby-ui/svelte";`,
@@ -100,14 +99,7 @@ export function usageFiles(output, report) {
 			],
 		];
 		for (const [path, content] of files) {
-			// Identical content is ours even without a manifest (fresh checkout); anything else is hand-written.
-			if (
-				existsSync(path) &&
-				!generated.has(path) &&
-				readFileSync(path, "utf8") !== content
-			)
-				continue;
-			output.add(path, content, { yieldToHand: true });
+			if (!existsSync(path.replace(".auto.", "."))) output.add(path, content);
 		}
 	}
 }

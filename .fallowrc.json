@@ -38,7 +38,7 @@
 		},
 		{
 			"files": [
-				"packages/demos/src/svelte/**",
+				"packages/demos/src/**/*.svelte",
 				"components/scroll-progress/svelte/scroll-progress.svelte"
 			],
 			"rules": {

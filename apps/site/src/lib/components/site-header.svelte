@@ -43,6 +43,7 @@ import {
 	TooltipTrigger,
 } from "@baby-ui/svelte";
 import { mode, setMode } from "mode-watcher";
+import AccountMenu from "#lib/components/account-menu.svelte";
 import Logo from "#lib/components/logo.svelte";
 import SidebarToggleIcon from "#lib/components/sidebar-toggle-icon.svelte";
 import SiteSearch from "#lib/components/site-search.svelte";
@@ -406,6 +407,7 @@ function active(match: string[]) {
 			</Tooltip>
 			</TooltipProvider>
 
+			{#if __SHOW_PRO__}<AccountMenu />{/if}
 		</nav>
 		</div>
 	</div>

@@ -75,7 +75,7 @@
 			}
 		},
 		{
-			"includes": ["packages/demos/src/usage/react/**"],
+			"includes": ["packages/demos/src/**/usage*.tsx"],
 			"linter": {
 				"rules": {
 					"a11y": {

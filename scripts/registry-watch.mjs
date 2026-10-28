@@ -11,10 +11,10 @@ const ROOTS = [
 	"packages/registry-schema/src",
 	"packages/tokens/src",
 	"components",
-	"packages/demos/src/usage",
+	"packages/demos/src",
 	"apps/site/src/docs",
 	"pro/components",
-	"pro/packages/demos/src/usage",
+	"pro/packages/demos/src",
 ]
 	.map((path) => join(ROOT, path))
 	.filter((path) => existsSync(path));

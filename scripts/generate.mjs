@@ -13,12 +13,15 @@ const PUBLIC_ROOTS = [
 	"components",
 	"packages/ui-react/src",
 	"packages/ui-svelte/src/lib",
-	"packages/demos/src/react",
-	"packages/demos/src/svelte",
-	"packages/demos/src/usage",
+	"packages/demos/src",
 ];
 const PRO_ROOTS = HAS_PRO
-	? ["pro/components", "pro/packages/react/src", "pro/packages/svelte/src/lib"]
+	? [
+			"pro/components",
+			"pro/packages/react/src",
+			"pro/packages/svelte/src/lib",
+			"pro/packages/demos/src",
+		]
 	: [];
 
 /**

@@ -20,13 +20,14 @@ const bySlug = <T>(globbed: Record<string, T>, suffix: string) =>
 	);
 const first = <T>(globbed: Lazy<T>) => Object.values(globbed)[0]?.();
 
-/** Pro demos by slug, following the public `<slug>-demo.svelte` convention. */
-export const proDemos: Record<string, DemoLoader> = bySlug(
-	import.meta.glob("../../../../pro/packages/demos/src/svelte/*-demo.svelte") as Record<
-		string,
-		DemoLoader
-	>,
-	"-demo.svelte",
+/** Pro demos by slug, following the public `<slug>/demo.svelte` convention. */
+export const proDemos: Record<string, DemoLoader> = Object.fromEntries(
+	Object.entries(
+		import.meta.glob("../../../../pro/packages/demos/src/*/demo.svelte") as Record<
+			string,
+			DemoLoader
+		>,
+	).map(([path, load]) => [path.split("/").at(-2) ?? path, load]),
 );
 
 const screens = import.meta.glob<{ default: AnyComponent }>(

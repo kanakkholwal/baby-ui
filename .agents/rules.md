@@ -128,7 +128,10 @@ Any agent (Claude Code, Codex, Cursor, Copilot) should read this file first.
   - All 5 index files (spec list, both UI `index.ts`, both demo maps) are generated from folders.
   - Spec `demo: { mode: "auto", frame }` generates both demos from a typed samples export
     (`packages/demos/src/data/samples.ts`, SCREAMING_SNAKE slug) and usage from required-prop
-    defaults. Hand-written demo or usage files always win.
+    defaults, as `packages/demos/src/<slug>/{demo,usage}.auto.*`. A hand-written
+    `<slug>/demo.{tsx,svelte}` or `<slug>/usage.{tsx,svelte}` beside it always wins.
+  - Each component's demos and usage snippets live together in `packages/demos/src/<slug>/`;
+    shared frames sit in `src/shared/`, sample data in `src/data/`.
   - Tailwind skips gitignored files: generated files carry no classes of their own.
 - `DESIGN.md` is the look-and-motion contract; update it with any token or contract change.
 - Class contracts are `tv()` objects with one slot per part (`backdrop`, `popup`, `panel`),

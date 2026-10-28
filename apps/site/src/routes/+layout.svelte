@@ -15,6 +15,8 @@ import { page } from "$app/state";
 let { children } = $props();
 
 const bare = $derived(page.route.id === "/frame");
+// Sign-in is a full page with its own brand, so the header would repeat the logo.
+const headerless = $derived(page.route.id === "/login");
 
 $effect(() => prefs.apply());
 $effect(() => {
@@ -67,10 +69,10 @@ afterNavigate(({ from, to, type, shallow }) => {
 	>
 		Skip to content
 	</a>
-	<SiteHeader />
+	{#if !headerless}<SiteHeader />{/if}
 	<PreferencesPanel />
 	<!-- Matches SiteHeader's single 56px row; sticky rails and anchors offset by the same value. -->
-	<div id="main-content" tabindex="-1" class="pt-(--header-h) outline-none [--header-h:3.5rem]">
+	<div id="main-content" tabindex="-1" class={["outline-none [--header-h:3.5rem]", !headerless && "pt-(--header-h)"]}>
 		{@render children()}
 	</div>
 {/if}

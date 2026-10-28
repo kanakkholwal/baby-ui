@@ -27,7 +27,8 @@ through [portless](https://portless.sh), so they get named `*.baby-ui.localhost`
   extras the imports don't show (a peer, a version pin, a component the usage composes with).
 - `packages/ui-react`, `packages/ui-svelte`: generated facades re-exporting `components/`.
 - `packages/registry-schema`: the spec schema and `defineComponent`.
-- `packages/demos`: demos and usage snippets for both ports.
+- `packages/demos/src/<slug>/`: each component's `demo.tsx`, `demo.svelte`, `usage.tsx` and
+  `usage.svelte` together; `src/shared/` holds demo frames, `src/data/` sample data.
 - `packages/registry-build`: turns specs and sources into the shadcn registry JSON.
 - `apps/site`: the docs site (SvelteKit). `apps/registry` serves the JSON.
 

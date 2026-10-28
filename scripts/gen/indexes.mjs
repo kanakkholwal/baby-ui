@@ -24,8 +24,8 @@ const PORTS = {
 	react: { componentExts: [".tsx"] },
 	svelte: { componentExts: [], defaults: true },
 };
-const DEMOS_REACT = join(ROOT, "packages/demos/src/react");
-const DEMOS_SVELTE = join(ROOT, "packages/demos/src/svelte");
+const DEMOS = join(ROOT, "packages/demos/src");
+const PRO_DEMOS = join(ROOT, "pro/packages/demos/src");
 
 // From lib/ only `cn` is public; the other helpers are internal to the components that use them.
 const LIB_PUBLIC = ["cn.ts"];
@@ -263,6 +263,8 @@ export function proIndexes(output, report) {
 		join(PRO.root, "specs.ts"),
 		specsIndex(specFiles("pro/components"), "proSpecs", deriveAll(output, PRO.root)),
 	);
+	// Pro has no auto demos; a fresh report keeps the public ones out of its maps.
+	demoIndexes(output, PRO_DEMOS, { unmatched: report.unmatched });
 }
 
 // Package export subpaths outside `<item>/index.ts`; each gets a facade file of its own.
@@ -327,21 +329,52 @@ export function indexes(output, report) {
 			(m) => m[1],
 		),
 	);
-	const bySlugKey = new Map(
-		slugs.map((slug) => [`${pascal(slug)}Demo`.toLowerCase(), slug]),
-	);
-
-	const svelteDemos = readdirSync(DEMOS_SVELTE)
-		.filter((f) => f.endsWith("-demo.svelte"))
+	const components = slugs
+		.filter((slug) => svelte.folders.has(slug))
 		.sort()
-		.map((f) => [f.replace(/-demo\.svelte$/, ""), `./${f}`]);
-	const svelteLoaders = new Map(
-		svelteDemos.map(([slug, from]) => [slug, `() => import("${from}")`]),
+		.map((slug) => `\t${quote(slug)}: () => import("@baby-ui/svelte/${slug}"),`);
+	const { svelteLoaders, reactLoaders } = demoIndexes(output, DEMOS, report, [
+		"",
+		"/** Each component's own module by slug, for pages that render the component unframed. */",
+		"export const components: Record<string, () => Promise<Record<string, unknown>>> = {",
+		...components,
+		"};",
+	]);
+	report.demoless = slugs.filter(
+		(slug) => !svelteLoaders.has(slug) || !reactLoaders.has(slug),
 	);
+}
+
+/** `svelte.ts` and `react.tsx` demo maps from `<slug>/demo.{svelte,tsx}` (auto demos fill gaps). */
+function demoIndexes(output, src, report, svelteExtra = []) {
+	const folders = existsSync(src)
+		? readdirSync(src, { withFileTypes: true })
+				.filter((d) => d.isDirectory())
+				.map((d) => d.name)
+				.sort()
+		: [];
+	const svelteLoaders = new Map();
+	const reactLoaders = new Map();
+	for (const slug of folders) {
+		if (existsSync(join(src, slug, "demo.svelte")))
+			svelteLoaders.set(slug, `() => import("./${slug}/demo.svelte")`);
+		const react = join(src, slug, "demo.tsx");
+		if (!existsSync(react)) continue;
+		const names = exportsOf(react)
+			.filter((n) => !n.type && n.name.endsWith("Demo"))
+			.map((n) => n.name);
+		if (names.length !== 1) {
+			report.unmatched.push(`${slug}/demo.tsx: ${names.length} Demo exports`);
+			continue;
+		}
+		reactLoaders.set(slug, [names[0], `./${slug}/demo`]);
+	}
 	for (const [slug, loader] of report.autoSvelte ?? [])
 		if (!svelteLoaders.has(slug)) svelteLoaders.set(slug, loader);
+	for (const [slug, name, from] of report.autoReact ?? [])
+		if (!reactLoaders.has(slug)) reactLoaders.set(slug, [name, from]);
 	output.add(
-		join(DEMOS_SVELTE, "index.ts"),
+		join(src, "svelte.ts"),
 		[
 			'import type { Component } from "svelte";',
 			"",
@@ -355,40 +388,12 @@ export function indexes(output, report) {
 				.sort(([a], [b]) => a.localeCompare(b))
 				.map(([slug, loader]) => `\t${quote(slug)}: ${loader},`),
 			"};",
-			"",
-			"/** Each component's own module by slug, for pages that render the component unframed. */",
-			"export const components: Record<string, () => Promise<Record<string, unknown>>> = {",
-			...slugs
-				.filter((slug) => svelte.folders.has(slug))
-				.sort()
-				.map((slug) => `\t${quote(slug)}: () => import("@baby-ui/svelte/${slug}"),`),
-			"};",
+			...svelteExtra,
 			"",
 		].join("\n"),
 	);
-
-	const reactFiles = readdirSync(DEMOS_REACT)
-		.filter((f) => f.endsWith(".tsx") && f !== "index.tsx")
-		.sort();
-	const entries = new Map();
-	for (const file of reactFiles) {
-		const names = exportsOf(join(DEMOS_REACT, file))
-			.filter((n) => !n.type && n.name.endsWith("Demo"))
-			.map((n) => n.name);
-		for (const name of names) {
-			const slug = bySlugKey.get(name.toLowerCase());
-			if (!slug) {
-				report.unmatched.push(`${file}: ${name}`);
-				continue;
-			}
-			entries.set(slug, [name, `./${file.replace(/\.tsx$/, "")}`]);
-		}
-	}
-	for (const [slug, name, from] of report.autoReact ?? []) {
-		if (!entries.has(slug)) entries.set(slug, [name, from]);
-	}
 	output.add(
-		join(DEMOS_REACT, "index.tsx"),
+		join(src, "react.tsx"),
 		[
 			'import type { ComponentType } from "react";',
 			"",
@@ -397,7 +402,7 @@ export function indexes(output, report) {
 			"",
 			"/** One dynamic import per slug, so a preview fetches only the demo it shows. */",
 			"export const demos: Record<string, DemoLoader> = {",
-			...[...entries]
+			...[...reactLoaders]
 				.sort(([a], [b]) => a.localeCompare(b))
 				.map(
 					([slug, [name, from]]) =>
@@ -407,7 +412,5 @@ export function indexes(output, report) {
 			"",
 		].join("\n"),
 	);
-	report.demoless = slugs.filter(
-		(slug) => !svelteLoaders.has(slug) || !entries.has(slug),
-	);
+	return { svelteLoaders, reactLoaders };
 }
