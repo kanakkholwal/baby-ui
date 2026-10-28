@@ -8,6 +8,8 @@ export { default as IconBackground } from "./icons/background.svelte";
 export { default as IconBell } from "./icons/bell.svelte";
 export { default as IconBolt } from "./icons/bolt.svelte";
 export { default as IconBook } from "./icons/book.svelte";
+export { default as IconBookmark } from "./icons/bookmark.svelte";
+export { default as IconBookmarkFilled } from "./icons/bookmark-filled.svelte";
 export { default as IconBot } from "./icons/bot.svelte";
 export { default as IconBrandClaude } from "./icons/brand-claude.svelte";
 export { default as IconBrandCursor } from "./icons/brand-cursor.svelte";

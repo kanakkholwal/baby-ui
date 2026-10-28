@@ -62,7 +62,7 @@ $effect(() => {
 	]}
 />
 
-<main class="max-w-7xl min-w-0 py-6 xl:col-span-2">
+<main class="w-full min-w-0 py-6 xl:col-span-2">
 	<GalleryIntro title={label} description={data.blurb} items={data.items} {back} compact />
 	{#if data.groups}
 		<Tabs bind:value={activeGroup} variant="underline">

@@ -39,6 +39,10 @@ const hasOutline = $derived(
 );
 const library = $derived(prefs.layout === "library");
 const playground = $derived(prefs.layout === "playground");
+// Studio tools are full-height workspaces: in Playground they run edge to edge, not as a reading page.
+const workspace = $derived(
+	playground && /^\/\(library\)\/studio\/.+/.test(page.route.id ?? ""),
+);
 let desktop = $state(false);
 $effect(() => {
 	const query = matchMedia("(min-width: 768px)");
@@ -101,10 +105,16 @@ function active(match: string[]) {
 		</div>
 	</div>
 	{/if}
-	<div class="min-w-0 rounded-t-3xl border border-border border-b-0 bg-background md:rounded-none md:border-b md:border-t-0 md:px-10 xl:px-14">
+	<div
+		class={[
+			"min-w-0 rounded-t-3xl border border-border border-b-0 bg-background md:rounded-none md:border-b md:border-t-0",
+			workspace ? "md:px-0" : "md:px-10 xl:px-14",
+		]}
+	>
 		<div
 			class={[
-				"min-w-0 [&_main]:px-4 md:[&_main]:px-0",
+				"min-w-0 [&_main]:px-4",
+				workspace ? "md:[&_main]:px-3" : "md:[&_main]:px-0",
 				library && hasOutline && [
 					"grid transition-[grid-template-columns] ease-[var(--ease-drawer)] motion-reduce:transition-none",
 					outlineSidebar.current

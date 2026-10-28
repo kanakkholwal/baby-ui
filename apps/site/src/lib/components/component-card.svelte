@@ -6,20 +6,26 @@ import { tv, type VariantProps } from "tailwind-variants";
 const cardFrame = tv({
 	base: "w-full",
 	variants: {
-		frame: { compact: "h-40", sm: "h-44", md: "h-56", lg: "h-72", xl: "h-88" },
+		frame: { compact: "h-48", sm: "h-56", md: "h-68", lg: "h-84", xl: "h-100" },
 	},
 	defaultVariants: { frame: "md" },
 });
 
 export type CardFrame = NonNullable<VariantProps<typeof cardFrame>["frame"]>;
 
+/** Which cards are picked, for pages that act on several at once. */
+export type CardSelection = {
+	has: (slug: string) => boolean;
+	toggle: (slug: string) => void;
+};
+
 /** Each frame's height in px: the masonry places tiles from it, and `content-visibility` reserves it. */
 export const FRAME_PX: Record<CardFrame, number> = {
-	compact: 160,
-	sm: 176,
-	md: 224,
-	lg: 288,
-	xl: 352,
+	compact: 192,
+	sm: 224,
+	md: 272,
+	lg: 336,
+	xl: 400,
 };
 
 const EMAIL_PX = 640;
@@ -29,6 +35,7 @@ const loaded = new SvelteMap<string, Awaited<ReturnType<DemoLoader>>>();
 <script lang="ts">
 import {
 	Badge,
+	Checkbox,
 	CopyButton,
 	ShowcaseCard,
 	ShowcaseCardAction,
@@ -42,14 +49,19 @@ import {
 } from "@baby-ui/svelte";
 import { mode } from "mode-watcher";
 import { untrack } from "svelte";
+import BookmarkButton from "#lib/components/bookmark-button.svelte";
 import { demos } from "#lib/demos.js";
 import { installArgs } from "#lib/install.js";
 import { claim, type LiveSlot, watchLive } from "#lib/live-demo.js";
 import { pmCommand } from "#lib/pm.js";
 import { prefs } from "#lib/preferences.svelte.js";
-import type { CardItem } from "#lib/registry.js";
+import { CATEGORY_LABEL, type CardItem } from "#lib/registry.js";
 
-let { item, frame = "md" }: { item: CardItem; frame?: CardFrame } = $props();
+let {
+	item,
+	frame = "md",
+	selection,
+}: { item: CardItem; frame?: CardFrame; selection?: CardSelection } = $props();
 
 let stage = $state<HTMLElement>();
 let live = $state(false);
@@ -93,15 +105,35 @@ const intrinsic = $derived(FRAME_PX[frame]);
 const installCommand = $derived(pmCommand("dlx", installArgs(item.slug), prefs.pm));
 </script>
 
+<!-- Pro stays in view so the paywall is never a surprise; New and Updated surface on hover, focus or touch. -->
 {#snippet badges()}
-	{#if item.tier === "pro"}
-		<Badge size="sm" variant="gold">Pro</Badge>
+	{#if selection}
+		<span class="absolute top-3 left-3 z-30 rounded-md border border-border bg-background/85 p-1.5 backdrop-blur-md">
+			<Checkbox
+				size="sm"
+				aria-label="Select {item.name}"
+				bind:checked={() => selection.has(item.slug), () => selection.toggle(item.slug)}
+			/>
+		</span>
+	{:else}
+		<span class="pointer-events-none absolute top-4 left-4 z-30 rounded-full border border-border bg-background/80 px-2.5 py-0.5 text-muted-foreground text-xs backdrop-blur-md">
+			{CATEGORY_LABEL[item.category]}
+		</span>
 	{/if}
-	{#if item.isNew}
-		<Badge size="sm" variant="info">New</Badge>
-	{:else if item.isUpdated}
-		<Badge size="sm" variant="success">Updated</Badge>
-	{/if}
+	<div class="pointer-events-none absolute top-4 right-4 z-30 flex items-center gap-1.5">
+		{#if item.isNew || item.isUpdated}
+			<Badge
+				size="sm"
+				variant={item.isNew ? "info" : "success"}
+				class="translate-y-1 opacity-0 shadow-xs backdrop-blur-md transition-[opacity,translate] duration-(--duration-dropdown) ease-(--ease-ui-out) group-hover/showcase:translate-y-0 group-hover/showcase:opacity-100 group-focus-within/showcase:translate-y-0 group-focus-within/showcase:opacity-100 motion-reduce:transition-none [@media(hover:none)]:translate-y-0 [@media(hover:none)]:opacity-100"
+			>
+				{item.isNew ? "New" : "Updated"}
+			</Badge>
+		{/if}
+		{#if item.tier === "pro"}
+			<Badge size="sm" variant="gold" class="shadow-xs">Pro</Badge>
+		{/if}
+	</div>
 {/snippet}
 
 {#snippet demoView(Demo: Awaited<ReturnType<DemoLoader>>["default"])}
@@ -148,9 +180,9 @@ const installCommand = $derived(pmCommand("dlx", installArgs(item.slug), prefs.p
 {/snippet}
 
 <ShowcaseCard
-	variant="morphing"
+	variant="framed"
 	size="sm"
-	class={cardFrame({ frame, class: "[content-visibility:auto]" })}
+	class={cardFrame({ frame, class: "[content-visibility:auto] [--showcase-footer:3.5rem]" })}
 	style="contain-intrinsic-block-size: auto {intrinsic}px"
 	onpointerenter={(event) => {
 		if (event.pointerType === "mouse") activate();
@@ -158,16 +190,15 @@ const installCommand = $derived(pmCommand("dlx", installArgs(item.slug), prefs.p
 	onfocusin={activate}
 >
 	{@render stageContent()}
+	{@render badges()}
 	<ShowcaseCardLink href={item.href} aria-label="View {item.name}" />
 	<ShowcaseCardFooter>
 		<ShowcaseCardCopy>
-			<ShowcaseCardTitle class="flex items-center gap-2">
-				<span class="truncate">{item.name}</span>
-				{@render badges()}
-			</ShowcaseCardTitle>
-			<ShowcaseCardDescription>{item.description}</ShowcaseCardDescription>
+			<ShowcaseCardTitle class="truncate">{item.name}</ShowcaseCardTitle>
+			<ShowcaseCardDescription class="line-clamp-1 text-pretty">{item.description}</ShowcaseCardDescription>
 		</ShowcaseCardCopy>
-		<ShowcaseCardAction>
+		<ShowcaseCardAction class="flex items-center gap-1">
+			<BookmarkButton slug={item.slug} name={item.name} class="size-8 rounded-full bg-background" />
 			<CopyButton
 				text={installCommand}
 				label="Copy {item.name} install command"

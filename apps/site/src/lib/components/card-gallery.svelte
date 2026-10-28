@@ -2,17 +2,24 @@
 import type { Category } from "@baby-ui/registry-schema";
 import type { Snippet } from "svelte";
 import type { CardItem } from "#lib/registry.js";
-import ComponentCard, { type CardFrame, FRAME_PX } from "./component-card.svelte";
+import ComponentCard, {
+	type CardFrame,
+	type CardSelection,
+	FRAME_PX,
+} from "./component-card.svelte";
 
 let {
 	items,
 	lead,
 	mode = "masonry",
+	selection,
 }: {
 	items: CardItem[];
 	/** An intro tile placed first, at its own measured height. */
 	lead?: Snippet;
 	mode?: "masonry" | "grid";
+	/** Grid mode only: a checkbox on each card for bulk actions. */
+	selection?: CardSelection;
 } = $props();
 
 const GAP = 12;
@@ -42,7 +49,8 @@ function frameFor(item: CardItem): CardFrame {
 // Columns follow the gallery's own width (42rem, 64rem, 80rem), so a tile stays about 20rem.
 let width = $state(0);
 let leadHeight = $state(0);
-const count = $derived(width >= 1280 ? 4 : width >= 1024 ? 3 : width >= 672 ? 2 : 1);
+// One column per 20rem a card needs, as the grid mode does, capped where tiles stop reading as a wall.
+const count = $derived(Math.max(1, Math.min(6, Math.floor((width + GAP) / (320 + GAP)))));
 
 type Placed = { column: number; top: number; height: number };
 
@@ -78,9 +86,10 @@ const at = (p: Placed) => ({
 
 {#if mode === "grid"}
 	<div class="@container">
-		<div class="grid grid-cols-1 gap-3 @2xl:grid-cols-2 @4xl:grid-cols-3 @7xl:grid-cols-4">
+		<!-- Columns follow the width a card needs to read, so a wide page gets more of them, not wider gaps. -->
+		<div class="grid grid-cols-[repeat(auto-fill,minmax(min(100%,20rem),1fr))] gap-3">
 			{#each items as item (item.slug)}
-				<ComponentCard {item} frame="md" />
+				<ComponentCard {item} frame="md" {selection} />
 			{/each}
 		</div>
 	</div>

@@ -3,6 +3,7 @@ import {
 	IconAdjustmentsHorizontal,
 	IconBackground,
 	IconBook,
+	IconBookmark,
 	IconChartBar,
 	IconComponents,
 	IconLayoutGrid,
@@ -17,6 +18,7 @@ import {
 import type { Category } from "@baby-ui/registry-schema/categories";
 import { DocsNav, type DocsNavSection } from "@baby-ui/svelte";
 import { type Component, untrack } from "svelte";
+import { bookmarks } from "#lib/bookmarks.svelte.js";
 import type { SidebarGroup } from "#lib/registry.js";
 import { DOCS_MENU, siteNav } from "#lib/registry.js";
 import { page } from "$app/state";
@@ -93,6 +95,13 @@ const sections = $derived.by<DocsNavSection[]>(() => {
 		},
 		...(pricing ? [direct(pricing)] : []),
 		...(studio ? [direct(studio)] : []),
+		{
+			id: "/bookmarks",
+			label: "Bookmarks",
+			href: "/bookmarks",
+			icon: IconBookmark,
+			count: bookmarks.slugs.length || undefined,
+		},
 		...groups.map((group) => ({
 			id: group.category,
 			label: group.label,

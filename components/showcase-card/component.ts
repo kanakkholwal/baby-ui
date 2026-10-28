@@ -1,14 +1,14 @@
 import { defineComponent, variantsOf } from "@baby-ui/registry-schema";
 import { showcaseCard as showcaseCardVariants } from "./variants";
 
-const VARIANTS = ["solid", "translucent", "morphing"];
+const VARIANTS = ["solid", "translucent", "morphing", "framed"];
 const SIZES = ["sm", "default", "lg"];
 
 export const showcaseCard = defineComponent({
 	slug: "showcase-card",
 	name: "Showcase Card",
 	description:
-		"A preview-first link card with solid, translucent and focus-safe morphing footer treatments.",
+		"A preview-first link card with solid, translucent, morphing and framed footer treatments.",
 	category: "advanced",
 	status: "experimental",
 	variants: variantsOf(showcaseCardVariants, ["variant", "size"]),
@@ -17,7 +17,7 @@ export const showcaseCard = defineComponent({
 			name: "variant",
 			type: VARIANTS.map((variant) => `"${variant}"`).join(" | "),
 			description:
-				"An in-flow solid footer, a persistent translucent overlay, or a preview-first footer revealed on hover and focus.",
+				"An in-flow solid footer, a persistent translucent overlay, a preview-first footer revealed on hover and focus, or that reveal inside a padded frame around an inset, bordered preview.",
 			default: "solid",
 			control: { kind: "select", options: VARIANTS },
 		},
@@ -34,7 +34,7 @@ export const showcaseCard = defineComponent({
 		reducedMotion:
 			"The framed card stops interpolating its internal rows; the morphing footer changes visibility immediately.",
 		behaviour: [
-			"The morphing footer rises 8px while its row opens on pointer hover or keyboard focus.",
+			"The morphing and framed footers rise 8px while its row opens on pointer hover or keyboard focus.",
 			"The preview yields space inside the fixed framed card without changing the card's outer size.",
 			"On devices without hover the morphing footer stays visible, so its title is never hidden behind an unavailable interaction.",
 		],

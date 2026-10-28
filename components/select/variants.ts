@@ -3,7 +3,8 @@ import { controlSize, fieldFrame } from "../lib/control";
 
 // Open state is `data-popup-open` from Base UI and `data-state=open` from bits-ui.
 export const selectTrigger = tv({
-	base: "inline-flex items-center justify-between",
+	// Content sits at the start and the chevron takes the slack, so an icon and label never drift apart.
+	base: "inline-flex items-center justify-start",
 	variants: {
 		variant: {
 			default: [fieldFrame({ kind: "trigger" }), "w-full"],

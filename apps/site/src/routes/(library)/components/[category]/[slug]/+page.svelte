@@ -33,6 +33,7 @@ import {
 import { Renderer } from "@docvia/core/svelte";
 import type { Snippet } from "svelte";
 import { track } from "#lib/analytics.js";
+import BookmarkButton from "#lib/components/bookmark-button.svelte";
 import CodeBlock from "#lib/components/code-block.svelte";
 import ComponentCard from "#lib/components/component-card.svelte";
 import ContentPageHeader from "#lib/components/content-page-header.svelte";
@@ -320,6 +321,7 @@ const pageTags = $derived([...new Set(data.spec.keywords)].slice(0, 4));
 				{/if}
 			{/snippet}
 			{#snippet actions()}
+				<BookmarkButton slug={data.spec.slug} name={data.spec.name} class="rounded-md" />
 				<PageMenu
 					markdownUrl="{specHref(data.spec)}.md"
 					copyText={data.spec.description}

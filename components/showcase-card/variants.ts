@@ -1,5 +1,18 @@
 import { tv, type VariantProps } from "tailwind-variants";
 
+// The footer row opens on hover or focus, and stays open where there is no hover.
+const REVEAL_ROWS = [
+	"[&>div]:[grid-template-rows:minmax(0,1fr)_0rem]",
+	"hover:[&>div]:[grid-template-rows:minmax(0,1fr)_var(--showcase-footer)] focus-within:[&>div]:[grid-template-rows:minmax(0,1fr)_var(--showcase-footer)]",
+	"[@media(hover:none)]:[&>div]:[grid-template-rows:minmax(0,1fr)_var(--showcase-footer)]",
+];
+const REVEAL_FOOTER = [
+	"relative translate-y-2 opacity-0",
+	"transition-[opacity,translate] duration-(--duration-dropdown) ease-(--ease-ui-out)",
+	"group-hover/showcase:translate-y-0 group-hover/showcase:opacity-100 group-focus-within/showcase:translate-y-0 group-focus-within/showcase:opacity-100",
+	"motion-reduce:transition-none [@media(hover:none)]:translate-y-0 [@media(hover:none)]:opacity-100",
+];
+
 export const showcaseCard = tv({
 	slots: {
 		root: [
@@ -32,19 +45,16 @@ export const showcaseCard = tv({
 					"absolute inset-x-2 bottom-2 rounded-lg border bg-popover/82 shadow-(--overlay-shadow) backdrop-blur-xl backdrop-saturate-150",
 			},
 			morphing: {
-				root: [
-					"[&>div]:[grid-template-rows:minmax(0,1fr)_0rem]",
-					"hover:[&>div]:[grid-template-rows:minmax(0,1fr)_var(--showcase-footer)] focus-within:[&>div]:[grid-template-rows:minmax(0,1fr)_var(--showcase-footer)]",
-					"[@media(hover:none)]:[&>div]:[grid-template-rows:minmax(0,1fr)_var(--showcase-footer)]",
-				],
+				root: REVEAL_ROWS,
 				preview:
 					"group-hover/showcase:rounded-b-none group-focus-within/showcase:rounded-b-none [@media(hover:none)]:rounded-b-none",
-				footer: [
-					"relative translate-y-2 border-t bg-background opacity-0",
-					"transition-[opacity,translate] duration-(--duration-dropdown) ease-(--ease-ui-out)",
-					"group-hover/showcase:translate-y-0 group-hover/showcase:opacity-100 group-focus-within/showcase:translate-y-0 group-focus-within/showcase:opacity-100",
-					"motion-reduce:transition-none [@media(hover:none)]:translate-y-0 [@media(hover:none)]:opacity-100",
-				],
+				footer: [...REVEAL_FOOTER, "border-t bg-background"],
+			},
+			// The framed Dialog recipe: a card-surface rim, a hairline-bordered preview, the footer in the rim.
+			framed: {
+				root: [...REVEAL_ROWS, "bg-card p-1 [&>div]:rounded-none [&>div]:bg-transparent"],
+				preview: "rounded-[11px] border border-border bg-popover",
+				footer: REVEAL_FOOTER,
 			},
 		},
 		size: {
@@ -62,6 +72,8 @@ export const showcaseCard = tv({
 			},
 		},
 	},
+	// The rim already pads the card, so the framed footer keeps Dialog's tighter rim spacing.
+	compoundVariants: [{ variant: "framed", class: { footer: "px-2.5 pt-2 pb-1" } }],
 	defaultVariants: { variant: "solid", size: "default" },
 });
 

@@ -1,6 +1,6 @@
 ---
 title: Showcase Card
-description: A preview-first link card with solid, translucent and morphing footer treatments.
+description: A preview-first link card with solid, translucent, morphing and framed footer treatments.
 component: showcase-card
 category: advanced
 tags: [card, showcase, preview, catalog, morph]

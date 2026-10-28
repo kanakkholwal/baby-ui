@@ -123,6 +123,7 @@ const SIDEBAR_ROUTES = [
 	"/docs",
 	"/studio",
 	"/pricing",
+	"/bookmarks",
 ];
 const hasSidebar = $derived(
 	SIDEBAR_ROUTES.some((route) => page.url.pathname.startsWith(route)),
