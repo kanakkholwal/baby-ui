@@ -21,6 +21,24 @@ export async function signOut(): Promise<void> {
 	await roundTrip(400);
 }
 
+/** Revokes every session for the account, this one included. */
+export async function signOutEverywhere(): Promise<void> {
+	await roundTrip();
+}
+
+/** Emails a link to the checkout address; opening it moves that licence to this account. */
+export async function sendLicenseTransfer(_email: string): Promise<void> {
+	await roundTrip();
+}
+
+export async function setNewsletter(_subscribed: boolean): Promise<void> {
+	await roundTrip(500);
+}
+
+export async function deleteAccount(): Promise<void> {
+	await roundTrip(1200);
+}
+
 /** Hosted checkout URL for `plan:seats`; null keeps the visitor on the page. */
 export async function createCheckout(
 	_itemId: string,

@@ -181,7 +181,7 @@ async function check(port, site, slug, props = {}) {
 		for (const e of r.errors) {
 			// First line only: stack frames hold machine paths. Origins and cache queries vary per run.
 			const message = (e.split("\n")[0] ?? "")
-				.replace(/https?:\/\/[^/\s)]+/g, "<runner>")
+				.replace(/https?:\/\/[^/\s)]+/g, "<site>")
 				.replace(/\?[vt]=[\w.-]+/g, "")
 				.slice(0, 200);
 			issues.push({

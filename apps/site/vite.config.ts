@@ -62,6 +62,12 @@ export default defineConfig(({ command, mode, isPreview }) => {
 		// The scanner can't see lazy demos; finding these mid-session re-bundles deps and pages
 		// hydrate against a second Svelte runtime. docvia adds its own runtime packages.
 		optimizeDeps: {
+			// React previews import their demos lazily, so the scanner crawls them up front; otherwise
+			// the first React preview finds new deps, re-bundles and reloads the page.
+			entries: [
+				"../../packages/demos/src/react/**/*.tsx",
+				"../../pro/packages/demos/src/react/**/*.tsx",
+			],
 			include: [
 				"@shikijs/langs/bash",
 				"@shikijs/langs/css",

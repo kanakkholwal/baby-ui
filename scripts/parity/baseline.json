@@ -1452,6 +1452,26 @@
 		"rest: toggle-group-item[5]: aria-pressed is false in React, unset in Svelte",
 		"rest: toggle-group-item[5]: role is button in React, radio in Svelte"
 	],
+	"slide-to-unlock": [
+		"closed: slide-to-unlock-handle: aria-valuemax is unset in React, 100 in Svelte",
+		"closed: slide-to-unlock-handle: aria-valuemin is unset in React, 0 in Svelte",
+		"closed: slide-to-unlock-handle: aria-valuenow is unset in React, 0 in Svelte",
+		"closed: slide-to-unlock-handle: name is unset in React, Confirmpublish in Svelte",
+		"closed: slide-to-unlock-handle: role is unset in React, slider in Svelte",
+		"closed: slide-to-unlock: role is group in React, unset in Svelte",
+		"open: slide-to-unlock-handle: aria-valuemax is unset in React, 100 in Svelte",
+		"open: slide-to-unlock-handle: aria-valuemin is unset in React, 0 in Svelte",
+		"open: slide-to-unlock-handle: aria-valuenow is unset in React, 0 in Svelte",
+		"open: slide-to-unlock-handle: name is unset in React, Confirmpublish in Svelte",
+		"open: slide-to-unlock-handle: role is unset in React, slider in Svelte",
+		"open: slide-to-unlock: role is group in React, unset in Svelte",
+		"rest: slide-to-unlock-handle: aria-valuemax is unset in React, 100 in Svelte",
+		"rest: slide-to-unlock-handle: aria-valuemin is unset in React, 0 in Svelte",
+		"rest: slide-to-unlock-handle: aria-valuenow is unset in React, 0 in Svelte",
+		"rest: slide-to-unlock-handle: name is unset in React, Confirmpublish in Svelte",
+		"rest: slide-to-unlock-handle: role is unset in React, slider in Svelte",
+		"rest: slide-to-unlock: role is group in React, unset in Svelte"
+	],
 	"slider": [
 		"rest: slider-thumb: aria-valuemax is unset in React, 100 in Svelte",
 		"rest: slider-thumb: aria-valuemin is unset in React, 0 in Svelte",

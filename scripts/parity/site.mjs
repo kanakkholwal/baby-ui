@@ -2,8 +2,9 @@ import { routeUrl } from "../lib/portless.mjs";
 
 const SITE_HOST = "site.baby-ui.localhost";
 
+// Generous: a cold dev server compiles /frame on its first request.
 const reachable = (url) =>
-	fetch(url, { signal: AbortSignal.timeout(5000) }).then(
+	fetch(url, { signal: AbortSignal.timeout(30_000) }).then(
 		(r) => r.ok,
 		() => false,
 	);
