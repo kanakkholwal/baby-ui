@@ -31,14 +31,13 @@ const CELLS: Cell[] = [
 </script>
 
 <section aria-labelledby="home-showcase-heading" class="mx-auto max-w-7xl px-4 pb-24 md:px-8">
-	<h2
-		id="home-showcase-heading"
-		class="font-normal text-[clamp(1.1rem,3.4vw,1.85rem)] text-foreground tracking-[-0.05em] md:whitespace-nowrap"
-	>
-		Every component, live and ready to explore.
-	</h2>
+	<div class="flex flex-col items-center gap-3 text-center">
+		<h2 id="home-showcase-heading" class="m-0 font-display font-medium text-3xl text-foreground tracking-[-0.03em] md:text-4xl">Live, not screenshots</h2>
+		<p class="m-0 max-w-md text-pretty text-muted-foreground">Every panel below is the real component, running.</p>
+	</div>
 
-	<ShowcaseGrid class="mt-8 sm:mt-10">
+	<div class="mt-8 rounded-2xl border border-border bg-card p-1 sm:mt-10">
+	<ShowcaseGrid class="overflow-hidden rounded-[11px] border border-border">
 		{#each CELLS as cell (cell.slug)}
 			<ShowcasePanel
 				slug={cell.slug}
@@ -49,6 +48,7 @@ const CELLS: Cell[] = [
 			/>
 		{/each}
 	</ShowcaseGrid>
+	</div>
 
 	<div class="mt-12 flex justify-center">
 		<Button href="/components" variant="outline" size="lg" class="group">

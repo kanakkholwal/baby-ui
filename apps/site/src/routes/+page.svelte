@@ -53,7 +53,11 @@ $effect(() => {
 />
 
 <main class="relative">
-	<LandingHero newCount={data.freshCount} />
+	<LandingHero
+		newCount={data.freshCount}
+		{total}
+		categories={data.categories?.length ?? 0}
+	/>
 
 	<HomeShowcase items={data.grid} />
 
@@ -62,10 +66,20 @@ $effect(() => {
 	{/if}
 
 	<section aria-labelledby="home-install-heading" class="mx-auto max-w-2xl px-4 pb-24">
-		<h2 id="home-install-heading" class="mb-4 text-center text-muted-foreground text-sm">
-			One command per component. It lands in your project as source.
-		</h2>
-		<InstallCommand slug={showcaseSlug} cascade />
+		<div class="mb-8 flex flex-col items-center gap-3 text-center">
+			<h2
+				id="home-install-heading"
+				class="m-0 font-display font-medium text-3xl text-foreground tracking-[-0.03em] md:text-4xl"
+			>
+				One command each
+			</h2>
+			<p class="m-0 max-w-md text-pretty text-muted-foreground">
+				Pick a component, run its command, and it lands in your project as source.
+			</p>
+		</div>
+		<div class="rounded-2xl border border-border bg-card p-1">
+			<InstallCommand slug={showcaseSlug} cascade />
+		</div>
 		<p class="mt-4 text-center text-muted-foreground text-xs">
 			New here? <a
 				href="/docs/installation"

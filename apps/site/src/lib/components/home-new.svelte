@@ -2,7 +2,7 @@
 import { IconArrowRight } from "@baby-ui/icons";
 import { Button } from "@baby-ui/svelte";
 import type { CardItem } from "#lib/registry.js";
-import ComponentCard from "./component-card.svelte";
+import CardGallery from "./card-gallery.svelte";
 
 let { items, count }: { items: CardItem[]; count: number } = $props();
 </script>
@@ -10,13 +10,8 @@ let { items, count }: { items: CardItem[]; count: number } = $props();
 <section aria-labelledby="home-new-heading" class="mx-auto max-w-7xl px-4 pb-24 md:px-8">
 	<div class="flex flex-wrap items-end justify-between gap-4">
 		<div>
-			<h2
-				id="home-new-heading"
-				class="font-normal text-[clamp(1.1rem,3.4vw,1.85rem)] text-foreground tracking-[-0.05em]"
-			>
-				Just landed.
-			</h2>
-			<p class="mt-1 text-muted-foreground text-sm">
+			<h2 id="home-new-heading" class="m-0 font-display font-medium text-3xl text-foreground tracking-[-0.03em] md:text-4xl">Just landed</h2>
+			<p class="mt-2 text-muted-foreground">
 				{count} components landed in the last 15 days.
 			</p>
 		</div>
@@ -28,9 +23,5 @@ let { items, count }: { items: CardItem[]; count: number } = $props();
 		</Button>
 	</div>
 
-	<div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-		{#each items as item (item.slug)}
-			<ComponentCard {item} />
-		{/each}
-	</div>
+	<div class="mt-8"><CardGallery {items} mode="grid" /></div>
 </section>

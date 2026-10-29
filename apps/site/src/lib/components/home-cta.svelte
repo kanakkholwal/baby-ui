@@ -1,52 +1,41 @@
 <script lang="ts">
-import { Badge, Button, FillButton, RollingDigits } from "@baby-ui/svelte";
+import { IconArrowRight } from "@baby-ui/icons";
+import { Badge, Button, RollingDigits } from "@baby-ui/svelte";
 import { page } from "$app/state";
-import ShowcaseDots from "./showcase-dots.svelte";
 
 let { count }: { count: number } = $props();
 </script>
 
-<section aria-labelledby="home-cta-heading" class="mx-auto max-w-7xl px-4 pb-12 md:px-8">
-	<div class="relative border-border border-t border-l">
-		<div
-			aria-hidden="true"
-			class="pointer-events-none absolute inset-0 bg-[radial-gradient(color-mix(in_oklch,var(--muted-foreground)_28%,transparent)_1px,transparent_1px)] bg-size-[14px_14px] [mask-image:radial-gradient(ellipse_at_70%_50%,black,transparent_75%)]"
-		></div>
-		<div class="relative grid grid-cols-1 md:grid-cols-12">
-			<div class="flex flex-col justify-center gap-6 border-border border-r border-b p-8 md:col-span-7 md:p-12">
-				<h2
-					id="home-cta-heading"
-					class="font-normal text-[clamp(1.6rem,4vw,2.75rem)] text-foreground leading-[1.05] tracking-[-0.05em]"
-				>
-					{count} components.<br />Start with one.
-				</h2>
-				<p class="max-w-md text-foreground/70 text-sm leading-6">
-					Install a single component with the shadcn CLI. It lands in your project as source,
-					styled by your own tokens.
-				</p>
-				<div class="flex flex-wrap items-center gap-3">
-					<FillButton href="/docs/installation">Install guide</FillButton>
-					<Button href="/docs" size="lg" variant="outline" class="h-11 rounded-xl">Read the docs</Button>
-				</div>
-			</div>
-
-			<div class="flex flex-col justify-center gap-5 border-border border-r border-b bg-background/60 p-8 md:col-span-5 md:p-12">
-				<p class="text-muted-foreground text-xs">In the registry today</p>
-				<span class="font-normal text-6xl text-foreground tracking-[-0.05em]">
-					<RollingDigits value={count} />
-				</span>
-				<div class="flex flex-wrap gap-2">
-					{#each page.data.categories ?? [] as group (group.category)}
-						<a href={group.href} class="rounded-md">
-							<Badge variant="outline">
-								{group.label}
-								<span class="text-muted-foreground tabular-nums">{group.count}</span>
-							</Badge>
-						</a>
-					{/each}
-				</div>
-			</div>
-		</div>
-		<ShowcaseDots weights={[7, 5]} class="hidden md:block" />
+<!-- The close mirrors the hero: centred, quiet, two actions, then every category one tap away. -->
+<section aria-labelledby="home-cta-heading" class="mx-auto flex max-w-3xl flex-col items-center px-4 py-24 text-center">
+	<h2
+		id="home-cta-heading"
+		class="m-0 font-display font-medium text-3xl text-foreground tracking-[-0.03em] md:text-5xl"
+	>
+		<RollingDigits value={Math.floor(count / 10) * 10} />+ components.
+		<span class="block text-muted-foreground">Start with one.</span>
+	</h2>
+	<p class="mt-5 max-w-md text-pretty text-muted-foreground">
+		It lands in your project as source, styled by your own tokens.
+	</p>
+	<div class="mt-8 flex flex-wrap items-center justify-center gap-2.5">
+		<Button href="/docs/installation" size="lg" variant="dark" class="rounded-full px-5">Install guide</Button>
+		<Button href="/components" size="lg" variant="secondary" class="group rounded-full px-5">
+			Browse components
+			<IconArrowRight
+				aria-hidden="true"
+				class="transition-transform duration-150 group-hover:translate-x-0.5 motion-reduce:transition-none"
+			/>
+		</Button>
+	</div>
+	<div class="mt-10 flex flex-wrap justify-center gap-2">
+		{#each page.data.categories ?? [] as group (group.category)}
+			<a href={group.href} class="rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring">
+				<Badge variant="outline" class="rounded-full">
+					{group.label}
+					<span class="text-muted-foreground tabular-nums">{group.count}</span>
+				</Badge>
+			</a>
+		{/each}
 	</div>
 </section>
