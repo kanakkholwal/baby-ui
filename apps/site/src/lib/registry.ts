@@ -247,7 +247,6 @@ export type NavIcon =
 	| "cli"
 	| "theming"
 	| "design"
-	| "create"
 	| "llms";
 
 export type NavMenuItem = NavLink & {
@@ -365,12 +364,6 @@ export function siteNav(categories: NavCategory[]): NavItem[] {
 					label: "Design system",
 					description: "The scale, tokens and states, measured live.",
 					icon: "design",
-				},
-				{
-					href: "/create",
-					label: "Create",
-					description: "Pick accent, radius and font; copy the CSS.",
-					icon: "create",
 				},
 				...DOCS_MENU.slice(4),
 				{

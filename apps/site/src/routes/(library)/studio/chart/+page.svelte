@@ -392,14 +392,14 @@ const allCharts = $derived([...data.kinds, ...data.samples]);
 {#if spec}
 	<main class="flex flex-col p-3 xl:h-[calc(100dvh-var(--header-h))]">
 		<h1 class="sr-only">Chart studio</h1>
-		<div class="grid min-h-0 flex-1 grid-cols-1 gap-3 xl:grid-cols-[24rem_minmax(0,1fr)] xl:grid-rows-2 xl:gap-y-0">
+		<div class="grid min-h-0 flex-1 grid-cols-1 gap-3 xl:grid-cols-[minmax(0,1fr)_22rem] xl:grid-rows-[minmax(0,1fr)] 2xl:grid-cols-[16rem_minmax(0,1fr)_22rem]">
 			<!-- Every chart: the ones whose data you edit, then the ones that keep their sample data. -->
-			<nav aria-label="Chart type" class="hidden min-h-0 flex-col rounded-xl border border-border bg-card p-1 xl:col-start-1 xl:row-start-1 xl:flex xl:rounded-b-none xl:border-b-0">
+			<nav aria-label="Chart type" class="hidden min-h-0 flex-col rounded-2xl border border-border bg-card p-1 2xl:col-start-1 2xl:row-start-1 2xl:flex">
 				<div class="relative px-1 pt-1 pb-2">
 					<IconSearch size={14} class="pointer-events-none absolute top-1/2 left-3.5 -mt-1 -translate-y-1/2 text-muted-foreground" />
 					<Input size="sm" bind:value={query} placeholder="Filter charts" aria-label="Filter charts" class="pl-8" />
 				</div>
-				<div class="min-h-0 flex-1 overflow-y-auto rounded-[7px] bg-background p-1">
+				<div class="min-h-0 flex-1 overflow-y-auto rounded-[11px] border border-border bg-background p-1">
 					{#if shownKinds.length}
 						<p class="px-2.5 pt-1.5 pb-1 font-medium text-muted-foreground text-xs">Your data</p>
 						<div class="relative">
@@ -429,10 +429,10 @@ const allCharts = $derived([...data.kinds, ...data.samples]);
 			</nav>
 
 			<!-- Stage: size switch and actions above, the chart, then its name and a data shuffle. -->
-			<section aria-label="Preview" class="flex min-h-[22rem] min-w-0 flex-col rounded-xl border border-border bg-card p-1 xl:col-start-2 xl:row-span-2 xl:row-start-1 xl:min-h-[28rem]">
+			<section aria-label="Preview" class="flex min-h-[22rem] min-w-0 flex-col rounded-2xl border border-border bg-card p-1 xl:col-start-1 xl:row-start-1 2xl:col-start-2 xl:min-h-[28rem]">
 				<div class="flex flex-wrap items-center justify-between gap-2 px-2 pt-1 pb-2">
 					<!-- Phones get a picker instead of the rail, and no size switch: the stage is already phone-wide. -->
-					<div class="min-w-0 flex-1 xl:hidden">
+					<div class="min-w-0 flex-1 2xl:hidden">
 						<Select items={allCharts.map((c) => ({ value: c.spec.slug, label: c.spec.name }))} bind:value={() => slug, pick}>
 							<SelectTrigger size="sm" aria-label="Chart" class="w-full max-w-56">
 								<SelectValue />
@@ -458,7 +458,7 @@ const allCharts = $derived([...data.kinds, ...data.samples]);
 						</Button>
 					</div>
 				</div>
-				<div class="grid min-h-0 flex-1 place-items-center overflow-auto rounded-[7px] bg-background bg-[radial-gradient(var(--border)_1px,transparent_1px)] [background-size:16px_16px] p-2 sm:p-8">
+				<div class="grid min-h-0 flex-1 place-items-center overflow-auto rounded-[11px] border border-border bg-background bg-[radial-gradient(var(--border)_1px,transparent_1px)] [background-size:16px_16px] p-2 sm:p-8">
 					<div class={s.frame()}>
 						{#if kind}
 							{@const square = shape !== "series"}
@@ -561,7 +561,7 @@ const allCharts = $derived([...data.kinds, ...data.samples]);
 			</section>
 
 			<!-- Style: the chart's own dials. Data: edit cells, add rows and series, or paste CSV. -->
-			<aside aria-label="Tune the chart" class="flex min-h-0 flex-col rounded-xl border border-border bg-card p-1 xl:col-start-1 xl:row-start-2 xl:rounded-t-none">
+			<aside aria-label="Tune the chart" class="flex min-h-0 flex-col rounded-2xl border border-border bg-card p-1 xl:col-start-2 xl:row-start-1 2xl:col-start-3">
 				<div class="flex shrink-0 items-start justify-between gap-2 px-2.5 pt-2 pb-1">
 					<div>
 						<p class="font-medium text-foreground text-sm">Tune the chart</p>
@@ -578,12 +578,12 @@ const allCharts = $derived([...data.kinds, ...data.samples]);
 						<TabsTrigger value="style">Style</TabsTrigger>
 						<TabsTrigger value="data" disabled={!kind}>Data</TabsTrigger>
 					</TabsList>
-					<TabsContent value="style" class="mt-1 min-h-0 flex-1 overflow-y-auto rounded-[7px] bg-background py-2">
+					<TabsContent value="style" class="mt-1 min-h-0 flex-1 overflow-y-auto rounded-[11px] border border-border bg-background py-2">
 						{#key `${slug}:${seed}`}
 							<SpecDials {spec} bind:values />
 						{/key}
 					</TabsContent>
-					<TabsContent value="data" class="mt-1 min-h-0 flex-1 overflow-y-auto rounded-[7px] bg-background p-2">
+					<TabsContent value="data" class="mt-1 min-h-0 flex-1 overflow-y-auto rounded-[11px] border border-border bg-background p-2">
 						{#if kind}
 							<div class="overflow-x-auto">
 								<table class="w-full border-separate border-spacing-1 text-xs">

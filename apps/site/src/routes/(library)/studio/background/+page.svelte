@@ -281,9 +281,9 @@ const code = new LiveCode(() => ({
 {#if current}
 	<main class="flex flex-col p-3 xl:h-[calc(100dvh-var(--header-h))]">
 		<h1 class="sr-only">Background studio</h1>
-		<div class="grid min-h-0 flex-1 grid-cols-1 gap-3 xl:grid-cols-[20rem_minmax(0,1fr)] xl:grid-rows-2 xl:gap-y-0">
+		<div class="grid min-h-0 flex-1 grid-cols-1 gap-3 xl:grid-cols-[minmax(0,1fr)_22rem] xl:grid-rows-[minmax(0,1fr)] 2xl:grid-cols-[16rem_minmax(0,1fr)_22rem]">
 			<!-- Library: the content layout to preview with, then every background as a live row. -->
-			<nav aria-label="Backgrounds" class="hidden min-h-0 flex-col rounded-xl border border-border bg-card p-1 xl:col-start-1 xl:row-start-1 xl:flex xl:rounded-b-none xl:border-b-0">
+			<nav aria-label="Backgrounds" class="hidden min-h-0 flex-col rounded-2xl border border-border bg-card p-1 2xl:col-start-1 2xl:row-start-1 2xl:flex">
 				<div class="px-2.5 pt-2 pb-3">
 					<p class="font-medium text-foreground text-sm">Scene library</p>
 					<p class="text-muted-foreground text-xs">Every background you can tune here.</p>
@@ -295,7 +295,7 @@ const code = new LiveCode(() => ({
 					<IconSearch size={14} class="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 -mt-1 text-muted-foreground" />
 					<Input size="sm" bind:value={query} placeholder="Filter" aria-label="Filter backgrounds" class="pl-8" />
 				</div>
-				<div class="scrollbar-hide relative min-h-0 flex-1 overflow-y-auto rounded-[7px] bg-background p-1">
+				<div class="scrollbar-hide relative min-h-0 flex-1 overflow-y-auto rounded-[11px] border border-border bg-background p-1">
 					{#if activeRow >= 0}
 						<span
 							aria-hidden="true"
@@ -337,10 +337,10 @@ const code = new LiveCode(() => ({
 			</nav>
 
 			<!-- Stage: description and size switch above, the framed preview, then name and remix below. -->
-			<section aria-label="Preview" class="flex min-h-[30rem] min-w-0 flex-col rounded-xl border border-border bg-card p-1 xl:col-start-2 xl:row-span-2 xl:row-start-1">
+			<section aria-label="Preview" class="flex min-h-[30rem] min-w-0 flex-col rounded-2xl border border-border bg-card p-1 xl:col-start-1 xl:row-start-1 2xl:col-start-2">
 				<div class="flex flex-wrap items-center justify-between gap-2 px-2 pt-1 pb-2">
 					<div class="flex min-w-0 flex-wrap items-center gap-2">
-						<div class="xl:hidden">
+						<div class="2xl:hidden">
 							<Select
 								items={data.backgrounds.map((b) => ({ value: b.spec.slug, label: b.spec.name }))}
 								bind:value={() => current.spec.slug, (next) => pick(next, "select")}
@@ -383,7 +383,7 @@ const code = new LiveCode(() => ({
 						</Button>
 					</div>
 				</div>
-				<div class="grid min-h-0 flex-1 place-items-center overflow-hidden rounded-[7px] bg-background bg-[radial-gradient(var(--border)_1px,transparent_1px)] [background-size:16px_16px] p-2 sm:p-8">
+				<div class="grid min-h-0 flex-1 place-items-center overflow-hidden rounded-[11px] border border-border bg-background bg-[radial-gradient(var(--border)_1px,transparent_1px)] [background-size:16px_16px] p-2 sm:p-8">
 					<div class={s.frame()}>
 						{#key current.spec.slug}
 							<LiveComponent slug={current.spec.slug} entry={current.entry} props={live} />
@@ -436,7 +436,7 @@ const code = new LiveCode(() => ({
 			</section>
 
 			<!-- Tune: the background's own dials, and the compose settings for the preview. -->
-			<aside aria-label="Tune the scene" class="flex min-h-0 flex-col rounded-xl border border-border bg-card p-1 xl:col-start-1 xl:row-start-2 xl:rounded-t-none">
+			<aside aria-label="Tune the scene" class="flex min-h-0 flex-col rounded-2xl border border-border bg-card p-1 xl:col-start-2 xl:row-start-1 2xl:col-start-3">
 				<div class="flex shrink-0 items-start justify-between gap-2 px-2.5 pt-2 pb-1">
 					<div>
 						<p class="font-medium text-foreground text-sm">Tune the scene</p>
@@ -451,12 +451,12 @@ const code = new LiveCode(() => ({
 						<TabsTrigger value="background">Background</TabsTrigger>
 						<TabsTrigger value="compose">Compose</TabsTrigger>
 					</TabsList>
-					<TabsContent value="background" class="scrollbar-hide mt-1 min-h-0 flex-1 overflow-y-auto rounded-[7px] bg-background py-2">
+					<TabsContent value="background" class="scrollbar-hide mt-1 min-h-0 flex-1 overflow-y-auto rounded-[11px] border border-border bg-background py-2">
 						{#key `${current.spec.slug}:${seed}`}
 							<SpecDials spec={current.spec} bind:values />
 						{/key}
 					</TabsContent>
-					<TabsContent value="compose" class="scrollbar-hide mt-1 min-h-0 flex-1 overflow-y-auto rounded-[7px] bg-background px-3 py-2">
+					<TabsContent value="compose" class="scrollbar-hide mt-1 min-h-0 flex-1 overflow-y-auto rounded-[11px] border border-border bg-background px-3 py-2">
 						<label class="flex min-h-8 items-center justify-between gap-3">
 							<span class="font-medium text-muted-foreground text-xs">Sample content</span>
 							<Switch size="sm" bind:checked={content} />
