@@ -44,6 +44,7 @@ import {
 } from "@baby-ui/svelte";
 import { mode, setMode } from "mode-watcher";
 import AccountMenu from "#lib/components/account-menu.svelte";
+import BookmarksLink from "#lib/components/bookmarks-link.svelte";
 import Logo from "#lib/components/logo.svelte";
 import SidebarToggleIcon from "#lib/components/sidebar-toggle-icon.svelte";
 import SiteSearch from "#lib/components/site-search.svelte";
@@ -51,13 +52,7 @@ import { docsSidebar, playgroundDocsDrawer } from "#lib/docs-sidebar.svelte.js";
 import { GITHUB_URL, githubStars } from "#lib/github-stars.js";
 import { mobileNav } from "#lib/mobile-nav.svelte.js";
 import { prefs } from "#lib/preferences.svelte.js";
-import {
-	COLLECTIONS,
-	categoryHref,
-	type NavIcon,
-	siteNav,
-	TOP_LEVEL,
-} from "#lib/registry.js";
+import { type NavIcon, siteNav } from "#lib/registry.js";
 import { page } from "$app/state";
 
 const NAV = $derived(siteNav(page.data.categories ?? []));
@@ -115,18 +110,9 @@ const iconFor = $derived(
 	),
 );
 
-// The header's own hamburger only opens something on routes that render a SiteSidebar.
-const SIDEBAR_ROUTES = [
-	"/components",
-	...TOP_LEVEL.map(categoryHref),
-	...Object.keys(COLLECTIONS).map((id) => `/${id}`),
-	"/docs",
-	"/studio",
-	"/pricing",
-	"/bookmarks",
-];
+// Only the (library) group renders the sidebar, and an error page never does, whatever its path.
 const hasSidebar = $derived(
-	SIDEBAR_ROUTES.some((route) => page.url.pathname.startsWith(route)),
+	(page.route.id?.startsWith("/(library)") ?? false) && !page.error,
 );
 const workspaceShell = $derived(hasSidebar);
 const libraryShell = $derived(hasSidebar && prefs.layout === "library");
@@ -407,6 +393,8 @@ function active(match: string[]) {
 				<TooltipContent side="bottom">Star on GitHub</TooltipContent>
 			</Tooltip>
 			</TooltipProvider>
+
+			<BookmarksLink />
 
 			{#if __SHOW_PRO__}<AccountMenu />{/if}
 		</nav>

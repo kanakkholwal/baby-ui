@@ -116,8 +116,4 @@ const HEAD = "mb-4 font-medium text-muted-foreground text-xs";
 		</div>
 	</div>
 
-	<p
-		aria-hidden="true"
-		class="pointer-events-none mx-auto -mb-[0.22em] max-w-7xl select-none text-center font-normal text-[clamp(4rem,19vw,16rem)] text-foreground/[0.05] leading-none tracking-[-0.07em] before:content-['Baby_UI']"
-	></p>
 </footer>

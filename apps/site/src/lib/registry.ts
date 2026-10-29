@@ -387,6 +387,7 @@ export function siteNav(categories: NavCategory[]): NavItem[] {
 			},
 		},
 		{ href: "/studio", label: "Studio", match: ["/studio"] },
+		{ href: "/sponsors", label: "Sponsor", match: ["/sponsors"] },
 		...(__SHOW_PRO__
 			? [{ href: "/pricing", label: "Pricing", match: ["/pricing"] }]
 			: []),

@@ -1,12 +1,6 @@
 <script lang="ts">
 import { IconArrowRight, IconRefresh } from "@baby-ui/icons";
-import {
-	Badge,
-	Button,
-	GibberishText,
-	ShowcaseGrid,
-	ShowcasePanel,
-} from "@baby-ui/svelte";
+import { Button } from "@baby-ui/svelte";
 import { type CatalogItem, loadCatalog } from "#lib/registry.js";
 import { page } from "$app/state";
 
@@ -35,10 +29,11 @@ const suggestions = $derived.by(() => {
 		.map((s) => s.spec);
 });
 
-const title = $derived(notFound ? "Page not found" : "Something broke");
+const title = $derived(notFound ? "This page isn't here" : "Something broke");
+const subtitle = $derived(notFound ? "One block never landed." : "We're on it.");
 const message = $derived(
 	notFound
-		? "Nothing lives at this address. It may have been renamed, or never existed."
+		? "It may have been renamed, or never existed."
 		: (page.error?.message ??
 				"This page failed to render. Try again, or head back home."),
 );
@@ -49,68 +44,63 @@ const message = $derived(
 	<meta name="robots" content="noindex" />
 </svelte:head>
 
-<main class="mx-auto flex min-h-[calc(100dvh-3.5rem)] max-w-5xl flex-col justify-center px-4 py-16 md:px-10">
-	<ShowcaseGrid>
-		<ShowcasePanel span={notFound ? 7 : 12} class="min-h-64 md:min-h-80">
-			<div class="flex w-full flex-col items-start gap-5 self-stretch md:justify-center">
-				<Badge variant="outline">Error {status}</Badge>
-				<p
-					aria-hidden="true"
-					class="font-mono font-semibold text-7xl text-foreground tracking-tighter tabular-nums sm:text-8xl"
-				>
-					<GibberishText text={String(status)} speedMs={40} class="text-inherit" />
-				</p>
-				<div>
-					<h1 class="font-semibold text-2xl text-foreground tracking-tight">{title}</h1>
-					<p class="mt-2 max-w-md text-muted-foreground text-sm leading-relaxed">{message}</p>
-					{#if notFound}
-						<p class="mt-3 truncate font-mono text-muted-foreground text-xs">{path}</p>
-					{/if}
-				</div>
-			</div>
-		</ShowcasePanel>
+<!-- Quiet and centred like the home hero, with the figure explaining what went missing. -->
+<main class="mx-auto flex min-h-[calc(100dvh-3.5rem)] max-w-3xl flex-col items-center justify-center px-4 py-8 text-center">
+	<!-- The figure's box is reserved, so the copy never shifts when it loads. -->
+	<div class="pointer-events-none -mb-4 aspect-[620/440] w-full max-w-72">
+		{#await import("#lib/components/missing-figure.svelte") then { default: MissingFigure }}
+			<MissingFigure />
+		{/await}
+	</div>
 
-		{#if notFound}
-			<ShowcasePanel span={5} class="min-h-64 md:min-h-80">
-				<nav aria-label="Suggested components" class="flex w-full flex-col gap-3 self-stretch">
-					<p class="font-medium text-[11px] text-muted-foreground uppercase tracking-wider">
-						Were you looking for
-					</p>
-					<ul class="flex flex-col gap-1">
-						{#each suggestions as spec (spec.slug)}
-							<li>
-								<a
-									href={spec.href}
-									class="group flex items-center justify-between gap-3 rounded-lg px-3 py-2.5 outline-none transition-colors hover:bg-foreground/[0.06] focus-visible:ring-2 focus-visible:ring-ring"
-								>
-									<span class="min-w-0">
-										<span class="block font-medium text-foreground text-sm">{spec.name}</span>
-										<span class="block truncate text-muted-foreground text-xs">{spec.description}</span>
-									</span>
-									<IconArrowRight
-										size={14}
-										class="shrink-0 text-muted-foreground transition-transform duration-150 group-hover:translate-x-0.5 motion-reduce:transition-none"
-									/>
-								</a>
-							</li>
-						{/each}
-					</ul>
-				</nav>
-			</ShowcasePanel>
+	<span class="rounded-full border border-border px-2.5 py-0.5 font-mono text-muted-foreground text-xs tabular-nums">
+		Error {status}
+	</span>
+	<h1 class="m-0 mt-4 text-balance font-display font-medium text-3xl text-foreground tracking-[-0.03em] md:text-4xl">
+		{title}
+		<span class="block text-muted-foreground">{subtitle}</span>
+	</h1>
+	<p class="mt-3 max-w-md text-pretty text-muted-foreground">{message}</p>
+	{#if notFound}
+		<p class="mt-2 max-w-full truncate font-mono text-muted-foreground text-xs">{path}</p>
+	{/if}
+
+	<div class="mt-6 flex flex-wrap items-center justify-center gap-2.5">
+		{#if !notFound}
+			<Button size="lg" variant="dark" class="rounded-full px-5" onclick={() => location.reload()}>
+				<IconRefresh />
+				Try again
+			</Button>
 		{/if}
+		<Button href="/" size="lg" variant={notFound ? "dark" : "secondary"} class="rounded-full px-5">
+			Back home
+		</Button>
+		<Button href="/components" size="lg" variant="secondary" class="group rounded-full px-5">
+			Browse components
+			<IconArrowRight
+				aria-hidden="true"
+				class="transition-transform duration-150 group-hover:translate-x-0.5 motion-reduce:transition-none"
+			/>
+		</Button>
+	</div>
 
-		<ShowcasePanel span={12} class="min-h-0 md:min-h-24">
-			<div class="flex w-full flex-wrap items-center justify-center gap-3">
-				{#if !notFound}
-					<Button onclick={() => location.reload()}>
-						<IconRefresh />
-						Try again
-					</Button>
-				{/if}
-				<Button href="/" variant={notFound ? "default" : "outline"}>Back home</Button>
-				<Button href="/components" variant="outline">Browse components</Button>
-				<Button href="/docs" variant="ghost">Read the docs</Button>
+	<!-- The catalog loads after the page, so the row folds open instead of popping in. -->
+	<div
+		data-open={suggestions.length > 0}
+		class="grid w-full grid-rows-[0fr] opacity-0 transition-[grid-template-rows,opacity] duration-(--duration-collapse) ease-(--ease-ui-out) data-[open=true]:grid-rows-[1fr] data-[open=true]:opacity-100 motion-reduce:transition-none"
+	>
+		<nav aria-label="Suggested components" class="min-h-0 overflow-hidden">
+			<div class="flex flex-wrap items-center justify-center gap-2 pt-6">
+				<span class="text-muted-foreground text-xs">Were you looking for</span>
+				{#each suggestions as spec (spec.slug)}
+					<a
+						href={spec.href}
+						class="rounded-full border border-border px-3 py-1 text-foreground text-xs outline-none transition-colors hover:bg-foreground/[0.06] focus-visible:ring-2 focus-visible:ring-ring"
+					>
+						{spec.name}
+					</a>
+				{/each}
 			</div>
-		</ShowcasePanel>
-	</ShowcaseGrid>
+		</nav>
+	</div>
 </main>

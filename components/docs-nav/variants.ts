@@ -32,10 +32,11 @@ export const docsNav = tv({
 				root: "gap-0.5",
 				section: "border-t-0 py-0.5 first:pt-0",
 				trigger:
-					"h-9 rounded-lg px-2 font-medium text-sm normal-case tracking-normal hover:bg-foreground/[0.04] hover:text-foreground [&>[data-slot=collapsible-icon]]:order-last [&>[data-slot=collapsible-icon]]:ml-auto [&>[data-slot=collapsible-icon]]:duration-[var(--duration-dropdown)] [&[data-panel-open]>[data-slot=collapsible-icon]]:duration-[var(--duration-collapse)] [&[data-state=open]>[data-slot=collapsible-icon]]:duration-[var(--duration-collapse)]",
+					"h-8 rounded-lg px-2 font-normal text-foreground/80 text-sm normal-case tracking-normal hover:bg-foreground/[0.04] hover:text-foreground [&>[data-slot=collapsible-icon]]:order-last [&>[data-slot=collapsible-icon]]:ml-auto [&>[data-slot=collapsible-icon]]:duration-[var(--duration-dropdown)] [&[data-panel-open]>[data-slot=collapsible-icon]]:duration-[var(--duration-collapse)] [&[data-state=open]>[data-slot=collapsible-icon]]:duration-[var(--duration-collapse)]",
 				count: "ml-auto mr-1 bg-transparent text-muted-foreground",
 				sectionLabel: "flex-1 truncate",
-				topLink: "h-9",
+				// Same weight, size and row height as the links inside each section.
+				topLink: "h-8 font-normal text-foreground/80 hover:text-foreground",
 				content: "pt-0 pb-1",
 			},
 		},
@@ -78,15 +79,15 @@ export const docsNav = tv({
 			variant: "sidebar",
 			sectionCurrent: true,
 			class: {
-				trigger: "bg-foreground/[0.06] text-foreground",
-				topLink: "bg-foreground/[0.06] text-foreground",
+				trigger: "bg-foreground/[0.06] font-medium text-foreground",
+				topLink: "bg-foreground/[0.06] font-medium text-foreground",
 			},
 		},
 		{
 			variant: "sidebar",
 			sectionCurrent: false,
 			class: {
-				topLink: "text-muted-foreground hover:bg-foreground/[0.04] hover:text-foreground",
+				topLink: "text-foreground/80 hover:bg-foreground/[0.04] hover:text-foreground",
 			},
 		},
 		{

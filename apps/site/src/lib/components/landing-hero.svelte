@@ -1,13 +1,23 @@
 <script lang="ts">
 import { IconArrowRight } from "@baby-ui/icons";
 import { Button, DiaText, RollingDigits, ShimmerText } from "@baby-ui/svelte";
-import HeroBackdrop from "./hero-backdrop.svelte";
+import HeroBackdrop, {
+	HERO_BACKDROPS,
+	type HeroBackdropPattern,
+} from "./hero-backdrop.svelte";
 
 let {
 	newCount = 0,
 	total = 0,
 	categories = 0,
 }: { newCount?: number; total?: number; categories?: number } = $props();
+
+// `?backdrop=rings` or `horizon` previews the others; read in the browser, as the page is prerendered.
+let backdrop = $state<HeroBackdropPattern>("blocks");
+$effect(() => {
+	const wanted = new URLSearchParams(location.search).get("backdrop");
+	backdrop = HERO_BACKDROPS.find((name) => name === wanted) ?? "blocks";
+});
 
 // Slow on purpose: the hero is read, not watched.
 const TAILS = [
@@ -30,7 +40,7 @@ const newLabel = $derived(
 
 <!-- Centred, quiet copy on the page background over a faint drifting backdrop. -->
 <section class="relative isolate flex min-h-[calc(100svh-var(--header-h))] w-full flex-col justify-center overflow-x-clip px-4 py-20">
-	<HeroBackdrop />
+	<HeroBackdrop pattern={backdrop} />
 	<div>
 		<div class="flex flex-col items-center text-center">
 			<div class="flex flex-col items-center">
@@ -62,7 +72,7 @@ const newLabel = $derived(
 					UI for products that ship
 					<!-- One line reserved for the cycling tail, so a swap never reflows the page. -->
 					<span class="block h-[1.1em] whitespace-nowrap text-muted-foreground">
-						<DiaText text={TAILS} repeat triggerOnView={false} durationMs={1600} repeatDelayMs={4200} />
+						<DiaText text={TAILS} repeat triggerOnView={false} durationMs={1600} repeatDelayMs={4200}  textColor="var(--muted-foreground)"/>
 					</span>
 				</h1>
 				<p class="hero-in mt-5 max-w-lg text-pretty text-base text-muted-foreground leading-7" style:--i="2">
