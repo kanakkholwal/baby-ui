@@ -105,7 +105,7 @@ jobs:
       - name: Pro pages stay dark
         run: |
           set -euo pipefail
-          for path in /pricing /checkout /dashboard /login; do
+          for path in /pricing /checkout /dashboard /login /account /account/downloads; do
             code=$(curl -sS -o /dev/null -w '%{http_code}' --retry 3 --retry-delay 5 "$BABY_UI_SITE_URL$path")
             echo "$code  $path"
             [ "$code" = "404" ]
