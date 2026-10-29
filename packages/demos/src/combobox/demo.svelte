@@ -31,7 +31,7 @@ const selected = $derived(regions.find((r) => r.value === value));
 </script>
 
 <Combobox bind:open>
-	<ComboboxTrigger {size}>
+	<ComboboxTrigger {size} class="w-60">
 		{selected?.label ?? "Search regions…"}
 		<svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class="size-3.5 shrink-0 text-muted-foreground">
 			<path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />

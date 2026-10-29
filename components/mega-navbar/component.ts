@@ -61,13 +61,14 @@ export const megaNavbar = defineComponent({
 			description:
 				"Use a translucent blurred surface rather than a solid one when scrolled.",
 			default: true,
-			control: { kind: "boolean" },
+			// Only shows once scrolled, and the preview is not sticky, so it never scrolls.
+			control: { kind: "none" },
 		},
 		{
 			name: "variant",
 			type: '"solid" | "floating" | "notched" | "capsule" | "expand"',
 			description:
-				"Solid spans the page edge to edge; floating is an inset rounded bar; notched hangs a shelf from the top edge on desktop, over a plain ruled bar and a top sheet on mobile; capsule gathers the centre links in a pill track with a sliding highlight; expand grows the floating bar itself into a full-width panel per section, over a blurred scrim.",
+				"Solid spans the page edge to edge; floating is an inset rounded bar that narrows once the page scrolls; notched hangs a shelf from the top edge on desktop, over a plain ruled bar and a top sheet on mobile; capsule gathers the centre links in a pill track with a sliding highlight; expand grows the floating bar itself into a full-width panel per section, over a blurred scrim.",
 			default: "solid",
 			control: {
 				kind: "select",
@@ -84,6 +85,7 @@ export const megaNavbar = defineComponent({
 			"Expand: moving along the bar switches at once, sliding the next pane in from the side the pointer travelled (28px, 320ms in, 150ms out) while the height eases to fit.",
 			"Expand: items rise in a 35ms stagger as their pane arrives; one highlight slides between items, and a pill slides between triggers.",
 			"Capsule: a pill slides to the hovered link and rests on the current one.",
+			"Floating: once the page scrolls, the bar draws in from 72rem to 56rem as it gains its shadow.",
 			"One shared panel resizes and slides between desktop triggers, measured from the active trigger and panel, rather than a fresh popover per item.",
 			"A disclosure pattern, not role=menu: contents are links to pages, so the browser's own link semantics are what a screen reader hears.",
 			"Hovering off a trigger toward the panel schedules a short close delay so the diagonal path to the panel doesn't close it first.",

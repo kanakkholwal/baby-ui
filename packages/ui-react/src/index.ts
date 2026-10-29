@@ -159,6 +159,8 @@ export { composer, type ComposerSize, COMPOSER_LINE_HEIGHT } from "@baby-ui/comp
 export { type ConfirmMorphProps, ConfirmMorph } from "@baby-ui/components/react/confirm-morph";
 export { type ConfirmMorphState, type ConfirmMorphMode, type ConfirmMorphFace, type ConfirmOptions, createConfirmMorph } from "@baby-ui/components/react/confirm-morph";
 export { confirmMorph, type ConfirmMorphVariant, type ConfirmMorphSize } from "@baby-ui/components/react/confirm-morph";
+export { type ContactSectionProps, ContactSection, ContactSectionHeader, ContactSectionTitle, ContactSectionDescription, ContactSectionChannels, ContactSectionChannel, ContactSectionChannelTitle, type ContactSectionChannelLinkProps, ContactSectionChannelLink, ContactSectionChannelDetail, ContactSectionForm, ContactSectionFormTitle, ContactSectionFormDescription } from "@baby-ui/components/react/contact-section";
+export { contactSection, type ContactSectionVariant } from "@baby-ui/components/react/contact-section";
 export { type ContextChunk, type ContextCardsProps, ContextCards } from "@baby-ui/components/react/context-cards";
 export { contextChunkBadge, type ContextChunkTone } from "@baby-ui/components/react/context-cards";
 export { ContextMenu, ContextMenuSub, ContextMenuTrigger, ContextMenuContent, ContextMenuItem, ContextMenuShortcut, ContextMenuLabel, ContextMenuSeparator, ContextMenuSubTrigger, ContextMenuSubContent, ContextMenuGroup, ContextMenuCheckboxItem, ContextMenuRadioGroup, ContextMenuRadioItem } from "@baby-ui/components/react/context-menu";
@@ -252,6 +254,8 @@ export { expandingSearch, type ExpandingSearchSize, type ExpandingSearchVariant 
 export { type FaqSectionProps, FaqSection, FaqSectionHeader, FaqSectionTitle, FaqSectionDescription, FaqSectionSearch, FaqSectionRail, FaqSectionTopics, FaqSectionList, FaqSectionEmpty, type FaqSectionContactProps, FaqSectionContact } from "@baby-ui/components/react/faq-section";
 export { type FaqItem, faqKey, faqCategory, faqCategories, faqMatches, highlightParts, faqHint } from "@baby-ui/components/react/faq-section";
 export { faqSection, type FaqSectionVariant } from "@baby-ui/components/react/faq-section";
+export { type FeatureSectionProps, FeatureSection, FeatureSectionHeader, FeatureSectionEyebrow, FeatureSectionTitle, FeatureSectionDescription, FeatureSectionList, FeatureSectionItem, FeatureSectionIcon, FeatureSectionItemTitle, FeatureSectionItemDescription, FeatureSectionMedia } from "@baby-ui/components/react/feature-section";
+export { featureSection, type FeatureSectionVariant } from "@baby-ui/components/react/feature-section";
 export { FieldSet, FieldLegend, FieldGroup, Field, FieldContent, FieldLabel, FieldTitle, FieldDescription, FieldSeparator, FieldError } from "@baby-ui/components/react/field";
 export { field, type FieldOrientation, type FieldSize, fieldLegend, type FieldLegendVariant, type FieldErrorEntry, fieldErrorMessages } from "@baby-ui/components/react/field";
 export { type DiffLine, type FileDiffProps, FileDiff } from "@baby-ui/components/react/file-diff";
@@ -308,6 +312,8 @@ export { type HeatmapChartProps, HeatmapChart, type HeatmapLegendProps, HeatmapL
 export { type HeatmapLevel, HEATMAP_LEVELS, type HeatmapCell, type HeatmapCalendar, localeWeekStart, buildCalendar, seeded, cellSeed, HEATMAP_TIMING, enterDelay, type HeatmapPhase, heatmapNext, LEVEL_PATTERN, type HeatmapWeekStart, heatmapLevelKey, HEATMAP_MARGIN } from "@baby-ui/components/react/heatmap-chart";
 export { runShimmer } from "@baby-ui/components/react/heatmap-chart";
 export { heatmapChart, type HeatmapShape, type HeatmapLegendAlign, SHAPE_RADIUS, levelFill } from "@baby-ui/components/react/heatmap-chart";
+export { type HeroSectionProps, HeroSection, HeroSectionContent, type HeroSectionAnnouncementProps, HeroSectionAnnouncement, HeroSectionTitle, HeroSectionDescription, HeroSectionActions, type HeroSectionActionProps, HeroSectionAction, type HeroSectionLogosProps, HeroSectionLogos, type HeroSectionMediaProps, HeroSectionMedia } from "@baby-ui/components/react/hero-section";
+export { heroSection, type HeroSectionVariant, heroSectionMedia, type HeroSectionMediaVariant } from "@baby-ui/components/react/hero-section";
 export { type HeroStageProps, HeroStage, type HeroStageSlotProps, HeroStageSlot } from "@baby-ui/components/react/hero-stage";
 export { heroStage, type HeroStageMotion } from "@baby-ui/components/react/hero-stage";
 export { type HoldToConfirmProps, HoldToConfirm } from "@baby-ui/components/react/hold-to-confirm";
@@ -344,6 +350,8 @@ export { InputGroup, InputGroupAddon, InputGroupButton, InputGroupText, InputGro
 export { inputGroup, inputGroupAddon, type InputGroupSize, type InputGroupAddonAlign, focusGroupControl } from "@baby-ui/components/react/input-group";
 export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from "@baby-ui/components/react/input-otp";
 export { inputOtp, type InputOtpSize, type InputOtpInvalidMotion } from "@baby-ui/components/react/input-otp";
+export { type IntegrationSectionProps, IntegrationSection, IntegrationSectionHeader, IntegrationSectionTitle, IntegrationSectionDescription, IntegrationSectionList, type IntegrationSectionItemProps, IntegrationSectionItem, IntegrationSectionItemLogo, IntegrationSectionItemName, IntegrationSectionItemDescription, type IntegrationSectionItemLinkProps, IntegrationSectionItemLink } from "@baby-ui/components/react/integration-section";
+export { integrationSection, type IntegrationSectionVariant } from "@baby-ui/components/react/integration-section";
 export { type InvoiceListProps, InvoiceList, InvoiceListTable, InvoiceListRow, InvoiceListRowSkeleton, InvoiceListCards, InvoiceListCard, InvoiceListCardSkeleton, InvoiceListStatus, InvoiceListDownloads, InvoiceListEmpty, InvoiceListFooter } from "@baby-ui/components/react/invoice-list";
 export { type InvoiceStatus, type Invoice, type InvoiceBadgeTone, INVOICE_STATUS_TONE, type InvoiceListLabels, INVOICE_LIST_LABELS, formatInvoiceAmount, formatInvoiceDate } from "@baby-ui/components/react/invoice-list";
 export { invoiceList, type InvoiceListDensity } from "@baby-ui/components/react/invoice-list";
@@ -750,6 +758,8 @@ export { tagInput, type TagInputSize, TAG_INPUT_CHIP } from "@baby-ui/components
 export { type TaskStepsProps, TaskSteps } from "@baby-ui/components/react/task-steps";
 export { TaskStepRows } from "@baby-ui/components/react/task-steps";
 export { taskSteps, type TaskStepsVariant, type TaskStepsSize, type TaskStatus, TASK_STEP_LABELS, type TaskStepDetail, type TaskStep, taskStepRows } from "@baby-ui/components/react/task-steps";
+export { type TeamSectionProps, TeamSection, TeamSectionHeader, TeamSectionTitle, TeamSectionDescription, TeamSectionGroup, TeamSectionGroupTitle, TeamSectionList, TeamSectionMember, type TeamSectionMemberAvatarProps, TeamSectionMemberAvatar, TeamSectionMemberName, TeamSectionMemberRole, TeamSectionMemberBio, TeamSectionMemberLinks, type TeamSectionMemberLinkProps, TeamSectionMemberLink } from "@baby-ui/components/react/team-section";
+export { teamSection, type TeamSectionVariant, TEAM_AVATAR } from "@baby-ui/components/react/team-section";
 export { Testimonial, TestimonialQuote, TestimonialAuthor, TestimonialAvatar, TestimonialAvatarImage, TestimonialAvatarFallback, TestimonialAuthorDetails, TestimonialAuthorName, TestimonialAuthorTagline, TestimonialVerifiedBadge } from "@baby-ui/components/react/testimonial";
 export { testimonial, type TestimonialVariant } from "@baby-ui/components/react/testimonial";
 export { type TextLoopProps, TextLoop } from "@baby-ui/components/react/text-loop";

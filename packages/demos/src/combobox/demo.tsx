@@ -33,7 +33,7 @@ export function ComboboxDemo({ props }: { props: Props }) {
 
 	return (
 		<Combobox open={open} onOpenChange={setOpen}>
-			<ComboboxTrigger size={size}>
+			<ComboboxTrigger size={size} className="w-60">
 				{selected?.label ?? "Search regions…"}
 				<svg
 					viewBox="0 0 16 16"

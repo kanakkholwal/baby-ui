@@ -25,7 +25,9 @@ export function Example() {
 
 	return (
 		<Combobox open={open} onOpenChange={setOpen}>
-			<ComboboxTrigger>{selected?.label ?? "Select region…"}</ComboboxTrigger>
+			<ComboboxTrigger className="w-60">
+				{selected?.label ?? "Select region…"}
+			</ComboboxTrigger>
 			<ComboboxContent>
 				<ComboboxInput placeholder="Search regions…" />
 				<ComboboxList>

@@ -122,7 +122,7 @@ export const megaNavbar = tv({
 			solid: { root: "border-b" },
 			floating: {
 				root: "px-3 pt-3",
-				nav: "h-14 rounded-2xl border px-4 transition-[background,border-color,box-shadow,backdrop-filter] duration-[var(--duration-dropdown)] motion-reduce:transition-none",
+				nav: "h-14 rounded-2xl border px-4 transition-[background,border-color,box-shadow,backdrop-filter,max-width] duration-[var(--duration-slow)] ease-(--ease-ui-out) motion-reduce:transition-none",
 			},
 			capsule: {
 				root: "border-b",
@@ -205,12 +205,13 @@ export const megaNavbar = tv({
 		{
 			variant: "floating",
 			surface: "blurred",
-			class: { nav: "border-border bg-background/85 shadow-lg backdrop-blur" },
+			// Once scrolled, the bar draws in to a narrower pill over the page.
+			class: { nav: "max-w-4xl border-border bg-background/85 shadow-lg backdrop-blur" },
 		},
 		{
 			variant: "floating",
 			surface: "opaque",
-			class: { nav: "border-border bg-background/85 shadow-lg" },
+			class: { nav: "max-w-4xl border-border bg-background/85 shadow-lg" },
 		},
 		{ variant: "notched", surface: "clear", class: { rule: "opacity-0" } },
 		{

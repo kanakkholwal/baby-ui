@@ -21,7 +21,7 @@ const selected = $derived(regions.find((r) => r.value === value));
 </script>
 
 <Combobox bind:open>
-	<ComboboxTrigger>{selected?.label ?? "Select region…"}</ComboboxTrigger>
+	<ComboboxTrigger class="w-60">{selected?.label ?? "Select region…"}</ComboboxTrigger>
 	<ComboboxContent>
 		<ComboboxInput placeholder="Search regions…" />
 		<ComboboxList>

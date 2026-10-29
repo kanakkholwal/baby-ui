@@ -45,6 +45,11 @@ notices are reproduced here as those licenses require.
 - Source: https://github.com/bklit/bklit-ui
 - License: MIT
 
+## cnblocks
+
+- Source: https://sv-blocks.vercel.app
+- License: MIT
+
 ## componentry
 
 - Source: https://github.com/harshjadhav/componentry
