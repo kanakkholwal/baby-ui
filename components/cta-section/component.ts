@@ -31,8 +31,16 @@ export const ctaSection = defineComponent({
 			name: "children",
 			type: "ReactNode | Snippet",
 			description:
-				"CtaSection: CtaSectionContent (CtaSectionTitle, CtaSectionDescription, CtaSectionPoints, CtaSectionActions, CtaSectionNote), then CtaSectionVisual in split; the banner puts CtaSectionActions with CtaSectionDismiss beside the content.",
+				"CtaSection: CtaSectionContent (CtaSectionTitle, CtaSectionDescription, CtaSectionPoints, CtaSectionActions or CtaSectionForm, CtaSectionNote), then CtaSectionVisual in split; the banner puts CtaSectionActions with CtaSectionDismiss beside the content.",
 			control: { kind: "none" },
+		},
+		{
+			name: "capture",
+			type: "boolean",
+			description:
+				"Demo only: CtaSectionForm, an email field and submit button in place of the actions.",
+			default: "false",
+			control: { kind: "boolean" },
 		},
 		{
 			name: "href",

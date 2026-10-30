@@ -28,6 +28,8 @@ export const statsBand = tv({
 			"col-start-1 row-start-1 transition-[opacity,translate] duration-(--duration-base) group-data-[context=true]/stat:group-hover/stat:-translate-y-1 group-data-[context=true]/stat:group-hover/stat:opacity-0 group-data-[context=true]/stat:group-focus-visible/stat:opacity-0",
 		context:
 			"col-start-1 row-start-1 translate-y-1 text-foreground/80 opacity-0 transition-[opacity,translate] duration-(--duration-base) group-hover/stat:translate-y-0 group-hover/stat:opacity-100 group-focus-visible/stat:translate-y-0 group-focus-visible/stat:opacity-100",
+		// The stat already names the trend; 20rem wide at 6:1 keeps the plot inside the visual band.
+		trend: "w-full max-w-80 [&_figcaption]:hidden",
 		visual: "mt-auto flex h-22 flex-col justify-end pt-8 [&>*]:h-full",
 		bars: "flex items-end gap-0.75 data-[dense=true]:h-[56%] data-[dense=true]:gap-0",
 		bar: "h-full flex-1 origin-bottom scale-y-(--h) rounded-[1px] bg-(--soft) transition-[background-color,scale] delay-[0ms,calc(var(--j)*420ms+600ms)] duration-[200ms,560ms] ease-(--ease-ui-out) group-data-[seen=false]/band:scale-y-0 data-[ink=true]:bg-(--ink) in-data-[dense=true]:rounded-none in-data-[dense=true]:[clip-path:inset(0_22%_0_22%)] motion-reduce:transition-none",
@@ -42,6 +44,11 @@ export const statsBand = tv({
 			divided: {
 				stats: "gap-0 border-border border-y",
 				stat: "border-border border-b p-6 last:border-b-0 @xl/stats:border-r @xl/stats:[&:nth-child(2n)]:border-r-0 @4xl/stats:border-b-0 @4xl/stats:[&:nth-child(2n)]:border-r @4xl/stats:last:border-r-0",
+			},
+			// A rule over each stat with a tighter figure, the way an annual report sets its numbers.
+			ruled: {
+				stat: "border-border border-t pt-6",
+				figure: "mb-3 text-3xl @3xl/stats:text-4xl",
 			},
 		},
 	},

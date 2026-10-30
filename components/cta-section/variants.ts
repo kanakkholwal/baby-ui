@@ -15,6 +15,8 @@ export const ctaSection = tv({
 		action: "group/cta-action w-full @xl/cta:w-auto",
 		arrow:
 			"transition-transform duration-(--duration-fast) group-hover/cta-action:translate-x-0.5 motion-reduce:transition-none",
+		// An email capture in place of the actions: the field grows, the button keeps its width.
+		form: "mt-4 flex w-full max-w-md flex-col gap-2 @xl/cta:flex-row [&_[data-slot=input]]:min-w-0 @xl/cta:[&_[data-slot=input]]:flex-1 [&_button]:shrink-0",
 		note: "mt-3 inline-flex flex-wrap items-center justify-center gap-3 text-muted-foreground text-sm",
 		points: "mt-2 grid gap-2",
 		point:
@@ -41,13 +43,14 @@ export const ctaSection = tv({
 					"grid justify-items-center gap-4 rounded-3xl border border-border bg-background px-5 py-16 text-center @xl/cta:px-8 @xl/cta:py-24",
 				copy: "justify-items-center",
 				actions: "@xl/cta:justify-center",
+				form: "mx-auto",
 			},
 			split: {
 				panel: "grid items-center gap-10 @3xl/cta:grid-cols-2 @3xl/cta:gap-16",
 				copy: "justify-items-start",
 				wrap: "@xl/cta:py-24",
 			},
-			banner: { wrap: "py-4 @xl/cta:py-6" },
+			banner: { wrap: "py-4 @xl/cta:py-6", form: "mt-0 @xl/cta:max-w-sm" },
 		},
 	},
 	defaultVariants: { variant: "centered" },

@@ -42,6 +42,14 @@ export function FaqSectionDemo({ props }: { props: Record<string, unknown> }) {
 					</FaqSectionRail>
 					<FaqSectionList />
 				</>
+			) : p.variant === "split" ? (
+				<>
+					<FaqSectionRail>
+						{header}
+						{contact}
+					</FaqSectionRail>
+					<FaqSectionList />
+				</>
 			) : (
 				<>
 					{header}

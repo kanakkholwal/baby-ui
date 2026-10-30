@@ -161,7 +161,14 @@ function Visual({
 }) {
 	if (visual.kind === "trend")
 		return (
-			<Sparkline data={visual.values} label={label} interactive={false} height={40} />
+			<Sparkline
+				data={visual.values}
+				label={label}
+				interactive={false}
+				width={240}
+				height={40}
+				className={styles.trend()}
+			/>
 		);
 	if (visual.kind === "uptime")
 		return <Bars bars={uptimeBars(visual.days)} dense styles={styles} />;

@@ -57,7 +57,7 @@ function useFaqSection() {
 
 export interface FaqSectionProps extends Omit<ComponentProps<"section">, "children"> {
 	items: FaqItem[];
-	/** `accordion` is one centred list, `columns` adds a topic rail, `search` filters as you type. */
+	/** One centred `accordion`, a topic rail in `columns`, `search` filtering, or a pinned `split` header. */
 	variant?: FaqSectionVariant;
 	/** Several answers open at once. */
 	type?: "single" | "multiple";
@@ -138,7 +138,11 @@ export function FaqSection({
 				className={cn(styles.root(), className)}
 				{...props}
 			>
-				<div className={variant === "columns" ? styles.grid() : styles.stack()}>
+				<div
+					className={
+						variant === "columns" || variant === "split" ? styles.grid() : styles.stack()
+					}
+				>
 					{children}
 				</div>
 			</section>
@@ -203,7 +207,7 @@ export function FaqSectionSearch({
 	);
 }
 
-/** The columns variant's side column: header, FaqSectionTopics and contact. */
+/** The side column in columns and split: header, contact and, in columns, FaqSectionTopics. */
 export function FaqSectionRail({ className, ...props }: ComponentProps<"div">) {
 	const { styles } = useFaqSection();
 	return (

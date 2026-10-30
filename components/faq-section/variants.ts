@@ -42,6 +42,8 @@ export const faqSection = tv({
 			accordion: { intro: "justify-items-center text-center" },
 			columns: {},
 			search: { intro: "justify-items-center text-center" },
+			// The header and contact stay pinned beside the open list as it scrolls.
+			split: { rail: "@3xl/faq:sticky @3xl/faq:top-24 @3xl/faq:self-start" },
 		},
 	},
 	defaultVariants: { variant: "accordion" },

@@ -5,8 +5,8 @@ export const combobox = tv({
 	slots: {
 		trigger: [
 			fieldFrame({ kind: "trigger" }),
-			// The trailing chevron takes the slack, so a leading icon stays beside its label.
-			"inline-flex w-full items-center justify-start font-normal [&>svg:last-child:not(:first-child)]:ms-auto",
+			// Unlike Select, the chevron is a child, not absolute: label left, chevron at the end.
+			"inline-flex w-full items-center justify-between font-normal",
 		],
 		// As wide as its trigger: Base UI sets --anchor-width, bits-ui --bits-popover-anchor-width.
 		content:

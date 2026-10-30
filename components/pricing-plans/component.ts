@@ -27,11 +27,11 @@ export const pricingPlans = defineComponent({
 		},
 		{
 			name: "layout",
-			type: '"cards" | "columns"',
+			type: '"cards" | "columns" | "rows"',
 			description:
-				"PricingPlans: separate cards, or one bordered panel split into columns.",
+				"PricingPlans: separate cards, one bordered panel split into columns, or one plan per row with its features beside it.",
 			default: "cards",
-			control: { kind: "select", options: ["cards", "columns"] },
+			control: { kind: "select", options: ["cards", "columns", "rows"] },
 		},
 		{
 			name: "size",

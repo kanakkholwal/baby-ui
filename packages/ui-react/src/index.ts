@@ -161,6 +161,8 @@ export { type ConfirmMorphState, type ConfirmMorphMode, type ConfirmMorphFace, t
 export { confirmMorph, type ConfirmMorphVariant, type ConfirmMorphSize } from "@baby-ui/components/react/confirm-morph";
 export { type ContactSectionProps, ContactSection, ContactSectionHeader, ContactSectionTitle, ContactSectionDescription, ContactSectionChannels, ContactSectionChannel, ContactSectionChannelTitle, type ContactSectionChannelLinkProps, ContactSectionChannelLink, ContactSectionChannelDetail, ContactSectionForm, ContactSectionFormTitle, ContactSectionFormDescription } from "@baby-ui/components/react/contact-section";
 export { contactSection, type ContactSectionVariant } from "@baby-ui/components/react/contact-section";
+export { type ContentSectionProps, ContentSection, ContentSectionTitle, ContentSectionBody, ContentSectionMedia, ContentSectionQuote, ContentSectionQuoteText, ContentSectionQuoteAuthor } from "@baby-ui/components/react/content-section";
+export { contentSection, type ContentSectionVariant } from "@baby-ui/components/react/content-section";
 export { type ContextChunk, type ContextCardsProps, ContextCards } from "@baby-ui/components/react/context-cards";
 export { contextChunkBadge, type ContextChunkTone } from "@baby-ui/components/react/context-cards";
 export { ContextMenu, ContextMenuSub, ContextMenuTrigger, ContextMenuContent, ContextMenuItem, ContextMenuShortcut, ContextMenuLabel, ContextMenuSeparator, ContextMenuSubTrigger, ContextMenuSubContent, ContextMenuGroup, ContextMenuCheckboxItem, ContextMenuRadioGroup, ContextMenuRadioItem } from "@baby-ui/components/react/context-menu";
@@ -172,7 +174,7 @@ export { countdown, type CountdownVariant } from "@baby-ui/components/react/coun
 export { type CtaBannerProps, CtaBanner, CtaBannerContent, CtaBannerBadge, CtaBannerEyebrow, CtaBannerTitle, CtaBannerDescription, CtaBannerActions, CtaBannerNote, type CtaBannerGrainProps, CtaBannerGrain, type CtaBannerFloaterProps, CtaBannerFloater, type CtaBannerTickerProps, CtaBannerTicker } from "@baby-ui/components/react/cta-banner";
 export { BANNER_NOISE, BANNER_BANDS, BANNER_LINES, BANNER_SPOTS, tickerRows, BANNER_DEFAULTS, bannerRows, bannerPace, BANNER_RUN } from "@baby-ui/components/react/cta-banner";
 export { ctaBanner, type CtaBannerVariant, type CtaBannerSize } from "@baby-ui/components/react/cta-banner";
-export { type CtaSectionProps, CtaSection, type CtaSectionTextProps, CtaSectionContent, CtaSectionTitle, CtaSectionDescription, CtaSectionPoints, CtaSectionPoint, CtaSectionActions, type CtaSectionActionProps, CtaSectionAction, CtaSectionNote, CtaSectionVisual, CtaSectionDismiss } from "@baby-ui/components/react/cta-section";
+export { type CtaSectionProps, CtaSection, type CtaSectionTextProps, CtaSectionContent, CtaSectionTitle, CtaSectionDescription, CtaSectionPoints, CtaSectionPoint, CtaSectionActions, type CtaSectionActionProps, CtaSectionAction, CtaSectionForm, CtaSectionNote, CtaSectionVisual, CtaSectionDismiss } from "@baby-ui/components/react/cta-section";
 export { ctaSection, type CtaSectionVariant } from "@baby-ui/components/react/cta-section";
 export { type CubeTextProps, CubeText } from "@baby-ui/components/react/cube-text";
 export { cubeText, type CubeTextSize, type CubeTextStagger, type CubeGlyph, cubeWords } from "@baby-ui/components/react/cube-text";
@@ -385,6 +387,8 @@ export { type LoadingStateProps, LoadingState, LoadingStateIndicator, LoadingSta
 export { loadingState, type LoadingStateVariant, LOADING_PATTERNS, formatElapsed } from "@baby-ui/components/react/loading-state";
 export { type LogoCarouselProps, LogoCarousel } from "@baby-ui/components/react/logo-carousel";
 export { logoCarousel, type LogoCarouselVariant, type LogoCarouselTone } from "@baby-ui/components/react/logo-carousel";
+export { type LogoCloudProps, LogoCloud, LogoCloudTitle, LogoCloudContent, LogoCloudList, LogoCloudItem, type LogoCloudLinkProps, LogoCloudLink } from "@baby-ui/components/react/logo-cloud";
+export { logoCloud, type LogoCloudVariant } from "@baby-ui/components/react/logo-cloud";
 export { type MagicLinkLoginProps, MagicLinkLogin, MagicLinkLoginAside, MagicLinkLoginPanel, MagicLinkLoginBrand, MagicLinkLoginViews, MagicLinkLoginForm, MagicLinkLoginSent, MagicLinkLoginHeader, MagicLinkLoginProviders, MagicLinkLoginEmail, MagicLinkLoginLegal, MagicLinkLoginSentHeader, MagicLinkLoginInbox, MagicLinkLoginResend } from "@baby-ui/components/react/magic-link-login";
 export { type MagicLinkStatus, type MagicLinkProvider, type MagicLinkInbox, type MagicLinkLabels, MAGIC_LINK_LABELS, normalizeEmail, isValidEmail, inboxFor, cooldownSeconds, formatCooldown } from "@baby-ui/components/react/magic-link-login";
 export { magicLinkLogin, magicLinkView, type MagicLinkVariant, type MagicLinkLayout } from "@baby-ui/components/react/magic-link-login";
@@ -762,6 +766,8 @@ export { type TeamSectionProps, TeamSection, TeamSectionHeader, TeamSectionTitle
 export { teamSection, type TeamSectionVariant, TEAM_AVATAR } from "@baby-ui/components/react/team-section";
 export { Testimonial, TestimonialQuote, TestimonialAuthor, TestimonialAvatar, TestimonialAvatarImage, TestimonialAvatarFallback, TestimonialAuthorDetails, TestimonialAuthorName, TestimonialAuthorTagline, TestimonialVerifiedBadge } from "@baby-ui/components/react/testimonial";
 export { testimonial, type TestimonialVariant } from "@baby-ui/components/react/testimonial";
+export { type TestimonialSectionProps, TestimonialSection, TestimonialSectionHeader, TestimonialSectionTitle, TestimonialSectionDescription, TestimonialSectionList, type TestimonialSectionItemProps, TestimonialSectionItem } from "@baby-ui/components/react/testimonial-section";
+export { testimonialSection, type TestimonialSectionVariant } from "@baby-ui/components/react/testimonial-section";
 export { type TextLoopProps, TextLoop } from "@baby-ui/components/react/text-loop";
 export { textLoop, type TextLoopVariant, type TextLoopDirection, type TextLoopSize, textLoopRollStep } from "@baby-ui/components/react/text-loop";
 export { type TextReelProps, TextReel } from "@baby-ui/components/react/text-reel";

@@ -243,6 +243,18 @@ export function CtaSectionAction({
 }
 
 /** Small print under the actions, e.g. "No credit card required"; faces can go inside. */
+/** An email capture in place of CtaSectionActions: put an Input and a submit Button inside. */
+export function CtaSectionForm({ className, ...props }: ComponentProps<"form">) {
+	const { styles } = useCtaSection();
+	return (
+		<form
+			data-slot="cta-section-form"
+			className={cn(styles.form(), className)}
+			{...props}
+		/>
+	);
+}
+
 export function CtaSectionNote({ className, ...props }: ComponentProps<"div">) {
 	const { styles } = useCtaSection();
 	return (

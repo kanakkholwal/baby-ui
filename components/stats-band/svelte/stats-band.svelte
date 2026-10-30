@@ -102,7 +102,7 @@ const withVisuals = $derived(stats.some((stat) => stat.visual));
 					{#if withVisuals}
 						<dd aria-hidden="true" class={s.visual()}>
 							{#if stat.visual?.kind === "trend"}
-								<Sparkline data={stat.visual.values} label={stat.label} interactive={false} height={40} />
+								<Sparkline data={stat.visual.values} label={stat.label} interactive={false} width={240} height={40} class={s.trend()} />
 							{:else if stat.visual?.kind === "uptime"}
 								{@render bars(uptimeBars(stat.visual.days), true)}
 							{:else if stat.visual?.kind === "distribution"}

@@ -12,7 +12,7 @@ let {
 const faq = faqSectionState();
 </script>
 
-<!-- The columns variant's side column: header, FaqSectionTopics and contact. -->
+<!-- The side column in columns and split: header, contact and, in columns, FaqSectionTopics. -->
 <div data-slot="faq-section-rail" {...rest} class={cn(faq.styles.rail(), classProp)}>
 	{@render children?.()}
 </div>

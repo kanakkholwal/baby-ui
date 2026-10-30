@@ -21,7 +21,7 @@ let {
 	...rest
 }: Omit<HTMLAttributes<HTMLElement>, "children"> & {
 	items: FaqItem[];
-	/** `accordion` is one centred list, `columns` adds a topic rail, `search` filters as you type. */
+	/** One centred `accordion`, a topic rail in `columns`, `search` filtering, or a pinned `split` header. */
 	variant?: FaqSectionVariant;
 	/** Several answers open at once. */
 	type?: "single" | "multiple";
@@ -108,7 +108,7 @@ setFaqSection({
 	{...rest}
 	class={cn(styles.root(), className)}
 >
-	<div class={variant === "columns" ? styles.grid() : styles.stack()}>
+	<div class={variant === "columns" || variant === "split" ? styles.grid() : styles.stack()}>
 		{@render children?.()}
 	</div>
 </section>

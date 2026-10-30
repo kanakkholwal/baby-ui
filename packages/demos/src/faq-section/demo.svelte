@@ -43,6 +43,12 @@ const p = $derived(controlProps<ComponentProps<typeof FaqSection>>(props));
 				{@render contact()}
 			</FaqSectionRail>
 			<FaqSectionList />
+		{:else if p.variant === "split"}
+			<FaqSectionRail>
+				{@render header()}
+				{@render contact()}
+			</FaqSectionRail>
+			<FaqSectionList />
 		{:else}
 			{@render header()}
 			{#if p.variant === "search"}

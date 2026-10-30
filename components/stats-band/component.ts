@@ -1,7 +1,7 @@
 import { defineComponent, variantsOf } from "@baby-ui/registry-schema";
 import { statsBand as statsBandVariants } from "./variants";
 
-const VARIANTS = ["plain", "divided"];
+const VARIANTS = ["plain", "divided", "ruled"];
 
 export const statsBand = defineComponent({
 	slug: "stats-band",
@@ -23,7 +23,8 @@ export const statsBand = defineComponent({
 		{
 			name: "variant",
 			type: VARIANTS.map((v) => `"${v}"`).join(" | "),
-			description: "Stats on whitespace, or a hairline grid ruled above and below.",
+			description:
+				"Stats on whitespace, a hairline grid ruled above and below, or a rule over each stat.",
 			default: "plain",
 			control: { kind: "select", options: VARIANTS },
 		},

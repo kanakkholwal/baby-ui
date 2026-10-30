@@ -1,7 +1,7 @@
 import { defineComponent, variantsOf } from "@baby-ui/registry-schema";
 import { faqSection as faqSectionVariants } from "./variants";
 
-const VARIANTS = ["accordion", "columns", "search"];
+const VARIANTS = ["accordion", "columns", "search", "split"];
 
 export const faqSection = defineComponent({
 	slug: "faq-section",
@@ -23,7 +23,8 @@ export const faqSection = defineComponent({
 		{
 			name: "variant",
 			type: VARIANTS.map((v) => `"${v}"`).join(" | "),
-			description: "One accordion, a topic rail beside the list, or a searchable list.",
+			description:
+				"One accordion, a topic rail beside the list, a searchable list, or the header pinned beside the whole list.",
 			default: "accordion",
 			control: { kind: "select", options: VARIANTS },
 		},
@@ -75,6 +76,7 @@ export const faqSection = defineComponent({
 			"Answers open on grid rows, as in the accordion.",
 			"Filtered-out rows fold away; switching topics eases the list height between them.",
 			"The topic rail's pill slides to the chosen topic.",
+			"Split: the header and contact stay pinned beside the list from 48rem as it scrolls.",
 		],
 	},
 	a11y: {
