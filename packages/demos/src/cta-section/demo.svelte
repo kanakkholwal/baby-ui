@@ -54,8 +54,8 @@ const capture = $derived(props.capture === true);
 		<CtaSection variant="banner" bind:open>
 			<CtaSectionContent>
 				<CtaSectionTitle>{CTA_COPY.banner.title}</CtaSectionTitle>
-				<CtaSectionDescription role="status">
-					{sent ? `Invite sent to ${sent}` : CTA_COPY.banner.description}
+				<CtaSectionDescription>
+					<span role="status">{sent ? `Invite sent to ${sent}` : CTA_COPY.banner.description}</span>
 				</CtaSectionDescription>
 			</CtaSectionContent>
 			<CtaSectionActions>
@@ -79,8 +79,8 @@ const capture = $derived(props.capture === true);
 	<CtaSection variant="split">
 		<CtaSectionContent>
 			<CtaSectionTitle>{CTA_COPY.split.title}</CtaSectionTitle>
-			<CtaSectionDescription role="status">
-				{sent ? `Invite sent to ${sent}` : CTA_COPY.split.description}
+			<CtaSectionDescription>
+				<span role="status">{sent ? `Invite sent to ${sent}` : CTA_COPY.split.description}</span>
 			</CtaSectionDescription>
 			<CtaSectionPoints>
 				{#each CTA_COPY.split.points as point (point)}

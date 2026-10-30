@@ -61,8 +61,10 @@ export function CtaSectionDemo({ props }: { props: Record<string, unknown> }) {
 				<CtaSection variant="banner" open={open} onOpenChange={setOpen}>
 					<CtaSectionContent>
 						<CtaSectionTitle>{copy.title}</CtaSectionTitle>
-						<CtaSectionDescription role="status">
-							{sent ? `Invite sent to ${sent}` : copy.description}
+						<CtaSectionDescription>
+							<span role="status">
+								{sent ? `Invite sent to ${sent}` : copy.description}
+							</span>
 						</CtaSectionDescription>
 					</CtaSectionContent>
 					<CtaSectionActions>
@@ -95,8 +97,10 @@ export function CtaSectionDemo({ props }: { props: Record<string, unknown> }) {
 			<CtaSection variant="split">
 				<CtaSectionContent>
 					<CtaSectionTitle>{copy.title}</CtaSectionTitle>
-					<CtaSectionDescription role="status">
-						{sent ? `Invite sent to ${sent}` : copy.description}
+					<CtaSectionDescription>
+						<span role="status">
+							{sent ? `Invite sent to ${sent}` : copy.description}
+						</span>
 					</CtaSectionDescription>
 					<CtaSectionPoints>
 						{copy.points.map((point) => (
