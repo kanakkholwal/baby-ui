@@ -29,3 +29,6 @@ Every cell shares one `pixel-on` keyframe; the wavefront comes entirely from sta
 each cell's `animation-delay`, not per-cell state. Reduced motion freezes the grid to its
 dim resting state and stops the label shimmer; the elapsed timer keeps ticking, since
 that's the real status information.
+
+To cycle what the agent is doing, put a TextLoop inside `LoadingStateLabel`; its `roll`, `slide`
+and `fade` variants keep the shimmer.

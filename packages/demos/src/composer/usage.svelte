@@ -1,7 +1,18 @@
 <script lang="ts">
-import { Composer } from "@baby-ui/svelte";
+import {
+	Composer,
+	ComposerInput,
+	ComposerSubmit,
+	ComposerToolbar,
+} from "@baby-ui/svelte";
 
+let { send }: { send: (text: string) => void } = $props();
 let value = $state("");
 </script>
 
-<Composer bind:value placeholder="Ask anything…" onSubmit={(text) => console.log(text)} />
+<Composer bind:value onSubmit={send}>
+	<ComposerInput placeholder="Ask anything…" />
+	<ComposerToolbar>
+		<ComposerSubmit />
+	</ComposerToolbar>
+</Composer>

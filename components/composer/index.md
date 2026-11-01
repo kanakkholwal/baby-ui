@@ -1,6 +1,6 @@
 ---
 title: Composer
-description: Chat input that grows with content, sends on Enter, and composes a model picker and an actions menu.
+description: "Chat input that grows with content, sends on Enter, and composes an actions menu, a model picker and send or stop."
 component: composer
 category: agents
 tags: [composer, prompt, chat, input]
@@ -16,15 +16,16 @@ position never shifts under the cursor. `loading` swaps it to a Stop button wire
 yours. Height follows content with no easing, for the same reason as Textarea: an eased
 grow lags the caret.
 
-## Model picker and actions menu
+## Parts
 
-Pass `models` to show a model picker built on the real `Select`; pass `actions` to show a
-"+" button (its glyph rotates 45° while open, a plain CSS transform) built on the real
-`DropdownMenu`. Both are omitted entirely, not shown empty, when you don't pass them;
-there's no fictional default list baked in.
+- `ComposerInput` is the field; `minRows` and `maxRows` bound its height.
+- `ComposerToolbar` holds `ComposerActions` (a plus button on the real DropdownMenu),
+  `ComposerModelSelect` (on the real Select, locked while `loading`) and `ComposerSubmit`.
+- Leave a part out and it is not there; there are no fictional default lists.
 
-## Controlled or uncontrolled
+## Migrating
 
-`value` and `model` both work either way: pass `value`/`model` with `onValueChange`/
-`onModelChange` for a controlled field, or a bare `defaultValue`/`defaultModel` (React) /
-`bind:value`/`bind:model` (Svelte) and let the component hold its own draft.
+Before parts, `Composer` took `placeholder`, `minRows`, `maxRows`, `models` and `actions`
+itself, and `onSubmit` received the model too. Move the field props to `ComposerInput`, the
+lists to `ComposerActions` and `ComposerModelSelect`, add `ComposerSubmit`, and read the
+model from your own state.

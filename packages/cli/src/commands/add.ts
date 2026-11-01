@@ -6,7 +6,7 @@ import type { Project } from "../project/detect.ts";
 import { type InstallConfig, installConfig } from "../project/paths.ts";
 import { discoverTargets, findWorkspace, type Target } from "../project/targets.ts";
 import { type ResolvedItem, resolveTree } from "../registry/graph.ts";
-import { canonicalUrl } from "../registry/resolve.ts";
+import { canonicalUrl, packUrl } from "../registry/resolve.ts";
 import {
 	intro,
 	isInteractive,
@@ -43,6 +43,8 @@ export interface AddOptions extends CommonOptions {
 	 * `adopt` writes nothing and records files stock shadcn installed in the lock.
 	 */
 	readonly mode?: "add" | "repair" | "adopt";
+	/** `items` are pack ids (`baby-ui pack add`), resolved under the registry's packs folder. */
+	readonly packs?: boolean;
 }
 
 type Action = "create" | "update" | "identical" | "conflict" | "skip";
@@ -219,12 +221,16 @@ export async function installInto(
 	if (options.items.length) {
 		const fetching = spinner();
 		fetching.start(`Resolving ${options.items.join(", ")} for ${target.path}`);
-		items = await resolveTree(options.items, {
+		const ctx = {
 			framework: cfg.framework,
 			typescript: cfg.typescript,
 			config: target.config?.raw ?? {},
 			cwd: root,
-		});
+		};
+		items = await resolveTree(
+			options.packs ? options.items.map((id) => packUrl(id, ctx)) : options.items,
+			ctx,
+		);
 		fetching.stop(`${items.length} item(s): ${items.map((i) => i.item.name).join(", ")}`);
 	}
 

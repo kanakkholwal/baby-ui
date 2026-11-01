@@ -1,10 +1,23 @@
 <script lang="ts">
-import { Composer, type ComposerAction, type ComposerModel } from "@baby-ui/svelte";
+import {
+	Composer,
+	type ComposerAction,
+	ComposerActions,
+	ComposerInput,
+	type ComposerModel,
+	ComposerModelSelect,
+	ComposerSubmit,
+	ComposerToolbar,
+} from "@baby-ui/svelte";
 import type { ComponentProps } from "svelte";
 import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
-const p = $derived(controlProps<ComponentProps<typeof Composer>>(props));
+const p = $derived(
+	controlProps<ComponentProps<typeof Composer> & ComponentProps<typeof ComposerInput>>(
+		props,
+	),
+);
 
 let value = $state("");
 let sent = $state("");
@@ -14,6 +27,15 @@ let loading = $state(false);
 $effect(() => {
 	loading = p.loading ?? false;
 });
+// The demo writes a reply for two seconds after each send; Stop ends it early.
+let timer = 0;
+function send(text: string) {
+	sent = text;
+	loading = true;
+	clearTimeout(timer);
+	timer = window.setTimeout(() => (loading = false), 2000);
+}
+$effect(() => () => clearTimeout(timer));
 </script>
 
 {#snippet fastIcon()}
@@ -44,27 +66,24 @@ $effect(() => {
 {/snippet}
 
 <div class="flex w-full max-w-sm flex-col gap-2">
-	<Composer
-		bind:value
-		bind:model
-		placeholder={p.placeholder || "Send a message…"}
-		size={p.size ?? "default"}
-		{loading}
-		onStop={() => (loading = false)}
-		disabled={p.disabled ?? false}
-		maxRows={Number(props.maxRows ?? 8)}
-		models={[
-			{ value: "fast", label: "Fast", icon: fastIcon },
-			{ value: "reasoning", label: "Reasoning", icon: reasoningIcon },
-		] as ComposerModel[]}
-		actions={[
-			{ value: "attach", label: "Attach file", description: "Upload a document for context", icon: attachIcon },
-			{ value: "image", label: "Add image", description: "Attach a screenshot or photo", icon: imageIcon },
-		] as ComposerAction[]}
-		onSubmit={(text) => {
-			sent = text;
-			loading = true;
-		}}
-	/>
-	{#if sent}<p class="text-muted-foreground text-xs">Sent: {sent}</p>{/if}
+	<Composer bind:value onSubmit={send} {loading} onStop={() => { clearTimeout(timer); loading = false; }} disabled={p.disabled ?? false} variant={p.variant} size={p.size ?? "default"}>
+		<ComposerInput placeholder={p.placeholder || "Ask the agent to do something…"} maxRows={p.maxRows ?? 8} />
+		<ComposerToolbar>
+			<ComposerActions
+				actions={[
+					{ value: "attach", label: "Attach file", description: "Upload a document for context", icon: attachIcon },
+					{ value: "image", label: "Add image", description: "Attach a screenshot or photo", icon: imageIcon },
+				] as ComposerAction[]}
+				onAction={(action) => (sent = `Picked: ${action}`)} />
+			<ComposerModelSelect
+				models={[
+					{ value: "fast", label: "Fast", icon: fastIcon },
+					{ value: "reasoning", label: "Reasoning", icon: reasoningIcon },
+				] as ComposerModel[]}
+				bind:model
+			/>
+			<ComposerSubmit />
+		</ComposerToolbar>
+	</Composer>
+	{#if sent}<p class="m-0 text-muted-foreground text-xs">{sent}</p>{/if}
 </div>

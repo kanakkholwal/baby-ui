@@ -1,13 +1,32 @@
 "use client";
 
-import { StreamingText } from "@baby-ui/react";
+import {
+	type StreamingSource,
+	StreamingText,
+	StreamingTextContent,
+	StreamingTextCopy,
+	StreamingTextFollowUps,
+	StreamingTextFooter,
+	StreamingTextSources,
+} from "@baby-ui/react";
 
-export function Example() {
+export function Example({
+	answer,
+	sources,
+	ask,
+}: {
+	answer: string;
+	sources: StreamingSource[];
+	ask: (text: string) => void;
+}) {
 	return (
-		<StreamingText
-			content={"Pistachio is trending up this month."
-				.split(" ")
-				.map((text) => ({ text }))}
-		/>
+		<StreamingText sources={sources}>
+			<StreamingTextContent content={answer} />
+			<StreamingTextFooter>
+				<StreamingTextCopy />
+				<StreamingTextSources />
+			</StreamingTextFooter>
+			<StreamingTextFollowUps items={["Tell me more"]} onSelect={ask} />
+		</StreamingText>
 	);
 }

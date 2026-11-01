@@ -7,12 +7,15 @@ import { type ConversationContext, setConversation } from "./context";
 let {
 	children,
 	threshold = 80,
+	onFollowChange,
 	class: classProp,
 	...rest
 }: {
 	children?: Snippet;
 	/** Auto-follow stays engaged while the reader is within this many px of the bottom. */
 	threshold?: number;
+	/** Fires when the reader leaves the newest message (false) or returns to it (true). */
+	onFollowChange?: (following: boolean) => void;
 } & HTMLAttributes<HTMLDivElement> = $props();
 
 let follow = $state(true);
@@ -60,6 +63,13 @@ const conversation: ConversationContext = {
 };
 
 setConversation(conversation);
+
+let reported = true;
+$effect(() => {
+	if (follow === reported) return;
+	reported = follow;
+	onFollowChange?.(follow);
+});
 </script>
 
 <!-- A scrollable transcript that follows new turns while the reader is already at the

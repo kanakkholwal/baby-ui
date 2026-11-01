@@ -113,6 +113,29 @@ function program(): Command {
 			await add({ ...common(cli, opts), ...opts, items });
 		});
 
+	const pack = cli
+		.command("pack")
+		.description("install curated sets of components that build one kind of screen");
+
+	targeted(pack.command("add"))
+		.description("add every component in one or more packs")
+		.argument("<packs...>", "pack names, e.g. agent-app (see `baby-ui pack list`)")
+		.option("-o, --overwrite", "replace files that differ without asking")
+		.option("--dry-run", "show what would change and write nothing")
+		.option("--no-install", "skip installing npm dependencies")
+		.action(async (items: string[], opts: TargetedOptions & AddFlags) => {
+			const { packAdd } = await import("./commands/pack.ts");
+			await packAdd({ ...common(cli, opts), ...opts, items });
+		});
+
+	targeted(pack.command("list"))
+		.description("show the available packs")
+		.option("--json", "machine-readable output")
+		.action(async (opts: TargetedOptions & { json?: boolean }) => {
+			const { packList } = await import("./commands/pack.ts");
+			await packList({ ...common(cli, opts), ...opts });
+		});
+
 	cli
 		.command("login")
 		.description("save a Pro licence key (or set BABY_UI_TOKEN)")

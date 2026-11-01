@@ -7,6 +7,7 @@ import {
 	MessageFooter,
 	MessageGroup,
 	MessageHeader,
+	MessageMarker,
 } from "@baby-ui/svelte";
 import type { ComponentProps } from "svelte";
 import { controlProps } from "../data/preview-props";
@@ -22,6 +23,7 @@ const animated = $derived(props.animated !== false);
 </script>
 
 <MessageGroup class="w-full max-w-96">
+	<MessageMarker>Today</MessageMarker>
 	<Message align="end" animated={false}>
 		<MessageContent>
 			<MessageBubble variant="primary">

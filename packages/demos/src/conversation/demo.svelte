@@ -3,6 +3,7 @@ import {
 	CodeBlock,
 	Conversation,
 	ConversationContent,
+	ConversationRail,
 	ConversationScrollButton,
 	Message,
 	MessageBubble,
@@ -67,5 +68,6 @@ const USER_BUBBLE = "rounded-xl bg-input text-foreground px-4 py-2.5";
 			/>
 		</ConversationContent>
 		<ConversationScrollButton />
+		<ConversationRail />
 	</Conversation>
 </div>

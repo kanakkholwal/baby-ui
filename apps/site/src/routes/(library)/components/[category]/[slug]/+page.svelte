@@ -8,6 +8,7 @@ import {
 	IconEye,
 	IconList,
 } from "@baby-ui/icons";
+import { packsFor } from "@baby-ui/registry-schema/packs";
 import {
 	Alert,
 	AlertDescription,
@@ -267,6 +268,7 @@ const categoryTrail = $derived(
 		: [{ name: "Components", path: "/components" }],
 );
 const pageTags = $derived([...new Set(data.spec.keywords)].slice(0, 4));
+const packs = $derived(packsFor(data.spec.slug));
 </script>
 
 <Seo
@@ -364,6 +366,18 @@ const pageTags = $derived([...new Set(data.spec.keywords)].slice(0, 4));
 				<OutlineToggle />
 			{/snippet}
 		</ContentPageHeader>
+
+		{#if packs.length}
+			<div class="mt-4 flex flex-wrap items-center gap-1.5 text-muted-foreground text-xs">
+				<span class="me-1">In packs</span>
+				{#each packs as pack (pack.id)}
+					<a
+						href="/packs/{pack.id}"
+						class="rounded-full border border-border px-2.5 py-0.5 text-foreground no-underline transition-colors duration-(--duration-fast) hover:bg-muted motion-reduce:transition-none"
+					>{pack.label}</a>
+				{/each}
+			</div>
+		{/if}
 
 		{#if data.spec.retired}
 			<Alert variant="warning" class="mt-4">

@@ -1,80 +1,99 @@
 import { defineComponent, variantsOf } from "@baby-ui/registry-schema";
 import { composer as composerVariants } from "./variants";
 
+const VARIANTS = ["outline", "filled"];
 const SIZES = ["sm", "md", "lg"];
 
 export const composer = defineComponent({
 	slug: "composer",
 	name: "Composer",
 	description:
-		"Chat input that grows with content, sends on Enter, and composes a model picker and an actions menu.",
+		"Chat input that grows with content, sends on Enter, and composes an actions menu, a model picker and send or stop.",
 	category: "agents",
 	status: "stable",
-	variants: variantsOf(composerVariants, ["size"]),
+	variants: variantsOf(composerVariants, ["variant", "size"]),
 	props: [
 		{
-			name: "value",
-			type: "string",
+			name: "value / defaultValue / onValueChange",
+			type: "string / string / (value: string) => void",
 			description:
-				"Draft text. Controlled if you pass it with `onValueChange`, uncontrolled otherwise (seeded from `defaultValue`).",
+				"Composer: the draft. Controlled with onValueChange, uncontrolled from defaultValue; bindable in Svelte.",
 			control: { kind: "none" },
 		},
 		{
-			name: "placeholder",
-			type: "string",
-			description: "Field placeholder.",
-			default: "Send a message…",
-			control: { kind: "text" },
+			name: "onSubmit",
+			type: "(value: string) => void",
+			description: "Composer: called with the trimmed text on Enter or the send button.",
+			control: { kind: "none" },
+		},
+		{
+			name: "variant",
+			type: VARIANTS.map((v) => `"${v}"`).join(" | "),
+			description:
+				"Composer: `outline` is the bordered field; `filled` sits on a muted surface.",
+			default: "outline",
+			control: { kind: "select", options: VARIANTS },
 		},
 		{
 			name: "size",
 			type: SIZES.map((v) => `"${v}"`).join(" | "),
-			description: "Padding and text size of the field.",
+			description: "Composer: padding and text size of the field.",
 			default: "default",
 			control: { kind: "select", options: SIZES },
-		},
-		{
-			name: "minRows",
-			type: "number",
-			description: "Rows the field starts at.",
-			default: 1,
-			control: { kind: "number", min: 1, max: 6, step: 1 },
-		},
-		{
-			name: "maxRows",
-			type: "number",
-			description: "Rows before the field scrolls.",
-			default: 8,
-			control: { kind: "number", min: 2, max: 16, step: 1 },
-		},
-		{
-			name: "models",
-			type: "ComposerModel[]",
-			description:
-				"Model choices for the built-in picker. Omit (or pass an empty array) to hide it entirely; there is no fictional default list.",
-			control: { kind: "none" },
-		},
-		{
-			name: "actions",
-			type: "ComposerAction[]",
-			description:
-				'Quick actions listed behind the leading "+" button. Omit to hide the button entirely.',
-			control: { kind: "none" },
 		},
 		{
 			name: "loading",
 			type: "boolean",
 			description:
-				"A send is in flight; the send button becomes a Stop button, wired to `onStop`.",
+				"Composer: a reply is being written; ComposerSubmit becomes Stop and calls onStop.",
 			default: false,
 			control: { kind: "boolean" },
 		},
 		{
+			name: "onStop",
+			type: "() => void",
+			description: "Composer: called by ComposerSubmit's stop button while loading.",
+			control: { kind: "none" },
+		},
+		{
 			name: "disabled",
 			type: "boolean",
-			description: "Disable the composer.",
+			description: "Composer: turns every part off.",
 			default: false,
 			control: { kind: "boolean" },
+		},
+		{
+			name: "placeholder",
+			type: "string",
+			description: "ComposerInput: shown while the field is empty.",
+			default: "Ask the agent to do something…",
+			control: { kind: "text" },
+		},
+		{
+			name: "maxRows",
+			type: "number",
+			description: "ComposerInput: lines before the field scrolls.",
+			default: 8,
+			control: { kind: "number", min: 2, max: 16, step: 1 },
+		},
+		{
+			name: "actions / onAction",
+			type: "ComposerAction[] / (value: string) => void",
+			description: "ComposerActions: the menu behind the plus button.",
+			control: { kind: "none" },
+		},
+		{
+			name: "models / model / onModelChange",
+			type: "ComposerModel[] / string / (model: string) => void",
+			description: "ComposerModelSelect: the model picker; bindable `model` in Svelte.",
+			control: { kind: "none" },
+		},
+		{
+			name: "children",
+			type: "ReactNode | Snippet",
+			description:
+				"Composer: ComposerInput, then ComposerToolbar with ComposerActions, ComposerModelSelect and ComposerSubmit.",
+			control: { kind: "none" },
 		},
 	],
 	motion: {

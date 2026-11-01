@@ -2,6 +2,9 @@
 export const installArgs = (slugs: string | readonly string[]) =>
 	`@baby-ui/cli add ${[slugs].flat().join(" ")}`;
 
+/** The `dlx` arguments that add every component in a pack. */
+export const packArgs = (id: string) => `@baby-ui/cli pack add ${id}`;
+
 /** Class and keyframe names a stylesheet defines, e.g. [".pop-in", "@keyframes pop-in"]. */
 export function cssNames(css: string): string[] {
 	const names = new Set<string>();

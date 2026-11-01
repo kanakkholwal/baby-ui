@@ -1,355 +1,321 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Collapsible as CollapsiblePrimitive } from "@base-ui/react/collapsible";
+import {
+	type ComponentProps,
+	createContext,
+	type ReactNode,
+	useContext,
+	useEffect,
+	useId,
+	useMemo,
+	useRef,
+	useState,
+} from "react";
+import { CopyButton } from "../../copy-button/react/copy-button";
 import { cn } from "../../lib/cn";
 import { Markdown } from "../../markdown/react/markdown";
 import {
+	plainTextOf,
+	type StreamingSource,
 	type StreamingTextLayout,
 	type StreamingTextSize,
+	type StreamingToken,
 	streamingText,
+	tokensOf,
+	WORD_DELAY,
 } from "../variants";
 
-const WORD_DELAY = 55;
+export type { StreamingSource, StreamingTextLayout, StreamingTextSize, StreamingToken };
 
-export type StreamingToken = { text: string; cite?: number };
-export type StreamingSource = {
-	name: string;
-	domain: string;
-	href: string;
-	image: string;
+type Ctx = {
+	done: boolean;
+	setDone: (done: boolean) => void;
+	text: string;
+	setText: (text: string) => void;
+	sources: StreamingSource[];
+	size: StreamingTextSize;
+	styles: ReturnType<typeof streamingText>;
 };
+const StreamingTextContext = createContext<Ctx | null>(null);
 
-function SourceChip({ source }: { source?: StreamingSource }) {
-	if (!source) return null;
-	return (
-		<a
-			href={source.href}
-			target="_blank"
-			rel="noreferrer"
-			className="pop-in mr-1 inline-flex h-4.5 translate-y-[-1px] items-center gap-1 rounded-[5px] bg-muted px-[3px] align-middle font-mono text-xs text-muted-foreground shadow-xs transition-colors duration-(--duration-fast) hover:bg-accent hover:text-accent-foreground"
-		>
-			<img src={source.image} alt="" className="size-3 rounded-[3px]" />
-			<span>{source.domain}</span>
-		</a>
-	);
+function useStreamingText(part: string): Ctx {
+	const ctx = useContext(StreamingTextContext);
+	if (!ctx) throw new Error(`${part} must be used inside <StreamingText>`);
+	return ctx;
 }
 
-const ACTION_ICON =
-	"flex size-6 items-center justify-center rounded-md text-muted-foreground transition-colors duration-(--duration-instant) hover:bg-accent hover:text-accent-foreground";
-
-export interface StreamingTextProps {
+export interface StreamingTextProps extends ComponentProps<"div"> {
 	layout?: StreamingTextLayout;
 	size?: StreamingTextSize;
-	/** Tokens with optional citations, or plain text revealed word by word. */
-	content: StreamingToken[] | string;
-	/** Render `content` as Markdown; the reveal follows `streaming` instead of the word timer. */
-	markdown?: boolean;
-	/** Markdown mode: `true` while chunks arrive, `false` once done. Unset renders it static. */
-	streaming?: boolean;
-	/** Blinking caret while the text reveals. */
-	caret?: boolean;
-	/** Copy, retry and feedback row once done. */
-	actions?: boolean;
+	/** Cited sources: inline chips in the answer and the StreamingTextSources list. */
 	sources?: StreamingSource[];
-	followUps?: string[];
-	sourcesLabel?: string;
-	followUpsLabel?: string;
-	wordDelay?: number;
-	onDone?: () => void;
-	onFollowUp?: (text: string, index: number) => void;
-	onRetry?: () => void;
-	onFeedback?: (positive: boolean) => void;
-	className?: string;
 }
 
-/** A streamed answer that reveals once and stops: plain text, or cited tokens with sources and follow-ups. */
+/** The root: an answer that reveals once, then shows what follows it. */
 export function StreamingText({
 	layout = "inline",
 	size = "default",
-	content: contentProp,
+	sources = [],
+	className,
+	children,
+	...props
+}: StreamingTextProps) {
+	const [done, setDone] = useState(false);
+	const [text, setText] = useState("");
+	const styles = streamingText({ layout, size });
+	return (
+		<StreamingTextContext.Provider
+			value={{ done, setDone, text, setText, sources, size, styles }}
+		>
+			<div
+				data-slot="streaming-text"
+				data-streaming={!done || undefined}
+				className={cn(styles.root(), className)}
+				{...props}
+			>
+				{children}
+			</div>
+		</StreamingTextContext.Provider>
+	);
+}
+
+export interface StreamingTextContentProps {
+	/** Tokens with optional citations, or plain text revealed word by word. */
+	content: StreamingToken[] | string;
+	/** Render as Markdown; the reveal then follows `streaming` instead of the word timer. */
+	markdown?: boolean;
+	/** Markdown: `true` while chunks arrive, `false` once done. */
+	streaming?: boolean;
+	/** A blinking caret while the text reveals. */
+	caret?: boolean;
+	/** Milliseconds between words. */
+	wordDelay?: number;
+	onDone?: () => void;
+	className?: string;
+}
+
+/** The answer. Plain text reveals word by word; Markdown follows your `streaming` flag. */
+export function StreamingTextContent({
+	content,
 	markdown = false,
 	streaming,
 	caret = true,
-	actions = true,
-	sources = [],
-	followUps = [],
-	sourcesLabel,
-	followUpsLabel = "Follow-ups",
 	wordDelay = WORD_DELAY,
 	onDone,
-	onFollowUp,
-	onRetry,
-	onFeedback,
 	className,
-}: StreamingTextProps) {
-	const source =
-		typeof contentProp === "string"
-			? contentProp
-			: contentProp.map((token) => token.text).join(" ");
-	const content = useMemo<StreamingToken[]>(
-		() =>
-			typeof contentProp === "string"
-				? contentProp
-						.split(/\s+/)
-						.filter(Boolean)
-						.map((word) => ({ text: word }))
-				: contentProp,
-		[contentProp],
-	);
+}: StreamingTextContentProps) {
+	const { setDone, setText, sources, size, styles } =
+		useStreamingText("StreamingTextContent");
+	const tokens = useMemo(() => tokensOf(content), [content]);
+	const plain = plainTextOf(content);
 	const [count, setCount] = useState(0);
-	const [sourcesOpen, setSourcesOpen] = useState(false);
-	const [copied, setCopied] = useState(false);
-	const done = markdown ? !streaming : count >= content.length;
-	const doneRef = useRef(false);
-	const { root, text } = streamingText({ layout, size });
+	const done = markdown ? !streaming : count >= tokens.length;
+	const reported = useRef(false);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: re-run triggers the body never reads: count.
+	useEffect(() => setText(plain), [plain, setText]);
 	useEffect(() => {
-		if (markdown || done) return;
+		setDone(done);
+		if (done && !reported.current) {
+			reported.current = true;
+			onDone?.();
+		}
+		if (!done) reported.current = false;
+	}, [done, setDone, onDone]);
+	useEffect(() => {
+		if (markdown || count >= tokens.length) return;
+		const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+		if (reduce) {
+			setCount(tokens.length);
+			return;
+		}
 		const id = setTimeout(
-			() => setCount((c) => Math.min(content.length, c + 1)),
+			() => setCount((c) => Math.min(tokens.length, c + 1)),
 			wordDelay,
 		);
 		return () => clearTimeout(id);
-	}, [count, done, markdown, content.length, wordDelay]);
+	}, [count, markdown, tokens.length, wordDelay]);
 
-	useEffect(() => {
-		if (!done || doneRef.current) return;
-		doneRef.current = true;
-		onDone?.();
-	}, [done, onDone]);
-
-	async function copyText() {
-		try {
-			await navigator.clipboard.writeText(source);
-			setCopied(true);
-			setTimeout(() => setCopied(false), 1500);
-		} catch {
-			// Clipboard access can be denied outside a secure context; nothing to fall back to here.
-		}
-	}
-
-	return (
-		<div data-slot="streaming-text" className={cn(root(), className)}>
-			{markdown ? (
-				<Markdown content={source} streaming={streaming} size={size} caret={caret} />
-			) : (
-				<p aria-busy={!done || undefined} className={text()}>
-					{content.slice(0, count).map((token, i) =>
-						token.cite !== undefined ? (
-							// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
-							<SourceChip key={`${token.text}-${i}`} source={sources[token.cite]} />
-						) : (
-							// biome-ignore lint/suspicious/noArrayIndexKey: items render in a fixed order and can repeat, so position is the identity.
-							<span key={`${token.text}-${i}`}>{token.text} </span>
-						),
-					)}
-					{caret && !done ? (
-						<span
-							aria-hidden
-							className="stream-caret ml-0.5 inline-block h-[1em] w-[2px] translate-y-[0.15em] bg-current"
-						/>
-					) : null}
-				</p>
-			)}
-
-			<div
-				className="mt-2 flex items-center gap-0.5 transition-opacity duration-400"
-				style={{ opacity: done ? 1 : 0, pointerEvents: done ? "auto" : "none" }}
-			>
-				{actions ? (
-					<>
-						<button
-							type="button"
-							onClick={copyText}
-							aria-label={copied ? "Copied" : "Copy"}
-							className={ACTION_ICON}
-						>
-							{copied ? (
-								<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-3.5">
-									<path
-										d="M3.5 8.4 6.4 11 12.5 4.5"
-										stroke="currentColor"
-										strokeWidth="1.6"
-										strokeLinecap="round"
-										strokeLinejoin="round"
-									/>
-								</svg>
-							) : (
-								<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-3.5">
-									<rect
-										x="5.5"
-										y="5.5"
-										width="8"
-										height="8"
-										rx="1.6"
-										stroke="currentColor"
-										strokeWidth="1.3"
-									/>
-									<path
-										d="M10.5 2.5H3.6A1.6 1.6 0 0 0 2 4.1V11"
-										stroke="currentColor"
-										strokeWidth="1.3"
-										strokeLinecap="round"
-									/>
-								</svg>
-							)}
-						</button>
-						{onRetry ? (
-							<button
-								type="button"
-								onClick={onRetry}
-								aria-label="Retry"
-								className={ACTION_ICON}
-							>
-								<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-3.5">
-									<path
-										d="M13 8a5 5 0 1 1-1.6-3.7"
-										stroke="currentColor"
-										strokeWidth="1.3"
-										strokeLinecap="round"
-									/>
-									<path
-										d="M13 2.5V5h-2.5"
-										stroke="currentColor"
-										strokeWidth="1.3"
-										strokeLinecap="round"
-										strokeLinejoin="round"
-									/>
-								</svg>
-							</button>
-						) : null}
-						{onFeedback ? (
-							<>
-								<button
-									type="button"
-									onClick={() => onFeedback(true)}
-									aria-label="Good response"
-									className={ACTION_ICON}
-								>
-									<svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-3.5">
-										<path
-											d="M6 14V6.5l3-4.5 1 .8-1 3.2h4.3a1 1 0 0 1 1 1.2l-1 5a1 1 0 0 1-1 .8H6Zm0 0H3.5A1.5 1.5 0 0 1 2 12.5v-4A1.5 1.5 0 0 1 3.5 7H6"
-											stroke="currentColor"
-											strokeWidth="1.2"
-											strokeLinecap="round"
-											strokeLinejoin="round"
-										/>
-									</svg>
-								</button>
-								<button
-									type="button"
-									onClick={() => onFeedback(false)}
-									aria-label="Bad response"
-									className={ACTION_ICON}
-								>
-									<svg
-										viewBox="0 0 16 16"
-										fill="none"
-										aria-hidden
-										className="size-3.5 rotate-180"
-									>
-										<path
-											d="M6 14V6.5l3-4.5 1 .8-1 3.2h4.3a1 1 0 0 1 1 1.2l-1 5a1 1 0 0 1-1 .8H6Zm0 0H3.5A1.5 1.5 0 0 1 2 12.5v-4A1.5 1.5 0 0 1 3.5 7H6"
-											stroke="currentColor"
-											strokeWidth="1.2"
-											strokeLinecap="round"
-											strokeLinejoin="round"
-										/>
-									</svg>
-								</button>
-							</>
-						) : null}
-					</>
-				) : null}
-				{sources.length ? (
-					<button
-						type="button"
-						aria-expanded={sourcesOpen}
-						onClick={() => setSourcesOpen((v) => !v)}
-						className="ml-1.5 flex items-center gap-1.5 rounded-md px-1 py-0.5 text-left transition-colors duration-(--duration-fast) hover:bg-accent"
-					>
-						<span className="flex -space-x-1">
-							{sources.map((source) => (
-								<img
-									key={source.domain}
-									src={source.image}
-									alt=""
-									className="size-3.5 rounded-full bg-card shadow-[0_0_0_1.5px_var(--background)]"
-								/>
-							))}
-						</span>
-						<span className="text-xs text-muted-foreground">
-							{sourcesLabel ??
-								`${sources.length} source${sources.length === 1 ? "" : "s"}`}
-						</span>
-					</button>
-				) : null}
+	if (markdown) {
+		return (
+			<div data-slot="streaming-text-content" className={className}>
+				<Markdown content={plain} streaming={streaming} size={size} caret={caret} />
 			</div>
+		);
+	}
+	return (
+		<p
+			data-slot="streaming-text-content"
+			aria-busy={!done || undefined}
+			className={cn(styles.text(), className)}
+		>
+			{tokens.slice(0, count).map((token, i) => {
+				const source = token.cite === undefined ? undefined : sources[token.cite];
+				// Position is the identity: tokens arrive in a fixed order and words repeat.
+				const key = `${i}-${token.text}`;
+				if (token.cite === undefined) return <span key={key}>{token.text} </span>;
+				if (!source) return null;
+				return (
+					<a
+						key={key}
+						href={source.href}
+						target="_blank"
+						rel="noreferrer"
+						className={styles.chip()}
+					>
+						<img src={source.image} alt="" className="size-3 rounded-[3px]" />
+						<span>{source.domain}</span>
+					</a>
+				);
+			})}
+			{caret && !done && <span aria-hidden className={styles.caret()} />}
+		</p>
+	);
+}
 
-			{sources.length ? (
-				<div
-					className="grid transition-[grid-template-rows,opacity] duration-(--duration-slow) ease-[var(--ease-ui-out)]"
-					style={{
-						gridTemplateRows: done && sourcesOpen ? "1fr" : "0fr",
-						opacity: done && sourcesOpen ? 1 : 0,
-					}}
-				>
-					<div className="overflow-hidden">
-						<div className="mt-1.5 flex flex-col rounded-[10px] bg-muted p-1 shadow-xs">
-							{sources.map((source) => (
-								<a
-									key={source.domain}
-									href={source.href}
-									target="_blank"
-									rel="noreferrer"
-									className="flex items-center gap-2 rounded-md px-1.5 py-1 text-xs text-muted-foreground transition-colors duration-(--duration-fast) hover:bg-accent hover:text-accent-foreground"
-								>
-									<img src={source.image} alt="" className="size-4 rounded-[4px]" />
-									<span>{source.name}</span>
-									<span className="ml-auto font-mono text-xs text-muted-foreground/70">
-										{source.domain}
-									</span>
-								</a>
-							))}
-						</div>
-					</div>
-				</div>
-			) : null}
+/** The row under the answer, shown once it settles: copy, message actions, sources. */
+export function StreamingTextFooter({ className, ...props }: ComponentProps<"div">) {
+	const { styles } = useStreamingText("StreamingTextFooter");
+	return (
+		<div
+			data-slot="streaming-text-footer"
+			className={cn(styles.footer(), className)}
+			{...props}
+		/>
+	);
+}
 
-			{followUps.length ? (
-				<div
-					className="mt-2.5 transition-opacity duration-400"
-					style={{ opacity: done ? 1 : 0, pointerEvents: done ? "auto" : "none" }}
-				>
-					<p className="font-medium text-xs text-muted-foreground">{followUpsLabel}</p>
-					<div className="mt-0.5 flex flex-col">
-						{followUps.map((label, i) => (
-							<button
-								key={label}
-								type="button"
-								onClick={() => onFollowUp?.(label, i)}
-								className="-mx-1.5 flex items-center gap-2 rounded-md border-border border-b px-1.5 py-1.5 text-left text-xs text-foreground transition-colors duration-(--duration-instant) last:border-0 hover:bg-accent"
+/** Copies the whole answer as plain text. */
+export function StreamingTextCopy({
+	label = "Copy",
+	className,
+}: {
+	label?: string;
+	className?: string;
+}) {
+	const { text, styles } = useStreamingText("StreamingTextCopy");
+	return (
+		<CopyButton
+			data-slot="streaming-text-copy"
+			text={text}
+			label={label}
+			iconOnly
+			className={cn(styles.copy(), className)}
+		/>
+	);
+}
+
+/** A favicon stack that opens the cited sources as a list of links. */
+export function StreamingTextSources({
+	label,
+	open,
+	defaultOpen,
+	onOpenChange,
+	className,
+}: {
+	/** Defaults to "3 sources". */
+	label?: string;
+	open?: boolean;
+	defaultOpen?: boolean;
+	onOpenChange?: (open: boolean) => void;
+	className?: string;
+}) {
+	const { sources, styles: s } = useStreamingText("StreamingTextSources");
+	const panelId = useId();
+	if (!sources.length) return null;
+	return (
+		<CollapsiblePrimitive.Root
+			open={open}
+			defaultOpen={defaultOpen}
+			onOpenChange={onOpenChange}
+			className={s.sources()}
+		>
+			<CollapsiblePrimitive.Trigger
+				data-slot="streaming-text-sources"
+				aria-controls={panelId}
+				className={cn(s.sourcesTrigger(), className)}
+			>
+				<span className={s.favicons()}>
+					{sources.map((source) => (
+						<img key={source.href} src={source.image} alt="" className={s.favicon()} />
+					))}
+				</span>
+				<span className={s.sourcesLabel()}>
+					{label ?? `${sources.length} source${sources.length === 1 ? "" : "s"}`}
+				</span>
+			</CollapsiblePrimitive.Trigger>
+			{/* keepMounted still sets `hidden`; force it off so the rows transition has a frame. */}
+			<CollapsiblePrimitive.Panel
+				id={panelId}
+				keepMounted
+				hidden={false}
+				className={s.panel()}
+			>
+				<div className={s.clip()}>
+					<div className={s.list()}>
+						{sources.map((source) => (
+							<a
+								key={source.href}
+								href={source.href}
+								target="_blank"
+								rel="noreferrer"
+								className={s.source()}
 							>
-								<svg
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									strokeWidth="2"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-									aria-hidden
-									className="size-3 shrink-0 text-muted-foreground"
-								>
-									<path d="M9 10l-5 5 5 5" />
-									<path d="M20 4v7a4 4 0 0 1-4 4H4" />
-								</svg>
-								{label}
-							</button>
+								<img src={source.image} alt="" className={s.sourceImage()} />
+								<span>{source.name}</span>
+								<span className={s.sourceDomain()}>{source.domain}</span>
+							</a>
 						))}
 					</div>
 				</div>
-			) : null}
+			</CollapsiblePrimitive.Panel>
+		</CollapsiblePrimitive.Root>
+	);
+}
+
+/** Suggested next prompts, shown once the answer settles. */
+export function StreamingTextFollowUps({
+	items,
+	onSelect,
+	label = "Follow-ups",
+	className,
+}: {
+	items: string[];
+	onSelect: (text: string, index: number) => void;
+	label?: ReactNode;
+	className?: string;
+}) {
+	const { styles: s } = useStreamingText("StreamingTextFollowUps");
+	if (!items.length) return null;
+	return (
+		<div data-slot="streaming-text-follow-ups" className={cn(s.followUps(), className)}>
+			<p className={s.followUpsLabel()}>{label}</p>
+			<ul className={s.followUpList()}>
+				{items.map((item, i) => (
+					<li key={item}>
+						<button
+							type="button"
+							onClick={() => onSelect(item, i)}
+							className={s.followUp()}
+						>
+							<svg
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								strokeWidth="2"
+								strokeLinecap="round"
+								strokeLinejoin="round"
+								aria-hidden
+								className="size-3 shrink-0 text-muted-foreground"
+							>
+								<path d="M9 10l-5 5 5 5" />
+								<path d="M20 4v7a4 4 0 0 1-4 4H4" />
+							</svg>
+							{item}
+						</button>
+					</li>
+				))}
+			</ul>
 		</div>
 	);
 }

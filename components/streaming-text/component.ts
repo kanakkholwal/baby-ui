@@ -8,7 +8,7 @@ export const streamingText = defineComponent({
 	slug: "streaming-text",
 	name: "Streaming Text",
 	description:
-		"Word-by-word answer reveal, plain or with inline citation chips, then actions, sources and follow-ups once it settles.",
+		"Word-by-word answer reveal, plain or with inline citation chips, then a footer, sources and follow-ups once it settles.",
 	category: "agents",
 	status: "stable",
 	variants: variantsOf(streamingTextVariants, ["layout", "size"]),
@@ -17,74 +17,78 @@ export const streamingText = defineComponent({
 			name: "layout",
 			type: LAYOUTS.map((v) => `"${v}"`).join(" | "),
 			description:
-				"`card` wraps the answer in a bordered surface; `inline` (default) has none, for embedding inside a Message bubble.",
+				"StreamingText: `card` wraps the answer in a bordered surface; `inline` has none, for a Message bubble.",
 			default: "inline",
 			control: { kind: "select", options: LAYOUTS },
 		},
 		{
 			name: "size",
 			type: SIZES.map((v) => `"${v}"`).join(" | "),
-			description: "Type scale of the answer.",
+			description: "StreamingText: type scale of the answer.",
 			default: "default",
 			control: { kind: "select", options: SIZES },
+		},
+		{
+			name: "sources",
+			type: "StreamingSource[]",
+			description:
+				"StreamingText: cited sources, as inline chips and in StreamingTextSources.",
+			control: { kind: "none" },
+		},
+		{
+			name: "content",
+			type: "StreamingToken[] | string",
+			description:
+				'StreamingTextContent: a plain string, or tokens where `{ text: "", cite: n }` places a chip for `sources[n]`.',
+			control: { kind: "none" },
 		},
 		{
 			name: "markdown",
 			type: "boolean",
 			description:
-				"Render `content` as Markdown. The reveal then follows `streaming` instead of the word timer.",
+				"StreamingTextContent: render as Markdown; the reveal follows `streaming`.",
 			default: false,
 			control: { kind: "boolean" },
 		},
 		{
 			name: "streaming",
 			type: "boolean",
-			description:
-				"Markdown mode: `true` while chunks arrive, `false` once done. Actions and follow-ups show once it is `false`.",
+			description: "StreamingTextContent: Markdown chunks are still arriving.",
 			control: { kind: "none" },
 		},
 		{
 			name: "caret",
 			type: "boolean",
-			description: "Blinking caret while the text reveals.",
+			description: "StreamingTextContent: a blinking caret while the text reveals.",
 			default: true,
 			control: { kind: "boolean" },
-		},
-		{
-			name: "actions",
-			type: "boolean",
-			description: "Copy, retry and feedback row once the reveal settles.",
-			default: true,
-			control: { kind: "boolean" },
-		},
-		{
-			name: "content",
-			type: "StreamingToken[] | string",
-			description:
-				'The answer: a plain string, or tokens where each is a word or `{ text: "", cite: n }` to place a citation chip for `sources[n]` inline.',
-			control: { kind: "none" },
-		},
-		{
-			name: "sources",
-			type: "StreamingSource[]",
-			description:
-				"Cited sources, shown as inline chips and in the expandable sources list.",
-			control: { kind: "none" },
-		},
-		{
-			name: "followUps",
-			type: "string[]",
-			description:
-				"Follow-up prompt suggestions shown once the answer finishes revealing.",
-			control: { kind: "none" },
 		},
 		{
 			name: "wordDelay",
 			type: "number",
-			description: "Milliseconds between each revealed word.",
+			description: "StreamingTextContent: milliseconds between words.",
 			default: 55,
 			control: { kind: "number", min: 10, max: 200, step: 5 },
 			showWhen: { markdown: [false] },
+		},
+		{
+			name: "onDone",
+			type: "() => void",
+			description: "StreamingTextContent: called once the answer has fully revealed.",
+			control: { kind: "none" },
+		},
+		{
+			name: "items / onSelect",
+			type: "string[] / (text: string, index: number) => void",
+			description: "StreamingTextFollowUps: suggested next prompts.",
+			control: { kind: "none" },
+		},
+		{
+			name: "children",
+			type: "ReactNode | Snippet",
+			description:
+				"StreamingText: StreamingTextContent, StreamingTextFooter (StreamingTextCopy, MessageActions, StreamingTextSources), StreamingTextFollowUps.",
+			control: { kind: "none" },
 		},
 	],
 	motion: {
@@ -99,7 +103,7 @@ export const streamingText = defineComponent({
 	a11y: {
 		keyboard: [],
 		notes: [
-			"Retry and the thumbs-up/down feedback buttons only render when `onRetry`/`onFeedback` are passed; Copy always works, reading the assembled plain text.",
+			"StreamingTextCopy copies the plain text; compose MessageActions in the footer for retry and feedback.",
 			"Citation chips and source rows are real links, not styled spans with a click handler.",
 		],
 	},

@@ -1,5 +1,6 @@
 import { guides } from "virtual:docvia/source";
 import { CATEGORIES, docsPath } from "@baby-ui/registry-schema";
+import { PACKS } from "@baby-ui/registry-schema/packs";
 import { COLLECTIONS, categoryHref } from "#lib/registry.js";
 import { absoluteUrl, SITE_URL } from "#lib/seo.js";
 import { liveSpecs as specs } from "#lib/server/registry.js";
@@ -26,6 +27,8 @@ export const GET: RequestHandler = async () => {
 			categoryHref(c),
 		),
 		...Object.keys(COLLECTIONS).map((id) => `/${id}`),
+		"/packs",
+		...PACKS.map((pack) => `/packs/${pack.id}`),
 	].map((path) => url(path, "0.7"));
 
 	// Alpha/experimental components are noindexed; keep them out of the sitemap too.

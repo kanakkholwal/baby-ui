@@ -1,14 +1,28 @@
 <script lang="ts">
 import {
+	MessageActions,
+	MessageActionsBar,
+	MessageActionsFeedback,
+	MessageActionsRegenerate,
+	type MessageFeedback,
 	type StreamingSource,
 	StreamingText,
+	StreamingTextContent,
+	StreamingTextCopy,
+	StreamingTextFollowUps,
+	StreamingTextFooter,
+	StreamingTextSources,
 	type StreamingToken,
 } from "@baby-ui/svelte";
 import type { ComponentProps } from "svelte";
 import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
-const p = $derived(controlProps<ComponentProps<typeof StreamingText>>(props));
+const p = $derived(
+	controlProps<
+		ComponentProps<typeof StreamingText> & ComponentProps<typeof StreamingTextContent>
+	>(props),
+);
 
 const SOURCE_IMAGES = {
 	scoop:
@@ -69,11 +83,13 @@ const MARKDOWN_CHUNKS = MARKDOWN_ANSWER.split(/(?<=\s)/);
 const layout = $derived(p.layout ?? "inline");
 const markdown = $derived(p.markdown ?? false);
 let count = $state(0);
+let run = $state(0);
+let feedback = $state<MessageFeedback | null>(null);
+let asked = $state("");
 
 // Markdown mode is controlled, so the demo scripts the chunks a model would send.
 $effect(() => {
-	void layout;
-	void props.actions;
+	void run;
 	count = 0;
 	if (!markdown) return;
 	const timer = setInterval(() => {
@@ -84,21 +100,28 @@ $effect(() => {
 });
 </script>
 
-{#key `${layout}-${String(props.actions)}-${markdown}`}
-	<div class="w-full max-w-96">
-		<StreamingText
-			{layout}
-			size={p.size ?? "default"}
-			caret={p.caret ?? true}
-			actions={p.actions ?? true}
-			{markdown}
-			streaming={markdown ? count < MARKDOWN_CHUNKS.length : undefined}
-			content={markdown ? MARKDOWN_CHUNKS.slice(0, count).join("") : CONTENT}
-			sources={SOURCES}
-			followUps={FOLLOW_UPS}
-			onFollowUp={() => {}}
-			onRetry={() => {}}
-			onFeedback={() => {}}
-		/>
-	</div>
-{/key}
+<div class="group/message flex w-full max-w-96 flex-col gap-2">
+	{#key `${layout}-${markdown}-${run}`}
+		<StreamingText {layout} size={p.size} sources={SOURCES}>
+			<StreamingTextContent
+				caret={p.caret ?? true}
+				{markdown}
+				streaming={markdown ? count < MARKDOWN_CHUNKS.length : undefined}
+				content={markdown ? MARKDOWN_CHUNKS.slice(0, count).join("") : CONTENT}
+				wordDelay={p.wordDelay}
+			/>
+			<StreamingTextFooter>
+				<StreamingTextCopy />
+				<MessageActions variant="solid" bind:feedback>
+					<MessageActionsBar>
+						<MessageActionsRegenerate onclick={() => (run += 1)} />
+						<MessageActionsFeedback />
+					</MessageActionsBar>
+				</MessageActions>
+				<StreamingTextSources />
+			</StreamingTextFooter>
+			<StreamingTextFollowUps items={FOLLOW_UPS} onSelect={(text) => (asked = text)} />
+		</StreamingText>
+	{/key}
+	{#if asked}<p class="m-0 text-muted-foreground text-xs">Asked: {asked}</p>{/if}
+</div>

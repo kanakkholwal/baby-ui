@@ -8,6 +8,7 @@ import {
 	MessageFooter,
 	MessageGroup,
 	MessageHeader,
+	MessageMarker,
 } from "@baby-ui/react";
 import type { ComponentProps } from "react";
 import { controlProps } from "../data/preview-props";
@@ -22,6 +23,7 @@ export function MessageDemo({ props }: { props: Props }) {
 	const animated = p.animated ?? true;
 	return (
 		<MessageGroup className="w-full max-w-96">
+			<MessageMarker>Today</MessageMarker>
 			<Message align="end" animated={false}>
 				<MessageContent>
 					<MessageBubble variant="primary">

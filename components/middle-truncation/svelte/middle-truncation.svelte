@@ -15,7 +15,7 @@ export type MiddleTruncationProps = Omit<HTMLAttributes<HTMLSpanElement>, "child
 <script lang="ts">
 import type { Attachment } from "svelte/attachments";
 import { cn } from "../../lib/cn";
-import { textMetrics, truncateMiddle } from "../truncate";
+import { copyFull, fitElement } from "../truncate";
 import { middleTruncation } from "../variants";
 
 let {
@@ -25,9 +25,11 @@ let {
 	minEnd,
 	variant = "default",
 	class: classProp,
+	oncopy,
 	...rest
 }: MiddleTruncationProps = $props();
 let displayed = $state<string>();
+let root = $state<HTMLSpanElement>();
 
 function measure(
 	currentText: string,
@@ -38,23 +40,17 @@ function measure(
 	return (element) => {
 		let frame = 0;
 		let active = true;
+		const fit = () => {
+			displayed = fitElement(element, currentText, currentEllipsis, currentEnd, currentMinEnd);
+		};
+		// Measured right away, so a new text never shows a frame of the old one.
+		fit();
 		const update = () => {
 			cancelAnimationFrame(frame);
 			frame = requestAnimationFrame(() => {
-				if (!active) return;
-				const { font, letterSpacing } = textMetrics(element);
-				displayed = truncateMiddle(
-					currentText,
-					element.clientWidth,
-					font,
-					letterSpacing,
-					currentEllipsis,
-					currentEnd,
-					currentMinEnd,
-				);
+				if (active) fit();
 			});
 		};
-		update();
 		const observer = new ResizeObserver(update);
 		observer.observe(element);
 		document.fonts?.ready.then(update);
@@ -68,9 +64,14 @@ function measure(
 </script>
 
 <span
+	bind:this={root}
 	{@attach measure(text, ellipsis, end, minEnd)}
 	data-slot="middle-truncation"
 	class={cn(middleTruncation({ variant }), classProp)}
 	title={text}
+	oncopy={(event) => {
+		oncopy?.(event);
+		if (root && !event.defaultPrevented) copyFull(event, root, text);
+	}}
 	{...rest}
-><span aria-hidden="true">{displayed ?? text}</span><span class="sr-only">{text}</span></span>
+><span aria-hidden="true">{displayed ?? text}</span><span class="sr-only select-none">{text}</span></span>

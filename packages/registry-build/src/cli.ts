@@ -9,7 +9,8 @@ import {
 	PREVIEW_CATEGORIES,
 	type RegistryItem,
 } from "@baby-ui/registry-schema";
-import { buildItem, toJsItem } from "./build";
+import { PACKS } from "@baby-ui/registry-schema/packs";
+import { buildItem, buildPackItem, toJsItem } from "./build";
 import { cssText } from "./component-css";
 import {
 	FRAMEWORK,
@@ -33,6 +34,7 @@ import {
 	verifyComponentDocs,
 	verifyEmittedImports,
 	verifyGuidance,
+	verifyPacks,
 	verifyRegistryDependencies,
 	verifySprings,
 } from "./verify";
@@ -97,6 +99,7 @@ async function main() {
 		...(DEV ? [] : docs.missing),
 		...(await verifyUsage([...specs])),
 		...verifyGuidance([...specs]),
+		...verifyPacks([...specs], PACKS),
 	];
 	if (errors.length) {
 		console.error("registry-build failed:");
@@ -135,6 +138,8 @@ async function main() {
 		const { routePrefix } = FRAMEWORK[framework];
 		const index: IndexSource[] = [];
 		const jsIndex: IndexSource[] = [];
+		const shipped = new Set<string>();
+		const jsShipped = new Set<string>();
 
 		// No files to transpile, so the JS route gets the same JSON.
 		for (const item of await buildThemeItems(framework)) {
@@ -148,6 +153,7 @@ async function main() {
 		for (const spec of releasedSpecs) {
 			const item = await itemFor(spec, framework);
 			if (!item) continue;
+			shipped.add(spec.slug);
 			await writeJson(`${routePrefix}/${spec.slug}.json`, item);
 			const { $schema: _, files: __, ...summary } = item;
 			index.push(summary);
@@ -157,7 +163,27 @@ async function main() {
 			if (js) {
 				await writeJson(`${routePrefix}/js/${spec.slug}.json`, js);
 				jsIndex.push(summary);
+				jsShipped.add(spec.slug);
 			}
+		}
+
+		// Packs live in their own folder and index, so a pack id never shadows a component name.
+		for (const [prefix, available] of [
+			[routePrefix, shipped],
+			[`${routePrefix}/js`, jsShipped],
+		] as const) {
+			const packs = PACKS.map((pack) =>
+				buildPackItem(pack, framework, available, prefix),
+			);
+			for (const item of packs)
+				await writeJson(`${prefix}/packs/${item.name}.json`, item);
+			await writeJson(
+				`${prefix}/packs/index.json`,
+				packs.map((item) => ({
+					...indexEntry(item),
+					count: item.registryDependencies?.length ?? 0,
+				})),
+			);
 		}
 
 		const schema =

@@ -1,4 +1,11 @@
-import { Question, type QuestionItem } from "@baby-ui/react";
+import {
+	Question,
+	QuestionContent,
+	QuestionFooter,
+	QuestionHeader,
+	type QuestionItem,
+	QuestionResult,
+} from "@baby-ui/react";
 
 const questions: QuestionItem[] = [
 	{
@@ -13,5 +20,12 @@ const questions: QuestionItem[] = [
 ];
 
 export function Example() {
-	return <Question questions={questions} onSubmit={(answers) => console.log(answers)} />;
+	return (
+		<Question questions={questions} onSubmit={(answers) => console.log(answers)}>
+			<QuestionHeader />
+			<QuestionContent />
+			<QuestionFooter />
+			<QuestionResult />
+		</Question>
+	);
 }

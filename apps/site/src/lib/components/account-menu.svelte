@@ -65,7 +65,7 @@ async function leave() {
 {#snippet feedbackIcon()}<IconChat aria-hidden="true" class="size-4 text-muted-foreground" />{/snippet}
 {#snippet supportIcon()}<IconHelp aria-hidden="true" class="size-4 text-muted-foreground" />{/snippet}
 
-{#if session.current?.plan !== "pro"}<GetProButton class="h-8" />{/if}
+{#if session.current?.plan !== "pro"}<GetProButton class="h-8 md:h-7 text-[13px]" />{/if}
 {#if user}
 	<UserMenu
 		{user}
@@ -80,7 +80,7 @@ async function leave() {
 		href={loginHref}
 		variant="ghost"
 		size="sm"
-		class="h-8 rounded-full px-3"
+		class="h-8 md:h-7 rounded-full px-3 text-[13px]"
 	>
 		Log in
 	</Button>

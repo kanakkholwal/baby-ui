@@ -16,6 +16,7 @@ Or `pnpm dlx`, `yarn dlx`, `bunx`. `npm create baby-ui` runs `init`.
 | `init` | Writes `components.json`, `utils` and the theme |
 | `add <items...>` | Baby UI names, `@namespace/name`, URLs or local `.json` files |
 | `list [query]` | Browse the registry; installed items are marked |
+| `pack add <packs...>` / `pack list` | Add every component in a pack, such as `agent-app` |
 | `diff [items...]` | Compare installed files with the registry (`--exit-code` for CI) |
 | `update [items...]` | Pull registry changes; files you edited are never overwritten silently |
 | `repair [items...]` | Restore missing files, broken imports, CSS and packages |

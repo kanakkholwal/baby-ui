@@ -2,7 +2,7 @@ import { defineComponent } from "@baby-ui/registry-schema";
 
 const ALIGNS = ["start", "end"];
 const MOTIONS = ["spring", "fade", "none"];
-const BUBBLE_VARIANTS = ["default", "primary", "ghost"];
+const BUBBLE_VARIANTS = ["default", "primary", "tint", "outline", "destructive", "ghost"];
 
 export const message = defineComponent({
 	slug: "message",
@@ -46,7 +46,7 @@ export const message = defineComponent({
 			name: "variant",
 			type: BUBBLE_VARIANTS.map((v) => `"${v}"`).join(" | "),
 			description:
-				"On `MessageBubble`. `default` is a muted pill for received messages, `primary` a filled pill for sent ones, `ghost` drops the pill entirely for bare text like a streamed reply.",
+				"MessageBubble: `default` muted for received, `primary` filled for sent, `tint` and `outline` quieter, `destructive` for a failed send, `ghost` no pill for bare text.",
 			default: "default",
 			control: { kind: "select", options: BUBBLE_VARIANTS },
 		},

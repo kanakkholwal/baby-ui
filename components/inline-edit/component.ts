@@ -47,7 +47,7 @@ export const inlineEdit = defineComponent({
 			name: "multiline",
 			type: "boolean",
 			description:
-				"Wraps and grows in height. Enter saves; Shift+Enter adds a line break.",
+				"Keeps line breaks and lets Shift+Enter add one. Either way the field wraps like the text and Enter saves.",
 			default: false,
 			control: { kind: "boolean" },
 		},
@@ -68,8 +68,29 @@ export const inlineEdit = defineComponent({
 		{
 			name: "as",
 			type: '"span" | "p" | "h1" | "h2" | "h3"',
-			description: "The element that holds the text, so a title can stay a heading.",
+			description:
+				"InlineEditPreview: the element that holds the text, so a title can stay a heading.",
 			default: "span",
+			control: { kind: "none" },
+		},
+		{
+			name: "placeholder",
+			type: "string",
+			description: "Shown by the preview and the input while the text is empty.",
+			control: { kind: "none" },
+		},
+		{
+			name: "failedText / retryText",
+			type: "string",
+			description: "InlineEditMessage: the rollback notice and its retry link.",
+			default: '"Couldn\'t save." / "Edit again"',
+			control: { kind: "none" },
+		},
+		{
+			name: "children",
+			type: "ReactNode | Snippet",
+			description:
+				"InlineEdit: InlineEditArea (InlineEditPreview, InlineEditInput, InlineEditStatus), then InlineEditMessage.",
 			control: { kind: "none" },
 		},
 	],
@@ -77,7 +98,7 @@ export const inlineEdit = defineComponent({
 		springs: [],
 		reducedMotion: "Text swaps without rising.",
 		behaviour: [
-			"The field grows with the text as you type, sitting exactly where the text was.",
+			"The field wraps and grows with the text as you type, sitting exactly where the text was.",
 			"A saved value rises into place; a tick draws beside it, then fades.",
 		],
 	},
@@ -91,6 +112,7 @@ export const inlineEdit = defineComponent({
 			"The text is a button named with the label and the current value; editing swaps it for a named field.",
 			"Validation errors are an alert tied to the field; saving and saved are announced in a status region.",
 			"Focus returns to the text after Enter or Escape.",
+			"Clicking away from an empty or unchanged invalid draft closes it; a changed one stays open with its message.",
 		],
 	},
 	guidance: {
@@ -105,7 +127,7 @@ export const inlineEdit = defineComponent({
 		performance: ["One state machine per field; nothing runs while idle."],
 		ai: [
 			"Return the request's promise from `onSave` so failures roll back with a retry.",
-			'Pass `as="h1"` (or h2, h3) when the text is a heading, so the document outline stays right.',
+			'Pass `as="h1"` (or h2, h3) on InlineEditPreview when the text is a heading, so the document outline stays right.',
 		],
 	},
 	licenseOrigin: {

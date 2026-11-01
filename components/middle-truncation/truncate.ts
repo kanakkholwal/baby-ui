@@ -18,7 +18,34 @@ export function textMetrics(element: HTMLElement) {
 	return {
 		font: `${style.fontStyle} ${style.fontWeight} ${style.fontSize} ${style.fontFamily}`,
 		letterSpacing: Number.parseFloat(style.letterSpacing) || 0,
+		// clientWidth includes padding, which the text cannot use.
+		available:
+			element.clientWidth -
+			(Number.parseFloat(style.paddingLeft) || 0) -
+			(Number.parseFloat(style.paddingRight) || 0),
 	};
+}
+
+/** Truncates `text` to fit `element`, reading its font and content width. */
+export function fitElement(
+	element: HTMLElement,
+	text: string,
+	ellipsis: string,
+	end?: number,
+	minEnd?: number,
+) {
+	const { font, letterSpacing, available } = textMetrics(element);
+	return truncateMiddle(text, available, font, letterSpacing, ellipsis, end, minEnd);
+}
+
+/** Copies the full value when a selection lies inside the element, not the shortened one. */
+export function copyFull(event: ClipboardEvent, element: HTMLElement, text: string) {
+	const selection = document.getSelection();
+	if (!selection || selection.isCollapsed || !event.clipboardData) return;
+	if (!element.contains(selection.anchorNode) || !element.contains(selection.focusNode))
+		return;
+	event.clipboardData.setData("text/plain", text);
+	event.preventDefault();
 }
 
 function width(text: string, letterSpacing: number) {
@@ -65,5 +92,8 @@ export function truncateMiddle(
 			high = keep - 1;
 		}
 	}
+	// A kept end that cannot fit gives way to an even split, rather than a lone ellipsis.
+	if (result === ellipsis && (end !== undefined || minEnd !== undefined))
+		return truncateMiddle(text, available, font, letterSpacing, ellipsis);
 	return result;
 }

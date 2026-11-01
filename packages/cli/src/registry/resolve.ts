@@ -29,6 +29,11 @@ export function babyUiUrl(name: string, ctx: RegistryContext): string {
 	return `${registryOrigin()}/${route}${ctx.typescript ? "" : "/js"}/${name}.json`;
 }
 
+/** Packs sit in their own folder, so a pack id never shadows a component name. */
+export function packUrl(name: string, ctx: RegistryContext): string {
+	return babyUiUrl(`packs/${name}`, ctx);
+}
+
 /** shadcn and shadcn-svelte resolve a bare dependency name against their own registry. */
 function upstreamUrl(name: string, ctx: RegistryContext): string {
 	const style = typeof ctx.config.style === "string" ? ctx.config.style : undefined;

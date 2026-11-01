@@ -1,12 +1,39 @@
-import { Tool } from "@baby-ui/react";
+"use client";
 
-export function Example() {
+import {
+	Tool,
+	ToolActions,
+	ToolContent,
+	ToolCopy,
+	ToolInput,
+	ToolOutput,
+	ToolRetry,
+	type ToolState,
+	ToolTrigger,
+} from "@baby-ui/react";
+
+export function Example({
+	status,
+	input,
+	output,
+	retry,
+}: {
+	status: ToolState;
+	input: string;
+	output: string;
+	retry: () => void;
+}) {
 	return (
-		<Tool
-			name="search_registry"
-			status="done"
-			input={'{ "query": "dialog" }'}
-			output={'{ "matches": 3 }'}
-		/>
+		<Tool status={status}>
+			<ToolTrigger name="search_docs" title="Searching the docs" kind="search" />
+			<ToolContent>
+				<ToolInput>{input}</ToolInput>
+				<ToolOutput>{output}</ToolOutput>
+				<ToolActions>
+					<ToolCopy text={output} />
+					<ToolRetry onClick={retry} />
+				</ToolActions>
+			</ToolContent>
+		</Tool>
 	);
 }

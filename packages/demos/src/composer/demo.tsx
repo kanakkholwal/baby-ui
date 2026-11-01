@@ -1,7 +1,14 @@
 "use client";
 
-import { Composer } from "@baby-ui/react";
-import { type ComponentProps, useEffect, useState } from "react";
+import {
+	Composer,
+	ComposerActions,
+	ComposerInput,
+	ComposerModelSelect,
+	ComposerSubmit,
+	ComposerToolbar,
+} from "@baby-ui/react";
+import { type ComponentProps, useEffect, useRef, useState } from "react";
 import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
@@ -76,36 +83,58 @@ const COMPOSER_ACTIONS = [
 ];
 
 export function ComposerDemo({ props }: { props: Props }) {
-	const p = controlProps<ComponentProps<typeof Composer>>(props);
+	const p = controlProps<
+		ComponentProps<typeof Composer> & ComponentProps<typeof ComposerInput>
+	>(props);
 	const [value, setValue] = useState("");
 	const [sent, setSent] = useState("");
 	const [model, setModel] = useState("fast");
 	const [loading, setLoading] = useState(p.loading ?? false);
 
 	useEffect(() => setLoading(p.loading ?? false), [p.loading]);
+	// The demo writes a reply for two seconds after each send; Stop ends it early.
+	const timer = useRef(0);
+	useEffect(() => () => clearTimeout(timer.current), []);
+	const send = (text: string) => {
+		setSent(text);
+		setLoading(true);
+		clearTimeout(timer.current);
+		timer.current = window.setTimeout(() => setLoading(false), 2000);
+	};
 
 	return (
 		<div className="flex w-full max-w-sm flex-col gap-2">
 			<Composer
 				value={value}
 				onValueChange={setValue}
-				onSubmit={(text) => {
-					setSent(text);
-					setValue("");
-					setLoading(true);
-				}}
-				placeholder={p.placeholder || "Send a message…"}
-				size={p.size ?? "default"}
+				onSubmit={send}
 				loading={loading}
-				onStop={() => setLoading(false)}
+				onStop={() => {
+					clearTimeout(timer.current);
+					setLoading(false);
+				}}
 				disabled={p.disabled ?? false}
-				maxRows={p.maxRows ?? 8}
-				models={COMPOSER_MODELS}
-				model={model}
-				onModelChange={setModel}
-				actions={COMPOSER_ACTIONS}
-			/>
-			{sent ? <p className="text-muted-foreground text-xs">Sent: {sent}</p> : null}
+				variant={p.variant}
+				size={p.size ?? "default"}
+			>
+				<ComposerInput
+					placeholder={p.placeholder || "Ask the agent to do something…"}
+					maxRows={p.maxRows ?? 8}
+				/>
+				<ComposerToolbar>
+					<ComposerActions
+						actions={COMPOSER_ACTIONS}
+						onAction={(action) => setSent(`Picked: ${action}`)}
+					/>
+					<ComposerModelSelect
+						models={COMPOSER_MODELS}
+						model={model}
+						onModelChange={setModel}
+					/>
+					<ComposerSubmit />
+				</ComposerToolbar>
+			</Composer>
+			{sent ? <p className="m-0 text-muted-foreground text-xs">{sent}</p> : null}
 		</div>
 	);
 }

@@ -6,6 +6,7 @@ import {
 	type ComponentSpec,
 	type Framework,
 } from "@baby-ui/registry-schema";
+import type { Pack } from "@baby-ui/registry-schema/packs";
 import { type SpringName, spring } from "@baby-ui/tokens";
 import { parse as parseYaml } from "yaml";
 import { COMPONENTS_DIR, readSource, sourcePath } from "./sources";
@@ -125,6 +126,26 @@ export function verifyGuidance(specs: ComponentSpec[]): string[] {
 						: [`${spec.slug}: guidance.whenNot uses "${use}", which is not a component`],
 		),
 	);
+}
+
+/** A pack installs every slug it lists, so each must be a live free component. */
+export function verifyPacks(specs: ComponentSpec[], packs: readonly Pack[]): string[] {
+	const bySlug = new Map(specs.map((s) => [s.slug, s]));
+	const errors: string[] = [];
+	const ids = new Set<string>();
+	for (const pack of packs) {
+		if (ids.has(pack.id)) errors.push(`pack ${pack.id}: duplicate id`);
+		ids.add(pack.id);
+		if (new Set(pack.slugs).size !== pack.slugs.length)
+			errors.push(`pack ${pack.id}: lists a slug twice`);
+		for (const slug of pack.slugs) {
+			const spec = bySlug.get(slug);
+			if (!spec) errors.push(`pack ${pack.id}: "${slug}" is not a component`);
+			else if (spec.tier === "pro") errors.push(`pack ${pack.id}: "${slug}" is Pro`);
+			else if (spec.retired) errors.push(`pack ${pack.id}: "${slug}" is retired`);
+		}
+	}
+	return errors;
 }
 
 /** Cross-checks component docs against the specs (docvia validates the fields, not that a spec

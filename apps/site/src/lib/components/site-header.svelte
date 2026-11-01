@@ -160,9 +160,9 @@ function active(match: string[]) {
 		aria-expanded={desktopNavigationOpen}
 		aria-controls="docs-sidebar"
 		aria-label={desktopNavigationOpen ? "Close navigation" : "Open navigation"}
-		class="hidden size-8 rounded-full bg-foreground/[0.045] text-foreground/70 ring-1 ring-foreground/[0.05] hover:bg-foreground/[0.075] hover:text-foreground md:inline-flex"
+		class="hidden size-7 rounded-full bg-foreground/[0.045] text-foreground/70 ring-1 ring-foreground/[0.05] hover:bg-foreground/[0.075] hover:text-foreground md:inline-flex"
 	>
-		<SidebarToggleIcon open={desktopNavigationOpen} class="size-4!" />
+		<SidebarToggleIcon open={desktopNavigationOpen} class="size-3.5!" />
 	</Button>
 {/snippet}
 
@@ -172,13 +172,13 @@ function active(match: string[]) {
 			aria-label="Baby UI home"
 		class="group flex items-center gap-2.5 font-semibold text-foreground text-sm tracking-tight"
 	>
-		<Logo class="size-6 text-foreground" />
+		<Logo class="size-5 text-foreground" />
 		<span class="font-semibold font-display whitespace-nowrap">Baby UI</span>
 	</a>
 {/snippet}
 
 {#snippet themeIcon(state: { isDark: boolean })}
-	<IconMorph name="theme" state={state.isDark} size="sm" />
+	<IconMorph name="theme" state={state.isDark} size="sm" class="size-3.5" />
 {/snippet}
 
 <header
@@ -268,7 +268,7 @@ function active(match: string[]) {
 				<NavigationMenuList class="gap-1">
 					{#each GROUPS as group (group.label)}
 						<NavigationMenuItem value={group.label}>
-							<NavigationMenuTrigger size="sm" class="rounded-full px-3 font-medium text-sm text-muted-foreground hover:text-foreground data-[popup-open]:text-foreground data-[state=open]:text-foreground">
+							<NavigationMenuTrigger size="sm" class="h-7 rounded-full px-2.5 font-medium text-[13px] text-muted-foreground hover:text-foreground data-[popup-open]:text-foreground data-[state=open]:text-foreground">
 								{group.label}
 							</NavigationMenuTrigger>
 							<NavigationMenuContent>
@@ -330,7 +330,7 @@ function active(match: string[]) {
 								aria-current={current ? "page" : undefined}
 								class={navigationMenuTriggerStyle({
 									size: "sm",
-									class: `rounded-full px-3 font-medium text-sm ${current ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`,
+									class: `h-7 rounded-full px-2.5 font-medium text-[13px] ${current ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`,
 								})}
 							>
 								{link.label}
@@ -354,7 +354,7 @@ function active(match: string[]) {
 					variant: "ghost",
 					size: "icon-sm",
 					class:
-						"size-8 rounded-full bg-foreground/[0.045] text-foreground/70 ring-1 ring-foreground/[0.05] hover:bg-foreground/[0.075] hover:text-foreground",
+						"size-8 md:size-7 rounded-full bg-foreground/[0.045] text-foreground/70 ring-1 ring-foreground/[0.05] hover:bg-foreground/[0.075] hover:text-foreground",
 				})}
 			/>
 
@@ -363,9 +363,9 @@ function active(match: string[]) {
 				size="icon"
 				onclick={() => (prefs.open = true)}
 				aria-label="Settings"
-				class="gear size-8 rounded-full bg-foreground/[0.045] text-foreground/70 ring-1 ring-foreground/[0.05] hover:bg-foreground/[0.075] hover:text-foreground"
+				class="gear size-8 md:size-7 rounded-full bg-foreground/[0.045] text-foreground/70 ring-1 ring-foreground/[0.05] hover:bg-foreground/[0.075] hover:text-foreground"
 			>
-				<IconSettings size={17} />
+				<IconSettings size={14} />
 			</Button>
 
 			<TooltipProvider>
@@ -381,9 +381,9 @@ function active(match: string[]) {
 							size="sm"
 							loadingLabel=""
 							aria-label={stars === null ? "Star on GitHub" : `Star on GitHub, ${stars} stars`}
-							class="h-8 gap-1 rounded-full bg-foreground/[0.045] px-2.5 font-normal text-foreground/70 tabular-nums ring-1 ring-foreground/[0.05] hover:bg-foreground/[0.075] hover:text-foreground"
+							class="h-8 md:h-7 gap-1 rounded-full bg-foreground/[0.045] px-2.5 font-normal text-foreground/70 tabular-nums ring-1 ring-foreground/[0.05] hover:bg-foreground/[0.075] hover:text-foreground"
 						>
-							<IconBrandGithub size={16} />
+							<IconBrandGithub size={14} />
 							{#if stars !== null}<span class="hidden text-xs sm:inline">{compact.format(stars)}</span>{/if}
 						</Button>
 					{/snippet}

@@ -1,51 +1,79 @@
 import { defineComponent, variantsOf } from "@baby-ui/registry-schema";
 import { question as questionVariants } from "./variants";
 
-const LAYOUTS = ["card", "inline"];
+const VARIANTS = ["muted", "outline", "plain"];
+const STATUSES = ["pending", "submitting", "answered"];
 
 export const question = defineComponent({
 	slug: "question",
 	name: "Question",
 	description:
-		"One or more clarifying questions, stepped through with radio/checkbox/custom-text answers and a sliding transition.",
+		"Clarifying questions an agent asks, one at a time with radio, checkbox or free-text answers, then folded to a one-line result.",
 	category: "agents",
 	status: "stable",
-	variants: variantsOf(questionVariants, ["layout"]),
+	variants: variantsOf(questionVariants, ["variant"]),
 	props: [
 		{
-			name: "layout",
-			type: LAYOUTS.map((v) => `"${v}"`).join(" | "),
+			name: "variant",
+			type: VARIANTS.map((v) => `"${v}"`).join(" | "),
 			description:
-				"`card` wraps the question in a bordered surface; `inline` has none, for embedding inside a Message bubble.",
-			default: "card",
-			control: { kind: "select", options: LAYOUTS },
+				"Question: `muted` is a filled card, `outline` a bordered one, `plain` none, for a Message bubble.",
+			default: "muted",
+			control: { kind: "select", options: VARIANTS },
+		},
+		{
+			name: "status",
+			type: STATUSES.map((v) => `"${v}"`).join(" | "),
+			description:
+				"Question: `submitting` locks it with a spinner; `answered` folds it to QuestionResult.",
+			default: "pending",
+			control: { kind: "select", options: STATUSES },
 		},
 		{
 			name: "questions",
 			type: "QuestionItem[]",
 			description:
-				"One or more questions, stepped through in order. Each can carry radio (single) or checkbox (multiple) options, a free-text field (`allowCustom`), and its own `autoAdvance`.",
+				"Question: asked in order. Each has radio or checkbox (`multiple`) options with descriptions, an optional free-text field (`allowCustom`) and `autoAdvance`.",
 			control: { kind: "none" },
 		},
 		{
-			name: "answers",
+			name: "answers / defaultAnswers / onAnswersChange",
 			type: "QuestionAnswers",
-			description:
-				"Controlled answers, keyed by question id. Uncontrolled via `defaultAnswers` otherwise.",
+			description: "Question: answers keyed by question id; bindable in Svelte.",
 			control: { kind: "none" },
 		},
 		{
-			name: "step",
+			name: "step / defaultStep / onStepChange",
 			type: "number",
-			description: "Controlled current step. Uncontrolled via `defaultStep` otherwise.",
+			description: "Question: the question shown, from 0; bindable in Svelte.",
+			control: { kind: "none" },
+		},
+		{
+			name: "onSubmit",
+			type: "(answers: QuestionAnswers) => void",
+			description:
+				"Question: called from the last question's submit. Set `status` from your request.",
+			control: { kind: "none" },
+		},
+		{
+			name: "title / onDismiss",
+			type: "string / () => void",
+			description: "QuestionHeader: the title once answered, and a close button.",
 			control: { kind: "none" },
 		},
 		{
 			name: "submitLabel",
 			type: "string",
-			description: "Label on the final question's submit control.",
-			default: "Submit",
+			description: "QuestionFooter: the last question's submit label.",
+			default: "Submit response",
 			control: { kind: "text" },
+		},
+		{
+			name: "children",
+			type: "ReactNode | Snippet",
+			description:
+				"Question: QuestionHeader, QuestionContent, QuestionFooter, QuestionResult. QuestionResult: the line shown once answered.",
+			control: { kind: "none" },
 		},
 	],
 	motion: {
@@ -53,9 +81,10 @@ export const question = defineComponent({
 		reducedMotion:
 			"The slide-in on each question drops; the progress dots keep their instant scale/opacity change.",
 		behaviour: [
-			"Each question slides in from the right and fades, replacing the previous one outright rather than cross-fading.",
-			"A single-select (non-multiple) question with `autoAdvance` (the default) moves to the next question 240ms after a pick, giving the reader a moment to see their choice register.",
-			"Progress dots scale and fade for the current question rather than just changing colour.",
+			"Each question slides in from the right and the title rises in as it changes.",
+			"A single pick moves on 240ms later, so the choice is seen before the next question.",
+			"Answering folds the options and footer away on grid rows, leaving the title and its result.",
+			"The current dot grows; earlier dots stay solid.",
 		],
 	},
 	a11y: {
@@ -70,10 +99,10 @@ export const question = defineComponent({
 		],
 	},
 	licenseOrigin: {
-		source: "sivir-ui",
-		url: "https://github.com/aidan-neel/sivir-ui",
+		source: "beui",
+		url: "https://github.com/starc007/ui-components",
 		license: "MIT",
-		copyright: "Copyright (c) 2026 Aidan Neel",
+		copyright: "Copyright (c) 2026 Saurabh Chauhan",
 	},
 	impl: {
 		react: {

@@ -16,6 +16,20 @@ export const conversation = defineComponent({
 			default: "80",
 			control: { kind: "number" },
 		},
+		{
+			name: "onFollowChange",
+			type: "(following: boolean) => void",
+			description:
+				"Conversation: fires when the reader scrolls away from the newest message (false) or returns to it (true).",
+			control: { kind: "none" },
+		},
+		{
+			name: "label",
+			type: "(index: number) => string",
+			description:
+				"ConversationRail: names each tick; a tick per Message jumps to it and the one being read widens.",
+			control: { kind: "none" },
+		},
 	],
 	motion: {
 		springs: [],

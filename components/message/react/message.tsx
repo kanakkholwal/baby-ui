@@ -8,6 +8,7 @@ import {
 	type MessageMotion,
 	message,
 	messageBubble,
+	messageMarker,
 } from "../variants";
 
 export type { MessageAlign, MessageBubbleVariant, MessageMotion };
@@ -91,8 +92,8 @@ export function MessageContent({ className, ...props }: ComponentProps<"div">) {
 }
 
 export interface MessageBubbleProps extends ComponentProps<"div"> {
-	/** `default` is a muted pill for received messages, `primary` a filled pill for sent
-	 * ones, `ghost` drops the pill for bare text like a streamed reply. */
+	/** `default` muted, `primary` filled for sent, `tint` and `outline` quieter, `destructive` for
+	 * a failed send; `ghost` drops the pill for bare text like a streamed reply. */
 	variant?: MessageBubbleVariant;
 }
 
@@ -132,6 +133,17 @@ export function MessageFooter({ className, ...props }: ComponentProps<"div">) {
 				"flex min-w-0 max-w-full items-center px-3 font-medium text-muted-foreground text-xs group-has-data-[variant=ghost]/message:px-0 group-data-[align=end]/message:justify-end",
 				className,
 			)}
+			{...props}
+		/>
+	);
+}
+
+/** A centred note in the thread, such as a date or "Conversation resumed". */
+export function MessageMarker({ className, ...props }: ComponentProps<"div">) {
+	return (
+		<div
+			data-slot="message-marker"
+			className={cn(messageMarker(), className)}
 			{...props}
 		/>
 	);

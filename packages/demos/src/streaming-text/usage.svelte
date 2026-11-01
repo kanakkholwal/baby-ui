@@ -1,7 +1,26 @@
 <script lang="ts">
-import { StreamingText } from "@baby-ui/svelte";
+import {
+	type StreamingSource,
+	StreamingText,
+	StreamingTextContent,
+	StreamingTextCopy,
+	StreamingTextFollowUps,
+	StreamingTextFooter,
+	StreamingTextSources,
+} from "@baby-ui/svelte";
+
+let {
+	answer,
+	sources,
+	ask,
+}: { answer: string; sources: StreamingSource[]; ask: (text: string) => void } = $props();
 </script>
 
-<StreamingText
-	content={"Pistachio is trending up this month.".split(" ").map((text) => ({ text }))}
-/>
+<StreamingText {sources}>
+	<StreamingTextContent content={answer} />
+	<StreamingTextFooter>
+		<StreamingTextCopy />
+		<StreamingTextSources />
+	</StreamingTextFooter>
+	<StreamingTextFollowUps items={["Tell me more"]} onSelect={ask} />
+</StreamingText>

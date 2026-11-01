@@ -21,6 +21,7 @@ command. `npm create baby-ui` runs `init`.
 | `init` | Writes `components.json`, `utils` and the theme |
 | `add <items...>` | Adds components and their dependencies |
 | `list [query]` | Browses the registry; installed items are marked |
+| `pack add <packs...>` / `pack list` | Adds every component in a [pack](/packs), such as `agent-app` |
 | `diff [items...]` | Compares installed files with the registry |
 | `update [items...]` | Pulls registry changes; edited files are never overwritten silently |
 | `repair [items...]` | Restores missing files, broken imports, CSS and packages |
@@ -44,7 +45,7 @@ TypeScript or JavaScript follows `tsx` (React) or `typescript` (Svelte) in `comp
 
 ## Flags
 
-- `--dry-run` on `init`, `add`, `update` and `repair` prints the plan and writes nothing.
+- `--dry-run` on `init`, `add`, `pack add`, `update` and `repair` prints the plan and writes nothing.
 - `-o, --overwrite` replaces files that differ without asking.
 - `--no-install` writes `package.json` entries but skips the install.
 - `-y, --yes` takes every prompt's default; this is automatic in CI and without a TTY.

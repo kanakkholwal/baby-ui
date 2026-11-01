@@ -1,6 +1,20 @@
 "use client";
 
-import { type StreamingSource, StreamingText, type StreamingToken } from "@baby-ui/react";
+import {
+	MessageActions,
+	MessageActionsBar,
+	MessageActionsFeedback,
+	MessageActionsRegenerate,
+	type MessageFeedback,
+	type StreamingSource,
+	StreamingText,
+	StreamingTextContent,
+	StreamingTextCopy,
+	StreamingTextFollowUps,
+	StreamingTextFooter,
+	StreamingTextSources,
+	type StreamingToken,
+} from "@baby-ui/react";
 import { type ComponentProps, useEffect, useState } from "react";
 import { controlProps } from "../data/preview-props";
 
@@ -63,12 +77,17 @@ const MARKDOWN_ANSWER = [
 const MARKDOWN_CHUNKS = MARKDOWN_ANSWER.split(/(?<=\s)/);
 
 export function StreamingTextDemo({ props }: { props: Props }) {
-	const p = controlProps<ComponentProps<typeof StreamingText>>(props);
+	const p = controlProps<
+		ComponentProps<typeof StreamingText> & ComponentProps<typeof StreamingTextContent>
+	>(props);
 	const markdown = p.markdown ?? false;
 	const [count, setCount] = useState(0);
+	const [run, setRun] = useState(0);
+	const [feedback, setFeedback] = useState<MessageFeedback | null>(null);
+	const [asked, setAsked] = useState("");
 
 	// Markdown mode is controlled, so the demo scripts the chunks a model would send.
-	useEffect(() => setCount(0), [markdown, props.layout, props.actions]);
+	useEffect(() => setCount(0), [markdown, run]);
 	useEffect(() => {
 		if (!markdown || count >= MARKDOWN_CHUNKS.length) return;
 		const timer = setTimeout(() => setCount((n) => n + 1), 40);
@@ -76,22 +95,37 @@ export function StreamingTextDemo({ props }: { props: Props }) {
 	}, [markdown, count]);
 
 	return (
-		<div className="w-full max-w-96">
+		<div className="group/message flex w-full max-w-96 flex-col gap-2">
 			<StreamingText
-				key={`${String(props.layout)}-${String(props.actions)}-${markdown}`}
-				layout={p.layout ?? "inline"}
-				size={p.size ?? "default"}
-				caret={p.caret ?? true}
-				actions={p.actions ?? true}
-				markdown={markdown}
-				streaming={markdown ? count < MARKDOWN_CHUNKS.length : undefined}
-				content={markdown ? MARKDOWN_CHUNKS.slice(0, count).join("") : CONTENT}
+				key={`${String(props.layout)}-${markdown}-${run}`}
+				layout={p.layout}
+				size={p.size}
 				sources={SOURCES}
-				followUps={FOLLOW_UPS}
-				onFollowUp={() => {}}
-				onRetry={() => {}}
-				onFeedback={() => {}}
-			/>
+			>
+				<StreamingTextContent
+					caret={p.caret ?? true}
+					markdown={markdown}
+					streaming={markdown ? count < MARKDOWN_CHUNKS.length : undefined}
+					content={markdown ? MARKDOWN_CHUNKS.slice(0, count).join("") : CONTENT}
+					wordDelay={p.wordDelay}
+				/>
+				<StreamingTextFooter>
+					<StreamingTextCopy />
+					<MessageActions
+						variant="solid"
+						feedback={feedback}
+						onFeedbackChange={setFeedback}
+					>
+						<MessageActionsBar>
+							<MessageActionsRegenerate onClick={() => setRun((n) => n + 1)} />
+							<MessageActionsFeedback />
+						</MessageActionsBar>
+					</MessageActions>
+					<StreamingTextSources />
+				</StreamingTextFooter>
+				<StreamingTextFollowUps items={FOLLOW_UPS} onSelect={setAsked} />
+			</StreamingText>
+			{asked ? <p className="m-0 text-muted-foreground text-xs">Asked: {asked}</p> : null}
 		</div>
 	);
 }

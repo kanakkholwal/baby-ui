@@ -59,6 +59,7 @@ export const middleTruncation = defineComponent({
 		notes: [
 			"The full value remains available through the native title attribute.",
 			"Grapheme segmentation prevents splitting emoji and combined characters.",
+			"Copying a selection inside it copies the full value, not the shortened one.",
 		],
 	},
 	guidance: {
@@ -66,7 +67,10 @@ export const middleTruncation = defineComponent({
 			"File names, paths, URLs, hashes, and identifiers where both ends carry meaning.",
 		],
 		whenNot: [{ text: "Prose that can wrap onto another line.", use: "typography" }],
-		responsive: ["ResizeObserver recalculates against the component's own inline width."],
+		responsive: [
+			"ResizeObserver recalculates against the component's own content width, padding excluded.",
+			"When `end` or `minEnd` cannot fit, the split falls back to even rather than a lone ellipsis.",
+		],
 		performance: [
 			"A shared canvas context and binary search avoid DOM measurement loops.",
 		],

@@ -8,6 +8,7 @@ import {
 	type RegistryItem,
 	RegistryItemSchema,
 } from "@baby-ui/registry-schema";
+import type { Pack } from "@baby-ui/registry-schema/packs";
 import { cssFor } from "./component-css";
 import { FRAMEWORK, REGISTRY_URL, SITE_URL } from "./config";
 import type { InstallLayout } from "./layout";
@@ -243,6 +244,29 @@ export async function buildItem(
 			markdown: `${SITE_URL}${docsPath(spec)}.md`,
 			tags: spec.keywords,
 		},
+	});
+}
+
+/** A file-less item whose dependencies are the pack's components, served under `<prefix>/packs/`.
+ * `shipped` drops slugs `prefix` has no item for; `prefix` keeps a JS pack on JS items. */
+export function buildPackItem(
+	pack: Pack,
+	framework: Framework,
+	shipped: ReadonlySet<string>,
+	prefix: string,
+): RegistryItem {
+	return RegistryItemSchema.parse({
+		$schema: REGISTRY_ITEM_SCHEMA_URL[framework],
+		name: pack.id,
+		type: "registry:block",
+		title: `${pack.label} pack`,
+		description: pack.blurb,
+		registryDependencies: pack.slugs
+			.filter((slug) => shipped.has(slug))
+			.map((slug) => `${REGISTRY_URL}/${prefix}/${slug}.json`),
+		files: [],
+		categories: ["packs"],
+		meta: { docs: `${SITE_URL}/packs/${pack.id}` },
 	});
 }
 

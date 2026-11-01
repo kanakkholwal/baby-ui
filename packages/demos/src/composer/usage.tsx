@@ -1,17 +1,16 @@
 "use client";
 
-import { Composer } from "@baby-ui/react";
+import { Composer, ComposerInput, ComposerSubmit, ComposerToolbar } from "@baby-ui/react";
 import { useState } from "react";
 
-export function Example() {
+export function Example({ send }: { send: (text: string) => void }) {
 	const [value, setValue] = useState("");
-
 	return (
-		<Composer
-			value={value}
-			onValueChange={setValue}
-			placeholder="Ask anything…"
-			onSubmit={(text) => console.log(text)}
-		/>
+		<Composer value={value} onValueChange={setValue} onSubmit={send}>
+			<ComposerInput placeholder="Ask anything…" />
+			<ComposerToolbar>
+				<ComposerSubmit />
+			</ComposerToolbar>
+		</Composer>
 	);
 }

@@ -42,3 +42,9 @@ scroll rounding without feeling loose.
 `Conversation` doesn't constrain its own height: give its container a real height and
 pass `className="h-full"` to `Conversation` itself so it actually fills it; otherwise the
 transcript just grows with its content instead of scrolling.
+
+## Following and the rail
+
+`onFollowChange` tells you when the reader leaves the newest message and when they come back,
+for an unread badge or to pause a stream. `ConversationRail` puts a tick per `Message` down the
+right edge; the one being read widens, and a tick scrolls to its message.

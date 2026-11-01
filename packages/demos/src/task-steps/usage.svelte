@@ -1,11 +1,18 @@
 <script lang="ts">
-import { type TaskStatus, TaskSteps } from "@baby-ui/svelte";
+import { type TaskStatus, TaskStep, TaskSteps, TaskStepsHeader } from "@baby-ui/svelte";
 
-const steps: { id: string; label: string; status: TaskStatus }[] = [
-	{ id: "read", label: "Read the spec", status: "done" },
-	{ id: "port", label: "Author the port", status: "active" },
-	{ id: "docs", label: "Write the docs", status: "pending" },
-];
+let {
+	steps,
+	retry,
+}: {
+	steps: { id: string; label: string; status: TaskStatus }[];
+	retry: (id: string) => void;
+} = $props();
 </script>
 
-<TaskSteps {steps} />
+<TaskStepsHeader title="Plan" done={steps.filter((s) => s.status === "done").length} total={steps.length} />
+<TaskSteps>
+	{#each steps as step (step.id)}
+		<TaskStep label={step.label} status={step.status} onRetry={() => retry(step.id)} />
+	{/each}
+</TaskSteps>

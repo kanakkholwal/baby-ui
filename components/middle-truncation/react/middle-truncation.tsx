@@ -2,7 +2,7 @@
 
 import { type ComponentProps, useLayoutEffect, useRef, useState } from "react";
 import { cn } from "../../lib/cn";
-import { textMetrics, truncateMiddle } from "../truncate";
+import { copyFull, fitElement } from "../truncate";
 import { type MiddleTruncationVariant, middleTruncation } from "../variants";
 
 export type { MiddleTruncationVariant };
@@ -23,6 +23,7 @@ export function MiddleTruncation({
 	minEnd,
 	variant = "default",
 	className,
+	onCopy,
 	...props
 }: MiddleTruncationProps) {
 	const ref = useRef<HTMLSpanElement>(null);
@@ -33,25 +34,15 @@ export function MiddleTruncation({
 		if (!element) return;
 		let frame = 0;
 		let active = true;
+		const fit = () => setDisplayed(fitElement(element, text, ellipsis, end, minEnd));
+		// Measured before paint, so a new text never shows a frame of the old one.
+		fit();
 		const update = () => {
-			if (!active) return;
 			cancelAnimationFrame(frame);
 			frame = requestAnimationFrame(() => {
-				const { font, letterSpacing } = textMetrics(element);
-				setDisplayed(
-					truncateMiddle(
-						text,
-						element.clientWidth,
-						font,
-						letterSpacing,
-						ellipsis,
-						end,
-						minEnd,
-					),
-				);
+				if (active) fit();
 			});
 		};
-		update();
 		const observer = new ResizeObserver(update);
 		observer.observe(element);
 		document.fonts?.ready.then(update);
@@ -68,10 +59,15 @@ export function MiddleTruncation({
 			data-slot="middle-truncation"
 			className={cn(middleTruncation({ variant }), className)}
 			title={text}
+			onCopy={(event) => {
+				onCopy?.(event);
+				if (ref.current && !event.defaultPrevented)
+					copyFull(event.nativeEvent, ref.current, text);
+			}}
 			{...props}
 		>
 			<span aria-hidden>{displayed}</span>
-			<span className="sr-only">{text}</span>
+			<span className="sr-only select-none">{text}</span>
 		</span>
 	);
 }

@@ -4,6 +4,7 @@ import {
 	CodeBlock,
 	Conversation,
 	ConversationContent,
+	ConversationRail,
 	ConversationScrollButton,
 	Message,
 	MessageBubble,
@@ -77,6 +78,7 @@ export function ConversationDemo({ props }: { props: Props }) {
 					/>
 				</ConversationContent>
 				<ConversationScrollButton />
+				<ConversationRail />
 			</Conversation>
 		</div>
 	);

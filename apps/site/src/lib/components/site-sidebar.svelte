@@ -4,15 +4,16 @@ import {
 	IconBackground,
 	IconBook,
 	IconBookmark,
+	IconBox,
 	IconChartBar,
 	IconComponents,
+	IconHandHeart,
 	IconLayoutGrid,
 	IconMail,
 	IconPhoto,
 	IconPlayerPlay,
 	IconRobot,
 	IconStack2,
-	IconTag,
 	IconTypography,
 } from "@baby-ui/icons";
 import type { Category } from "@baby-ui/registry-schema/categories";
@@ -52,8 +53,9 @@ const CATEGORY_ICON: Record<Category, Icon> = {
 const PRIMARY_ICON: Record<string, Icon> = {
 	"/components": IconComponents,
 	"/docs": IconBook,
+	"/packs": IconBox,
 	"/studio": IconAdjustmentsHorizontal,
-	"/pricing": IconTag,
+	"/sponsors": IconHandHeart,
 };
 
 function navBadge(item: SidebarGroup["items"][number]): {
@@ -68,14 +70,13 @@ function navBadge(item: SidebarGroup["items"][number]): {
 
 const sections = $derived.by<DocsNavSection[]>(() => {
 	const navigation = siteNav(page.data.categories ?? []);
-	const primary = ["/components", "/pricing", "/studio"]
-		.map((href) => navigation.find((item) => item.href === href))
-		.filter((item) => item !== undefined);
-	const library = primary.find((item) => item.href === "/components");
-	const pricing = primary.find((item) => item.href === "/pricing");
-	const studio = primary.find((item) => item.href === "/studio");
+	const find = (href: string) => navigation.find((item) => item.href === href);
+	const library = find("/components");
+	const packs = find("/packs");
+	const studio = find("/studio");
+	const sponsors = find("/sponsors");
 	const direct = (
-		item: (typeof primary)[number],
+		item: (typeof navigation)[number],
 		label = item.label,
 	): DocsNavSection => ({
 		id: item.href,
@@ -87,14 +88,15 @@ const sections = $derived.by<DocsNavSection[]>(() => {
 
 	return [
 		...(library ? [direct(library, "Library")] : []),
+		...(packs ? [direct(packs)] : []),
 		{
 			id: "guides",
 			label: "Docs",
 			icon: IconBook,
 			items: DOCS_MENU.map((item) => ({ href: item.href, label: item.label })),
 		},
-		...(pricing ? [direct(pricing)] : []),
 		...(studio ? [direct(studio)] : []),
+		...(sponsors ? [direct(sponsors)] : []),
 		{
 			id: "/bookmarks",
 			label: "Bookmarks",

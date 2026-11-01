@@ -1,7 +1,8 @@
 import { tv, type VariantProps } from "tailwind-variants";
 
 export const middleTruncation = tv({
-	base: "block min-w-0 overflow-hidden whitespace-nowrap",
+	// text-ellipsis covers the frame before the first measure, and any subpixel rounding after it.
+	base: "block min-w-0 overflow-hidden text-ellipsis whitespace-nowrap",
 	variants: {
 		variant: {
 			default: "",

@@ -23,6 +23,30 @@ export function caretAt(
 export const cleanDraft = (text: string, multiline: boolean) =>
 	multiline ? text.trim() : text.replace(/\s+/g, " ").trim();
 
+export type SubmitOutcome =
+	| { kind: "save"; next: string }
+	| { kind: "close" }
+	| { kind: "invalid"; message: string }
+	| { kind: "discard" };
+
+/** What a submit does. A blur never strands an invalid field that holds nothing new. */
+export function submitOutcome(
+	draft: string,
+	shown: string,
+	multiline: boolean,
+	source: "key" | "blur",
+	validate?: (next: string) => string | null | undefined,
+): SubmitOutcome {
+	const next = cleanDraft(draft, multiline);
+	const message = validate?.(next) || null;
+	if (message) {
+		return source === "blur" && (next === "" || next === shown)
+			? { kind: "discard" }
+			: { kind: "invalid", message };
+	}
+	return next === shown ? { kind: "close" } : { kind: "save", next };
+}
+
 /** Runs `onSave`, sync or async, and reports whether it succeeded. */
 export async function runSave(
 	onSave: (next: string) => unknown,

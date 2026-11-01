@@ -3812,3 +3812,20 @@
 		animation: none;
 	}
 }
+
+/* ImageGeneration status mark: four squares turn while the image is being made. */
+.image-generation-mark {
+	animation: image-generation-mark 2.4s var(--ease-ui-in-out) infinite;
+}
+
+@keyframes image-generation-mark {
+	to {
+		rotate: 360deg;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.image-generation-mark {
+		animation: none;
+	}
+}

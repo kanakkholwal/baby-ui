@@ -1,5 +1,12 @@
 <script lang="ts">
-import { Question, type QuestionItem } from "@baby-ui/svelte";
+import {
+	Question,
+	QuestionContent,
+	QuestionFooter,
+	QuestionHeader,
+	type QuestionItem,
+	QuestionResult,
+} from "@baby-ui/svelte";
 
 const questions: QuestionItem[] = [
 	{
@@ -14,4 +21,9 @@ const questions: QuestionItem[] = [
 ];
 </script>
 
-<Question {questions} onSubmit={(answers) => console.log(answers)} />
+<Question {questions} onSubmit={(answers) => console.log(answers)}>
+	<QuestionHeader />
+	<QuestionContent />
+	<QuestionFooter />
+	<QuestionResult />
+</Question>

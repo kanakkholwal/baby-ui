@@ -51,3 +51,6 @@ There's no `layout` prop. Drop `MessageAvatar` for a dense turn; drop `MessageHe
 `MessageFooter` for a bare bubble; nest a `MessageTyping` inside `MessageBubble` in place of
 its text while a reply is pending. The row's own width already stays unconstrained, so a wide
 turn is just a wide `MessageBubble`.
+
+A centred `MessageMarker` notes a date or a resumed session between turns. For a long bubble,
+wrap its text in ShowMore.

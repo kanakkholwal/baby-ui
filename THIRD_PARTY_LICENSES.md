@@ -35,6 +35,11 @@ notices are reproduced here as those licenses require.
 - Source: https://uiarc.dev
 - License: MIT
 
+## beui
+
+- Source: https://github.com/starc007/ui-components
+- License: MIT
+
 ## beUI
 
 - Source: https://beui.dev

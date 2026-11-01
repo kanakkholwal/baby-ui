@@ -14,6 +14,8 @@ import {
 import { Empty } from "../../empty/react/empty";
 import { cn } from "../../lib/cn";
 import { ScrollArea } from "../../scroll-area/react/scroll-area";
+import { createRail, type RailState } from "../rail";
+import { conversationRail } from "../variants";
 
 type ConversationCtx = {
 	follow: boolean;
@@ -24,6 +26,8 @@ type ConversationCtx = {
 	viewportRef: React.MutableRefObject<HTMLDivElement | null>;
 	scrollingToBottomRef: React.MutableRefObject<boolean>;
 	scrollToBottom: (behavior?: ScrollBehavior) => void;
+	viewport: HTMLDivElement | null;
+	setViewport: (el: HTMLDivElement | null) => void;
 };
 
 const ConversationContext = createContext<ConversationCtx | null>(null);
@@ -38,6 +42,8 @@ export interface ConversationProps extends Omit<ComponentProps<"div">, "children
 	children?: ReactNode;
 	/** Auto-follow stays engaged while the reader is within this many px of the bottom. */
 	threshold?: number;
+	/** Fires when the reader leaves the newest message (false) or returns to it (true). */
+	onFollowChange?: (following: boolean) => void;
 }
 
 /** Follows new turns while the reader is already at the bottom, and stops the moment
@@ -45,10 +51,20 @@ export interface ConversationProps extends Omit<ComponentProps<"div">, "children
 export function Conversation({
 	children,
 	threshold = 80,
+	onFollowChange,
 	className,
 	...props
 }: ConversationProps) {
 	const [follow, setFollow] = useState(true);
+	const [viewport, setViewport] = useState<HTMLDivElement | null>(null);
+	const reported = useRef(true);
+	const onFollowRef = useRef(onFollowChange);
+	onFollowRef.current = onFollowChange;
+	useEffect(() => {
+		if (reported.current === follow) return;
+		reported.current = follow;
+		onFollowRef.current?.(follow);
+	}, [follow]);
 	const [atBottom, setAtBottom] = useState(true);
 	const viewportRef = useRef<HTMLDivElement | null>(null);
 	const scrollingToBottomRef = useRef(false);
@@ -74,8 +90,10 @@ export function Conversation({
 			viewportRef,
 			scrollingToBottomRef,
 			scrollToBottom,
+			viewport,
+			setViewport,
 		}),
-		[follow, atBottom, threshold, scrollToBottom],
+		[follow, atBottom, threshold, scrollToBottom, viewport],
 	);
 
 	return (
@@ -107,8 +125,15 @@ export function ConversationContent({
 	transcriptClassName,
 	"aria-label": ariaLabel = "Conversation",
 }: ConversationContentProps) {
-	const { follow, setFollow, setAtBottom, threshold, viewportRef, scrollingToBottomRef } =
-		useConversation();
+	const {
+		follow,
+		setFollow,
+		setAtBottom,
+		threshold,
+		viewportRef,
+		scrollingToBottomRef,
+		setViewport,
+	} = useConversation();
 	const [scrollable, setScrollable] = useState(false);
 	const previousScrollTop = useRef(0);
 	const userScrollIntent = useRef(false);
@@ -189,6 +214,7 @@ export function ConversationContent({
 			className={cn("h-full min-h-0", className)}
 			viewportRef={(el) => {
 				viewportRef.current = el;
+				setViewport(el);
 			}}
 			viewportProps={{
 				role: "log",
@@ -294,5 +320,52 @@ export function ConversationScrollButton({
 				</svg>
 			</button>
 		</div>
+	);
+}
+
+export interface ConversationRailProps {
+	/** Names each tick, e.g. the speaker; defaults to "Message 3". */
+	label?: (index: number) => string;
+	className?: string;
+}
+
+/** A tick per message down the right edge: the current one widens, and a tick jumps to its message. */
+export function ConversationRail({
+	label = (index) => `Message ${index + 1}`,
+	className,
+}: ConversationRailProps) {
+	const { viewport } = useConversation();
+	const styles = conversationRail();
+	const [state, setState] = useState<RailState>({ count: 0, active: -1 });
+	const rail = useRef<ReturnType<typeof createRail> | null>(null);
+	useEffect(() => {
+		if (!viewport) return;
+		const created = createRail(viewport, setState);
+		rail.current = created;
+		return () => created.destroy();
+	}, [viewport]);
+	if (state.count < 2) return null;
+	return (
+		<nav
+			data-slot="conversation-rail"
+			aria-label="Messages"
+			className={cn(styles.root(), className)}
+		>
+			{Array.from({ length: state.count }, (_, i) => (
+				<button
+					// Messages have no id of their own here; position is the identity.
+					// biome-ignore lint/suspicious/noArrayIndexKey: one tick per message, in order.
+					key={i}
+					type="button"
+					aria-label={label(i)}
+					aria-current={i === state.active ? "location" : undefined}
+					data-active={i === state.active || undefined}
+					onClick={() => rail.current?.jump(i)}
+					className={styles.tick()}
+				>
+					<span aria-hidden className={styles.bar()} />
+				</button>
+			))}
+		</nav>
 	);
 }
