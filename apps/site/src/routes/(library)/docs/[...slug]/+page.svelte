@@ -62,7 +62,12 @@ $effect(() => {
 
 <!-- The drawer copy drops the heading (the drawer has a title) and the promo card. -->
 {#snippet railContent(inRail = true)}
-	<PropsRail slug={data.slug} outline={data.headings} heading={inRail} promo={inRail} />
+	<PropsRail
+		slug={data.slug}
+		outline={data.headings}
+		heading={inRail}
+		promo={inRail}
+	/>
 {/snippet}
 
 <main class="@container mx-auto w-full min-w-0 max-w-5xl py-8">
@@ -101,7 +106,11 @@ $effect(() => {
 				</Button>
 			{/if}
 			{#if data.headings.length}
-				<MobileNavDrawer label="On this page" title="On this page" class="xl:hidden">
+				<MobileNavDrawer
+					label="On this page"
+					title="On this page"
+					class="xl:hidden"
+				>
 					{#snippet icon()}<IconList size={14} />{/snippet}
 					{#snippet children()}
 						{@render railContent(false)}
@@ -112,28 +121,43 @@ $effect(() => {
 		{/snippet}
 	</ContentPageHeader>
 	{#if data.slug === "index"}
-		<div class="mt-8 max-w-3xl"><DocsIntroCover /></div>
+		<div class="mt-8 max-w-4xl">
+			<DocsIntroCover />
+		</div>
 	{/if}
-	<article class="prose-baby mt-8 max-w-3xl"><Renderer nodes={data.page.content} {registry} /></article>
-	<div class="mt-10 flex max-w-3xl flex-wrap items-center justify-between gap-x-6 gap-y-2 text-muted-foreground text-xs">
+	<article class="prose-baby mt-8 max-w-3xl">
+		<Renderer nodes={data.page.content} {registry} />
+	</article>
+	<div
+		class="mt-10 flex max-w-3xl flex-wrap items-center justify-between gap-x-6 gap-y-2 text-muted-foreground text-xs"
+	>
 		<!-- A real link, not only the menu item: crawlers and agents follow it to the markdown twin. -->
-		<a href="/docs/{data.slug}.md" target="_blank" rel="noopener" class="underline decoration-border underline-offset-4 transition-colors hover:text-foreground">
+		<a
+			href="/docs/{data.slug}.md"
+			target="_blank"
+			rel="noopener"
+			class="underline decoration-border underline-offset-4 transition-colors hover:text-foreground"
+		>
 			View this page as Markdown
 		</a>
 		<p>
 			Powered by
 			<a
-				href="https://docvia.dev"
+				href="https://docvia.dev?utm_source=baby-ui"
 				target="_blank"
 				rel="noopener"
 				class="font-medium underline decoration-border underline-offset-4 transition-colors hover:text-foreground"
-			>docvia</a>
+				>docvia</a
+			>
 		</p>
 	</div>
 </main>
 
 {#if library}
-	<aside aria-label="On this page" class="hidden min-w-0 overflow-clip xl:block">
+	<aside
+		aria-label="On this page"
+		class="hidden min-w-0 overflow-clip xl:block"
+	>
 		<div
 			id="outline-sidebar"
 			inert={!outlineSidebar.current}
@@ -148,9 +172,14 @@ $effect(() => {
 			handle={false}
 			class="w-80! max-w-[85vw]! rounded-none! border-border border-l bg-card! shadow-xl [&_[data-slot=drawer-surface]]:p-6"
 		>
-			<DrawerHeader class="sr-only"><DrawerTitle>On this page</DrawerTitle></DrawerHeader>
+			<DrawerHeader class="sr-only">
+				<DrawerTitle>On this page</DrawerTitle>
+			</DrawerHeader>
 			<DrawerClose />
-			<div id="outline-sidebar" class="scrollbar-hide min-h-0 flex-1 overflow-y-auto">
+			<div
+				id="outline-sidebar"
+				class="scrollbar-hide min-h-0 flex-1 overflow-y-auto"
+			>
 				{@render railContent()}
 			</div>
 		</DrawerContent>

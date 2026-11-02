@@ -90,6 +90,11 @@ notices are reproduced here as those licenses require.
 - Source: https://github.com/TahaSh/swapy
 - License: MIT
 
+## ui-components
+
+- Source: https://github.com/starc007/ui-components
+- License: MIT
+
 ## valence
 
 - Source: https://github.com/ValenceOSS/Valence

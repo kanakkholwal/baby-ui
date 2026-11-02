@@ -35,7 +35,7 @@ const text = $derived(labels?.[ctx.status] ?? TOOL_STATUS_TEXT[ctx.status]);
 	<span data-status={ctx.status} class={s.status()}>
 		{#if ctx.status === "running"}
 			<svg viewBox="0 0 12 12" fill="none" aria-hidden="true" class="spinner size-3"><circle cx="6" cy="6" r="4.4" stroke="currentColor" stroke-width="1.5" opacity="0.25" /><path d="M10.4 6A4.4 4.4 0 0 0 6 1.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /></svg>
-		{:else if ctx.status === "done" || ctx.status === "error"}
+		{:else if ctx.status === "done" || ctx.status === "error" || ctx.status === "approval"}
 			<svg viewBox="0 0 24 24" aria-hidden="true" class={s.statusIcon()}><path d={TOOL_ICONS[ctx.status]} /></svg>
 		{/if}
 		{#key text}<span class={s.statusText()}>{text}</span>{/key}

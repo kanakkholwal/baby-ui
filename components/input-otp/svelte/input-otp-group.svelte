@@ -2,6 +2,7 @@
 import type { HTMLAttributes } from "svelte/elements";
 import { cn } from "../../lib/cn";
 import { inputOtp } from "../variants";
+import { getInputOtpStyle } from "./context";
 
 let {
 	ref = $bindable(null),
@@ -9,8 +10,9 @@ let {
 	children,
 	...rest
 }: HTMLAttributes<HTMLDivElement> & { ref?: HTMLDivElement | null } = $props();
+const style = getInputOtpStyle();
 </script>
 
-<div bind:this={ref} data-slot="input-otp-group" class={cn(inputOtp().group(), classProp)} {...rest}>
+<div bind:this={ref} data-slot="input-otp-group" class={cn(inputOtp(style()).group(), classProp)} {...rest}>
 	{@render children?.()}
 </div>

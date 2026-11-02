@@ -70,7 +70,9 @@ export function Tool({
 	const [previous, setPrevious] = useState(status);
 	if (previous !== status) {
 		setPrevious(status);
-		if (previous !== "running" && status === "running") setOpen(true);
+		// A tool waiting on approval opens too, so its gate is in view.
+		if (status !== previous && (status === "running" || status === "approval"))
+			setOpen(true);
 		else if (previous === "running" && collapseOnComplete) setOpen(false);
 	}
 
@@ -147,7 +149,7 @@ export function ToolTrigger({
 							strokeLinecap="round"
 						/>
 					</svg>
-				) : status === "done" || status === "error" ? (
+				) : status === "done" || status === "error" || status === "approval" ? (
 					<svg viewBox="0 0 24 24" aria-hidden className={s.statusIcon()}>
 						<path d={TOOL_ICONS[status]} />
 					</svg>

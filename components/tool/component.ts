@@ -1,7 +1,7 @@
 import { defineComponent, variantsOf } from "@baby-ui/registry-schema";
 import { tool as toolVariants } from "./variants";
 
-const STATUSES = ["pending", "running", "done", "error"];
+const STATUSES = ["pending", "running", "approval", "done", "error"];
 const VARIANTS = ["card", "plain"];
 const KINDS = ["function", "terminal", "request", "search"];
 
@@ -18,7 +18,7 @@ export const tool = defineComponent({
 			name: "status",
 			type: STATUSES.map((s) => `"${s}"`).join(" | "),
 			description:
-				"Tool: where the call is. Starting to run opens the panel; the trigger, output and retry follow it.",
+				"Tool: where the call is. Running or `approval` opens the panel; the trigger, output and retry follow it.",
 			default: "running",
 			control: { kind: "select", options: STATUSES },
 		},

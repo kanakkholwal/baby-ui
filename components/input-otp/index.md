@@ -20,3 +20,12 @@ React runs on [`input-otp`](https://github.com/guilhermerodz/input-otp) and pass
 
 Set `aria-invalid` on the slots and say what went wrong in text beside the field. The red
 border alone is not enough for someone who can't see it.
+
+## Verifying and verified
+
+`status` is yours to set. Put `"verifying"` while your server checks the code: the slots shimmer
+and typing locks. On success set `"success"` and place `InputOTPVerified` inside the field; the
+slots fold into it. On a wrong code set `invalid`, show `InputOTPMessage`, then clear the value
+so the next try starts fresh.
+
+`InputOTPResend` counts down from `seconds`, which comes from your own clock, then offers Resend.

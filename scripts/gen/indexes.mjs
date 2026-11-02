@@ -36,6 +36,10 @@ const NAME_OVERRIDES = {
 	"input-otp-group": "InputOTPGroup",
 	"input-otp-slot": "InputOTPSlot",
 	"input-otp-separator": "InputOTPSeparator",
+	"input-otp-message": "InputOTPMessage",
+	"input-otp-resend": "InputOTPResend",
+	"input-otp-ring": "InputOTPRing",
+	"input-otp-verified": "InputOTPVerified",
 };
 // Svelte parts published under a second name too (Combobox shares Command's parts).
 const EXTRA_DEFAULTS = {

@@ -76,7 +76,6 @@ import {
 } from "#lib/seo.js";
 import { installSourceUrl } from "#lib/source.js";
 import { FRAMEWORK_OPTIONS } from "#lib/technology-options.js";
-import { page } from "$app/state";
 import type { PageProps } from "./$types";
 
 let { data }: PageProps = $props();
@@ -85,7 +84,6 @@ const bullets = (items: string[]) => items.map((item) => `- ${item}`).join("\n")
 
 let tab = $state("preview");
 let viewport = $state<"desktop" | "mobile">("desktop");
-let fullscreen = $state(false);
 let reloadKey = $state(0);
 let wide = $state(false);
 let split = $state(false);
@@ -143,24 +141,6 @@ const stage = $derived(
 	data.email ? emailStage : view === "og_png" ? pngStage : undefined,
 );
 
-// Viewport sizes are a fullscreen tool, except for emails, which size their own iframe.
-$effect(() => {
-	if (!fullscreen && !data.email) viewport = "desktop";
-});
-
-$effect(() => {
-	if (!fullscreen) return;
-	const onKey = (event: KeyboardEvent) => {
-		if (event.key === "Escape") fullscreen = false;
-	};
-	window.addEventListener("keydown", onKey);
-	document.body.style.overflow = "hidden";
-	return () => {
-		window.removeEventListener("keydown", onKey);
-		document.body.style.overflow = "";
-	};
-});
-
 // $effect, not a `{#key data.spec.slug}`-scoped $state init: relies on `data.spec`
 // changing exactly on navigation, not on any other future reactive field of `data`.
 $effect(() => {
@@ -168,6 +148,14 @@ $effect(() => {
 });
 
 const port = $derived(data.ports.find((p) => p.framework === framework) ?? data.ports[0]);
+// The demo alone at full size, with the controls as they are set now.
+const frameHref = $derived(
+	`/frame?${new URLSearchParams({
+		slug: data.spec.slug,
+		framework: framework === "react" ? "react" : "svelte",
+		props: JSON.stringify(values),
+	})}`,
+);
 const adjacent = $derived(data.adjacent);
 const hasControls = $derived(data.spec.props.some((p) => p.control.kind !== "none"));
 const related = $derived(data.related);
@@ -404,23 +392,35 @@ const packs = $derived(packsFor(data.spec.slug));
 			variant="segment"
 			size="sm"
 		>
-			<TabsList
-				aria-label="Component views"
-				class="mb-4 rounded-full [&_[data-slot=tabs-indicator]]:rounded-full"
-			>
-				{#each tabs as item (item.id)}
-					<TabsTrigger value={item.id} class="rounded-full">
-						{#if item.id === "preview"}<IconEye size={14} />{:else}<IconCode size={14} />{/if}
-						{item.label}
-					</TabsTrigger>
-				{/each}
-			</TabsList>
+			<!-- One row: views on the left, every preview control on the right. -->
+			<div class="mb-2 flex items-center gap-2">
+				<!-- TabsList fills its parent, so it gets the free space and the toolbar keeps its own. -->
+				<div class="min-w-0 flex-1">
+				<TabsList
+					aria-label="Component views"
+					class="rounded-full [&_[data-slot=tabs-indicator]]:rounded-full"
+				>
+					{#each tabs as item (item.id)}
+						<TabsTrigger value={item.id} class="rounded-full">
+							{#if item.id === "preview"}<IconEye size={14} />{:else}<IconCode size={14} />{/if}
+							{item.label}
+						</TabsTrigger>
+					{/each}
+				</TabsList>
+				</div>
+				<PreviewToolbar
+					bind:viewport
+					bind:view
+					views={tab === "preview" ? views : []}
+					viewports={tab === "preview" && Boolean(data.email)}
+					reload={tab === "preview"}
+					href={frameHref}
+					onReload={() => reloadKey++}
+				/>
+			</div>
 			<!-- Only the open view renders: the demo is heavy and the usage block is highlighted. -->
-			<TabsContent value="preview">
-				<!-- Fullscreen renders its own stage; a second live demo here would split its state. -->
-				{#if tab === "preview" && fullscreen}
-					<div class="h-64 rounded-2xl border border-dashed border-border"></div>
-				{:else if tab === "preview"}
+			<TabsContent value="preview" class="mt-0">
+				{#if tab === "preview"}
 					{#if playground}
 						<div
 							class={[
@@ -439,7 +439,7 @@ const packs = $derived(packsFor(data.spec.slug));
 					{/if}
 				{/if}
 			</TabsContent>
-			<TabsContent value="usage">
+			<TabsContent value="usage" class="mt-0">
 				{#if tab === "usage" && data.spec.tier === "pro"}
 					<ProInstallGate name={data.spec.name} />
 				{:else if tab === "usage" && usage}
@@ -623,36 +623,18 @@ const packs = $derived(packsFor(data.spec.slug));
 </main>
 
 {#snippet previewStage(fill = false)}
-	<div
-		class={[
-			"mx-auto w-full",
-			viewport === "mobile" && !data.email ? "max-w-sm" : "max-w-full",
-			fill && "flex h-full flex-col",
-		]}
-	>
-		<div class={["relative", fill && "flex min-h-0 flex-1 flex-col"]}>
-			{#key reloadKey}
-				<DemoPreview
-					{framework}
-					slug={data.spec.slug}
-					demo={demos[data.spec.slug]}
-					props={values}
-					content={stage as Snippet | undefined}
-					maxHeight={fill || data.email ? undefined : "calc(100dvh - var(--header-h) - 4rem)"}
-					class={fill ? "h-full flex-1" : undefined}
-				/>
-			{/key}
-			<div class="pointer-events-none absolute inset-x-0 bottom-3 flex justify-center">
-				<PreviewToolbar
-					bind:viewport
-					bind:fullscreen
-					bind:view
-					{views}
-					viewports={Boolean(data.email)}
-					onReload={() => reloadKey++}
-				/>
-			</div>
-		</div>
+	<div class={["w-full", fill && "flex h-full flex-col"]}>
+		{#key reloadKey}
+			<DemoPreview
+				{framework}
+				slug={data.spec.slug}
+				demo={demos[data.spec.slug]}
+				props={values}
+				content={stage as Snippet | undefined}
+				maxHeight={fill || data.email ? undefined : "calc(100dvh - var(--header-h) - 4rem)"}
+				class={fill ? "h-full flex-1" : undefined}
+			/>
+		{/key}
 	</div>
 {/snippet}
 
@@ -673,23 +655,6 @@ const packs = $derived(packsFor(data.spec.slug));
 {#snippet pngStage()}
 	<OgPngStage preview={png} name={data.spec.name} />
 {/snippet}
-
-{#if fullscreen}
-	<div class="fixed inset-0 z-50 flex flex-col gap-4 bg-background p-4 sm:p-6">
-		<div class="flex items-center justify-between gap-3">
-			<p class="font-medium text-foreground text-sm">{data.spec.name} · Preview</p>
-		</div>
-		<div
-			class={[
-				"grid min-h-0 flex-1 gap-3",
-				hasControls && "lg:grid-cols-[minmax(0,1fr)_20rem]",
-			]}
-		>
-			<div class="min-h-0 overflow-auto">{@render previewStage(true)}</div>
-			{#if hasControls}<ControlsPanel spec={data.spec} bind:values docked />{/if}
-		</div>
-	</div>
-{/if}
 
 {#if library}
 	<aside

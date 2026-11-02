@@ -35,7 +35,8 @@ let previous = untrack(() => status);
 $effect.pre(() => {
 	const next = status;
 	untrack(() => {
-		if (previous !== "running" && next === "running") setOpen(true);
+		// A tool waiting on approval opens too, so its gate is in view.
+		if (next !== previous && (next === "running" || next === "approval")) setOpen(true);
 		else if (previous === "running" && next !== "running" && collapseOnComplete)
 			setOpen(false);
 		previous = next;

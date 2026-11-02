@@ -3585,17 +3585,30 @@
 	}
 }
 
-/* A typed digit rises into its slot from the baseline. */
+/* A typed digit rises into its slot out of a blur; a pasted code lands slot by slot. */
 .otp-value {
 	display: inline-block;
 	transform-origin: bottom center;
-	animation: otp-value-in 250ms var(--ease-smooth) both;
+	animation: otp-value-in 280ms var(--ease-smooth) both;
+	animation-delay: var(--otp-delay, 0ms);
 }
 
 @keyframes otp-value-in {
 	from {
-		transform: translateY(8px) scale(0.8);
+		transform: translateY(5px) scale(0.75);
 		opacity: 0;
+		filter: blur(3px);
+	}
+}
+
+/* Verifying: a soft light passes over the slots, one after another. */
+@keyframes otp-shimmer {
+	from {
+		translate: -120% 0;
+	}
+	55%,
+	to {
+		translate: 120% 0;
 	}
 }
 

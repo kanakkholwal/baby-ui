@@ -1,6 +1,14 @@
 "use client";
 
 import {
+	ApprovalGate,
+	ApprovalGateActions,
+	ApprovalGateArgs,
+	ApprovalGateBody,
+	ApprovalGateReceipt,
+	ApprovalGateSummary,
+	type ApprovalRequest,
+	type ApprovalStatus,
 	Tool,
 	ToolActions,
 	ToolContent,
@@ -32,6 +40,15 @@ const LOG = [
 	"      Tests  4 passed (4)",
 ];
 
+const DEPLOY: ApprovalRequest = {
+	tool: "shell.run",
+	title: "Deploy checkout to production",
+	summary:
+		"Ships the 4 passing checkout changes. Rolls out to 10% of traffic, then everyone.",
+	risk: "medium",
+	args: { command: "pnpm deploy checkout --env production --canary 10" },
+};
+
 // The terminal call streams one line at a time, so following the end can be seen.
 function useRun() {
 	const [lines, setLines] = useState(0);
@@ -57,6 +74,14 @@ export function ToolDemo({ props }: { props: Props }) {
 	const status: ToolState = p.status ?? "done";
 	const { lines, run } = useRun();
 	const testStatus: ToolState = lines >= LOG.length ? "done" : "running";
+	// A deploy waits on a person: approving runs it, denying fails the call.
+	const [decision, setDecision] = useState<ApprovalStatus>("pending");
+	const [deploy, setDeploy] = useState<ToolState>("approval");
+	const decide = (next: ApprovalStatus) => {
+		setDecision(next);
+		setDeploy(next === "approved" ? "running" : "error");
+		if (next === "approved") window.setTimeout(() => setDeploy("done"), 1800);
+	};
 
 	return (
 		<div className="flex w-full max-w-md flex-col gap-3">
@@ -87,6 +112,26 @@ export function ToolDemo({ props }: { props: Props }) {
 						<ToolCopy text={LOG.join("\n")} />
 						<ToolRetry onClick={run} />
 					</ToolActions>
+				</ToolContent>
+			</Tool>
+			<Tool status={deploy} variant={p.variant} defaultOpen collapseOnComplete={false}>
+				<ToolTrigger
+					name="pnpm deploy checkout"
+					title="Deploying to production"
+					kind="terminal"
+				/>
+				<ToolContent>
+					<ApprovalGate request={DEPLOY} status={decision} now={0} variant="plain">
+						<ApprovalGateReceipt />
+						<ApprovalGateBody>
+							<ApprovalGateSummary />
+							<ApprovalGateArgs />
+							<ApprovalGateActions
+								onApprove={() => decide("approved")}
+								onDeny={() => decide("denied")}
+							/>
+						</ApprovalGateBody>
+					</ApprovalGate>
 				</ToolContent>
 			</Tool>
 		</div>

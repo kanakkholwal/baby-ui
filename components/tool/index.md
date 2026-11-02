@@ -10,7 +10,8 @@ State is a word next to the icon, not just a colour. Only the running state anim
 finished list of ten calls is completely still rather than a wall of spinners.
 
 A call that starts running opens its panel, so the output can be followed as it streams; set
-`collapseOnComplete` to fold it again when it ends.
+`collapseOnComplete` to fold it again when it ends. A call waiting on a person takes
+`status="approval"` and opens too: put an `ApprovalGate` in `ToolContent`.
 
 ## Parts
 

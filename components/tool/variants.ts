@@ -14,7 +14,7 @@ export const tool = tv({
 		name: "min-w-0 truncate font-mono text-muted-foreground text-xs",
 		status: [
 			"inline-flex shrink-0 items-center gap-1 font-medium text-xs",
-			"data-[status=pending]:text-muted-foreground data-[status=running]:text-primary data-[status=done]:text-success-strong data-[status=error]:text-destructive-strong",
+			"data-[status=pending]:text-muted-foreground data-[status=running]:text-primary data-[status=approval]:text-warning-strong data-[status=done]:text-success-strong data-[status=error]:text-destructive-strong",
 		],
 		statusIcon:
 			"size-3 fill-none stroke-current [stroke-linecap:round] [stroke-linejoin:round] [stroke-width:1.8]",
@@ -54,12 +54,14 @@ export const tool = tv({
 });
 
 export type ToolVariant = NonNullable<VariantProps<typeof tool>["variant"]>;
-export type ToolState = "pending" | "running" | "done" | "error";
+/** `approval` waits on a person; put an ApprovalGate in ToolContent. */
+export type ToolState = "pending" | "running" | "approval" | "done" | "error";
 export type ToolKind = "function" | "terminal" | "request" | "search";
 
 export const TOOL_STATUS_TEXT: Record<ToolState, string> = {
 	pending: "Queued",
 	running: "Running",
+	approval: "Needs approval",
 	done: "Completed",
 	error: "Failed",
 };
@@ -77,4 +79,6 @@ export const TOOL_ICONS = {
 	done: "m5 12.5 4.5 4.5L19 7.5",
 	error: "M7 7l10 10M17 7 7 17",
 	retry: "M3.5 12a8.5 8.5 0 1 0 2.5-6M3.5 4v4.5H8",
+	approval:
+		"M12 3.5 5 6.2v5.3c0 4.2 3 7.6 7 9 4-1.4 7-4.8 7-9V6.2l-7-2.7ZM12 8.5v4M12 15.5h.01",
 } as const;

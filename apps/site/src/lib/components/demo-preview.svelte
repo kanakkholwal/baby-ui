@@ -53,7 +53,7 @@ $effect(() => {
 		data-demo-canvas
 		data-framework={react ? "react" : "svelte"}
 		style:max-height={maxHeight}
-		class="relative grid h-full min-h-88 grid-cols-[minmax(0,1fr)] place-items-center-safe overflow-auto rounded-[7px] bg-background bg-[radial-gradient(var(--border)_1px,transparent_1px)] [background-size:16px_16px] p-4 pb-16 sm:p-8 sm:pb-16"
+		class="relative grid h-full min-h-88 grid-cols-[minmax(0,1fr)] place-items-center-safe overflow-auto rounded-[7px] bg-background bg-[radial-gradient(var(--border)_1px,transparent_1px)] [background-size:16px_16px] p-4 sm:p-8"
 	>
 		{#if content}
 			{@render content()}
