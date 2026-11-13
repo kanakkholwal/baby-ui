@@ -1,13 +1,16 @@
+import { spawnSync } from "node:child_process";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { defaultJobs, runPool } from "./lib/pool.mjs";
 
-const HELP = `Usage: pnpm verify [--quick | --full] [--keep-going] [--jobs=N] [--verbose]
+const HELP = `Usage: pnpm verify [--quick | --full] [--all] [--keep-going] [--jobs=N] [--verbose]
 
 Runs the gates CI runs. Stages run in order; the steps inside a stage run in parallel.
 
   --quick        generated files, Biome, comments, import extensions (the pre-commit set)
-  (default)      quick + tests + every package's type check + Pro check (the pre-push set)
+  (default)      quick + tests + type checks of the packages changed since origin/main + Pro check
+                 (the pre-push set)
+  --all          type-check every package, not only those changed since origin/main (and their dependents)
   --full         default + build, then worker size, Pro-hidden check and a browser sweep of
                  every component page (what Deploy runs, plus the sweep)
   --keep-going   don't stop at the first failure; report every failing step at the end
@@ -44,6 +47,30 @@ function checkTargets() {
 	});
 }
 
+/**
+ * Check targets changed since origin/main plus their dependents (pnpm's own graph), so a CLI-only
+ * push skips the site check. Anything unexpected falls back to every target: never skip silently.
+ */
+function affectedTargets(all) {
+	if (argv.includes("--all") || level === 2) return all;
+	const run = spawnSync(
+		"pnpm",
+		["--filter", "...[origin/main]", "ls", "--depth", "-1", "--json"],
+		{ cwd: ROOT, encoding: "utf8", shell: true },
+	);
+	try {
+		if (run.status !== 0) return all;
+		const changed = new Set(JSON.parse(run.stdout).map((p) => p.name));
+		const picked = all.filter((name) => changed.has(name));
+		console.log(
+			`verify: type-checking ${picked.length}/${all.length} packages touched since origin/main (--all for every one)`,
+		);
+		return picked;
+	} catch {
+		return all;
+	}
+}
+
 const hasPro = existsSync(join(ROOT, "pro/package.json"));
 const STAGES = [
 	{
@@ -61,7 +88,7 @@ const STAGES = [
 		name: "Tests and type checks",
 		steps: [
 			{ name: "Tests", cmd: "pnpm test" },
-			...checkTargets().map((name) => ({
+			...affectedTargets(checkTargets()).map((name) => ({
 				name: `Type-check ${name}`,
 				cmd: `pnpm --filter ${name} check`,
 			})),
@@ -93,6 +120,7 @@ for (const stage of STAGES) {
 		cwd: ROOT,
 		jobs,
 		failFast,
+		onStart: (task) => console.log(`  run   ${task.name}`),
 		onDone: (r) => {
 			const mark = r.cancelled ? "stop" : r.ok ? "pass" : "FAIL";
 			console.log(`  ${mark}  ${r.name} (${r.seconds}s)`);
