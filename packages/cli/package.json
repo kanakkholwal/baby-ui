@@ -1,6 +1,6 @@
 {
 	"name": "@baby-ui/cli",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Add Baby UI and shadcn registry components to React and Svelte projects",
 	"license": "Apache-2.0",
 	"homepage": "https://baby-ui.nexonauts.com",

@@ -1,6 +1,6 @@
 {
 	"name": "create-baby-ui",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "npm create baby-ui: set up Baby UI in a React or Svelte app",
 	"license": "Apache-2.0",
 	"type": "module",
