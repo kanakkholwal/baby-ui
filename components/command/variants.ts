@@ -80,21 +80,21 @@ export const commandFrame = tv({
 				footer: "border-border border-t px-3 py-2",
 			},
 			framed: {
-				panel:
-					"rounded-2xl border border-border bg-background p-1 shadow-(--overlay-shadow)",
+				panel: "rounded-2xl border border-border bg-card p-1 shadow-(--overlay-shadow)",
 				header: "pt-1.5 pb-2",
 				body: "rounded-[11px] border border-border bg-popover",
 				inputWrap: "border-border border-b px-3",
-				input: "h-12 text-sm",
+				input: "h-14 text-sm",
 				count:
 					"block min-w-[2ch] shrink-0 text-right font-mono text-muted-foreground text-xs tabular-nums",
 				list: "py-1.5",
-				groupHeading: "px-4 pt-2 pb-1 font-semibold text-xs uppercase tracking-wide",
+				groupHeading: "px-4 pt-2.5 pb-1.5 font-medium text-xs uppercase tracking-wide",
+				// A hairline above every group that follows a visible one; hidden groups do not count.
 				group:
-					"[&_[cmdk-group-heading]]:px-4 [&_[cmdk-group-heading]]:pt-2 [&_[cmdk-group-heading]]:pb-1 [&_[cmdk-group-heading]]:font-semibold [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-wide [&_[cmdk-group-items]]:px-1.5",
-				groupItems: "px-1.5",
+					"pb-1 [&:not([hidden])~&:not([hidden])]:mt-1 [&:not([hidden])~&:not([hidden])]:border-border [&:not([hidden])~&:not([hidden])]:border-t [&_[cmdk-group-heading]]:px-4 [&_[cmdk-group-heading]]:pt-2.5 [&_[cmdk-group-heading]]:pb-1.5 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-wide [&_[cmdk-group-items]]:px-2",
+				groupItems: "px-2",
 				item: [
-					"justify-between gap-3 rounded-lg px-2.5 py-2 text-muted-foreground",
+					"justify-between gap-3 rounded-xl px-2.5 py-3 text-muted-foreground",
 					"transition-[color,scale] [transition-duration:var(--duration-instant),var(--duration-slow)] ease-[var(--ease-out-quart)] active:scale-[var(--press-scale-row)] motion-reduce:transition-none",
 					'data-[selected=""]:text-foreground data-[selected=true]:text-foreground',
 				],

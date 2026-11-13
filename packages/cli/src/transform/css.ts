@@ -203,7 +203,7 @@ const isScopeRule = (rule: Rule, selector: string) =>
 			rule.parent.params === "base"));
 
 // shadcn-svelte: light then dark, then theme; v4 files only.
-function applyVarsSvelte(root: Root, cssVars: CssVars): void {
+function applyVarsSvelte(root: Root, cssVars: CssVars, overwrite: boolean): void {
 	const v4 = root.nodes.some((n) => isAtRule(n, "import") || isAtRule(n, "theme"));
 	if (v4 && Object.keys(cssVars.dark ?? {}).length) addDarkVariant(root);
 	for (const [scope, selector] of [
@@ -216,14 +216,14 @@ function applyVarsSvelte(root: Root, cssVars: CssVars): void {
 		root.walkRules((rule) => {
 			if (!isScopeRule(rule, selector)) return;
 			found = true;
-			setVars(rule, vars, true);
+			setVars(rule, vars, overwrite);
 		});
-		if (!found && v4) setVars(scopedRule(root, selector), vars, true);
+		if (!found && v4) setVars(scopedRule(root, selector), vars, overwrite);
 	}
 	if (cssVars.theme && v4) {
 		const theme = themeInline(root, "svelte");
 		for (const [key, value] of Object.entries(cssVars.theme)) {
-			setDecl(theme, `--${key.replace(/^--/, "")}`, value, true);
+			setDecl(theme, `--${key.replace(/^--/, "")}`, value, overwrite);
 		}
 	}
 	if (v4 && (cssVars.light || cssVars.dark)) addThemeAliases(root, cssVars, "svelte");
@@ -476,6 +476,38 @@ function mergeVars(patches: readonly CssPatch[]): CssVars {
 	return out;
 }
 
+/** Every declaration as `selector > prop`, for comparing a stylesheet before and after. */
+function declMap(source: string): Map<string, string> {
+	const out = new Map<string, string>();
+	postcss.parse(source).walkDecls((decl) => {
+		if (!decl.prop.startsWith("--")) return;
+		const path: string[] = [];
+		for (let n = decl.parent; n && n.type !== "root"; n = n.parent) {
+			path.unshift(
+				n.type === "rule" ? n.selector : `@${(n as AtRule).name} ${(n as AtRule).params}`,
+			);
+		}
+		out.set(`${path.join(" > ")} > ${decl.prop}`, decl.value);
+	});
+	return out;
+}
+
+/** Variables whose value an install replaced, so the CLI can say what it changed. */
+export function replacedVars(
+	before: string,
+	after: string,
+): Array<{ name: string; scope: string; from: string; to: string }> {
+	const prev = declMap(before);
+	const out: Array<{ name: string; scope: string; from: string; to: string }> = [];
+	for (const [key, to] of declMap(after)) {
+		const from = prev.get(key);
+		if (from === undefined || from === to) continue;
+		const cut = key.lastIndexOf(" > ");
+		out.push({ name: key.slice(cut + 3), scope: key.slice(0, cut), from, to });
+	}
+	return out;
+}
+
 /** Applies registry `cssVars` and `css` to a Tailwind v4 stylesheet the way each CLI does. */
 export function patchCss(
 	source: string,
@@ -485,8 +517,11 @@ export function patchCss(
 	const root = postcss.parse(source);
 	if (dialect === "svelte") {
 		// shadcn-svelte merges every item first and applies once.
-		const vars = mergeVars(patches);
-		if (Object.keys(vars).length) applyVarsSvelte(root, vars);
+		// Replacing patches first, so a variable they own is not left to an add-only pass.
+		for (const overwrite of [true, false]) {
+			const vars = mergeVars(patches.filter((p) => p.overwriteVars === overwrite));
+			if (Object.keys(vars).length) applyVarsSvelte(root, vars, overwrite);
+		}
 		const css = patches.reduce<Record<string, unknown>>(
 			(acc, p) => deepMerge(acc, p.css ?? {}),
 			{},

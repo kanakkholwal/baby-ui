@@ -32,3 +32,18 @@ The native `<dialog>` stays mounted through the close transition so it has somet
 animate out; that means `Command`'s internal search state would otherwise survive into the
 next open. It clears the moment `CommandDialog`'s `open` flips true instead, which reads
 the same to a caller as if the whole tree had remounted.
+
+## Nest `Command` inside `CommandDialog`
+
+`CommandDialog` is the dialog shell only. Put a `Command` root inside it, then the input, list and
+the rest. Unlike shadcn, it does not render the root for you, so `CommandInput` and friends
+throw `missing_context` (Svelte) when they sit directly in the dialog.
+
+```svelte
+<CommandDialog bind:open>
+  <Command>
+    <CommandInput />
+    <CommandList>...</CommandList>
+  </Command>
+</CommandDialog>
+```

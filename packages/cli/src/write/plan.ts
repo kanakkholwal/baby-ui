@@ -15,7 +15,7 @@ import { type InstallConfig, resolveAlias } from "../project/paths.ts";
 import type { ResolvedItem } from "../registry/graph.ts";
 import { registryOrigin } from "../registry/resolve.ts";
 import type { RegistryFile, RegistryItem } from "../registry/schema.ts";
-import { type CssPatch, patchCss } from "../transform/css.ts";
+import { type CssPatch, patchCss, replacedVars } from "../transform/css.ts";
 import { transformScript } from "../transform/imports.ts";
 import { replacePlaceholders } from "../transform/svelte.ts";
 
@@ -39,7 +39,13 @@ export interface Plan {
 	readonly items: readonly ResolvedItem[];
 	readonly files: readonly PlannedFile[];
 	readonly css:
-		| { readonly path: string; readonly content: string; readonly root: string }
+		| {
+				readonly path: string;
+				readonly content: string;
+				readonly root: string;
+				/** Existing variables whose value the install replaced. */
+				readonly replaced: ReturnType<typeof replacedVars>;
+		  }
 		| undefined;
 	readonly installs: readonly PackageInstall[];
 	readonly warnings: readonly string[];
@@ -217,7 +223,12 @@ function stylesheet(
 	const root = cfg.project.root;
 	const exists = path !== undefined && existsSync(path);
 	if (path && !exists && cssSource !== undefined) {
-		return { path, root, content: patchCss(cssSource, patches, cfg.framework) };
+		return {
+			path,
+			root,
+			content: patchCss(cssSource, patches, cfg.framework),
+			replaced: [],
+		};
 	}
 	if (!patches.length) return undefined;
 	if (!path || !exists) {
@@ -226,18 +237,21 @@ function stylesheet(
 	}
 	const source = readFileSync(path, "utf8");
 	const next = patchCss(source, patches, cfg.framework);
-	return next === source ? undefined : { path, root, content: next };
+	return next === source
+		? undefined
+		: { path, root, content: next, replaced: replacedVars(source, next) };
 }
 
 /**
- * Computes every write an install would make. With `workspace`, ui/lib/hook files, their
- * packages and the CSS go to the ui package, like shadcn; `cssSource` seeds init's stylesheet.
+ * Every write an install would make. `workspace` takes ui files and CSS; `cssSource` seeds init.
+ * `replaceVars(url)`: may that theme or style item overwrite existing variables (components never do).
  */
 export function planInstall(
 	cfg: InstallConfig,
 	items: readonly ResolvedItem[],
 	cssSource?: string,
 	workspace?: InstallConfig,
+	replaceVars: (url: string) => boolean = () => true,
 ): Plan {
 	const files: PlannedFile[] = [];
 	const patches: CssPatch[] = [];
@@ -272,7 +286,7 @@ export function planInstall(
 			patches.push({
 				cssVars: item.cssVars,
 				css: item.css,
-				overwriteVars: THEME_TYPES.has(item.type),
+				overwriteVars: THEME_TYPES.has(item.type) && replaceVars(url),
 			});
 		}
 		for (const file of item.files ?? []) {

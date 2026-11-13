@@ -204,6 +204,21 @@ function report(decisions: Decision[], root: string, preOps: readonly FileOp[]):
 	return [...pre, ...items].join("\n");
 }
 
+/** Lists the existing variables a stylesheet edit replaced, so none changes silently. */
+function replacedNote(plan: Plan, root: string, verb: string): void {
+	const replaced = plan.css?.replaced ?? [];
+	if (!plan.css || !replaced.length) return;
+	const shown = replaced
+		.slice(0, 12)
+		.map((v) => `${v.scope.replace(/^.* > /, "")} ${v.name}: ${v.from} -> ${v.to}`);
+	const more =
+		replaced.length > shown.length ? [`and ${replaced.length - shown.length} more`] : [];
+	note(
+		[...shown, ...more].join("\n"),
+		`${verb} ${replaced.length} existing variable(s) in ${relativeTo(root, plan.css.path)}`,
+	);
+}
+
 export interface Extra {
 	/** Written in the same transaction, before the items (init's components.json, utils). */
 	readonly preOps?: readonly FileOp[];
@@ -245,7 +260,16 @@ export async function installInto(
 			),
 		);
 	}
-	const planned = planInstall(cfg, items, extra.cssSource, workspace);
+	// A theme replaces variables the first time (that is the install) or when asked. After that its
+	// values may be the user's own edits, so a re-add only fills in what is missing.
+	const styleLock = await readLock(workspace?.project.root ?? root);
+	const planned = planInstall(
+		cfg,
+		items,
+		extra.cssSource,
+		workspace,
+		(url) => options.overwrite === true || !styleLock.items[canonicalUrl(url)],
+	);
 	// Adopting only records what is already there: no stylesheet edits, no installs.
 	const plan =
 		options.mode === "adopt" ? { ...planned, css: undefined, installs: [] } : planned;
@@ -289,6 +313,7 @@ export async function installInto(
 			`${target.path} (dry run)`,
 		);
 		if (plan.css) message(`would update ${relativeTo(root, plan.css.path)}`);
+		replacedNote(plan, root, "would replace");
 		for (const i of pending) {
 			const where = relativeTo(root, i.project.root) || ".";
 			if (i.deps.length)
@@ -348,6 +373,7 @@ export async function installInto(
 		changes,
 	);
 	if (plan.css) message(`${c.brand("updated")} ${relativeTo(root, plan.css.path)}`);
+	replacedNote(plan, root, "replaced");
 
 	if (willInstall) {
 		try {

@@ -1,15 +1,22 @@
 name: Release CLI
 
-# Automatic: merging a version bump to main publishes it. Manual: pick a dist-tag, or dry-run
-# to see exactly what would ship. Versions already on npm are skipped, so reruns are safe.
+# Automatic: a push to main that touches the CLI publishes it. If its version is already on npm
+# the workflow bumps both packages (patch by default), commits that to main, publishes and tags
+# each as <name>@<version> through a GitHub release. A hand-bumped version publishes as it is.
+# Manual: pick a bump and dist-tag, or dry-run to see exactly what would ship.
 on:
   push:
     branches: [main]
     paths:
-      - packages/cli/package.json
-      - packages/create-baby-ui/package.json
+      - packages/cli/**
+      - packages/create-baby-ui/**
   workflow_dispatch:
     inputs:
+      bump:
+        description: Version bump when the current version is already on npm
+        type: choice
+        options: [patch, minor, major, none]
+        default: patch
       dry-run:
         description: Build, pack and run `npm publish --dry-run` only
         type: boolean
@@ -44,7 +51,8 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          persist-credentials: false
+          # The version commit is pushed back to the branch.
+          persist-credentials: true
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v6
         with:
@@ -57,6 +65,30 @@ jobs:
         run: npm install --global npm@^11.5.1
 
       - run: pnpm install --frozen-lockfile --filter @baby-ui/cli... --filter create-baby-ui...
+
+      # Both packages move together; create-baby-ui pins the CLI, so one lockstep version is simplest.
+      - name: Version
+        env:
+          BUMP: ${{ github.event_name == 'workflow_dispatch' && inputs.bump || 'patch' }}
+        run: |
+          set -euo pipefail
+          cli=$(node -p "require('./packages/cli/package.json').version")
+          if [ "$BUMP" = "none" ] || ! npm view "@baby-ui/cli@$cli" version >/dev/null 2>&1; then
+            echo "::notice::Publishing @baby-ui/cli@$cli as it is."
+            exit 0
+          fi
+          for dir in packages/cli packages/create-baby-ui; do
+            (cd "$dir" && npm version "$BUMP" --no-git-tag-version --allow-same-version >/dev/null)
+          done
+          next=$(node -p "require('./packages/cli/package.json').version")
+          echo "::notice::Bumped $cli to $next."
+          if [ "$DRY_RUN" != "true" ] && [ "$GITHUB_REF" = "refs/heads/main" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add packages/cli/package.json packages/create-baby-ui/package.json
+            git commit -m "chore(release): cli $next [skip ci]"
+            git push origin HEAD:main
+          fi
 
       - name: Build
         run: pnpm --filter @baby-ui/cli build

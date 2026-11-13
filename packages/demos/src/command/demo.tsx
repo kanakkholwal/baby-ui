@@ -115,13 +115,15 @@ export function CommandDemo({ props }: { props: Props }) {
 							</CommandGroup>
 						))}
 					</CommandList>
-					{variant === "launcher" ? (
+					{variant === "launcher" || variant === "framed" ? (
 						<CommandFooter>
 							<span className="flex items-center gap-4">
 								<CommandHint keys={["↑", "↓"]}>Move</CommandHint>
 								<CommandHint keys={["↵"]}>Open</CommandHint>
 							</span>
-							<CommandHint keys={["Esc"]}>Close</CommandHint>
+							{variant === "launcher" ? (
+								<CommandHint keys={["Esc"]}>Close</CommandHint>
+							) : null}
 						</CommandFooter>
 					) : null}
 				</Command>

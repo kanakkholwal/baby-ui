@@ -91,13 +91,13 @@ function run(id: string) {
 				</CommandGroup>
 			{/each}
 		</CommandList>
-		{#if variant === "launcher"}
+		{#if variant === "launcher" || variant === "framed"}
 			<CommandFooter>
 				<span class="flex items-center gap-4">
 					<CommandHint keys={["↑", "↓"]}>Move</CommandHint>
 					<CommandHint keys={["↵"]}>Open</CommandHint>
 				</span>
-				<CommandHint keys={["Esc"]}>Close</CommandHint>
+				{#if variant === "launcher"}<CommandHint keys={["Esc"]}>Close</CommandHint>{/if}
 			</CommandFooter>
 		{/if}
 	</Command>
