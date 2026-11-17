@@ -56,7 +56,7 @@ export const planRunner = tv({
 			},
 			plain: {
 				body: "gap-4 py-2",
-				footer: "border-border border-t",
+				footer: "border-border/60 border-t",
 			},
 		},
 	},

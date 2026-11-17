@@ -25,9 +25,9 @@ export const pageHeader = tv({
 	variants: {
 		/** `sticky` pins the header and condenses it once the page scrolls; `static` scrolls away. */
 		variant: {
-			static: { bar: "border-border border-b" },
+			static: { bar: "border-border/60 border-b" },
 			sticky: {
-				bar: "sticky top-0 border-border border-b bg-background/90 backdrop-blur data-[condensed=true]:shadow-sm",
+				bar: "sticky top-0 border-border/60 border-b bg-background/90 backdrop-blur data-[condensed=true]:shadow-sm",
 			},
 		},
 	},

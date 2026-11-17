@@ -38,7 +38,7 @@ export const pricingPlans = tv({
 				plan: "rounded-2xl border border-border bg-background data-highlighted:border-foreground/40 data-highlighted:shadow-(--surface-shadow)",
 			},
 			columns: {
-				grid: "divide-y divide-border overflow-hidden rounded-2xl border border-border @3xl:auto-cols-fr @3xl:grid-flow-col @3xl:divide-x @3xl:divide-y-0",
+				grid: "divide-y divide-border/60 overflow-hidden rounded-2xl border border-border @3xl:auto-cols-fr @3xl:grid-flow-col @3xl:divide-x @3xl:divide-y-0",
 				plan: "data-highlighted:shadow-[inset_0_2px_0_0_var(--foreground)]",
 			},
 			// One plan per row from 48rem: name, price, features in two columns, then the action last.

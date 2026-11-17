@@ -15,7 +15,7 @@ export const approvalQueue = tv({
 			"data-[dismissed]:grid-rows-[0fr] data-[dismissed]:opacity-0",
 		],
 		clip: "min-h-0 overflow-hidden",
-		row: "border-border border-t group-first/item:border-t-0",
+		row: "border-border/60 border-t group-first/item:border-t-0",
 		trigger: [
 			"group/trigger flex min-h-11 w-full items-center gap-3 border-0 bg-transparent text-left outline-none",
 			"transition-colors duration-(--duration-fast) ease-(--ease-ui-out) hover:bg-foreground/[0.03] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset motion-reduce:transition-none",
@@ -44,7 +44,7 @@ export const approvalQueue = tv({
 			},
 			plain: {
 				header: "pb-1",
-				list: "border-border border-y",
+				list: "border-border/60 border-y",
 			},
 		},
 	},

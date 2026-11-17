@@ -64,7 +64,7 @@ export const taskSteps = tv({
 			},
 			list: {
 				root: "max-w-[27.5rem] gap-0 self-start overflow-hidden rounded-2xl border border-border bg-background",
-				item: "card-fade-up border-border border-b transition-colors duration-(--duration-slow) last:border-0",
+				item: "card-fade-up border-border/60 border-b transition-colors duration-(--duration-slow) last:border-0",
 				row: "items-center pe-1",
 				label: "truncate font-medium text-sm",
 				progress: "mx-2.5 mb-2 w-auto max-w-none",

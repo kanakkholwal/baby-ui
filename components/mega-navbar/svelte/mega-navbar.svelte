@@ -197,7 +197,7 @@ $effect(() => {
 
 <Sheet bind:open={mobileOpen}>
 	<SheetContent side={variant === "notched" ? "top" : "right"} class={styles.sheet()}>
-		<SheetHeader class="border-border border-b px-5 py-4">
+		<SheetHeader class="border-border/60 border-b px-5 py-4">
 			<SheetTitle class="flex items-center gap-2.5">
 				{#if brand}{@render brand()}{/if}
 			</SheetTitle>
@@ -207,7 +207,7 @@ $effect(() => {
 				{@const isOpen = openMobileGroup === i}
 				<Collapsible
 					open={isOpen}
-					class="border-border border-b last:border-b-0"
+					class="border-border/60 border-b last:border-b-0"
 				>
 					<button
 						type="button"
@@ -271,7 +271,7 @@ $effect(() => {
 			</ul>
 		</nav>
 		{#if footerActions}
-			<div class="mt-auto flex flex-col gap-2 border-border border-t px-5 py-4">
+			<div class="mt-auto flex flex-col gap-2 border-border/60 border-t px-5 py-4">
 				{@render footerActions()}
 			</div>
 		{/if}

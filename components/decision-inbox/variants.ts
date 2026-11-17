@@ -45,7 +45,7 @@ export const decisionInbox = tv({
 			},
 			plain: {
 				root: "overflow-hidden rounded-2xl border border-border bg-background",
-				header: "border-border border-b px-5 py-3.5",
+				header: "border-border/60 border-b px-5 py-3.5",
 				list: "",
 			},
 		},

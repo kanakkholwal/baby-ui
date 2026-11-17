@@ -25,7 +25,7 @@ export const contextMeter = tv({
 		],
 		track: "h-2 min-w-0 flex-1 rounded-full bg-muted",
 		threshold: "absolute top-1 bottom-1 w-px bg-foreground/50",
-		list: "m-0 flex list-none flex-col border-border border-t p-0 py-1.5",
+		list: "m-0 flex list-none flex-col border-border/60 border-t p-0 py-1.5",
 		row: "flex min-h-11 items-center gap-3 px-5 transition-opacity duration-(--duration-fast) ease-(--ease-ui-out) group-data-[active]/meter:opacity-45 data-[active]:opacity-100 motion-reduce:transition-none",
 		dot: "size-2 shrink-0 rounded-full",
 		label: "min-w-0 truncate text-foreground",
@@ -36,7 +36,7 @@ export const contextMeter = tv({
 			"inline-flex items-center gap-1 text-muted-foreground text-xs [&_svg]:size-3.5",
 		action: "h-7 rounded-full px-2.5 text-xs",
 		footer:
-			"flex min-h-14 items-center justify-between gap-3 border-border border-t px-5 py-2.5",
+			"flex min-h-14 items-center justify-between gap-3 border-border/60 border-t px-5 py-2.5",
 		note: "m-0 text-muted-foreground text-xs",
 		compact: "rounded-full",
 		tipTitle: "block font-medium",

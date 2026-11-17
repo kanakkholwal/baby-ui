@@ -41,7 +41,7 @@ export const tool = tv({
 			card: {
 				root: "overflow-hidden rounded-xl border border-border bg-card",
 				trigger: "min-h-10 px-3 hover:bg-foreground/[0.03]",
-				body: "border-border border-t p-3",
+				body: "border-border/60 border-t p-3",
 			},
 			plain: {
 				trigger: "-mx-1.5 min-h-8 w-[calc(100%+0.75rem)] rounded-md px-1.5",

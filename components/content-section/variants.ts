@@ -29,7 +29,7 @@ export const contentSection = tv({
 			stacked: {
 				title: "mx-auto text-center",
 				body: "mx-auto max-w-2xl text-center",
-				quote: "justify-items-center border-l-0 border-border border-t pt-6 pl-0",
+				quote: "justify-items-center border-l-0 border-border/60 border-t pt-6 pl-0",
 				media: "order-last",
 			},
 		},

@@ -19,18 +19,18 @@ export const npmStats = tv({
 		factNote: "font-normal text-muted-foreground",
 		chart: "min-w-0 px-5 pt-4 pb-6 md:px-7",
 		// A 1px gap over a border-coloured grid draws every divider, with no doubled edges.
-		counts: "grid grid-cols-3 gap-px border-border border-t bg-border",
+		counts: "grid grid-cols-3 gap-px border-border/60 border-t bg-border",
 		count: "flex min-w-0 flex-col gap-1 bg-background px-6 py-5 md:px-8",
 		countValue:
 			"font-heading font-semibold text-2xl text-foreground tabular-nums tracking-tight",
 		countLabel: "text-muted-foreground text-xs",
-		footer: "flex min-w-0 flex-col gap-4 border-border border-t px-6 py-6 md:px-8",
+		footer: "flex min-w-0 flex-col gap-4 border-border/60 border-t px-6 py-6 md:px-8",
 		sectionTitle: "font-medium text-muted-foreground text-xs",
 		shareBar: "flex h-2.5 w-full gap-[2px] overflow-hidden rounded-full",
 		// flex-grow, not width, so a range switch glides without measuring anything.
 		shareSegment:
 			"h-full min-w-[3px] transition-[flex-grow] duration-300 ease-[var(--ease-out-quart)] motion-reduce:transition-none",
-		list: "flex flex-col divide-y divide-border",
+		list: "flex flex-col divide-y divide-border/60",
 		row: [
 			"grid grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-x-4 py-2.5",
 			"sm:grid-cols-[minmax(0,1fr)_3rem_6rem_4.5rem_4.75rem]",

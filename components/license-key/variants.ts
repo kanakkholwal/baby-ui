@@ -29,7 +29,7 @@ export const licenseKey = tv({
 			"[stroke-dasharray:1] transition-[stroke-dashoffset] duration-(--duration-base) ease-(--ease-ui-out) motion-reduce:transition-none",
 		rotateIcon:
 			"transition-transform duration-(--duration-slow) ease-(--ease-ui-out) group-hover/rotate:rotate-90 data-[spinning]:animate-spin motion-reduce:transition-none motion-reduce:data-[spinning]:animate-none",
-		meta: "grid grid-cols-2 gap-x-6 gap-y-3 border-border border-t pt-4 @md:flex @md:flex-wrap @md:gap-x-10",
+		meta: "grid grid-cols-2 gap-x-6 gap-y-3 border-border/60 border-t pt-4 @md:flex @md:flex-wrap @md:gap-x-10",
 		metaItem: "flex min-w-0 flex-col gap-1",
 		metaLabel: "font-medium text-muted-foreground text-xs uppercase tracking-[0.12em]",
 		metaValue: "flex items-center gap-2 text-foreground text-sm tabular-nums",

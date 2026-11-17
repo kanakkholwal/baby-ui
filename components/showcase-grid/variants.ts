@@ -2,7 +2,7 @@ import { tv, type VariantProps } from "tailwind-variants";
 
 export const showcaseGrid = tv({
 	slots: {
-		root: "relative isolate grid w-full grid-cols-1 border-border border-t border-l md:grid-cols-12",
+		root: "relative isolate grid w-full grid-cols-1 border-border/60 border-t border-l md:grid-cols-12",
 		rules: "pointer-events-none absolute inset-0 -z-10 hidden",
 		rule: "absolute block bg-muted-foreground/40",
 		hatch:
@@ -19,7 +19,7 @@ export const showcaseGrid = tv({
 
 export const showcasePanel = tv({
 	slots: {
-		root: "group/panel relative col-span-full flex min-h-60 min-w-0 flex-col border-border border-r border-b bg-background md:min-h-75",
+		root: "group/panel relative col-span-full flex min-h-60 min-w-0 flex-col border-border/60 border-r border-b bg-background md:min-h-75",
 		dot: "pointer-events-none absolute z-3 size-2 rounded-full border border-border bg-background md:size-2.5",
 		content:
 			"relative z-2 flex flex-1 items-center justify-center p-4 md:absolute md:inset-0 md:overflow-hidden md:p-5",

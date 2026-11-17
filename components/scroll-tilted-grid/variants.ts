@@ -5,7 +5,7 @@ export const scrollTiltedGrid = tv({
 		root: "@container relative w-full",
 		grid: "mx-auto grid w-full max-w-5xl grid-cols-2 items-start gap-x-4 gap-y-16 px-4 @xl:gap-x-10 @xl:gap-y-28 @xl:px-10 @3xl:gap-x-16",
 		figure: "m-0 [view-timeline-name:--scroll-tilted]",
-		tile: "scroll-tilted-tile relative w-full overflow-hidden border border-border bg-muted shadow-2xl",
+		tile: "scroll-tilted-tile relative w-full overflow-hidden bg-muted shadow-(--overlay-shadow)",
 		image: "scroll-tilted-image block size-full object-cover",
 		sheen:
 			"pointer-events-none absolute inset-0 bg-gradient-to-b from-background/10 via-transparent to-foreground/10",

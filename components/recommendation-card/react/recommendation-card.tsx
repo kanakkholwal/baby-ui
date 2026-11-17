@@ -83,7 +83,7 @@ export function RecommendationCard({ title, options, labels }: RecommendationCar
 				style={{ gridTemplateRows: open ? "1fr" : "0fr", opacity: open ? 1 : 0 }}
 			>
 				<div className="overflow-hidden">
-					<div className="border-border border-t bg-card px-2 py-2">
+					<div className="border-border/60 border-t bg-card px-2 py-2">
 						<p className="px-1.5 pb-1 font-medium text-xs text-muted-foreground">
 							{t.otherOptions}
 						</p>
@@ -110,7 +110,7 @@ export function RecommendationCard({ title, options, labels }: RecommendationCar
 				</div>
 			</div>
 
-			<div className="flex items-center justify-between gap-3 border-border border-t bg-card px-4 py-3">
+			<div className="flex items-center justify-between gap-3 border-border/60 border-t bg-card px-4 py-3">
 				<span className="flex items-center gap-2">
 					<Meter signal={active.signal} tone={active.tone} />
 					<span className="font-medium text-xs text-muted-foreground">

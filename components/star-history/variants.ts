@@ -22,7 +22,7 @@ export const starHistory = tv({
 		chart: "min-w-0 px-5 pt-4 pb-6 md:px-7",
 		panel: "card-fade-up mt-0 min-w-0 outline-none",
 		// A 1px gap over a border-coloured grid draws every divider, with no doubled edges.
-		counts: "grid grid-cols-3 gap-px border-border border-t bg-border",
+		counts: "grid grid-cols-3 gap-px border-border/60 border-t bg-border",
 		count: "flex min-w-0 flex-col gap-1 bg-background px-6 py-5 md:px-8",
 		countValue:
 			"truncate font-heading font-semibold text-foreground text-xl tabular-nums tracking-tight",

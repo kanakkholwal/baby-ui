@@ -23,7 +23,7 @@ export const megaNavbar = tv({
 		pane: "absolute inset-x-0 top-0 w-max transition-opacity duration-[var(--duration-dropdown)] motion-reduce:transition-none",
 		item: "flex gap-3 rounded-lg p-2.5 transition-colors hover:bg-foreground/[0.06] focus-visible:bg-foreground/[0.06] focus-visible:outline-none aria-[current=page]:bg-foreground/[0.06] motion-reduce:transition-none",
 		footer:
-			"group/cta flex items-center justify-between gap-4 border-border border-t px-5 py-3 transition-colors hover:bg-accent focus-visible:bg-accent focus-visible:outline-none motion-reduce:transition-none",
+			"group/cta flex items-center justify-between gap-4 border-border/60 border-t px-5 py-3 transition-colors hover:bg-accent focus-visible:bg-accent focus-visible:outline-none motion-reduce:transition-none",
 		link: "inline-flex h-8 items-center whitespace-nowrap rounded-full px-3 font-medium text-sm transition-colors hover:bg-foreground/[0.06] hover:text-foreground motion-reduce:transition-none",
 		mobileChevron:
 			"size-4 shrink-0 text-muted-foreground transition-transform duration-[var(--duration-dropdown)] motion-reduce:transition-none",
@@ -33,7 +33,7 @@ export const megaNavbar = tv({
 			"flex min-h-12 items-center rounded-lg px-2 font-medium text-foreground transition-colors motion-reduce:transition-none",
 		list: "grid w-[34rem] grid-cols-2 gap-1 p-2",
 		// Secondary links: one line each, several columns, so a long group stays short.
-		more: "border-border border-t p-2",
+		more: "border-border/60 border-t p-2",
 		moreHeading: "px-3 pt-1 pb-1.5 font-medium text-muted-foreground text-xs",
 		moreList: "grid grid-cols-3 gap-0.5",
 		moreLink:
@@ -108,7 +108,7 @@ export const megaNavbar = tv({
 		expandArrow:
 			"mt-0.5 size-3.5 text-muted-foreground transition-transform duration-(--duration-fast) ease-out group-hover/item:-translate-y-0.5 group-hover/item:translate-x-0.5 motion-reduce:transition-none",
 		expandMore:
-			"col-start-2 mt-2 flex flex-wrap items-center gap-1 border-border border-t pt-3",
+			"col-start-2 mt-2 flex flex-wrap items-center gap-1 border-border/60 border-t pt-3",
 		expandMoreLink:
 			"rounded-lg px-2.5 py-1 text-muted-foreground text-sm outline-none transition-colors hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none",
 		expandMobile:

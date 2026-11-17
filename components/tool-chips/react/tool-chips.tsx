@@ -189,7 +189,7 @@ export function ToolChips({
 										}}
 									>
 										<div className="min-h-0 overflow-hidden">
-											<div className="mt-0.5 mb-1 ml-2 flex flex-col gap-0.5 border-border border-l py-0.5 pl-3.5">
+											<div className="mt-0.5 mb-1 ml-2 flex flex-col gap-0.5 border-border/60 border-l py-0.5 pl-3.5">
 												{row.detail.map((line) => (
 													<span
 														key={line.text}
@@ -213,7 +213,7 @@ export function ToolChips({
 					</div>
 
 					{diffs.length > 0 ? (
-						<div className="mt-2.5 flex max-w-full flex-wrap gap-1.5 border-border border-t pt-2.5">
+						<div className="mt-2.5 flex max-w-full flex-wrap gap-1.5 border-border/60 border-t pt-2.5">
 							{diffs.map((diff, index) => (
 								<HoverCard key={diff.file}>
 									<HoverCardTrigger
@@ -238,7 +238,7 @@ export function ToolChips({
 											align="start"
 											className="w-72 overflow-hidden rounded-[10px] border-none p-0 shadow-2xl"
 										>
-											<div className="flex items-center justify-between border-border border-b px-2.5 py-1.5 font-mono text-xs">
+											<div className="flex items-center justify-between border-border/60 border-b px-2.5 py-1.5 font-mono text-xs">
 												<span className="min-w-0 truncate text-muted-foreground">
 													{diff.file}
 												</span>

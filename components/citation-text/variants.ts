@@ -5,7 +5,7 @@ export const citationText = tv({
 		root: "text-pretty text-foreground/90 leading-7",
 		segment:
 			"rounded-[0.2em] box-decoration-clone transition-[background-color] duration-(--duration-fast) ease-(--ease-ui-out) data-[active]:bg-info/15 motion-reduce:transition-none",
-		chip: "relative -top-[0.45em] mx-1 h-[1.4em] min-w-[1.4em] items-center justify-center rounded-[0.4em] border border-border bg-card px-[0.3em] align-baseline font-medium text-muted-foreground text-xs tabular-nums leading-none no-underline outline-none transition-[color,border-color,opacity,scale] duration-(--duration-base) ease-(--ease-ui-out) active:scale-(--press-scale-icon) hover:border-foreground/30 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring starting:opacity-0 motion-reduce:transition-none",
+		chip: "relative -top-[0.45em] mx-1 h-[1.4em] min-w-[1.4em] items-center justify-center rounded-[0.4em] bg-card px-[0.3em] align-baseline font-medium text-muted-foreground text-xs tabular-nums leading-none no-underline outline-none transition-[color,border-color,opacity,scale] duration-(--duration-base) ease-(--ease-ui-out) active:scale-(--press-scale-icon) hover:border-foreground/30 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring starting:opacity-0 motion-reduce:transition-none",
 		card: "flex w-72 flex-col gap-2",
 		cardHead: "flex min-w-0 items-center gap-2 text-muted-foreground text-xs",
 		favicon:
@@ -14,7 +14,7 @@ export const citationText = tv({
 		cardSnippet: "line-clamp-3 text-muted-foreground text-xs leading-relaxed",
 		cardLink:
 			"inline-flex items-center self-start rounded font-medium text-foreground text-xs underline decoration-border underline-offset-4 outline-none transition-colors hover:decoration-foreground focus-visible:ring-2 focus-visible:ring-ring",
-		sources: "mt-4 grid grid-cols-[minmax(0,1fr)] gap-0.5 border-border border-t pt-3",
+		sources: "mt-4 grid grid-cols-[minmax(0,1fr)] gap-0.5 border-border/60 border-t pt-3",
 		sourcesLabel: "mb-1 font-medium text-muted-foreground text-xs",
 		sourceList: "grid grid-cols-[minmax(0,1fr)] gap-0.5 *:min-w-0",
 		source:

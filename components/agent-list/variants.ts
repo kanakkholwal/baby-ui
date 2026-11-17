@@ -8,7 +8,7 @@ export const agentList = tv({
 		count: "shrink-0 font-medium text-muted-foreground text-xs tabular-nums",
 		list: "flex flex-col",
 		item: [
-			"border-border border-t first:border-t-0",
+			"border-border/60 border-t first:border-t-0",
 			"transition-colors duration-(--duration-base) ease-(--ease-ui-out) data-[status=needs-input]:bg-warning/[0.06] motion-reduce:transition-none",
 		],
 		trigger: [
@@ -53,7 +53,7 @@ export const agentList = tv({
 			},
 			plain: {
 				header: "pb-1",
-				list: "border-border border-y",
+				list: "border-border/60 border-y",
 			},
 		},
 	},

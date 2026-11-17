@@ -18,7 +18,7 @@ export const emailDraft = tv({
 		contentBody:
 			"transition-opacity duration-(--duration-base) data-[sending]:pointer-events-none data-[sending]:opacity-60",
 		fields:
-			"flex min-w-0 items-center justify-between gap-3 border-border border-b py-2 ps-4 pe-3",
+			"flex min-w-0 items-center justify-between gap-3 border-border/60 border-b py-2 ps-4 pe-3",
 		to: "flex min-w-0 items-center gap-2",
 		toLabel: "shrink-0 text-muted-foreground",
 		attachment:
@@ -43,7 +43,8 @@ export const emailDraft = tv({
 			"data-[tone=success]:bg-[color-mix(in_oklch,var(--success)_15%,transparent)] data-[tone=success]:text-success-strong",
 		],
 		receiptText: "min-w-0 flex-1 truncate [&_b]:font-medium [&_b]:text-foreground",
-		footer: "flex min-h-12 items-center gap-2 border-border border-t py-2.5 ps-4 pe-2.5",
+		footer:
+			"flex min-h-12 items-center gap-2 border-border/60 border-t py-2.5 ps-4 pe-2.5",
 		author: "min-w-0 truncate",
 		actions: [
 			"ms-auto grid shrink-0 grid-cols-[1fr] transition-[grid-template-columns,opacity] duration-(--duration-collapse) ease-(--ease-ui-out) motion-reduce:transition-none",
@@ -62,7 +63,7 @@ export const emailDraft = tv({
 			},
 			plain: {
 				root: "overflow-hidden rounded-2xl border border-border bg-background",
-				header: "border-border border-b px-4 py-3",
+				header: "border-border/60 border-b px-4 py-3",
 				panel: "",
 			},
 		},

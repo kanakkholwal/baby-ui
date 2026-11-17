@@ -32,7 +32,7 @@ export const reasoning = tv({
 				trigger: "-mx-1.5 w-fit items-center rounded-md px-1.5 py-1",
 				icon: "mt-0",
 				chevron: "mt-0",
-				content: "mt-1 ml-[5px] border-border border-l px-0 pt-1 pb-1 pl-4",
+				content: "mt-1 ml-[5px] border-border/60 border-l px-0 pt-1 pb-1 pl-4",
 			},
 		},
 	},

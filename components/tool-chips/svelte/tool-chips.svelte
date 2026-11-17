@@ -137,7 +137,7 @@ function toggleRow(label: string) {
 							style:opacity={rowOpen ? 1 : 0}
 						>
 							<div class="min-h-0 overflow-hidden">
-								<div class="mt-0.5 mb-1 ml-2 flex flex-col gap-0.5 border-border border-l py-0.5 pl-3.5">
+								<div class="mt-0.5 mb-1 ml-2 flex flex-col gap-0.5 border-border/60 border-l py-0.5 pl-3.5">
 									{#each row.detail as line (line.text)}
 										<span
 											class={cn(
@@ -157,7 +157,7 @@ function toggleRow(label: string) {
 			</div>
 
 			{#if diffs.length > 0}
-				<div class="mt-2.5 flex max-w-full flex-wrap gap-1.5 border-border border-t pt-2.5">
+				<div class="mt-2.5 flex max-w-full flex-wrap gap-1.5 border-border/60 border-t pt-2.5">
 					{#each diffs as diff, index (diff.file)}
 						<HoverCard>
 							<HoverCardTrigger
@@ -176,7 +176,7 @@ function toggleRow(label: string) {
 									align="start"
 									class="w-72 overflow-hidden rounded-[10px] border-none p-0 shadow-2xl"
 								>
-									<div class="flex items-center justify-between border-border border-b px-2.5 py-1.5 font-mono text-xs">
+									<div class="flex items-center justify-between border-border/60 border-b px-2.5 py-1.5 font-mono text-xs">
 										<span class="min-w-0 truncate text-muted-foreground">{diff.file}</span>
 										<span class="shrink-0 tabular-nums">
 											<span class="text-success-strong">+{diff.add}</span>

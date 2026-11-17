@@ -2,7 +2,7 @@ import { tv, type VariantProps } from "tailwind-variants";
 
 export const caseStudyFlipStack = tv({
 	slots: {
-		root: "relative w-full overflow-y-auto overscroll-contain rounded-2xl border border-border bg-background text-foreground outline-none [container-type:size] focus-visible:ring-2 focus-visible:ring-ring",
+		root: "relative w-full overflow-y-auto overscroll-contain rounded-2xl bg-muted/40 text-foreground outline-none [container-type:size] focus-visible:ring-2 focus-visible:ring-ring",
 		intro: "flex h-[100cqh] flex-col items-center justify-center gap-8 px-5 text-center",
 		hint: "flex items-center gap-3 font-medium text-2xl tracking-tighter @xl:gap-6 @xl:text-4xl",
 		arrow: "case-study-bob size-[1em]",
@@ -14,7 +14,7 @@ export const caseStudyFlipStack = tv({
 		deck: "relative h-[78cqh] w-full max-w-[860px] [perspective:800px] @3xl:aspect-[1.76/1] @3xl:h-auto @3xl:max-h-[78cqh]",
 		article:
 			"absolute inset-0 [--e:clamp(0,calc(var(--scroll-p)*var(--n)_-_var(--i)),1)] [--en:clamp(0,calc((var(--scroll-p)*var(--n)_-_var(--i)_+_1)/0.7),1)] [backface-visibility:hidden] [transform-style:preserve-3d] [transform:translateY(calc(var(--e)*-118%_+_var(--e)*var(--stack)*1px))_rotateX(calc(var(--e)*22deg))] motion-reduce:opacity-[calc(1_-_var(--e))] motion-reduce:[transform:none]",
-		card: "grid h-full origin-bottom grid-rows-[auto_minmax(0,1fr)] gap-0 overflow-hidden rounded-[1.25rem] py-0 shadow-xl [transform:translateY(calc((1_-_var(--en))*var(--rest-y)*1px))_scale(calc(1_-_(1_-_var(--en))*(1_-_var(--rest-s))))] @xl:grid-cols-[1.15fr_0.85fr] @xl:grid-rows-1 motion-reduce:[transform:none]",
+		card: "grid h-full origin-bottom grid-rows-[auto_minmax(0,1fr)] gap-0 overflow-hidden rounded-[1.25rem] py-0 shadow-(--overlay-shadow) [transform:translateY(calc((1_-_var(--en))*var(--rest-y)*1px))_scale(calc(1_-_(1_-_var(--en))*(1_-_var(--rest-s))))] @xl:grid-cols-[1.15fr_0.85fr] @xl:grid-rows-1 motion-reduce:[transform:none]",
 		copy: "flex min-w-0 flex-col p-5 @xl:p-10",
 		number: "font-medium text-2xl leading-none tracking-tighter @xl:text-4xl",
 		eyebrow:

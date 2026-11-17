@@ -58,7 +58,7 @@ export function ContextCards({
 					className="card-fade-up overflow-hidden rounded-2xl bg-card shadow-sm"
 					style={{ animationDelay: `calc(var(--stagger-step) * ${i})` }}
 				>
-					<div className="flex items-center gap-2.5 border-border border-b px-3 py-2">
+					<div className="flex items-center gap-2.5 border-border/60 border-b px-3 py-2">
 						<span className="flex min-w-0 items-center gap-1.5 text-sm font-medium text-foreground">
 							<svg
 								width="11"

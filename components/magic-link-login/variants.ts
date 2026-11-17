@@ -34,7 +34,7 @@ export const magicLinkLogin = tv({
 		resend: "flex flex-col",
 		hint: "text-muted-foreground text-xs leading-relaxed",
 		footer:
-			"mt-6 flex flex-wrap items-center justify-between gap-2 border-border border-t pt-4",
+			"mt-6 flex flex-wrap items-center justify-between gap-2 border-border/60 border-t pt-4",
 		legal: [
 			"text-muted-foreground text-xs leading-relaxed",
 			"[&_a]:text-foreground [&_a]:underline [&_a]:decoration-foreground/30 [&_a]:underline-offset-2",

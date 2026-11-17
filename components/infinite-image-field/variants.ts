@@ -11,7 +11,7 @@ export type InfiniteImageItem = {
 
 export const infiniteImageField = tv({
 	slots: {
-		root: "relative isolate w-full overflow-hidden rounded-xl border border-border bg-background outline-none focus-visible:ring-2 focus-visible:ring-ring",
+		root: "relative isolate w-full overflow-hidden rounded-xl bg-muted/40 outline-none focus-visible:ring-2 focus-visible:ring-ring",
 		canvas: "pointer-events-none absolute inset-0 block size-full",
 		vignette:
 			"pointer-events-none absolute inset-0 bg-radial from-transparent from-55% to-background/70",

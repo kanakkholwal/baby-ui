@@ -28,7 +28,7 @@ export const featureSection = tv({
 				item: "justify-items-center rounded-2xl border border-border p-8 text-center transition-colors duration-(--duration-fast) hover:bg-foreground/[0.03]",
 				icon: "grid size-28 place-items-center before:pointer-events-none before:absolute before:inset-0 before:bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] before:bg-size-[20px_20px] before:[mask-image:radial-gradient(circle,black_30%,transparent_72%)] before:transition-transform before:duration-(--duration-slow) before:ease-(--ease-ui-out) group-hover/feature:before:scale-115 motion-reduce:before:transition-none",
 				iconTile:
-					"size-12 border-border border-t border-l bg-background text-primary [&_svg]:size-6",
+					"size-12 border-border/60 border-t border-l bg-background text-primary [&_svg]:size-6",
 				itemTitle: "mt-2",
 			},
 			// Hairline cells: the gap shows the border colour, so every row and column is ruled.
@@ -52,7 +52,7 @@ export const featureSection = tv({
 				inner:
 					"@4xl/features:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] @4xl/features:gap-x-16 @4xl/features:gap-y-10",
 				header: "@4xl/features:self-end",
-				list: "divide-y divide-border border-border border-y @4xl/features:self-start",
+				list: "divide-y divide-border/60 border-border/60 border-y @4xl/features:self-start",
 				item: "grid-cols-[auto_minmax(0,1fr)] items-center gap-x-3 gap-y-1 py-3.5",
 				iconTile:
 					"text-muted-foreground transition-[translate,color] duration-(--duration-fast) group-hover/feature:translate-x-0.5 group-hover/feature:text-foreground motion-reduce:transition-none [&_svg]:size-5",

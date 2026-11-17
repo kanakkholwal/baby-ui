@@ -36,7 +36,7 @@ export const subscriptionCard = tv({
 				title: "text-base",
 				amount: "text-3xl",
 				alertSpace: "pt-5",
-				footer: "border-border border-t pt-4",
+				footer: "border-border/60 border-t pt-4",
 			},
 			compact: {
 				root: "p-4 *:not-first:mt-3",

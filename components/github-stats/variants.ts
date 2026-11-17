@@ -24,13 +24,13 @@ export const githubStats = tv({
 		calendar: "min-w-0 px-6 pt-5 pb-6 md:px-8",
 		panel: "card-fade-up mt-0 min-w-0 outline-none",
 		// A 1px gap over a border-coloured grid draws every divider, with no doubled edges.
-		counts: "grid grid-cols-2 gap-px border-border border-t bg-border sm:grid-cols-4",
+		counts: "grid grid-cols-2 gap-px border-border/60 border-t bg-border sm:grid-cols-4",
 		count: "flex min-w-0 flex-col gap-1 bg-background px-6 py-5 md:px-8",
 		countValue:
 			"font-heading font-semibold text-2xl text-foreground tabular-nums tracking-tight",
 		countLabel: "text-muted-foreground text-xs",
 		footer:
-			"grid gap-8 border-border border-t px-6 py-6 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] md:gap-12 md:px-8",
+			"grid gap-8 border-border/60 border-t px-6 py-6 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] md:gap-12 md:px-8",
 		sectionTitle: "font-medium text-muted-foreground text-xs",
 		mix: "flex min-w-0 flex-col gap-3",
 		mixBar: "flex h-2.5 w-full gap-[2px] overflow-hidden rounded-full",
