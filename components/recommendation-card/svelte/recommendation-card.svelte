@@ -69,7 +69,7 @@ const others = $derived(
 							selected = index;
 							accepted = false;
 						}}
-						class="flex w-full items-center gap-2.5 rounded-lg px-1.5 py-1.5 text-left transition-colors duration-(--duration-instant) hover:bg-accent"
+						class="flex w-full items-center gap-2.5 rounded-lg px-1.5 py-1.5 text-left outline-none focus-visible:ring-2 focus-visible:ring-ring transition-colors duration-(--duration-instant) hover:bg-accent"
 					>
 						{@render meter(option.signal, option.tone)}
 						<span class="min-w-0 flex-1 truncate text-xs text-foreground">{option.short}</span>

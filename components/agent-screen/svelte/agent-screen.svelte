@@ -89,7 +89,7 @@ function endRecording() {
 		disabled={loading}
 		onclick={() => (open = true)}
 		class={cn(
-			"group/screen relative aspect-[2964/1856] w-full overflow-hidden rounded-2xl bg-muted text-left shadow-sm transition-shadow duration-(--duration-fast)",
+			"group/screen relative aspect-[2964/1856] outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background w-full overflow-hidden rounded-2xl bg-muted text-left shadow-sm transition-shadow duration-(--duration-fast)",
 			!loading && "cursor-pointer hover:shadow-md",
 		)}
 	>

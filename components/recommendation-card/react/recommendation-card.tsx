@@ -95,7 +95,7 @@ export function RecommendationCard({ title, options, labels }: RecommendationCar
 									setSelected(index);
 									setAccepted(false);
 								}}
-								className="flex w-full items-center gap-2.5 rounded-lg px-1.5 py-1.5 text-left transition-colors duration-(--duration-instant) hover:bg-accent"
+								className="flex w-full items-center gap-2.5 rounded-lg px-1.5 py-1.5 text-left outline-none focus-visible:ring-2 focus-visible:ring-ring transition-colors duration-(--duration-instant) hover:bg-accent"
 							>
 								<Meter signal={option.signal} tone={option.tone} />
 								<span className="min-w-0 flex-1 truncate text-xs text-foreground">

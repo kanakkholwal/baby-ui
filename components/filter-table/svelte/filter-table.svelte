@@ -71,7 +71,7 @@ const counts = $derived.by(() => {
 				aria-pressed={active}
 				onclick={() => setFilter(f.key)}
 				class={cn(
-					"flex h-[26px] shrink-0 items-center gap-1.5 rounded-full px-2.5 text-xs font-medium transition-[background-color,box-shadow,color] duration-(--duration-base)",
+					"flex h-[26px] shrink-0 items-center gap-1.5 rounded-full px-2.5 text-xs font-medium outline-none focus-visible:ring-2 focus-visible:ring-ring transition-[background-color,box-shadow,color] duration-(--duration-base)",
 					active ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:bg-accent",
 				)}
 			>

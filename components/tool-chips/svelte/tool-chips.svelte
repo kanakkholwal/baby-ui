@@ -51,7 +51,7 @@ function toggleRow(label: string) {
 		type="button"
 		aria-expanded={open}
 		onclick={() => (open = !open)}
-		class="-mx-1.5 flex w-fit items-center gap-1.5 rounded-md px-1.5 py-1 text-xs text-muted-foreground transition-colors duration-(--duration-instant) hover:bg-accent"
+		class="-mx-1.5 flex w-fit items-center gap-1.5 rounded-md px-1.5 py-1 text-xs outline-none focus-visible:ring-2 focus-visible:ring-ring text-muted-foreground transition-colors duration-(--duration-instant) hover:bg-accent"
 	>
 		<svg
 			width="12"
@@ -85,7 +85,7 @@ function toggleRow(label: string) {
 							type="button"
 							aria-expanded={rowOpen}
 							onclick={() => toggleRow(row.label)}
-							class="group/row -mx-[3px] flex h-7 w-[calc(100%+6px)] min-w-0 items-center gap-2 rounded-md px-[3px] text-left transition-colors duration-(--duration-instant) hover:bg-accent"
+							class="group/row -mx-[3px] flex h-7 outline-none focus-visible:ring-2 focus-visible:ring-ring w-[calc(100%+6px)] min-w-0 items-center gap-2 rounded-md px-[3px] text-left transition-colors duration-(--duration-instant) hover:bg-accent"
 						>
 							<span class="relative flex size-4 shrink-0 items-center justify-center text-muted-foreground">
 								<span
