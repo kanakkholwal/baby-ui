@@ -59,7 +59,7 @@ $effect(() => {
 
 	<HomeInstall slug={showcaseSlug} />
 
-	<HomeBreadth items={data.breadth} categories={data.categories ?? []} emailHtml={data.emailHtml} />
+	<HomeBreadth items={data.breadth} categories={data.categories ?? []} emailHtml={data.emailHtml} ogSlug={data.ogSlug} />
 
 	<HomeShowcase items={data.grid} />
 

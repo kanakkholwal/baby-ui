@@ -12,14 +12,14 @@ type Cell = {
 	props?: Record<string, unknown>;
 };
 
-// Six panels chosen for motion worth watching; only the ones resting in view run.
+// Six compact panels that read at this height; tall stacks and swipers stay on their own pages.
 const CELLS: Cell[] = [
-	{ slug: "orbit-card-stack", span: 7, class: "min-h-85 md:min-h-95" },
+	{ slug: "animated-beam", span: 7, class: "min-h-85 md:min-h-95" },
 	{ slug: "voice-orb", span: 5, class: "min-h-85 md:min-h-95" },
 	{ slug: "notification-stack", span: 5, class: "min-h-85 md:min-h-95" },
 	{ slug: "image-compare", span: 7, class: "min-h-85 md:min-h-95" },
-	{ slug: "card-stack", span: 7, class: "min-h-85 md:min-h-90" },
-	{ slug: "prism-orb", span: 5, class: "min-h-85 md:min-h-90" },
+	{ slug: "github-calendar", span: 7, class: "min-h-85 md:min-h-90" },
+	{ slug: "status-monitor", span: 5, class: "min-h-85 md:min-h-90" },
 ];
 </script>
 

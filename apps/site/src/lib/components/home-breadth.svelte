@@ -1,6 +1,6 @@
 <script lang="ts">
 import { IconArrowRight } from "@baby-ui/icons";
-import { ShowcaseGrid } from "@baby-ui/svelte";
+import { Badge, ShowcaseGrid } from "@baby-ui/svelte";
 import type { CardItem, NavCategory } from "#lib/registry.js";
 import ShowcasePanel from "./showcase-panel.svelte";
 
@@ -8,36 +8,49 @@ let {
 	items,
 	categories,
 	emailHtml,
-}: { items: CardItem[]; categories: NavCategory[]; emailHtml?: string } = $props();
+	ogSlug,
+}: { items: CardItem[]; categories: NavCategory[]; emailHtml?: string; ogSlug: string } =
+	$props();
 
-type Tile = { category: string; slug?: string; title: string; text: string };
+type Tile = {
+	category: string;
+	slug?: string;
+	title: string;
+	text: string;
+	pro?: boolean;
+};
 
 // The four areas most libraries leave out, each shown running rather than described.
-const TILES: Tile[] = [
+const TILES: Tile[] = $derived([
 	{
 		category: "agents",
-		slug: "approval-gate",
+		slug: "tool-chips",
 		title: "Agent UI",
-		text: "Approvals, tool calls, plans and chat.",
+		text: "Tool calls, plans, approvals and chat.",
 	},
 	{
 		category: "charts",
-		slug: "area-chart",
+		slug: "sankey-chart",
 		title: "Charts",
 		text: "d3 and SVG, keyboard navigable.",
 	},
 	{
-		category: "emails",
-		title: "Emails",
-		text: "Transactional templates for React Email and Svelte.",
-	},
-	{
 		category: "og-images",
-		slug: "og-product-launch",
+		slug: ogSlug,
 		title: "OG images",
 		text: "1200 × 630 cards rendered to PNG.",
 	},
-];
+	...(emailHtml
+		? [
+				{
+					category: "emails",
+					title: "Emails",
+					text: "Templates for React Email and Svelte, fitted to your brand.",
+					pro: true,
+				},
+			]
+		: []),
+]);
 
 const hrefOf = (category: string) =>
 	categories.find((c) => c.category === category)?.href ?? "/components";
@@ -63,6 +76,7 @@ const countOf = (category: string) =>
 						<span class="font-medium text-foreground">
 							{tile.title}
 							{#if countOf(tile.category)}<span class="ml-1 text-muted-foreground tabular-nums">{countOf(tile.category)}</span>{/if}
+							{#if tile.pro}<Badge variant="gold" size="sm" class="ml-1.5 align-middle">Pro</Badge>{/if}
 						</span>
 						<span class="text-muted-foreground text-sm">{tile.text}</span>
 					</span>
@@ -85,11 +99,12 @@ const countOf = (category: string) =>
 					{:else if emailHtml}
 						<!-- The real build-time render, scaled to fit; links inside stay inert. -->
 						<iframe
-							title="Welcome email preview"
+							title="Newsletter email preview"
+							scrolling="no"
 							srcdoc={emailHtml}
 							loading="lazy"
 							tabindex="-1"
-							class="pointer-events-none absolute top-0 left-1/2 h-[200%] w-[600px] origin-top -translate-x-1/2 scale-[0.6] border-0"
+							class="pointer-events-none absolute top-0 left-1/2 h-[200%] w-[600px] origin-top -translate-x-1/2 scale-[0.6] overflow-hidden border-0"
 						></iframe>
 					{/if}
 				</div>
