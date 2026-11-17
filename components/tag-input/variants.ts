@@ -1,15 +1,13 @@
 import { tv, type VariantProps } from "tailwind-variants";
 import type { BadgeSize } from "../badge/variants";
-import { fieldText } from "../lib/control";
+import { fieldGroup, fieldText } from "../lib/control";
 
 /** The same chip field as MultiSelect: Badge chips that pop in, one ring for the whole field. */
 export const tagInput = tv({
 	slots: {
 		root: [
-			"flex w-full min-w-0 cursor-text flex-wrap items-center gap-1 border border-input bg-(--field)",
-			"transition-[box-shadow,border-color] duration-[var(--duration-press)] ease-[var(--ease-ui-out)] motion-reduce:transition-none",
-			"hover:border-border-strong focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/20",
-			"aria-invalid:border-destructive aria-invalid:ring-destructive/20 data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+			"flex w-full min-w-0 cursor-text flex-wrap items-center gap-1",
+			fieldGroup({ kind: "input" }),
 		],
 		chip: "pop-in max-w-40 gap-1 pr-0.5 transition-shadow data-[armed=true]:ring-2 data-[armed=true]:ring-ring",
 		chipLabel: "min-w-0 truncate",

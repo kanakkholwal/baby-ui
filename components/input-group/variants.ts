@@ -1,15 +1,11 @@
 import { tv, type VariantProps } from "tailwind-variants";
-import { fieldText } from "../lib/control";
+import { fieldGroup, fieldText } from "../lib/control";
 
 export const inputGroup = tv({
 	slots: {
 		root: [
-			"group/input-group relative flex w-full min-w-0 items-center border border-input bg-[var(--field,var(--background))] outline-none",
-			"has-[[data-slot=input-group-control]:disabled]:cursor-not-allowed has-[[data-slot=input-group-control]:disabled]:opacity-50",
-			"transition-[box-shadow,border-color] duration-(--duration-fast) ease-(--ease-ui-out) motion-reduce:transition-none",
-			"hover:border-border-strong",
-			"has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot=input-group-control]:focus-visible]:ring-ring/20",
-			"has-[[data-slot][aria-invalid=true]]:border-destructive has-[[data-slot][aria-invalid=true]]:ring-destructive/20",
+			"group/input-group relative flex w-full min-w-0 items-center",
+			fieldGroup({ kind: "input" }),
 			"has-[>textarea]:h-auto has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-end]]:flex-col has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-start]]:flex-col",
 			"has-[>[data-align=inline-start]]:[&>input]:pl-1.5 has-[>[data-align=inline-end]]:[&>input]:pr-1.5",
 			"has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=block-end]]:[&>input]:pt-3",

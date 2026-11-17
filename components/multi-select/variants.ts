@@ -1,15 +1,13 @@
 import { tv, type VariantProps } from "tailwind-variants";
 import type { BadgeSize } from "../badge/variants";
+import { fieldGroup } from "../lib/control";
 
 export const multiSelect = tv({
 	slots: {
 		// The whole field anchors the list, so it drops straight below at full width.
 		root: [
-			"flex w-full min-w-0 flex-wrap items-center gap-1 border border-input bg-(--field)",
-			"transition-[box-shadow,border-color] duration-[var(--duration-press)] ease-[var(--ease-ui-out)] motion-reduce:transition-none",
-			"hover:border-border-strong has-[[role=combobox]:focus-visible]:border-ring",
-			"has-[[role=combobox][data-popup-open]]:border-border-strong has-[[role=combobox][data-state=open]]:border-border-strong",
-			"has-[[aria-invalid=true]]:border-destructive data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+			"flex w-full min-w-0 flex-wrap items-center gap-1",
+			fieldGroup({ kind: "trigger" }),
 		],
 		chip: "pop-in max-w-40 gap-1 pr-0.5",
 		chipLabel: "min-w-0 truncate",

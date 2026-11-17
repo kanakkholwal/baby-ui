@@ -38,6 +38,30 @@ export const fieldFrame = tv({
 	defaultVariants: { kind: "input" },
 });
 
+/**
+ * The frame of a composite field (addons, chips, steppers): one edge for the whole group,
+ * driven by whichever descendant has focus, is invalid or is disabled.
+ * `trigger` stays calm (no halo) and marks an open popup, as fieldFrame does.
+ */
+export const fieldGroup = tv({
+	base: [
+		"border border-input bg-[var(--field,var(--background))] text-foreground outline-none",
+		"transition-[color,border-color,box-shadow] duration-(--duration-fast) ease-(--ease-ui-out) motion-reduce:transition-none",
+		"hover:border-border-strong has-[:focus-visible]:border-ring has-[[aria-invalid=true]]:border-destructive aria-invalid:border-destructive",
+		"has-[input:disabled]:cursor-not-allowed has-[input:disabled]:opacity-50 has-[textarea:disabled]:cursor-not-allowed has-[textarea:disabled]:opacity-50",
+		"data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+	],
+	variants: {
+		kind: {
+			input:
+				"has-[:focus-visible]:ring-3 has-[:focus-visible]:ring-ring/20 has-[[aria-invalid=true]]:ring-destructive/20 aria-invalid:ring-destructive/20",
+			trigger:
+				"has-[[data-popup-open]]:border-border-strong has-[[data-state=open]]:border-border-strong",
+		},
+	},
+	defaultVariants: { kind: "input" },
+});
+
 /** The opt-in soft halo around a focused text field: Input and Textarea's `ring` variant. */
 export const fieldHalo = tv({
 	base: "focus-visible:ring-3 focus-visible:ring-ring/20 aria-invalid:ring-destructive/20",

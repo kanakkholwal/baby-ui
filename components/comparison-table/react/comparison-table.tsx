@@ -1,8 +1,9 @@
 "use client";
 
-import { Fragment, useId, useState } from "react";
+import { Fragment, useId } from "react";
 import { Button } from "../../button/react/button";
 import { cn } from "../../lib/cn";
+import { useControllable } from "../../lib/react/use-controllable";
 import { RollingDigits } from "../../rolling-digits/react/rolling-digits";
 import { Switch } from "../../switch/react/switch";
 import { ToggleGroup, ToggleGroupItem } from "../../toggle-group/react/toggle-group";
@@ -75,12 +76,13 @@ export function ComparisonTable({
 }: ComparisonTableProps) {
 	const id = useId();
 	const s = comparisonTable({ variant });
-	const [ownDiff, setOwnDiff] = useState(false);
-	const [ownBilling, setOwnBilling] = useState<ComparisonBilling>("monthly");
-	const [ownValue, setOwnValue] = useState<string | null>(null);
-	const diff = diffProp ?? ownDiff;
-	const billing = billingProp ?? ownBilling;
-	const chosen = value !== undefined ? value : ownValue;
+	const [diff, setDiff] = useControllable(diffProp, false, onDifferencesOnlyChange);
+	const [billing, setBillingValue] = useControllable<ComparisonBilling>(
+		billingProp,
+		"monthly",
+		onBillingChange,
+	);
+	const [chosen, setChosen] = useControllable<string | null>(value, null, onValueChange);
 	const money = new Intl.NumberFormat(locale, {
 		style: "currency",
 		currency: "USD",
@@ -88,20 +90,14 @@ export function ComparisonTable({
 	});
 	const rows = sections.flatMap((section) => section.rows);
 	const shown = rows.filter((row) => !(diff && rowIsShared(row, columns))).length;
-	const setDiff = (next: boolean) => {
-		if (diffProp === undefined) setOwnDiff(next);
-		onDifferencesOnlyChange?.(next);
-	};
 	const setBilling = (next: string | string[]) => {
 		const picked = next === "yearly" ? "yearly" : next === "monthly" ? "monthly" : null;
 		if (!picked) return;
-		if (billingProp === undefined) setOwnBilling(picked);
-		onBillingChange?.(picked);
+		setBillingValue(picked);
 	};
 	const choose = (column: ComparisonColumn) => {
 		const next = chosen === column.id ? null : column.id;
-		if (value === undefined) setOwnValue(next);
-		onValueChange?.(next);
+		setChosen(next);
 		column.action?.onClick?.();
 	};
 
