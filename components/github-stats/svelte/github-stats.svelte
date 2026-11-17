@@ -197,7 +197,7 @@ const countFormat = (value: number) => formatCount(Math.round(value), locale);
 							{formatCount(facts.best.count, locale)}
 							<span class={styles.insightNote()}>{formatDay(facts.best.date, locale)}</span>
 						{:else}
-							–
+							-
 						{/if}
 					</dd>
 				</div>

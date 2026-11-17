@@ -28,7 +28,7 @@ export const magicLinkLogin = tv({
 		error: "block text-destructive-strong text-xs leading-relaxed",
 		submit: "w-full",
 		sentIcon:
-			"flex size-10 items-center justify-center rounded-full border border-border text-foreground [&_svg]:size-4.5",
+			"flex size-10 items-center justify-center rounded-full bg-muted text-foreground [&_svg]:size-4.5",
 		address: "break-all font-medium text-foreground",
 		actions: "flex flex-col gap-2",
 		resend: "flex flex-col",
@@ -43,13 +43,13 @@ export const magicLinkLogin = tv({
 	},
 	variants: {
 		variant: {
-			card: { panel: "rounded-2xl border border-border bg-card p-6 sm:p-8" },
+			card: { panel: "rounded-2xl bg-card p-6 sm:p-8" },
 			plain: {},
 		},
 		layout: {
 			centered: { root: "max-w-sm" },
 			split: {
-				root: "grid max-w-3xl overflow-hidden rounded-2xl border border-border bg-card md:grid-cols-2",
+				root: "grid max-w-3xl overflow-hidden rounded-2xl bg-card md:grid-cols-2",
 				aside:
 					"hidden flex-col justify-between gap-6 border-border p-8 text-sm md:flex md:border-r",
 				panel: "p-6 sm:p-8",

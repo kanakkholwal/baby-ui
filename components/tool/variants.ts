@@ -39,7 +39,7 @@ export const tool = tv({
 		/** `card` is a bordered row with its own surface; `plain` sits inline in a chat turn. */
 		variant: {
 			card: {
-				root: "overflow-hidden rounded-xl border border-border bg-card",
+				root: "overflow-hidden rounded-xl bg-card",
 				trigger: "min-h-10 px-3 hover:bg-foreground/[0.03]",
 				body: "border-border/60 border-t p-3",
 			},

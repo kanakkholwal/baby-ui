@@ -23,7 +23,7 @@ export const integrationSection = tv({
 			// A card per tool: logo, name, two lines of copy, then a dashed rule over the link.
 			grid: {
 				list: "grid gap-3 @xl/integrations:grid-cols-2 @4xl/integrations:grid-cols-3",
-				item: "grid content-start gap-2 rounded-2xl border border-border p-6 transition-colors duration-(--duration-fast) hover:bg-foreground/[0.03] data-[featured=true]:border-primary/40 data-[featured=true]:bg-primary/[0.04]",
+				item: "grid content-start gap-2 rounded-2xl p-6 transition-colors duration-(--duration-fast) hover:bg-foreground/[0.03] data-[featured=true]:border-primary/40 data-[featured=true]:bg-primary/[0.04]",
 				logo: "mb-4 size-10 [&_img]:size-8 [&_svg]:size-8",
 				link: "group/integration-link mt-4 w-fit border-border/60 border-t border-dashed pt-4 font-medium text-sm outline-none focus-visible:underline [&>span]:inline-flex [&>span]:items-center [&>span]:gap-1",
 			},

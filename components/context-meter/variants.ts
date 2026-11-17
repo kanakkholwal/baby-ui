@@ -46,9 +46,9 @@ export const contextMeter = tv({
 		/** `framed` holds the meter in a card rim under its header; `plain` drops the chrome. */
 		variant: {
 			framed: {
-				root: "rounded-2xl border border-border bg-card p-1",
+				root: "rounded-2xl bg-card p-1",
 				header: "px-4 pt-3 pb-3.5",
-				body: "rounded-[11px] border border-border bg-background",
+				body: "rounded-[11px] bg-background",
 			},
 			plain: {
 				header: "pb-1",

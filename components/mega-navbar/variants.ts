@@ -49,7 +49,7 @@ export const megaNavbar = tv({
 		// Expand: the bar itself grows down into the open section's panel.
 		expandBar: [
 			// Concentric: a 16px bar round 8px padding round the ladder's 8px-radius h-9 controls.
-			"absolute inset-x-0 top-0 mx-auto grid w-full max-w-6xl grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-4 overflow-hidden rounded-2xl border border-border bg-background/85 p-2 backdrop-blur-xl backdrop-saturate-150 @3xl:gap-x-6",
+			"absolute inset-x-0 top-0 mx-auto grid w-full max-w-6xl grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-4 overflow-hidden rounded-2xl bg-background/85 p-2 backdrop-blur-xl backdrop-saturate-150 @3xl:gap-x-6",
 			// A bright top edge reads as light catching the material; the cast shadow lands once raised.
 			"shadow-[inset_0_1px_0_rgb(255_255_255/0.06)] transition-[background-color,border-color,box-shadow] duration-300 ease-(--ease-ui-out) data-[open=false]:data-[raised=true]:shadow-[inset_0_1px_0_rgb(255_255_255/0.06),0_28px_56px_-28px_rgb(0_0_0/0.4)] motion-reduce:transition-none",
 			// Open, the bar becomes a popover: the same fill and edge as every other floating panel.
@@ -101,7 +101,7 @@ export const megaNavbar = tv({
 			"motion-reduce:translate-y-0 motion-reduce:blur-none motion-reduce:[transition-delay:0ms]",
 		],
 		expandIcon:
-			"grid size-9 place-items-center rounded-lg border border-border bg-muted/60 text-foreground shadow-xs transition-transform duration-(--duration-fast) ease-out group-hover/item:scale-105 group-active/item:scale-95 motion-reduce:transition-none [&_svg]:size-[1.125rem]",
+			"grid size-9 place-items-center rounded-lg bg-muted/60 text-foreground shadow-xs transition-transform duration-(--duration-fast) ease-out group-hover/item:scale-105 group-active/item:scale-95 motion-reduce:transition-none [&_svg]:size-[1.125rem]",
 		expandLabel:
 			"flex items-center gap-1 font-medium text-foreground text-sm leading-tight",
 		expandDetail: "mt-1 text-pretty text-[0.8125rem] text-muted-foreground leading-snug",
@@ -126,7 +126,7 @@ export const megaNavbar = tv({
 			},
 			capsule: {
 				root: "border-b",
-				capsule: "rounded-full border border-border bg-muted/40 p-1",
+				capsule: "rounded-full bg-muted/40 p-1",
 				trigger: "relative z-1",
 				link: "relative z-1",
 			},

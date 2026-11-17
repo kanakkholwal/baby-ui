@@ -29,13 +29,13 @@ export const pricing02 = tv({
 		listLabel: "font-medium text-xs text-muted-foreground uppercase tracking-widest",
 		features: "mt-5 flex flex-col gap-4",
 		feature: "flex items-center gap-2.5 text-foreground/80 text-sm",
-		tick: "flex size-5 shrink-0 items-center justify-center rounded-full border border-border bg-background text-muted-foreground",
+		tick: "flex size-5 shrink-0 items-center justify-center rounded-full bg-background text-muted-foreground",
 		footnotes:
 			"mt-5 flex flex-col gap-2 text-muted-foreground text-xs @xl:flex-row @xl:items-center @xl:justify-between",
 	},
 	variants: {
 		variant: {
-			soft: { panel: "border border-border bg-background shadow-sm" },
+			soft: { panel: "bg-card" },
 			outline: { panel: "border border-border border-dashed bg-transparent" },
 		},
 		featured: {

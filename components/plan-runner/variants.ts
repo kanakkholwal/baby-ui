@@ -49,9 +49,9 @@ export const planRunner = tv({
 		/** `framed` holds the plan in a card rim under its header; `plain` drops the chrome. */
 		variant: {
 			framed: {
-				root: "rounded-2xl border border-border bg-card p-1",
+				root: "rounded-2xl bg-card p-1",
 				header: "px-3 pt-1 pb-1.5",
-				body: "gap-4 rounded-[11px] border border-border bg-background p-4",
+				body: "gap-4 rounded-[11px] bg-background p-4",
 				footer: "px-3",
 			},
 			plain: {

@@ -72,7 +72,7 @@ export const fieldLegend = tv({
 		variant: {
 			legend: "text-base",
 			label: "text-sm",
-			eyebrow: "mb-2 text-muted-foreground text-xs uppercase tracking-wider",
+			eyebrow: "mb-2 text-muted-foreground text-xs",
 		},
 	},
 	defaultVariants: { variant: "legend" },

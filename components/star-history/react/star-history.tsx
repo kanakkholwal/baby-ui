@@ -182,7 +182,7 @@ export function StarHistory({
 										</span>
 									</>
 								) : (
-									"–"
+									"-"
 								)}
 							</Fact>
 							<Fact label={labels.milestone} styles={styles}>
@@ -194,7 +194,7 @@ export function StarHistory({
 										</span>
 									</>
 								) : (
-									"–"
+									"-"
 								)}
 							</Fact>
 							<Fact label={labels.nextMilestone} styles={styles}>
@@ -211,7 +211,7 @@ export function StarHistory({
 										) : null}
 									</>
 								) : (
-									"–"
+									"-"
 								)}
 							</Fact>
 						</dl>
@@ -246,13 +246,13 @@ export function StarHistory({
 			{data.length > 0 ? (
 				<dl className={styles.counts()}>
 					<Count label={labels.firstStar} styles={styles}>
-						{first ? formatDate(first, locale, FULL_DATE) : "–"}
+						{first ? formatDate(first, locale, FULL_DATE) : "-"}
 					</Count>
 					<Count label={labels.avgPerDay} styles={styles}>
 						{compact(averagePerDay(data))}
 					</Count>
 					<Count label={labels.lastStar} styles={styles}>
-						{lastStar ? formatDate(lastStar, locale, SHORT_DATE) : "–"}
+						{lastStar ? formatDate(lastStar, locale, SHORT_DATE) : "-"}
 					</Count>
 				</dl>
 			) : null}

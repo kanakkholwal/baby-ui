@@ -7,7 +7,7 @@ export const licenseKey = tv({
 		heading: "flex min-w-0 flex-col gap-1",
 		title: "font-semibold text-base tracking-tight",
 		description: "max-w-prose text-muted-foreground text-sm leading-relaxed",
-		pass: "flex flex-col gap-5 rounded-2xl border border-border bg-card p-5 @md:p-6",
+		pass: "flex flex-col gap-5 rounded-2xl bg-card p-5 @md:p-6",
 		passHeader: "flex items-center justify-between gap-3",
 		brand: "flex min-w-0 items-center gap-2 font-mono text-muted-foreground text-xs",
 		glyph: "flex shrink-0 text-muted-foreground [&_svg]:size-3.5",
@@ -21,7 +21,7 @@ export const licenseKey = tv({
 		value:
 			"flex min-w-0 flex-wrap items-center gap-1.5 font-mono text-base [perspective:600px] @md:text-lg",
 		valuePrefix: "mr-1 text-muted-foreground text-sm @md:text-base",
-		chip: "inline-block rounded-lg border border-border bg-background px-2 py-1 text-foreground tabular-nums tracking-wider",
+		chip: "inline-block rounded-lg bg-background px-2 py-1 text-foreground tabular-nums tracking-wider",
 		actions: "flex shrink-0 items-center gap-0.5",
 		action: "text-muted-foreground hover:text-foreground",
 		// pathLength=1 on the slash, so a dash of 1 hides it and 0 draws it in.
@@ -36,7 +36,7 @@ export const licenseKey = tv({
 		pips: "flex items-center gap-1",
 		// Each pip grows in from the left on first paint, staggered by its index.
 		pip: "h-1.5 w-3.5 origin-left rounded-full bg-foreground/[0.12] transition-[scale] duration-(--duration-slow) ease-[var(--ease-out-quart)] starting:scale-x-0 data-[on]:bg-foreground motion-reduce:transition-none",
-		confirm: "flex flex-col gap-3 rounded-xl border border-border p-4",
+		confirm: "flex flex-col gap-3 rounded-xl bg-muted p-4",
 		confirmTitle: "font-medium text-sm",
 		confirmBody: "text-muted-foreground text-sm leading-relaxed",
 		confirmActions: "flex flex-wrap justify-end gap-2",
@@ -48,12 +48,12 @@ export const licenseKey = tv({
 			"after:absolute after:top-8 after:-bottom-5 after:left-[0.875rem] after:w-px after:bg-border last:after:hidden",
 		],
 		stepNumber: [
-			"flex size-7 items-center justify-center rounded-full border border-border bg-background",
+			"flex size-7 items-center justify-center rounded-full bg-background",
 			"font-mono text-muted-foreground text-xs before:content-[counter(license-step)]",
 		],
 		stepBody: "flex min-w-0 flex-col gap-2 pt-1",
 		stepTitle: "font-medium text-sm",
-		code: "relative min-w-0 rounded-lg border border-border bg-background",
+		code: "relative min-w-0 rounded-lg bg-background",
 		pre: "overflow-x-auto rounded-lg p-3 pr-12 font-mono text-xs leading-relaxed outline-none focus-visible:ring-2 focus-visible:ring-ring",
 		codeCopy: "absolute top-1.5 right-1.5",
 	},

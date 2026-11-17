@@ -25,7 +25,7 @@ export const newsletterSignup = tv({
 		// Every issue shares one cell, so the stack is as tall as its tallest issue.
 		stack: "grid pt-6",
 		issue:
-			"col-start-1 row-start-1 grid origin-top content-start gap-2 rounded-2xl border border-border bg-background p-5 shadow-xs transition-[translate,scale,opacity] duration-(--duration-spring-snappy) ease-(--ease-spring-snappy) motion-reduce:transition-none",
+			"col-start-1 row-start-1 grid origin-top content-start gap-2 rounded-2xl bg-card p-5 shadow-xs transition-[translate,scale,opacity] duration-(--duration-spring-snappy) ease-(--ease-spring-snappy) motion-reduce:transition-none",
 		issueHead: "flex items-center justify-between gap-3 text-xs",
 		masthead: "font-semibold tracking-tight",
 		issueNumber: "text-muted-foreground tabular-nums",
@@ -45,8 +45,7 @@ export const newsletterSignup = tv({
 					"max-w-280 px-4 py-16 @3xl/news:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] @3xl/news:gap-16 @xl/news:px-8",
 			},
 			card: {
-				layout:
-					"max-w-110 gap-6 rounded-3xl border border-border bg-background p-5 @md/news:p-6",
+				layout: "max-w-110 gap-6 rounded-3xl bg-card p-5 @md/news:p-6",
 				stack: "order-first",
 			},
 		},

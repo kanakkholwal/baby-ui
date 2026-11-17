@@ -14,7 +14,7 @@ export const footer = tv({
 		description: "mt-6 max-w-sm text-pretty text-muted-foreground text-sm",
 		socials: "mt-7 flex items-center gap-2",
 		social:
-			"grid size-9 place-items-center rounded-lg border border-border bg-background text-muted-foreground transition-colors hover:text-foreground motion-reduce:transition-none [&_svg]:size-4",
+			"grid size-9 place-items-center rounded-lg bg-card text-muted-foreground transition-colors hover:text-foreground motion-reduce:transition-none [&_svg]:size-4",
 		copyright: "mt-7 text-muted-foreground text-xs",
 		legal: "mt-3 flex flex-wrap gap-x-4 gap-y-1",
 		actions: "mt-4 flex items-center gap-1",

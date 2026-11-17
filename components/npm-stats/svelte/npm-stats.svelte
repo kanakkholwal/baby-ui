@@ -133,7 +133,7 @@ function setRange(next: string | string[]) {
 						{compact(facts.peak.value)}
 						<span class={styles.factNote()}>{formatDayTick(facts.peak.date, locale)}</span>
 					{:else}
-						–
+						-
 					{/if}
 				</dd>
 			</div>
@@ -146,7 +146,7 @@ function setRange(next: string | string[]) {
 							{labels.overAverage(formatChange(facts.weekday.lift, locale))}
 						</span>
 					{:else}
-						–
+						-
 					{/if}
 				</dd>
 			</div>
@@ -157,7 +157,7 @@ function setRange(next: string | string[]) {
 						<span class="font-mono">{facts.leader.name}</span>
 						<span class={styles.factNote()}>{formatChange(facts.leader.ratio, locale)}</span>
 					{:else}
-						–
+						-
 					{/if}
 				</dd>
 			</div>

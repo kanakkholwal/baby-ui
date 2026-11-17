@@ -35,9 +35,7 @@ export function CodeBlock({
 			)}
 		>
 			<div className="flex min-h-8 items-center gap-2 px-1 pb-1">
-				<span className="inline-flex h-5 shrink-0 items-center rounded bg-background px-1.5 font-mono font-semibold text-xs text-muted-foreground uppercase tracking-wider">
-					{language}
-				</span>
+				<span className="shrink-0 font-mono text-foreground text-xs">{language}</span>
 				{filename ? (
 					<span className="truncate font-mono text-muted-foreground text-xs">
 						{filename}

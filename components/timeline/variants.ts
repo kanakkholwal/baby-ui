@@ -20,7 +20,7 @@ export const timelineScale = tv({
 		],
 		tick: "pointer-events-none absolute z-1 block bg-border-strong transition-[scale,background-color] duration-(--duration-fast) group-data-[active]/timeline-scale-item:bg-foreground",
 		date: "relative z-1 whitespace-nowrap text-muted-foreground text-xs tabular-nums",
-		year: "pointer-events-none absolute font-medium text-foreground/[0.06] leading-none tracking-tighter tabular-nums",
+		year: "pointer-events-none absolute font-medium text-foreground/[0.06] leading-none tracking-tight tabular-nums",
 		content: "relative z-1 min-w-0",
 	},
 	variants: {

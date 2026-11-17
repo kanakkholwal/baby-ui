@@ -30,7 +30,7 @@ export const authForm = tv({
 		/** `card` frames the form on a bordered surface; `plain` sits on the page. */
 		variant: {
 			card: {
-				root: "rounded-2xl border border-border bg-background p-6 shadow-sm @md:p-8",
+				root: "rounded-2xl bg-card p-6 shadow-sm @md:p-8",
 			},
 			plain: {},
 		},

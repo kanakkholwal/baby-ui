@@ -84,7 +84,7 @@ export const reasoningExtras = tv({
 			"rounded-full transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
 		source: "pop-in rounded-full text-foreground/70",
 		figure: "pop-in mt-2",
-		image: "w-full max-w-[220px] rounded-lg border border-border object-cover",
+		image: "w-full max-w-[220px] rounded-lg object-cover",
 		caption: "mt-1 text-xs text-muted-foreground",
 	},
 });

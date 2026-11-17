@@ -62,7 +62,7 @@ export const agentActivity = tv({
 		variant: {
 			plain: {},
 			card: {
-				root: "rounded-xl border border-border bg-card px-3 py-1.5",
+				root: "rounded-xl bg-card px-3 py-1.5",
 				trigger: "mx-0",
 			},
 		},

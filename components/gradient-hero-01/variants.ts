@@ -24,7 +24,7 @@ export const gradientHero01 = tv({
 		action: "min-w-36",
 		copy: "flex flex-col items-center @4xl:group-has-[>[data-slot=gradient-hero-01-media]]/hero:items-start",
 		install:
-			"mt-8 inline-flex h-10 items-center gap-2 rounded-full border border-border bg-background/60 pr-1 pl-4 font-mono text-muted-foreground text-sm backdrop-blur-md",
+			"mt-8 inline-flex h-10 items-center gap-2 rounded-full bg-background/60 pr-1 pl-4 font-mono text-muted-foreground text-sm backdrop-blur-md",
 		meta: "mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-muted-foreground text-xs [&>li+li]:before:mr-3 [&>li+li]:before:content-['·'] @4xl:group-has-[>[data-slot=gradient-hero-01-media]]/hero:justify-start",
 		media: "mt-12 w-full @4xl:mt-0",
 	},

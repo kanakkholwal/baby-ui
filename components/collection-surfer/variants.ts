@@ -5,9 +5,9 @@ export const collectionSurfer = tv({
 		root: "relative w-full overflow-y-auto overscroll-contain rounded-2xl bg-muted/40 text-foreground outline-none [container-type:size] [scrollbar-width:none] focus-visible:ring-2 focus-visible:ring-ring",
 		stage: "sticky top-0 h-[100cqh] w-full overflow-hidden",
 		title:
-			"pointer-events-none absolute top-5 left-5 z-50 max-w-[80%] font-bold text-3xl uppercase leading-[0.9] tracking-tighter @xl:text-5xl",
+			"pointer-events-none absolute top-5 left-5 z-50 max-w-[80%] font-bold text-3xl uppercase leading-[0.9] tracking-tight @xl:text-5xl",
 		count: "relative top-[0.6em] ml-2 align-top font-mono text-[0.4em] tabular-nums",
-		hint: "pointer-events-none absolute right-5 bottom-5 z-50 font-mono text-muted-foreground text-xs uppercase tracking-wider",
+		hint: "pointer-events-none absolute right-5 bottom-5 z-50 font-mono text-muted-foreground text-xs",
 		scene:
 			"absolute inset-0 flex items-center justify-center [perspective-origin:10%_10%] [perspective:2000px]",
 		track:

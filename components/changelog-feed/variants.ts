@@ -17,7 +17,7 @@ export const changelogFeed = tv({
 		monthInner: "relative min-h-0 overflow-clip",
 		// Each month heading sticks while its entries scroll under it.
 		monthLabel:
-			"sticky top-0 z-1 border-border/60 border-b bg-background/90 py-2 font-medium text-muted-foreground text-xs uppercase tracking-wider backdrop-blur",
+			"sticky top-0 z-1 border-border/60 border-b bg-background/90 py-2 font-medium text-muted-foreground text-xs backdrop-blur",
 		list: "divide-y-0 rounded-none border-0",
 		row: "grid grid-rows-[1fr] border-border/60 border-b opacity-100 transition-[grid-template-rows,opacity,border-color] duration-(--duration-collapse) ease-(--ease-out-quad) data-[hidden=true]:grid-rows-[0fr] data-[hidden=true]:border-transparent data-[hidden=true]:opacity-0 motion-reduce:transition-none",
 		rowInner: "min-h-0 overflow-hidden",

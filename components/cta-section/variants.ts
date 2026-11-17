@@ -21,14 +21,13 @@ export const ctaSection = tv({
 		points: "mt-2 grid gap-2",
 		point:
 			"flex items-center gap-3 text-muted-foreground text-sm [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-success",
-		stage:
-			"grid min-h-80 place-items-center rounded-3xl border border-border bg-background p-5 @xl/cta:p-8",
+		stage: "grid min-h-80 place-items-center rounded-3xl bg-card p-5 @xl/cta:p-8",
 		// The banner folds its own row closed on dismiss, so the page below rises instead of jumping.
 		collapse:
 			"grid grid-rows-[1fr] transition-[grid-template-rows,opacity] duration-(--duration-collapse) ease-(--ease-out-quad) data-[open=false]:grid-rows-[0fr] data-[open=false]:opacity-0 motion-reduce:transition-none",
 		collapseInner: "min-h-0 overflow-hidden",
 		banner:
-			"flex flex-col items-start gap-4 rounded-2xl border border-border bg-background p-4 @xl/cta:flex-row @xl/cta:items-center @xl/cta:justify-between @xl/cta:py-2.5 @xl/cta:pr-2.5 @xl/cta:pl-5",
+			"flex flex-col items-start gap-4 rounded-2xl bg-card p-4 @xl/cta:flex-row @xl/cta:items-center @xl/cta:justify-between @xl/cta:py-2.5 @xl/cta:pr-2.5 @xl/cta:pl-5",
 		bannerText:
 			"flex min-w-0 flex-wrap items-baseline gap-x-2 gap-y-0.5 text-sm leading-relaxed",
 		bannerTitle: "font-medium",
@@ -40,7 +39,7 @@ export const ctaSection = tv({
 		variant: {
 			centered: {
 				panel:
-					"grid justify-items-center gap-4 rounded-3xl border border-border bg-background px-5 py-16 text-center @xl/cta:px-8 @xl/cta:py-24",
+					"grid justify-items-center gap-4 rounded-3xl bg-card px-5 py-16 text-center @xl/cta:px-8 @xl/cta:py-24",
 				copy: "justify-items-center",
 				actions: "@xl/cta:justify-center",
 				form: "mx-auto",

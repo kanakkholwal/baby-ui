@@ -13,7 +13,7 @@ export const orbitCardStack = tv({
 		link: "absolute top-6 right-6 rounded-full shadow-(--overlay-shadow)",
 		body: "px-2 pt-5 pb-2",
 		role: "font-semibold text-xs text-muted-foreground uppercase tracking-widest",
-		name: "mt-2 font-semibold leading-none tracking-tighter",
+		name: "mt-2 font-semibold leading-none tracking-tight",
 		description: "mt-3 font-medium text-muted-foreground leading-[1.42]",
 		stat: "mt-4 border-border/60 border-t pt-3 font-bold text-xs text-muted-foreground uppercase tracking-widest",
 	},

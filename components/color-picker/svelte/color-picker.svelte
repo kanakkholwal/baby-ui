@@ -359,7 +359,7 @@ const FORMATS: ColorFormat[] = ["hsv", "hsl", "rgb"];
 						spellcheck="false"
 						autocomplete="off"
 						oninput={(e) => typeHex(e.currentTarget.value)}
-						class="h-6 min-w-0 flex-1 bg-transparent font-mono text-xs text-foreground uppercase outline-none"
+						class="h-6 min-w-0 flex-1 bg-transparent font-mono text-xs text-foreground outline-none"
 					/>
 				</div>
 			</div>
@@ -372,7 +372,7 @@ const FORMATS: ColorFormat[] = ["hsv", "hsl", "rgb"];
 						type="button"
 						onclick={() => (format = option)}
 						aria-pressed={format === option}
-						class="h-5 flex-1 rounded font-mono text-xs text-muted-foreground uppercase transition-colors aria-pressed:bg-background aria-pressed:text-foreground"
+						class="h-5 flex-1 rounded font-mono text-xs text-muted-foreground transition-colors aria-pressed:bg-background aria-pressed:text-foreground"
 					>
 						{option}
 					</button>

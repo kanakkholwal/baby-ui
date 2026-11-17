@@ -57,13 +57,13 @@ export const taskSteps = tv({
 			timeline: {},
 			capsules: {
 				root: "max-w-[27.5rem] gap-2",
-				item: "card-fade-up overflow-hidden rounded-[22px] border border-border bg-background transition-[border-radius,background-color] duration-(--duration-slow) has-[[data-panel-open]]:rounded-[14px] has-[[data-state=open]]:rounded-[14px]",
+				item: "card-fade-up overflow-hidden rounded-[22px] bg-card transition-[border-radius,background-color] duration-(--duration-slow) has-[[data-panel-open]]:rounded-[14px] has-[[data-state=open]]:rounded-[14px]",
 				row: "items-center pe-1",
 				label: "truncate font-medium text-sm",
 				progress: "mx-2.5 mb-2 w-auto max-w-none",
 			},
 			list: {
-				root: "max-w-[27.5rem] gap-0 self-start overflow-hidden rounded-2xl border border-border bg-background",
+				root: "max-w-[27.5rem] gap-0 self-start overflow-hidden rounded-2xl bg-card",
 				item: "card-fade-up border-border/60 border-b transition-colors duration-(--duration-slow) last:border-0",
 				row: "items-center pe-1",
 				label: "truncate font-medium text-sm",

@@ -420,7 +420,7 @@ export function ColorPicker({
 							spellCheck={false}
 							autoComplete="off"
 							onChange={(e) => typeHex(e.currentTarget.value)}
-							className="h-6 min-w-0 flex-1 bg-transparent font-mono text-xs text-foreground uppercase outline-none"
+							className="h-6 min-w-0 flex-1 bg-transparent font-mono text-xs text-foreground outline-none"
 						/>
 					</div>
 				</div>
@@ -434,7 +434,7 @@ export function ColorPicker({
 							type="button"
 							onClick={() => pickFormat(option)}
 							aria-pressed={format === option}
-							className="h-5 flex-1 rounded font-mono text-xs text-muted-foreground uppercase transition-colors aria-pressed:bg-background aria-pressed:text-foreground"
+							className="h-5 flex-1 rounded font-mono text-xs text-muted-foreground transition-colors aria-pressed:bg-background aria-pressed:text-foreground"
 						>
 							{option}
 						</button>

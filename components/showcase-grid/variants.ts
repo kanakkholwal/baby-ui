@@ -20,7 +20,7 @@ export const showcaseGrid = tv({
 export const showcasePanel = tv({
 	slots: {
 		root: "group/panel relative col-span-full flex min-h-60 min-w-0 flex-col border-border/60 border-r border-b bg-background md:min-h-75",
-		dot: "pointer-events-none absolute z-3 size-2 rounded-full border border-border bg-background md:size-2.5",
+		dot: "pointer-events-none absolute z-3 size-2 rounded-full bg-card md:size-2.5",
 		content:
 			"relative z-2 flex flex-1 items-center justify-center p-4 md:absolute md:inset-0 md:overflow-hidden md:p-5",
 		actions:

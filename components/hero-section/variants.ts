@@ -8,7 +8,7 @@ export const heroSection = tv({
 		// A nowrap announcement would widen an auto track past the column; minmax(0,1fr) caps it.
 		content: "grid w-full min-w-0 grid-cols-[minmax(0,1fr)] gap-6",
 		announcement: [
-			"group/hero-pill card-fade-up inline-flex w-fit max-w-full items-center gap-3 rounded-full border border-border bg-background py-1 pr-1 pl-4 text-sm",
+			"group/hero-pill card-fade-up inline-flex w-fit max-w-full items-center gap-3 rounded-full bg-card py-1 pr-1 pl-4 text-sm",
 			"outline-none transition-[background-color,scale] duration-(--duration-fast) hover:bg-foreground/[0.06] focus-visible:ring-2 focus-visible:ring-ring active:scale-[var(--press-scale)]",
 		],
 		announcementLabel: "shrink-0 font-medium",

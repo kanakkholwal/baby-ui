@@ -34,9 +34,9 @@ export const starHistory = tv({
 		 * `compact`: the total, two facts and the chart for a sidebar. `minimal`: no chrome.
 		 */
 		variant: {
-			default: { root: "rounded-2xl border border-border bg-background" },
+			default: { root: "rounded-2xl bg-card" },
 			compact: {
-				root: "rounded-2xl border border-border bg-background",
+				root: "rounded-2xl bg-card",
 				head: "px-5 pt-5 md:px-5 md:pt-5",
 				heroValue: "text-4xl",
 				facts: "mt-4 px-5 md:px-5 [&>*:nth-child(n+3)]:hidden",
@@ -46,7 +46,7 @@ export const starHistory = tv({
 			},
 			minimal: {
 				head: "px-0 pt-0 md:px-0 md:pt-0",
-				heroValue: "font-medium font-mono text-4xl tracking-tighter",
+				heroValue: "font-medium font-mono text-4xl tracking-tight",
 				facts: "px-0 md:px-0",
 				factLabel: "font-mono uppercase tracking-widest",
 				factValue: "font-mono",

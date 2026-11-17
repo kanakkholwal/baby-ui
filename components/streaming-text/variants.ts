@@ -37,7 +37,7 @@ export const streamingText = tv({
 	variants: {
 		layout: {
 			inline: { root: "" },
-			card: { root: "rounded-xl border border-border bg-card p-4" },
+			card: { root: "rounded-xl bg-card p-4" },
 		},
 		size: {
 			sm: { text: "text-xs leading-normal" },

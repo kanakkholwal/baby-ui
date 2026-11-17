@@ -9,7 +9,7 @@ export const chatComposer = tv({
 			"flex shrink-0 items-center justify-between gap-2 border-border/60 border-b p-1.5",
 		actions: "flex items-center gap-0.5",
 		thread: "flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto px-3 pt-3 pb-1",
-		user: "card-fade-up ml-12 self-end rounded-xl border border-border bg-background px-3 py-1.5 text-foreground leading-snug",
+		user: "card-fade-up ml-12 self-end rounded-xl bg-card px-3 py-1.5 text-foreground leading-snug",
 		assistant:
 			"card-fade-up flex flex-col gap-1 transition-[opacity,filter] duration-(--duration-slow) ease-[var(--ease-ui-out)] motion-reduce:transition-none",
 		byline: "flex items-center gap-1 text-xs leading-tight",
@@ -21,7 +21,7 @@ export const chatComposer = tv({
 	variants: {
 		variant: {
 			framed: {
-				frame: "rounded-2xl border border-border bg-background p-1",
+				frame: "rounded-2xl bg-background p-1",
 				root: "rounded-[11px] border-0",
 			},
 			outline: { root: "rounded-2xl" },

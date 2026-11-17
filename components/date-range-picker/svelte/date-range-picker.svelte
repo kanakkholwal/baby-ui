@@ -156,7 +156,7 @@ function pick(next: DateRange | undefined) {
 	>
 		{#each ["start", "end"] as const as type (type)}
 			{#if type === "end"}
-				<span aria-hidden="true" class={field.separator()}>–</span>
+				<span aria-hidden="true" class={field.separator()}>to</span>
 			{/if}
 			<DateRangeField.Input
 				{type}

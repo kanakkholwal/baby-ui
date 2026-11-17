@@ -32,7 +32,7 @@ export const changeSummary = tv({
 				list: "rounded-xl bg-background shadow-surface dark:bg-popover",
 			},
 			plain: {
-				root: "overflow-hidden rounded-2xl border border-border bg-background",
+				root: "overflow-hidden rounded-2xl bg-card",
 				header: "border-border/60 border-b px-5 py-3.5",
 				title: "text-foreground [&_svg]:text-muted-foreground",
 				list: "",

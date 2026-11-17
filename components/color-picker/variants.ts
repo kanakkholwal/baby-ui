@@ -26,7 +26,7 @@ export const colorPicker = tv({
 		hexInput: "w-[10ch] flex-none font-mono uppercase tabular-nums",
 		content: "w-auto border-0 bg-transparent p-0 shadow-none",
 		extras: "flex flex-wrap items-center gap-1.5 border-border/60 border-t p-2",
-		extrasLabel: "w-full font-mono text-xs text-muted-foreground uppercase",
+		extrasLabel: "w-full font-mono text-xs text-muted-foreground",
 		eyedropper:
 			"ms-auto grid size-6 place-items-center rounded-md text-muted-foreground outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring [&_svg]:size-3.5",
 		// The square and the strip take the keyboard as well as the pointer.

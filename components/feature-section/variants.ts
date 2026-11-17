@@ -17,7 +17,7 @@ export const featureSection = tv({
 		itemTitle: "font-medium",
 		itemDescription: "text-muted-foreground text-sm leading-relaxed",
 		media:
-			"relative min-w-0 overflow-hidden rounded-3xl border border-border bg-foreground/[0.03] p-2 [&>*]:rounded-2xl [&_img]:h-auto [&_img]:w-full [&_img]:align-top",
+			"relative min-w-0 overflow-hidden rounded-3xl bg-foreground/[0.03] p-2 [&>*]:rounded-2xl [&_img]:h-auto [&_img]:w-full [&_img]:align-top",
 	},
 	variants: {
 		variant: {
@@ -25,7 +25,7 @@ export const featureSection = tv({
 			cards: {
 				header: "mx-auto justify-items-center text-center",
 				list: "gap-4 @xl/features:grid-cols-2 @4xl/features:grid-cols-3",
-				item: "justify-items-center rounded-2xl border border-border p-8 text-center transition-colors duration-(--duration-fast) hover:bg-foreground/[0.03]",
+				item: "justify-items-center rounded-2xl p-8 text-center transition-colors duration-(--duration-fast) hover:bg-foreground/[0.03]",
 				icon: "grid size-28 place-items-center before:pointer-events-none before:absolute before:inset-0 before:bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] before:bg-size-[20px_20px] before:[mask-image:radial-gradient(circle,black_30%,transparent_72%)] before:transition-transform before:duration-(--duration-slow) before:ease-(--ease-ui-out) group-hover/feature:before:scale-115 motion-reduce:before:transition-none",
 				iconTile:
 					"size-12 border-border/60 border-t border-l bg-background text-primary [&_svg]:size-6",
@@ -44,7 +44,7 @@ export const featureSection = tv({
 			plain: {
 				list: "gap-x-10 gap-y-12 @xl/features:grid-cols-2 @4xl/features:grid-cols-4",
 				iconTile:
-					"size-10 rounded-lg border border-border bg-background text-primary shadow-md shadow-primary/15 transition-transform duration-(--duration-fast) group-hover/feature:-translate-y-0.5 motion-reduce:transition-none [&_svg]:size-5",
+					"size-10 rounded-lg bg-card text-primary shadow-md shadow-primary/15 transition-transform duration-(--duration-fast) group-hover/feature:-translate-y-0.5 motion-reduce:transition-none [&_svg]:size-5",
 				itemTitle: "mt-3",
 			},
 			// Header and a ruled list on the left, FeatureSectionMedia spanning both rows on the right.

@@ -36,9 +36,9 @@ export const approvalQueue = tv({
 		/** `framed` holds the rows in a card rim under the header; `plain` drops the chrome. */
 		variant: {
 			framed: {
-				root: "rounded-2xl border border-border bg-card p-1",
+				root: "rounded-2xl bg-card p-1",
 				header: "px-3 pt-1 pb-1.5",
-				list: "overflow-hidden rounded-[11px] border border-border bg-background",
+				list: "overflow-hidden rounded-[11px] bg-background",
 				trigger: "px-3",
 				body: "px-3",
 			},

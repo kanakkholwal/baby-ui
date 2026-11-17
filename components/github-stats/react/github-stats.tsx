@@ -211,7 +211,7 @@ export function GithubStats({
 								</span>
 							</>
 						) : (
-							"–"
+							"-"
 						)}
 					</Fact>
 					<Fact label={labels.activeDays} styles={styles}>

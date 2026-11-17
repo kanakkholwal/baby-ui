@@ -88,7 +88,7 @@ export const commandFrame = tv({
 				count:
 					"block min-w-[2ch] shrink-0 text-right font-mono text-muted-foreground text-xs tabular-nums",
 				list: "py-1.5",
-				groupHeading: "px-4 pt-2.5 pb-1.5 font-medium text-xs uppercase tracking-wide",
+				groupHeading: "px-4 pt-2.5 pb-1.5 font-medium text-xs",
 				// A hairline above every group that follows a visible one; hidden groups do not count.
 				group:
 					"pb-1 [&:not([hidden])~&:not([hidden])]:mt-1 [&:not([hidden])~&:not([hidden])]:border-border/60 [&:not([hidden])~&:not([hidden])]:border-t [&_[cmdk-group-heading]]:px-4 [&_[cmdk-group-heading]]:pt-2.5 [&_[cmdk-group-heading]]:pb-1.5 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-wide [&_[cmdk-group-items]]:px-2",

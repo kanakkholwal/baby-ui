@@ -5,7 +5,7 @@ export const paymentMethodCard = tv({
 		root: "flex w-full flex-col text-card-foreground",
 		title: "font-semibold text-foreground text-sm tracking-tight",
 		content: "flex flex-wrap items-center gap-x-3 gap-y-2",
-		mark: "flex h-8 w-14 shrink-0 select-none items-center justify-center rounded-md border border-border font-bold text-foreground text-xs italic tracking-wide",
+		mark: "flex h-8 w-14 shrink-0 select-none items-center justify-center rounded-md bg-muted font-bold text-foreground text-xs italic tracking-wide",
 		details: "flex min-w-0 flex-1 flex-col gap-0.5",
 		primary:
 			"flex min-w-0 flex-wrap items-center gap-2 font-medium text-foreground text-sm",
@@ -22,7 +22,7 @@ export const paymentMethodCard = tv({
 	variants: {
 		variant: {
 			card: {
-				root: "rounded-xl border border-border bg-card p-5 *:not-first:mt-4",
+				root: "rounded-xl bg-card p-5 *:not-first:mt-4",
 				error: "pt-4",
 			},
 			inline: { root: "*:not-first:mt-2", error: "pt-2" },

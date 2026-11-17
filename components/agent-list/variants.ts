@@ -44,9 +44,9 @@ export const agentList = tv({
 		/** `framed` holds the rows in a card rim; `plain` drops the chrome. */
 		variant: {
 			framed: {
-				root: "rounded-2xl border border-border bg-card p-1",
+				root: "rounded-2xl bg-card p-1",
 				header: "px-3 pt-1 pb-1.5",
-				list: "overflow-hidden rounded-[11px] border border-border bg-background",
+				list: "overflow-hidden rounded-[11px] bg-background",
 				trigger: "px-3",
 				body: "pe-3 ps-12",
 				footer: "px-0 pt-1",

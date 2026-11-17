@@ -13,14 +13,13 @@ export const flightStatusCard = tv({
 		dotOn: "",
 		dotOff: "opacity-15",
 		city: "mt-1 truncate font-medium text-foreground text-sm",
-		time: "truncate text-muted-foreground text-xs uppercase tracking-wide tabular-nums",
+		time: "truncate text-muted-foreground text-xs tabular-nums",
 		arrow: "mt-2 size-5 shrink-0 @xl:mt-3",
-		eta: "flex flex-col gap-0.5 rounded-xl border border-border p-3 @xl:min-w-36",
+		eta: "flex flex-col gap-0.5 rounded-xl bg-muted p-3 @xl:min-w-36",
 		etaValue: "font-semibold text-foreground text-sm tabular-nums",
 		etaNote: "text-muted-foreground text-xs",
 		event: "mt-1 font-semibold text-xs uppercase tracking-wide",
-		track:
-			"relative h-11 overflow-hidden rounded-full border border-border bg-background",
+		track: "relative h-11 overflow-hidden rounded-full bg-card",
 		reveal: "flight-status-reveal absolute inset-0",
 		fill: "flex h-full min-w-11 items-center justify-end rounded-full pr-1.5 transition-[width] duration-700 ease-[var(--ease-ui-out)] motion-reduce:transition-none",
 		plane:

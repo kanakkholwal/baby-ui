@@ -32,7 +32,7 @@ const lines = $derived(code.replace(/\n$/, "").split("\n"));
 >
 	<div class="flex min-h-8 items-center gap-2 px-1 pb-1">
 		<span
-			class="inline-flex h-5 shrink-0 items-center rounded bg-background px-1.5 font-mono font-semibold text-xs text-muted-foreground uppercase tracking-wider"
+			class="shrink-0 font-mono text-foreground text-xs"
 		>
 			{language}
 		</span>
