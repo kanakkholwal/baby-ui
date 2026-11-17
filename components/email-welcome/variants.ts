@@ -5,9 +5,9 @@ export const emailWelcome = tv({
 	slots: {
 		heroImage: "mb-section w-full rounded-inner",
 		eyebrow:
-			"m-0 mb-3 text-center font-semibold text-[13px] text-muted-foreground leading-[20px] dark:text-muted-foreground-dark",
-		intro: "mt-3 text-center",
-		action: "mt-section text-center",
+			"m-0 mb-3 text-left font-semibold text-[13px] text-muted-foreground leading-[20px] dark:text-muted-foreground-dark",
+		intro: "mt-3 text-left",
+		action: "mt-section text-left",
 		steps: "mt-block",
 		stepIndex: "w-[40px] align-top",
 		stepBadge:

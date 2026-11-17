@@ -31,11 +31,11 @@ const RADIUS: Record<EmailRadius, [number, number, number, number]> = {
 // padding, gap between stacked blocks, space between groups, and the gap between cards.
 const SPACE = {
 	gutter: 24,
-	pad: 20,
-	stack: 40,
+	pad: 16,
+	stack: 32,
 	section: 32,
 	block: 24,
-	gap: 16,
+	gap: 12,
 } as const;
 const SCALE: Record<EmailDensity, number> = { compact: 0.8, default: 1, relaxed: 1.25 };
 

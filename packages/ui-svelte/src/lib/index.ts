@@ -633,6 +633,7 @@ export { EmailSection } from "@baby-ui/components/svelte/email-kit";
 export { EmailShell } from "@baby-ui/components/svelte/email-kit";
 export { EmailStats, type EmailStat } from "@baby-ui/components/svelte/email-kit";
 export { EmailText } from "@baby-ui/components/svelte/email-kit";
+export { setEmailSurface, getEmailSurface } from "@baby-ui/components/svelte/email-kit";
 export { emailShell, emailHeader, emailHeading, emailHero, emailPanel, emailSection, emailList, emailText, emailBadge, emailButton, EMAIL_BUTTON_PADDING, emailCallout, emailDivider, emailFooter, emailCode, emailLayout, emailFallbackLink, emailStats, EMAIL_STAT_TREND_GLYPH, emailKeyValue, type EmailShellSurface, type EmailHeaderVariant, type EmailHeaderAlign, type EmailHeadingSize, type EmailHeadingAlign, type EmailHeroTone, type EmailHeroSize, type EmailHeroAlign, type EmailPanelTone, type EmailSectionAlign, type EmailListMarker, type EmailButtonShape, type EmailButtonWidth, type EmailFooterLayout, type EmailTextTone, type EmailTextSize, type EmailBadgeTone, type EmailButtonVariant, type EmailButtonSize, type EmailCalloutTone, type EmailDividerSpacing, type EmailFooterAlign, type EmailCodeSize, type EmailFallbackLinkAlign, type EmailStatsColumns, type EmailStatsTone, type EmailStatsTrend, type EmailKeyValueDensity } from "@baby-ui/components/svelte/email-kit";
 export { EmailMagicLink } from "@baby-ui/components/svelte/email-magic-link";
 export { emailMagicLink } from "@baby-ui/components/svelte/email-magic-link";

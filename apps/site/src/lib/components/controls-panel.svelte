@@ -48,7 +48,7 @@ $effect(() => {
 </script>
 
 {#if docked}
-	<section aria-label="Controls" class="flex h-full min-h-0 flex-col rounded-2xl border border-border bg-background p-1">
+	<section aria-label="Controls" class="flex h-full min-h-0 flex-col rounded-2xl bg-card p-1">
 		<div class="flex h-10 shrink-0 items-center justify-between gap-2 px-2.5">
 			<p class="flex items-center gap-2 font-medium text-foreground text-sm">
 				<IconAdjustmentsHorizontal size={16} class="text-muted-foreground" />
@@ -74,7 +74,7 @@ $effect(() => {
 {:else}
 <!-- The inset frame, same treatment as Card's `framed` variant and CodeBlock: a rim in
      bg-background around a bg-card body, so it reads as its own surface, not a plain box. -->
-<Collapsible bind:open class="mt-4 rounded-2xl border border-border bg-background p-1">
+<Collapsible bind:open class="mt-4 rounded-2xl bg-card p-1">
 	<div class="flex min-h-10 items-center justify-between gap-2 px-1.5">
 		<CollapsibleTrigger class="min-h-8 flex-1 px-1.5 py-1">
 			<IconAdjustmentsHorizontal size={16} class="text-muted-foreground" />

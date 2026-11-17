@@ -38,7 +38,7 @@ let {
 	actionLabel = "Download invoice",
 	helpLabel = "Questions about this charge? Write to",
 	labels: labelOverrides,
-	surface = "card",
+	surface = "plain",
 }: {
 	productName: string;
 	receiptNumber: string;
@@ -86,7 +86,7 @@ const labels = $derived({ ...EMAIL_RECEIPT_LABELS, ...labelOverrides });
 	<Section class={s.badge()}>
 		<EmailBadge tone="success">{labels.status}</EmailBadge>
 	</Section>
-	<EmailHeading size="display">{heading}</EmailHeading>
+	<EmailHeading size="lg">{heading}</EmailHeading>
 	<EmailText tone="muted" class={s.intro()}>{intro}</EmailText>
 	<Section class={r.summary()}>
 		<EmailPanel>
@@ -114,7 +114,7 @@ const labels = $derived({ ...EMAIL_RECEIPT_LABELS, ...labelOverrides });
 	{/if}
 	{#if invoiceUrl}
 		<Section class={s.action()}>
-			<EmailButton href={invoiceUrl} shape="pill">{actionLabel}</EmailButton>
+			<EmailButton href={invoiceUrl}>{actionLabel}</EmailButton>
 		</Section>
 	{/if}
 	{#if billingEmail}

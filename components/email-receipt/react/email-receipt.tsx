@@ -75,7 +75,7 @@ export function EmailReceipt({
 	actionLabel = "Download invoice",
 	helpLabel = "Questions about this charge? Write to",
 	labels: labelOverrides,
-	surface = "card",
+	surface = "plain",
 }: EmailReceiptProps) {
 	const s = emailLayout();
 	const r = emailReceipt();
@@ -99,7 +99,7 @@ export function EmailReceipt({
 			<Section className={s.badge()}>
 				<EmailBadge tone="success">{labels.status}</EmailBadge>
 			</Section>
-			<EmailHeading size="display">{heading}</EmailHeading>
+			<EmailHeading size="lg">{heading}</EmailHeading>
 			<EmailText tone="muted" className={s.intro()}>
 				{intro}
 			</EmailText>
@@ -134,9 +134,7 @@ export function EmailReceipt({
 			) : null}
 			{invoiceUrl ? (
 				<Section className={s.action()}>
-					<EmailButton href={invoiceUrl} shape="pill">
-						{actionLabel}
-					</EmailButton>
+					<EmailButton href={invoiceUrl}>{actionLabel}</EmailButton>
 				</Section>
 			) : null}
 			{billingEmail ? (

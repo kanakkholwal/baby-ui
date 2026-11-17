@@ -9,6 +9,7 @@ import {
 } from "@better-svelte-email/components";
 import type { Snippet } from "svelte";
 import { type EmailShellSurface, emailShell } from "../variants";
+import { setEmailSurface } from "./context";
 
 let {
 	preview,
@@ -16,7 +17,7 @@ let {
 	footer,
 	cardFooter,
 	lang = "en",
-	surface = "card",
+	surface = "plain",
 }: {
 	/** Inbox preview line shown after the subject; keep it under ~90 characters. */
 	preview: string;
@@ -31,6 +32,7 @@ let {
 } = $props();
 
 const s = $derived(emailShell({ surface }));
+setEmailSurface(() => surface);
 </script>
 
 <Html {lang}>

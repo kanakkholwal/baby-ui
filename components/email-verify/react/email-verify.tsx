@@ -10,7 +10,6 @@ import {
 	EmailHeading,
 	EmailList,
 	type EmailListItem,
-	EmailPanel,
 	EmailShell,
 	type EmailShellSurface,
 	EmailText,
@@ -66,7 +65,7 @@ export function EmailVerify({
 	reason,
 	preview = `Confirm ${recipientEmail} to finish setting up ${productName}.`,
 	heading = "Verify your email",
-	subheading = `Thanks for signing up for ${productName}`,
+	subheading,
 	intro = `Confirm that ${recipientEmail} is your address to finish setting up your ${productName} account.`,
 	actionLabel = "Verify email address",
 	codeLabel = "Or enter this code in the app",
@@ -74,7 +73,7 @@ export function EmailVerify({
 	ignoreText = `This link expires in ${expiresIn}. If you didn't create a ${productName} account, you can ignore this email.`,
 	noticeTitle = "Security notice",
 	helpTitle = "Need help?",
-	surface = "card",
+	surface = "plain",
 }: EmailVerifyProps) {
 	const s = emailLayout();
 	const v = emailVerify();
@@ -93,16 +92,18 @@ export function EmailVerify({
 				/>
 			}
 		>
-			<EmailHeader brand={productName} logo={logoUrl} align="center" />
-			<EmailHeading align="center">{heading}</EmailHeading>
-			<EmailText tone="muted" className={v.subheading()}>
-				{subheading}
+			<EmailHeader brand={productName} logo={logoUrl} align="left" />
+			<EmailHeading align="left">{heading}</EmailHeading>
+			{subheading ? (
+				<EmailText tone="muted" className={v.subheading()}>
+					{subheading}
+				</EmailText>
+			) : null}
+			<EmailText tone="muted" className={v.intro()}>
+				{intro}
 			</EmailText>
-			<EmailText className={v.intro()}>{intro}</EmailText>
 			<Section className={v.action()}>
-				<EmailButton href={verifyUrl} size="lg">
-					{actionLabel}
-				</EmailButton>
+				<EmailButton href={verifyUrl}>{actionLabel}</EmailButton>
 			</Section>
 			{code ? (
 				<Section className={s.section()}>
@@ -113,18 +114,17 @@ export function EmailVerify({
 				</Section>
 			) : null}
 			<Section className={v.fallback()}>
-				<EmailFallbackLink href={verifyUrl} label={fallbackLabel} align="center" />
+				<EmailFallbackLink href={verifyUrl} label={fallbackLabel} align="left" />
 			</Section>
-			<Section className={v.notice()}>
-				<EmailPanel>
-					<EmailText className={s.sectionTitle()}>{noticeTitle}</EmailText>
-					<EmailText size="sm">{ignoreText}</EmailText>
-				</EmailPanel>
-			</Section>
+			<EmailDivider spacing="lg" />
+			<EmailText tone="muted" size="sm">
+				<strong>{noticeTitle}.</strong> {ignoreText}
+			</EmailText>
 			{helpItems.length > 0 ? (
 				<>
-					<EmailDivider spacing="lg" />
-					<EmailHeading size="default">{helpTitle}</EmailHeading>
+					<Section className={v.helpHeading()}>
+						<EmailHeading size="default">{helpTitle}</EmailHeading>
+					</Section>
 					<Section className={v.helpList()}>
 						<EmailList items={helpItems} marker="dot" />
 					</Section>

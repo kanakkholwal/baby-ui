@@ -29,9 +29,11 @@ export const fieldFrame = tv({
 	variants: {
 		kind: {
 			input: "focus-visible:border-ring",
+			// Pickers read as a soft fill, not a second outlined field: the edge appears only on keyboard focus.
 			trigger: [
+				"border-transparent bg-foreground/[0.05] hover:border-transparent hover:bg-foreground/[0.08]",
 				"focus-visible:border-ring",
-				"data-[popup-open]:border-border-strong data-[state=open]:border-border-strong",
+				"data-[popup-open]:bg-foreground/[0.1] data-[state=open]:bg-foreground/[0.1]",
 			],
 		},
 	},
@@ -56,7 +58,7 @@ export const fieldGroup = tv({
 			input:
 				"has-[:focus-visible]:ring-3 has-[:focus-visible]:ring-ring/20 has-[[aria-invalid=true]]:ring-destructive/20 aria-invalid:ring-destructive/20",
 			trigger:
-				"has-[[data-popup-open]]:border-border-strong has-[[data-state=open]]:border-border-strong",
+				"border-transparent bg-foreground/[0.05] hover:border-transparent hover:bg-foreground/[0.08] has-[[data-popup-open]]:bg-foreground/[0.1] has-[[data-state=open]]:bg-foreground/[0.1]",
 		},
 	},
 	defaultVariants: { kind: "input" },

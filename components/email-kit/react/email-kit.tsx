@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { createContext, type ReactNode, useContext } from "react";
 import {
 	Body,
 	Button,
@@ -105,6 +105,9 @@ const themeFor = (brand?: EmailBrand) => ({
 });
 const defaultTheme = themeFor();
 
+// The footer's `band` is a strip inside a card; on a plain page it falls back to `plain`.
+const SurfaceContext = createContext<EmailShellSurface>("plain");
+
 export interface EmailShellProps {
 	/** Inbox preview line shown after the subject; keep it under ~90 characters. */
 	preview: string;
@@ -124,7 +127,7 @@ export function EmailShell({
 	preview,
 	children,
 	lang = "en",
-	surface = "card",
+	surface = "plain",
 	footer,
 	cardFooter,
 	brand,
@@ -139,15 +142,17 @@ export function EmailShell({
 				</Head>
 				<Preview>{preview}</Preview>
 				<Body className={s.body()}>
-					<Section className={s.page()}>
-						<Container className={s.container()}>
-							<Section className={s.card()}>
-								<Section className={s.content()}>{children}</Section>
-								{cardFooter}
-							</Section>
-							{footer}
-						</Container>
-					</Section>
+					<SurfaceContext.Provider value={surface}>
+						<Section className={s.page()}>
+							<Container className={s.container()}>
+								<Section className={s.card()}>
+									<Section className={s.content()}>{children}</Section>
+									{cardFooter}
+								</Section>
+								{footer}
+							</Container>
+						</Section>
+					</SurfaceContext.Provider>
 				</Body>
 			</Tailwind>
 		</Html>
@@ -156,9 +161,9 @@ export function EmailShell({
 
 export interface EmailHeaderProps {
 	brand: string;
-	/** Absolute PNG or JPG URL, 32px tall; SVG does not render in Gmail or Outlook. */
+	/** Absolute PNG or JPG URL, 24px tall; SVG does not render in Gmail or Outlook. */
 	logo?: string;
-	/** Rendered width of `logo`: 32 for a square mark, wider for a `logo` wordmark. */
+	/** Rendered width of `logo`: 24 for a square mark, wider for a `logo` wordmark. */
 	logoWidth?: number;
 	/** `lockup` sets the name beside a square mark; `logo` shows a wordmark image alone. */
 	variant?: EmailHeaderVariant;
@@ -168,7 +173,7 @@ export interface EmailHeaderProps {
 export function EmailHeader({
 	brand,
 	logo,
-	logoWidth = 32,
+	logoWidth = 24,
 	variant = "lockup",
 	align = "left",
 }: EmailHeaderProps) {
@@ -181,7 +186,7 @@ export function EmailHeader({
 					alt={variant === "logo" ? brand : ""}
 					role={variant === "logo" ? undefined : "presentation"}
 					width={logoWidth}
-					height={32}
+					height={24}
 					className={s.logo()}
 				/>
 			) : null}
@@ -420,9 +425,14 @@ export function EmailFooter({
 	reason,
 	brand,
 	logo,
-	layout = "plain",
-	align = "center",
+	layout: requested = "plain",
+	align = "left",
 }: EmailFooterProps) {
+	const surface = useContext(SurfaceContext);
+	const layout =
+		(requested === "band" || requested === "row") && surface !== "card"
+			? "plain"
+			: requested;
 	const s = emailFooter({ layout, align });
 	const lockup = brand ? (
 		<Text className={s.brand()}>

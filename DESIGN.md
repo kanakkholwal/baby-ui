@@ -22,7 +22,7 @@ component's `variants.ts`.
   Each surface is its own step: light is a white page, grey `card`, `popover` `lab(96.52% 0 0)`
   (#f5f5f5, lifted by shadow) and a darker `muted`; dark is page 17%, card 21%, popover #1c1c1c,
   muted 27%. The popover values are the user's pick (2026-10-03), matching their reference palette.
-- Field and divider edges stay hairlines (`border` about 1.16:1; light `input` 1.33:1 on a white field, 1.23:1 on `card`, raised 2026-11-17 after an OTP-on-card contrast report; 3:1 is unreachable without a heavy edge). Off tracks of switches,
+- Field and divider edges stay hairlines (`border` about 1.16:1; light `input` 1.24:1 on a white field, raised 2026-11-17 after an OTP-on-card contrast report; 3:1 is unreachable without a heavy edge). Off tracks of switches,
   sliders and progress use `track` (1.39 light, 1.49 dark) so the off state reads. Dark hover is 4.5%.
 - Fields fill with `--field`: the page colour in light, the card step in dark, so a field reads as
   an object rather than a hole.
@@ -189,8 +189,7 @@ Tokens:
   TagInput, NumberInput, date/time fields) share one frame:
   - rest `border-input` on `bg-(--field)`, hover `border-border-strong`;
   - text entry on focus: `border-ring` plus a `ring-3 ring-ring/20` halo;
-  - triggers (Select, Combobox, NativeSelect, MultiSelect) stay calm: `border-ring` on keyboard
-    focus only, `border-border-strong` while open, never a halo (`fieldFrame({ kind: "trigger" })`);
+  - triggers (Select, Combobox, NativeSelect, MultiSelect) are a soft `foreground/5%` fill, 8% on hover and 10% while open, with an edge only on keyboard focus and never a halo (`fieldFrame({ kind: "trigger" })`);
   - invalid `border-destructive`, halo `ring-destructive/20`;
   - disabled `opacity-50` and `cursor-not-allowed`.
 - Pressables (Button, Toggle, Checkbox, Switch, Radio) focus with `ring-2 ring-ring ring-offset-2

@@ -153,7 +153,8 @@ function audit(slug, port, html, props) {
 	const fail = [];
 	const bytes = Buffer.byteLength(html);
 	if (bytes > MAX_BYTES) fail.push(`${bytes} bytes; Gmail clips past ${MAX_BYTES}`);
-	if (/var\(--/.test(html)) fail.push("CSS variable left in output");
+	const leftover = html.match(/.{0,60}var\(--[^)]*\)/)?.[0];
+	if (leftover) fail.push(`CSS variable left in output: ${leftover}`);
 	if (/oklch\(/.test(html)) fail.push("oklch colour left in output");
 	if (/\d(\.\d+)?rem\b/.test(html)) fail.push("rem unit left in output");
 	if (!/prefers-color-scheme:\s*dark/.test(html)) fail.push("no dark-mode media query");

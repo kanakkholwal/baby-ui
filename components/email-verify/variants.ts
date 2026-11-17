@@ -2,12 +2,12 @@ import { tv } from "tailwind-variants";
 
 export const emailVerify = tv({
 	slots: {
-		subheading: "mt-2 text-center",
-		intro: "mt-section text-center",
-		action: "mt-section text-center",
-		codeLabel: "mb-3 text-center",
+		subheading: "mt-2",
+		intro: "mt-3",
+		action: "mt-block",
+		codeLabel: "mb-2",
 		fallback: "mt-block",
-		notice: "mt-10",
+		helpHeading: "mt-block",
 		helpList: "mt-3",
 	},
 });

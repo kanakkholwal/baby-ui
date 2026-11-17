@@ -30,7 +30,7 @@ const BODY =
 	bind:value={active}
 	variant="segment"
 	size="sm"
-	class="min-w-0 max-w-full rounded-xl border border-border bg-card p-1 text-foreground"
+	class="min-w-0 max-w-full rounded-xl bg-card p-1 text-foreground"
 >
 	<div class="flex min-h-8 items-center gap-2 px-1 pb-1">
 		{#if panels.length > 1}
@@ -41,7 +41,7 @@ const BODY =
 			</TabsList>
 		{:else}
 			<span
-				class="inline-flex h-5 shrink-0 items-center rounded border border-border bg-background px-1.5 font-mono font-semibold text-[10px] text-muted-foreground uppercase tracking-wider"
+				class="shrink-0 font-mono text-foreground text-xs"
 			>
 				{LANG_LABEL[current.lang] ?? current.lang.toUpperCase()}
 			</span>
@@ -55,7 +55,7 @@ const BODY =
 			/>
 		</div>
 	</div>
-	<div class="overflow-hidden rounded-[calc(var(--radius-xl)-1px-0.25rem)] bg-background">
+	<div class="overflow-hidden rounded-[calc(var(--radius-xl)-0.25rem)] bg-background">
 		{#each panels as panel (panel.id)}
 			<TabsContent value={panel.id} class="mt-0">
 				{#if panel.pm}

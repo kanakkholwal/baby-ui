@@ -107,16 +107,16 @@ const s = $derived(emailWelcome({ density }));
 	{#snippet footer()}
 		<EmailFooter lines={companyLines} links={footerLinks} {reason} brand={productName} logo={logoUrl} />
 	{/snippet}
-	<EmailSection align="center">
-		<EmailHeader brand={productName} logo={logoUrl} align="center" />
+	<EmailSection align="left">
+		<EmailHeader brand={productName} logo={logoUrl} align="left" />
 		{#if heroImageUrl}
 			<Img src={heroImageUrl} alt={heroImageAlt ?? productName} width="528" height="auto" class={s.heroImage()} />
 		{/if}
 		<EmailText class={s.eyebrow()}>{eyebrow}</EmailText>
-		<EmailHeading size="display" align="center">{heading}</EmailHeading>
+		<EmailHeading size="lg" align="left">{heading}</EmailHeading>
 		<EmailText tone="muted" class={s.intro()}>{intro}</EmailText>
 		<Section class={s.action()}>
-			<EmailButton href={actionUrl} size="lg" shape="pill">{actionLabel}</EmailButton>
+			<EmailButton href={actionUrl}>{actionLabel}</EmailButton>
 		</Section>
 	</EmailSection>
 	{#if steps.length > 0}
@@ -183,6 +183,6 @@ const s = $derived(emailWelcome({ density }));
 		</EmailSection>
 	{/if}
 	{#if !note && steps.length === 0 && supportEmail}
-		<EmailSection align="center">{@render help()}</EmailSection>
+		<EmailSection align="left">{@render help()}</EmailSection>
 	{/if}
 </EmailShell>

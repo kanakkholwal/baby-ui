@@ -121,8 +121,8 @@ export function EmailWelcome({
 				/>
 			}
 		>
-			<EmailSection align="center">
-				<EmailHeader brand={productName} logo={logoUrl} align="center" />
+			<EmailSection align="left">
+				<EmailHeader brand={productName} logo={logoUrl} align="left" />
 				{heroImageUrl ? (
 					<Img
 						src={heroImageUrl}
@@ -132,16 +132,14 @@ export function EmailWelcome({
 					/>
 				) : null}
 				<EmailText className={s.eyebrow()}>{eyebrow}</EmailText>
-				<EmailHeading size="display" align="center">
+				<EmailHeading size="lg" align="left">
 					{heading}
 				</EmailHeading>
 				<EmailText tone="muted" className={s.intro()}>
 					{intro}
 				</EmailText>
 				<Section className={s.action()}>
-					<EmailButton href={actionUrl} size="lg" shape="pill">
-						{actionLabel}
-					</EmailButton>
+					<EmailButton href={actionUrl}>{actionLabel}</EmailButton>
 				</Section>
 			</EmailSection>
 			{steps.length > 0 ? (
@@ -216,7 +214,7 @@ export function EmailWelcome({
 				</EmailSection>
 			) : null}
 			{!note && steps.length === 0 && help ? (
-				<EmailSection align="center">{help}</EmailSection>
+				<EmailSection align="left">{help}</EmailSection>
 			) : null}
 		</EmailShell>
 	);

@@ -122,12 +122,12 @@ export const emailPasswordReset = defineComponent({
 		{
 			name: "surface",
 			type: '"card" | "plain"',
-			description: "A bordered card on a quiet page, or content straight on the page.",
+			description: "Content straight on the page, or a bordered card on a quiet page.",
 			control: {
 				kind: "select",
 				options: ["card", "plain"],
 			},
-			default: "card",
+			default: "plain",
 		},
 	],
 	a11y: {

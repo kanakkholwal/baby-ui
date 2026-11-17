@@ -61,7 +61,7 @@ const BODY =
 	{#snippet title()}
 		<div class="flex min-w-0 items-center gap-2 px-1 text-xs">
 			<span
-				class="inline-flex h-5 shrink-0 items-center rounded border border-border bg-background px-1.5 font-mono font-semibold text-[10px] text-muted-foreground uppercase tracking-wider"
+				class="shrink-0 font-mono text-foreground text-xs"
 			>
 				{label(current.lang)}
 			</span>
@@ -103,7 +103,7 @@ const BODY =
 			type="button"
 			aria-expanded={expanded}
 			onclick={() => (expanded = !expanded)}
-			class="-translate-x-1/2 absolute bottom-3 left-1/2 inline-flex h-8 items-center gap-1.5 rounded-full border border-border bg-card px-3 font-medium text-foreground text-xs shadow-sm transition-colors hover:bg-foreground/[0.06]"
+			class="-translate-x-1/2 absolute bottom-3 left-1/2 inline-flex h-8 items-center gap-1.5 rounded-full bg-card px-3 font-medium text-foreground text-xs shadow-(--overlay-shadow) transition-colors hover:bg-foreground/[0.06]"
 		>
 			{expanded ? "Collapse" : "Expand code"}
 			<svg

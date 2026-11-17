@@ -69,7 +69,7 @@ export function EmailTeamInvite({
 	actionLabel = "Accept invitation",
 	closingText = `${expiresIn ? `This invitation expires in ${expiresIn}. ` : ""}If you weren't expecting it, you can ignore this email.`,
 	fallbackLabel,
-	surface = "card",
+	surface = "plain",
 }: EmailTeamInviteProps) {
 	const s = emailLayout();
 	const t = emailTeamInvite();
@@ -88,20 +88,20 @@ export function EmailTeamInvite({
 				/>
 			}
 		>
-			<EmailHeader brand={productName} logo={logoUrl} align="center" />
+			<EmailHeader brand={productName} logo={logoUrl} align="left" />
 			{inviterAvatarUrl ? (
 				<Img
 					src={inviterAvatarUrl}
 					alt={inviterName}
-					width={64}
-					height={64}
+					width={48}
+					height={48}
 					className={t.avatar()}
 				/>
 			) : (
 				<Text className={t.initials()}>{initials(inviterName)}</Text>
 			)}
 			<Text className={t.lead()}>{lead}</Text>
-			<EmailHeading size="display" align="center">
+			<EmailHeading size="lg" align="left">
 				{heading ?? teamName}
 			</EmailHeading>
 			{role ? (
@@ -121,15 +121,13 @@ export function EmailTeamInvite({
 				</Section>
 			) : null}
 			<Section className={s.action()}>
-				<EmailButton href={acceptUrl} size="lg" shape="pill" width="full">
-					{actionLabel}
-				</EmailButton>
+				<EmailButton href={acceptUrl}>{actionLabel}</EmailButton>
 			</Section>
 			<EmailText tone="muted" size="sm" className={t.closing()}>
 				{closingText}
 			</EmailText>
 			<EmailDivider spacing="lg" />
-			<EmailFallbackLink href={acceptUrl} label={fallbackLabel} align="center" />
+			<EmailFallbackLink href={acceptUrl} label={fallbackLabel} align="left" />
 		</EmailShell>
 	);
 }

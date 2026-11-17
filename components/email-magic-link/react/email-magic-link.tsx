@@ -1,15 +1,14 @@
 import { Section } from "react-email";
 import {
 	EmailButton,
-	EmailCallout,
 	EmailCode,
+	EmailDivider,
 	EmailFooter,
 	type EmailFooterLink,
 	EmailHeader,
 	EmailHeading,
 	EmailKeyValue,
 	type EmailKeyValueRow,
-	EmailPanel,
 	EmailShell,
 	type EmailShellSurface,
 	EmailText,
@@ -69,7 +68,7 @@ export function EmailMagicLink({
 	detailsTitle = "Request details",
 	warningTitle = "Didn't try to sign in?",
 	warningText = "You can safely ignore this email. Nobody can sign in without it.",
-	surface = "card",
+	surface = "plain",
 }: EmailMagicLinkProps) {
 	const s = emailLayout();
 	const m = emailMagicLink();
@@ -89,44 +88,41 @@ export function EmailMagicLink({
 				/>
 			}
 		>
-			<EmailHeader brand={productName} logo={logoUrl} align="center" />
-			<EmailHeading align="center">{heading}</EmailHeading>
+			<EmailHeader brand={productName} logo={logoUrl} align="left" />
+			<EmailHeading align="left">{heading}</EmailHeading>
 			<EmailText tone="muted" className={m.intro()}>
 				{intro}
 			</EmailText>
 			{code ? (
-				<Section className={s.section()}>
-					<EmailPanel tone="accent">
-						<EmailText className={m.codeLabel()}>{codeLabel}</EmailText>
-						<EmailCode code={code} />
-					</EmailPanel>
+				<Section className={m.code()}>
+					<EmailCode code={code} />
+					<EmailText tone="muted" size="sm" className={m.codeLabel()}>
+						{codeLabel}
+					</EmailText>
 				</Section>
 			) : null}
 			<Section className={s.action()}>
-				<EmailButton
-					href={signInUrl}
-					variant={code ? "secondary" : "primary"}
-					width="full"
-				>
+				<EmailButton href={signInUrl} variant={code ? "secondary" : "primary"}>
 					{actionLabel}
 				</EmailButton>
 			</Section>
 			<EmailText tone="muted" size="sm" className={m.expiry()}>
 				{expiryText}
 			</EmailText>
+			<EmailDivider spacing="lg" />
 			{requestDetails.length > 0 ? (
-				<Section className={s.section()}>
-					<EmailPanel tone="outline">
-						<EmailText className={s.sectionTitle()}>{detailsTitle}</EmailText>
-						<EmailKeyValue rows={requestDetails} density="compact" />
-					</EmailPanel>
+				<Section>
+					<EmailText className={s.sectionTitle()}>{detailsTitle}</EmailText>
+					<EmailKeyValue rows={requestDetails} density="compact" />
 				</Section>
 			) : null}
-			<Section className={s.section()}>
-				<EmailCallout tone="warning" title={warningTitle}>
-					<EmailText size="sm">{warningText}</EmailText>
-				</EmailCallout>
-			</Section>
+			<EmailText
+				tone="muted"
+				size="sm"
+				className={requestDetails.length > 0 ? m.warning() : undefined}
+			>
+				<strong>{warningTitle}</strong> {warningText}
+			</EmailText>
 		</EmailShell>
 	);
 }
