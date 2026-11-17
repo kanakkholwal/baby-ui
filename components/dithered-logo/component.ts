@@ -3,7 +3,7 @@ import { ditheredLogo as ditheredLogoVariants } from "./variants";
 
 const VARIANTS = ["solid", "inverted"];
 const TONES = ["foreground", "primary", "muted", "chart"];
-const SIZES = ["sm", "md", "lg"];
+const SIZES = ["sm", "default", "lg"];
 
 export const ditheredLogo = defineComponent({
 	slug: "dithered-logo",

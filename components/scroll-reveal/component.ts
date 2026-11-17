@@ -1,7 +1,7 @@
 import { defineComponent, variantsOf } from "@baby-ui/registry-schema";
 import { scrollReveal as scrollRevealVariants } from "./variants";
 
-const SIZES = ["sm", "md", "lg"];
+const SIZES = ["sm", "default", "lg"];
 
 export const scrollReveal = defineComponent({
 	slug: "scroll-reveal",

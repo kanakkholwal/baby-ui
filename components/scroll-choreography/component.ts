@@ -2,7 +2,7 @@ import { defineComponent, variantsOf } from "@baby-ui/registry-schema";
 import { scrollChoreography as scrollChoreographyVariants } from "./variants";
 
 const VARIANTS = ["expand", "stack"];
-const SIZES = ["sm", "md", "lg"];
+const SIZES = ["sm", "default", "lg"];
 
 export const scrollChoreography = defineComponent({
 	slug: "scroll-choreography",

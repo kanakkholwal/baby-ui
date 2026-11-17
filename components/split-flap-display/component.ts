@@ -2,7 +2,7 @@ import { defineComponent, variantsOf } from "@baby-ui/registry-schema";
 import { splitFlap as splitFlapVariants } from "./variants";
 
 const VARIANTS = ["solid", "card"];
-const SIZES = ["sm", "md", "lg"];
+const SIZES = ["sm", "default", "lg"];
 const INDICATORS = ["none", "success", "primary", "warning", "destructive"];
 const LAYOUTS = ["board", "line"];
 const union = (values: string[]) => values.map((v) => `"${v}"`).join(" | ");

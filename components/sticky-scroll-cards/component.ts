@@ -1,7 +1,7 @@
 import { defineComponent, variantsOf } from "@baby-ui/registry-schema";
 import { stickyScrollCards as stickyScrollCardsVariants } from "./variants";
 
-const SIZES = ["sm", "md", "lg", "auto"];
+const SIZES = ["sm", "default", "lg", "auto"];
 const VARIANTS = ["polaroid", "plain"];
 
 export const stickyScrollCards = defineComponent({

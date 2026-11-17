@@ -2,7 +2,7 @@ import { defineComponent, variantsOf } from "@baby-ui/registry-schema";
 import { textRepel as textRepelVariants } from "./variants";
 
 const MODES = ["repel", "attract", "inertia"];
-const SIZES = ["inherit", "sm", "md", "lg"];
+const SIZES = ["inherit", "sm", "default", "lg"];
 
 export const textRepel = defineComponent({
 	slug: "text-repel",

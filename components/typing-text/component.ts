@@ -1,7 +1,7 @@
 import { defineComponent, variantsOf } from "@baby-ui/registry-schema";
 import { typingText as typingTextVariants } from "./variants";
 
-const SIZES = ["sm", "md", "lg"];
+const SIZES = ["sm", "default", "lg"];
 
 export const typingText = defineComponent({
 	slug: "typing-text",

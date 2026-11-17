@@ -1,7 +1,7 @@
 import { defineComponent, variantsOf } from "@baby-ui/registry-schema";
 import { textLoop as textLoopVariants } from "./variants";
 
-const SIZES = ["inherit", "sm", "md", "lg"];
+const SIZES = ["inherit", "sm", "default", "lg"];
 const VARIANTS = ["slide", "fade", "roll"];
 const DIRECTIONS = ["up", "down"];
 

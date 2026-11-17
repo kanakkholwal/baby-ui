@@ -1,7 +1,7 @@
 import { defineComponent, variantsOf } from "@baby-ui/registry-schema";
 import { magnetLines as magnetLinesVariants } from "./variants";
 
-const SIZES = ["sm", "md", "lg"];
+const SIZES = ["sm", "default", "lg"];
 const TONES = ["muted", "foreground", "primary", "chart"];
 const union = (values: string[]) => values.map((v) => `"${v}"`).join(" | ");
 

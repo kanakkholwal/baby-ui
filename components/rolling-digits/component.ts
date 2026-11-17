@@ -3,7 +3,7 @@ import { rollingDigits as rollingDigitsVariants } from "./variants";
 
 const VARIANTS = ["roll", "odometer", "count"];
 const DIRECTIONS = ["dynamic", "up", "down"];
-const SIZES = ["inherit", "sm", "md", "lg"];
+const SIZES = ["inherit", "sm", "default", "lg"];
 
 export const rollingDigits = defineComponent({
 	slug: "rolling-digits",

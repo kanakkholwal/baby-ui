@@ -2,7 +2,7 @@ import { defineComponent, variantsOf } from "@baby-ui/registry-schema";
 import { fillButton as fillButtonVariants } from "./variants";
 
 const TONES = ["soft", "outline"];
-const SIZES = ["sm", "md", "lg"];
+const SIZES = ["sm", "default", "lg"];
 
 export const fillButton = defineComponent({
 	slug: "fill-button",

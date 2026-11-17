@@ -3,7 +3,7 @@ import { githubCalendar as githubCalendarVariants } from "./variants";
 
 const VARIANTS = ["default", "glow", "minimal"];
 const SHAPES = ["square", "rounded", "circle"];
-const SIZES = ["sm", "md", "lg", "fluid"];
+const SIZES = ["sm", "default", "lg", "fluid"];
 const TONES = ["scale", "success", "primary"];
 
 export const githubCalendar = defineComponent({

@@ -1,5 +1,7 @@
 <script lang="ts">
 import { ToolChips, type ToolDiff, type ToolStep } from "@baby-ui/svelte";
+import type { ComponentProps } from "svelte";
+import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
 
@@ -58,8 +60,9 @@ const DIFFS: ToolDiff[] = [
 	},
 ];
 
+const p = $derived(controlProps<ComponentProps<typeof ToolChips>>(props));
 // svelte-ignore state_referenced_locally -- intentional one-time seed, matching React's useState(initialValue)
 let open = $state(props.defaultOpen !== false);
 </script>
 
-<ToolChips steps={STEPS} diffs={DIFFS} hiddenDiffCount={2} bind:open />
+<ToolChips steps={STEPS} diffs={DIFFS} hiddenDiffCount={2} size={p.size} bind:open />

@@ -1,6 +1,8 @@
 "use client";
 
 import { FineTuneCard, type FineTuneField } from "@baby-ui/react";
+import type { ComponentProps } from "react";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 type ElementKind = "button" | "card";
@@ -26,12 +28,14 @@ const OPTIONS = ["Primary", "Secondary", "Ghost"];
 export function FineTuneCardDemo({ props }: { props: Props }) {
 	const element: ElementKind = props.element === "card" ? "card" : "button";
 	const title = typeof props.title === "string" ? props.title : "";
+	const p = controlProps<ComponentProps<typeof FineTuneCard>>(props);
 	return (
 		<FineTuneCard
 			id={element}
 			fields={ELEMENTS[element]}
 			options={OPTIONS}
 			labels={{ title: title || undefined }}
+			size={p.size}
 		/>
 	);
 }

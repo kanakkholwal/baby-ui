@@ -2,7 +2,7 @@ import { defineComponent, variantsOf } from "@baby-ui/registry-schema";
 import { collectionSurfer as collectionSurferVariants } from "./variants";
 
 const VARIANTS = ["magnetic", "uplift", "simple"];
-const SIZES = ["sm", "md", "lg"];
+const SIZES = ["sm", "default", "lg"];
 
 export const collectionSurfer = defineComponent({
 	slug: "collection-surfer",

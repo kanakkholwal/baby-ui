@@ -1,7 +1,7 @@
 import { defineComponent, variantsOf } from "@baby-ui/registry-schema";
 import { maskText as maskTextVariants } from "./variants";
 
-const SIZES = ["sm", "md", "lg"];
+const SIZES = ["sm", "default", "lg"];
 
 export const maskText = defineComponent({
 	slug: "mask-text",
