@@ -3,13 +3,15 @@ import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { defaultJobs, runPool } from "./lib/pool.mjs";
 
-const HELP = `Usage: pnpm verify [--quick | --full] [--all] [--keep-going] [--jobs=N] [--verbose]
+const HELP = `Usage: pnpm verify [--quick | --push | --full] [--all] [--keep-going] [--jobs=N] [--verbose]
 
 Runs the gates CI runs. Stages run in order; the steps inside a stage run in parallel.
 
   --quick        generated files, Biome, comments, import extensions (the pre-commit set)
   (default)      quick + tests + type checks of the packages changed since origin/main + Pro check
-                 (the pre-push set)
+                 (the full local check)
+  --push         the pre-push set: quick + type checks of the packages changed since origin/main
+                 (no tests, no Pro check; CI runs those)
   --all          type-check every package, not only those changed since origin/main (and their dependents)
   --full         default + build, then worker size, Pro-hidden check and a browser sweep of
                  every component page (what Deploy runs, plus the sweep)
@@ -24,6 +26,8 @@ if (argv.includes("--help")) {
 	console.log(HELP);
 	process.exit(0);
 }
+// --push: the cheap gates plus the type checks of what this branch touched; CI runs the rest.
+const push = argv.includes("--push");
 const level = argv.includes("--full") ? 2 : argv.includes("--quick") ? 0 : 1;
 const failFast = !argv.includes("--keep-going");
 const verbose = argv.includes("--verbose");
@@ -87,13 +91,15 @@ const STAGES = [
 		level: 1,
 		name: "Tests and type checks",
 		steps: [
-			{ name: "Tests", cmd: "pnpm test" },
+			...(push ? [] : [{ name: "Tests", cmd: "pnpm test" }]),
 			...affectedTargets(checkTargets()).map((name) => ({
 				name: `Type-check ${name}`,
 				cmd: `pnpm --filter ${name} check`,
 			})),
 			// Pro's own `check` regenerates first; the Gates stage already proved that is a no-op.
-			...(hasPro ? [{ name: "Pro type checks", cmd: "pnpm --dir pro -r check" }] : []),
+			...(hasPro && !push
+				? [{ name: "Pro type checks", cmd: "pnpm --dir pro -r check" }]
+				: []),
 		],
 	},
 	{ level: 2, name: "Build", steps: [{ name: "Build", cmd: "pnpm build" }] },
