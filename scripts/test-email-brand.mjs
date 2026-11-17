@@ -18,14 +18,14 @@ const ext = (brand) => createEmailTheme(brand).theme.extend;
 test("the default theme keeps the shipped spacing and corners", () => {
 	const { spacing, borderRadius } = ext();
 	assert.equal(spacing.gutter, "24px");
-	assert.equal(spacing.stack, "28px");
+	assert.equal(spacing.stack, "24px");
 	assert.equal(borderRadius.card, "14px");
 	assert.equal(borderRadius.control, "10px");
 });
 
 test("density scales every spacing token together", () => {
 	assert.equal(ext({ density: "compact" }).spacing.gutter, "19px");
-	assert.equal(ext({ density: "relaxed" }).spacing.stack, "35px");
+	assert.equal(ext({ density: "relaxed" }).spacing.stack, "30px");
 });
 
 test("radius presets reach square and pill extremes", () => {

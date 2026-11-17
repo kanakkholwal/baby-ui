@@ -35,19 +35,23 @@ export const emailShell = tv({
 // Mark and name sit inline in one text line, so `align` centres the lockup without nested tables.
 export const emailHeader = tv({
 	slots: {
-		root: "m-0 mb-section font-semibold text-[15px] text-foreground leading-[24px] tracking-[-0.01em] dark:text-foreground-dark",
-		logo: "inline-block h-6 align-middle",
-		name: "align-middle",
+		root: "mb-block",
+		// A table row, so mark and name share a baseline in every client (Img is display:block).
+		row: "w-auto",
+		logoCell: "align-middle",
+		nameCell: "pl-2 align-middle",
+		logo: "block h-6",
+		name: "m-0 font-semibold text-[15px] text-foreground leading-[24px] tracking-[-0.01em] dark:text-foreground-dark",
 	},
 	variants: {
 		variant: {
 			// `logo` is a full wordmark image, so the name is left out.
-			lockup: { logo: "w-6", name: "ml-2" },
+			lockup: { logo: "w-6" },
 			logo: { logo: "w-auto" },
 		},
 		align: {
-			left: { root: "text-left" },
-			center: { root: "text-center" },
+			left: {},
+			center: { row: "mx-auto" },
 		},
 	},
 	defaultVariants: { variant: "lockup", align: "left" },
@@ -221,8 +225,8 @@ export const emailButton = tv({
 			link: "text-foreground underline dark:text-foreground-dark",
 		},
 		size: {
-			default: "px-4 py-[10px] text-[14px] leading-[20px]",
-			lg: "px-5 py-3 text-[14px] leading-[20px]",
+			default: "px-4 py-2 text-[14px] leading-[20px]",
+			lg: "px-5 py-[10px] text-[14px] leading-[20px]",
 		},
 		shape: {
 			rounded: "",
@@ -244,8 +248,8 @@ export const emailButton = tv({
 
 /** Padding the Svelte button also needs as numbers, for its Outlook (MSO) spacer. */
 export const EMAIL_BUTTON_PADDING: Record<EmailButtonSize, { x: number; y: number }> = {
-	default: { x: 16, y: 10 },
-	lg: { x: 20, y: 12 },
+	default: { x: 16, y: 8 },
+	lg: { x: 20, y: 10 },
 };
 
 export const emailCallout = tv({
@@ -375,8 +379,8 @@ export const emailStats = tv({
 	},
 	variants: {
 		columns: {
-			2: { cell: "w-1/2" },
-			3: { cell: "w-1/3" },
+			2: { cell: "w-[47%]" },
+			3: { cell: "w-[31%]" },
 		},
 		tone: {
 			neutral: {},

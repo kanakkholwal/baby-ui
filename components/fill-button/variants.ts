@@ -42,13 +42,13 @@ export const fillButton = tv({
 		},
 		size: {
 			sm: {
-				root: "h-9 rounded-lg pr-3.5 text-sm [--fill-gap:0.625rem] [--fill-radius:0.375rem] [--fill-tile:1.75rem] [&_svg]:size-3.5",
+				root: "h-8 rounded-md pr-3 text-xs [--fill-gap:0.5rem] [--fill-radius:0.25rem] [--fill-tile:1.5rem] [&_svg]:size-3.5",
 			},
 			default: {
-				root: "h-11 rounded-xl pr-4.5 text-sm [--fill-gap:0.875rem] [--fill-radius:0.5rem] [--fill-tile:2.25rem] [&_svg]:size-4",
+				root: "h-9 rounded-lg pr-4 text-sm [--fill-gap:0.625rem] [--fill-radius:0.375rem] [--fill-tile:1.75rem] [&_svg]:size-4",
 			},
 			lg: {
-				root: "h-14 rounded-2xl pr-6 text-base [--fill-gap:1.125rem] [--fill-radius:0.75rem] [--fill-tile:3rem] [&_svg]:size-5",
+				root: "h-10 rounded-lg pr-5 text-sm [--fill-gap:0.75rem] [--fill-radius:0.375rem] [--fill-tile:2rem] [&_svg]:size-4.5",
 			},
 		},
 	},

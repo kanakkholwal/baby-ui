@@ -39,6 +39,9 @@ component's `variants.ts`.
   - Every adjacent surface pair keeps 1.15:1 lightness separation in both modes (measured).
   - Inner bodies of framed surfaces carry no shadow; the step between rim and body is the depth.
   - Tables and Cards take a `bordered` prop (compound variant) for the classic edge.
+  - No forced 1px ring or border for depth, on any surface: popovers, menus, dropdowns, tab
+    triggers, cards, code frames. Depth is a surface step plus a soft shadow (no `0 0 0 1px` or
+    `inset 0 0 0 1px` layer in a shadow token). Only fields, outline variants and table rows keep a hairline.
   - Focus rings are never removed.
 - Neutral chroma stays at or under 0.004 (hue 265) so every accent theme reads true.
 - Accent: Blue. `primary` is `var(--accent)`; `ring` and `accent-ink` follow the theme ink.
@@ -47,7 +50,7 @@ component's `variants.ts`.
 
 ## Emails
 
-- Email parts take spacing and corners from tokens (`gutter` 24, `pad` 16, `stack` and `section` 28, `block` 24, `gap` 12; `card`, `inner`, `control`, `chip`), never raw `px-6` or `rounded-lg`.
+- Email parts take spacing and corners from tokens (`gutter` 24, `pad` 16, `stack` and `section` 24, `block` 20, `gap` 12; `card`, `inner`, `control`, `chip`), never raw `px-6` or `rounded-lg`.
 - `createEmailTheme({ primary, radius, density })` fits a brand: soft fills and the dark twin derive from `primary`, labels hold 4.5:1, density scales spacing together.
 
 ## Type
@@ -98,9 +101,9 @@ step is `default`, never `md`.
 | `lg` | `h-10` 40 | `rounded-lg` 10 | `text-sm` | `size-4.5` | `px-3.5` | `px-5` | `gap-2` |
 | `xl` | `h-12` 48 | `rounded-xl` 14 | `text-base` | `size-5` | `px-4` | `px-6` | `gap-2.5` |
 
-The compact preview is deliberately limited to the shared `controlSize` recipe. Its token
-heights are 24, 28, 32, 36 and 40px in `tokens.css`; individual component recipes stay on the
-established ladder until the preview is approved, avoiding a speculative library-wide rewrite.
+One ladder, no per-recipe overrides (2026-11-17): a compact height preview in `controlSize` once
+made Input and Select 32px beside 36px Buttons in the same form. Heights come only from the `h-*`
+in this table; never add `[height:var(...)]!` or a second scale.
 
 - Radius rides the size variant, never the base: the ladder holds radius at 25 to 29% of height,
   so small controls don't turn into pills and large ones don't go square.

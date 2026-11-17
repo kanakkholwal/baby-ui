@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Img, Text } from "@better-svelte-email/components";
+import { Column, Img, Row, Section, Text } from "@better-svelte-email/components";
 import { type EmailHeaderAlign, type EmailHeaderVariant, emailHeader } from "../variants";
 
 let {
@@ -22,13 +22,24 @@ let {
 const s = $derived(emailHeader({ variant, align }));
 </script>
 
-<Text class={s.root()}>
-	{#if logo}<Img
-			src={logo}
-			alt={variant === "logo" ? brand : ""}
-			role={variant === "logo" ? undefined : "presentation"}
-			width={String(logoWidth)}
-			height="24"
-			class={s.logo()}
-		/>{/if}{#if !(logo && variant === "logo")}<span class={s.name()}>{brand}</span>{/if}
-</Text>
+<Section class={s.root()}>
+	<Row class={s.row()}>
+		{#if logo}
+			<Column class={s.logoCell()}>
+				<Img
+					src={logo}
+					alt={variant === "logo" ? brand : ""}
+					role={variant === "logo" ? undefined : "presentation"}
+					width={String(logoWidth)}
+					height="24"
+					class={s.logo()}
+				/>
+			</Column>
+		{/if}
+		{#if !(logo && variant === "logo")}
+			<Column class={logo ? s.nameCell() : undefined}>
+				<Text class={s.name()}>{brand}</Text>
+			</Column>
+		{/if}
+	</Row>
+</Section>
