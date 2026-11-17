@@ -11,7 +11,7 @@ export const ogPaperWindow = tv({
 		light: "h-[16px] w-[16px] rounded-full",
 		brand: "mt-[44px] flex items-center gap-4",
 		logo: "h-[84px] w-[84px] shrink-0 object-contain",
-		name: "line-clamp-1 max-w-[700px] font-heading font-bold text-[96px] leading-none tracking-[-0.05em]",
+		name: "line-clamp-1 max-w-[700px] font-heading font-bold text-[96px] leading-none tracking-[-0.02em]",
 		title:
 			"mt-5 line-clamp-3 max-w-[820px] font-serif text-[78px] leading-[1.06] tracking-[-0.01em]",
 	},

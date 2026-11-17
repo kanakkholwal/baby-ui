@@ -13,7 +13,7 @@ export const ogStatsMetrics = tv({
 		label: "line-clamp-1 max-w-[900px] font-semibold text-[24px]",
 		hero: "mt-2 flex items-center gap-7",
 		value:
-			"line-clamp-1 max-w-[760px] font-bold font-heading text-[168px] leading-[1] tracking-tighter tabular-nums",
+			"line-clamp-1 max-w-[760px] font-bold font-heading text-[168px] leading-[1] tracking-tight tabular-nums",
 		delta:
 			"flex shrink-0 items-center gap-2 rounded-full px-5 py-2.5 font-semibold text-[30px] tabular-nums",
 		deltaIcon: "shrink-0",

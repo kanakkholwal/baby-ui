@@ -13,7 +13,7 @@ export const ogProductLaunch = tv({
 		body: "flex flex-col",
 		badge:
 			"line-clamp-1 max-w-full self-start rounded-full px-5 py-2 font-semibold text-[22px]",
-		name: "font-bold font-heading leading-[1] tracking-tighter",
+		name: "font-bold font-heading leading-[1] tracking-tight",
 		tagline: "text-muted-foreground leading-snug",
 		url: "line-clamp-1 font-medium text-[24px] text-muted-foreground",
 	},

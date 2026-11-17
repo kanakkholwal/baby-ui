@@ -9,7 +9,7 @@ export const ogNewsletterIssue = tv({
 		publication: "line-clamp-1 font-semibold text-[26px] leading-none tracking-tight",
 		issue: "line-clamp-1 shrink-0 font-medium text-[22px] leading-none tabular-nums",
 		headline:
-			"mt-[48px] font-bold font-heading text-[80px] leading-[1.02] tracking-[-0.04em]",
+			"mt-[48px] font-bold font-heading text-[80px] leading-[1.02] tracking-[-0.02em]",
 		inside: "mt-auto flex flex-col gap-[16px]",
 		insideLabel:
 			"font-semibold text-[18px] text-muted-foreground uppercase leading-none tracking-[0.14em]",
