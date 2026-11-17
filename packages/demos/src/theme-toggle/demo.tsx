@@ -31,7 +31,7 @@ export function ThemeToggleDemo({ props }: { props: Props }) {
 			onThemeChange={onThemeChange}
 			variant={p.variant ?? "rectangle"}
 			start={p.start ?? "bottom-up"}
-			className="rounded-xl border border-border bg-background p-2.5"
+			className="rounded-xl bg-card p-2.5"
 			iconClassName="size-5"
 		/>
 	);

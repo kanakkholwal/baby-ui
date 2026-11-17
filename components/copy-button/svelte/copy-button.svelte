@@ -49,7 +49,7 @@ async function copy() {
 	}}
 	aria-label={iconOnly ? (copied ? copiedLabel : label) : undefined}
 	class={cn(
-		"inline-flex h-8 shrink-0 items-center gap-1.5 rounded-lg bg-card font-medium text-muted-foreground text-xs transition-[color,transform,scale,translate] duration-[var(--duration-press)] ease-[var(--ease-ui-out)] hover:text-foreground active:scale-[var(--press-scale)]",
+		"inline-flex h-8 shrink-0 items-center gap-1.5 rounded-lg bg-card font-medium text-muted-foreground text-xs transition-[color,transform,scale,translate] duration-[var(--duration-press)] ease-[var(--ease-ui-out)] outline-none hover:bg-foreground/[0.06] hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring active:scale-[var(--press-scale)] disabled:pointer-events-none disabled:opacity-50 motion-reduce:transition-none motion-reduce:active:scale-100",
 		iconOnly ? "w-8 justify-center" : "px-2.5",
 		classProp,
 	)}
