@@ -42,7 +42,7 @@ export const drawerFrame = tv({
 			framed: {
 				panel: "bg-card p-1",
 				surface: [
-					"rounded-[20px] bg-popover p-5 shadow-surface",
+					"rounded-[20px] bg-popover p-5",
 					"group-data-[vaul-drawer-direction=bottom]/drawer:rounded-b-none group-data-[vaul-drawer-direction=top]/drawer:rounded-t-none",
 					"group-data-[vaul-drawer-direction=left]/drawer:rounded-l-none group-data-[vaul-drawer-direction=right]/drawer:rounded-r-none",
 				].join(" "),

@@ -24,7 +24,7 @@ export const wallHero = tv({
 		track: "wall-drift flex flex-col",
 		group: "flex flex-col gap-5 pb-5",
 		card: "overflow-hidden rounded-2xl bg-card p-1.5",
-		cardBody: "rounded-xl bg-background p-4 shadow-surface dark:bg-popover",
+		cardBody: "rounded-xl bg-background p-4 dark:bg-popover",
 	},
 	variants: {
 		variant: {

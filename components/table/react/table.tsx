@@ -4,26 +4,37 @@ import { type ComponentProps, createContext, useContext, useMemo } from "react";
 import { cn } from "../../lib/cn";
 import { type TableDensity, type TableVariant, table } from "../variants";
 
-const TableContext = createContext<{ variant: TableVariant; density: TableDensity }>({
+const TableContext = createContext<{
+	variant: TableVariant;
+	density: TableDensity;
+	bordered: boolean;
+}>({
 	variant: "default",
 	density: "comfortable",
+	bordered: false,
 });
 
 export interface TableProps extends ComponentProps<"table"> {
 	variant?: TableVariant;
 	density?: TableDensity;
+	/** Adds a hairline edge around the default variant and under its header. */
+	bordered?: boolean;
 	containerClassName?: string;
 }
 
 export function Table({
 	variant = "default",
 	density = "comfortable",
+	bordered = false,
 	className,
 	containerClassName,
 	...props
 }: TableProps) {
-	const { container, root } = table({ variant, density });
-	const style = useMemo(() => ({ variant, density }), [variant, density]);
+	const { container, root } = table({ variant, density, bordered });
+	const style = useMemo(
+		() => ({ variant, density, bordered }),
+		[variant, density, bordered],
+	);
 	return (
 		<TableContext.Provider value={style}>
 			<div data-slot="table-container" className={cn(container(), containerClassName)}>

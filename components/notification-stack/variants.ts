@@ -40,7 +40,7 @@ export const notificationStack = tv({
 	variants: {
 		variant: {
 			elevated: {
-				item: "bg-background shadow-surface dark:bg-popover",
+				item: "bg-background dark:bg-popover",
 			},
 			flat: { item: "bg-card" },
 		},

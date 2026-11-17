@@ -38,12 +38,25 @@ export const table = tv({
 				row: "[&>td]:transition-colors hover:[&>td]:bg-card data-[state=selected]:[&>td]:bg-primary/[0.04]",
 			},
 		},
+		bordered: { true: {}, false: {} },
 		density: {
 			comfortable: { head: "px-3 py-2", cell: "px-3 py-2" },
 			compact: { head: "px-3 py-1.5", cell: "px-3 py-1" },
 		},
 	},
-	defaultVariants: { variant: "default", density: "comfortable" },
+	// Decision (product): borderless by default; `bordered` adds the classic grid edge on the default variant.
+	compoundVariants: [
+		{
+			variant: "default",
+			bordered: true,
+			class: {
+				container: "border border-border",
+				header: "[&_tr]:border-border/60 [&_tr]:border-b",
+				footer: "border-border/60 border-t",
+			},
+		},
+	],
+	defaultVariants: { variant: "default", density: "comfortable", bordered: false },
 });
 
 export type TableVariant = NonNullable<VariantProps<typeof table>["variant"]>;

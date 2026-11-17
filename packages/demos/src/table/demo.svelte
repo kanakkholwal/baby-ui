@@ -23,7 +23,7 @@ const INVOICES = [
 ];
 </script>
 
-<Table variant={p.variant} density={p.density}>
+<Table variant={p.variant} density={p.density} bordered={p.bordered === true}>
 	<TableCaption>A list of recent invoices.</TableCaption>
 	<TableHeader>
 		<TableRow>

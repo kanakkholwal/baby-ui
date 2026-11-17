@@ -42,7 +42,7 @@ export const showcaseCard = tv({
 			translucent: {
 				root: "[&>div]:[grid-template-rows:minmax(0,1fr)]",
 				footer:
-					"absolute inset-x-2 bottom-2 rounded-lg bg-popover/82 shadow-(--overlay-shadow) backdrop-blur-xl backdrop-saturate-150",
+					"absolute inset-x-0 bottom-0 rounded-b-[inherit] bg-linear-to-b from-transparent via-popover/75 to-popover/90 pt-10",
 			},
 			morphing: {
 				root: REVEAL_ROWS,
@@ -53,7 +53,7 @@ export const showcaseCard = tv({
 			// The framed Dialog recipe: a card-surface rim, a raised preview, the footer in the rim.
 			framed: {
 				root: [...REVEAL_ROWS, "bg-card p-1 [&>div]:rounded-none [&>div]:bg-transparent"],
-				preview: "rounded-[11px] bg-popover shadow-surface",
+				preview: "rounded-[11px] bg-popover",
 				footer: REVEAL_FOOTER,
 			},
 		},

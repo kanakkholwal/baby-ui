@@ -48,7 +48,7 @@ $effect(() => {
 {/snippet}
 
 <!-- The inset frame: a tinted outer card, canvas sunk one level on bg-background. -->
-<div class={["rounded-xl border border-border bg-card p-1", classProp]}>
+<div class={["rounded-xl bg-card p-1", classProp]}>
 	<div
 		data-demo-canvas
 		data-framework={react ? "react" : "svelte"}

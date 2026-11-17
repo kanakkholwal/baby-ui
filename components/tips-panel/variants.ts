@@ -28,7 +28,7 @@ export const tipsPanel = tv({
 			tray: {
 				root: "rounded-2xl bg-card p-1.5",
 				header: "px-4.5 pt-3 pb-3",
-				body: "rounded-xl bg-background shadow-surface dark:bg-popover",
+				body: "rounded-xl bg-background dark:bg-popover",
 				footer: "px-2 pt-2 pb-1",
 			},
 			plain: {

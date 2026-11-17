@@ -41,7 +41,7 @@ export const decisionInbox = tv({
 			tray: {
 				root: "rounded-2xl bg-card p-1.5",
 				header: "px-4.5 pt-2.5 pb-2.5",
-				list: "rounded-xl bg-background shadow-surface dark:bg-popover",
+				list: "rounded-xl bg-background dark:bg-popover",
 			},
 			plain: {
 				root: "overflow-hidden rounded-2xl bg-card",

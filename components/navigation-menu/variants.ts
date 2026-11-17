@@ -65,9 +65,9 @@ export const navigationMenu = tv({
 				viewport: ["rounded-2xl bg-card [--navigation-menu-spacing:calc(0.5rem+2px)]"],
 				content: [
 					"p-1 has-data-[slot=navigation-menu-body]:p-1",
-					"not-has-data-[slot=navigation-menu-body]:*:rounded-[11px] not-has-data-[slot=navigation-menu-body]:*:bg-popover not-has-data-[slot=navigation-menu-body]:*:p-2 not-has-data-[slot=navigation-menu-body]:*:shadow-surface",
+					"not-has-data-[slot=navigation-menu-body]:*:rounded-[11px] not-has-data-[slot=navigation-menu-body]:*:bg-popover not-has-data-[slot=navigation-menu-body]:*:p-2",
 				],
-				body: "rounded-[11px] bg-popover shadow-surface",
+				body: "rounded-[11px] bg-popover",
 				footer: "border-t-0 px-3 pt-2 pb-1",
 			},
 		},

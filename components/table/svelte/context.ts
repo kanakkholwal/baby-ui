@@ -1,7 +1,11 @@
 import { getContext, setContext } from "svelte";
 import type { TableDensity, TableVariant } from "../variants";
 
-export type TableStyle = { variant: TableVariant; density: TableDensity };
+export type TableStyle = {
+	variant: TableVariant;
+	density: TableDensity;
+	bordered: boolean;
+};
 
 const KEY = Symbol("table-style");
 
@@ -11,5 +15,7 @@ export function setTableStyle(style: () => TableStyle) {
 
 export function getTableStyle(): () => TableStyle {
 	const style = getContext<(() => TableStyle) | undefined>(KEY);
-	return style ?? (() => ({ variant: "default", density: "comfortable" }));
+	return (
+		style ?? (() => ({ variant: "default", density: "comfortable", bordered: false }))
+	);
 }

@@ -29,7 +29,7 @@ export const changeSummary = tv({
 				root: "rounded-2xl bg-card p-1.5",
 				header: "px-4 pt-2 pb-2.5",
 				title: "text-primary",
-				list: "rounded-xl bg-background shadow-surface dark:bg-popover",
+				list: "rounded-xl bg-background dark:bg-popover",
 			},
 			plain: {
 				root: "overflow-hidden rounded-2xl bg-card",

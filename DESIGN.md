@@ -37,6 +37,8 @@ component's `variants.ts`.
   - Never nest the same surface step twice; card in card goes one step up or down.
   - Tables: no vertical or outer borders; row dividers at hairline alpha, header as a surface step.
   - Every adjacent surface pair keeps 1.15:1 lightness separation in both modes (measured).
+  - Inner bodies of framed surfaces carry no shadow; the step between rim and body is the depth.
+  - Tables and Cards take a `bordered` prop (compound variant) for the classic edge.
   - Focus rings are never removed.
 - Neutral chroma stays at or under 0.004 (hue 265) so every accent theme reads true.
 - Accent: Blue. `primary` is `var(--accent)`; `ring` and `accent-ink` follow the theme ink.

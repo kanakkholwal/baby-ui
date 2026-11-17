@@ -12,6 +12,7 @@ let {
 	containerClass,
 	variant = "default",
 	density = "comfortable",
+	bordered = false,
 	...rest
 }: {
 	/** Bindable: the `<table>` element. */
@@ -21,11 +22,13 @@ let {
 	containerClass?: string;
 	variant?: TableVariant;
 	density?: TableDensity;
+	/** Adds a hairline edge around the default variant and under its header. */
+	bordered?: boolean;
 } & HTMLAttributes<HTMLTableElement> = $props();
 
-setTableStyle(() => ({ variant, density }));
+setTableStyle(() => ({ variant, density, bordered }));
 
-const classes = $derived(table({ variant, density }));
+const classes = $derived(table({ variant, density, bordered }));
 </script>
 
 <div data-slot="table-container" class={cn(classes.container(), containerClass)}>
