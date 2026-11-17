@@ -31,6 +31,7 @@ const ROW = "flex w-full flex-row-reverse items-center justify-between gap-4";
 		side={p.side ?? "bottom"}
 		sideOffset={Number(props.sideOffset ?? 4)}
 		align={p.align ?? "center"}
+		alignOffset={Number(props.alignOffset ?? 0)}
 	>
 		<div class="flex flex-col gap-3">
 			<Label>Preview branches</Label>
