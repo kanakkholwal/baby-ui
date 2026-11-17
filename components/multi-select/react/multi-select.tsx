@@ -12,6 +12,7 @@ import {
 	CommandSeparator,
 } from "../../command/react/command";
 import { cn } from "../../lib/cn";
+import { useControllable } from "../../lib/react/use-controllable";
 import { Popover, PopoverContent, PopoverTrigger } from "../../popover/react/popover";
 import { RollingDigits } from "../../rolling-digits/react/rolling-digits";
 import {
@@ -28,9 +29,18 @@ export type { MultiSelectLabels, MultiSelectOption, MultiSelectSize };
 
 export interface MultiSelectProps {
 	options: MultiSelectOption[];
-	/** Controlled selection, in option order. */
-	value: string[];
-	onValueChange: (value: string[]) => void;
+	/** Selection, in option order. Omit to let the field own it. */
+	value?: string[];
+	defaultValue?: string[];
+	onValueChange?: (value: string[]) => void;
+	/** Whether the list is open; omit to let the field own it. */
+	open?: boolean;
+	defaultOpen?: boolean;
+	onOpenChange?: (open: boolean) => void;
+	/** Submits each chosen value under this name, so the field works inside a native form. */
+	name?: string;
+	/** Shows a button that clears every chip. */
+	clearable?: boolean;
 	/** Chips shown before collapsing the rest into "+N". */
 	maxChips?: number;
 	size?: MultiSelectSize;
@@ -45,8 +55,14 @@ export interface MultiSelectProps {
 
 export function MultiSelect({
 	options,
-	value,
+	value: valueProp,
+	defaultValue,
 	onValueChange,
+	open: openProp,
+	defaultOpen = false,
+	onOpenChange,
+	name,
+	clearable = false,
 	maxChips = 3,
 	size = "default",
 	disabled = false,
@@ -59,7 +75,12 @@ export function MultiSelect({
 }: MultiSelectProps) {
 	const labels = { ...MULTI_SELECT_LABELS, ...labelsProp };
 	const s = multiSelect({ size });
-	const [open, setOpen] = useState(false);
+	const [value, setValue] = useControllable<string[]>(
+		valueProp,
+		defaultValue ?? [],
+		onValueChange,
+	);
+	const [open, setOpen] = useControllable(openProp, defaultOpen, onOpenChange);
 	const [search, setSearch] = useState("");
 	const field = useRef<HTMLDivElement>(null);
 	const selected = options.filter((o) => value.includes(o.value));
@@ -68,7 +89,7 @@ export function MultiSelect({
 	const enabled = options.filter((o) => !o.disabled);
 	const allSelected = enabled.length > 0 && enabled.every((o) => value.includes(o.value));
 
-	const toggle = (item: string) => onValueChange(toggleValue(options, value, item));
+	const toggle = (item: string) => setValue(toggleValue(options, value, item));
 	const removeLast = () => {
 		const last = selected.at(-1);
 		if (last) toggle(last.value);
@@ -145,6 +166,30 @@ export function MultiSelect({
 						/>
 					</svg>
 				</PopoverTrigger>
+				{clearable && value.length > 0 && !disabled ? (
+					<button
+						type="button"
+						aria-label={labels.clear}
+						className={s.clear()}
+						onClick={() => setValue([])}
+					>
+						<svg
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							strokeWidth="2"
+							strokeLinecap="round"
+							aria-hidden
+						>
+							<path d="M18 6 6 18M6 6l12 12" />
+						</svg>
+					</button>
+				) : null}
+				{name
+					? value.map((item) => (
+							<input key={item} type="hidden" name={name} value={item} />
+						))
+					: null}
 			</div>
 			<PopoverContent anchor={field} align="start" className={s.content()}>
 				<Command className={s.list()}>
@@ -191,7 +236,7 @@ export function MultiSelect({
 										value="__select-all"
 										disabled={allSelected}
 										onSelect={() =>
-											onValueChange(
+											setValue(
 												options
 													.filter((o) => !o.disabled || value.includes(o.value))
 													.map((o) => o.value),
@@ -203,7 +248,7 @@ export function MultiSelect({
 									<CommandItem
 										value="__clear"
 										disabled={!value.length}
-										onSelect={() => onValueChange([])}
+										onSelect={() => setValue([])}
 									>
 										{labels.clear}
 									</CommandItem>

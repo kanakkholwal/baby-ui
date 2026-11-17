@@ -17,6 +17,8 @@ export const multiSelect = tv({
 			"group/trigger flex min-w-16 flex-1 cursor-pointer items-center justify-between gap-2 self-stretch rounded-md text-left text-foreground outline-none",
 			"data-[placeholder]:text-muted-foreground",
 		],
+		clear:
+			"relative inline-flex size-6 shrink-0 cursor-pointer items-center justify-center rounded-full text-muted-foreground outline-none transition-colors after:absolute after:-inset-1 hover:bg-foreground/[0.06] hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none [&_svg]:size-3",
 		chevron: [
 			"size-3.5 shrink-0 text-muted-foreground transition-transform duration-[var(--duration-exit)] ease-[var(--ease-ui-out)] motion-reduce:transition-none",
 			"group-data-[popup-open]/trigger:rotate-180 group-data-[state=open]/trigger:rotate-180 group-data-[popup-open]/trigger:duration-[var(--duration-dropdown)] group-data-[state=open]/trigger:duration-[var(--duration-dropdown)]",

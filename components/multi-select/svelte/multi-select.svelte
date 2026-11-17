@@ -26,6 +26,9 @@ let {
 	options,
 	value = $bindable([]),
 	onValueChange,
+	open = $bindable(false),
+	name,
+	clearable = false,
 	maxChips = 3,
 	size = "default",
 	disabled = false,
@@ -40,6 +43,12 @@ let {
 	/** Bindable selection, in option order. */
 	value?: string[];
 	onValueChange?: (value: string[]) => void;
+	/** Bindable: whether the list is open. */
+	open?: boolean;
+	/** Submits each chosen value under this name, so the field works inside a native form. */
+	name?: string;
+	/** Shows a button that clears every chip. */
+	clearable?: boolean;
 	/** Chips shown before collapsing the rest into "+N". */
 	maxChips?: number;
 	size?: MultiSelectSize;
@@ -54,7 +63,6 @@ let {
 
 const labels = $derived({ ...MULTI_SELECT_LABELS, ...labelsProp });
 const s = $derived(multiSelect({ size }));
-let open = $state(false);
 let search = $state("");
 let field = $state<HTMLDivElement | null>(null);
 const selected = $derived(options.filter((o) => value.includes(o.value)));
@@ -132,6 +140,14 @@ function removeLast() {
 				<path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
 			</svg>
 		</PopoverTrigger>
+		{#if clearable && value.length > 0 && !disabled}
+			<button type="button" aria-label={labels.clear} class={s.clear()} onclick={() => set([])}>
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+					<path d="M18 6 6 18M6 6l12 12" />
+				</svg>
+			</button>
+		{/if}
+		{#if name}{#each value as item (item)}<input type="hidden" {name} value={item} />{/each}{/if}
 	</div>
 	<PopoverContent customAnchor={field} align="start" class={s.content()}>
 		<Command class={s.list()}>

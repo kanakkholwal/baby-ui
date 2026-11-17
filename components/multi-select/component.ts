@@ -19,8 +19,30 @@ export const multiSelect = defineComponent({
 		{
 			name: "value",
 			type: "string[]",
-			description: "Selected values. Bindable in Svelte.",
+			description:
+				"Selected values. Omit it (React) to let the field own the selection; bindable in Svelte.",
 			control: { kind: "none" },
+		},
+		{
+			name: "open",
+			type: "boolean",
+			description:
+				"Whether the list is open. Pair with `onOpenChange` in React; bindable in Svelte.",
+			control: { kind: "none" },
+		},
+		{
+			name: "name",
+			type: "string",
+			description:
+				"Submits each chosen value under this name, so the field works inside a native form.",
+			control: { kind: "none" },
+		},
+		{
+			name: "clearable",
+			type: "boolean",
+			description: "Shows a button in the field that clears every chip.",
+			default: false,
+			control: { kind: "boolean" },
 		},
 		{
 			name: "maxChips",

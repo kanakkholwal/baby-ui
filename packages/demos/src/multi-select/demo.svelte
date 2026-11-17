@@ -19,6 +19,7 @@ let value = $state(["ana", "dev"]);
 		maxChips={Number(props.maxChips ?? 3)}
 		size={p.size ?? "default"}
 		disabled={p.disabled ?? false}
+		clearable={p.clearable === true}
 		labels={{ placeholder: "Add reviewers…", search: "Search people…" }}
 	/>
 </div>
