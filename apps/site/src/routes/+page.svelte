@@ -1,5 +1,8 @@
 <script lang="ts">
+import HomeBreadth from "#lib/components/home-breadth.svelte";
 import HomeCategories from "#lib/components/home-categories.svelte";
+import HomeInstall from "#lib/components/home-install.svelte";
+import HomeInteractions from "#lib/components/home-interactions.svelte";
 import HomeNew from "#lib/components/home-new.svelte";
 import HomeShowcase from "#lib/components/home-showcase.svelte";
 import LandingHero from "#lib/components/landing-hero.svelte";
@@ -52,9 +55,15 @@ $effect(() => {
 />
 
 <main class="relative">
-	<LandingHero slug={showcaseSlug} {total} />
+	<LandingHero {total} />
+
+	<HomeInstall slug={showcaseSlug} />
+
+	<HomeBreadth items={data.breadth} categories={data.categories ?? []} emailHtml={data.emailHtml} />
 
 	<HomeShowcase items={data.grid} />
+
+	<HomeInteractions items={data.motion} />
 
 	<HomeCategories categories={data.categories ?? []} />
 

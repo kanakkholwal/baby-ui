@@ -12,20 +12,14 @@ type Cell = {
 	props?: Record<string, unknown>;
 };
 
-// Six panels, none repeating the hero: few enough to take in at once,
-// and only the ones resting in view run.
+// Six panels chosen for motion worth watching; only the ones resting in view run.
 const CELLS: Cell[] = [
-	{ slug: "area-chart", span: 7, class: "min-h-85 md:min-h-95" },
-	{ slug: "text-loop", span: 5, class: "min-h-85 md:min-h-95" },
-	{
-		slug: "task-steps",
-		span: 5,
-		class: "min-h-85 md:min-h-95",
-		props: { variant: "capsules" },
-	},
-	{ slug: "webgl-liquid", span: 7, class: "min-h-85 md:min-h-95" },
-	{ slug: "circuit-board", span: 5, class: "min-h-85 md:min-h-80" },
-	{ slug: "week-calendar", span: 7, class: "min-h-85 md:min-h-80" },
+	{ slug: "orbit-card-stack", span: 7, class: "min-h-85 md:min-h-95" },
+	{ slug: "voice-orb", span: 5, class: "min-h-85 md:min-h-95" },
+	{ slug: "notification-stack", span: 5, class: "min-h-85 md:min-h-95" },
+	{ slug: "image-compare", span: 7, class: "min-h-85 md:min-h-95" },
+	{ slug: "card-stack", span: 7, class: "min-h-85 md:min-h-90" },
+	{ slug: "prism-orb", span: 5, class: "min-h-85 md:min-h-90" },
 ];
 </script>
 

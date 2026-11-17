@@ -27,15 +27,15 @@ export const musicPlayer = tv({
 		scrub: "flex flex-col",
 		times:
 			"-mt-2 flex justify-between font-mono text-xs text-muted-foreground tabular-nums",
-		controls: "flex items-center justify-between gap-3",
+		controls: "flex flex-wrap items-center justify-between gap-3",
 		transport: "flex items-center gap-1",
-		volume: "flex w-32 items-center gap-1",
+		volume: "hidden w-28 items-center gap-1 @sm:flex @md:w-32",
 	},
 	variants: {
 		layout: {
 			vinyl: {
 				frame: "@xl:grid-cols-[auto_1fr]",
-				deck: "size-52 @xl:size-56",
+				deck: "w-[min(13rem,62cqw)] @xl:w-56",
 				disc: "border-4",
 				arm: "-top-[4%] -right-[8%] h-[14%] w-[58%]",
 				meta: "text-center @xl:text-left",
