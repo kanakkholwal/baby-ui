@@ -10,7 +10,7 @@ let { categories }: { categories: NavCategory[] } = $props();
 		id="home-categories-heading"
 		class="m-0 font-display font-medium text-3xl text-foreground tracking-[-0.03em] md:text-4xl"
 	>
-		Start from what you are building
+		Browse by category
 	</h2>
 	<ul class="mt-8 grid list-none grid-cols-2 gap-2 p-0 sm:grid-cols-3 lg:grid-cols-4">
 		{#each categories as group (group.category)}
