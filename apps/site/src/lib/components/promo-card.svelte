@@ -5,9 +5,9 @@ import type { Product } from "#lib/products.js";
 let { product }: { product: Product } = $props();
 </script>
 
-<aside aria-label="More from Nexonauts" class="rounded-2xl border border-border bg-card p-1.5">
+<aside aria-label="More from Nexonauts" class="rounded-2xl bg-card p-1.5">
 	<div
-		class="grid h-20 place-items-center rounded-[calc(1rem-0.375rem)] border border-border bg-background text-foreground"
+		class="grid h-20 place-items-center rounded-[calc(1rem-0.375rem)] bg-background text-foreground"
 	>
 		<span class="flex items-center gap-2">
 			<span class="font-semibold text-lg tracking-tight">{product.name}</span>
@@ -25,7 +25,7 @@ let { product }: { product: Product } = $props();
 			href={product.href}
 			target="_blank"
 			rel="noreferrer"
-			class="mt-3 inline-flex h-8 w-full items-center justify-center gap-1 rounded-lg border border-border bg-background font-medium text-foreground text-xs transition-colors hover:bg-foreground/[0.06]"
+			class="mt-3 inline-flex h-8 w-full items-center justify-center gap-1 rounded-lg bg-background font-medium text-foreground text-xs transition-colors hover:bg-foreground/[0.06]"
 		>
 			Explore {product.name}
 			<IconArrowUpRight size={13} />

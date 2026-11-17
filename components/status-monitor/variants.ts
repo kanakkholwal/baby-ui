@@ -12,8 +12,8 @@ export const statusMonitor = tv({
 		footer: "flex justify-between text-muted-foreground text-xs",
 		tip: "flex max-w-60 flex-col gap-1 p-1 text-sm",
 		tipHead: "flex items-center gap-2 font-semibold",
-		tipMeta: "text-background/65",
-		tipInfo: "text-foreground/80 leading-snug",
+		tipMeta: "text-muted-foreground",
+		tipInfo: "text-popover-foreground/80 leading-snug",
 	},
 	variants: {
 		size: {

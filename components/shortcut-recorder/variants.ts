@@ -6,7 +6,7 @@ export const shortcutRecorder = tv({
 		row: "flex items-center gap-1.5",
 		field: [
 			"inline-flex min-w-40 flex-1 items-center gap-1 rounded-lg border border-input bg-(--field) px-2.5 text-left text-sm outline-none",
-			"transition-[border-color,box-shadow] duration-(--duration-fast) hover:border-border-strong focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/20",
+			"transition-[border-color,box-shadow] duration-(--duration-fast) hover:bg-[color-mix(in_oklab,var(--field)_97%,var(--foreground))] focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/20",
 			"data-[recording=true]:border-ring data-[recording=true]:ring-3 data-[recording=true]:ring-ring/20 disabled:cursor-not-allowed disabled:opacity-50",
 		],
 		placeholder: "text-muted-foreground",

@@ -156,8 +156,8 @@ function go(href: string) {
 	aria-keyshortcuts={mac ? "Meta+K" : "Control+K"}
 	title="Search ({mac ? "⌘K" : "Ctrl K"})"
 	class={expanded
-		? "w-full justify-start rounded-lg border border-border bg-background px-3 text-muted-foreground shadow-xs hover:bg-background hover:text-foreground"
-		: "size-8 md:size-7 shrink-0 rounded-full bg-foreground/[0.045] text-foreground/70 ring-1 ring-foreground/[0.05] hover:bg-foreground/[0.075] hover:text-foreground"}
+		? "w-full justify-start rounded-lg bg-background px-3 text-muted-foreground shadow-xs hover:bg-background hover:text-foreground"
+		: "size-8 shrink-0 rounded-full bg-foreground/[0.045] text-foreground/70 hover:bg-foreground/[0.075] hover:text-foreground"}
 >
 	<IconSearch size={14} />
 	{#if expanded}

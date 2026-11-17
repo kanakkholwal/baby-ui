@@ -62,7 +62,7 @@ $effect(() => {
 		<ScrollArea
 			scrollbar="hidden"
 			maxHeight="none"
-			class="min-h-0 flex-1 rounded-[11px] bg-card"
+			class="min-h-0 flex-1 rounded-[calc(var(--radius-2xl)-0.25rem)] bg-card"
 		>
 			<div class="py-2">
 			{#key `${spec.slug}:${resetKey}`}
@@ -86,7 +86,7 @@ $effect(() => {
 		</Button>
 	</div>
 	<CollapsibleContent class="px-0 pb-0">
-		<div class="rounded-[11px] bg-card py-2">
+		<div class="rounded-[calc(var(--radius-2xl)-0.25rem)] bg-card py-2">
 			{#key `${spec.slug}:${resetKey}`}
 				<SpecDials {spec} bind:values />
 			{/key}

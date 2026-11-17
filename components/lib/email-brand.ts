@@ -32,9 +32,9 @@ const RADIUS: Record<EmailRadius, [number, number, number, number]> = {
 const SPACE = {
 	gutter: 24,
 	pad: 16,
-	stack: 32,
-	section: 32,
-	block: 24,
+	stack: 24,
+	section: 24,
+	block: 20,
 	gap: 12,
 } as const;
 const SCALE: Record<EmailDensity, number> = { compact: 0.8, default: 1, relaxed: 1.25 };

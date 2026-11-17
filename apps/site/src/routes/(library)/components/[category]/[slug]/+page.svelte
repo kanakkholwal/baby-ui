@@ -361,7 +361,7 @@ const packs = $derived(packsFor(data.spec.slug));
 				{#each packs as pack (pack.id)}
 					<a
 						href="/packs/{pack.id}"
-						class="rounded-full border border-border px-2.5 py-0.5 text-foreground no-underline transition-colors duration-(--duration-fast) hover:bg-muted motion-reduce:transition-none"
+						class="rounded-full px-2.5 py-0.5 text-foreground no-underline transition-colors duration-(--duration-fast) hover:bg-muted motion-reduce:transition-none"
 					>{pack.label}</a>
 				{/each}
 			</div>

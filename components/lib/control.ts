@@ -4,12 +4,11 @@ import { tv, type VariantProps } from "tailwind-variants";
 export const controlSize = tv({
 	variants: {
 		size: {
-			xs: "h-6 [height:var(--control-height-xs)]! rounded-sm text-xs [&_svg]:size-3",
-			sm: "h-8 [height:var(--control-height-sm)]! rounded-md text-xs [&_svg]:size-3.5",
-			default:
-				"h-9 [height:var(--control-height-default)]! rounded-lg text-sm [&_svg]:size-4",
-			lg: "h-10 [height:var(--control-height-lg)]! rounded-lg text-sm [&_svg]:size-4.5",
-			xl: "h-12 [height:var(--control-height-xl)]! rounded-xl text-base [&_svg]:size-5",
+			xs: "h-6 rounded-sm text-xs [&_svg]:size-3",
+			sm: "h-8 rounded-md text-xs [&_svg]:size-3.5",
+			default: "h-9 rounded-lg text-sm [&_svg]:size-4",
+			lg: "h-10 rounded-lg text-sm [&_svg]:size-4.5",
+			xl: "h-12 rounded-xl text-base [&_svg]:size-5",
 		},
 	},
 	defaultVariants: { size: "default" },
@@ -23,7 +22,7 @@ export const fieldFrame = tv({
 	base: [
 		"border border-input bg-(--field) text-foreground outline-none",
 		"transition-[color,border-color,box-shadow] duration-(--duration-fast) ease-(--ease-ui-out) motion-reduce:transition-none",
-		"hover:border-border-strong aria-invalid:border-destructive",
+		"hover:bg-[color-mix(in_oklab,var(--field)_97%,var(--foreground))] aria-invalid:border-destructive",
 		"disabled:cursor-not-allowed disabled:opacity-50",
 	],
 	variants: {
@@ -49,7 +48,7 @@ export const fieldGroup = tv({
 	base: [
 		"border border-input bg-[var(--field,var(--background))] text-foreground outline-none",
 		"transition-[color,border-color,box-shadow] duration-(--duration-fast) ease-(--ease-ui-out) motion-reduce:transition-none",
-		"hover:border-border-strong has-[:focus-visible]:border-ring has-[[aria-invalid=true]]:border-destructive aria-invalid:border-destructive",
+		"hover:bg-[color-mix(in_oklab,var(--field)_97%,var(--foreground))] has-[:focus-visible]:border-ring has-[[aria-invalid=true]]:border-destructive aria-invalid:border-destructive",
 		"has-[input:disabled]:cursor-not-allowed has-[input:disabled]:opacity-50 has-[textarea:disabled]:cursor-not-allowed has-[textarea:disabled]:opacity-50",
 		"data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
 	],

@@ -35,19 +35,23 @@ export const emailShell = tv({
 // Mark and name sit inline in one text line, so `align` centres the lockup without nested tables.
 export const emailHeader = tv({
 	slots: {
-		root: "m-0 mb-section font-semibold text-[15px] text-foreground leading-[24px] tracking-[-0.01em] dark:text-foreground-dark",
-		logo: "inline-block h-6 align-middle",
-		name: "align-middle",
+		root: "mb-block",
+		// A table row, so mark and name share a baseline in every client (Img is display:block).
+		row: "w-auto",
+		logoCell: "align-middle",
+		nameCell: "pl-2 align-middle",
+		logo: "block h-6",
+		name: "m-0 font-semibold text-[15px] text-foreground leading-[24px] tracking-[-0.01em] dark:text-foreground-dark",
 	},
 	variants: {
 		variant: {
 			// `logo` is a full wordmark image, so the name is left out.
-			lockup: { logo: "w-6", name: "ml-2" },
+			lockup: { logo: "w-6" },
 			logo: { logo: "w-auto" },
 		},
 		align: {
-			left: { root: "text-left" },
-			center: { root: "text-center" },
+			left: {},
+			center: { row: "mx-auto" },
 		},
 	},
 	defaultVariants: { variant: "lockup", align: "left" },
@@ -71,7 +75,7 @@ export const emailHeading = tv({
 
 export const emailHero = tv({
 	slots: {
-		root: "rounded-inner px-gutter py-block",
+		root: "rounded-inner px-pad py-pad",
 		eyebrow: "m-0 font-semibold text-[13px] leading-[20px]",
 		meta: "m-0 text-right text-[12px] leading-[18px]",
 		title: "m-0 mt-2 font-semibold tracking-[-0.02em]",
@@ -192,7 +196,7 @@ export const emailText = tv({
 
 // Light status hues are under 4.5:1 on any fill, so light mode keeps the hue in the fill only.
 export const emailBadge = tv({
-	base: "m-0 inline-block rounded-chip px-2 py-[2px] font-semibold text-[12px] leading-[18px] tracking-[0.02em]",
+	base: "m-0 inline-block whitespace-nowrap rounded-chip px-2 py-[2px] font-semibold text-[12px] leading-[18px] tracking-[0.02em]",
 	variants: {
 		tone: {
 			neutral:
@@ -221,8 +225,8 @@ export const emailButton = tv({
 			link: "text-foreground underline dark:text-foreground-dark",
 		},
 		size: {
-			default: "px-4 py-[10px] text-[14px] leading-[20px]",
-			lg: "px-5 py-3 text-[14px] leading-[20px]",
+			default: "px-4 py-2 text-[14px] leading-[20px]",
+			lg: "px-5 py-[10px] text-[14px] leading-[20px]",
 		},
 		shape: {
 			rounded: "",
@@ -244,8 +248,8 @@ export const emailButton = tv({
 
 /** Padding the Svelte button also needs as numbers, for its Outlook (MSO) spacer. */
 export const EMAIL_BUTTON_PADDING: Record<EmailButtonSize, { x: number; y: number }> = {
-	default: { x: 16, y: 10 },
-	lg: { x: 20, y: 12 },
+	default: { x: 16, y: 8 },
+	lg: { x: 20, y: 10 },
 };
 
 export const emailCallout = tv({
@@ -364,7 +368,7 @@ export const emailFallbackLink = tv({
 export const emailStats = tv({
 	slots: {
 		cell: "align-top",
-		card: "rounded-inner bg-card px-3 py-4 dark:bg-card-dark",
+		card: "rounded-inner bg-card px-3 py-3 dark:bg-card-dark",
 		value:
 			"m-0 font-semibold text-[22px] text-foreground leading-[28px] tracking-[-0.01em] dark:text-foreground-dark",
 		label:
@@ -375,8 +379,8 @@ export const emailStats = tv({
 	},
 	variants: {
 		columns: {
-			2: { cell: "w-1/2" },
-			3: { cell: "w-1/3" },
+			2: { cell: "w-[47%]" },
+			3: { cell: "w-[31%]" },
 		},
 		tone: {
 			neutral: {},
@@ -405,16 +409,16 @@ export const EMAIL_STAT_TREND_GLYPH: Record<EmailStatsTrend, string> = {
 export const emailKeyValue = tv({
 	slots: {
 		label:
-			"py-2 text-[14px] text-muted-foreground leading-[22px] dark:text-muted-foreground-dark",
+			"py-[6px] text-[14px] text-muted-foreground leading-[22px] dark:text-muted-foreground-dark",
 		value:
-			"py-2 text-right text-[14px] text-foreground leading-[22px] break-all dark:text-foreground-dark",
+			"py-[6px] text-right text-[14px] text-foreground leading-[22px] break-all dark:text-foreground-dark",
 		total:
 			"border-0 border-border border-t border-solid pt-3 font-semibold text-foreground dark:border-border-dark dark:text-foreground-dark",
 	},
 	variants: {
 		density: {
 			comfortable: {},
-			compact: { label: "py-1", value: "py-1" },
+			compact: { label: "py-[2px]", value: "py-[2px]" },
 		},
 	},
 	defaultVariants: { density: "comfortable" },

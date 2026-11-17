@@ -126,7 +126,7 @@ $effect(() => {
 		{#if missing.length}
 			<div
 				role="status"
-				class="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border bg-card px-4 py-3 text-sm"
+				class="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-xl bg-card px-4 py-3 text-sm"
 			>
 				<span class="text-muted-foreground">
 					{missing.length === 1 ? "1 saved component is" : `${missing.length} saved components are`}
@@ -166,7 +166,7 @@ $effect(() => {
 					role="region"
 					aria-label="Install bookmarks"
 					class={[
-						"pointer-events-auto w-[min(19rem,100%)] rounded-[1.75rem] border border-border bg-card p-1 shadow-(--overlay-shadow)",
+						"pointer-events-auto w-[min(19rem,100%)] rounded-[1.75rem] bg-card p-1 shadow-(--overlay-shadow)",
 						"transition-[width,border-radius] delay-(--duration-dropdown) duration-(--duration-dropdown) ease-(--ease-ui-out)",
 						"data-[open]:w-[min(44rem,100%)] data-[open]:rounded-2xl data-[open]:delay-0 motion-reduce:transition-none",
 					]}

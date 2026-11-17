@@ -179,19 +179,27 @@ export function EmailHeader({
 }: EmailHeaderProps) {
 	const s = emailHeader({ variant, align });
 	return (
-		<Text className={s.root()}>
-			{logo ? (
-				<Img
-					src={logo}
-					alt={variant === "logo" ? brand : ""}
-					role={variant === "logo" ? undefined : "presentation"}
-					width={logoWidth}
-					height={24}
-					className={s.logo()}
-				/>
-			) : null}
-			{logo && variant === "logo" ? null : <span className={s.name()}>{brand}</span>}
-		</Text>
+		<Section className={s.root()}>
+			<Row align={align} className={s.row()}>
+				{logo ? (
+					<Column className={s.logoCell()}>
+						<Img
+							src={logo}
+							alt={variant === "logo" ? brand : ""}
+							role={variant === "logo" ? undefined : "presentation"}
+							width={logoWidth}
+							height={24}
+							className={s.logo()}
+						/>
+					</Column>
+				) : null}
+				{logo && variant === "logo" ? null : (
+					<Column className={logo ? s.nameCell() : undefined}>
+						<Text className={s.name()}>{brand}</Text>
+					</Column>
+				)}
+			</Row>
+		</Section>
 	);
 }
 

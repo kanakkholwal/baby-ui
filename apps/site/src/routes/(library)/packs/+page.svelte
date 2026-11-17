@@ -28,7 +28,7 @@ const SHOWN = 5;
 					href="/packs/{pack.id}"
 					class="group flex flex-col rounded-2xl border border-border bg-card p-1 text-foreground no-underline transition-[border-color] duration-(--duration-fast) hover:border-foreground/20 motion-reduce:transition-none"
 				>
-					<div class="flex flex-1 flex-col gap-3 rounded-[11px] border border-border bg-background p-4">
+					<div class="flex flex-1 flex-col gap-3 rounded-[calc(var(--radius-2xl)-0.25rem)] bg-background p-4">
 						<div class="flex flex-col gap-1">
 							<h2 class="m-0 font-medium text-base tracking-tight">{pack.label}</h2>
 							<p class="m-0 line-clamp-2 text-pretty text-muted-foreground text-sm">{pack.blurb}</p>

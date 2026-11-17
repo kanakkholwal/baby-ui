@@ -32,7 +32,7 @@ export const numberInput = tv({
 			default: {},
 			scrub: {
 				root: "w-auto",
-				group: "hover:border-border-strong",
+				group: "hover:bg-[color-mix(in_oklab,var(--field)_97%,var(--foreground))]",
 				label: [
 					"flex shrink-0 touch-none items-center gap-1 border-input border-e font-medium text-muted-foreground",
 					"transition-colors duration-(--duration-fast) hover:bg-accent hover:text-accent-foreground",

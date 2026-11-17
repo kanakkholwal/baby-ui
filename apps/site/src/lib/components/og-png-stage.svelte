@@ -11,10 +11,10 @@ let { preview, name }: { preview: OgPngPreview; name: string } = $props();
 			alt="Rendered 1200x630 PNG of {name}"
 			width="1200"
 			height="630"
-			class={["h-auto w-full rounded-xl border border-border shadow-sm transition-opacity", preview.pending && "opacity-60"]}
+			class={["h-auto w-full rounded-xl shadow-sm transition-opacity", preview.pending && "opacity-60"]}
 		/>
 	{:else}
-		<div class="grid aspect-[1200/630] w-full place-items-center rounded-xl border border-border bg-card text-muted-foreground text-sm">
+		<div class="grid aspect-[1200/630] w-full place-items-center rounded-xl bg-card text-muted-foreground text-sm">
 			Rendering…
 		</div>
 	{/if}

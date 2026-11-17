@@ -1,8 +1,10 @@
 <script lang="ts">
-import HomeCta from "#lib/components/home-cta.svelte";
+import HomeBreadth from "#lib/components/home-breadth.svelte";
+import HomeCategories from "#lib/components/home-categories.svelte";
+import HomeInstall from "#lib/components/home-install.svelte";
+import HomeInteractions from "#lib/components/home-interactions.svelte";
 import HomeNew from "#lib/components/home-new.svelte";
 import HomeShowcase from "#lib/components/home-showcase.svelte";
-import InstallCommand from "#lib/components/install-command.svelte";
 import LandingHero from "#lib/components/landing-hero.svelte";
 import Seo from "#lib/components/seo.svelte";
 import SiteFooter from "#lib/components/site-footer.svelte";
@@ -53,42 +55,21 @@ $effect(() => {
 />
 
 <main class="relative">
-	<LandingHero
-		newCount={data.freshCount}
-		{total}
-		categories={data.categories?.length ?? 0}
-	/>
+	<LandingHero {total} />
+
+	<HomeInstall slug={showcaseSlug} />
+
+	<HomeBreadth items={data.breadth} categories={data.categories ?? []} emailHtml={data.emailHtml} ogSlug={data.ogSlug} />
 
 	<HomeShowcase items={data.grid} />
+
+	<HomeInteractions items={data.motion} />
+
+	<HomeCategories categories={data.categories ?? []} />
 
 	{#if data.fresh.length}
 		<HomeNew items={data.fresh} count={data.freshCount} />
 	{/if}
-
-	<section aria-labelledby="home-install-heading" class="mx-auto max-w-2xl px-4 pb-24">
-		<div class="mb-8 flex flex-col items-center gap-3 text-center">
-			<h2
-				id="home-install-heading"
-				class="m-0 font-display font-medium text-3xl text-foreground tracking-[-0.03em] md:text-4xl"
-			>
-				One command each
-			</h2>
-			<p class="m-0 max-w-md text-pretty text-muted-foreground">
-				Pick a component, run its command, and it lands in your project as source.
-			</p>
-		</div>
-		<div class="rounded-2xl border border-border bg-card p-1">
-			<InstallCommand slug={showcaseSlug} cascade />
-		</div>
-		<p class="mt-4 text-center text-muted-foreground text-xs">
-			New here? <a
-				href="/docs/installation"
-				class="font-medium text-foreground underline underline-offset-4 hover:text-muted-foreground"
-			>Read the install guide</a>.
-		</p>
-	</section>
-
-	<HomeCta count={total} />
 
 	<SiteFooter />
 </main>

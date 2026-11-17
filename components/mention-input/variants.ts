@@ -7,7 +7,7 @@ export const mentionInput = tv({
 		root: "relative w-full",
 		frame: [
 			"grid w-full rounded-lg border border-input bg-(--field) outline-none *:col-start-1 *:row-start-1",
-			"transition-[border-color,box-shadow] duration-(--duration-fast) hover:border-border-strong",
+			"transition-[border-color,box-shadow] duration-(--duration-fast) hover:bg-[color-mix(in_oklab,var(--field)_97%,var(--foreground))]",
 			"has-[textarea:focus-visible]:border-ring has-[textarea:focus-visible]:ring-3 has-[textarea:focus-visible]:ring-ring/20",
 		],
 		mirror: [

@@ -3,7 +3,7 @@ const mark = (slug: string) => `https://cdn.simpleicons.org/${slug}`;
 /** The app at the centre, then the services it syncs with. */
 export const INTEGRATION_NODES = [
 	{ id: "app", label: "Your app", src: "/logo.svg" },
-	{ id: "slack", label: "Slack", src: mark("slack") },
+	{ id: "vercel", label: "Vercel", src: mark("vercel") },
 	{ id: "github", label: "GitHub", src: mark("github") },
 	{ id: "linear", label: "Linear", src: mark("linear") },
 	{ id: "notion", label: "Notion", src: mark("notion") },

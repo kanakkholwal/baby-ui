@@ -23,7 +23,7 @@ const HEAD = "mb-4 font-medium text-muted-foreground text-xs";
 
 <footer class="overflow-hidden px-4 pt-16 md:px-8">
 	<div class="mx-auto max-w-7xl">
-		<div class="border-border border-t pt-12 pb-10">
+		<div class="border-border/60 border-t pt-12 pb-10">
 			<div class="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-12">
 				<div class="col-span-2 flex flex-col gap-4 md:col-span-4">
 					<a href="/" class="flex items-center gap-2 font-semibold text-foreground text-sm">
@@ -110,7 +110,7 @@ const HEAD = "mb-4 font-medium text-muted-foreground text-xs";
 			</div>
 		</div>
 
-		<div class="flex flex-col gap-2 border-border border-t py-6 text-muted-foreground text-xs sm:flex-row sm:items-center sm:justify-between">
+		<div class="flex flex-col gap-2 border-border/60 border-t py-6 text-muted-foreground text-xs sm:flex-row sm:items-center sm:justify-between">
 			<p>Components are yours once copied. Apache License 2.0.</p>
 			<p>© {year} Baby UI.</p>
 		</div>

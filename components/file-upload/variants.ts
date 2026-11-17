@@ -6,7 +6,7 @@ export const fileUpload = tv({
 		zone: [
 			"group/zone relative flex w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border border-border border-dashed bg-background text-center outline-none",
 			"transition-[padding,border-color,background-color] duration-(--duration-press) ease-(--ease-ui-out) motion-reduce:transition-none",
-			"hover:border-border-strong hover:bg-foreground/[0.03] focus-visible:ring-2 focus-visible:ring-ring",
+			"hover:bg-foreground/[0.03] focus-visible:ring-2 focus-visible:ring-ring",
 			"data-[dragging=true]:border-primary data-[dragging=true]:bg-[color-mix(in_oklch,var(--primary)_6%,transparent)]",
 			"disabled:cursor-not-allowed disabled:opacity-50",
 			// A refused drop shakes the zone, the same shake InputOTP uses.

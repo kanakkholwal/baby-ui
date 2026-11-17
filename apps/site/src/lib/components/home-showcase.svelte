@@ -1,6 +1,5 @@
 <script lang="ts">
-import { IconArrowRight } from "@baby-ui/icons";
-import { Button, ShowcaseGrid, type ShowcaseSpan } from "@baby-ui/svelte";
+import { ShowcaseGrid, type ShowcaseSpan } from "@baby-ui/svelte";
 import type { CardItem } from "#lib/registry.js";
 import ShowcasePanel from "./showcase-panel.svelte";
 
@@ -13,31 +12,24 @@ type Cell = {
 	props?: Record<string, unknown>;
 };
 
-// Six panels, none repeating the hero: few enough to take in at once,
-// and only the ones resting in view run.
+// Six compact panels that read at this height; tall stacks and swipers stay on their own pages.
 const CELLS: Cell[] = [
-	{ slug: "area-chart", span: 7, class: "min-h-85 md:min-h-95" },
-	{ slug: "text-loop", span: 5, class: "min-h-85 md:min-h-95" },
-	{
-		slug: "task-steps",
-		span: 5,
-		class: "min-h-85 md:min-h-95",
-		props: { variant: "capsules" },
-	},
-	{ slug: "webgl-liquid", span: 7, class: "min-h-85 md:min-h-95" },
-	{ slug: "circuit-board", span: 5, class: "min-h-85 md:min-h-80" },
-	{ slug: "week-calendar", span: 7, class: "min-h-85 md:min-h-80" },
+	{ slug: "animated-beam", span: 7, class: "min-h-85 md:min-h-95" },
+	{ slug: "voice-orb", span: 5, class: "min-h-85 md:min-h-95" },
+	{ slug: "notification-stack", span: 5, class: "min-h-85 md:min-h-95" },
+	{ slug: "image-compare", span: 7, class: "min-h-85 md:min-h-95" },
+	{ slug: "github-calendar", span: 7, class: "min-h-85 md:min-h-90" },
+	{ slug: "status-monitor", span: 5, class: "min-h-85 md:min-h-90" },
 ];
 </script>
 
 <section aria-labelledby="home-showcase-heading" class="mx-auto max-w-7xl px-4 pb-24 md:px-8">
 	<div class="flex flex-col items-center gap-3 text-center">
-		<h2 id="home-showcase-heading" class="m-0 font-display font-medium text-3xl text-foreground tracking-[-0.03em] md:text-4xl">Live, not screenshots</h2>
-		<p class="m-0 max-w-md text-pretty text-muted-foreground">Every panel below is the real component, running.</p>
+		<h2 id="home-showcase-heading" class="m-0 font-display font-medium text-3xl text-foreground tracking-[-0.03em] md:text-4xl">Live components</h2>
 	</div>
 
-	<div class="mt-8 rounded-2xl border border-border bg-card p-1 sm:mt-10">
-	<ShowcaseGrid class="overflow-hidden rounded-[11px] border border-border">
+	<div class="mt-8 rounded-2xl bg-card p-1 sm:mt-10">
+	<ShowcaseGrid class="overflow-hidden rounded-[calc(var(--radius-2xl)-0.25rem)]">
 		{#each CELLS as cell (cell.slug)}
 			<ShowcasePanel
 				slug={cell.slug}
@@ -48,14 +40,5 @@ const CELLS: Cell[] = [
 			/>
 		{/each}
 	</ShowcaseGrid>
-	</div>
-
-	<div class="mt-12 flex justify-center">
-		<Button href="/components" variant="outline" size="lg" class="group">
-			Browse all components
-			<IconArrowRight
-				class="transition-transform duration-150 group-hover:translate-x-0.5 motion-reduce:transition-none"
-			/>
-		</Button>
 	</div>
 </section>

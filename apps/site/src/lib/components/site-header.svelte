@@ -160,7 +160,7 @@ function active(match: string[]) {
 		aria-expanded={desktopNavigationOpen}
 		aria-controls="docs-sidebar"
 		aria-label={desktopNavigationOpen ? "Close navigation" : "Open navigation"}
-		class="hidden size-7 rounded-full bg-foreground/[0.045] text-foreground/70 ring-1 ring-foreground/[0.05] hover:bg-foreground/[0.075] hover:text-foreground md:inline-flex"
+		class="hidden size-7 rounded-full bg-foreground/[0.045] text-foreground/70 hover:bg-foreground/[0.075] hover:text-foreground md:inline-flex"
 	>
 		<SidebarToggleIcon open={desktopNavigationOpen} class="size-3.5!" />
 	</Button>
@@ -185,7 +185,7 @@ function active(match: string[]) {
 	class={[
 		"fixed inset-x-0 top-0 z-40",
 		// The blur layer is always composited; scrolling only fades its opacity.
-		"before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:border-border before:border-b before:bg-background/70 before:backdrop-blur-xl before:backdrop-saturate-150",
+		"before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:border-border/60 before:border-b before:bg-background/70 before:backdrop-blur-xl before:backdrop-saturate-150",
 		"before:transition-opacity before:duration-[var(--duration-dropdown)] before:ease-[var(--ease-ui-out)] motion-reduce:before:transition-none",
 		scrolled && !workspaceShell ? "before:opacity-100" : "before:opacity-0",
 		workspaceShell && [
@@ -228,7 +228,7 @@ function active(match: string[]) {
 			class={[
 				"flex h-14 min-w-0 items-center justify-between gap-2 px-4 sm:gap-4 md:px-6",
 				workspaceShell
-					? "md:border md:border-b-0 md:border-border md:bg-background"
+					? "md:bg-background"
 					: "xl:px-8",
 			]}
 		>
@@ -239,7 +239,7 @@ function active(match: string[]) {
 					size="icon-sm"
 					onclick={() => (mobileNav.open = true)}
 					aria-label="Open navigation"
-					class="size-9 rounded-full bg-foreground/[0.04] text-foreground/75 ring-1 ring-border/70 hover:bg-foreground/[0.07] hover:text-foreground md:hidden"
+					class="size-9 rounded-full bg-foreground/[0.04] text-foreground/75 hover:bg-foreground/[0.07] hover:text-foreground md:hidden"
 				>
 					<IconMenu2 class="size-[1.125rem]" />
 				</Button>
@@ -294,7 +294,7 @@ function active(match: string[]) {
 											{/each}
 										</ul>
 										{#if group.more}
-											<div class="w-44 border-border border-l pl-4">
+											<div class="w-44 border-border/60 border-l pl-4">
 												<p class="px-2 pt-2 pb-1.5 text-muted-foreground text-xs">{group.more.heading}</p>
 												<ul class="grid gap-0.5">
 													{#each group.more.links as link (link.href)}
@@ -354,7 +354,7 @@ function active(match: string[]) {
 					variant: "ghost",
 					size: "icon-sm",
 					class:
-						"size-8 md:size-7 rounded-full bg-foreground/[0.045] text-foreground/70 ring-1 ring-foreground/[0.05] hover:bg-foreground/[0.075] hover:text-foreground",
+						"size-8 rounded-full bg-foreground/[0.045] text-foreground/70 hover:bg-foreground/[0.075] hover:text-foreground",
 				})}
 			/>
 
@@ -363,7 +363,7 @@ function active(match: string[]) {
 				size="icon"
 				onclick={() => (prefs.open = true)}
 				aria-label="Settings"
-				class="gear size-8 md:size-7 rounded-full bg-foreground/[0.045] text-foreground/70 ring-1 ring-foreground/[0.05] hover:bg-foreground/[0.075] hover:text-foreground"
+				class="gear size-8 rounded-full bg-foreground/[0.045] text-foreground/70 hover:bg-foreground/[0.075] hover:text-foreground"
 			>
 				<IconSettings size={14} />
 			</Button>
@@ -381,7 +381,7 @@ function active(match: string[]) {
 							size="sm"
 							loadingLabel=""
 							aria-label={stars === null ? "Star on GitHub" : `Star on GitHub, ${stars} stars`}
-							class="h-8 md:h-7 gap-1 rounded-full bg-foreground/[0.045] px-2.5 font-normal text-foreground/70 tabular-nums ring-1 ring-foreground/[0.05] hover:bg-foreground/[0.075] hover:text-foreground"
+							class="h-8 gap-1 rounded-full bg-foreground/[0.045] px-2.5 font-normal text-foreground/70 tabular-nums hover:bg-foreground/[0.075] hover:text-foreground"
 						>
 							<IconBrandGithub size={14} />
 							{#if stars !== null}<span class="hidden text-xs sm:inline">{compact.format(stars)}</span>{/if}

@@ -26,6 +26,12 @@ let {
 	options,
 	value = $bindable([]),
 	onValueChange,
+	open = $bindable(false),
+	name,
+	clearable = false,
+	max,
+	loading = false,
+	onCreate,
 	maxChips = 3,
 	size = "default",
 	disabled = false,
@@ -40,6 +46,18 @@ let {
 	/** Bindable selection, in option order. */
 	value?: string[];
 	onValueChange?: (value: string[]) => void;
+	/** Bindable: whether the list is open. */
+	open?: boolean;
+	/** Submits each chosen value under this name, so the field works inside a native form. */
+	name?: string;
+	/** Shows a button that clears every chip. */
+	clearable?: boolean;
+	/** Most choices allowed; the rest of the list turns off once it is reached. */
+	max?: number;
+	/** Options are loading: the list shows a status line and the field is marked busy. */
+	loading?: boolean;
+	/** Offers "Create" for search text no option matches; add the option and select it in `onCreate`. */
+	onCreate?: (label: string) => void;
 	/** Chips shown before collapsing the rest into "+N". */
 	maxChips?: number;
 	size?: MultiSelectSize;
@@ -54,12 +72,18 @@ let {
 
 const labels = $derived({ ...MULTI_SELECT_LABELS, ...labelsProp });
 const s = $derived(multiSelect({ size }));
-let open = $state(false);
 let search = $state("");
 let field = $state<HTMLDivElement | null>(null);
 const selected = $derived(options.filter((o) => value.includes(o.value)));
 const shown = $derived(selected.slice(0, maxChips));
 const hidden = $derived(selected.length - shown.length);
+const atLimit = $derived(max !== undefined && value.length >= max);
+const typed = $derived(search.trim());
+const canCreate = $derived(
+	onCreate !== undefined &&
+		typed !== "" &&
+		!options.some((o) => o.label.toLowerCase() === typed.toLowerCase()),
+);
 const allSelected = $derived.by(() => {
 	const enabled = options.filter((o) => !o.disabled);
 	return enabled.length > 0 && enabled.every((o) => value.includes(o.value));
@@ -116,6 +140,7 @@ function removeLast() {
 			aria-label={ariaLabel}
 			aria-labelledby={ariaLabelledBy}
 			aria-invalid={invalid || undefined}
+			aria-busy={loading || undefined}
 			{disabled}
 			data-slot="multi-select-trigger"
 			data-placeholder={selected.length ? undefined : ""}
@@ -132,6 +157,14 @@ function removeLast() {
 				<path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
 			</svg>
 		</PopoverTrigger>
+		{#if clearable && value.length > 0 && !disabled}
+			<button type="button" aria-label={labels.clear} class={s.clear()} onclick={() => set([])}>
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+					<path d="M18 6 6 18M6 6l12 12" />
+				</svg>
+			</button>
+		{/if}
+		{#if name}{#each value as item (item)}<input type="hidden" {name} value={item} />{/each}{/if}
 	</div>
 	<PopoverContent customAnchor={field} align="start" class={s.content()}>
 		<Command class={s.list()}>
@@ -144,14 +177,15 @@ function removeLast() {
 				}}
 			/>
 			<CommandList>
-				<CommandEmpty>{labels.empty}</CommandEmpty>
+				{#if loading}<p role="status" class={s.status()}>{labels.loading}</p>{/if}
+				<CommandEmpty>{canCreate ? "" : labels.empty}</CommandEmpty>
 				<CommandGroup>
 					{#each options as option (option.value)}
 						{@const checked = value.includes(option.value)}
 						<CommandItem
 							value={option.value}
 							keywords="{option.label} {option.keywords ?? ''}"
-							disabled={option.disabled}
+							disabled={option.disabled || (atLimit && !checked)}
 							class={s.item()}
 							onSelect={() => toggle(option.value)}
 						>
@@ -165,7 +199,22 @@ function removeLast() {
 						</CommandItem>
 					{/each}
 				</CommandGroup>
-				{#if !search}
+				{#if canCreate}
+					<CommandGroup>
+						<CommandItem
+							value="__create"
+							keywords={typed}
+							class={s.item()}
+							onSelect={() => {
+								onCreate?.(typed);
+								search = "";
+							}}
+						>
+							{labels.create.replace("{value}", typed)}
+						</CommandItem>
+					</CommandGroup>
+				{/if}
+				{#if !search && max === undefined}
 					<CommandSeparator />
 					<CommandGroup>
 						<CommandItem
@@ -181,6 +230,7 @@ function removeLast() {
 						</CommandItem>
 					</CommandGroup>
 				{/if}
+				{#if atLimit}<p role="status" class={s.status()}>{labels.limit.replace("{count}", String(max))}</p>{/if}
 			</CommandList>
 		</Command>
 	</PopoverContent>

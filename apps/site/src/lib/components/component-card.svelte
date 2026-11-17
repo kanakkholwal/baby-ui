@@ -108,7 +108,7 @@ const installCommand = $derived(pmCommand("dlx", installArgs(item.slug), prefs.p
 <!-- Pro stays in view so the paywall is never a surprise; New and Updated surface on hover, focus or touch. -->
 {#snippet badges()}
 	{#if selection}
-		<span class="absolute top-3 left-3 z-30 rounded-md border border-border bg-background/85 p-1.5 backdrop-blur-md">
+		<span class="absolute top-3 left-3 z-30 rounded-md bg-background/85 p-1.5 backdrop-blur-md">
 			<Checkbox
 				size="sm"
 				aria-label="Select {item.name}"
@@ -116,7 +116,7 @@ const installCommand = $derived(pmCommand("dlx", installArgs(item.slug), prefs.p
 			/>
 		</span>
 	{:else}
-		<span class="pointer-events-none absolute top-4 left-4 z-30 rounded-full border border-border bg-background/80 px-2.5 py-0.5 text-muted-foreground text-xs backdrop-blur-md">
+		<span class="pointer-events-none absolute top-4 left-4 z-30 rounded-full bg-background/80 px-2.5 py-0.5 text-muted-foreground text-xs backdrop-blur-md">
 			{CATEGORY_LABEL[item.category]}
 		</span>
 	{/if}
