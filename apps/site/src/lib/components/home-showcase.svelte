@@ -31,8 +31,7 @@ const CELLS: Cell[] = [
 
 <section aria-labelledby="home-showcase-heading" class="mx-auto max-w-7xl px-4 pb-24 md:px-8">
 	<div class="flex flex-col items-center gap-3 text-center">
-		<h2 id="home-showcase-heading" class="m-0 font-display font-medium text-3xl text-foreground tracking-[-0.03em] md:text-4xl">Running right now</h2>
-		<p class="m-0 max-w-md text-pretty text-muted-foreground">These are the real components, not screenshots. Replay any of them.</p>
+		<h2 id="home-showcase-heading" class="m-0 font-display font-medium text-3xl text-foreground tracking-[-0.03em] md:text-4xl">Live components</h2>
 	</div>
 
 	<div class="mt-8 rounded-2xl bg-card p-1 sm:mt-10">

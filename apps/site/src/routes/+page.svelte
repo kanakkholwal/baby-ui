@@ -1,9 +1,5 @@
 <script lang="ts">
 import HomeCategories from "#lib/components/home-categories.svelte";
-import HomeCta from "#lib/components/home-cta.svelte";
-import HomeFaq from "#lib/components/home-faq.svelte";
-import HomeFrameworks from "#lib/components/home-frameworks.svelte";
-import HomeIncluded from "#lib/components/home-included.svelte";
 import HomeNew from "#lib/components/home-new.svelte";
 import HomeShowcase from "#lib/components/home-showcase.svelte";
 import LandingHero from "#lib/components/landing-hero.svelte";
@@ -56,27 +52,15 @@ $effect(() => {
 />
 
 <main class="relative">
-	<LandingHero
-		slug={showcaseSlug}
-		{total}
-		items={data.grid}
-	/>
-
-	<HomeFrameworks />
+	<LandingHero slug={showcaseSlug} {total} />
 
 	<HomeShowcase items={data.grid} />
-
-	<HomeIncluded />
 
 	<HomeCategories categories={data.categories ?? []} />
 
 	{#if data.fresh.length}
 		<HomeNew items={data.fresh} count={data.freshCount} />
 	{/if}
-
-	<HomeFaq />
-
-	<HomeCta />
 
 	<SiteFooter />
 </main>
