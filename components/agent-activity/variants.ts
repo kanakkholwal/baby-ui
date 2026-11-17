@@ -33,8 +33,8 @@ export const agentActivity = tv({
 		],
 		icon: "mt-0.5 grid size-4 shrink-0 place-items-center text-muted-foreground/70 [&_svg]:size-4 [&_svg]:fill-none [&_svg]:stroke-current [&_svg]:[stroke-linecap:round] [&_svg]:[stroke-linejoin:round] [&_svg]:[stroke-width:1.7]",
 		label:
-			"min-w-0 flex-1 text-foreground/90 data-[status=pending]:text-muted-foreground/60",
-		meta: "shrink-0 text-muted-foreground/60 tabular-nums",
+			"min-w-0 flex-1 text-foreground/90 data-[status=pending]:text-muted-foreground",
+		meta: "shrink-0 text-muted-foreground tabular-nums",
 		pulse:
 			"relative grid size-3 place-items-center before:absolute before:inset-0 before:animate-pulse before:rounded-full before:bg-foreground/15 after:size-1.5 after:rounded-full after:bg-foreground/60 motion-reduce:before:animate-none",
 		text: ["px-1.5 py-1 text-muted-foreground leading-5", ROW_IN],
@@ -48,8 +48,8 @@ export const agentActivity = tv({
 		resultIcon:
 			"grid size-4 shrink-0 place-items-center text-muted-foreground [&_img]:size-3.5 [&_img]:rounded-sm [&_svg]:size-3.5 [&_svg]:fill-none [&_svg]:stroke-current [&_svg]:[stroke-width:2]",
 		resultTitle: "min-w-0 truncate font-medium text-foreground/90",
-		resultDomain: "min-w-0 shrink-[2] truncate text-muted-foreground/60",
-		more: ["px-1.5 py-1 ps-8 text-muted-foreground/60", ROW_IN],
+		resultDomain: "min-w-0 shrink-[2] truncate text-muted-foreground",
+		more: ["px-1.5 py-1 ps-8 text-muted-foreground", ROW_IN],
 		action: "shrink-0 font-medium text-foreground/90",
 		target:
 			"min-w-0 flex-1 truncate rounded-md bg-muted px-2 py-0.5 font-mono text-muted-foreground text-xs leading-5",
