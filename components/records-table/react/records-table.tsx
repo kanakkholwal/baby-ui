@@ -16,6 +16,7 @@ import {
 	DropdownMenuTrigger,
 } from "../../dropdown-menu/react/dropdown-menu";
 import { cn } from "../../lib/cn";
+import { useControllable } from "../../lib/react/use-controllable";
 import { Popover, PopoverContent, PopoverTrigger } from "../../popover/react/popover";
 import {
 	ACTIONS_WIDTH,
@@ -60,21 +61,6 @@ export type {
 	RecordsToolKind,
 } from "../types";
 export type { RecordStrength, RecordsDensity } from "../variants";
-
-/** Value from `value` when controlled, else local state; `set` always reports through `onChange`. */
-function useControllable<T>(
-	value: T | undefined,
-	initial: T,
-	onChange?: (next: T) => void,
-) {
-	const [inner, setInner] = useState(initial);
-	const current = value ?? inner;
-	const set = (next: T) => {
-		if (value === undefined) setInner(next);
-		onChange?.(next);
-	};
-	return [current, set] as const;
-}
 
 function CalcCell({ label }: { label: string }) {
 	return (

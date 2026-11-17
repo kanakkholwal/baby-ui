@@ -4,7 +4,8 @@ import { fieldText } from "../lib/control";
 export const inputGroup = tv({
 	slots: {
 		root: [
-			"group/input-group relative flex w-full min-w-0 items-center border border-input bg-(--field) outline-none",
+			"group/input-group relative flex w-full min-w-0 items-center border border-input bg-[var(--field,var(--background))] outline-none",
+			"has-[[data-slot=input-group-control]:disabled]:cursor-not-allowed has-[[data-slot=input-group-control]:disabled]:opacity-50",
 			"transition-[box-shadow,border-color] duration-(--duration-fast) ease-(--ease-ui-out) motion-reduce:transition-none",
 			"hover:border-border-strong",
 			"has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot=input-group-control]:focus-visible]:ring-ring/20",
@@ -15,7 +16,7 @@ export const inputGroup = tv({
 		],
 		text: "flex items-center gap-2 text-muted-foreground [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none",
 		control:
-			"h-full flex-1 rounded-none border-0 text-[length:inherit] md:text-[length:inherit] bg-transparent shadow-none ring-0 hover:border-0 focus-visible:border-0 focus-visible:ring-0 aria-invalid:border-0 aria-invalid:ring-0",
+			"h-full min-w-0 flex-1 rounded-none border-0 text-[length:inherit] md:text-[length:inherit] bg-transparent shadow-none ring-0 hover:border-0 focus-visible:border-0 focus-visible:ring-0 aria-invalid:border-0 aria-invalid:ring-0",
 		textarea: "resize-none py-2.5",
 		button: "flex items-center gap-2 shadow-none",
 	},
@@ -34,7 +35,7 @@ export const inputGroup = tv({
 
 export const inputGroupAddon = tv({
 	base: [
-		"flex h-auto cursor-text select-none items-center justify-center gap-2 py-1.5 font-medium text-muted-foreground",
+		"flex h-auto shrink-0 cursor-text select-none items-center justify-center gap-2 py-1.5 font-medium text-muted-foreground",
 		"group-data-[disabled=true]/input-group:opacity-50 [&>svg:not([class*='size-'])]:size-4",
 	],
 	variants: {
