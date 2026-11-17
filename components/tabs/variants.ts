@@ -20,7 +20,7 @@ export const tabsFrame = tv({
 			segment: {
 				list: "gap-0.5 bg-card p-0.5",
 				trigger: "aria-selected:text-foreground",
-				indicator: "top-0.5 bottom-0.5 bg-background shadow-sm",
+				indicator: "top-0.5 bottom-0.5 bg-background shadow-surface",
 			},
 			underline: {
 				list: "gap-1 border-border/60 border-b",

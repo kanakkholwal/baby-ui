@@ -47,7 +47,7 @@ component's `variants.ts`.
 
 ## Emails
 
-- Email parts take spacing and corners from tokens (`gutter`, `pad`, `stack`, `section`, `block`, `gap`; `card`, `inner`, `control`, `chip`), never raw `px-6` or `rounded-lg`.
+- Email parts take spacing and corners from tokens (`gutter` 24, `pad` 16, `stack` and `section` 28, `block` 24, `gap` 12; `card`, `inner`, `control`, `chip`), never raw `px-6` or `rounded-lg`.
 - `createEmailTheme({ primary, radius, density })` fits a brand: soft fills and the dark twin derive from `primary`, labels hold 4.5:1, density scales spacing together.
 
 ## Type
@@ -169,8 +169,8 @@ Tokens:
 - Scrims fade in on `--duration-backdrop`, landing before their panel, and leave with it.
   Drawer's scrim is vaul's.
 - Overlays (popover, menus, dialog, sheet, drawer, command) sit on `bg-popover` with
-  `shadow-(--overlay-shadow)` and no CSS border; framed variants put a `bg-card` rim around a
-  `bg-popover` body with a hairline `border-border`, so the rim reads in dark mode too.
+  `shadow-(--overlay-shadow)` (soft shadows, no 1px ring) and no CSS border; framed variants put a
+  `bg-card` rim around a `bg-popover` body, so the step between them is the edge.
 - Springs are CSS `linear()` curves: `ease-(--ease-spring-snappy)` over 400ms (no overshoot) and
   `ease-(--ease-spring-bouncy)` over 600ms (3% overshoot). No JS animation library.
 - Scales: `--popover-enter-scale` 0.97, `--popover-exit-scale` 0.98, `--modal-enter-scale` 1.02,

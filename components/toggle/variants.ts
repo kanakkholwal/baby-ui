@@ -13,8 +13,7 @@ export const toggleButton = tv({
 		// shadcn's names: `outline` keeps a field-style border at rest, so it reads as a button.
 		variant: {
 			default: "",
-			outline:
-				"border-input hover:border-border-strong aria-pressed:border-border-strong",
+			outline: "border-border aria-pressed:border-border",
 			// Pressed takes the brand tint; --primary ink is 4.05:1 on it in light, --primary-hover 4.72:1.
 			primary:
 				"aria-pressed:border-transparent aria-pressed:bg-[color-mix(in_oklch,var(--primary)_14%,transparent)] aria-pressed:text-primary-hover",

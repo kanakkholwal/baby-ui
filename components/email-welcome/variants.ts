@@ -18,7 +18,7 @@ export const emailWelcome = tv({
 			"m-0 text-[14px] text-muted-foreground leading-[22px] dark:text-muted-foreground-dark",
 		stepLink:
 			"m-0 mt-1 font-semibold text-[14px] leading-[22px] text-foreground dark:text-foreground-dark",
-		stepGap: "h-[20px]",
+		stepGap: "h-[16px]",
 		resource: "border-0 border-border border-t border-solid py-4 dark:border-border-dark",
 		resourceTitle:
 			"m-0 font-semibold text-[15px] text-foreground leading-[24px] dark:text-foreground-dark",

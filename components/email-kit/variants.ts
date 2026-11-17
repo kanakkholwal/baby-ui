@@ -71,7 +71,7 @@ export const emailHeading = tv({
 
 export const emailHero = tv({
 	slots: {
-		root: "rounded-inner px-gutter py-block",
+		root: "rounded-inner px-pad py-pad",
 		eyebrow: "m-0 font-semibold text-[13px] leading-[20px]",
 		meta: "m-0 text-right text-[12px] leading-[18px]",
 		title: "m-0 mt-2 font-semibold tracking-[-0.02em]",
@@ -364,7 +364,7 @@ export const emailFallbackLink = tv({
 export const emailStats = tv({
 	slots: {
 		cell: "align-top",
-		card: "rounded-inner bg-card px-3 py-4 dark:bg-card-dark",
+		card: "rounded-inner bg-card px-3 py-3 dark:bg-card-dark",
 		value:
 			"m-0 font-semibold text-[22px] text-foreground leading-[28px] tracking-[-0.01em] dark:text-foreground-dark",
 		label:
@@ -405,16 +405,16 @@ export const EMAIL_STAT_TREND_GLYPH: Record<EmailStatsTrend, string> = {
 export const emailKeyValue = tv({
 	slots: {
 		label:
-			"py-2 text-[14px] text-muted-foreground leading-[22px] dark:text-muted-foreground-dark",
+			"py-[6px] text-[14px] text-muted-foreground leading-[22px] dark:text-muted-foreground-dark",
 		value:
-			"py-2 text-right text-[14px] text-foreground leading-[22px] break-all dark:text-foreground-dark",
+			"py-[6px] text-right text-[14px] text-foreground leading-[22px] break-all dark:text-foreground-dark",
 		total:
 			"border-0 border-border border-t border-solid pt-3 font-semibold text-foreground dark:border-border-dark dark:text-foreground-dark",
 	},
 	variants: {
 		density: {
 			comfortable: {},
-			compact: { label: "py-1", value: "py-1" },
+			compact: { label: "py-[2px]", value: "py-[2px]" },
 		},
 	},
 	defaultVariants: { density: "comfortable" },

@@ -32,8 +32,8 @@ const RADIUS: Record<EmailRadius, [number, number, number, number]> = {
 const SPACE = {
 	gutter: 24,
 	pad: 16,
-	stack: 32,
-	section: 32,
+	stack: 28,
+	section: 28,
 	block: 24,
 	gap: 12,
 } as const;
