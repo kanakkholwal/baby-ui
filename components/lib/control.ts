@@ -22,7 +22,7 @@ export const fieldFrame = tv({
 	base: [
 		"border border-input bg-(--field) text-foreground outline-none",
 		"transition-[color,border-color,box-shadow] duration-(--duration-fast) ease-(--ease-ui-out) motion-reduce:transition-none",
-		"hover:border-border-strong aria-invalid:border-destructive",
+		"hover:bg-[color-mix(in_oklab,var(--field)_97%,var(--foreground))] aria-invalid:border-destructive",
 		"disabled:cursor-not-allowed disabled:opacity-50",
 	],
 	variants: {
@@ -48,7 +48,7 @@ export const fieldGroup = tv({
 	base: [
 		"border border-input bg-[var(--field,var(--background))] text-foreground outline-none",
 		"transition-[color,border-color,box-shadow] duration-(--duration-fast) ease-(--ease-ui-out) motion-reduce:transition-none",
-		"hover:border-border-strong has-[:focus-visible]:border-ring has-[[aria-invalid=true]]:border-destructive aria-invalid:border-destructive",
+		"hover:bg-[color-mix(in_oklab,var(--field)_97%,var(--foreground))] has-[:focus-visible]:border-ring has-[[aria-invalid=true]]:border-destructive aria-invalid:border-destructive",
 		"has-[input:disabled]:cursor-not-allowed has-[input:disabled]:opacity-50 has-[textarea:disabled]:cursor-not-allowed has-[textarea:disabled]:opacity-50",
 		"data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
 	],

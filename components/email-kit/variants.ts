@@ -196,7 +196,7 @@ export const emailText = tv({
 
 // Light status hues are under 4.5:1 on any fill, so light mode keeps the hue in the fill only.
 export const emailBadge = tv({
-	base: "m-0 inline-block rounded-chip px-2 py-[2px] font-semibold text-[12px] leading-[18px] tracking-[0.02em]",
+	base: "m-0 inline-block whitespace-nowrap rounded-chip px-2 py-[2px] font-semibold text-[12px] leading-[18px] tracking-[0.02em]",
 	variants: {
 		tone: {
 			neutral:

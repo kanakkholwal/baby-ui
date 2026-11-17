@@ -23,7 +23,7 @@ const s = $derived(emailHeader({ variant, align }));
 </script>
 
 <Section class={s.root()}>
-	<Row class={s.row()}>
+	<Row {align} class={s.row()}>
 		{#if logo}
 			<Column class={s.logoCell()}>
 				<Img

@@ -180,7 +180,7 @@ export function EmailHeader({
 	const s = emailHeader({ variant, align });
 	return (
 		<Section className={s.root()}>
-			<Row className={s.row()}>
+			<Row align={align} className={s.row()}>
 				{logo ? (
 					<Column className={s.logoCell()}>
 						<Img

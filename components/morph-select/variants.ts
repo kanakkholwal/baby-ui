@@ -7,7 +7,7 @@ export const morphSelect = tv({
 		root: "inline-flex flex-col gap-1.5",
 		label: "font-medium text-sm",
 		trigger:
-			"group/trigger inline-flex items-center justify-between gap-2 rounded-lg border border-input bg-popover font-medium text-foreground outline-none transition-[border-color,opacity] duration-(--duration-fast) hover:border-border-strong focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/20 disabled:cursor-not-allowed disabled:opacity-50",
+			"group/trigger inline-flex items-center justify-between gap-2 rounded-lg border border-input bg-popover font-medium text-foreground outline-none transition-[border-color,opacity] duration-(--duration-fast) hover:bg-[color-mix(in_oklab,var(--field)_97%,var(--foreground))] focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/20 disabled:cursor-not-allowed disabled:opacity-50",
 		frame:
 			"relative inline-grid min-w-0 overflow-clip transition-[width] duration-(--duration-spring-snappy) ease-(--ease-spring-snappy) motion-reduce:transition-none",
 		// A new value rolls in as it mounts; @starting-style needs no exit bookkeeping.
