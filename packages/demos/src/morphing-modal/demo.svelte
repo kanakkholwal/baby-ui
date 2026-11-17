@@ -15,7 +15,7 @@ const p = $derived(controlProps<ComponentProps<typeof MorphingModal>>(props));
 	backdropBlur={Number(props.backdropBlur ?? 8)}
 >
 	{#snippet trigger()}
-		<div class="w-56 rounded-2xl border border-border bg-card p-4">
+		<div class="w-56 rounded-2xl bg-card p-4">
 			<p class="font-medium text-foreground text-sm">Deploy to production</p>
 			<p class="mt-1 text-muted-foreground text-xs">Click to expand</p>
 		</div>

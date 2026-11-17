@@ -24,7 +24,7 @@
 	--accent-foreground: oklch(16% 0.002 265);
 	--card-foreground: oklch(16% 0.002 265);
 	--popover-foreground: oklch(16% 0.002 265);
-	--input: oklch(16% 0.002 265 / 0.08);
+	--input: oklch(16% 0.002 265 / 0.2);
 	--ring: oklch(55% 0.18 255);
 	--neon: oklch(80% 0.22 145);
 	--violet: oklch(68% 0.22 295);

@@ -26,7 +26,7 @@ function profileName() {
 		details={p.details ?? true}
 		onreset={() => (crash = false)}
 	>
-		<div class="flex items-center gap-3 rounded-xl border border-border bg-card p-4">
+		<div class="flex items-center gap-3 rounded-xl bg-card p-4">
 			<span class="grid size-10 place-items-center rounded-full bg-primary/10 font-medium text-primary">AR</span>
 			<div class="flex min-w-0 flex-1 flex-col">
 				<span class="font-medium text-sm">{profileName()}</span>

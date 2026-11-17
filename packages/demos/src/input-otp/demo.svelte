@@ -62,9 +62,9 @@ function reset() {
 }
 </script>
 
-<div class="w-full max-w-sm rounded-2xl border border-border bg-muted/60 p-1">
-	<div class="flex flex-col items-center rounded-[11px] border border-border bg-card px-6 py-8 text-center">
-		<span class="grid size-11 place-items-center rounded-xl border border-border bg-muted text-muted-foreground">
+<div class="w-full max-w-sm rounded-2xl bg-muted/60 p-1">
+	<div class="flex flex-col items-center rounded-[calc(var(--radius-2xl)-0.25rem)] bg-card px-6 py-8 text-center">
+		<span class="grid size-11 place-items-center rounded-xl bg-muted text-muted-foreground">
 			<svg viewBox="0 0 24 24" aria-hidden="true" class="size-5 fill-none stroke-current [stroke-linecap:round] [stroke-linejoin:round] [stroke-width:1.6]">
 				<path d="M4 6.5A1.5 1.5 0 0 1 5.5 5h13A1.5 1.5 0 0 1 20 6.5v11a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5v-11ZM4.5 6.5l7.5 6 7.5-6" />
 			</svg>

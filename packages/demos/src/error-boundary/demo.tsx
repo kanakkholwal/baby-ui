@@ -10,7 +10,7 @@ type Props = Record<string, unknown>;
 function ProfileCard({ crash }: { crash: boolean }) {
 	if (crash) throw new Error("Profile service answered 503 Service Unavailable");
 	return (
-		<div className="flex items-center gap-3 rounded-xl border border-border bg-card p-4">
+		<div className="flex items-center gap-3 rounded-xl bg-card p-4">
 			<span className="grid size-10 place-items-center rounded-full bg-primary/10 font-medium text-primary">
 				AR
 			</span>

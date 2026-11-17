@@ -28,7 +28,7 @@ const variant = $derived(p.variant ?? "default");
 		{variant}
 		label="All permissions"
 	/>
-	<div class={variant === "card" ? "flex flex-col gap-2" : "flex flex-col gap-3 border-border border-l pl-4"}>
+	<div class={variant === "card" ? "flex flex-col gap-2" : "flex flex-col gap-3 border-border/60 border-l pl-4"}>
 		{#each SCOPES as scope, i (scope)}
 			<Checkbox bind:checked={scopes[i]} {variant} label={scope} />
 		{/each}

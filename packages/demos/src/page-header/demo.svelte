@@ -92,7 +92,7 @@ const { breadcrumbs, avatars, status, tabs } = PAGE_HEADER;
 				{#each PAGE_PANELS as panel (panel.value)}
 					<TabsContent value={panel.value}>
 						{#each panel.lines as line (line)}
-							<p class="border-border border-b py-4 text-muted-foreground text-sm">{line}</p>
+							<p class="border-border/60 border-b py-4 text-muted-foreground text-sm">{line}</p>
 						{/each}
 					</TabsContent>
 				{/each}

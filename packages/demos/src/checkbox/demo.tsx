@@ -29,7 +29,7 @@ export function CheckboxDemo({ props }: { props: Props }) {
 				className={
 					variant === "card"
 						? "flex flex-col gap-2"
-						: "flex flex-col gap-3 border-border border-l pl-4"
+						: "flex flex-col gap-3 border-border/60 border-l pl-4"
 				}
 			>
 				{SCOPES.map((scope, i) => (

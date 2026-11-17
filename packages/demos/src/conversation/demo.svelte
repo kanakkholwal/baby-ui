@@ -13,13 +13,12 @@ import {
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
 
-const INLINE_CODE =
-	"rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-xs";
+const INLINE_CODE = "rounded bg-muted px-1.5 py-0.5 font-mono text-xs";
 const USER_BUBBLE = "rounded-xl bg-input text-foreground px-4 py-2.5";
 </script>
 
 <div
-	class="w-full max-w-96 rounded-xl border border-border bg-card/40 p-2"
+	class="w-full max-w-96 rounded-xl bg-card/40 p-2"
 	style="height: {typeof props.maxHeight === 'string' && props.maxHeight ? props.maxHeight : '22rem'}"
 >
 	<Conversation class="h-full">

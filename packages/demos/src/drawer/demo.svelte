@@ -25,7 +25,7 @@ const variant = $derived(pContent.variant ?? "default");
 </script>
 
 <Drawer bind:open {direction} dismissible={props.dismissible !== false}>
-	<DrawerTrigger class="inline-flex h-9 items-center rounded-lg border border-border bg-card px-3 font-medium text-foreground text-sm">
+	<DrawerTrigger class="inline-flex h-9 items-center rounded-lg bg-card px-3 font-medium text-foreground text-sm">
 		Set a budget
 	</DrawerTrigger>
 	<DrawerContent {variant}>
