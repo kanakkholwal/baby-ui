@@ -38,6 +38,28 @@ export const multiSelect = defineComponent({
 			control: { kind: "none" },
 		},
 		{
+			name: "max",
+			type: "number",
+			description:
+				"Most choices allowed. Once reached, unchosen options turn off and a note says so.",
+			control: { kind: "number", min: 1, max: 8, step: 1 },
+		},
+		{
+			name: "loading",
+			type: "boolean",
+			description:
+				"Options are still loading: the list shows a status line and the field is marked busy.",
+			default: false,
+			control: { kind: "boolean" },
+		},
+		{
+			name: "onCreate",
+			type: "(label: string) => void",
+			description:
+				'Offers "Create" for search text no option matches. Add the option and select it in the handler.',
+			control: { kind: "none" },
+		},
+		{
 			name: "clearable",
 			type: "boolean",
 			description: "Shows a button in the field that clears every chip.",

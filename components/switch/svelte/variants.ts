@@ -3,7 +3,7 @@ import { tv, type VariantProps } from "tailwind-variants";
 export const switchTrack = tv({
 	base: [
 		"group/switch relative inline-flex shrink-0 items-center rounded-full border border-transparent bg-(--track) p-px",
-		"transition-[background-color,box-shadow] duration-(--duration-slow) ease-[var(--ease-smooth)] motion-reduce:transition-none",
+		"transition-[background-color,box-shadow] duration-(--duration-base) ease-(--ease-ui-out) motion-reduce:transition-none",
 		"outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
 		"aria-checked:bg-primary aria-disabled:cursor-not-allowed aria-disabled:opacity-50",
 		"not-aria-disabled:hover:bg-foreground/25 not-aria-disabled:aria-checked:hover:bg-primary-hover",
@@ -23,12 +23,12 @@ export const switchTrack = tv({
 				"before:transition-opacity after:transition-opacity before:duration-(--duration-fast) after:duration-(--duration-fast) motion-reduce:before:transition-none motion-reduce:after:transition-none",
 			],
 		},
-		// Heights sit beside the checkbox and radio boxes (14, 16, 20, 24) at 16, 18, 22, 26.
+		// Track height is the checkbox and radio box plus 4 (14, 16, 20, 24 to 18, 20, 24, 28), 1.8 wide.
 		size: {
-			sm: "h-4 w-7",
-			default: "h-[18px] w-8",
-			lg: "h-[22px] w-10",
-			xl: "h-[26px] w-12",
+			sm: "h-[18px] w-8",
+			default: "h-5 w-9",
+			lg: "h-6 w-11",
+			xl: "h-7 w-[52px]",
 		},
 	},
 	defaultVariants: { variant: "default", size: "default" },
@@ -49,42 +49,42 @@ export const switchThumb = tv({
 		{
 			variant: "default",
 			size: "sm",
-			class: "h-3 w-[17px] data-[state=checked]:translate-x-[7px]",
-		},
-		{
-			variant: "default",
-			size: "default",
 			class: "h-[14px] w-[20px] data-[state=checked]:translate-x-[8px]",
 		},
 		{
 			variant: "default",
+			size: "default",
+			class: "h-4 w-[22px] data-[state=checked]:translate-x-[10px]",
+		},
+		{
+			variant: "default",
 			size: "lg",
-			class: "h-[18px] w-[24px] data-[state=checked]:translate-x-[12px]",
+			class: "h-5 w-[26px] data-[state=checked]:translate-x-[14px]",
 		},
 		{
 			variant: "default",
 			size: "xl",
-			class: "h-[22px] w-[28px] data-[state=checked]:translate-x-[16px]",
+			class: "h-6 w-[30px] data-[state=checked]:translate-x-[18px]",
 		},
 		{
 			variant: ["round", "marked"],
 			size: "sm",
-			class: "size-3 data-[state=checked]:translate-x-[12px]",
-		},
-		{
-			variant: ["round", "marked"],
-			size: "default",
 			class: "size-[14px] data-[state=checked]:translate-x-[14px]",
 		},
 		{
 			variant: ["round", "marked"],
+			size: "default",
+			class: "size-4 data-[state=checked]:translate-x-[16px]",
+		},
+		{
+			variant: ["round", "marked"],
 			size: "lg",
-			class: "size-[18px] data-[state=checked]:translate-x-[18px]",
+			class: "size-5 data-[state=checked]:translate-x-[20px]",
 		},
 		{
 			variant: ["round", "marked"],
 			size: "xl",
-			class: "size-[22px] data-[state=checked]:translate-x-[22px]",
+			class: "size-6 data-[state=checked]:translate-x-[24px]",
 		},
 	],
 	defaultVariants: { variant: "default", size: "default" },

@@ -22,6 +22,8 @@ export function MultiSelectDemo({ props }: { props: Props }) {
 				size={p.size ?? "default"}
 				disabled={p.disabled ?? false}
 				clearable={p.clearable === true}
+				max={props.max ? Number(props.max) : undefined}
+				loading={props.loading === true}
 				labels={{ placeholder: "Add reviewers…", search: "Search people…" }}
 			/>
 		</div>

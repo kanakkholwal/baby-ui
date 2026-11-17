@@ -17,6 +17,7 @@ export const multiSelect = tv({
 			"group/trigger flex min-w-16 flex-1 cursor-pointer items-center justify-between gap-2 self-stretch rounded-md text-left text-foreground outline-none",
 			"data-[placeholder]:text-muted-foreground",
 		],
+		status: "m-0 px-3 py-2 text-muted-foreground text-xs",
 		clear:
 			"relative inline-flex size-6 shrink-0 cursor-pointer items-center justify-center rounded-full text-muted-foreground outline-none transition-colors after:absolute after:-inset-1 hover:bg-foreground/[0.06] hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none [&_svg]:size-3",
 		chevron: [
@@ -111,6 +112,11 @@ export interface MultiSelectLabels {
 	selected: string;
 	/** `{count}` hidden chips. */
 	more: string;
+	/** `{value}` is the text typed in the search. */
+	create: string;
+	loading: string;
+	/** `{count}` is the `max` choices. */
+	limit: string;
 }
 
 export const MULTI_SELECT_LABELS: MultiSelectLabels = {
@@ -122,6 +128,9 @@ export const MULTI_SELECT_LABELS: MultiSelectLabels = {
 	remove: "Remove",
 	selected: "selected",
 	more: "+{count}",
+	create: "Create “{value}”",
+	loading: "Loading…",
+	limit: "Up to {count} choices",
 };
 
 /** Toggles one value, keeping the options' order. */

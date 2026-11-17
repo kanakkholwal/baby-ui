@@ -254,9 +254,9 @@
 /* Travel is `translate` (Tailwind v4 translate-x), not `transform`, or it snaps. */
 .switch-thumb {
 	transition:
-		translate 300ms var(--ease-drawer),
+		translate var(--duration-base) var(--ease-ui-out),
 		scale var(--duration-press) var(--ease-ui-out),
-		transform-origin 0s linear 300ms;
+		transform-origin 0s linear var(--duration-base);
 }
 
 .switch-thumb[data-shake] {
@@ -291,8 +291,8 @@
 	transform: scale(0.7);
 	opacity: 0;
 	transition:
-		transform 250ms var(--ease-out-quart),
-		opacity 250ms var(--ease-out-quart);
+		transform var(--duration-base) var(--ease-ui-out),
+		opacity var(--duration-base) var(--ease-ui-out);
 }
 
 .radio-dot[data-on="true"],

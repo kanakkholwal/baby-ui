@@ -41,6 +41,12 @@ export interface MultiSelectProps {
 	name?: string;
 	/** Shows a button that clears every chip. */
 	clearable?: boolean;
+	/** Most choices allowed; the rest of the list turns off once it is reached. */
+	max?: number;
+	/** Options are loading: the list shows a status line and the field is marked busy. */
+	loading?: boolean;
+	/** Offers "Create" for search text no option matches; add the option and select it in `onCreate`. */
+	onCreate?: (label: string) => void;
 	/** Chips shown before collapsing the rest into "+N". */
 	maxChips?: number;
 	size?: MultiSelectSize;
@@ -63,6 +69,9 @@ export function MultiSelect({
 	onOpenChange,
 	name,
 	clearable = false,
+	max,
+	loading = false,
+	onCreate,
 	maxChips = 3,
 	size = "default",
 	disabled = false,
@@ -87,6 +96,12 @@ export function MultiSelect({
 	const shown = selected.slice(0, maxChips);
 	const hidden = selected.length - shown.length;
 	const enabled = options.filter((o) => !o.disabled);
+	const atLimit = max !== undefined && value.length >= max;
+	const typed = search.trim();
+	const canCreate =
+		onCreate !== undefined &&
+		typed !== "" &&
+		!options.some((o) => o.label.toLowerCase() === typed.toLowerCase());
 	const allSelected = enabled.length > 0 && enabled.every((o) => value.includes(o.value));
 
 	const toggle = (item: string) => setValue(toggleValue(options, value, item));
@@ -144,6 +159,7 @@ export function MultiSelect({
 					aria-label={ariaLabel}
 					aria-labelledby={ariaLabelledBy}
 					aria-invalid={invalid || undefined}
+					aria-busy={loading || undefined}
 					disabled={disabled}
 					data-slot="multi-select-trigger"
 					data-placeholder={selected.length ? undefined : ""}
@@ -202,7 +218,12 @@ export function MultiSelect({
 						}}
 					/>
 					<CommandList>
-						<CommandEmpty>{labels.empty}</CommandEmpty>
+						{loading ? (
+							<p role="status" className={s.status()}>
+								{labels.loading}
+							</p>
+						) : null}
+						<CommandEmpty>{canCreate ? "" : labels.empty}</CommandEmpty>
 						<CommandGroup>
 							{options.map((option) => {
 								const checked = value.includes(option.value);
@@ -211,7 +232,7 @@ export function MultiSelect({
 										key={option.value}
 										value={option.value}
 										keywords={`${option.label} ${option.keywords ?? ""}`}
-										disabled={option.disabled}
+										disabled={option.disabled || (atLimit && !checked)}
 										className={s.item()}
 										onSelect={() => toggle(option.value)}
 									>
@@ -228,7 +249,22 @@ export function MultiSelect({
 								);
 							})}
 						</CommandGroup>
-						{search ? null : (
+						{canCreate ? (
+							<CommandGroup>
+								<CommandItem
+									value="__create"
+									keywords={typed}
+									className={s.item()}
+									onSelect={() => {
+										onCreate?.(typed);
+										setSearch("");
+									}}
+								>
+									{labels.create.replace("{value}", typed)}
+								</CommandItem>
+							</CommandGroup>
+						) : null}
+						{search || max !== undefined ? null : (
 							<>
 								<CommandSeparator />
 								<CommandGroup>
@@ -255,6 +291,11 @@ export function MultiSelect({
 								</CommandGroup>
 							</>
 						)}
+						{atLimit ? (
+							<p role="status" className={s.status()}>
+								{labels.limit.replace("{count}", String(max))}
+							</p>
+						) : null}
 					</CommandList>
 				</Command>
 			</PopoverContent>
