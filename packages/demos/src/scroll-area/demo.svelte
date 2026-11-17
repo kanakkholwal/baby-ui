@@ -24,13 +24,21 @@ const regions = [
 	"Toronto",
 	"Washington DC",
 ];
+const orientation = $derived(p.orientation ?? "vertical");
 </script>
 
-<div class="w-64 rounded-xl border border-border bg-card p-1">
-	<ScrollArea maxHeight={p.maxHeight || "12rem"} scrollbar={p.scrollbar ?? "auto"}>
-		<ul class="flex flex-col">
+<div class="w-64 rounded-xl bg-card p-1">
+	<ScrollArea
+		maxHeight={p.maxHeight || "12rem"}
+		scrollbar={p.scrollbar ?? "auto"}
+		gutter={p.gutter ?? "overlay"}
+		{orientation}
+		fade={p.fade ?? "mask"}
+		class="rounded-[calc(var(--radius-xl)-0.25rem)]"
+	>
+		<ul class={orientation === "horizontal" ? "flex w-max" : "flex flex-col"}>
 			{#each regions as region (region)}
-				<li class="rounded-lg px-3 py-2 text-foreground text-sm hover:bg-foreground/[0.04]">
+				<li class="shrink-0 whitespace-nowrap rounded-lg px-3 py-2 text-foreground text-sm hover:bg-foreground/[0.04]">
 					{region}
 				</li>
 			{/each}

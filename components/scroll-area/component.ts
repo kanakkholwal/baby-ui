@@ -17,18 +17,42 @@ export const scrollArea = defineComponent({
 		},
 		{
 			name: "scrollbar",
-			type: '"auto" | "hidden"',
+			type: '"auto" | "hover" | "scroll" | "hidden"',
 			description:
-				"Whether to render the custom scrollbar. Hidden keeps scrolling but removes the track, corner and gutter.",
+				"`auto` always shows the bar; `hover` shows it on hover, focus or while scrolling; `scroll` only while scrolling; `hidden` removes the bar and its gutter.",
 			default: "auto",
-			control: { kind: "select", options: ["auto", "hidden"] },
+			control: { kind: "select", options: ["auto", "hover", "scroll", "hidden"] },
+		},
+		{
+			name: "gutter",
+			type: '"overlay" | "reserve"',
+			description:
+				"`overlay` lets the bar sit over the content; `reserve` pads the content so the bar never overlaps it.",
+			default: "overlay",
+			control: { kind: "select", options: ["overlay", "reserve"] },
+		},
+		{
+			name: "orientation",
+			type: '"vertical" | "horizontal" | "both"',
+			description:
+				"The scroll axis. Vertical uses `maxHeight`; horizontal scrolls sideways; both scrolls either way.",
+			default: "vertical",
+			control: { kind: "select", options: ["vertical", "horizontal", "both"] },
+		},
+		{
+			name: "fade",
+			type: '"mask" | "blur" | "none"',
+			description:
+				"How a clipped end reads. `mask` fades the content out, `blur` softens it, `none` cuts it. Ends appear only when content is clipped there.",
+			default: "mask",
+			control: { kind: "select", options: ["mask", "blur", "none"] },
 		},
 	],
 	motion: {
 		springs: [],
 		reducedMotion: "Unchanged; the fades are not motion.",
 		behaviour: [
-			"Top and bottom fades appear only when content is actually clipped in that direction, so a short list has no false edge.",
+			"The start and end fades (top and bottom, or left and right when horizontal) appear only when content is clipped there, so a short list has no false edge.",
 			"They fade over 150ms, which is below the threshold where the change itself draws attention.",
 			"Nested regions contain overscroll, so a wheel or trackpad gesture does not move the page behind a sidebar or panel.",
 		],

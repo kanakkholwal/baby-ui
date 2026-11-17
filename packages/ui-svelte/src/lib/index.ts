@@ -1482,7 +1482,7 @@ export { ScoreCardTrend } from "@baby-ui/components/svelte/score-card";
 export { type ScoreCardState, setScoreCard, scoreCardState } from "@baby-ui/components/svelte/score-card";
 export { scoreCard, type ScoreCardSize } from "@baby-ui/components/svelte/score-card";
 export { ScrollArea } from "@baby-ui/components/svelte/scroll-area";
-export { scrollArea, type ScrollAreaScrollbar } from "@baby-ui/components/svelte/scroll-area";
+export { scrollArea, type ScrollAreaScrollbar, type ScrollAreaGutter, type ScrollAreaOrientation, type ScrollAreaFade, SCROLL_EDGE, type ScrollEdges, readEdges } from "@baby-ui/components/svelte/scroll-area";
 export { ScrollChoreography } from "@baby-ui/components/svelte/scroll-choreography";
 export { type ScrollChoreographyImage, type ScrollChoreographyImages, CHOREOGRAPHY_SLOTS } from "@baby-ui/components/svelte/scroll-choreography";
 export { scrollChoreography, type ScrollChoreographySize, type ScrollChoreographyVariant } from "@baby-ui/components/svelte/scroll-choreography";
