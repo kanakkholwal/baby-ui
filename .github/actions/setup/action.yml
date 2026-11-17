@@ -25,13 +25,13 @@ runs:
     - run: pnpm install --frozen-lockfile
       shell: bash
 
-    # Keyed on what the builds read, so identical inputs always hit and a changed tree starts from
-    # the newest cache. A per-commit key saved once per commit and rarely matched across jobs.
+    # Saved per run and restored from the newest, so the caches follow the code instead of
+    # freezing at the first run for a key.
     - if: inputs.build-caches == 'true'
       uses: actions/cache@v4
       with:
         path: .turbo/cache
-        key: turbo-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml', 'turbo.json', 'components/**', 'packages/*/src/**', 'apps/*/src/**', 'scripts/**', 'pro/components/**', 'pro/packages/*/src/**') }}
+        key: turbo-${{ runner.os }}-${{ github.sha }}
         restore-keys: turbo-${{ runner.os }}-
 
     - if: inputs.build-caches == 'true'

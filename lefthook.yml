@@ -22,10 +22,9 @@ pre-commit:
       run: node scripts/generate.mjs --check
       fail_text: "Generated files are stale. Run `pnpm gen`, stage the result and commit again."
 
-# The cheap gates and the type checks of touched packages, so a broken build rarely reaches CI. `git push --no-verify` skips.
+# The CI type checks and tests, so a broken build never reaches CI. `git push --no-verify` skips.
 pre-push:
   jobs:
     - name: verify
-      # CI runs the tests and the Pro check; locally the cheap gates and the touched packages.
-      run: node scripts/verify.mjs --push
+      run: node scripts/verify.mjs
       fail_text: "A CI gate failed (summary above). Fix it, or re-run the listed step on its own."

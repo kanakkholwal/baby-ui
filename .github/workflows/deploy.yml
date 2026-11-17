@@ -22,10 +22,7 @@ permissions:
 jobs:
   ci:
     uses: ./.github/workflows/ci.yml
-    with:
-      # CI builds with production settings once and uploads the result; deploy ships that.
-      artifact: true
-    # The build job needs the private repo token.
+    # The Pro bundle job needs the private repo token.
     secrets: inherit
 
   deploy:
@@ -35,28 +32,43 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
+          # Full history: the site dates each component from git for its New/Updated badges.
+          fetch-depth: 0
           persist-credentials: false
 
-      # Only wrangler is needed here, so skip the build caches and the Pro checkout.
-      - uses: ./.github/actions/setup
-
-      - name: Download the CI build
-        uses: actions/download-artifact@v4
+      # Production always bundles Pro; without the token this fails rather than ship without it.
+      # The token reaches this step only and is never written to pro/.git.
+      - name: Check out Pro
+        uses: actions/checkout@v6
         with:
-          name: deploy-output
-          path: ${{ runner.temp }}/deploy-output
+          # Full history: the site dates each component from git for its New/Updated badges.
+          fetch-depth: 0
+          repository: kanakkholwal/baby-ui-pro
+          token: ${{ secrets.PRO_REPO_TOKEN }}
+          # ssh-key: ${{ secrets.PRO_REPO_SSH_KEY }}
+          path: pro
+          persist-credentials: false
 
-      # upload-artifact keeps paths relative to the common ancestor (apps/).
-      - name: Put the build in place
-        run: |
-          set -euo pipefail
-          out="$RUNNER_TEMP/deploy-output"
-          find "$out" -maxdepth 3 -type d | head -20
-          mkdir -p apps/registry apps/site/.svelte-kit
-          cp -R "$out/registry/dist" apps/registry/dist
-          cp -R "$out/site/.svelte-kit/cloudflare" apps/site/.svelte-kit/cloudflare
-          test -d apps/registry/dist
-          test -f apps/site/.svelte-kit/cloudflare/_worker.js
+      - uses: ./.github/actions/setup
+        with:
+          build-caches: "true"
+
+      - name: Install Pro
+        run: pnpm install --frozen-lockfile --dir pro
+
+      # Rebuilt here rather than reused from CI: production URLs and keys are baked in.
+      - name: Build site and registry
+        run: pnpm build
+        env:
+          VITE_POSTHOG_KEY: ${{ vars.POSTHOG_KEY }}
+          # Pro is bundled but hidden until subscriptions and the account dashboard ship.
+          VITE_SHOW_PRO: "false"
+
+      - name: Pro bundled and hidden
+        run: node scripts/check-pro-bundle.mjs --expect=hidden
+
+      - name: Worker bundle budget
+        run: pnpm size
 
       - name: Deploy registry to Pages
         uses: cloudflare/wrangler-action@v4

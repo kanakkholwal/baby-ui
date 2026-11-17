@@ -4,20 +4,8 @@ on:
   pull_request:
   push:
     branches-ignore: [main]
-  # Manual runs can try the artifact path on a branch without deploying anything.
-  workflow_dispatch:
-    inputs:
-      artifact:
-        description: Build with production settings and upload the site and registry output.
-        type: boolean
-        default: false
-  # Deploy runs this first and ships the artifact it builds, so main is built once.
+  # Deploy runs this first, so main gets the same gates without a second copy of them.
   workflow_call:
-    inputs:
-      artifact:
-        description: Build with production settings and upload the site and registry output.
-        type: boolean
-        default: false
 
 permissions:
   contents: read
@@ -52,57 +40,52 @@ jobs:
           PROBE_BROWSER: /usr/bin/google-chrome
         run: pnpm test
 
-  # The flag-visible Pro build is a full build that only proves the flag works, so it runs
-  # when something that touches the flag changed instead of on every push.
-  changes:
-    name: Does this touch the Pro flag
-    runs-on: ubuntu-latest
-    outputs:
-      pro-flag: ${{ steps.diff.outputs.pro-flag }}
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-      - id: diff
-        env:
-          BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
-        run: |
-          set -euo pipefail
-          # No usable base (new branch, manual run): run the check rather than skip it.
-          if [ -z "${BASE:-}" ] || [ "$BASE" = "0000000000000000000000000000000000000000" ] || ! git cat-file -e "$BASE^{commit}" 2>/dev/null; then
-            echo "pro-flag=true" >> "$GITHUB_OUTPUT"; exit 0
-          fi
-          flag_files=$(git grep -lE '__SHOW_PRO__|VITE_SHOW_PRO' -- apps scripts packages || true)
-          changed=$(git diff --name-only "$BASE" HEAD)
-          if echo "$changed" | grep -qE '^(\.github/|scripts/check-pro-bundle\.mjs$|pnpm-lock\.yaml$)'; then
-            echo "pro-flag=true" >> "$GITHUB_OUTPUT"; exit 0
-          fi
-          for file in $flag_files; do
-            if echo "$changed" | grep -qxF "$file"; then
-              echo "pro-flag=true" >> "$GITHUB_OUTPUT"; exit 0
-            fi
-          done
-          echo "pro-flag=false" >> "$GITHUB_OUTPUT"
-
-  # One production-shaped build per run: type-check, build, budget and the hidden-Pro gate.
-  # With the Pro token it bundles Pro (as production does) and type-checks it once.
   build:
     name: Type-check, build, bundle budget
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          # Full history: the site dates each component from git for its New/Updated badges.
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: ./.github/actions/setup
+        with:
+          build-caches: "true"
+
+      - name: Type-check
+        run: pnpm exec turbo run check
+
+      - name: Build
+        run: pnpm build
+
+      - name: Worker bundle budget
+        run: pnpm size
+
+      # A public checkout has no Pro to show; the pro job below proves the flag with it bundled.
+      - name: Pro stays hidden
+        run: node scripts/check-pro-bundle.mjs --expect=hidden
+
+  # Pro lives in a private repo and is always bundled; the flag only decides whether the site shows it.
+  # With its token set, this builds both ways: flag on must show Pro, flag off (production) must not.
+  pro:
+    name: Pro bundle (VITE_SHOW_PRO=${{ matrix.show-pro }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        show-pro: ["true", "false"]
     env:
       HAS_PRO: ${{ secrets.PRO_REPO_TOKEN != '' }}
-      VITE_SHOW_PRO: "false"
-      # A public client key; baked in only for the build that is deployed.
-      VITE_POSTHOG_KEY: ${{ inputs.artifact && vars.POSTHOG_KEY || '' }}
+      # HAS_PRO: ${{ secrets.PRO_REPO_SSH_KEY != '' }}
+      VITE_SHOW_PRO: ${{ matrix.show-pro }}
     steps:
-      - name: Require Pro for a deployable build
-        if: inputs.artifact && env.HAS_PRO != 'true'
-        run: |
-          echo "::error::PRO_REPO_TOKEN is not set; production always bundles Pro."
-          exit 1
+      - name: Skip without the Pro token
+        if: env.HAS_PRO != 'true'
+        run: echo "::notice::PRO_REPO_TOKEN is not set (forks, Dependabot); Pro bundle checks skipped."
 
-      - uses: actions/checkout@v6
+      - if: env.HAS_PRO == 'true'
+        uses: actions/checkout@v6
         with:
           # Full history: the site dates each component from git for its New/Updated badges.
           fetch-depth: 0
@@ -114,92 +97,29 @@ jobs:
         if: env.HAS_PRO == 'true'
         uses: actions/checkout@v6
         with:
+          # Full history: the site dates each component from git for its New/Updated badges.
           fetch-depth: 0
           repository: kanakkholwal/baby-ui-pro
           token: ${{ secrets.PRO_REPO_TOKEN }}
+          # ssh-key: ${{ secrets.PRO_REPO_SSH_KEY }}
           path: pro
           persist-credentials: false
 
-      - uses: ./.github/actions/setup
-        with:
-          build-caches: "true"
+      - if: env.HAS_PRO == 'true'
+        uses: ./.github/actions/setup
 
       - name: Install Pro
         if: env.HAS_PRO == 'true'
         run: pnpm install --frozen-lockfile --dir pro
-
-      - name: Type-check
-        run: pnpm exec turbo run check
 
       - name: Type-check Pro
         if: env.HAS_PRO == 'true'
         run: pnpm --dir pro run check
 
       - name: Build
-        run: pnpm build
-
-      - name: Worker bundle budget
-        run: pnpm size
-
-      - name: Pro stays hidden
-        run: node scripts/check-pro-bundle.mjs --expect=hidden
-
-      - name: Upload site and registry
-        if: inputs.artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: deploy-output
-          # .svelte-kit is a hidden directory.
-          include-hidden-files: true
-          path: |
-            apps/registry/dist
-            apps/site/.svelte-kit/cloudflare
-          if-no-files-found: error
-          retention-days: 3
-
-  # Pro with the flag on must show it. The hidden case is the build job above.
-  pro-visible:
-    name: Pro bundle (VITE_SHOW_PRO=true)
-    needs: changes
-    if: needs.changes.outputs.pro-flag == 'true'
-    runs-on: ubuntu-latest
-    env:
-      HAS_PRO: ${{ secrets.PRO_REPO_TOKEN != '' }}
-      VITE_SHOW_PRO: "true"
-    steps:
-      - name: Skip without the Pro token
-        if: env.HAS_PRO != 'true'
-        run: echo "::notice::PRO_REPO_TOKEN is not set (forks, Dependabot); Pro bundle checks skipped."
-
-      - if: env.HAS_PRO == 'true'
-        uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-
-      - name: Check out Pro
-        if: env.HAS_PRO == 'true'
-        uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-          repository: kanakkholwal/baby-ui-pro
-          token: ${{ secrets.PRO_REPO_TOKEN }}
-          path: pro
-          persist-credentials: false
-
-      - if: env.HAS_PRO == 'true'
-        uses: ./.github/actions/setup
-        with:
-          build-caches: "true"
-
-      - name: Install Pro
-        if: env.HAS_PRO == 'true'
-        run: pnpm install --frozen-lockfile --dir pro
-
-      - name: Build
         if: env.HAS_PRO == 'true'
         run: pnpm build
 
-      - name: Pro bundled and shown with the flag on
+      - name: Pro bundled, shown only with the flag on
         if: env.HAS_PRO == 'true'
-        run: node scripts/check-pro-bundle.mjs --expect=visible
+        run: node scripts/check-pro-bundle.mjs --expect=${{ matrix.show-pro == 'true' && 'visible' || 'hidden' }}
