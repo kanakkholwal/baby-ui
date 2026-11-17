@@ -154,8 +154,6 @@ jobs:
           path: |
             apps/registry/dist
             apps/site/.svelte-kit/cloudflare
-            # _worker.js imports the server bundle from this sibling folder.
-            apps/site/.svelte-kit/cloudflare-tmp
           if-no-files-found: error
           retention-days: 3
 
