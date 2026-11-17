@@ -277,7 +277,7 @@ export function RecordsTable({
 				{...aiProps(key)}
 				className={cn(
 					headerCell(),
-					"relative border-border border-r border-b bg-card text-left font-medium text-xs text-muted-foreground",
+					"relative border-border/60 border-b bg-card text-left font-medium text-xs text-muted-foreground",
 					openColumn === key && "bg-primary/[0.04]",
 					key === "ai" && aiCell(),
 				)}
@@ -339,7 +339,7 @@ export function RecordsTable({
 		);
 	}
 
-	const footerCell = cn(cell(), "border-border border-r text-muted-foreground text-xs");
+	const footerCell = cn(cell(), "text-muted-foreground text-xs");
 
 	return (
 		<div
@@ -348,7 +348,7 @@ export function RecordsTable({
 		>
 			<div
 				data-slot="records-table-scroll"
-				className="overflow-auto rounded-2xl border border-border"
+				className="overflow-auto rounded-2xl"
 				style={{ scrollbarWidth: "thin" }}
 			>
 				<table
@@ -390,7 +390,7 @@ export function RecordsTable({
 								setAiShown(false);
 								setOpenColumn(null);
 							})}
-							<th className={cn(headerCell(), "border-border border-b bg-card px-2")}>
+							<th className={cn(headerCell(), "border-border/60 border-b bg-card px-2")}>
 								<div className="flex items-center gap-1">
 									<DropdownMenu>
 										<DropdownMenuTrigger
@@ -458,7 +458,7 @@ export function RecordsTable({
 								...aiProps(key),
 								className: cn(
 									cell(),
-									"border-border border-r border-b",
+									"border-border/60 border-b",
 									pinClass(key, isSelected),
 									key === "ai" && aiCell(),
 									extra,
@@ -567,7 +567,7 @@ export function RecordsTable({
 											)}
 										</div>
 									</td>
-									<td className={cn(cell(), "border-border border-b px-2")} />
+									<td className={cn(cell(), "border-border/60 border-b px-2")} />
 								</tr>
 							);
 						})}
@@ -582,7 +582,7 @@ export function RecordsTable({
 							</td>
 							<td
 								style={pinStyle("categories")}
-								className={cn(cell(), "border-border border-r", pinClass("categories"))}
+								className={cn(cell(), "", pinClass("categories"))}
 							/>
 							<td style={pinStyle("last")} className={cn(footerCell, pinClass("last"))}>
 								{text.empty}

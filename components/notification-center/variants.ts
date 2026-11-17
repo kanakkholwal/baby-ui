@@ -13,14 +13,15 @@ export const notificationCenter = tv({
 			"transition-[scale,opacity] duration-(--duration-spring-snappy) ease-(--ease-spring-snappy) data-[on=false]:scale-60 data-[on=false]:opacity-0 motion-reduce:transition-none",
 		],
 		panel:
-			"flex max-h-[min(36rem,calc(100vh-1.5rem))] w-[min(26.5rem,calc(100vw-1.5rem))] flex-col overflow-hidden p-0",
+			"flex max-h-[min(36rem,calc(100dvh-1.5rem))] w-[min(26.5rem,calc(100vw-1.5rem))] flex-col overflow-hidden p-0",
 		header: "flex items-start justify-between gap-3 px-6 pt-5.5 pb-4 max-sm:px-4",
 		heading: "flex items-center gap-2",
 		title: "font-medium text-xl leading-tight max-sm:text-lg",
 		count:
 			"grid h-5.5 min-w-5.5 place-items-center rounded-md bg-muted px-1.5 text-muted-foreground text-xs tabular-nums",
 		summary: "mt-1 text-muted-foreground text-xs",
-		toolbar: "flex min-h-13 items-center justify-between gap-3 border-b px-5 pb-3",
+		toolbar:
+			"flex min-h-13 items-center justify-between gap-3 border-border/60 border-b px-5 pb-3",
 		markAll: [
 			"gap-1.5 text-muted-foreground hover:text-foreground",
 			"transition-[opacity,filter,color] duration-(--duration-base) data-[on=false]:pointer-events-none data-[on=false]:opacity-0 data-[on=false]:blur-[2px]",
@@ -48,7 +49,7 @@ export const notificationCenter = tv({
 		emptyTitle: "font-medium text-sm",
 		emptyText: "mt-1 text-muted-foreground text-xs",
 		footer:
-			"flex min-h-11.5 items-center justify-between gap-3 border-t px-5.5 py-2 text-muted-foreground text-xs",
+			"flex min-h-11.5 items-center justify-between gap-3 border-border/60 border-t px-5.5 py-2 text-muted-foreground text-xs",
 	},
 	variants: {
 		size: {

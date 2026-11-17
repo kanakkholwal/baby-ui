@@ -196,7 +196,7 @@ const pickerTrigger =
 		{labels.calculate}
 	</Button>
 
-	<div class="mt-3 flex flex-col gap-0.5 border-border border-t pt-2">
+	<div class="mt-3 flex flex-col gap-0.5 border-border/60 border-t pt-2">
 		<button type="button" aria-pressed={pinned} onclick={onTogglePin} class={actionRow}>
 			<span class={pinned ? "text-primary" : "text-muted-foreground"}>
 				{@render icon(15, ["M12 17v5M8 3h8l-1 7 3 3H6l3-3-1-7z"])}
@@ -232,7 +232,7 @@ const pickerTrigger =
 		class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-[var(--duration-dropdown)] ease-[var(--ease-ui-out)] data-[open]:grid-rows-[1fr] motion-reduce:transition-none"
 	>
 		<div class="min-h-0 overflow-hidden">
-			<div class="mt-2 border-border border-t pt-2">
+			<div class="mt-2 border-border/60 border-t pt-2">
 				<div class="pb-1 font-medium text-xs text-muted-foreground">{labels.behavior}</div>
 				{#each behaviour as key (key)}
 					<div class="relative flex h-8 items-center justify-between">

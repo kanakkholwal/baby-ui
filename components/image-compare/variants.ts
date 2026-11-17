@@ -15,7 +15,7 @@ export const imageCompare = tv({
 		line: "absolute -top-[calc(100cqw+100cqh)] -left-px h-[calc((100cqw+100cqh)*2)] w-0.5 bg-white shadow-[0_0_0_0.5px_rgb(0_0_0/0.14)]",
 		slot: "absolute top-0 left-0",
 		handle:
-			"pointer-events-auto absolute top-0 left-0 grid -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-border bg-popover text-foreground shadow-overlay outline-none transition-[width,height,border-color] duration-(--duration-base) ease-[var(--ease-ui-out)] after:absolute after:-inset-2 after:rounded-[inherit] focus-visible:ring-2 focus-visible:ring-ring group-hover/compare:border-border-strong data-quiet:ring-0 motion-reduce:transition-none",
+			"pointer-events-auto absolute top-0 left-0 grid -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-popover text-foreground shadow-overlay outline-none transition-[width,height,border-color] duration-(--duration-base) ease-[var(--ease-ui-out)] after:absolute after:-inset-2 after:rounded-[inherit] focus-visible:ring-2 focus-visible:ring-ring group-hover/compare:border-border-strong data-quiet:ring-0 motion-reduce:transition-none",
 		chevrons: "flex items-center",
 		chevron:
 			"-mx-[2.5px] grid place-items-center transition-transform duration-(--duration-base) ease-[var(--ease-ui-out)] group-data-dragging/compare:first:-translate-x-1 group-data-dragging/compare:last:translate-x-1 motion-reduce:transition-none [&_svg]:size-4",

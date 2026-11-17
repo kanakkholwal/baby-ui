@@ -281,7 +281,7 @@ export function ConfigPopover({
 				{labels.calculate}
 			</Button>
 
-			<div className="mt-3 flex flex-col gap-0.5 border-border border-t pt-2">
+			<div className="mt-3 flex flex-col gap-0.5 border-border/60 border-t pt-2">
 				<button
 					type="button"
 					aria-pressed={pinned}
@@ -339,7 +339,7 @@ export function ConfigPopover({
 				className="grid grid-rows-[0fr] transition-[grid-template-rows] duration-[var(--duration-dropdown)] ease-[var(--ease-ui-out)] data-[open]:grid-rows-[1fr] motion-reduce:transition-none"
 			>
 				<div className="min-h-0 overflow-hidden">
-					<div className="mt-2 border-border border-t pt-2">
+					<div className="mt-2 border-border/60 border-t pt-2">
 						<div className="pb-1 font-medium text-xs text-muted-foreground">
 							{labels.behavior}
 						</div>

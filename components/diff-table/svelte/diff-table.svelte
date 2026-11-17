@@ -94,7 +94,7 @@ function apply() {
 
 <div data-slot="diff-table" class={cn("w-full", classProp)}>
 	<div class="relative overflow-hidden rounded-2xl bg-card shadow-sm">
-		<div class="flex items-center justify-between border-border border-b px-3 py-2">
+		<div class="flex items-center justify-between border-border/60 border-b px-3 py-2">
 			<span class="font-medium text-xs text-foreground">{title}</span>
 			{#if !accepted}
 				<span class="text-xs text-muted-foreground">Click rows to toggle</span>
@@ -108,7 +108,7 @@ function apply() {
 				<col class="w-[36%]" />
 			</colgroup>
 			<thead>
-				<tr class="border-border border-b">
+				<tr class="border-border/60 border-b">
 					{#each ["Field", "Category", "Detail"] as heading (heading)}
 						<th class="px-3 py-1.5 font-medium text-xs text-muted-foreground">{heading}</th>
 					{/each}
@@ -133,7 +133,7 @@ function apply() {
 								}
 							: undefined}
 						class={cn(
-							"card-fade-up border-border border-b transition-colors duration-(--duration-fast) last:border-0 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-inset",
+							"card-fade-up border-border/60 border-b transition-colors duration-(--duration-fast) last:border-0 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-inset",
 							interactive && "cursor-pointer hover:brightness-[0.985]",
 							classes.row,
 						)}
@@ -154,7 +154,7 @@ function apply() {
 			</tbody>
 		</table>
 
-		<div class="flex min-h-11 items-center justify-between border-border border-t px-3 py-2">
+		<div class="flex min-h-11 items-center justify-between border-border/60 border-t px-3 py-2">
 			{#if accepted}
 				<span
 					class="pop-in inline-flex items-center gap-1.5 rounded-full bg-success/10 py-1 pr-2.5 pl-1 font-medium text-xs text-success-strong"
