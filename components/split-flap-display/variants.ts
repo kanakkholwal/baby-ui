@@ -33,7 +33,7 @@ export const splitFlap = tv({
 	variants: {
 		variant: {
 			solid: {
-				board: "bg-foreground text-background shadow-xl",
+				board: "bg-foreground text-background shadow-(--overlay-shadow)",
 				tile: "shadow-[inset_0_1px_0_color-mix(in_oklab,var(--background)_12%,transparent)]",
 				top: "bg-linear-to-b from-[color-mix(in_oklab,var(--foreground)_90%,var(--background))] to-[color-mix(in_oklab,var(--foreground)_86%,var(--background))]",
 				bottom:
@@ -41,8 +41,8 @@ export const splitFlap = tv({
 				divider: "bg-foreground",
 			},
 			card: {
-				board: "border border-border bg-muted text-foreground",
-				tile: "shadow-sm ring-1 ring-border",
+				board: "bg-muted text-foreground",
+				tile: "shadow-sm",
 				top: "bg-linear-to-b from-card to-[color-mix(in_oklab,var(--card)_96%,var(--foreground))]",
 				bottom:
 					"bg-linear-to-b from-[color-mix(in_oklab,var(--card)_92%,var(--foreground))] to-[color-mix(in_oklab,var(--card)_88%,var(--foreground))]",

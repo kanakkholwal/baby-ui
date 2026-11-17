@@ -6,7 +6,7 @@ import {
 	EmailFooter,
 	type EmailFooterLink,
 	EmailHeader,
-	EmailHero,
+	EmailHeading,
 	EmailKeyValue,
 	type EmailKeyValueRow,
 	EmailShell,
@@ -67,7 +67,7 @@ export function EmailPasswordReset({
 	footerLinks,
 	reason,
 	preview = `Reset your ${productName} password. The link expires in ${expiresIn}.`,
-	eyebrow = "Password reset",
+	eyebrow,
 	heading = "Reset your password",
 	intro = `We received a request to reset the password for ${recipientEmail ?? `your ${productName} account`}.`,
 	prompt = "Choose a new password with the button below.",
@@ -78,7 +78,7 @@ export function EmailPasswordReset({
 	warningTitle = "Didn't request this?",
 	warningText = "Ignore this email and your password stays the same.",
 	securityLabel = "Review your account security",
-	surface = "card",
+	surface = "plain",
 }: EmailPasswordResetProps) {
 	const s = emailLayout();
 	const r = emailPasswordReset();
@@ -98,18 +98,18 @@ export function EmailPasswordReset({
 			}
 		>
 			<EmailHeader brand={productName} logo={logoUrl} />
-			<EmailHero
-				eyebrow={eyebrow}
-				meta={requestedAt}
-				title={heading}
-				text={intro}
-				tone="accent"
-			/>
+			<EmailHeading>{heading}</EmailHeading>
+			<EmailText tone="muted" className={r.intro()}>
+				{intro}
+			</EmailText>
+			{[eyebrow, requestedAt].some(Boolean) ? (
+				<EmailText tone="muted" size="sm" className={r.meta()}>
+					{[eyebrow, requestedAt].filter(Boolean).join(" · ")}
+				</EmailText>
+			) : null}
 			<EmailText className={r.prompt()}>{prompt}</EmailText>
 			<Section className={r.action()}>
-				<EmailButton href={resetUrl} size="lg" width="full">
-					{actionLabel}
-				</EmailButton>
+				<EmailButton href={resetUrl}>{actionLabel}</EmailButton>
 			</Section>
 			<EmailText tone="muted" size="sm" className={r.reassurance()}>
 				{`${expiryText} ${warningTitle} ${warningText}`}

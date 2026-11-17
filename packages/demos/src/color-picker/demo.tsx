@@ -26,6 +26,7 @@ export function ColorPickerDemo({ props }: { props: Props }) {
 			className={p.variant === "row" ? "max-w-64" : undefined}
 			size={p.size ?? "default"}
 			invalid={p.invalid ?? false}
+			eyedropper={p.eyedropper ?? true}
 			recent={recent}
 			onOpenChange={(open) => {
 				if (!open)

@@ -88,6 +88,11 @@ export class OgPngPreview {
 // Loaded on first use, so pages without an OG preview never fetch the renderer or the CSS.
 async function warm() {
 	const { warmOgRenderer } = await import("#lib/og/renderer.js");
+	// The chunks the first card needs load beside the worker, not after it.
+	void Promise.all([
+		import("#lib/og/markup.js"),
+		import("../routes/layout.css?inline"),
+	]).catch(() => undefined);
 	await warmOgRenderer();
 }
 

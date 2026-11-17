@@ -18,7 +18,7 @@ export const contactSection = tv({
 			"rounded-sm outline-none transition-[background-size] duration-(--duration-slow) ease-(--ease-ui-out) hover:bg-size-[100%_1px] focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none",
 		],
 		channelDetail: "text-muted-foreground text-sm",
-		form: "grid w-full min-w-0 gap-6 rounded-2xl border border-border bg-background p-6 shadow-foreground/5 shadow-xl @xl/contact:p-10",
+		form: "grid w-full min-w-0 gap-6 rounded-2xl bg-card p-6 @xl/contact:p-10",
 		formTitle: "font-medium text-xl",
 		formDescription: "-mt-4 text-muted-foreground text-sm leading-relaxed",
 	},
@@ -28,7 +28,7 @@ export const contactSection = tv({
 			split: {
 				inner:
 					"@4xl/contact:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] @4xl/contact:items-start @4xl/contact:gap-x-16",
-				channels: "gap-8 border-border border-t pt-8",
+				channels: "gap-8 border-border/60 border-t pt-8",
 				form: "@4xl/contact:col-start-2 @4xl/contact:row-span-2 @4xl/contact:row-start-1",
 			},
 			// Centred header, a ruled row of channel cells, then a narrower centred form.

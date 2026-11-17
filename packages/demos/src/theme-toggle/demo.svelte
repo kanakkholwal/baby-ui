@@ -25,6 +25,6 @@ function onThemeChange(next: ThemeToggleValue) {
 	{onThemeChange}
 	variant={p.variant ?? "rectangle"}
 	start={p.start ?? "bottom-up"}
-	class="rounded-xl border border-border bg-background p-2.5"
+	class="rounded-xl bg-card p-2.5"
 	iconClass="size-5"
 />

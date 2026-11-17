@@ -9,9 +9,9 @@ export const animatedBeam = tv({
 		list: "relative size-full",
 		hubItem: "flex flex-col items-center",
 		satelliteItem: "flex flex-col items-center",
-		node: "relative z-10 grid shrink-0 place-items-center rounded-2xl border border-border bg-card text-foreground shadow-xs",
+		node: "relative z-10 grid shrink-0 place-items-center rounded-2xl bg-card text-foreground shadow-xs",
 		center:
-			"relative z-10 grid shrink-0 place-items-center rounded-2xl border border-border bg-background text-foreground shadow-sm ring-4 ring-(--beam-a)/10",
+			"relative z-10 grid shrink-0 place-items-center rounded-2xl bg-background text-foreground shadow-sm ring-4 ring-(--beam-a)/10",
 		icon: "pointer-events-none size-1/2 object-contain select-none",
 		label: "mt-2 whitespace-nowrap text-center text-muted-foreground text-xs",
 	},

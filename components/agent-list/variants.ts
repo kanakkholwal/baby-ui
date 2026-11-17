@@ -8,7 +8,7 @@ export const agentList = tv({
 		count: "shrink-0 font-medium text-muted-foreground text-xs tabular-nums",
 		list: "flex flex-col",
 		item: [
-			"border-border border-t first:border-t-0",
+			"border-border/60 border-t first:border-t-0",
 			"transition-colors duration-(--duration-base) ease-(--ease-ui-out) data-[status=needs-input]:bg-warning/[0.06] motion-reduce:transition-none",
 		],
 		trigger: [
@@ -44,16 +44,16 @@ export const agentList = tv({
 		/** `framed` holds the rows in a card rim; `plain` drops the chrome. */
 		variant: {
 			framed: {
-				root: "rounded-2xl border border-border bg-card p-1",
+				root: "rounded-2xl bg-card p-1",
 				header: "px-3 pt-1 pb-1.5",
-				list: "overflow-hidden rounded-[11px] border border-border bg-background",
+				list: "overflow-hidden rounded-[calc(var(--radius-2xl)-0.25rem)] bg-background",
 				trigger: "px-3",
 				body: "pe-3 ps-12",
 				footer: "px-0 pt-1",
 			},
 			plain: {
 				header: "pb-1",
-				list: "border-border border-y",
+				list: "border-border/60 border-y",
 			},
 		},
 	},

@@ -2,7 +2,7 @@ import { defineComponent, variantsOf } from "@baby-ui/registry-schema";
 import { composer as composerVariants } from "./variants";
 
 const VARIANTS = ["outline", "filled"];
-const SIZES = ["sm", "md", "lg"];
+const SIZES = ["sm", "default", "lg"];
 
 export const composer = defineComponent({
 	slug: "composer",

@@ -26,12 +26,12 @@ let {
 </script>
 
 <!-- The inset frame: a tinted outer card, a header in its padding, and the code on
-     an inner surface whose radius is the outer one minus border and inset. -->
+     an inner surface whose radius is the outer one minus the inset. -->
 <Tabs
 	bind:value={active}
 	variant="segment"
 	size="sm"
-	class="min-w-0 max-w-full rounded-xl border border-border bg-card p-1 text-foreground {classProp ?? ''}"
+	class="min-w-0 max-w-full rounded-xl bg-card p-1 text-foreground {classProp ?? ''}"
 >
 	<div class="flex min-h-8 items-center gap-2 px-1 pb-1">
 		{#if tabs?.length}
@@ -46,7 +46,7 @@ let {
 		{/if}
 		<div class="ml-auto shrink-0"><CopyButton text={copyText} {analytics} iconOnly /></div>
 	</div>
-	<div class="relative overflow-hidden rounded-[calc(var(--radius-xl)-1px-0.25rem)] bg-background">
+	<div class="relative overflow-hidden rounded-[calc(var(--radius-xl)-0.25rem)] bg-background">
 		{@render children()}
 	</div>
 </Tabs>

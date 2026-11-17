@@ -8,7 +8,7 @@ export const heroSection = tv({
 		// A nowrap announcement would widen an auto track past the column; minmax(0,1fr) caps it.
 		content: "grid w-full min-w-0 grid-cols-[minmax(0,1fr)] gap-6",
 		announcement: [
-			"group/hero-pill card-fade-up inline-flex w-fit max-w-full items-center gap-3 rounded-full border border-border bg-background py-1 pr-1 pl-4 text-sm",
+			"group/hero-pill card-fade-up inline-flex w-fit max-w-full items-center gap-3 rounded-full bg-card py-1 pr-1 pl-4 text-sm",
 			"outline-none transition-[background-color,scale] duration-(--duration-fast) hover:bg-foreground/[0.06] focus-visible:ring-2 focus-visible:ring-ring active:scale-[var(--press-scale)]",
 		],
 		announcementLabel: "shrink-0 font-medium",
@@ -67,14 +67,14 @@ export const heroSectionMedia = tv({
 			plain: { frame: "rounded-2xl" },
 			framed: {
 				frame:
-					"rounded-2xl border border-border bg-foreground/[0.03] p-2 shadow-foreground/5 shadow-xl [&>*]:rounded-xl [&>*]:border [&>*]:border-border/60",
+					"rounded-2xl bg-foreground/[0.03] p-2 shadow-(--overlay-shadow) [&>*]:rounded-xl",
 			},
 			tilted: {
 				root: "py-6 perspective-[1600px] @4xl/hero:py-10",
 				plate:
-					"absolute inset-x-0 inset-y-0 block -skew-x-6 rounded-3xl border border-foreground/5 bg-foreground/[0.04] transition-transform duration-(--duration-slow) ease-(--ease-ui-out) group-hover/hero-media:-skew-x-3 motion-reduce:transition-none",
+					"absolute inset-x-0 inset-y-0 block -skew-x-6 rounded-2xl border border-foreground/5 bg-foreground/[0.04] transition-transform duration-(--duration-slow) ease-(--ease-ui-out) group-hover/hero-media:-skew-x-3 motion-reduce:transition-none",
 				frame:
-					"translate-x-3 -translate-y-6 -skew-x-6 rounded-2xl border border-border bg-background shadow-foreground/10 shadow-xl transition-transform duration-(--duration-slow) ease-(--ease-ui-out) group-hover/hero-media:-translate-y-4 group-hover/hero-media:-skew-x-3 motion-reduce:transition-none",
+					"translate-x-3 -translate-y-6 -skew-x-6 rounded-2xl bg-background shadow-(--overlay-shadow) transition-transform duration-(--duration-slow) ease-(--ease-ui-out) group-hover/hero-media:-translate-y-4 group-hover/hero-media:-skew-x-3 motion-reduce:transition-none",
 			},
 		},
 		// Follows the HeroSection variant through context, never set by callers.

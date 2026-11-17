@@ -25,7 +25,7 @@ const INVOICES = [
 export function TableDemo({ props }: { props: Props }) {
 	const p = controlProps<ComponentProps<typeof Table>>(props);
 	return (
-		<Table variant={p.variant} density={p.density}>
+		<Table variant={p.variant} density={p.density} bordered={p.bordered === true}>
 			<TableCaption>A list of recent invoices.</TableCaption>
 			<TableHeader>
 				<TableRow>

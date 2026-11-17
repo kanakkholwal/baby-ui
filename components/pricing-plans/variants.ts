@@ -5,8 +5,7 @@ export const pricingPlans = tv({
 		root: "@container flex w-full flex-col gap-6 text-foreground",
 		bar: "flex flex-wrap items-center justify-center gap-3",
 		// Equal columns, so one thumb slides between them by its own width.
-		cycles:
-			"relative inline-grid auto-cols-fr grid-flow-col rounded-full border border-border p-0.5",
+		cycles: "relative inline-grid auto-cols-fr grid-flow-col rounded-full bg-muted p-0.5",
 		thumb:
 			"pointer-events-none absolute inset-y-0.5 left-0.5 rounded-full bg-foreground transition-[translate] duration-(--duration-spring-snappy) ease-(--ease-spring-snappy) motion-reduce:transition-none",
 		cycle: [
@@ -35,16 +34,16 @@ export const pricingPlans = tv({
 		layout: {
 			cards: {
 				grid: "grid-cols-[repeat(auto-fit,minmax(15rem,1fr))] gap-4",
-				plan: "rounded-2xl border border-border bg-background data-highlighted:border-foreground/40 data-highlighted:shadow-(--surface-shadow)",
+				plan: "rounded-2xl bg-card data-highlighted:border-foreground/40 data-highlighted:shadow-(--surface-shadow)",
 			},
 			columns: {
-				grid: "divide-y divide-border overflow-hidden rounded-2xl border border-border @3xl:auto-cols-fr @3xl:grid-flow-col @3xl:divide-x @3xl:divide-y-0",
+				grid: "divide-y divide-border/60 overflow-hidden rounded-2xl bg-card @3xl:auto-cols-fr @3xl:grid-flow-col @3xl:divide-x @3xl:divide-y-0",
 				plan: "data-highlighted:shadow-[inset_0_2px_0_0_var(--foreground)]",
 			},
 			// One plan per row from 48rem: name, price, features in two columns, then the action last.
 			rows: {
 				grid: "gap-3",
-				plan: "rounded-2xl border border-border bg-background data-highlighted:border-foreground/40 data-highlighted:shadow-(--surface-shadow) @3xl:grid @3xl:grid-cols-[minmax(0,1fr)_auto_minmax(0,1.4fr)_auto] @3xl:items-center @3xl:gap-8 @3xl:[&>[data-slot=pricing-plan-action]]:order-last",
+				plan: "rounded-2xl bg-card data-highlighted:border-foreground/40 data-highlighted:shadow-(--surface-shadow) @3xl:grid @3xl:grid-cols-[minmax(0,1fr)_auto_minmax(0,1.4fr)_auto] @3xl:items-center @3xl:gap-8 @3xl:[&>[data-slot=pricing-plan-action]]:order-last",
 				features: "@3xl:grid @3xl:grid-cols-2 @3xl:gap-x-6",
 				cta: "@3xl:w-auto",
 			},

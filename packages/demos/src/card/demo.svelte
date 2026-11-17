@@ -20,6 +20,7 @@ const p = $derived(controlProps<ComponentProps<typeof Card>>(props));
 <Card
 	interactive={p.interactive !== false}
 	variant={p.variant ?? "default"}
+	bordered={p.bordered === true}
 	class="w-full max-w-md"
 >
 	<CardHeader>

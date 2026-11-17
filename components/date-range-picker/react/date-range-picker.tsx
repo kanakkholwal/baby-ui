@@ -257,7 +257,7 @@ export function DateRangePicker({
 			>
 				{segments(false)}
 				<span aria-hidden="true" className={field.separator()}>
-					–
+					to
 				</span>
 				{segments(true)}
 				<Popover open={open} onOpenChange={setOpen}>

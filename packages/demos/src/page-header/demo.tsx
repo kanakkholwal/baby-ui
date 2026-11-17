@@ -104,7 +104,7 @@ export function PageHeaderDemo({ props }: { props: Record<string, unknown> }) {
 								{panel.lines.map((line) => (
 									<p
 										key={line}
-										className="border-border border-b py-4 text-muted-foreground text-sm"
+										className="border-border/60 border-b py-4 text-muted-foreground text-sm"
 									>
 										{line}
 									</p>

@@ -1,7 +1,7 @@
 import { defineComponent, variantsOf } from "@baby-ui/registry-schema";
 import { shimmerText as shimmerTextVariants } from "./variants";
 
-const SIZES = ["inherit", "sm", "md", "lg"];
+const SIZES = ["inherit", "sm", "default", "lg"];
 const VARIANTS = ["default", "bell"];
 
 export const shimmerText = defineComponent({

@@ -2,7 +2,7 @@ import { tv, type VariantProps } from "tailwind-variants";
 
 export const accordion = tv({
 	base: [
-		"group/accordion divide-y divide-border overflow-hidden rounded-xl border border-border",
+		"group/accordion divide-y divide-border/60 overflow-hidden rounded-xl",
 		"[--accordion-duration:var(--duration-collapse)] [--accordion-ease:var(--ease-out-quad)]",
 		"[--accordion-open-duration:var(--duration-collapse)] [--accordion-open-ease:var(--ease-out-quad)]",
 		"[--accordion-content-y:-0.25rem] [--accordion-content-scale:1]",

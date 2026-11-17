@@ -13,7 +13,7 @@ export function ButtonDemo({ props }: { props: Props }) {
 		<Button
 			variant={p.variant ?? "default"}
 			size={size}
-			href={p.href || undefined}
+			{...(p.href ? { href: p.href } : { disabled: props.disabled === true })}
 			loading={p.loading ?? false}
 			loadingLabel={p.loadingLabel || "Loading…"}
 		>

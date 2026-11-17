@@ -23,9 +23,9 @@ export const integrationSection = tv({
 			// A card per tool: logo, name, two lines of copy, then a dashed rule over the link.
 			grid: {
 				list: "grid gap-3 @xl/integrations:grid-cols-2 @4xl/integrations:grid-cols-3",
-				item: "grid content-start gap-2 rounded-2xl border border-border p-6 transition-colors duration-(--duration-fast) hover:bg-foreground/[0.03] data-[featured=true]:border-primary/40 data-[featured=true]:bg-primary/[0.04]",
+				item: "grid content-start gap-2 rounded-2xl p-6 transition-colors duration-(--duration-fast) hover:bg-foreground/[0.03] data-[featured=true]:border-primary/40 data-[featured=true]:bg-primary/[0.04]",
 				logo: "mb-4 size-10 [&_img]:size-8 [&_svg]:size-8",
-				link: "group/integration-link mt-4 w-fit border-border border-t border-dashed pt-4 font-medium text-sm outline-none focus-visible:underline [&>span]:inline-flex [&>span]:items-center [&>span]:gap-1",
+				link: "group/integration-link mt-4 w-fit border-border/60 border-t border-dashed pt-4 font-medium text-sm outline-none focus-visible:underline [&>span]:inline-flex [&>span]:items-center [&>span]:gap-1",
 			},
 			// Logo tiles in a cloud that fades out at its edges; the header sits underneath.
 			cluster: {
@@ -34,7 +34,7 @@ export const integrationSection = tv({
 					"[mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_78%)]",
 					"before:absolute before:inset-0 before:-z-10 before:bg-[radial-gradient(var(--border)_1px,transparent_1px)] before:bg-size-[16px_16px]",
 				],
-				item: "grid size-16 place-items-center rounded-2xl border border-border bg-background shadow-foreground/5 shadow-sm transition-[translate,box-shadow] duration-(--duration-fast) hover:-translate-y-0.5 hover:shadow-md has-focus-visible:ring-2 has-focus-visible:ring-ring motion-reduce:transition-none data-[featured=true]:size-20 data-[featured=true]:border-foreground/20 data-[featured=true]:shadow-xl",
+				item: "grid size-16 place-items-center rounded-2xl bg-card transition-[translate,box-shadow] duration-(--duration-fast) hover:-translate-y-0.5 hover:shadow-surface has-focus-visible:ring-2 has-focus-visible:ring-ring motion-reduce:transition-none data-[featured=true]:size-20 data-[featured=true]:border-foreground/20 data-[featured=true]:shadow-xl",
 				logo: "[&_img]:size-7 [&_svg]:size-7 group-data-[featured=true]/integration:[&_img]:size-9 group-data-[featured=true]/integration:[&_svg]:size-9",
 				name: "sr-only",
 				itemDescription: "hidden",

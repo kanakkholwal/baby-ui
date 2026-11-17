@@ -25,11 +25,11 @@ export const reactionBar = tv({
 	variants: {
 		variant: {
 			pill: {
-				root: "gap-0.5 rounded-full border border-border bg-background px-2 py-1 shadow-xs",
+				root: "gap-0.5 rounded-full bg-card px-2 py-1 shadow-xs",
 			},
 			chips: {
 				root: "gap-1.5",
-				item: "h-9 border border-border bg-background px-3 aria-pressed:border-transparent aria-pressed:bg-(--reaction-tone)/10",
+				item: "h-9 bg-card px-3 aria-pressed:border-transparent aria-pressed:bg-(--reaction-tone)/10",
 			},
 		},
 		tone: {

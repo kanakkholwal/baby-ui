@@ -2,7 +2,7 @@ import { defineComponent, variantsOf } from "@baby-ui/registry-schema";
 import { scrollSplitCard as scrollSplitCardVariants } from "./variants";
 
 const TONES = ["card", "inverse", "chart"];
-const SIZES = ["sm", "md", "lg"];
+const SIZES = ["sm", "default", "lg"];
 
 export const scrollSplitCard = defineComponent({
 	slug: "scroll-split-card",

@@ -26,7 +26,7 @@ export const emailKit = defineComponent({
 			type: '"card" | "plain" | "stacked"',
 			description:
 				"EmailShell: a 600px bordered card, content straight on the page, or EmailSection cards.",
-			default: "card",
+			default: "plain",
 			control: { kind: "none" },
 		},
 		{

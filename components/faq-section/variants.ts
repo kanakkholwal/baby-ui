@@ -7,9 +7,9 @@ export const faqSection = tv({
 		intro: "grid gap-3",
 		title: "text-balance font-semibold text-3xl tracking-tight",
 		description: "max-w-120 text-pretty text-base text-muted-foreground leading-relaxed",
-		list: "divide-y-0 rounded-none border-0 border-border border-t",
+		list: "divide-y-0 rounded-none border-0 border-border/60 border-t",
 		// Filtered or off-topic rows fold away on grid rows instead of popping out.
-		row: "grid grid-rows-[1fr] border-border border-b opacity-100 transition-[grid-template-rows,opacity,border-color] duration-(--duration-collapse) ease-(--ease-out-quad) data-[hidden=true]:grid-rows-[0fr] data-[hidden=true]:border-transparent data-[hidden=true]:opacity-0 motion-reduce:transition-none",
+		row: "grid grid-rows-[1fr] border-border/60 border-b opacity-100 transition-[grid-template-rows,opacity,border-color] duration-(--duration-collapse) ease-(--ease-out-quad) data-[hidden=true]:grid-rows-[0fr] data-[hidden=true]:border-transparent data-[hidden=true]:opacity-0 motion-reduce:transition-none",
 		rowInner: "min-h-0 overflow-hidden",
 		trigger: "min-h-16 px-1 py-4 text-base hover:bg-transparent",
 		answer: "pr-10 pb-5 pl-1 text-base leading-relaxed",

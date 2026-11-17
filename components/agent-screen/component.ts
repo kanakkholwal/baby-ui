@@ -1,7 +1,7 @@
 import { defineComponent, variantsOf } from "@baby-ui/registry-schema";
 import { agentScreen as agentScreenVariants } from "./variants";
 
-const SIZES = ["sm", "md", "lg"];
+const SIZES = ["sm", "default", "lg"];
 
 export const agentScreen = defineComponent({
 	slug: "agent-screen",

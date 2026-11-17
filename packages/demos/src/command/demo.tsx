@@ -64,7 +64,16 @@ export function CommandDemo({ props }: { props: Props }) {
 				Open palette
 			</Button>
 			{last ? <p className="text-muted-foreground text-xs">Ran: {last}</p> : null}
-			<CommandDialog open={open} onOpenChange={setOpen} variant={variant}>
+			<CommandDialog
+				open={open}
+				onOpenChange={setOpen}
+				variant={variant}
+				description={
+					typeof props.description === "string" && props.description
+						? props.description
+						: undefined
+				}
+			>
 				<Command>
 					{variant === "framed" ? <CommandHeader>Command</CommandHeader> : null}
 					{variant === "launcher" ? (

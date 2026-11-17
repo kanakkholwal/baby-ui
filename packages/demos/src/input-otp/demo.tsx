@@ -65,9 +65,9 @@ export function InputOTPDemo({ props }: { props: Props }) {
 	}
 
 	return (
-		<div className="w-full max-w-sm rounded-2xl border border-border bg-muted/60 p-1">
-			<div className="flex flex-col items-center rounded-[11px] border border-border bg-card px-6 py-8 text-center">
-				<span className="grid size-11 place-items-center rounded-xl border border-border bg-muted text-muted-foreground">
+		<div className="w-full max-w-sm rounded-2xl bg-muted/60 p-1">
+			<div className="flex flex-col items-center rounded-[calc(var(--radius-2xl)-0.25rem)] bg-card px-6 py-8 text-center">
+				<span className="grid size-11 place-items-center rounded-xl bg-muted text-muted-foreground">
 					<svg
 						viewBox="0 0 24 24"
 						aria-hidden

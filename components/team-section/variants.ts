@@ -25,7 +25,7 @@ export const teamSection = tv({
 		variant: {
 			// Round faces in a ruled grid, the way an about page lists a whole company.
 			grid: {
-				list: "grid-cols-2 gap-x-4 gap-y-8 border-border border-t pt-6 @xl/team:grid-cols-3 @3xl/team:grid-cols-4",
+				list: "grid-cols-2 gap-x-4 gap-y-8 border-border/60 border-t pt-6 @xl/team:grid-cols-3 @3xl/team:grid-cols-4",
 				member: "gap-0.5",
 				avatar:
 					"mb-2 ring-offset-2 ring-offset-background transition-transform duration-(--duration-fast) group-hover/member:-translate-y-0.5 motion-reduce:transition-none",
@@ -44,7 +44,7 @@ export const teamSection = tv({
 			},
 			// Ruled rows: face, name and role, then links at the end of the row from 36rem.
 			list: {
-				list: "divide-y divide-border border-border border-y",
+				list: "divide-y divide-border/60 border-border/60 border-y",
 				member:
 					"grid-cols-[auto_minmax(0,1fr)] items-center gap-x-4 gap-y-0.5 py-4 @xl/team:grid-cols-[auto_minmax(0,1fr)_auto]",
 				avatar:

@@ -51,7 +51,7 @@ function toggleRow(label: string) {
 		type="button"
 		aria-expanded={open}
 		onclick={() => (open = !open)}
-		class="-mx-1.5 flex w-fit items-center gap-1.5 rounded-md px-1.5 py-1 text-xs text-muted-foreground transition-colors duration-(--duration-instant) hover:bg-accent"
+		class="-mx-1.5 flex w-fit items-center gap-1.5 rounded-md px-1.5 py-1 text-xs outline-none focus-visible:ring-2 focus-visible:ring-ring text-muted-foreground transition-colors duration-(--duration-instant) hover:bg-accent"
 	>
 		<svg
 			width="12"
@@ -85,7 +85,7 @@ function toggleRow(label: string) {
 							type="button"
 							aria-expanded={rowOpen}
 							onclick={() => toggleRow(row.label)}
-							class="group/row -mx-[3px] flex h-7 w-[calc(100%+6px)] min-w-0 items-center gap-2 rounded-md px-[3px] text-left transition-colors duration-(--duration-instant) hover:bg-accent"
+							class="group/row -mx-[3px] flex h-7 outline-none focus-visible:ring-2 focus-visible:ring-ring w-[calc(100%+6px)] min-w-0 items-center gap-2 rounded-md px-[3px] text-left transition-colors duration-(--duration-instant) hover:bg-accent"
 						>
 							<span class="relative flex size-4 shrink-0 items-center justify-center text-muted-foreground">
 								<span
@@ -137,7 +137,7 @@ function toggleRow(label: string) {
 							style:opacity={rowOpen ? 1 : 0}
 						>
 							<div class="min-h-0 overflow-hidden">
-								<div class="mt-0.5 mb-1 ml-2 flex flex-col gap-0.5 border-border border-l py-0.5 pl-3.5">
+								<div class="mt-0.5 mb-1 ml-2 flex flex-col gap-0.5 border-border/60 border-l py-0.5 pl-3.5">
 									{#each row.detail as line (line.text)}
 										<span
 											class={cn(
@@ -157,7 +157,7 @@ function toggleRow(label: string) {
 			</div>
 
 			{#if diffs.length > 0}
-				<div class="mt-2.5 flex max-w-full flex-wrap gap-1.5 border-border border-t pt-2.5">
+				<div class="mt-2.5 flex max-w-full flex-wrap gap-1.5 border-border/60 border-t pt-2.5">
 					{#each diffs as diff, index (diff.file)}
 						<HoverCard>
 							<HoverCardTrigger
@@ -176,7 +176,7 @@ function toggleRow(label: string) {
 									align="start"
 									class="w-72 overflow-hidden rounded-[10px] border-none p-0 shadow-2xl"
 								>
-									<div class="flex items-center justify-between border-border border-b px-2.5 py-1.5 font-mono text-xs">
+									<div class="flex items-center justify-between border-border/60 border-b px-2.5 py-1.5 font-mono text-xs">
 										<span class="min-w-0 truncate text-muted-foreground">{diff.file}</span>
 										<span class="shrink-0 tabular-nums">
 											<span class="text-success-strong">+{diff.add}</span>

@@ -9,7 +9,6 @@ import {
 	EmailHeading,
 	EmailKeyValue,
 	type EmailKeyValueRow,
-	EmailPanel,
 	EmailShell,
 	type EmailShellSurface,
 	EmailText,
@@ -75,7 +74,7 @@ export function EmailReceipt({
 	actionLabel = "Download invoice",
 	helpLabel = "Questions about this charge? Write to",
 	labels: labelOverrides,
-	surface = "card",
+	surface = "plain",
 }: EmailReceiptProps) {
 	const s = emailLayout();
 	const r = emailReceipt();
@@ -91,7 +90,7 @@ export function EmailReceipt({
 					reason={reason}
 					brand={productName}
 					logo={logoUrl}
-					layout="bar"
+					layout="band"
 				/>
 			}
 		>
@@ -99,18 +98,16 @@ export function EmailReceipt({
 			<Section className={s.badge()}>
 				<EmailBadge tone="success">{labels.status}</EmailBadge>
 			</Section>
-			<EmailHeading size="display">{heading}</EmailHeading>
+			<EmailHeading size="lg">{heading}</EmailHeading>
 			<EmailText tone="muted" className={s.intro()}>
 				{intro}
 			</EmailText>
 			<Section className={r.summary()}>
-				<EmailPanel>
-					<EmailText className={s.sectionTitle()}>{labels.items}</EmailText>
-					<EmailKeyValue
-						rows={[...items, ...adjustments]}
-						total={{ label: labels.total, value: total }}
-					/>
-				</EmailPanel>
+				<EmailText className={s.sectionTitle()}>{labels.items}</EmailText>
+				<EmailKeyValue
+					rows={[...items, ...adjustments]}
+					total={{ label: labels.total, value: total }}
+				/>
 			</Section>
 			<Section className={r.details()}>
 				<EmailKeyValue
@@ -134,9 +131,7 @@ export function EmailReceipt({
 			) : null}
 			{invoiceUrl ? (
 				<Section className={s.action()}>
-					<EmailButton href={invoiceUrl} shape="pill">
-						{actionLabel}
-					</EmailButton>
+					<EmailButton href={invoiceUrl}>{actionLabel}</EmailButton>
 				</Section>
 			) : null}
 			{billingEmail ? (

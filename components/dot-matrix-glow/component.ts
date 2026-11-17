@@ -2,7 +2,7 @@ import { defineComponent, variantsOf } from "@baby-ui/registry-schema";
 import { dotMatrixGlow as dotMatrixGlowVariants } from "./variants";
 
 const SHAPES = ["dot", "square", "plus"];
-const SIZES = ["sm", "md", "lg"];
+const SIZES = ["sm", "default", "lg"];
 const TONES = ["primary", "spectrum", "mono"];
 const POSITIONS = ["absolute", "fixed"];
 const union = (values: string[]) => values.map((v) => `"${v}"`).join(" | ");

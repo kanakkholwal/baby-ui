@@ -189,9 +189,7 @@ const hideAi = () => {
 	setAiShown(false);
 	openColumn = null;
 };
-const footerCell = $derived(
-	cn(classes.cell(), "border-border border-r text-muted-foreground text-xs"),
-);
+const footerCell = $derived(cn(classes.cell(), "text-muted-foreground text-xs"));
 </script>
 
 {#snippet header(key: ColumnKey, sortKey?: RecordSortKey, withSelectAll = false, onHide?: () => void)}
@@ -201,7 +199,7 @@ const footerCell = $derived(
 		inert={key === "ai" && !showAiColumn}
 		class={cn(
 			classes.headerCell(),
-			"relative border-border border-r border-b bg-card text-left font-medium text-xs text-muted-foreground",
+			"relative border-border/60 border-b bg-card text-left font-medium text-xs text-muted-foreground",
 			openColumn === key && "bg-primary/[0.04]",
 			key === "ai" && classes.aiCell(),
 		)}
@@ -286,7 +284,7 @@ const footerCell = $derived(
 {/snippet}
 
 <div data-slot="records-table" class={cn(classes.root(), fill ? "w-full" : "w-fit max-w-full", classProp)}>
-	<div data-slot="records-table-scroll" class="overflow-auto rounded-2xl border border-border" style="scrollbar-width: thin;">
+	<div data-slot="records-table-scroll" class="overflow-auto rounded-2xl" style="scrollbar-width: thin;">
 		<table class={classes.table()} style="width: {fill ? '100%' : `${tableWidth}px`}; min-width: {tableWidth}px;">
 			<colgroup>
 				{#each COLUMN_ORDER as key (key)}
@@ -306,7 +304,7 @@ const footerCell = $derived(
 					{@render header("strength", "strength")}
 					{@render header("links")}
 					{@render header("ai", undefined, false, hideAi)}
-					<th class={cn(classes.headerCell(), "border-border border-b bg-card px-2")}>
+					<th class={cn(classes.headerCell(), "border-border/60 border-b bg-card px-2")}>
 						<div class="flex items-center gap-1">
 							<DropdownMenu>
 								<DropdownMenuTrigger
@@ -356,7 +354,7 @@ const footerCell = $derived(
 				{#each visibleRows as row, index (row.id)}
 					{@const isSelected = selected.includes(row.id)}
 					{@const td = (key: ColumnKey, extra?: string | false) =>
-						cn(classes.cell(), "border-border border-r border-b", pinClass(key, isSelected), extra)}
+						cn(classes.cell(), "border-border/60 border-b", pinClass(key, isSelected), extra)}
 					<tr
 						data-slot="records-table-row"
 						data-selected={isSelected || undefined}
@@ -433,14 +431,14 @@ const footerCell = $derived(
 								{/if}
 							</div>
 						</td>
-						<td class={cn(classes.cell(), "border-border border-b px-2")}></td>
+						<td class={cn(classes.cell(), "border-border/60 border-b px-2")}></td>
 					</tr>
 				{/each}
 			</tbody>
 			<tfoot>
 				<tr>
 					<td style={pinStyle("company")} class={cn(footerCell, pinClass("company"))}>{text.count(rows.length)}</td>
-					<td style={pinStyle("categories")} class={cn(classes.cell(), "border-border border-r", pinClass("categories"))}></td>
+					<td style={pinStyle("categories")} class={cn(classes.cell(), "", pinClass("categories"))}></td>
 					<td style={pinStyle("last")} class={cn(footerCell, pinClass("last"))}>{text.empty}</td>
 					<td style={pinStyle("strength")} class={cn(footerCell, "tabular-nums", pinClass("strength"))}>
 						{rows.length

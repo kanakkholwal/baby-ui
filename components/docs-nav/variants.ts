@@ -6,7 +6,7 @@ export const docsNav = tv({
 		section: "border-border/60 border-t py-2 first:border-t-0 first:pt-0",
 		// pl-1.5: the trigger's chevron (14px) and gap (8px) land the label on the rows' pl-7.
 		trigger:
-			"h-8 w-full justify-start gap-1.5 pr-3 pl-1.5 font-semibold text-xs text-muted-foreground uppercase tracking-wider hover:text-foreground",
+			"h-8 w-full justify-start gap-1.5 pr-3 pl-1.5 font-semibold text-xs text-muted-foreground hover:text-foreground",
 		count:
 			"inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-foreground/[0.06] px-1 font-medium text-xs text-foreground/70 tabular-nums",
 		sectionIcon: "size-4 shrink-0 text-muted-foreground",

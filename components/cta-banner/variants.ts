@@ -12,7 +12,7 @@ export const ctaBanner = tv({
 		// A <strong> inside the note becomes its emphasised second line.
 		note: "text-sm [&_strong]:mt-2 [&_strong]:block [&_strong]:font-medium",
 		badge:
-			"mb-3 grid size-20 rotate-2 place-items-center rounded-3xl bg-white text-(--tint) shadow-lg [&_svg]:size-10",
+			"mb-3 grid size-20 rotate-2 place-items-center rounded-2xl bg-white text-(--tint) shadow-lg [&_svg]:size-10",
 		// Grain
 		layer: "pointer-events-none absolute inset-0",
 		line: "pointer-events-none absolute bg-white/20",
@@ -30,17 +30,16 @@ export const ctaBanner = tv({
 			"flex shrink-0 items-center gap-[0.35em] pr-[0.35em] [&_svg]:h-[0.5em] [&_svg]:w-auto",
 		// Blurs the rows where they pass behind the words.
 		tickerVeil:
-			"pointer-events-none absolute inset-y-0 left-[calc(50%-7rem)] hidden w-48 bg-(--tint)/20 backdrop-blur-xl [mask-image:linear-gradient(to_right,transparent,black_35%,black_65%,transparent)] @4xl:block",
+			"pointer-events-none absolute inset-y-0 left-[calc(50%-7rem)] hidden w-48 bg-(--tint)/20 [mask-image:linear-gradient(to_right,transparent,black_35%,black_65%,transparent)] @4xl:block",
 	},
 	variants: {
 		/** `grain`: a noisy tinted panel; `ticker`: lit copy beside a running wordmark. */
 		variant: {
 			grain: {
-				root: "rounded-3xl bg-(--tint) text-white [--tint:var(--cta-banner,#05845f)]",
+				root: "rounded-2xl bg-(--tint) text-white [--tint:var(--cta-banner,#05845f)]",
 				content: "mx-auto max-w-4xl items-center px-6 text-center",
 				// The title fades down its height, light catching the top of the words.
-				title:
-					"mb-8 bg-linear-to-b from-white to-white/75 bg-clip-text font-medium text-transparent leading-[1.05] tracking-[-0.02em]",
+				title: "mb-8 font-medium text-white leading-[1.05] tracking-[-0.02em]",
 				description: "-mt-4 mb-8 max-w-xl text-lg text-white/80",
 				actions: "justify-center",
 				note: "mt-8 max-w-md text-white/80 [&_strong]:text-white",
@@ -50,7 +49,7 @@ export const ctaBanner = tv({
 				content: "mx-auto w-full max-w-6xl items-start gap-8 px-6 @2xl:px-10",
 				// Lit text: a white gradient under a hairline stroke, so the words read as embossed.
 				title:
-					"box-decoration-clone max-w-[12ch] bg-linear-to-b from-white/50 via-white/85 to-white bg-clip-text pb-[0.1em] -mb-[0.1em] font-bold text-transparent leading-[0.92] tracking-[-0.04em] [-webkit-text-stroke:1px_white]",
+					"box-decoration-clone max-w-[12ch] text-white pb-[0.1em] -mb-[0.1em] font-bold leading-[0.92] tracking-[-0.02em] [-webkit-text-stroke:1px_white]",
 				description: "max-w-lg text-lg text-white/85 @2xl:text-xl",
 				note: "text-white/75 [&_strong]:text-white",
 			},

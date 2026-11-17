@@ -24,11 +24,11 @@ export const attachment = tv({
 		],
 		clip: "min-h-0 min-w-0 overflow-hidden",
 		surface:
-			"relative flex items-center border border-border bg-background transition-[border-color,background-color] duration-(--duration-dropdown) ease-(--ease-ui-out)",
+			"relative flex items-center bg-card transition-[border-color,background-color] duration-(--duration-dropdown) ease-(--ease-ui-out)",
 		preview:
-			"relative grid shrink-0 place-items-center overflow-hidden border border-border bg-card text-muted-foreground transition-colors duration-(--duration-dropdown) [&_svg]:size-4",
+			"relative grid shrink-0 place-items-center overflow-hidden bg-card text-muted-foreground transition-colors duration-(--duration-dropdown) [&_svg]:size-4",
 		image: "size-full object-cover",
-		type: "font-semibold text-xs uppercase",
+		type: "font-semibold text-xs",
 		// The upload ring sits over a dimmed preview, so progress reads at chip size.
 		ring: "pointer-events-none absolute inset-0 grid place-items-center bg-background/60 text-primary",
 		ringTrack: "stroke-(--track)",

@@ -7,7 +7,7 @@ import EmailFooter, {
 	type EmailFooterLink,
 } from "../../email-kit/svelte/email-footer.svelte";
 import EmailHeader from "../../email-kit/svelte/email-header.svelte";
-import EmailHero from "../../email-kit/svelte/email-hero.svelte";
+import EmailHeading from "../../email-kit/svelte/email-heading.svelte";
 import EmailKeyValue, {
 	type EmailKeyValueRow,
 } from "../../email-kit/svelte/email-key-value.svelte";
@@ -29,7 +29,7 @@ let {
 	footerLinks,
 	reason,
 	preview = `Reset your ${productName} password. The link expires in ${expiresIn}.`,
-	eyebrow = "Password reset",
+	eyebrow,
 	heading = "Reset your password",
 	intro = `We received a request to reset the password for ${recipientEmail ?? `your ${productName} account`}.`,
 	prompt = "Choose a new password with the button below.",
@@ -40,7 +40,7 @@ let {
 	warningTitle = "Didn't request this?",
 	warningText = "Ignore this email and your password stays the same.",
 	securityLabel = "Review your account security",
-	surface = "card",
+	surface = "plain",
 }: {
 	productName: string;
 	/** One-time reset link. */
@@ -87,10 +87,16 @@ const r = emailPasswordReset();
 		<EmailFooter lines={companyLines} links={footerLinks} {reason} brand={productName} logo={logoUrl} layout="band" />
 	{/snippet}
 	<EmailHeader brand={productName} logo={logoUrl} />
-	<EmailHero {eyebrow} meta={requestedAt} title={heading} text={intro} tone="accent" />
+	<EmailHeading>{heading}</EmailHeading>
+	<EmailText tone="muted" class={r.intro()}>{intro}</EmailText>
+	{#if eyebrow || requestedAt}
+		<EmailText tone="muted" size="sm" class={r.meta()}>
+			{[eyebrow, requestedAt].filter(Boolean).join(" · ")}
+		</EmailText>
+	{/if}
 	<EmailText class={r.prompt()}>{prompt}</EmailText>
 	<Section class={r.action()}>
-		<EmailButton href={resetUrl} size="lg" width="full">{actionLabel}</EmailButton>
+		<EmailButton href={resetUrl}>{actionLabel}</EmailButton>
 	</Section>
 	<EmailText tone="muted" size="sm" class={r.reassurance()}>
 		{`${expiryText} ${warningTitle} ${warningText}`}{#if securityUrl}{" "}<Link href={securityUrl} class={s.inlineLink()}>{securityLabel}</Link>.{/if}

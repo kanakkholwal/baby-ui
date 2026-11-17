@@ -24,13 +24,13 @@ export const githubStats = tv({
 		calendar: "min-w-0 px-6 pt-5 pb-6 md:px-8",
 		panel: "card-fade-up mt-0 min-w-0 outline-none",
 		// A 1px gap over a border-coloured grid draws every divider, with no doubled edges.
-		counts: "grid grid-cols-2 gap-px border-border border-t bg-border sm:grid-cols-4",
+		counts: "grid grid-cols-2 gap-px border-border/60 border-t bg-border sm:grid-cols-4",
 		count: "flex min-w-0 flex-col gap-1 bg-background px-6 py-5 md:px-8",
 		countValue:
 			"font-heading font-semibold text-2xl text-foreground tabular-nums tracking-tight",
 		countLabel: "text-muted-foreground text-xs",
 		footer:
-			"grid gap-8 border-border border-t px-6 py-6 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] md:gap-12 md:px-8",
+			"grid gap-8 border-border/60 border-t px-6 py-6 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] md:gap-12 md:px-8",
 		sectionTitle: "font-medium text-muted-foreground text-xs",
 		mix: "flex min-w-0 flex-col gap-3",
 		mixBar: "flex h-2.5 w-full gap-[2px] overflow-hidden rounded-full",
@@ -59,9 +59,9 @@ export const githubStats = tv({
 		 * `compact`: the total, two facts and a small calendar for a sidebar. `minimal`: no chrome.
 		 */
 		variant: {
-			default: { root: "rounded-2xl border border-border bg-background" },
+			default: { root: "rounded-2xl bg-card" },
 			compact: {
-				root: "rounded-2xl border border-border bg-background",
+				root: "rounded-2xl bg-card",
 				head: "px-5 pt-5 md:px-5 md:pt-5",
 				heroValue: "text-4xl",
 				insights: "mt-4 px-5 md:px-5 [&>*:nth-child(n+3)]:hidden",
@@ -72,7 +72,7 @@ export const githubStats = tv({
 			},
 			minimal: {
 				head: "px-0 pt-0 md:px-0 md:pt-0",
-				heroValue: "font-medium font-mono text-4xl tracking-tighter",
+				heroValue: "font-medium font-mono text-4xl tracking-tight",
 				insights: "px-0 md:px-0",
 				insightLabel: "font-mono uppercase tracking-widest",
 				insightValue: "font-mono",

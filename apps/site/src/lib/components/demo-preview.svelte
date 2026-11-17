@@ -48,12 +48,12 @@ $effect(() => {
 {/snippet}
 
 <!-- The inset frame: a tinted outer card, canvas sunk one level on bg-background. -->
-<div class={["rounded-xl border border-border bg-card p-1", classProp]}>
+<div class={["rounded-xl bg-card p-1", classProp]}>
 	<div
 		data-demo-canvas
 		data-framework={react ? "react" : "svelte"}
 		style:max-height={maxHeight}
-		class="relative grid h-full min-h-88 grid-cols-[minmax(0,1fr)] place-items-center-safe overflow-auto rounded-[7px] bg-background bg-[radial-gradient(var(--border)_1px,transparent_1px)] [background-size:16px_16px] p-4 sm:p-8"
+		class="relative grid h-full min-h-88 grid-cols-[minmax(0,1fr)] place-items-center-safe overflow-auto rounded-lg bg-background bg-[radial-gradient(var(--border)_1px,transparent_1px)] [background-size:16px_16px] p-4 sm:p-8"
 	>
 		{#if content}
 			{@render content()}

@@ -80,7 +80,7 @@ export function ErrorBoundaryFallback({
 						<summary className="cursor-pointer select-none text-center">
 							{labels.details}
 						</summary>
-						<code className="mt-2 block break-words rounded-md border border-border bg-background p-2 font-mono">
+						<code className="mt-2 block break-words rounded-md bg-background p-2 font-mono">
 							{errorMessage(error)}
 						</code>
 					</details>

@@ -6,7 +6,6 @@ import {
 	type ReactNode,
 	useContext,
 	useId,
-	useState,
 } from "react";
 import {
 	Accordion,
@@ -16,6 +15,7 @@ import {
 } from "../../accordion/react/accordion";
 import { Button } from "../../button/react/button";
 import { cn } from "../../lib/cn";
+import { useControllable } from "../../lib/react/use-controllable";
 import { SearchInput } from "../../search-input/react/search-input";
 import { ToggleGroup, ToggleGroupItem } from "../../toggle-group/react/toggle-group";
 import {
@@ -94,12 +94,18 @@ export function FaqSection({
 	const titleId = useId();
 	const styles = faqSection({ variant });
 	const categories = faqCategories(items);
-	const [ownOpen, setOwnOpen] = useState<string[]>(() =>
+	const [openKeys, setOpenKeys] = useControllable<string[]>(
+		value,
 		items[0] ? [faqKey(items[0])] : [],
+		onValueChange,
 	);
-	const [ownCategory, setOwnCategory] = useState(categories[0] ?? "General");
-	const [ownQuery, setOwnQuery] = useState("");
-	const text = variant === "search" ? (query ?? ownQuery) : "";
+	const [topic, setTopic] = useControllable(
+		category,
+		categories[0] ?? "General",
+		onCategoryChange,
+	);
+	const [queryText, setQueryText] = useControllable(query, "", onQueryChange);
+	const text = variant === "search" ? queryText : "";
 
 	const state: FaqSectionState = {
 		items,
@@ -107,24 +113,15 @@ export function FaqSection({
 		type,
 		titleId,
 		categories,
-		open: value ?? ownOpen,
-		setOpen: (next) => {
-			const list = Array.isArray(next) ? next : next ? [next] : [];
-			if (value === undefined) setOwnOpen(list);
-			onValueChange?.(list);
-		},
-		topic: category ?? ownCategory,
+		open: openKeys,
+		setOpen: (next) => setOpenKeys(Array.isArray(next) ? next : next ? [next] : []),
+		topic,
 		setTopic: (next) => {
 			const picked = Array.isArray(next) ? next[0] : next;
-			if (!picked) return;
-			if (category === undefined) setOwnCategory(picked);
-			onCategoryChange?.(picked);
+			if (picked) setTopic(picked);
 		},
 		text,
-		setText: (next) => {
-			if (query === undefined) setOwnQuery(next);
-			onQueryChange?.(next);
-		},
+		setText: setQueryText,
 		shown: items.filter((item) => faqMatches(item, text)),
 		styles,
 	};

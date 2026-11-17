@@ -25,7 +25,7 @@ export const showcaseCard = tv({
 			"transition-[border-radius] duration-(--duration-dropdown) ease-(--ease-ui-out) motion-reduce:transition-none",
 		],
 		footer:
-			"pointer-events-none z-30 flex min-h-0 min-w-0 items-center gap-3 overflow-hidden border-border",
+			"pointer-events-none z-30 flex min-h-0 min-w-0 items-center gap-3 overflow-hidden",
 		copy: "min-w-0 flex-1",
 		title: "font-medium text-foreground text-sm leading-tight",
 		description: "mt-1 line-clamp-2 text-muted-foreground text-xs leading-relaxed",
@@ -37,23 +37,23 @@ export const showcaseCard = tv({
 			solid: {
 				root: "[&>div]:[grid-template-rows:minmax(0,1fr)_auto]",
 				preview: "rounded-b-none",
-				footer: "relative border-t bg-background",
+				footer: "relative",
 			},
 			translucent: {
 				root: "[&>div]:[grid-template-rows:minmax(0,1fr)]",
 				footer:
-					"absolute inset-x-2 bottom-2 rounded-lg border bg-popover/82 shadow-(--overlay-shadow) backdrop-blur-xl backdrop-saturate-150",
+					"absolute inset-x-0 bottom-0 rounded-b-[inherit] bg-linear-to-b from-transparent via-popover/75 to-popover/90 pt-10",
 			},
 			morphing: {
 				root: REVEAL_ROWS,
 				preview:
 					"group-hover/showcase:rounded-b-none group-focus-within/showcase:rounded-b-none [@media(hover:none)]:rounded-b-none",
-				footer: [...REVEAL_FOOTER, "border-t bg-background"],
+				footer: REVEAL_FOOTER,
 			},
-			// The framed Dialog recipe: a card-surface rim, a hairline-bordered preview, the footer in the rim.
+			// The framed Dialog recipe: a card-surface rim, a raised preview, the footer in the rim.
 			framed: {
 				root: [...REVEAL_ROWS, "bg-card p-1 [&>div]:rounded-none [&>div]:bg-transparent"],
-				preview: "rounded-[11px] border border-border bg-popover",
+				preview: "rounded-[calc(var(--radius-2xl)-0.25rem)] bg-popover",
 				footer: REVEAL_FOOTER,
 			},
 		},

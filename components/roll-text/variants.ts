@@ -1,7 +1,7 @@
 import { tv, type VariantProps } from "tailwind-variants";
 
 export const rollText = tv({
-	base: "roll-text relative inline-block cursor-default",
+	base: "roll-text relative inline-block cursor-default rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-50",
 	variants: {
 		size: {
 			sm: "text-sm",

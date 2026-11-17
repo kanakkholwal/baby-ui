@@ -32,12 +32,12 @@ export const streamingText = tv({
 		followUpsLabel: "m-0 font-medium text-muted-foreground text-xs",
 		followUpList: "m-0 mt-0.5 flex list-none flex-col p-0",
 		followUp:
-			"-mx-1.5 flex w-[calc(100%+0.75rem)] items-center gap-2 rounded-md border-border border-b px-1.5 py-1.5 text-left text-foreground text-xs outline-none transition-[background-color,scale] duration-(--duration-instant) last:border-0 hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring active:scale-(--press-scale) motion-reduce:transition-none",
+			"-mx-1.5 flex w-[calc(100%+0.75rem)] items-center gap-2 rounded-md border-border/60 border-b px-1.5 py-1.5 text-left text-foreground text-xs outline-none transition-[background-color,scale] duration-(--duration-instant) last:border-0 hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring active:scale-(--press-scale) motion-reduce:transition-none",
 	},
 	variants: {
 		layout: {
 			inline: { root: "" },
-			card: { root: "rounded-xl border border-border bg-card p-4" },
+			card: { root: "rounded-xl bg-card p-4" },
 		},
 		size: {
 			sm: { text: "text-xs leading-normal" },

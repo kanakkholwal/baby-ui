@@ -204,7 +204,7 @@ function fullDate(value: unknown): string {
 							+{compact(best.stars)}
 							<span class={styles.factNote()}>{formatDate(best.date, locale, FULL_DATE)}</span>
 						{:else}
-							–
+							-
 						{/if}
 					</dd>
 				</div>
@@ -217,7 +217,7 @@ function fullDate(value: unknown): string {
 								{formatDate(milestones.reached.date, locale, FULL_DATE)}
 							</span>
 						{:else}
-							–
+							-
 						{/if}
 					</dd>
 				</div>
@@ -230,7 +230,7 @@ function fullDate(value: unknown): string {
 								<span class={styles.factNote()}>{labels.eta(milestones.next.days)}</span>
 							{/if}
 						{:else}
-							–
+							-
 						{/if}
 					</dd>
 				</div>
@@ -308,7 +308,7 @@ function fullDate(value: unknown): string {
 			<div class={styles.count()}>
 				<dt class={styles.countLabel()}>{labels.firstStar}</dt>
 				<dd class={cn("order-first", styles.countValue())}>
-					{first ? formatDate(first, locale, FULL_DATE) : "–"}
+					{first ? formatDate(first, locale, FULL_DATE) : "-"}
 				</dd>
 			</div>
 			<div class={styles.count()}>
@@ -318,7 +318,7 @@ function fullDate(value: unknown): string {
 			<div class={styles.count()}>
 				<dt class={styles.countLabel()}>{labels.lastStar}</dt>
 				<dd class={cn("order-first", styles.countValue())}>
-					{lastStar ? formatDate(lastStar, locale, SHORT_DATE) : "–"}
+					{lastStar ? formatDate(lastStar, locale, SHORT_DATE) : "-"}
 				</dd>
 			</div>
 		</dl>

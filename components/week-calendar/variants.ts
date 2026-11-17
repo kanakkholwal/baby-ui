@@ -33,7 +33,7 @@ export const weekCalendar = tv({
 	},
 	variants: {
 		variant: {
-			card: { root: "border border-border bg-card shadow-sm" },
+			card: { root: "bg-card" },
 			plain: { root: "bg-transparent" },
 		},
 		tone: {

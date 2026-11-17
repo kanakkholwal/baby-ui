@@ -11,7 +11,7 @@ export const invoiceList = tv({
 		amount: "text-right tabular-nums",
 		links: "flex items-center justify-end gap-3",
 		link: "rounded-sm text-muted-foreground text-xs underline-offset-4 transition-colors hover:text-foreground hover:underline focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2",
-		list: "flex flex-col divide-y divide-border rounded-xl border border-border @xl:hidden",
+		list: "flex flex-col divide-y divide-border/60 rounded-xl bg-card @xl:hidden",
 		item: "flex flex-col gap-1.5 px-4",
 		itemTop: "flex items-baseline justify-between gap-3",
 		itemTitle: "min-w-0 truncate font-medium text-foreground text-sm",

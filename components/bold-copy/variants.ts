@@ -5,7 +5,8 @@ export const boldCopy = tv({
 		root: "group/bold relative inline-flex items-center justify-center font-heading font-bold uppercase",
 		background:
 			"select-none text-foreground/15 transition-opacity duration-[var(--bc-duration,300ms)] group-hover/bold:opacity-50",
-		title: "absolute transition-all duration-[var(--bc-duration,300ms)]",
+		title:
+			"absolute transition-[font-size,line-height,color,opacity] duration-[var(--bc-duration,300ms)]",
 	},
 	variants: {
 		size: {

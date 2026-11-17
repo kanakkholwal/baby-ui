@@ -9,7 +9,7 @@ export const notificationStack = tv({
 			"transition-[height] duration-(--duration-collapse) ease-(--ease-ui-out) motion-reduce:transition-none",
 		],
 		item: [
-			"relative col-start-1 row-start-1 self-start overflow-hidden rounded-2xl border border-border",
+			"relative col-start-1 row-start-1 self-start overflow-hidden rounded-2xl bg-card",
 			"origin-bottom transition-[translate,scale,opacity] duration-(--duration-collapse) ease-(--ease-ui-out) motion-reduce:transition-none",
 			"data-[behind]:*:opacity-0 *:transition-opacity *:duration-(--duration-base)",
 			"data-[leaving]:absolute data-[leaving]:inset-x-0 data-[leaving]:top-0 data-[leaving]:translate-x-10 data-[leaving]:scale-98 data-[leaving]:opacity-0 data-[leaving]:duration-(--duration-exit)",
@@ -40,7 +40,7 @@ export const notificationStack = tv({
 	variants: {
 		variant: {
 			elevated: {
-				item: "bg-background shadow-surface dark:bg-popover",
+				item: "bg-background dark:bg-popover",
 			},
 			flat: { item: "bg-card" },
 		},

@@ -25,14 +25,14 @@ const lines = $derived(code.replace(/\n$/, "").split("\n"));
 </script>
 
 <!-- Inset frame: a tinted rim holds the header, the code sits on an inner surface whose
-     radius is the outer one minus border and inset. -->
+     radius is the outer one minus the inset. -->
 <div
 	data-slot="code-block"
-	class={cn("min-w-0 max-w-full rounded-xl border border-border bg-card p-1 text-foreground", classProp)}
+	class={cn("min-w-0 max-w-full rounded-xl bg-card p-1 text-foreground", classProp)}
 >
 	<div class="flex min-h-8 items-center gap-2 px-1 pb-1">
 		<span
-			class="inline-flex h-5 shrink-0 items-center rounded border border-border bg-background px-1.5 font-mono font-semibold text-xs text-muted-foreground uppercase tracking-wider"
+			class="shrink-0 font-mono text-foreground text-xs"
 		>
 			{language}
 		</span>
@@ -41,7 +41,7 @@ const lines = $derived(code.replace(/\n$/, "").split("\n"));
 		{/if}
 		<div class="ml-auto shrink-0"><CopyButton text={code} iconOnly /></div>
 	</div>
-	<div class="overflow-hidden rounded-[calc(var(--radius-xl)-1px-0.25rem)] bg-background">
+	<div class="overflow-hidden rounded-[calc(var(--radius-xl)-0.25rem)] bg-background">
 		{#if html}
 			<div
 				style:max-height={maxHeight}

@@ -12,7 +12,7 @@ export const ogPricing = tv({
 		plan: "mt-auto line-clamp-1 font-semibold text-[40px] tracking-tight",
 		priceRow: "mt-3 flex items-end gap-6",
 		price:
-			"line-clamp-1 min-w-0 font-bold font-heading text-[168px] leading-[0.95] tracking-tighter",
+			"line-clamp-1 min-w-0 font-bold font-heading text-[168px] leading-[0.95] tracking-tight",
 		priceMeta: "mb-5 flex flex-col gap-1 text-[30px] text-muted-foreground",
 		compare: "line-through",
 		period: "font-medium",

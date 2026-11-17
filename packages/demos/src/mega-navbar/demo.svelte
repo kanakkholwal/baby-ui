@@ -101,7 +101,7 @@ const links = [
 		sticky={false}
 		blur={props.blur !== false}
 		{variant}
-		class={variant === "solid" ? "rounded-t-[11px] border-border border-b bg-card" : undefined}
+		class={variant === "solid" ? "rounded-t-[11px] border-border/60 border-b bg-card" : undefined}
 		groups={GROUPS}
 		{links}
 	>

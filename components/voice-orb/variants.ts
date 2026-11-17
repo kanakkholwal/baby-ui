@@ -6,7 +6,7 @@ export const voiceOrb = tv({
 		root: "relative aspect-square shrink-0",
 		canvas: "block size-full will-change-transform",
 		fallback:
-			"flex size-full items-center justify-center rounded-full border border-border bg-card p-4 text-center text-muted-foreground text-xs",
+			"flex size-full items-center justify-center rounded-full bg-card p-4 text-center text-muted-foreground text-xs",
 	},
 	variants: {
 		/** The palette; the colours themselves live in VOICE_ORB_PALETTES. */

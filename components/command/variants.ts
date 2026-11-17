@@ -4,7 +4,7 @@ export const commandFrame = tv({
 	slots: {
 		// Command shares Dialog's modal scale/fade contract; its top offset is the only layout difference.
 		popup: [
-			"fixed top-[14vh] left-1/2 z-50 -translate-x-1/2 outline-none",
+			"fixed top-[14dvh] left-1/2 z-50 -translate-x-1/2 outline-none",
 			"transition-[opacity,scale] duration-[var(--duration-overlay)] ease-[var(--ease-out-quad)]",
 			"data-[closed]:opacity-0 data-[closed]:scale-[var(--popover-exit-scale)] data-[closed]:duration-[var(--duration-exit)]",
 			"data-[state=closed]:opacity-0 data-[state=closed]:scale-[var(--popover-exit-scale)] data-[state=closed]:duration-[var(--duration-exit)]",
@@ -62,7 +62,7 @@ export const commandFrame = tv({
 		 */
 		variant: {
 			default: {
-				panel: "rounded-xl border border-border bg-popover shadow-(--overlay-shadow)",
+				panel: "rounded-xl bg-popover shadow-(--overlay-shadow)",
 				body: "rounded-xl bg-popover p-1",
 				inputWrap: "mx-1 mt-1 h-8 rounded-lg bg-foreground/[0.04] px-2",
 				inputIcon: "opacity-50",
@@ -77,21 +77,21 @@ export const commandFrame = tv({
 				],
 				marker: "hidden",
 				empty: "py-6",
-				footer: "border-border border-t px-3 py-2",
+				footer: "border-border/60 border-t px-3 py-2",
 			},
 			framed: {
-				panel: "rounded-2xl border border-border bg-card p-1 shadow-(--overlay-shadow)",
+				panel: "rounded-2xl bg-card p-1 shadow-(--overlay-shadow)",
 				header: "pt-1.5 pb-2",
-				body: "rounded-[11px] border border-border bg-popover",
-				inputWrap: "border-border border-b px-3",
+				body: "rounded-[calc(var(--radius-2xl)-0.25rem)] bg-popover",
+				inputWrap: "border-border/60 border-b px-3",
 				input: "h-14 text-sm",
 				count:
 					"block min-w-[2ch] shrink-0 text-right font-mono text-muted-foreground text-xs tabular-nums",
 				list: "py-1.5",
-				groupHeading: "px-4 pt-2.5 pb-1.5 font-medium text-xs uppercase tracking-wide",
+				groupHeading: "px-4 pt-2.5 pb-1.5 font-medium text-xs",
 				// A hairline above every group that follows a visible one; hidden groups do not count.
 				group:
-					"pb-1 [&:not([hidden])~&:not([hidden])]:mt-1 [&:not([hidden])~&:not([hidden])]:border-border [&:not([hidden])~&:not([hidden])]:border-t [&_[cmdk-group-heading]]:px-4 [&_[cmdk-group-heading]]:pt-2.5 [&_[cmdk-group-heading]]:pb-1.5 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-wide [&_[cmdk-group-items]]:px-2",
+					"pb-1 [&:not([hidden])~&:not([hidden])]:mt-1 [&:not([hidden])~&:not([hidden])]:border-border/60 [&:not([hidden])~&:not([hidden])]:border-t [&_[cmdk-group-heading]]:px-4 [&_[cmdk-group-heading]]:pt-2.5 [&_[cmdk-group-heading]]:pb-1.5 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-wide [&_[cmdk-group-items]]:px-2",
 				groupItems: "px-2",
 				item: [
 					"justify-between gap-3 rounded-xl px-2.5 py-3 text-muted-foreground",
@@ -100,12 +100,12 @@ export const commandFrame = tv({
 				],
 				marker: "rounded-md bg-foreground/[0.06]",
 				empty: "px-4 py-10",
-				footer: "border-border border-t px-4 py-2",
+				footer: "border-border/60 border-t px-4 py-2",
 			},
 			launcher: {
 				popup: "w-[min(42rem,calc(100vw-2rem))]",
 				// The card-toned shell separates the white input, tray and result islands in light mode.
-				panel: "rounded-3xl border border-border bg-card p-3 shadow-(--overlay-shadow)",
+				panel: "rounded-2xl bg-card p-3 shadow-(--overlay-shadow)",
 				body: "gap-3",
 				bar: "flex-wrap sm:flex-nowrap",
 				inputWrap:

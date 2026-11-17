@@ -11,7 +11,7 @@ export const ogTiltedScreen = tv({
 		logo: "h-12 w-12 shrink-0 rounded-xl object-cover",
 		site: "line-clamp-1 max-w-[480px] font-semibold text-[32px] tracking-tight",
 		title:
-			"relative mt-[96px] line-clamp-3 max-w-[540px] font-heading font-semibold text-[64px] leading-[1.04] tracking-[-0.04em]",
+			"relative mt-[96px] line-clamp-3 max-w-[540px] font-heading font-semibold text-[64px] leading-[1.04] tracking-[-0.02em]",
 		description:
 			"relative mt-6 line-clamp-2 max-w-[480px] text-[24px] text-muted-foreground leading-snug",
 	},

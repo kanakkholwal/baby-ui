@@ -13,6 +13,7 @@ import {
 import { cn } from "../../lib/cn";
 import { glideHighlight } from "../../lib/glide";
 import { trackActiveWidth } from "../../lib/morph";
+import { useControllable } from "../../lib/react/use-controllable";
 import {
 	flatOptions,
 	type MorphSelectGroup,
@@ -85,8 +86,7 @@ export function MorphSelect({
 	className,
 }: MorphSelectProps) {
 	const labelId = useId();
-	const [inner, setInner] = useState(defaultValue);
-	const selected = value !== undefined ? value : inner;
+	const [selected, setSelected] = useControllable<string | null>(value, defaultValue);
 	const [open, setOpen] = useState(false);
 	const all = useMemo(() => flatOptions(items), [items]);
 	const groups = useMemo(() => sections(items), [items]);
@@ -115,7 +115,7 @@ export function MorphSelect({
 				value={selected}
 				onValueChange={(next) => {
 					if (next === null) return;
-					if (value === undefined) setInner(next);
+					setSelected(next);
 					onValueChange?.(next);
 				}}
 				open={open}

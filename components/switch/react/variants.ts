@@ -13,8 +13,9 @@ export const switchTrack = tv({
 		/** `default`: a pill thumb; `round`: a circular thumb; `marked`: round, with on/off marks
 		 * in the free half of the track, so state never rests on colour alone. */
 		variant: {
-			default: "",
-			round: "",
+			// A 4px expander keeps the small track at a 24px target; marked uses both pseudos for its marks.
+			default: "before:absolute before:-inset-1 before:rounded-full",
+			round: "before:absolute before:-inset-1 before:rounded-full",
 			marked: [
 				"before:pointer-events-none before:absolute before:top-1/2 before:left-1/4 before:h-[38%] before:w-0.5 before:-translate-1/2 before:rounded-full before:bg-primary-foreground",
 				"after:pointer-events-none after:absolute after:top-1/2 after:right-1/4 after:aspect-square after:h-[38%] after:translate-x-1/2 after:-translate-y-1/2 after:rounded-full after:border-[1.5px] after:border-muted-foreground",

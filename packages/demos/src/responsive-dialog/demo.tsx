@@ -17,7 +17,7 @@ import { controlProps } from "../data/preview-props";
 type Props = Record<string, unknown>;
 
 const BTN =
-	"inline-flex h-9 items-center rounded-lg border border-border bg-card px-3 font-medium text-foreground text-sm";
+	"inline-flex h-9 items-center rounded-lg bg-card px-3 font-medium text-foreground text-sm";
 
 export function ResponsiveDialogDemo({ props }: { props: Props }) {
 	const p = controlProps<ComponentProps<typeof ResponsiveDialog>>(props);
@@ -28,6 +28,10 @@ export function ResponsiveDialogDemo({ props }: { props: Props }) {
 				open={open}
 				onOpenChange={setOpen}
 				variant={p.variant ?? "default"}
+				size={p.size}
+				dismissOnBackdrop={p.dismissOnBackdrop ?? true}
+				direction={p.direction ?? "bottom"}
+				dismissible={p.dismissible ?? true}
 			>
 				<ResponsiveDialogTrigger className={BTN}>Edit profile</ResponsiveDialogTrigger>
 				<ResponsiveDialogContent>

@@ -1,8 +1,8 @@
 <script lang="ts">
 import { Section } from "@better-svelte-email/components";
 import EmailButton from "../../email-kit/svelte/email-button.svelte";
-import EmailCallout from "../../email-kit/svelte/email-callout.svelte";
 import EmailCode from "../../email-kit/svelte/email-code.svelte";
+import EmailDivider from "../../email-kit/svelte/email-divider.svelte";
 import EmailFooter, {
 	type EmailFooterLink,
 } from "../../email-kit/svelte/email-footer.svelte";
@@ -11,7 +11,6 @@ import EmailHeading from "../../email-kit/svelte/email-heading.svelte";
 import EmailKeyValue, {
 	type EmailKeyValueRow,
 } from "../../email-kit/svelte/email-key-value.svelte";
-import EmailPanel from "../../email-kit/svelte/email-panel.svelte";
 import EmailShell from "../../email-kit/svelte/email-shell.svelte";
 import EmailText from "../../email-kit/svelte/email-text.svelte";
 import { type EmailShellSurface, emailLayout } from "../../email-kit/variants";
@@ -40,7 +39,7 @@ let {
 	detailsTitle = "Request details",
 	warningTitle = "Didn't try to sign in?",
 	warningText = "You can safely ignore this email. Nobody can sign in without it.",
-	surface = "card",
+	surface = "plain",
 }: {
 	productName: string;
 	/** One-time sign-in link. */
@@ -85,34 +84,29 @@ const m = emailMagicLink();
 			align="left"
 		/>
 	{/snippet}
-	<EmailHeader brand={productName} logo={logoUrl} align="center" />
-	<EmailHeading align="center">{heading}</EmailHeading>
+	<EmailHeader brand={productName} logo={logoUrl} align="left" />
+	<EmailHeading align="left">{heading}</EmailHeading>
 	<EmailText tone="muted" class={m.intro()}>{intro}</EmailText>
 	{#if code}
-		<Section class={s.section()}>
-			<EmailPanel tone="accent">
-				<EmailText class={m.codeLabel()}>{codeLabel}</EmailText>
-				<EmailCode {code} />
-			</EmailPanel>
+		<Section class={m.code()}>
+			<EmailCode {code} />
+			<EmailText tone="muted" size="sm" class={m.codeLabel()}>{codeLabel}</EmailText>
 		</Section>
 	{/if}
 	<Section class={s.action()}>
-		<EmailButton href={signInUrl} variant={code ? "secondary" : "primary"} width="full">
+		<EmailButton href={signInUrl} variant={code ? "secondary" : "primary"}>
 			{actionLabel}
 		</EmailButton>
 	</Section>
 	<EmailText tone="muted" size="sm" class={m.expiry()}>{expiryText}</EmailText>
+	<EmailDivider spacing="lg" />
 	{#if requestDetails.length > 0}
-		<Section class={s.section()}>
-			<EmailPanel tone="outline">
-				<EmailText class={s.sectionTitle()}>{detailsTitle}</EmailText>
-				<EmailKeyValue rows={requestDetails} density="compact" />
-			</EmailPanel>
+		<Section>
+			<EmailText class={s.sectionTitle()}>{detailsTitle}</EmailText>
+			<EmailKeyValue rows={requestDetails} density="compact" />
 		</Section>
 	{/if}
-	<Section class={s.section()}>
-		<EmailCallout tone="warning" title={warningTitle}>
-			<EmailText size="sm">{warningText}</EmailText>
-		</EmailCallout>
-	</Section>
+	<EmailText tone="muted" size="sm" class={requestDetails.length > 0 ? m.warning() : undefined}>
+		<strong>{warningTitle}</strong> {warningText}
+	</EmailText>
 </EmailShell>

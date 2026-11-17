@@ -12,9 +12,10 @@ and `CardFooter`.
 
 ## Variants
 
-`default` sits on the page colour with a border. `secondary` is the borderless grey card step,
-for grouped or nested areas. `ghost` drops both fill and border, and `framed` wraps the body in
-the same inset rim as Dialog.
+`default` is the borderless grey card step. `secondary` is one step further (muted), for cards
+nested inside a default card. `ghost`
+drops both fill and border, and `framed` wraps the body in the same inset rim as Dialog.
+Set `bordered` to add a hairline to any variant.
 
 ## Drop-in for shadcn
 

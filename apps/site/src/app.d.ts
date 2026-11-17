@@ -11,7 +11,11 @@ declare global {
 			footerPicks?: { slug: string; name: string; href: string }[];
 		}
 		// interface PageState {}
-		// interface Platform {}
+		/** Set by adapter-cloudflare on a Worker; absent in dev and prerender. */
+		interface Platform {
+			caches?: { default: Cache };
+			context?: { waitUntil(promise: Promise<unknown>): void };
+		}
 	}
 
 	/** The Pro feature flag, a build-time literal from vite.config.ts so Pro-only globs fold away. */

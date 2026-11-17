@@ -25,7 +25,7 @@ export const ogJobPosting = tv({
 		body: "relative mt-auto flex flex-col gap-3",
 		team: "line-clamp-1 font-semibold text-[28px]",
 		title:
-			"line-clamp-2 max-w-[900px] font-bold font-heading text-[80px] leading-[1.02] tracking-tighter",
+			"line-clamp-2 max-w-[900px] font-bold font-heading text-[80px] leading-[1.02] tracking-tight",
 		strip:
 			"relative mt-10 flex self-start overflow-hidden rounded-3xl border border-border bg-card",
 		cell: "flex items-center gap-3 px-7 py-5",

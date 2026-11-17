@@ -8,7 +8,7 @@ const FOLD = [
 
 export const subscriptionCard = tv({
 	slots: {
-		root: "flex w-full flex-col rounded-xl border border-border bg-card text-card-foreground",
+		root: "flex w-full flex-col rounded-xl bg-card text-card-foreground",
 		header: "flex min-w-0 flex-col gap-1.5",
 		titleRow: "flex min-w-0 flex-wrap items-center gap-2",
 		title: "truncate font-semibold text-foreground tracking-tight",
@@ -36,7 +36,7 @@ export const subscriptionCard = tv({
 				title: "text-base",
 				amount: "text-3xl",
 				alertSpace: "pt-5",
-				footer: "border-border border-t pt-4",
+				footer: "border-border/60 border-t pt-4",
 			},
 			compact: {
 				root: "p-4 *:not-first:mt-3",

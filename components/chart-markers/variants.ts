@@ -10,7 +10,7 @@ export const chartMarkers = tv({
 		fanItem: "-translate-x-1/2 -translate-y-1/2 absolute top-0 left-0",
 		dot: "-translate-x-1/2 -translate-y-1/2 pointer-events-none absolute top-1/2 left-1/2 size-1/2 rounded-full bg-border-strong",
 		guide: "fill-none stroke-border-strong [stroke-dasharray:4_4] [stroke-linecap:round]",
-		tooltip: "mt-2 grid gap-2 border-border border-t pt-2",
+		tooltip: "mt-2 grid gap-2 border-border/60 border-t pt-2",
 		tooltipRow: "flex items-start gap-2 text-xs",
 		tooltipTitle: "font-medium text-foreground",
 		tooltipText: "text-muted-foreground",

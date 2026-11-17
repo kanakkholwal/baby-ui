@@ -341,7 +341,7 @@ function MobileNav({
 				side={variant === "notched" ? "top" : "right"}
 				className={styles.sheet()}
 			>
-				<SheetHeader className="border-border border-b px-5 py-4">
+				<SheetHeader className="border-border/60 border-b px-5 py-4">
 					<SheetTitle className="flex items-center gap-2.5">{brand}</SheetTitle>
 				</SheetHeader>
 				<nav aria-label="Mobile" className="flex-1 overflow-y-auto px-3 py-3">
@@ -351,7 +351,7 @@ function MobileNav({
 							<Collapsible
 								key={group.label}
 								open={isOpen}
-								className="border-border border-b last:border-b-0"
+								className="border-border/60 border-b last:border-b-0"
 							>
 								<button
 									type="button"
@@ -422,7 +422,7 @@ function MobileNav({
 					</ul>
 				</nav>
 				{actions ? (
-					<div className="mt-auto flex flex-col gap-2 border-border border-t px-5 py-4">
+					<div className="mt-auto flex flex-col gap-2 border-border/60 border-t px-5 py-4">
 						{actions}
 					</div>
 				) : null}

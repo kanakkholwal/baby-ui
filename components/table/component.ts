@@ -11,7 +11,7 @@ export const table = defineComponent({
 		"Styled semantic table primitives: Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, TableCaption.",
 	category: "base",
 	status: "stable",
-	variants: variantsOf(tableVariants, ["variant", "density"]),
+	variants: variantsOf(tableVariants, ["variant", "density", "bordered"]),
 	props: [
 		{
 			name: "variant",
@@ -27,6 +27,14 @@ export const table = defineComponent({
 				"Row height for every TableHead/TableCell inside, set once on Table and read by its children.",
 			default: "comfortable",
 			control: { kind: "select", options: DENSITIES },
+		},
+		{
+			name: "bordered",
+			type: "boolean",
+			description:
+				"Adds the classic hairline edge around the default variant and under its header. Tables are borderless by default.",
+			default: false,
+			control: { kind: "boolean" },
 		},
 	],
 	motion: {

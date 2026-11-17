@@ -17,7 +17,7 @@ export const approvalGate = tv({
 			"inline-flex items-center gap-1 self-start rounded-md font-medium text-muted-foreground text-xs outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
 		chevron:
 			"size-3.5 transition-[rotate] duration-(--duration-exit) ease-(--ease-ui-out) motion-reduce:transition-none",
-		code: "max-h-56 overflow-auto rounded-lg border border-border bg-background p-2.5 font-mono text-foreground text-xs leading-relaxed",
+		code: "max-h-56 overflow-auto rounded-lg bg-card p-2.5 font-mono text-foreground text-xs leading-relaxed",
 		editor:
 			"min-h-36 w-full resize-y rounded-lg border border-border bg-background p-2.5 font-mono text-foreground text-xs leading-relaxed outline-none focus-visible:ring-2 focus-visible:ring-ring aria-invalid:border-destructive",
 		error: "text-destructive-strong text-xs",
@@ -32,12 +32,12 @@ export const approvalGate = tv({
 		/** `framed` holds the body in a card rim; `card` is one bordered surface; `plain` is a ruled block. */
 		variant: {
 			framed: {
-				root: "rounded-2xl border border-border bg-card p-1",
-				body: "rounded-[11px] border border-border bg-background p-4",
+				root: "rounded-2xl bg-card p-1",
+				body: "rounded-[calc(var(--radius-2xl)-0.25rem)] bg-background p-4",
 				receipt: "px-3",
 			},
 			card: {
-				root: "overflow-hidden rounded-xl border border-border bg-card",
+				root: "overflow-hidden rounded-xl bg-card",
 				body: "p-4",
 				receipt: "px-4",
 			},

@@ -5,14 +5,14 @@ import { type EmailHeaderAlign, type EmailHeaderVariant, emailHeader } from "../
 let {
 	brand,
 	logo,
-	logoWidth = 32,
+	logoWidth = 24,
 	variant = "lockup",
 	align = "left",
 }: {
 	brand: string;
-	/** Absolute PNG or JPG URL, 32px tall; SVG does not render in Gmail or Outlook. */
+	/** Absolute PNG or JPG URL, 24px tall; SVG does not render in Gmail or Outlook. */
 	logo?: string;
-	/** Rendered width of `logo`: 32 for a square mark, wider for a `logo` wordmark. */
+	/** Rendered width of `logo`: 24 for a square mark, wider for a `logo` wordmark. */
 	logoWidth?: number;
 	/** `lockup` sets the name beside a square mark; `logo` shows a wordmark image alone. */
 	variant?: EmailHeaderVariant;
@@ -28,7 +28,7 @@ const s = $derived(emailHeader({ variant, align }));
 			alt={variant === "logo" ? brand : ""}
 			role={variant === "logo" ? undefined : "presentation"}
 			width={String(logoWidth)}
-			height="32"
+			height="24"
 			class={s.logo()}
 		/>{/if}{#if !(logo && variant === "logo")}<span class={s.name()}>{brand}</span>{/if}
 </Text>

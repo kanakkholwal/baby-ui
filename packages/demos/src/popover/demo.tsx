@@ -30,6 +30,7 @@ export function PopoverDemo({ props }: { props: Props }) {
 				side={p.side ?? "bottom"}
 				sideOffset={Number(p.sideOffset ?? 4)}
 				align={p.align ?? "center"}
+				alignOffset={Number(p.alignOffset ?? 0)}
 			>
 				<div className="flex flex-col gap-3">
 					<Label>Preview branches</Label>

@@ -1,5 +1,10 @@
 import { defaultProps } from "@baby-ui/registry-schema";
-import { emailTailwindConfig } from "@baby-ui/svelte/lib/email-theme";
+import {
+	createEmailTheme,
+	type EmailBrand,
+	type EmailDensity,
+	type EmailRadius,
+} from "@baby-ui/svelte/lib/email-brand";
 import { pixelBasedPreset, Renderer } from "@better-svelte-email/server";
 import { error } from "@sveltejs/kit";
 import { proEmailSample, proEmailTemplates } from "#lib/pro.js";
@@ -26,9 +31,34 @@ const loader = templateLoader({
 	...proEmailTemplates,
 });
 
-const renderer = new Renderer({
-	tailwindConfig: { ...emailTailwindConfig, presets: [pixelBasedPreset] },
-});
+const RADII: readonly EmailRadius[] = ["none", "sm", "md", "lg", "full"];
+const DENSITIES: readonly EmailDensity[] = ["compact", "default", "relaxed"];
+
+/** `?primary=%23e11d48&radius=lg&density=compact`: anything invalid falls back to the default. */
+function brandFrom(params: URLSearchParams): EmailBrand {
+	const primary = params.get("primary");
+	const radius = RADII.find((value) => value === params.get("radius"));
+	const density = DENSITIES.find((value) => value === params.get("density"));
+	return {
+		primary: primary && /^#[0-9a-f]{6}$/i.test(primary) ? primary : undefined,
+		radius,
+		density,
+	};
+}
+
+const renderers = new Map<string, Renderer>();
+function rendererFor(brand: EmailBrand) {
+	const key = JSON.stringify(brand);
+	let renderer = renderers.get(key);
+	if (!renderer) {
+		renderer = new Renderer({
+			tailwindConfig: { ...createEmailTheme(brand), presets: [pixelBasedPreset] },
+		});
+		if (renderers.size >= 24) renderers.clear();
+		renderers.set(key, renderer);
+	}
+	return renderer;
+}
 
 export const GET: RequestHandler = async ({ params, url, request }) => {
 	if (!sameOrigin(request, url)) throw error(403, "Same-origin requests only");
@@ -56,7 +86,7 @@ export const GET: RequestHandler = async ({ params, url, request }) => {
 	const { default: Template } = await load();
 	let html: string;
 	try {
-		html = await renderer.render(Template, { props });
+		html = await rendererFor(brandFrom(url.searchParams)).render(Template, { props });
 	} catch {
 		throw error(400, `Invalid props for "${params.slug}"`);
 	}

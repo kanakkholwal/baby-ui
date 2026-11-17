@@ -5,43 +5,44 @@ import { tv, type VariantProps } from "tailwind-variants";
 export const emailShell = tv({
 	slots: {
 		body: "m-0 font-sans",
-		page: "bg-card py-10 dark:bg-card-dark",
+		page: "bg-card py-section dark:bg-card-dark",
 		// 600px is the width every client lays out without scaling; 12px keeps phones edge-near.
-		container: "mx-auto w-full max-w-[600px] px-3",
+		container: "mx-auto w-full max-w-[600px] px-5",
 		// The card has no padding of its own, so a footer band inside it can run edge to edge.
-		card: "rounded-lg border border-border border-solid bg-background dark:border-border-dark dark:bg-background-dark",
+		card: "rounded-card border border-border border-solid bg-background dark:border-border-dark dark:bg-background-dark",
 		// 24px, not 32: stacked padding otherwise overflows a 320px phone, and breakpoints are out.
-		content: "px-6 py-10",
+		content: "px-gutter py-stack",
 	},
 	variants: {
 		surface: {
 			card: {},
 			plain: {
-				page: "bg-background dark:bg-background-dark",
+				page: "bg-background py-stack dark:bg-background-dark",
 				card: "rounded-none border-0 bg-transparent dark:bg-transparent",
 				content: "px-0",
 			},
-			// Children are EmailSection cards with gaps between them, on the quiet page.
+			// Children are EmailSections spaced by the section gap, straight on the page.
 			stacked: {
+				page: "bg-background py-stack dark:bg-background-dark",
 				card: "rounded-none border-0 bg-transparent dark:bg-transparent",
 				content: "px-0 py-0",
 			},
 		},
 	},
-	defaultVariants: { surface: "card" },
+	defaultVariants: { surface: "plain" },
 });
 
 // Mark and name sit inline in one text line, so `align` centres the lockup without nested tables.
 export const emailHeader = tv({
 	slots: {
-		root: "m-0 mb-10 font-semibold text-[17px] text-foreground leading-[32px] tracking-[-0.01em] dark:text-foreground-dark",
-		logo: "inline-block h-8 align-middle",
+		root: "m-0 mb-section font-semibold text-[15px] text-foreground leading-[24px] tracking-[-0.01em] dark:text-foreground-dark",
+		logo: "inline-block h-6 align-middle",
 		name: "align-middle",
 	},
 	variants: {
 		variant: {
 			// `logo` is a full wordmark image, so the name is left out.
-			lockup: { logo: "w-8", name: "ml-[10px]" },
+			lockup: { logo: "w-6", name: "ml-2" },
 			logo: { logo: "w-auto" },
 		},
 		align: {
@@ -56,9 +57,9 @@ export const emailHeading = tv({
 	base: "m-0 font-semibold text-foreground tracking-[-0.02em] dark:text-foreground-dark",
 	variants: {
 		size: {
-			default: "text-[20px] leading-[28px]",
-			lg: "text-[26px] leading-[34px]",
-			display: "font-extrabold text-[36px] leading-[42px] tracking-[-0.03em]",
+			default: "text-[18px] leading-[26px]",
+			lg: "text-[24px] leading-[32px]",
+			display: "text-[30px] leading-[36px] tracking-[-0.025em]",
 		},
 		align: {
 			left: "text-left",
@@ -70,12 +71,12 @@ export const emailHeading = tv({
 
 export const emailHero = tv({
 	slots: {
-		root: "rounded-lg px-6 py-8",
-		eyebrow: "m-0 font-semibold text-[12px] leading-[18px] tracking-[0.04em]",
+		root: "rounded-inner px-gutter py-block",
+		eyebrow: "m-0 font-semibold text-[13px] leading-[20px]",
 		meta: "m-0 text-right text-[12px] leading-[18px]",
-		title: "m-0 mt-4 font-extrabold tracking-[-0.03em]",
-		text: "m-0 mt-3 text-[15px] leading-[24px]",
-		image: "mt-6 w-full rounded-lg",
+		title: "m-0 mt-2 font-semibold tracking-[-0.02em]",
+		text: "m-0 mt-2 text-[15px] leading-[24px]",
+		image: "mt-block w-full rounded-inner",
 	},
 	variants: {
 		tone: {
@@ -109,8 +110,8 @@ export const emailHero = tv({
 			},
 		},
 		size: {
-			default: { title: "text-[26px] leading-[32px]" },
-			display: { title: "text-[36px] leading-[42px]" },
+			default: { title: "text-[20px] leading-[28px]" },
+			display: { title: "text-[26px] leading-[32px]" },
 		},
 		align: {
 			left: { root: "text-left" },
@@ -121,7 +122,7 @@ export const emailHero = tv({
 });
 
 export const emailPanel = tv({
-	base: "rounded-lg px-5 py-5",
+	base: "rounded-inner px-pad py-pad",
 	variants: {
 		tone: {
 			muted: "bg-card dark:bg-card-dark",
@@ -133,7 +134,8 @@ export const emailPanel = tv({
 });
 
 export const emailSection = tv({
-	base: "mb-4 rounded-lg border border-border border-solid bg-background px-6 py-8 dark:border-border-dark dark:bg-background-dark",
+	// A block of the email: no chrome, spaced by the section gap so proximity groups it.
+	base: "mb-section",
 	variants: {
 		align: {
 			left: "text-left",
@@ -182,7 +184,7 @@ export const emailText = tv({
 		},
 		size: {
 			sm: "text-[13px] leading-[20px]",
-			default: "text-[15px] leading-[26px]",
+			default: "text-[15px] leading-[24px]",
 		},
 	},
 	defaultVariants: { tone: "default", size: "default" },
@@ -190,7 +192,7 @@ export const emailText = tv({
 
 // Light status hues are under 4.5:1 on any fill, so light mode keeps the hue in the fill only.
 export const emailBadge = tv({
-	base: "m-0 inline-block rounded-sm px-2 py-[2px] font-semibold text-[12px] leading-[18px] tracking-[0.02em]",
+	base: "m-0 inline-block rounded-chip px-2 py-[2px] font-semibold text-[12px] leading-[18px] tracking-[0.02em]",
 	variants: {
 		tone: {
 			neutral:
@@ -213,14 +215,14 @@ export const emailButton = tv({
 	variants: {
 		variant: {
 			primary:
-				"rounded bg-primary text-primary-foreground no-underline dark:bg-primary-dark dark:text-primary-foreground-dark",
+				"rounded-control bg-primary text-primary-foreground no-underline dark:bg-primary-dark dark:text-primary-foreground-dark",
 			secondary:
-				"rounded border border-border-strong border-solid bg-background text-foreground no-underline dark:border-border-strong-dark dark:bg-background-dark dark:text-foreground-dark",
+				"rounded-control border border-border-strong border-solid bg-background text-foreground no-underline dark:border-border-strong-dark dark:bg-background-dark dark:text-foreground-dark",
 			link: "text-foreground underline dark:text-foreground-dark",
 		},
 		size: {
-			default: "px-5 py-3 text-[14px] leading-[20px]",
-			lg: "px-6 py-[14px] text-[15px] leading-[20px]",
+			default: "px-4 py-[10px] text-[14px] leading-[20px]",
+			lg: "px-5 py-3 text-[14px] leading-[20px]",
 		},
 		shape: {
 			rounded: "",
@@ -242,13 +244,13 @@ export const emailButton = tv({
 
 /** Padding the Svelte button also needs as numbers, for its Outlook (MSO) spacer. */
 export const EMAIL_BUTTON_PADDING: Record<EmailButtonSize, { x: number; y: number }> = {
-	default: { x: 20, y: 12 },
-	lg: { x: 24, y: 14 },
+	default: { x: 16, y: 10 },
+	lg: { x: 20, y: 12 },
 };
 
 export const emailCallout = tv({
 	slots: {
-		root: "rounded px-5 py-4",
+		root: "rounded-control px-pad py-4",
 		title:
 			"m-0 mb-1 font-semibold text-[14px] text-foreground leading-[22px] dark:text-foreground-dark",
 	},
@@ -268,8 +270,8 @@ export const emailDivider = tv({
 	base: "m-0 border-0 border-border border-t border-solid dark:border-border-dark",
 	variants: {
 		spacing: {
-			md: "my-6",
-			lg: "my-8",
+			md: "my-block",
+			lg: "my-stack",
 		},
 	},
 	defaultVariants: { spacing: "md" },
@@ -277,7 +279,7 @@ export const emailDivider = tv({
 
 export const emailFooter = tv({
 	slots: {
-		root: "mt-8 px-6",
+		root: "mt-stack",
 		bar: "",
 		brand:
 			"m-0 mb-3 font-semibold text-[14px] text-foreground leading-[20px] tracking-[-0.01em] dark:text-foreground-dark",
@@ -290,25 +292,25 @@ export const emailFooter = tv({
 		linksCell: "text-right align-middle",
 		linkText:
 			"m-0 text-[12px] text-muted-foreground leading-[20px] dark:text-muted-foreground-dark",
-		legal: "mt-4",
+		legal: "mt-gap",
 	},
 	variants: {
 		// `plain` sits under the card; the rest go in EmailShell's `cardFooter`, inside the card.
 		layout: {
 			plain: {},
 			band: {
-				root: "mt-0 rounded-b-lg border-0 border-border border-t border-solid bg-card px-6 py-6 dark:border-border-dark dark:bg-card-dark",
+				root: "mt-0 rounded-b-card border-0 border-border border-t border-solid bg-card px-gutter py-block dark:border-border-dark dark:bg-card-dark",
 			},
 			bar: {
-				root: "mt-0 px-6 pb-6",
-				bar: "rounded-lg bg-foreground px-5 py-5 dark:bg-foreground-dark",
+				root: "mt-0 px-gutter pb-block",
+				bar: "rounded-inner bg-foreground px-pad py-pad dark:bg-foreground-dark",
 				brand:
 					"mb-0 text-[16px] text-background leading-[24px] dark:text-background-dark",
 				link: "text-background underline dark:text-background-dark",
 				linkText: "text-background dark:text-background-dark",
 			},
 			row: {
-				root: "mt-0 border-0 border-border border-t border-solid px-6 py-5 dark:border-border-dark",
+				root: "mt-0 border-0 border-border border-t border-solid px-gutter py-pad dark:border-border-dark",
 			},
 		},
 		align: {
@@ -316,15 +318,15 @@ export const emailFooter = tv({
 			center: { root: "text-center" },
 		},
 	},
-	defaultVariants: { layout: "plain", align: "center" },
+	defaultVariants: { layout: "plain", align: "left" },
 });
 
 export const emailCode = tv({
-	base: "m-0 rounded-lg border border-border border-solid bg-card px-6 py-5 text-center font-mono font-semibold text-foreground dark:border-border-dark dark:bg-card-dark dark:text-foreground-dark",
+	base: "m-0 rounded-inner bg-card px-gutter py-pad text-center font-mono font-semibold text-foreground dark:bg-card-dark dark:text-foreground-dark",
 	variants: {
 		size: {
-			default: "text-[22px] leading-[28px] tracking-[6px]",
-			lg: "text-[32px] leading-[40px] tracking-[10px]",
+			default: "text-[20px] leading-[28px] tracking-[6px]",
+			lg: "text-[28px] leading-[36px] tracking-[8px]",
 		},
 	},
 	defaultVariants: { size: "lg" },
@@ -333,14 +335,14 @@ export const emailCode = tv({
 /** Vertical rhythm templates share, so every email spaces its parts the same way. */
 export const emailLayout = tv({
 	slots: {
-		badge: "mb-4",
+		badge: "mb-gap",
 		intro: "mt-3",
-		action: "mt-8",
-		section: "mt-8",
-		label: "mb-3",
+		action: "mt-block",
+		section: "mt-block",
+		label: "mb-2",
 		sectionTitle:
 			"m-0 mb-2 font-semibold text-[13px] text-foreground leading-[20px] dark:text-foreground-dark",
-		closing: "mt-4",
+		closing: "mt-gap",
 		inlineLink: "text-foreground underline dark:text-foreground-dark",
 	},
 });
@@ -362,7 +364,7 @@ export const emailFallbackLink = tv({
 export const emailStats = tv({
 	slots: {
 		cell: "align-top",
-		card: "rounded-lg border border-border border-solid bg-card px-3 py-4 dark:border-border-dark dark:bg-card-dark",
+		card: "rounded-inner bg-card px-3 py-4 dark:bg-card-dark",
 		value:
 			"m-0 font-semibold text-[22px] text-foreground leading-[28px] tracking-[-0.01em] dark:text-foreground-dark",
 		label:

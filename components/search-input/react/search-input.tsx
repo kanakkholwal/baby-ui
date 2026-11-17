@@ -1,6 +1,6 @@
 "use client";
 
-import { type InputHTMLAttributes, useRef, useState } from "react";
+import { type InputHTMLAttributes, useRef } from "react";
 import {
 	InputGroup,
 	InputGroupAddon,
@@ -8,6 +8,7 @@ import {
 } from "../../input-group/react/input-group";
 import type { InputGroupSize } from "../../input-group/variants";
 import { cn } from "../../lib/cn";
+import { useControllable } from "../../lib/react/use-controllable";
 import { Shortcut } from "../../shortcut/react/shortcut";
 import { type SearchInputVariant, searchInput } from "../variants";
 
@@ -45,13 +46,8 @@ export function SearchInput({
 	className,
 	...props
 }: SearchInputProps) {
-	const [own, setOwn] = useState(defaultValue);
-	const text = value ?? own;
+	const [text, set] = useControllable(value, defaultValue, onValueChange);
 	const inputRef = useRef<HTMLInputElement>(null);
-	const set = (next: string) => {
-		if (value === undefined) setOwn(next);
-		onValueChange?.(next);
-	};
 	const s = searchInput({ variant });
 	return (
 		<InputGroup size={size} data-slot="search-input" className={cn(s.root(), className)}>

@@ -97,7 +97,7 @@ const CLIP = 102 * 1024;
 		></iframe>
 	{:else}
 		<pre
-			class="max-h-[640px] w-full overflow-auto whitespace-pre-wrap rounded-lg border border-border bg-card p-5 font-mono text-foreground text-xs leading-relaxed">{text}</pre>
+			class="max-h-[640px] w-full overflow-auto whitespace-pre-wrap rounded-lg bg-card p-5 font-mono text-foreground text-xs leading-relaxed">{text}</pre>
 	{/if}
 	<figcaption class="mt-2 text-center text-muted-foreground text-xs">
 		{viewport === "mobile" && view === "html" ? "375px wide · " : ""}{(bytes / 1024).toFixed(1)} KB of HTML, {bytes < CLIP ? "under" : "over"} Gmail's 102 KB clip

@@ -24,11 +24,11 @@ export function FileDiff({
 	return (
 		<div
 			data-slot="file-diff"
-			className={cn("overflow-hidden rounded-xl border border-border bg-card", className)}
+			className={cn("overflow-hidden rounded-xl bg-card", className)}
 		>
 			<div
 				data-slot="file-diff-header"
-				className="flex items-center justify-between gap-3 border-border border-b bg-background/60 px-4 py-2.5"
+				className="flex items-center justify-between gap-3 bg-background/60 px-4 py-2.5"
 			>
 				<span className="truncate font-mono text-foreground text-xs">{filename}</span>
 				<span className="flex shrink-0 items-center gap-2 font-mono text-xs">

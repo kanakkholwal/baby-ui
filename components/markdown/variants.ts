@@ -10,8 +10,8 @@ export const markdown = tv({
 		"[&_ol]:list-decimal [&_ul]:list-disc [&_:is(ul,ol)]:pl-5 [&_li+li]:mt-1 [&_li>:is(ul,ol)]:mt-1 [&_li::marker]:text-muted-foreground",
 		"[&_blockquote]:border-border [&_blockquote]:border-l-2 [&_blockquote]:pl-4 [&_blockquote]:italic [&_hr]:border-border",
 		"[&_:not(pre)>code]:rounded [&_:not(pre)>code]:bg-muted [&_:not(pre)>code]:px-1 [&_:not(pre)>code]:py-0.5 [&_:not(pre)>code]:font-mono [&_:not(pre)>code]:text-[0.875em] [&_:not(pre)>code]:text-foreground",
-		"[&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:border [&_pre]:border-border [&_pre]:bg-card [&_pre]:p-3 [&_pre]:font-mono [&_pre]:text-foreground",
-		"[&_table]:w-full [&_table]:border-collapse [&_:is(th,td)]:border-border [&_:is(th,td)]:border-b [&_:is(th,td)]:px-2 [&_:is(th,td)]:py-1.5 [&_:is(th,td)]:text-left [&_th]:font-medium [&_th]:text-foreground",
+		"[&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:bg-card [&_pre]:p-3 [&_pre]:font-mono [&_pre]:text-foreground",
+		"[&_table]:w-full [&_table]:border-collapse [&_:is(th,td)]:border-border/60 [&_:is(th,td)]:border-b [&_:is(th,td)]:px-2 [&_:is(th,td)]:py-1.5 [&_:is(th,td)]:text-left [&_th]:font-medium [&_th]:text-foreground",
 		"[&_img]:rounded-lg [&_input]:mr-1.5 [&_input]:align-middle",
 	],
 	variants: {

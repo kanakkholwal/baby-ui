@@ -10,7 +10,7 @@ export const field = tv({
 		label: [
 			"group/field-label peer/field-label flex w-fit gap-2 leading-snug",
 			"group-data-[disabled=true]/field:opacity-50",
-			"has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:border-border *:data-[slot=field]:p-3",
+			"has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:bg-card *:data-[slot=field]:p-3",
 			"has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-2 has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring",
 			"has-data-[state=checked]:border-foreground/30 has-data-[state=checked]:bg-foreground/[0.03]",
 		],
@@ -72,7 +72,7 @@ export const fieldLegend = tv({
 		variant: {
 			legend: "text-base",
 			label: "text-sm",
-			eyebrow: "mb-2 text-muted-foreground text-xs uppercase tracking-wider",
+			eyebrow: "mb-2 text-muted-foreground text-xs",
 		},
 	},
 	defaultVariants: { variant: "legend" },

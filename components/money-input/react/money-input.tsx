@@ -9,6 +9,7 @@ import {
 } from "../../input-group/react/input-group";
 import type { InputGroupSize } from "../../input-group/variants";
 import { cn } from "../../lib/cn";
+import { useControllable } from "../../lib/react/use-controllable";
 import {
 	Select,
 	SelectContent,
@@ -97,8 +98,11 @@ export function MoneyInput({
 	const [ownCurrency, setOwnCurrency] = useState(defaultCurrency);
 	const code = currencyProp ?? ownCurrency;
 	const info = useMemo(() => currencyInfo(code, locale), [code, locale]);
-	const [own, setOwn] = useState(defaultValue);
-	const amount = value !== undefined ? value : own;
+	const [amount, commitAmount] = useControllable<number | null, [MoneyInputDetails]>(
+		value,
+		defaultValue,
+		onValueChange,
+	);
 	const [focused, setFocused] = useState(false);
 	const [draft, setDraft] = useState("");
 	const [blurred, setBlurred] = useState(false);
@@ -118,8 +122,7 @@ export function MoneyInput({
 	});
 
 	const emit = (next: number | null, clean: string, nextInfo = info) => {
-		if (value === undefined) setOwn(next);
-		onValueChange?.(next, {
+		commitAmount(next, {
 			currency: nextInfo.code,
 			formatted: groupAmount(clean, nextInfo),
 		});

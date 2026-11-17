@@ -3,6 +3,7 @@
 import { type PointerEvent, useEffect, useId, useRef, useState } from "react";
 import { Button } from "../../button/react/button";
 import { cn } from "../../lib/cn";
+import { useControllable } from "../../lib/react/use-controllable";
 import { ToggleGroup, ToggleGroupItem } from "../../toggle-group/react/toggle-group";
 import {
 	downloadBlob,
@@ -84,8 +85,7 @@ export function SignaturePad({
 	const id = useId();
 	const s = signaturePad({ variant });
 	const pad = useRef<HTMLDivElement>(null);
-	const [own, setOwn] = useState<InkStroke[]>([]);
-	const strokes = value ?? own;
+	const [strokes, emit] = useControllable<InkStroke[]>(value, [], onValueChange);
 	const [past, setPast] = useState<InkStroke[][]>([]);
 	const [future, setFuture] = useState<InkStroke[][]>([]);
 	const [fresh, setFresh] = useState<string | null>(null);
@@ -112,10 +112,6 @@ export function SignaturePad({
 		[],
 	);
 
-	const emit = (next: InkStroke[]) => {
-		if (value === undefined) setOwn(next);
-		onValueChange?.(next);
-	};
 	const commit = (next: InkStroke[], freshId: string | null = null) => {
 		setPast((list) => [...list, strokes].slice(-HISTORY_LIMIT));
 		setFuture([]);

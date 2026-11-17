@@ -7,7 +7,7 @@ export const card = defineComponent({
 	description: "Content surface with header, body and footer slots.",
 	category: "base",
 	status: "stable",
-	variants: variantsOf(cardFrameVariants, ["variant"]),
+	variants: variantsOf(cardFrameVariants, ["variant", "bordered"]),
 	props: [
 		{
 			name: "interactive",
@@ -21,12 +21,20 @@ export const card = defineComponent({
 			name: "variant",
 			type: '"default" | "secondary" | "ghost" | "framed" | "well"',
 			description:
-				"`default` sits on the page colour with a border; `secondary` is the borderless grey card step for grouped or nested areas; `ghost` has no fill or border; `framed` wraps the body in Dialog's inset rim; `well` is a grey rim around a raised page-colour body, with a direct `CardFooter` in the rim below it.",
+				"`default` is the borderless grey card step; `secondary` is one step further (muted) for nested cards; `ghost` has no fill or border; `framed` wraps the body in Dialog's inset rim; `well` is a grey rim around a raised page-colour body, with a direct `CardFooter` in the rim below it.",
 			default: "default",
 			control: {
 				kind: "select",
 				options: ["default", "secondary", "ghost", "framed", "well"],
 			},
+		},
+		{
+			name: "bordered",
+			type: "boolean",
+			description:
+				"Adds a hairline border to any variant. Cards are borderless by default and separate by surface step.",
+			default: false,
+			control: { kind: "boolean" },
 		},
 	],
 	motion: {

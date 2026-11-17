@@ -11,7 +11,6 @@ import EmailHeading from "../../email-kit/svelte/email-heading.svelte";
 import EmailKeyValue, {
 	type EmailKeyValueRow,
 } from "../../email-kit/svelte/email-key-value.svelte";
-import EmailPanel from "../../email-kit/svelte/email-panel.svelte";
 import EmailShell from "../../email-kit/svelte/email-shell.svelte";
 import EmailText from "../../email-kit/svelte/email-text.svelte";
 import { type EmailShellSurface, emailLayout } from "../../email-kit/variants";
@@ -38,7 +37,7 @@ let {
 	actionLabel = "Download invoice",
 	helpLabel = "Questions about this charge? Write to",
 	labels: labelOverrides,
-	surface = "card",
+	surface = "plain",
 }: {
 	productName: string;
 	receiptNumber: string;
@@ -80,19 +79,17 @@ const labels = $derived({ ...EMAIL_RECEIPT_LABELS, ...labelOverrides });
 
 <EmailShell {preview} {surface}>
 	{#snippet cardFooter()}
-		<EmailFooter lines={companyLines} links={footerLinks} {reason} brand={productName} logo={logoUrl} layout="bar" />
+		<EmailFooter lines={companyLines} links={footerLinks} {reason} brand={productName} logo={logoUrl} layout="band" />
 	{/snippet}
 	<EmailHeader brand={productName} logo={logoUrl} />
 	<Section class={s.badge()}>
 		<EmailBadge tone="success">{labels.status}</EmailBadge>
 	</Section>
-	<EmailHeading size="display">{heading}</EmailHeading>
+	<EmailHeading size="lg">{heading}</EmailHeading>
 	<EmailText tone="muted" class={s.intro()}>{intro}</EmailText>
 	<Section class={r.summary()}>
-		<EmailPanel>
-			<EmailText class={s.sectionTitle()}>{labels.items}</EmailText>
-			<EmailKeyValue rows={[...items, ...adjustments]} total={{ label: labels.total, value: total }} />
-		</EmailPanel>
+		<EmailText class={s.sectionTitle()}>{labels.items}</EmailText>
+		<EmailKeyValue rows={[...items, ...adjustments]} total={{ label: labels.total, value: total }} />
 	</Section>
 	<Section class={r.details()}>
 		<EmailKeyValue
@@ -114,7 +111,7 @@ const labels = $derived({ ...EMAIL_RECEIPT_LABELS, ...labelOverrides });
 	{/if}
 	{#if invoiceUrl}
 		<Section class={s.action()}>
-			<EmailButton href={invoiceUrl} shape="pill">{actionLabel}</EmailButton>
+			<EmailButton href={invoiceUrl}>{actionLabel}</EmailButton>
 		</Section>
 	{/if}
 	{#if billingEmail}

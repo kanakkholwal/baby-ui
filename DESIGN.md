@@ -22,7 +22,7 @@ component's `variants.ts`.
   Each surface is its own step: light is a white page, grey `card`, `popover` `lab(96.52% 0 0)`
   (#f5f5f5, lifted by shadow) and a darker `muted`; dark is page 17%, card 21%, popover #1c1c1c,
   muted 27%. The popover values are the user's pick (2026-10-03), matching their reference palette.
-- Field and divider edges stay hairlines (`input`, `border`, about 1.19:1). Off tracks of switches,
+- Field and divider edges stay hairlines (`border` about 1.16:1; light `input` 1.24:1 on a white field, raised 2026-11-17 after an OTP-on-card contrast report; 3:1 is unreachable without a heavy edge). Off tracks of switches,
   sliders and progress use `track` (1.39 light, 1.49 dark) so the off state reads. Dark hover is 4.5%.
 - Fields fill with `--field`: the page colour in light, the card step in dark, so a field reads as
   an object rather than a hole.
@@ -30,10 +30,25 @@ component's `variants.ts`.
 - Nest by surface step, not border; a framed body adds a hairline `border-border` where the steps
   sit close. Regions inside an overlay (search, filters, list) recess into `bg-background` with a
   hairline, never a third, lighter fill.
+- Separation order (owner direction, 2026-11-17): spacing first, then a surface step, then a soft
+  shadow (floating layers only), then a hairline as last resort. Borders stay only where they carry
+  function: fields and outline variants (3:1 boundary), table row dividers, framed rims.
+  - Cards, sections and sidebars separate by surface step and gap, no border.
+  - Never nest the same surface step twice; card in card goes one step up or down.
+  - Tables: no vertical or outer borders; row dividers at hairline alpha, header as a surface step.
+  - Every adjacent surface pair keeps 1.15:1 lightness separation in both modes (measured).
+  - Inner bodies of framed surfaces carry no shadow; the step between rim and body is the depth.
+  - Tables and Cards take a `bordered` prop (compound variant) for the classic edge.
+  - Focus rings are never removed.
 - Neutral chroma stays at or under 0.004 (hue 265) so every accent theme reads true.
 - Accent: Blue. `primary` is `var(--accent)`; `ring` and `accent-ink` follow the theme ink.
 - Status: `success`, `warning`, `destructive`, `info`.
 - Theme presets swap the accent only; neutrals never change per theme.
+
+## Emails
+
+- Email parts take spacing and corners from tokens (`gutter`, `pad`, `stack`, `section`, `block`, `gap`; `card`, `inner`, `control`, `chip`), never raw `px-6` or `rounded-lg`.
+- `createEmailTheme({ primary, radius, density })` fits a brand: soft fills and the dark twin derive from `primary`, labels hold 4.5:1, density scales spacing together.
 
 ## Type
 
@@ -174,8 +189,7 @@ Tokens:
   TagInput, NumberInput, date/time fields) share one frame:
   - rest `border-input` on `bg-(--field)`, hover `border-border-strong`;
   - text entry on focus: `border-ring` plus a `ring-3 ring-ring/20` halo;
-  - triggers (Select, Combobox, NativeSelect, MultiSelect) stay calm: `border-ring` on keyboard
-    focus only, `border-border-strong` while open, never a halo (`fieldFrame({ kind: "trigger" })`);
+  - triggers (Select, Combobox, NativeSelect, MultiSelect) are a soft `foreground/5%` fill, 8% on hover and 10% while open, with an edge only on keyboard focus and never a halo (`fieldFrame({ kind: "trigger" })`);
   - invalid `border-destructive`, halo `ring-destructive/20`;
   - disabled `opacity-50` and `cursor-not-allowed`.
 - Pressables (Button, Toggle, Checkbox, Switch, Radio) focus with `ring-2 ring-ring ring-offset-2

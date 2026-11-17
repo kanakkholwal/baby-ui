@@ -33,7 +33,7 @@ export const fullscreenNav = tv({
 			"font-heading font-semibold text-foreground tracking-tight decoration-2 underline-offset-8 group-aria-[current=page]/link:underline",
 		description: "mt-1 text-muted-foreground text-sm",
 		footer:
-			"shrink-0 border-border border-t px-6 py-5 text-muted-foreground text-sm md:px-10",
+			"shrink-0 border-border/60 border-t px-6 py-5 text-muted-foreground text-sm md:px-10",
 	},
 	variants: {
 		/** Fade dissolves in place; slide drops from the top; clip grows from the top-right corner. */

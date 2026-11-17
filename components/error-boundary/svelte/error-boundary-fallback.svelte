@@ -49,7 +49,7 @@ const labels = $derived({ ...ERROR_BOUNDARY_LABELS, ...labelsProp });
 		{#if details}
 			<details class="w-full text-left text-muted-foreground text-xs">
 				<summary class="cursor-pointer select-none text-center">{labels.details}</summary>
-				<code class="mt-2 block break-words rounded-md border border-border bg-background p-2 font-mono">
+				<code class="mt-2 block break-words rounded-md bg-background p-2 font-mono">
 					{errorMessage(error)}
 				</code>
 			</details>

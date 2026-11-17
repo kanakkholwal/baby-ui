@@ -1,7 +1,7 @@
 import { defineComponent, variantsOf } from "@baby-ui/registry-schema";
 import { morphText as morphTextVariants } from "./variants";
 
-const SIZES = ["inherit", "sm", "md", "lg"];
+const SIZES = ["inherit", "sm", "default", "lg"];
 
 export const morphText = defineComponent({
 	slug: "morph-text",

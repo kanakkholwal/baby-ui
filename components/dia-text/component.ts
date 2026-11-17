@@ -1,7 +1,7 @@
 import { defineComponent, variantsOf } from "@baby-ui/registry-schema";
 import { diaText as diaTextVariants } from "./variants";
 
-const SIZES = ["inherit", "sm", "md", "lg"];
+const SIZES = ["inherit", "sm", "default", "lg"];
 
 export const diaText = defineComponent({
 	slug: "dia-text",

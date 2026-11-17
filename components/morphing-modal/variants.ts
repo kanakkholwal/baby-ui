@@ -5,7 +5,7 @@ export const morphingModal = tv({
 		trigger:
 			"cursor-pointer rounded-2xl text-left outline-none focus-visible:ring-2 focus-visible:ring-ring",
 		dialog: "morph-dialog m-auto bg-transparent p-0 text-foreground backdrop:bg-black/40",
-		panel: "overflow-hidden rounded-2xl border border-border bg-popover p-6 shadow-2xl",
+		panel: "overflow-hidden rounded-2xl bg-popover p-6 shadow-(--overlay-shadow)",
 		header: "flex items-start justify-between gap-4",
 		title: "font-medium text-foreground text-lg",
 		close:

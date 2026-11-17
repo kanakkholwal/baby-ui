@@ -3,12 +3,12 @@ import { tv, type VariantProps } from "tailwind-variants";
 // Separate cards: a centred opener, numbered steps, optional resources, then a personal note.
 export const emailWelcome = tv({
 	slots: {
-		heroImage: "mb-8 w-full rounded-lg",
+		heroImage: "mb-block w-full rounded-inner",
 		eyebrow:
-			"m-0 mb-3 text-center font-semibold text-[13px] text-muted-foreground leading-[20px] dark:text-muted-foreground-dark",
-		intro: "mt-3 text-center",
-		action: "mt-8 text-center",
-		steps: "mt-6",
+			"m-0 mb-3 text-left font-semibold text-[13px] text-muted-foreground leading-[20px] dark:text-muted-foreground-dark",
+		intro: "mt-3",
+		action: "mt-block",
+		steps: "mt-block",
 		stepIndex: "w-[40px] align-top",
 		stepBadge:
 			"m-0 h-[26px] w-[26px] rounded-full bg-primary-soft text-center font-semibold text-[13px] text-foreground leading-[26px] dark:bg-primary-soft-dark dark:text-foreground-dark",
@@ -28,14 +28,14 @@ export const emailWelcome = tv({
 			"m-0 font-semibold text-[14px] text-foreground leading-[20px] dark:text-foreground-dark",
 		noteRole:
 			"m-0 text-[13px] text-muted-foreground leading-[20px] dark:text-muted-foreground-dark",
-		noteMessage: "mt-4",
-		help: "mt-6 border-0 border-border border-t border-solid pt-5 dark:border-border-dark",
+		noteMessage: "mt-gap",
+		help: "mt-block border-0 border-border border-t border-solid pt-5 dark:border-border-dark",
 		link: "text-foreground underline dark:text-foreground-dark",
 	},
 	variants: {
 		density: {
 			comfortable: {},
-			compact: { steps: "mt-4", stepGap: "h-[12px]", resource: "py-3" },
+			compact: { steps: "mt-gap", stepGap: "h-[12px]", resource: "py-3" },
 		},
 	},
 	defaultVariants: { density: "comfortable" },

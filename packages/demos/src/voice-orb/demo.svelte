@@ -46,7 +46,7 @@ $effect(() => () => {
 </script>
 
 <div class="flex flex-col items-center gap-5">
-	<VoiceOrb {activity} {analyser} variant={p.variant} size={p.size ?? "lg"} label={analyser ? "Listening" : speaking ? "Assistant is speaking" : "Assistant is idle"} />
+	<VoiceOrb {activity} {analyser} variant={p.variant} active={p.active ?? true} size={p.size ?? "lg"} label={analyser ? "Listening" : speaking ? "Assistant is speaking" : "Assistant is idle"} />
 	<p class="m-0 text-muted-foreground text-sm" aria-live="polite">{analyser ? "Listening to your microphone" : speaking ? "Speaking" : "Idle"}</p>
 	<div class="flex gap-2">
 		<Button size="sm" variant="secondary" class="rounded-full" disabled={!!analyser} onclick={() => (speaking = !speaking)}>{speaking ? "Stop speaking" : "Speak"}</Button>

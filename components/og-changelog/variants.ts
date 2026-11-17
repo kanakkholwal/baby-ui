@@ -4,7 +4,7 @@ export const ogChangelog = tv({
 	slots: {
 		root: "relative flex h-[630px] w-[1200px] overflow-hidden bg-background font-sans text-foreground",
 		ghost:
-			"absolute right-[-24px] bottom-[-64px] line-clamp-1 whitespace-nowrap font-bold font-heading text-[240px] text-foreground/[0.05] leading-none tracking-tighter",
+			"absolute right-[-24px] bottom-[-64px] line-clamp-1 whitespace-nowrap font-bold font-heading text-[240px] text-foreground/[0.05] leading-none tracking-tight",
 		stub: "relative flex w-[340px] shrink-0 flex-col border-border border-r-2 border-dashed bg-card p-[56px]",
 		notch:
 			"absolute left-[312px] h-14 w-14 rounded-full border-2 border-border bg-background",

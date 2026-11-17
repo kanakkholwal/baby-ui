@@ -35,7 +35,7 @@ let {
 	actionLabel = "Accept invitation",
 	closingText = `${expiresIn ? `This invitation expires in ${expiresIn}. ` : ""}If you weren't expecting it, you can ignore this email.`,
 	fallbackLabel,
-	surface = "card",
+	surface = "plain",
 }: {
 	productName: string;
 	inviterName: string;
@@ -76,14 +76,14 @@ const t = emailTeamInvite();
 	{#snippet cardFooter()}
 		<EmailFooter lines={companyLines} links={footerLinks} {reason} brand={productName} logo={logoUrl} layout="band" />
 	{/snippet}
-	<EmailHeader brand={productName} logo={logoUrl} align="center" />
+	<EmailHeader brand={productName} logo={logoUrl} align="left" />
 	{#if inviterAvatarUrl}
-		<Img src={inviterAvatarUrl} alt={inviterName} width="64" height="64" class={t.avatar()} />
+		<Img src={inviterAvatarUrl} alt={inviterName} width="48" height="48" class={t.avatar()} />
 	{:else}
 		<Text class={t.initials()}>{initials(inviterName)}</Text>
 	{/if}
 	<Text class={t.lead()}>{lead}</Text>
-	<EmailHeading size="display" align="center">{heading ?? teamName}</EmailHeading>
+	<EmailHeading size="lg" align="left">{heading ?? teamName}</EmailHeading>
 	{#if role}
 		<Section class={t.role()}>
 			<EmailBadge tone="accent">{role}</EmailBadge>
@@ -98,9 +98,9 @@ const t = emailTeamInvite();
 		</Section>
 	{/if}
 	<Section class={s.action()}>
-		<EmailButton href={acceptUrl} size="lg" shape="pill" width="full">{actionLabel}</EmailButton>
+		<EmailButton href={acceptUrl}>{actionLabel}</EmailButton>
 	</Section>
 	<EmailText tone="muted" size="sm" class={t.closing()}>{closingText}</EmailText>
 	<EmailDivider spacing="lg" />
-	<EmailFallbackLink href={acceptUrl} label={fallbackLabel} align="center" />
+	<EmailFallbackLink href={acceptUrl} label={fallbackLabel} align="left" />
 </EmailShell>

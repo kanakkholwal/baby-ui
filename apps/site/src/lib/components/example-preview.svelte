@@ -26,7 +26,7 @@ const example = $derived(load?.());
 
 <div class="my-6 flex flex-col gap-3">
 	<div
-		class="grid min-h-40 grid-cols-[minmax(0,1fr)] place-items-center rounded-xl border border-border bg-background bg-[radial-gradient(var(--border)_1px,transparent_1px)] [background-size:16px_16px] p-8"
+		class="grid min-h-40 grid-cols-[minmax(0,1fr)] place-items-center rounded-xl bg-card bg-[radial-gradient(var(--border)_1px,transparent_1px)] [background-size:16px_16px] p-8"
 	>
 		{#if example}
 			<svelte:boundary onerror={(error) => console.error(error)}>

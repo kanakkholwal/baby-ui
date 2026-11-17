@@ -28,7 +28,7 @@ export const filterMenu = tv({
 	},
 	variants: {
 		variant: {
-			card: { root: "rounded-2xl border border-border bg-background" },
+			card: { root: "rounded-2xl bg-card" },
 			plain: { root: "" },
 		},
 	},

@@ -13,7 +13,7 @@ export const comparisonTable = tv({
 		scroller: "overflow-x-auto overscroll-x-contain",
 		table: "grid min-w-max",
 		row: "grid grid-cols-subgrid col-span-full",
-		headRow: "sticky z-2 border-border border-b bg-background",
+		headRow: "sticky z-2 border-border/60 border-b bg-background",
 		labelCell:
 			"sticky left-0 z-1 flex min-w-44 flex-col justify-center gap-0.5 bg-background py-3 pr-6 text-sm",
 		hint: "text-muted-foreground text-xs",
@@ -23,10 +23,9 @@ export const comparisonTable = tv({
 		colCaption: "text-muted-foreground text-xs",
 		price: "font-semibold text-2xl tabular-nums tracking-tight",
 		period: "text-muted-foreground text-xs",
-		section:
-			"col-span-full pt-6 pb-2 font-medium text-muted-foreground text-xs uppercase tracking-wider",
+		section: "col-span-full pt-6 pb-2 font-medium text-muted-foreground text-xs",
 		// Rows hidden by "differences only" fold on grid rows instead of popping out.
-		fold: "col-span-full grid grid-cols-subgrid grid-rows-[1fr] border-border border-b opacity-100 transition-[grid-template-rows,opacity,border-color] duration-(--duration-collapse) ease-(--ease-out-quad) data-[hidden=true]:grid-rows-[0fr] data-[hidden=true]:border-transparent data-[hidden=true]:opacity-0 motion-reduce:transition-none",
+		fold: "col-span-full grid grid-cols-subgrid grid-rows-[1fr] border-border/60 border-b opacity-100 transition-[grid-template-rows,opacity,border-color] duration-(--duration-collapse) ease-(--ease-out-quad) data-[hidden=true]:grid-rows-[0fr] data-[hidden=true]:border-transparent data-[hidden=true]:opacity-0 motion-reduce:transition-none",
 		foldInner: "col-span-full grid min-h-0 grid-cols-subgrid overflow-hidden",
 		check: "size-5 text-success",
 		partial: "size-5 text-warning",
@@ -38,7 +37,7 @@ export const comparisonTable = tv({
 		/** `plain` sits on the page; `card` frames the matrix in a bordered surface. */
 		variant: {
 			plain: {},
-			card: { scroller: "rounded-2xl border border-border px-4", labelCell: "pl-2" },
+			card: { scroller: "rounded-2xl bg-card px-4", labelCell: "pl-2" },
 		},
 	},
 	defaultVariants: { variant: "plain" },

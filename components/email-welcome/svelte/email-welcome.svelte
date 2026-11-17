@@ -51,7 +51,7 @@ let {
 	supportLabel = "Questions? Reply to this email or write to",
 	footerLinks,
 	preview = `Your ${productName} account is ready. Here is how to get started.`,
-	eyebrow = "Thanks for joining",
+	eyebrow,
 	heading = recipientName ? `Welcome, ${recipientName}` : `Welcome to ${productName}`,
 	intro = `Your ${productName} account is ready. Here is what's worth doing first.`,
 	stepsTitle = "Getting started",
@@ -107,16 +107,16 @@ const s = $derived(emailWelcome({ density }));
 	{#snippet footer()}
 		<EmailFooter lines={companyLines} links={footerLinks} {reason} brand={productName} logo={logoUrl} />
 	{/snippet}
-	<EmailSection align="center">
-		<EmailHeader brand={productName} logo={logoUrl} align="center" />
+	<EmailSection align="left">
+		<EmailHeader brand={productName} logo={logoUrl} align="left" />
 		{#if heroImageUrl}
 			<Img src={heroImageUrl} alt={heroImageAlt ?? productName} width="528" height="auto" class={s.heroImage()} />
 		{/if}
-		<EmailText class={s.eyebrow()}>{eyebrow}</EmailText>
-		<EmailHeading size="display" align="center">{heading}</EmailHeading>
+		{#if eyebrow}<EmailText class={s.eyebrow()}>{eyebrow}</EmailText>{/if}
+		<EmailHeading size="lg" align="left">{heading}</EmailHeading>
 		<EmailText tone="muted" class={s.intro()}>{intro}</EmailText>
 		<Section class={s.action()}>
-			<EmailButton href={actionUrl} size="lg" shape="pill">{actionLabel}</EmailButton>
+			<EmailButton href={actionUrl}>{actionLabel}</EmailButton>
 		</Section>
 	</EmailSection>
 	{#if steps.length > 0}
@@ -183,6 +183,6 @@ const s = $derived(emailWelcome({ density }));
 		</EmailSection>
 	{/if}
 	{#if !note && steps.length === 0 && supportEmail}
-		<EmailSection align="center">{@render help()}</EmailSection>
+		<EmailSection align="left">{@render help()}</EmailSection>
 	{/if}
 </EmailShell>

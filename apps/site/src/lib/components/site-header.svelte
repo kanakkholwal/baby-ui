@@ -284,7 +284,7 @@ function active(match: string[]) {
 														aria-current={page.url.pathname === item.href ? "page" : undefined}
 														class="flex-row items-start gap-3"
 													>
-														{#if Icon}<span class="mt-0.5 grid size-7 shrink-0 place-items-center rounded-md border border-border bg-background text-muted-foreground [&_svg]:size-4"><Icon aria-hidden="true" /></span>{/if}
+														{#if Icon}<span class="mt-0.5 grid size-7 shrink-0 place-items-center rounded-md bg-background text-muted-foreground [&_svg]:size-4"><Icon aria-hidden="true" /></span>{/if}
 														<span class="grid gap-0.5">
 															<span class="font-medium text-foreground">{item.label}</span>
 															{#if item.description}<span class="text-muted-foreground text-xs">{item.description}</span>{/if}

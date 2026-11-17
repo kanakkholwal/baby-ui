@@ -22,10 +22,10 @@ const removed = $derived(lines.filter((l) => l.kind === "remove").length);
 const MARK = { add: "+", remove: "-", context: " " };
 </script>
 
-<div data-slot="file-diff" class={cn("overflow-hidden rounded-xl border border-border bg-card", classProp)}>
+<div data-slot="file-diff" class={cn("overflow-hidden rounded-xl bg-card", classProp)}>
 	<div
 		data-slot="file-diff-header"
-		class="flex items-center justify-between gap-3 border-border border-b bg-background/60 px-4 py-2.5"
+		class="flex items-center justify-between gap-3 bg-background/60 px-4 py-2.5"
 	>
 		<span class="truncate font-mono text-foreground text-xs">{filename}</span>
 		<span class="flex shrink-0 items-center gap-2 font-mono text-xs">

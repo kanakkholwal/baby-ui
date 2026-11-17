@@ -12,10 +12,15 @@ export function Card({
 	className,
 	interactive = false,
 	variant = "default",
+	bordered = false,
 	children,
 	...props
-}: ComponentProps<"div"> & { interactive?: boolean; variant?: CardVariant }) {
-	const { root, body } = cardFrame({ variant });
+}: ComponentProps<"div"> & {
+	interactive?: boolean;
+	variant?: CardVariant;
+	bordered?: boolean;
+}) {
+	const { root, body } = cardFrame({ variant, bordered });
 
 	if (variant === "well") {
 		// Direct CardFooter children sit in the rim below the body; picked here so SSR has them.

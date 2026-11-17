@@ -151,7 +151,7 @@ export function NpmStats({
 							</span>
 						</>
 					) : (
-						"–"
+						"-"
 					)}
 				</Fact>
 				<Fact label={labels.busiestWeekday} styles={styles}>
@@ -163,7 +163,7 @@ export function NpmStats({
 							</span>
 						</>
 					) : (
-						"–"
+						"-"
 					)}
 				</Fact>
 				<Fact label={labels.fastestGrowing} styles={styles}>
@@ -175,7 +175,7 @@ export function NpmStats({
 							</span>
 						</>
 					) : (
-						"–"
+						"-"
 					)}
 				</Fact>
 			</dl>

@@ -9,18 +9,19 @@ export const table = tv({
 		footer: "font-medium text-muted-foreground",
 		row: "transition-colors",
 		head: "text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0",
-		cell: "align-middle text-foreground [&:has([role=checkbox])]:pr-0",
+		cell: "align-middle text-foreground tabular-nums [&:has([role=checkbox])]:pr-0",
 		caption: "mt-4 text-sm text-muted-foreground",
 	},
 	variants: {
 		variant: {
 			default: {
-				container: "rounded-xl border border-border",
+				// Decision (product): no outer or header border; the header is a surface step, rows keep a soft hairline.
+				container: "rounded-xl",
 				root: "border-collapse",
-				header: "bg-card [&_tr]:border-border [&_tr]:border-b",
+				header: "bg-card [&_tr]:border-0",
 				body: "[&_tr:last-child]:border-0",
-				footer: "border-border border-t bg-card [&>tr]:last:border-b-0",
-				row: "border-border border-b hover:bg-accent data-[state=selected]:bg-primary/[0.04]",
+				footer: "bg-card [&>tr]:last:border-b-0",
+				row: "border-border/60 border-b hover:bg-accent data-[state=selected]:bg-primary/[0.04]",
 			},
 			// The header sits on a card rim around a rounded inset body, and
 			// hairlines split the columns. Separate borders, so cells can round the body corners.
@@ -37,12 +38,25 @@ export const table = tv({
 				row: "[&>td]:transition-colors hover:[&>td]:bg-card data-[state=selected]:[&>td]:bg-primary/[0.04]",
 			},
 		},
+		bordered: { true: {}, false: {} },
 		density: {
 			comfortable: { head: "px-3 py-2", cell: "px-3 py-2" },
 			compact: { head: "px-3 py-1.5", cell: "px-3 py-1" },
 		},
 	},
-	defaultVariants: { variant: "default", density: "comfortable" },
+	// Decision (product): borderless by default; `bordered` adds the classic grid edge on the default variant.
+	compoundVariants: [
+		{
+			variant: "default",
+			bordered: true,
+			class: {
+				container: "border border-border",
+				header: "[&_tr]:border-border/60 [&_tr]:border-b",
+				footer: "border-border/60 border-t",
+			},
+		},
+	],
+	defaultVariants: { variant: "default", density: "comfortable", bordered: false },
 });
 
 export type TableVariant = NonNullable<VariantProps<typeof table>["variant"]>;

@@ -21,6 +21,7 @@ import {
 import { type ChartStatus, type Datum, toDate } from "../../chart/core";
 import { ChartContainer } from "../../chart/react/chart";
 import { cn } from "../../lib/cn";
+import { useControllable } from "../../lib/react/use-controllable";
 import { Line, LineChart } from "../../line-chart/react/line-chart";
 import { RollingDigits } from "../../rolling-digits/react/rolling-digits";
 import { ToggleGroup, ToggleGroupItem } from "../../toggle-group/react/toggle-group";
@@ -197,17 +198,16 @@ export function OverviewCardPeriods({
 	children,
 }: OverviewCardPeriodsProps) {
 	const { name } = useOverviewCard();
-	const [internal, setInternal] = useState(defaultValue);
+	const [current, setCurrent] = useControllable(value, defaultValue, onValueChange);
 	return (
 		<CardAction className={className}>
 			<ToggleGroup
 				type="single"
 				size="sm"
-				value={value ?? internal}
+				value={current}
 				onValueChange={(next) => {
 					if (typeof next !== "string") return;
-					if (value === undefined) setInternal(next);
-					onValueChange?.(next);
+					setCurrent(next);
 				}}
 				label={label ?? `${name} period`}
 			>

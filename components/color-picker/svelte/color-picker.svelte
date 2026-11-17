@@ -339,7 +339,7 @@ const FORMATS: ColorFormat[] = ["hsv", "hsl", "rgb"];
 	>
 		{@render area()}
 
-		<div class="flex items-center gap-2.5 border-border border-b p-2">
+		<div class="flex items-center gap-2.5 border-border/60 border-b p-2">
 			<span
 				aria-hidden="true"
 				style:background={preview}
@@ -359,20 +359,20 @@ const FORMATS: ColorFormat[] = ["hsv", "hsl", "rgb"];
 						spellcheck="false"
 						autocomplete="off"
 						oninput={(e) => typeHex(e.currentTarget.value)}
-						class="h-6 min-w-0 flex-1 bg-transparent font-mono text-xs text-foreground uppercase outline-none"
+						class="h-6 min-w-0 flex-1 bg-transparent font-mono text-xs text-foreground outline-none"
 					/>
 				</div>
 			</div>
 		</div>
 
-		<div class="flex flex-col gap-1.5 border-border border-b p-2">
+		<div class="flex flex-col gap-1.5 border-border/60 border-b p-2">
 			<div class="flex items-center gap-0.5 rounded-md bg-card p-0.5">
 				{#each FORMATS as option (option)}
 					<button
 						type="button"
 						onclick={() => (format = option)}
 						aria-pressed={format === option}
-						class="h-5 flex-1 rounded font-mono text-xs text-muted-foreground uppercase transition-colors aria-pressed:bg-background aria-pressed:text-foreground"
+						class="h-5 flex-1 rounded font-mono text-xs text-muted-foreground transition-colors aria-pressed:bg-background aria-pressed:text-foreground"
 					>
 						{option}
 					</button>

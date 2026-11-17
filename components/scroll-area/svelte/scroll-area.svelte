@@ -2,20 +2,37 @@
 import { ScrollArea as ScrollAreaPrimitive } from "bits-ui";
 import type { Snippet } from "svelte";
 import { cn } from "../../lib/cn";
-import { type ScrollAreaScrollbar, scrollArea } from "../variants";
+import {
+	readEdges,
+	SCROLL_EDGE,
+	type ScrollAreaFade,
+	type ScrollAreaGutter,
+	type ScrollAreaOrientation,
+	type ScrollAreaScrollbar,
+	scrollArea,
+} from "../variants";
 
 let {
 	children,
 	maxHeight = "16rem",
 	scrollbar = "auto",
+	gutter = "overlay",
+	orientation = "vertical",
+	fade = "mask",
 	class: classProp,
 	viewportRef = $bindable(null),
 	viewportProps,
 	...rest
-}: ScrollAreaPrimitive.RootProps & {
+}: Omit<ScrollAreaPrimitive.RootProps, "type" | "orientation"> & {
 	children: Snippet;
 	maxHeight?: string;
+	/** `auto` always shows the bar, `hover` and `scroll` reveal it when needed, `hidden` removes it. */
 	scrollbar?: ScrollAreaScrollbar;
+	/** `reserve` pads the content so the bar never overlaps it. */
+	gutter?: ScrollAreaGutter;
+	orientation?: ScrollAreaOrientation;
+	/** How the clipped ends read: `mask` fades the content, `blur` softens it, `none` cuts it. */
+	fade?: ScrollAreaFade;
 	/** Exposes the actual scrollable element, for callers that need to drive its scroll
 	 * position themselves (e.g. Conversation's auto-follow). */
 	viewportRef?: HTMLDivElement | null;
@@ -24,17 +41,15 @@ let {
 	viewportProps?: Omit<ScrollAreaPrimitive.ViewportProps, "children" | "ref">;
 } = $props();
 
-const styles = $derived(scrollArea({ scrollbar }));
+const styles = $derived(scrollArea({ scrollbar, gutter, orientation, fade }));
 
-let atTop = $state(true);
-let atBottom = $state(true);
+let edges = $state({ start: false, end: false });
+let scrolling = $state(false);
+let idle: ReturnType<typeof setTimeout> | undefined;
 
 // Fades tell the reader there is more; a styled scrollbar alone does not on touch.
 function measure() {
-	if (!viewportRef) return;
-	atTop = viewportRef.scrollTop <= 1;
-	atBottom =
-		viewportRef.scrollTop + viewportRef.clientHeight >= viewportRef.scrollHeight - 1;
+	if (viewportRef) edges = readEdges(viewportRef, orientation);
 }
 
 $effect(() => {
@@ -44,11 +59,29 @@ $effect(() => {
 	observer.observe(viewportRef);
 	return () => observer.disconnect();
 });
+
+$effect(() => () => clearTimeout(idle));
+
+const showVertical = $derived(orientation !== "horizontal");
+const showHorizontal = $derived(orientation !== "vertical");
 </script>
 
+{#snippet bar(direction: "vertical" | "horizontal")}
+	<ScrollAreaPrimitive.Scrollbar
+		data-slot="scroll-area-scrollbar"
+		orientation={direction}
+		forceMount
+		class={styles.scrollbar()}
+	>
+		<ScrollAreaPrimitive.Thumb data-slot="scroll-area-thumb" class={styles.thumb()} />
+	</ScrollAreaPrimitive.Scrollbar>
+{/snippet}
+
 <ScrollAreaPrimitive.Root
+	type="always"
 	data-slot="scroll-area"
 	data-scrollbar={scrollbar}
+	data-scrolling={scrolling}
 	class={cn(styles.root(), classProp)}
 	{...rest}
 >
@@ -57,36 +90,29 @@ $effect(() => {
 		bind:ref={viewportRef}
 		onscroll={(event) => {
 			measure();
+			scrolling = true;
+			clearTimeout(idle);
+			idle = setTimeout(() => (scrolling = false), 900);
 			viewportProps?.onscroll?.(event);
 		}}
 		data-slot="scroll-area-viewport"
-		style="max-height: {maxHeight}"
+		style="max-height: {maxHeight}; --sa-start: {edges.start ? SCROLL_EDGE : '0px'}; --sa-end: {edges.end ? SCROLL_EDGE : '0px'}"
 		class={cn(styles.viewport(), viewportProps?.class)}
 	>
 		{@render children()}
 	</ScrollAreaPrimitive.Viewport>
-	{#if scrollbar === "auto"}
-		<ScrollAreaPrimitive.Scrollbar
-			data-slot="scroll-area-scrollbar"
-			orientation="vertical"
-			class="flex touch-none select-none p-0.5 transition-colors data-[orientation=horizontal]:h-2.5 data-[orientation=horizontal]:flex-col data-[orientation=vertical]:w-2.5"
-		>
-			<ScrollAreaPrimitive.Thumb
-				data-slot="scroll-area-thumb"
-				class="relative flex-1 rounded-full bg-border"
-			/>
-		</ScrollAreaPrimitive.Scrollbar>
-		<ScrollAreaPrimitive.Corner />
+	{#if scrollbar !== "hidden"}
+		{#if showVertical}{@render bar("vertical")}{/if}
+		{#if showHorizontal}{@render bar("horizontal")}{/if}
+		{#if orientation === "both"}<ScrollAreaPrimitive.Corner />{/if}
 	{/if}
 
-	<span
-		aria-hidden="true"
-		style:opacity={atTop ? 0 : 1}
-		class="pointer-events-none absolute inset-x-0 top-0 h-6 bg-gradient-to-b from-background to-transparent transition-opacity duration-(--duration-fast)"
-	></span>
-	<span
-		aria-hidden="true"
-		style:opacity={atBottom ? 0 : 1}
-		class="pointer-events-none absolute inset-x-0 bottom-0 h-6 bg-gradient-to-t from-background to-transparent transition-opacity duration-(--duration-fast)"
-	></span>
+	{#if fade === "blur"}
+		<span
+			aria-hidden="true"
+			style:opacity={edges.start ? 1 : 0}
+			class={styles.fadeStart()}
+		></span>
+		<span aria-hidden="true" style:opacity={edges.end ? 1 : 0} class={styles.fadeEnd()}></span>
+	{/if}
 </ScrollAreaPrimitive.Root>

@@ -176,7 +176,7 @@ export function MegaNavbarDemo({ props }: { props: Props }) {
 				variant={variant}
 				className={
 					variant === "solid"
-						? "rounded-t-[11px] border-border border-b bg-card"
+						? "rounded-t-[11px] border-border/60 border-b bg-card"
 						: undefined
 				}
 				brand={

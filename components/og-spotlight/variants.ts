@@ -6,7 +6,7 @@ export const ogSpotlight = tv({
 		grid: "absolute inset-0 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] bg-[size:80px_80px] [mask-image:radial-gradient(ellipse_44%_60%_at_50%_50%,black,transparent)]",
 		face: "absolute rounded-[20px] object-cover shadow-[0_16px_32px_-16px_rgb(0_0_0/0.35)]",
 		title:
-			"relative line-clamp-2 max-w-[760px] text-center font-heading font-medium text-[92px] leading-[1.05] tracking-[-0.04em]",
+			"relative line-clamp-2 max-w-[760px] text-center font-heading font-medium text-[92px] leading-[1.05] tracking-[-0.02em]",
 		brand: "relative mt-10 flex items-center gap-5 text-muted-foreground",
 		logo: "h-[60px] w-[60px] shrink-0 rounded-2xl object-cover",
 		site: "line-clamp-1 max-w-[520px] font-medium text-[60px] tracking-[-0.03em]",

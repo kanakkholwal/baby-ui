@@ -1,6 +1,7 @@
 <script lang="ts">
 import { Column, Img, Link, Row, Section, Text } from "@better-svelte-email/components";
 import { type EmailFooterAlign, type EmailFooterLayout, emailFooter } from "../variants";
+import { getEmailSurface } from "./context";
 
 export interface EmailFooterLink {
 	label: string;
@@ -13,8 +14,8 @@ let {
 	reason,
 	brand,
 	logo,
-	layout = "plain",
-	align = "center",
+	layout: requested = "plain",
+	align = "left",
 }: {
 	/** Sender identity and postal address: required for commercial mail in many regions. */
 	lines: string[];
@@ -30,6 +31,12 @@ let {
 	align?: EmailFooterAlign;
 } = $props();
 
+const surface = getEmailSurface();
+const layout = $derived(
+	(requested === "band" || requested === "row") && surface() !== "card"
+		? "plain"
+		: requested,
+);
 const s = $derived(emailFooter({ layout, align }));
 </script>
 

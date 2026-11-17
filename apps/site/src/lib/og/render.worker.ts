@@ -1,20 +1,32 @@
 import { render } from "takumi-js";
+import { cachedAsset } from "./assets";
 import { OG_FONT_FILES } from "./fonts";
 import type { OgReply, OgRequest } from "./protocol";
 
 type Font = { name: string; data: ArrayBuffer; weight?: number };
 
-// takumi's browser build fetches its WASM from a hashed asset URL, so the HTTP cache keeps
-// the binary across visits; this worker keeps the compiled renderer and fonts across renders.
+// takumi's WASM has a hashed URL, so the HTTP cache keeps it; fonts and images persist in
+// Cache Storage (assets.ts), and this worker keeps the compiled renderer across renders.
 let fonts: Promise<Font[]> | undefined;
 let warmed: Promise<unknown> | undefined;
 
+// A failed load is dropped, so the next request retries instead of replaying the failure.
+function forgetOnFail<T>(promise: Promise<T>, reset: () => void): Promise<T> {
+	promise.catch(reset);
+	return promise;
+}
+
 const loadFonts = () =>
-	(fonts ??= Promise.all(
-		OG_FONT_FILES.map(async ({ url, ...font }) => ({
-			...font,
-			data: await (await fetch(url)).arrayBuffer(),
-		})),
+	(fonts ??= forgetOnFail(
+		Promise.all(
+			OG_FONT_FILES.map(async ({ url, ...font }) => ({
+				...font,
+				data: (await cachedAsset(url)).data,
+			})),
+		),
+		() => {
+			fonts = undefined;
+		},
 	));
 
 // A transparent 1x1 PNG, so one unreachable image blanks out instead of failing the whole card.
@@ -37,10 +49,13 @@ async function fetchImage(url: string, init?: RequestInit): Promise<Response> {
 }
 
 // A CORS refusal surfaces as a network error, so both it and a bad status read as "no image".
+// Hits come from the per-worker memo or Cache Storage, so retyping never refetches a photo.
 async function tryFetch(url: string, init?: RequestInit): Promise<Response | null> {
 	try {
-		const response = await fetch(url, init);
-		return response.ok ? response : null;
+		const asset = await cachedAsset(url, init);
+		return new Response(asset.data.slice(0), {
+			headers: asset.type ? { "content-type": asset.type } : undefined,
+		});
 	} catch {
 		return null;
 	}
@@ -48,8 +63,13 @@ async function tryFetch(url: string, init?: RequestInit): Promise<Response | nul
 
 // One throwaway pixel compiles the WASM and instantiates the renderer before a real card asks.
 const warm = () =>
-	(warmed ??= loadFonts().then((faces) =>
-		render("<div></div>", { width: 1, height: 1, fonts: faces }),
+	(warmed ??= forgetOnFail(
+		loadFonts().then((faces) =>
+			render("<div></div>", { width: 1, height: 1, fonts: faces }),
+		),
+		() => {
+			warmed = undefined;
+		},
 	));
 
 function reply(message: OgReply, transfer: Transferable[] = []) {

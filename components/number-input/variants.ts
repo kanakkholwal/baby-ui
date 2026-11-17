@@ -1,5 +1,5 @@
 import { tv, type VariantProps } from "tailwind-variants";
-import { fieldText } from "../lib/control";
+import { fieldGroup, fieldText } from "../lib/control";
 
 export const numberInput = tv({
 	slots: {
@@ -7,10 +7,8 @@ export const numberInput = tv({
 		label:
 			"w-fit cursor-ew-resize select-none font-medium text-foreground text-sm data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50",
 		group: [
-			"flex w-full min-w-0 items-stretch overflow-hidden border border-input bg-(--field) hover:border-border-strong",
-			"transition-[box-shadow,border-color] duration-[var(--duration-press)] ease-[var(--ease-ui-out)] motion-reduce:transition-none",
-			"has-[input:focus-visible]:border-ring has-[input:focus-visible]:ring-3 has-[input:focus-visible]:ring-ring/20",
-			"has-[input[aria-invalid=true]]:border-destructive has-[input[aria-invalid=true]]:ring-destructive/20 has-[input:disabled]:opacity-50",
+			"flex w-full min-w-0 items-stretch overflow-hidden",
+			fieldGroup({ kind: "input" }),
 			// A key press past min or max shakes the field, the same shake InputOTP uses.
 			"data-[nudge=true]:animate-[otp-shake_240ms_ease-in-out] motion-reduce:animate-none",
 		],

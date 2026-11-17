@@ -89,7 +89,7 @@ export function EmailWelcome({
 	supportLabel = "Questions? Reply to this email or write to",
 	footerLinks,
 	preview = `Your ${productName} account is ready. Here is how to get started.`,
-	eyebrow = "Thanks for joining",
+	eyebrow,
 	heading = recipientName ? `Welcome, ${recipientName}` : `Welcome to ${productName}`,
 	intro = `Your ${productName} account is ready. Here is what's worth doing first.`,
 	stepsTitle = "Getting started",
@@ -121,8 +121,8 @@ export function EmailWelcome({
 				/>
 			}
 		>
-			<EmailSection align="center">
-				<EmailHeader brand={productName} logo={logoUrl} align="center" />
+			<EmailSection align="left">
+				<EmailHeader brand={productName} logo={logoUrl} align="left" />
 				{heroImageUrl ? (
 					<Img
 						src={heroImageUrl}
@@ -131,17 +131,15 @@ export function EmailWelcome({
 						className={s.heroImage()}
 					/>
 				) : null}
-				<EmailText className={s.eyebrow()}>{eyebrow}</EmailText>
-				<EmailHeading size="display" align="center">
+				{eyebrow ? <EmailText className={s.eyebrow()}>{eyebrow}</EmailText> : null}
+				<EmailHeading size="lg" align="left">
 					{heading}
 				</EmailHeading>
 				<EmailText tone="muted" className={s.intro()}>
 					{intro}
 				</EmailText>
 				<Section className={s.action()}>
-					<EmailButton href={actionUrl} size="lg" shape="pill">
-						{actionLabel}
-					</EmailButton>
+					<EmailButton href={actionUrl}>{actionLabel}</EmailButton>
 				</Section>
 			</EmailSection>
 			{steps.length > 0 ? (
@@ -216,7 +214,7 @@ export function EmailWelcome({
 				</EmailSection>
 			) : null}
 			{!note && steps.length === 0 && help ? (
-				<EmailSection align="center">{help}</EmailSection>
+				<EmailSection align="left">{help}</EmailSection>
 			) : null}
 		</EmailShell>
 	);

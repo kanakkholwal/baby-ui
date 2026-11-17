@@ -4,18 +4,18 @@ export const orbitCardStack = tv({
 	slots: {
 		root: "relative flex w-full items-center justify-center overflow-hidden p-6",
 		stage: "@container relative w-full max-w-[980px]",
-		card: "absolute top-1/2 left-1/2 w-[min(var(--orbit-card-w),78cqw)] origin-bottom cursor-pointer rounded-[1.75rem] border border-border bg-card p-3 text-card-foreground shadow-xl outline-none transition-transform duration-[420ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transition-none",
+		card: "absolute top-1/2 left-1/2 w-[min(var(--orbit-card-w),78cqw)] origin-bottom cursor-pointer rounded-[1.75rem] bg-card p-3 text-card-foreground shadow-(--overlay-shadow) outline-none transition-transform duration-[420ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transition-none",
 		portrait:
-			"relative grid aspect-[1.36] w-full place-items-center overflow-hidden rounded-[1.35rem] border border-border bg-muted",
+			"relative grid aspect-[1.36] w-full place-items-center overflow-hidden rounded-[1.35rem] bg-muted",
 		portraitImage: "size-full object-cover",
 		monogram: "font-semibold text-4xl text-muted-foreground tracking-tight",
 		initials: "absolute right-3 bottom-3 tracking-widest",
-		link: "absolute top-6 right-6 rounded-full shadow-lg",
+		link: "absolute top-6 right-6 rounded-full shadow-(--overlay-shadow)",
 		body: "px-2 pt-5 pb-2",
 		role: "font-semibold text-xs text-muted-foreground uppercase tracking-widest",
-		name: "mt-2 font-semibold leading-none tracking-tighter",
+		name: "mt-2 font-semibold leading-none tracking-tight",
 		description: "mt-3 font-medium text-muted-foreground leading-[1.42]",
-		stat: "mt-4 border-border border-t pt-3 font-bold text-xs text-muted-foreground uppercase tracking-widest",
+		stat: "mt-4 border-border/60 border-t pt-3 font-bold text-xs text-muted-foreground uppercase tracking-widest",
 	},
 	variants: {
 		size: {

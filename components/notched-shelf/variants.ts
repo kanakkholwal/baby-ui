@@ -5,7 +5,7 @@ export const notchedShelf = tv({
 		root: "relative z-10 flex -translate-y-px items-start justify-center",
 		wing: "h-full w-auto shrink-0 translate-y-px overflow-visible",
 		stroke: "",
-		edge: "mt-px min-w-0 grow border-border border-t",
+		edge: "mt-px min-w-0 grow border-border/60 border-t",
 		bar: "relative z-10 flex h-[calc(100%+1px)] min-w-0 shrink-0 items-center justify-center bg-current",
 		content: "flex items-center justify-center",
 	},
@@ -26,7 +26,7 @@ export const notchedShelf = tv({
 			outline: {
 				root: "text-transparent",
 				stroke: "stroke-border",
-				bar: "border-border border-b",
+				bar: "border-border/60 border-b",
 				content: "text-foreground",
 			},
 		},

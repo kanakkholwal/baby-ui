@@ -2,7 +2,7 @@ import { tv, type VariantProps } from "tailwind-variants";
 
 export const scrollSplitCard = tv({
 	slots: {
-		root: "relative w-full overflow-y-auto overscroll-contain rounded-2xl border border-border bg-background text-foreground outline-none [container-type:size] focus-visible:ring-2 focus-visible:ring-ring",
+		root: "relative w-full overflow-y-auto overscroll-contain rounded-2xl bg-muted/40 text-foreground outline-none [container-type:size] focus-visible:ring-2 focus-visible:ring-ring",
 		track: "scroll-frame-track relative h-[500cqh] motion-reduce:h-[100cqh]",
 		stage:
 			"sticky top-0 flex h-[100cqh] w-full items-center justify-center overflow-hidden [perspective:1200px] [--ssc-a:clamp(0,calc(var(--scroll-p)*2.5),1)] [--ssc-b:clamp(0,calc((var(--scroll-p)_-_0.4)*2.5),1)] [--ssc-c:clamp(0,calc((var(--scroll-p)_-_0.8)*5),1)] [--ssc-r:clamp(0,calc(var(--scroll-p)*5),1)] [--ssc-h:clamp(0,calc(var(--scroll-p)*10),1)]",

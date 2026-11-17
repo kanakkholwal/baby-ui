@@ -6,9 +6,9 @@ import {
 	type ReactNode,
 	useContext,
 	useId,
-	useState,
 } from "react";
 import { cn } from "../../lib/cn";
+import { useControllable } from "../../lib/react/use-controllable";
 import { Switch } from "../../switch/react/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../tabs/react/tabs";
 import {
@@ -49,21 +49,6 @@ function useComparison(part: string): ComparisonCtx {
 	if (!ctx) throw new Error(`${part} must be used inside <PricingComparison>`);
 	return ctx;
 }
-
-function useControllable<T>(
-	value: T | undefined,
-	initial: T,
-	onChange?: (next: T) => void,
-) {
-	const [local, setLocal] = useState(initial);
-	const current = value ?? local;
-	const set = (next: T) => {
-		if (value === undefined) setLocal(next);
-		onChange?.(next);
-	};
-	return [current, set] as const;
-}
-
 const CHECK = "M5 12l5 5l10 -10";
 const CROSS = "M18 6l-12 12M6 6l12 12";
 

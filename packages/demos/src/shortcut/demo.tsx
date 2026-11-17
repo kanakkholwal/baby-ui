@@ -35,7 +35,7 @@ export function ShortcutDemo({ props }: { props: Props }) {
 					<Shortcut shortcut="cmd+enter" />
 				</Button>
 			</div>
-			<div className="divide-y divide-border rounded-xl border border-border">
+			<div className="divide-y divide-border/60 rounded-xl border border-border">
 				{ROWS.map(([label, keys]) => (
 					<button
 						key={keys}

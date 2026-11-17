@@ -2,7 +2,7 @@ import { tv, type VariantProps } from "tailwind-variants";
 
 export const toggleGroup = tv({
 	slots: {
-		root: "inline-flex items-center gap-0.5 border border-border",
+		root: "inline-flex items-center gap-0.5",
 		// bits-ui marks pressed items data-state=on; data-pressed keeps the classes in step with React.
 		item: [
 			"inline-flex items-center justify-center gap-1.5 font-medium text-muted-foreground outline-none",

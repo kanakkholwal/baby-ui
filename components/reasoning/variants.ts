@@ -32,7 +32,7 @@ export const reasoning = tv({
 				trigger: "-mx-1.5 w-fit items-center rounded-md px-1.5 py-1",
 				icon: "mt-0",
 				chevron: "mt-0",
-				content: "mt-1 ml-[5px] border-border border-l px-0 pt-1 pb-1 pl-4",
+				content: "mt-1 ml-[5px] border-border/60 border-l px-0 pt-1 pb-1 pl-4",
 			},
 		},
 	},
@@ -84,7 +84,7 @@ export const reasoningExtras = tv({
 			"rounded-full transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
 		source: "pop-in rounded-full text-foreground/70",
 		figure: "pop-in mt-2",
-		image: "w-full max-w-[220px] rounded-lg border border-border object-cover",
+		image: "w-full max-w-[220px] rounded-lg object-cover",
 		caption: "mt-1 text-xs text-muted-foreground",
 	},
 });

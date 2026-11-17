@@ -8,8 +8,9 @@ export const pricingComparison = tv({
 			"hidden w-full table-fixed border-separate border-spacing-0 text-sm @2xl:table",
 		head: "sticky top-[var(--pricing-comparison-top,0px)] z-10 bg-background",
 		corner:
-			"border-border border-b bg-background text-left align-bottom font-normal text-muted-foreground",
-		planHead: "border-border border-b bg-background text-center align-bottom font-medium",
+			"border-border/60 border-b bg-background text-left align-bottom font-normal text-muted-foreground",
+		planHead:
+			"border-border/60 border-b bg-background text-center align-bottom font-medium",
 		highlight: "border-x border-x-foreground/20",
 		highlightTop: "rounded-t-xl border-t border-t-foreground/20",
 		highlightEnd: "rounded-b-xl border-b border-b-foreground/20",
@@ -25,7 +26,7 @@ export const pricingComparison = tv({
 			"data-[state=open]:grid-rows-[1fr] data-[state=open]:duration-[var(--duration-dropdown)] motion-reduce:transition-none",
 		],
 		collapseInner: "min-h-0 overflow-hidden",
-		cell: "border-border border-t",
+		cell: "border-border/60 border-t",
 		feature: "text-foreground/90",
 		hint: "mt-0.5 block text-muted-foreground text-xs",
 		value: "flex items-center justify-center text-center tabular-nums",
@@ -34,7 +35,7 @@ export const pricingComparison = tv({
 		empty: "py-8 text-center text-muted-foreground text-sm",
 		mobile: "@2xl:hidden",
 		mobileGroupLabel: "mt-6 mb-1 font-medium text-sm first:mt-0",
-		mobileRow: "flex items-start justify-between gap-4 border-border border-t text-sm",
+		mobileRow: "flex items-start justify-between gap-4 border-border/60 border-t text-sm",
 		mobileValue: "flex shrink-0 items-center text-right tabular-nums",
 	},
 	variants: {

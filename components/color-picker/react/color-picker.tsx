@@ -402,7 +402,7 @@ export function ColorPicker({
 		>
 			{area}
 
-			<div className="flex items-center gap-2.5 border-border border-b p-2">
+			<div className="flex items-center gap-2.5 border-border/60 border-b p-2">
 				<span
 					aria-hidden
 					style={{ background: preview }}
@@ -420,13 +420,13 @@ export function ColorPicker({
 							spellCheck={false}
 							autoComplete="off"
 							onChange={(e) => typeHex(e.currentTarget.value)}
-							className="h-6 min-w-0 flex-1 bg-transparent font-mono text-xs text-foreground uppercase outline-none"
+							className="h-6 min-w-0 flex-1 bg-transparent font-mono text-xs text-foreground outline-none"
 						/>
 					</div>
 				</div>
 			</div>
 
-			<div className="flex flex-col gap-1.5 border-border border-b p-2">
+			<div className="flex flex-col gap-1.5 border-border/60 border-b p-2">
 				<div className="flex items-center gap-0.5 rounded-md bg-card p-0.5">
 					{FORMATS.map((option) => (
 						<button
@@ -434,7 +434,7 @@ export function ColorPicker({
 							type="button"
 							onClick={() => pickFormat(option)}
 							aria-pressed={format === option}
-							className="h-5 flex-1 rounded font-mono text-xs text-muted-foreground uppercase transition-colors aria-pressed:bg-background aria-pressed:text-foreground"
+							className="h-5 flex-1 rounded font-mono text-xs text-muted-foreground transition-colors aria-pressed:bg-background aria-pressed:text-foreground"
 						>
 							{option}
 						</button>

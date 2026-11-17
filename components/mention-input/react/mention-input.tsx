@@ -11,6 +11,7 @@ import {
 } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "../../avatar/react/avatar";
 import { cn } from "../../lib/cn";
+import { useControllable } from "../../lib/react/use-controllable";
 import {
 	EMPTY_MENTIONS,
 	findTrigger,
@@ -87,8 +88,7 @@ export function MentionInput({
 	"aria-label": ariaLabel = "Message",
 	className,
 }: MentionInputProps) {
-	const [own, setOwn] = useState(defaultValue);
-	const current = value ?? own;
+	const [current, commit] = useControllable(value, defaultValue, onValueChange);
 	const [caret, setCaret] = useState<number | null>(null);
 	const [active, setActive] = useState(0);
 	const [dismissed, setDismissed] = useState<number | null>(null);
@@ -114,10 +114,6 @@ export function MentionInput({
 		pendingCaret.current = null;
 	});
 
-	const commit = (next: MentionValue) => {
-		if (value === undefined) setOwn(next);
-		onValueChange?.(next);
-	};
 	const choose = (index: number) => {
 		const pick = suggestions[index];
 		if (!pick || !trigger || caret === null) return;

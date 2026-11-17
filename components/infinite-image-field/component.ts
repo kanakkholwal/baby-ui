@@ -4,7 +4,7 @@ import { infiniteImageField as infiniteImageFieldVariants } from "./variants";
 const VARIANTS = ["drift", "fisheye", "gallery"];
 const SHAPES = ["square", "rounded"];
 const LAYOUTS = ["grid", "staggered"];
-const SIZES = ["sm", "md", "lg"];
+const SIZES = ["sm", "default", "lg"];
 
 export const infiniteImageField = defineComponent({
 	slug: "infinite-image-field",

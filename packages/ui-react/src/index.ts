@@ -659,7 +659,7 @@ export { scatterPoint, type ScatterSize, type ScatterShape, SCATTER_RADIUS, SCAT
 export { type ScoreCardProps, ScoreCard, ScoreCardHeader, ScoreCardTitle, ScoreCardDescription, type ScoreCardTrendProps, ScoreCardTrend, ScoreCardContent, ScoreCardGauge } from "@baby-ui/components/react/score-card";
 export { scoreCard, type ScoreCardSize } from "@baby-ui/components/react/score-card";
 export { type ScrollAreaProps, ScrollArea } from "@baby-ui/components/react/scroll-area";
-export { scrollArea, type ScrollAreaScrollbar } from "@baby-ui/components/react/scroll-area";
+export { scrollArea, type ScrollAreaScrollbar, type ScrollAreaGutter, type ScrollAreaOrientation, type ScrollAreaFade, SCROLL_EDGE, type ScrollEdges, readEdges } from "@baby-ui/components/react/scroll-area";
 export { type ScrollChoreographyProps, ScrollChoreography } from "@baby-ui/components/react/scroll-choreography";
 export { type ScrollChoreographyImage, type ScrollChoreographyImages, CHOREOGRAPHY_SLOTS } from "@baby-ui/components/react/scroll-choreography";
 export { scrollChoreography, type ScrollChoreographySize, type ScrollChoreographyVariant } from "@baby-ui/components/react/scroll-choreography";

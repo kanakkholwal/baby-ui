@@ -2,7 +2,7 @@ import { tv, type VariantProps } from "tailwind-variants";
 
 export const collabCard = tv({
 	slots: {
-		root: "group/collab @container relative isolate aspect-3/2 w-full overflow-hidden rounded-2xl shadow-xl ring-1",
+		root: "group/collab @container relative isolate aspect-3/2 w-full overflow-hidden rounded-2xl shadow-(--overlay-shadow) ring-1",
 		backdrop: "absolute inset-0 -z-10",
 		glow: "pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_70%_55%_at_18%_88%,color-mix(in_oklch,var(--chart-4)_42%,transparent)_0%,transparent_70%),radial-gradient(ellipse_60%_50%_at_88%_22%,color-mix(in_oklch,var(--chart-2)_32%,transparent)_0%,transparent_68%)]",
 		dots: "pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(currentColor_1px,transparent_1.2px)] opacity-[0.08] [background-size:14px_14px] [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_88%)]",

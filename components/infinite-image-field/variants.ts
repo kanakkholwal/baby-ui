@@ -11,12 +11,12 @@ export type InfiniteImageItem = {
 
 export const infiniteImageField = tv({
 	slots: {
-		root: "relative isolate w-full overflow-hidden rounded-xl border border-border bg-background outline-none focus-visible:ring-2 focus-visible:ring-ring",
+		root: "relative isolate w-full overflow-hidden rounded-xl bg-muted/40 outline-none focus-visible:ring-2 focus-visible:ring-ring",
 		canvas: "pointer-events-none absolute inset-0 block size-full",
 		vignette:
 			"pointer-events-none absolute inset-0 bg-radial from-transparent from-55% to-background/70",
 		status: "absolute inset-0 grid place-items-center",
-		hint: "pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 font-mono text-muted-foreground/70 text-xs uppercase tracking-widest",
+		hint: "pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 font-mono text-muted-foreground text-xs uppercase tracking-widest",
 		fallback:
 			"grid h-full auto-rows-max grid-cols-2 gap-3 overflow-auto p-3 sm:grid-cols-3",
 		fallbackImage: "aspect-square w-full rounded-md object-cover",

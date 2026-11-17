@@ -22,7 +22,7 @@ const ROW = "flex w-full flex-row-reverse items-center justify-between gap-4";
 
 <Popover>
 	<PopoverTrigger
-		class="inline-flex h-9 items-center rounded-lg border border-border bg-card px-3 font-medium text-foreground text-sm"
+		class="inline-flex h-9 items-center rounded-lg bg-card px-3 font-medium text-foreground text-sm"
 	>
 		Deploy settings
 	</PopoverTrigger>
@@ -31,6 +31,7 @@ const ROW = "flex w-full flex-row-reverse items-center justify-between gap-4";
 		side={p.side ?? "bottom"}
 		sideOffset={Number(props.sideOffset ?? 4)}
 		align={p.align ?? "center"}
+		alignOffset={Number(props.alignOffset ?? 0)}
 	>
 		<div class="flex flex-col gap-3">
 			<Label>Preview branches</Label>

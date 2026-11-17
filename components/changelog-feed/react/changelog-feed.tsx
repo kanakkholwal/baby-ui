@@ -6,7 +6,6 @@ import {
 	type ReactNode,
 	useContext,
 	useId,
-	useState,
 } from "react";
 import {
 	Accordion,
@@ -18,6 +17,7 @@ import { Badge } from "../../badge/react/badge";
 import { CodeBlock } from "../../code-block/react/code-block";
 import { cn } from "../../lib/cn";
 import type { ImageSlotProps } from "../../lib/image";
+import { useControllable } from "../../lib/react/use-controllable";
 import { RollingDigits } from "../../rolling-digits/react/rolling-digits";
 import { ToggleGroup, ToggleGroupItem } from "../../toggle-group/react/toggle-group";
 import {
@@ -89,12 +89,17 @@ export function ChangelogFeed({
 }: ChangelogFeedProps) {
 	const titleId = useId();
 	const styles = changelogFeed({ variant });
-	const [ownKinds, setOwnKinds] = useState<ChangelogKind[]>([]);
-	const [ownOpen, setOwnOpen] = useState<string[]>(() => {
-		const newest = changelogMonths(entries, locale)[0]?.items[0];
-		return newest ? [newest.id] : [];
-	});
-	const kinds = kindsProp ?? ownKinds;
+	const newest = changelogMonths(entries, locale)[0]?.items[0];
+	const [kinds, setKindList] = useControllable<ChangelogKind[]>(
+		kindsProp,
+		[],
+		onKindsChange,
+	);
+	const [openIds, setOpenIds] = useControllable<string[]>(
+		value,
+		newest ? [newest.id] : [],
+		onValueChange,
+	);
 
 	const state: ChangelogFeedState = {
 		entries,
@@ -105,15 +110,10 @@ export function ChangelogFeed({
 			const list = (Array.isArray(next) ? next : [next]).flatMap((v) =>
 				CHANGELOG_KINDS.filter((k) => k.id === v).map((k) => k.id),
 			);
-			if (kindsProp === undefined) setOwnKinds(list);
-			onKindsChange?.(list);
+			setKindList(list);
 		},
-		open: value ?? ownOpen,
-		setOpen: (next) => {
-			const list = Array.isArray(next) ? next : next ? [next] : [];
-			if (value === undefined) setOwnOpen(list);
-			onValueChange?.(list);
-		},
+		open: openIds,
+		setOpen: (next) => setOpenIds(Array.isArray(next) ? next : next ? [next] : []),
 		shown: entries.filter((entry) => kindShown(entry, kinds)),
 		styles,
 	};

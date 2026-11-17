@@ -101,7 +101,7 @@ export function FilterTable({
 							aria-pressed={active}
 							onClick={() => setFilter(f.key)}
 							className={cn(
-								"flex h-[26px] shrink-0 items-center gap-1.5 rounded-full px-2.5 text-xs font-medium transition-[background-color,box-shadow,color] duration-(--duration-base)",
+								"flex h-[26px] shrink-0 items-center gap-1.5 rounded-full px-2.5 text-xs font-medium outline-none focus-visible:ring-2 focus-visible:ring-ring transition-[background-color,box-shadow,color] duration-(--duration-base)",
 								active
 									? "bg-card text-foreground shadow-sm"
 									: "text-muted-foreground hover:bg-accent",
@@ -132,19 +132,13 @@ export function FilterTable({
 				<div className="min-w-[420px]">
 					<div
 						className={cn(
-							"grid border-border border-b text-xs font-medium text-muted-foreground",
+							"grid border-border/60 border-b text-xs font-medium text-muted-foreground",
 							GRID_COLS,
 						)}
 					>
-						<span className="border-border border-r px-3 py-2">
-							{labels.columns.task}
-						</span>
-						<span className="border-border border-r px-3 py-2">
-							{labels.columns.date}
-						</span>
-						<span className="border-border border-r px-3 py-2">
-							{labels.columns.status}
-						</span>
+						<span className="px-3 py-2">{labels.columns.task}</span>
+						<span className="px-3 py-2">{labels.columns.date}</span>
+						<span className="px-3 py-2">{labels.columns.status}</span>
 						<span className="px-3 py-2">{labels.columns.owner}</span>
 					</div>
 					{rows.map((row) => {
@@ -161,19 +155,19 @@ export function FilterTable({
 								<div className="overflow-hidden">
 									<div
 										className={cn(
-											"grid border-border border-b text-sm transition-colors duration-(--duration-instant) hover:bg-accent",
+											"grid border-border/60 border-b text-sm transition-colors duration-(--duration-instant) hover:bg-accent",
 											GRID_COLS,
 										)}
 									>
-										<span className="flex min-w-0 items-center border-border border-r px-3 py-2">
+										<span className="flex min-w-0 items-center px-3 py-2">
 											<span className="truncate font-medium text-foreground">
 												{row.task}
 											</span>
 										</span>
-										<span className="flex items-center whitespace-nowrap border-border border-r px-3 py-2 text-muted-foreground tabular-nums">
+										<span className="flex items-center whitespace-nowrap px-3 py-2 text-muted-foreground tabular-nums">
 											{row.date}
 										</span>
-										<span className="flex items-center border-border border-r px-3 py-2">
+										<span className="flex items-center px-3 py-2">
 											<Badge variant={STATUS_VARIANT[row.status]}>
 												{STATUS_LABEL[row.status]}
 											</Badge>

@@ -9,7 +9,7 @@ export const userMenu = tv({
 		dot: [
 			"absolute -right-0.5 -bottom-0.5 size-2.5 rounded-full ring-2 ring-background transition-colors duration-(--duration-base)",
 			"before:absolute before:inset-x-[2px] before:top-1/2 before:h-[2px] before:-translate-y-1/2 before:scale-x-0 before:rounded-full before:bg-background before:transition-transform before:duration-(--duration-base)",
-			"after:absolute after:inset-[2.5px] after:scale-0 after:rounded-full after:bg-background after:transition-transform after:duration-(--duration-base)",
+			"after:absolute after:inset-[2.5px] after:scale-50 after:rounded-full after:bg-background after:transition-transform after:duration-(--duration-base)",
 			"data-[presence=available]:bg-success data-[presence=busy]:bg-destructive data-[presence=busy]:before:scale-x-100 data-[presence=away]:bg-warning data-[presence=away]:after:scale-100",
 			"motion-reduce:transition-none motion-reduce:before:transition-none motion-reduce:after:transition-none",
 		],

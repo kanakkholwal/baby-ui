@@ -40,7 +40,7 @@ export const videoPlayer = tv({
 		loopButton: "group/loop",
 		loopDot: [
 			"pointer-events-none absolute bottom-0.5 left-1/2 size-1 -translate-x-1/2 rounded-full bg-current",
-			"scale-0 opacity-0 transition-[opacity,scale] duration-(--duration-base) ease-(--ease-ui-out)",
+			"scale-50 opacity-0 transition-[opacity,scale] duration-(--duration-base) ease-(--ease-ui-out)",
 			"group-aria-pressed/loop:scale-100 group-aria-pressed/loop:opacity-100",
 		],
 		loopIcon: [
@@ -85,8 +85,7 @@ export const videoPlayer = tv({
 		volumeMenu: "w-auto p-1",
 		volumePanel: "flex items-center gap-1 pr-2",
 		volumeRange: "w-28",
-		volumeValue:
-			"w-7 text-right font-mono text-[11px] text-muted-foreground tabular-nums",
+		volumeValue: "w-7 text-right font-mono text-xs text-muted-foreground tabular-nums",
 		loading:
 			"pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
 		loadingIcon: [

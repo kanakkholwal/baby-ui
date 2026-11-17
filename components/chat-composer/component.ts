@@ -2,7 +2,7 @@ import { defineComponent, variantsOf } from "@baby-ui/registry-schema";
 import { chatComposer as chatComposerVariants } from "./variants";
 
 const VARIANTS = ["framed", "outline"];
-const SIZES = ["sm", "md"];
+const SIZES = ["sm", "default"];
 
 export const chatComposer = defineComponent({
 	slug: "chat-composer",

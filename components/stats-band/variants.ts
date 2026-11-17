@@ -42,12 +42,12 @@ export const statsBand = tv({
 			plain: {},
 			// A hairline grid, ruled above and below.
 			divided: {
-				stats: "gap-0 border-border border-y",
-				stat: "border-border border-b p-6 last:border-b-0 @xl/stats:border-r @xl/stats:[&:nth-child(2n)]:border-r-0 @4xl/stats:border-b-0 @4xl/stats:[&:nth-child(2n)]:border-r @4xl/stats:last:border-r-0",
+				stats: "gap-0 border-border/60 border-y",
+				stat: "border-border/60 border-b p-6 last:border-b-0 @xl/stats:border-r @xl/stats:[&:nth-child(2n)]:border-r-0 @4xl/stats:border-b-0 @4xl/stats:[&:nth-child(2n)]:border-r @4xl/stats:last:border-r-0",
 			},
 			// A rule over each stat with a tighter figure, the way an annual report sets its numbers.
 			ruled: {
-				stat: "border-border border-t pt-6",
+				stat: "border-border/60 border-t pt-6",
 				figure: "mb-3 text-3xl @3xl/stats:text-4xl",
 			},
 		},

@@ -1,6 +1,8 @@
 "use client";
 
 import { ToolChips, type ToolDiff, type ToolStep } from "@baby-ui/react";
+import type { ComponentProps } from "react";
+import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
 
@@ -60,12 +62,14 @@ const DIFFS: ToolDiff[] = [
 ];
 
 export function ToolChipsDemo({ props }: { props: Props }) {
+	const p = controlProps<ComponentProps<typeof ToolChips>>(props);
 	return (
 		<ToolChips
 			steps={STEPS}
 			diffs={DIFFS}
 			hiddenDiffCount={2}
 			defaultOpen={props.defaultOpen !== false}
+			size={p.size}
 		/>
 	);
 }

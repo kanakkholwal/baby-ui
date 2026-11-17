@@ -1,6 +1,6 @@
 "use client";
 
-import { type InputHTMLAttributes, useId, useMemo, useState } from "react";
+import { type InputHTMLAttributes, useId, useMemo } from "react";
 import {
 	InputGroup,
 	InputGroupAddon,
@@ -9,6 +9,7 @@ import {
 import type { InputGroupSize } from "../../input-group/variants";
 import { LetterMorph } from "../../letter-morph/react/letter-morph";
 import { cn } from "../../lib/cn";
+import { useControllable } from "../../lib/react/use-controllable";
 import {
 	DEFAULT_STRENGTH_LABELS,
 	measurePassword,
@@ -69,10 +70,16 @@ export function PasswordInput({
 	...props
 }: PasswordInputProps) {
 	const id = useId();
-	const [own, setOwn] = useState(defaultValue);
-	const text = value ?? own;
-	const [ownRevealed, setOwnRevealed] = useState(defaultRevealed);
-	const revealed = revealedProp ?? ownRevealed;
+	const [text, setText] = useControllable<string, [PasswordStrength]>(
+		value,
+		defaultValue,
+		onValueChange,
+	);
+	const [revealed, setRevealed] = useControllable(
+		revealedProp,
+		defaultRevealed,
+		onRevealedChange,
+	);
 	const strength = useMemo(
 		() => measurePassword(text, rules ?? [], shortLength),
 		[text, rules, shortLength],
@@ -97,8 +104,7 @@ export function PasswordInput({
 					value={text}
 					onChange={(event) => {
 						const next = event.target.value;
-						if (value === undefined) setOwn(next);
-						onValueChange?.(next, measurePassword(next, rules ?? [], shortLength));
+						setText(next, measurePassword(next, rules ?? [], shortLength));
 					}}
 				/>
 				<InputGroupAddon align="inline-end">
@@ -109,8 +115,7 @@ export function PasswordInput({
 						data-revealed={revealed}
 						className={cn("group/toggle", s.toggle())}
 						onClick={() => {
-							if (revealedProp === undefined) setOwnRevealed(!revealed);
-							onRevealedChange?.(!revealed);
+							setRevealed(!revealed);
 						}}
 					>
 						<svg

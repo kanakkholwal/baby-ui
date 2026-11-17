@@ -36,7 +36,7 @@ export const question = tv({
 		/** `muted` is a filled card on the muted surface; `outline` a bordered one; `plain` sits in a turn. */
 		variant: {
 			muted: { root: "rounded-2xl bg-muted p-4" },
-			outline: { root: "rounded-2xl border border-border bg-card p-4" },
+			outline: { root: "rounded-2xl bg-card p-4" },
 			plain: {},
 		},
 	},

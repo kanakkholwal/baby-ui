@@ -23,7 +23,7 @@ let done = $state(false);
 
 <div class="flex flex-col items-center gap-3">
 	<AlertDialog bind:open variant={p.variant ?? "default"}>
-		<AlertDialogTrigger class="inline-flex h-9 items-center rounded-lg border border-border bg-card px-3 font-medium text-foreground text-sm">Delete project</AlertDialogTrigger>
+		<AlertDialogTrigger class="inline-flex h-9 items-center rounded-lg bg-card px-3 font-medium text-foreground text-sm">Delete project</AlertDialogTrigger>
 		<AlertDialogContent>
 			<AlertDialogHeader>
 				<AlertDialogTitle>Delete this project?</AlertDialogTitle>

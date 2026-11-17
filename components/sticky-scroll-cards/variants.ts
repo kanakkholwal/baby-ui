@@ -9,7 +9,7 @@ export const stickyScrollCards = tv({
 		hintText: "text-xs font-medium uppercase tracking-widest text-muted-foreground",
 		hintLine: "h-12 w-px bg-gradient-to-b from-foreground/30 to-transparent",
 		section: "sticky top-0 grid w-full place-items-center",
-		card: "sticky-scroll-card relative m-0 origin-top rotate-[var(--sticky-scroll-rotate)] overflow-hidden motion-reduce:rotate-none rounded-md border border-border bg-card text-card-foreground shadow-xl",
+		card: "sticky-scroll-card relative m-0 origin-top rotate-[var(--sticky-scroll-rotate)] overflow-hidden motion-reduce:rotate-none rounded-md bg-card text-card-foreground shadow-xl",
 		image: "block h-[clamp(160px,42cqw,290px)] w-[min(78cqw,460px)] object-cover",
 		caption: "",
 	},

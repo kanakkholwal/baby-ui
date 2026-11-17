@@ -34,7 +34,7 @@ function note(action: string) {
 			<Shortcut shortcut="cmd+enter" />
 		</Button>
 	</div>
-	<div class="divide-y divide-border rounded-xl border border-border">
+	<div class="divide-y divide-border/60 rounded-xl border border-border">
 		{#each ROWS as [label, keys] (keys)}
 			<button
 				type="button"

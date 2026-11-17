@@ -23,7 +23,7 @@ export const megaNavbar = tv({
 		pane: "absolute inset-x-0 top-0 w-max transition-opacity duration-[var(--duration-dropdown)] motion-reduce:transition-none",
 		item: "flex gap-3 rounded-lg p-2.5 transition-colors hover:bg-foreground/[0.06] focus-visible:bg-foreground/[0.06] focus-visible:outline-none aria-[current=page]:bg-foreground/[0.06] motion-reduce:transition-none",
 		footer:
-			"group/cta flex items-center justify-between gap-4 border-border border-t px-5 py-3 transition-colors hover:bg-accent focus-visible:bg-accent focus-visible:outline-none motion-reduce:transition-none",
+			"group/cta flex items-center justify-between gap-4 border-border/60 border-t px-5 py-3 transition-colors hover:bg-accent focus-visible:bg-accent focus-visible:outline-none motion-reduce:transition-none",
 		link: "inline-flex h-8 items-center whitespace-nowrap rounded-full px-3 font-medium text-sm transition-colors hover:bg-foreground/[0.06] hover:text-foreground motion-reduce:transition-none",
 		mobileChevron:
 			"size-4 shrink-0 text-muted-foreground transition-transform duration-[var(--duration-dropdown)] motion-reduce:transition-none",
@@ -33,7 +33,7 @@ export const megaNavbar = tv({
 			"flex min-h-12 items-center rounded-lg px-2 font-medium text-foreground transition-colors motion-reduce:transition-none",
 		list: "grid w-[34rem] grid-cols-2 gap-1 p-2",
 		// Secondary links: one line each, several columns, so a long group stays short.
-		more: "border-border border-t p-2",
+		more: "border-border/60 border-t p-2",
 		moreHeading: "px-3 pt-1 pb-1.5 font-medium text-muted-foreground text-xs",
 		moreList: "grid grid-cols-3 gap-0.5",
 		moreLink:
@@ -49,7 +49,7 @@ export const megaNavbar = tv({
 		// Expand: the bar itself grows down into the open section's panel.
 		expandBar: [
 			// Concentric: a 16px bar round 8px padding round the ladder's 8px-radius h-9 controls.
-			"absolute inset-x-0 top-0 mx-auto grid w-full max-w-6xl grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-4 overflow-hidden rounded-2xl border border-border bg-background/85 p-2 backdrop-blur-xl backdrop-saturate-150 @3xl:gap-x-6",
+			"absolute inset-x-0 top-0 mx-auto grid w-full max-w-6xl grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-4 overflow-hidden rounded-2xl bg-background/85 p-2 backdrop-blur-xl backdrop-saturate-150 @3xl:gap-x-6",
 			// A bright top edge reads as light catching the material; the cast shadow lands once raised.
 			"shadow-[inset_0_1px_0_rgb(255_255_255/0.06)] transition-[background-color,border-color,box-shadow] duration-300 ease-(--ease-ui-out) data-[open=false]:data-[raised=true]:shadow-[inset_0_1px_0_rgb(255_255_255/0.06),0_28px_56px_-28px_rgb(0_0_0/0.4)] motion-reduce:transition-none",
 			// Open, the bar becomes a popover: the same fill and edge as every other floating panel.
@@ -101,14 +101,14 @@ export const megaNavbar = tv({
 			"motion-reduce:translate-y-0 motion-reduce:blur-none motion-reduce:[transition-delay:0ms]",
 		],
 		expandIcon:
-			"grid size-9 place-items-center rounded-lg border border-border bg-muted/60 text-foreground shadow-xs transition-transform duration-(--duration-fast) ease-out group-hover/item:scale-105 group-active/item:scale-95 motion-reduce:transition-none [&_svg]:size-[1.125rem]",
+			"grid size-9 place-items-center rounded-lg bg-muted/60 text-foreground shadow-xs transition-transform duration-(--duration-fast) ease-out group-hover/item:scale-105 group-active/item:scale-95 motion-reduce:transition-none [&_svg]:size-[1.125rem]",
 		expandLabel:
 			"flex items-center gap-1 font-medium text-foreground text-sm leading-tight",
 		expandDetail: "mt-1 text-pretty text-[0.8125rem] text-muted-foreground leading-snug",
 		expandArrow:
 			"mt-0.5 size-3.5 text-muted-foreground transition-transform duration-(--duration-fast) ease-out group-hover/item:-translate-y-0.5 group-hover/item:translate-x-0.5 motion-reduce:transition-none",
 		expandMore:
-			"col-start-2 mt-2 flex flex-wrap items-center gap-1 border-border border-t pt-3",
+			"col-start-2 mt-2 flex flex-wrap items-center gap-1 border-border/60 border-t pt-3",
 		expandMoreLink:
 			"rounded-lg px-2.5 py-1 text-muted-foreground text-sm outline-none transition-colors hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none",
 		expandMobile:
@@ -126,7 +126,7 @@ export const megaNavbar = tv({
 			},
 			capsule: {
 				root: "border-b",
-				capsule: "rounded-full border border-border bg-muted/40 p-1",
+				capsule: "rounded-full bg-muted/40 p-1",
 				trigger: "relative z-1",
 				link: "relative z-1",
 			},

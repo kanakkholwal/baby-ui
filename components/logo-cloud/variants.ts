@@ -33,7 +33,7 @@ export const logoCloud = tv({
 			// A ruled band: the line on the left, logos spread on the right from 56rem.
 			row: {
 				inner:
-					"border-border border-y py-10 @4xl/logos:grid-cols-[minmax(0,14rem)_minmax(0,1fr)] @4xl/logos:items-center @4xl/logos:gap-12",
+					"border-border/60 border-y py-10 @4xl/logos:grid-cols-[minmax(0,14rem)_minmax(0,1fr)] @4xl/logos:items-center @4xl/logos:gap-12",
 				list: "flex flex-wrap items-center justify-center gap-x-12 gap-y-8 @4xl/logos:justify-between",
 			},
 		},

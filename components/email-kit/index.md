@@ -28,6 +28,32 @@ and inboxes that support `prefers-color-scheme` switch to the dark palette.
 </EmailShell>
 ```
 
+## Fit it to your brand
+
+`createEmailTheme` (in `lib/email-brand.ts`) returns the Tailwind theme with your brand applied.
+Parts use semantic classes (`px-gutter`, `py-stack`, `rounded-card`, `rounded-control`), so one call
+re-fits every template.
+
+| Option | Effect |
+| --- | --- |
+| `primary` | Brand colour. The soft fill, the dark-mode twin and a 4.5:1 button label derive from it. |
+| `radius` | `none`, `sm`, `md`, `lg` or `full`: card, panel, button and badge corners together. |
+| `density` | `compact`, `default` or `relaxed`: gutters, padding and gaps scale as one. |
+| `fontSans`, `fontMono` | Font stacks. |
+| `colors` | Any other token, in hex. |
+
+React takes it per send; Better Svelte Email takes it on the renderer.
+
+```tsx
+<EmailShell preview="Your receipt" brand={{ primary: "#e11d48", radius: "lg", density: "compact" }}>
+```
+
+```ts
+const renderer = new Renderer({
+	tailwindConfig: { ...createEmailTheme({ primary: "#e11d48" }), presets: [pixelBasedPreset] },
+});
+```
+
 - `EmailShell` sets a 600px column, the widest any inbox reliably shows, with a 12px gutter so
   phones keep the card near the edge.
 - `EmailHeader` sets a square mark beside the product name (`variant="lockup"`), or a wordmark

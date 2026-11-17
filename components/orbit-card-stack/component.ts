@@ -1,7 +1,7 @@
 import { defineComponent, variantsOf } from "@baby-ui/registry-schema";
 import { orbitCardStack as orbitCardStackVariants } from "./variants";
 
-const SIZES = ["sm", "md", "lg"];
+const SIZES = ["sm", "default", "lg"];
 const LAYOUTS = ["arc", "row", "grid"];
 
 export const orbitCardStack = defineComponent({
