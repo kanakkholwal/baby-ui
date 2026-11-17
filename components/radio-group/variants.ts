@@ -6,7 +6,7 @@ export const radioGroup = tv({
 		label: "inline-flex cursor-pointer items-start gap-2.5 text-foreground",
 		// The ring is the primitive itself: Base UI marks it data-checked, bits-ui data-state.
 		ring: [
-			"mt-0.5 grid shrink-0 place-items-center rounded-full border-2 border-muted-foreground/75 bg-background outline-none",
+			"relative mt-0.5 grid shrink-0 place-items-center rounded-full border-2 before:absolute before:-inset-1.5 before:rounded-full border-muted-foreground/75 bg-background outline-none",
 			"transition-[background-color,border-color] duration-(--duration-fast) ease-(--ease-ui-out) hover:border-muted-foreground motion-reduce:transition-none",
 			"aria-invalid:border-destructive data-checked:border-primary data-[state=checked]:border-primary",
 			"focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
