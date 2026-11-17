@@ -18,6 +18,7 @@ import {
 } from "../../input-group/react/input-group";
 import type { InputGroupSize } from "../../input-group/variants";
 import { cn } from "../../lib/cn";
+import { useControllable } from "../../lib/react/use-controllable";
 import {
 	capDigits,
 	caretAfterDigits,
@@ -102,8 +103,11 @@ export function PhoneInput({
 		[countries],
 	);
 	const initial = parsePhoneNumber(value ?? defaultValue, pool);
-	const [ownIso, setOwnIso] = useState(initial?.country.iso ?? defaultCountry);
-	const iso = countryProp ?? ownIso;
+	const [iso, setIso] = useControllable(
+		countryProp,
+		initial?.country.iso ?? defaultCountry,
+		onCountryChange,
+	);
 	const entry = findCountry(iso) ?? pool[0] ?? FALLBACK_COUNTRY;
 	const [ownDigits, setOwnDigits] = useState(initial?.national ?? "");
 	// A controlled E.164 value decides the digits; otherwise the field keeps its own.
@@ -135,8 +139,7 @@ export function PhoneInput({
 		});
 	};
 	const pickCountry = (next: PhoneCountry) => {
-		if (countryProp === undefined) setOwnIso(next.iso);
-		onCountryChange?.(next.iso);
+		setIso(next.iso);
 		emit(next, capDigits(next, digits));
 	};
 
@@ -219,8 +222,7 @@ export function PhoneInput({
 						// An international number switches the country to match.
 						const parsed = /^\s*(\+|00)/.test(raw) ? parsePhoneNumber(raw, pool) : null;
 						if (parsed) {
-							if (countryProp === undefined) setOwnIso(parsed.country.iso);
-							onCountryChange?.(parsed.country.iso);
+							setIso(parsed.country.iso);
 							caret.current = parsed.national.length;
 							emit(parsed.country, parsed.national);
 							return;

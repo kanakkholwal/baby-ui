@@ -16,6 +16,8 @@ let warming: Promise<void> | undefined;
 let nextId = 0;
 const pending = new Map<number, Pending>();
 const cache = new Map<string, string>();
+// Identical cards asked for together share one render.
+const inflight = new Map<string, Promise<string>>();
 
 function failAll(message: string) {
 	for (const job of pending.values()) job.reject(new Error(message));
@@ -61,13 +63,21 @@ export function warmOgRenderer(): Promise<void> {
 }
 
 /** Rasterises a card's HTML at 1200x630 off the main thread; resolves to an object URL. */
-export async function renderOgPng(html: string, css: string): Promise<string> {
+export function renderOgPng(html: string, css: string): Promise<string> {
 	const hit = cache.get(html);
 	if (hit) {
 		cache.delete(html);
 		cache.set(html, hit);
-		return hit;
+		return Promise.resolve(hit);
 	}
+	const running = inflight.get(html);
+	if (running) return running;
+	const job = rasterise(html, css).finally(() => inflight.delete(html));
+	inflight.set(html, job);
+	return job;
+}
+
+async function rasterise(html: string, css: string): Promise<string> {
 	const png = await call({ type: "render", html, css, width: WIDTH, height: HEIGHT });
 	if (!png) throw new Error("The OG renderer returned no image");
 	const url = URL.createObjectURL(new Blob([png], { type: "image/png" }));
