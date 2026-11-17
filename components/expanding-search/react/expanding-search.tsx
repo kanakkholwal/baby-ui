@@ -11,6 +11,7 @@ import {
 } from "react";
 import { cn } from "../../lib/cn";
 import { glideHighlight } from "../../lib/glide";
+import { useControllable } from "../../lib/react/use-controllable";
 import {
 	type ExpandingSearchGroup,
 	type ExpandingSearchItem,
@@ -89,25 +90,18 @@ export function ExpandingSearch({
 	size = "default",
 	className,
 }: ExpandingSearchProps) {
-	const [ownExpanded, setOwnExpanded] = useState(defaultExpanded);
-	const expanded = expandedProp ?? ownExpanded;
-	const [ownQuery, setOwnQuery] = useState("");
-	const query = value ?? ownQuery;
+	const [expanded, setExpanded] = useControllable(
+		expandedProp,
+		defaultExpanded,
+		onExpandedChange,
+	);
+	const [query, setQuery] = useControllable(value, "", onValueChange);
 	const [focused, setFocused] = useState(false);
 	const inputRef = useRef<HTMLInputElement>(null);
 	const buttonRef = useRef<HTMLButtonElement>(null);
 	const highlighted = useRef<ExpandingSearchItem | undefined>(undefined);
 	const [list, setList] = useState<HTMLDivElement | null>(null);
 	const pillRef = useRef<HTMLSpanElement>(null);
-
-	const setQuery = (next: string) => {
-		if (value === undefined) setOwnQuery(next);
-		onValueChange?.(next);
-	};
-	const setExpanded = (next: boolean) => {
-		if (expandedProp === undefined) setOwnExpanded(next);
-		onExpandedChange?.(next);
-	};
 
 	const trimmed = query.trim();
 	const results = useMemo(

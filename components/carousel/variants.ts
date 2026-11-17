@@ -32,12 +32,12 @@ export const carousel = tv({
 			linear: {},
 			concave: {
 				viewport:
-					"h-[min(42cqw,22rem)] rounded-3xl bg-muted/20 [clip-path:inset(0_round_1.5rem)]",
+					"h-[min(42cqw,22rem)] rounded-2xl bg-muted/20 [clip-path:inset(0_round_1rem)]",
 				track: "relative h-full px-0",
 			},
 			convex: {
 				viewport:
-					"h-[min(42cqw,22rem)] rounded-3xl bg-muted/20 [clip-path:inset(0_round_1.5rem)]",
+					"h-[min(42cqw,22rem)] rounded-2xl bg-muted/20 [clip-path:inset(0_round_1rem)]",
 				track: "relative h-full px-0",
 			},
 		},
@@ -86,7 +86,7 @@ export const carousel = tv({
 			projection: ["concave", "convex"],
 			variant: "showcase",
 			class: {
-				viewport: "rounded-3xl [clip-path:inset(0_round_1.5rem)]",
+				viewport: "rounded-2xl [clip-path:inset(0_round_1rem)]",
 				slide: "rounded-2xl",
 			},
 		},

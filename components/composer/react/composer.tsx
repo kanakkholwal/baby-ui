@@ -20,6 +20,7 @@ import {
 	DropdownMenuTrigger,
 } from "../../dropdown-menu/react/dropdown-menu";
 import { cn } from "../../lib/cn";
+import { useControllable } from "../../lib/react/use-controllable";
 import {
 	Select,
 	SelectContent,
@@ -101,13 +102,8 @@ export function Composer({
 	...props
 }: ComposerProps) {
 	const inputRef = useRef<HTMLTextAreaElement>(null);
-	const [own, setOwn] = useState(defaultValue);
-	const current = value ?? own;
+	const [current, setValue] = useControllable(value, defaultValue, onValueChange);
 	const canSubmit = current.trim() !== "" && !disabled && !loading;
-	const setValue = (next: string) => {
-		if (value === undefined) setOwn(next);
-		onValueChange?.(next);
-	};
 	const submit = () => {
 		const text = current.trim();
 		if (!text || disabled || loading) return;

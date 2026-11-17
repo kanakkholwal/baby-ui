@@ -72,7 +72,7 @@ export const heroSectionMedia = tv({
 			tilted: {
 				root: "py-6 perspective-[1600px] @4xl/hero:py-10",
 				plate:
-					"absolute inset-x-0 inset-y-0 block -skew-x-6 rounded-3xl border border-foreground/5 bg-foreground/[0.04] transition-transform duration-(--duration-slow) ease-(--ease-ui-out) group-hover/hero-media:-skew-x-3 motion-reduce:transition-none",
+					"absolute inset-x-0 inset-y-0 block -skew-x-6 rounded-2xl border border-foreground/5 bg-foreground/[0.04] transition-transform duration-(--duration-slow) ease-(--ease-ui-out) group-hover/hero-media:-skew-x-3 motion-reduce:transition-none",
 				frame:
 					"translate-x-3 -translate-y-6 -skew-x-6 rounded-2xl bg-background shadow-(--overlay-shadow) transition-transform duration-(--duration-slow) ease-(--ease-ui-out) group-hover/hero-media:-translate-y-4 group-hover/hero-media:-skew-x-3 motion-reduce:transition-none",
 			},

@@ -105,7 +105,7 @@ export const commandFrame = tv({
 			launcher: {
 				popup: "w-[min(42rem,calc(100vw-2rem))]",
 				// The card-toned shell separates the white input, tray and result islands in light mode.
-				panel: "rounded-3xl bg-card p-3 shadow-(--overlay-shadow)",
+				panel: "rounded-2xl bg-card p-3 shadow-(--overlay-shadow)",
 				body: "gap-3",
 				bar: "flex-wrap sm:flex-nowrap",
 				inputWrap:

@@ -17,7 +17,7 @@ export const featureSection = tv({
 		itemTitle: "font-medium",
 		itemDescription: "text-muted-foreground text-sm leading-relaxed",
 		media:
-			"relative min-w-0 overflow-hidden rounded-3xl bg-foreground/[0.03] p-2 [&>*]:rounded-2xl [&_img]:h-auto [&_img]:w-full [&_img]:align-top",
+			"relative min-w-0 overflow-hidden rounded-2xl bg-foreground/[0.03] p-2 [&>*]:rounded-lg [&_img]:h-auto [&_img]:w-full [&_img]:align-top",
 	},
 	variants: {
 		variant: {

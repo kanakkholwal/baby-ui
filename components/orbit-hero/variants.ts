@@ -84,7 +84,7 @@ export const orbitHero = tv({
 		variant: {
 			panel: {
 				root: "px-3 @3xl:px-0",
-				panel: "rounded-2xl bg-muted/30 @3xl:mb-[34px] @3xl:rounded-3xl",
+				panel: "rounded-2xl bg-muted/30 @3xl:mb-[34px] @3xl:rounded-2xl",
 			},
 			plain: { panel: "bg-background" },
 		},

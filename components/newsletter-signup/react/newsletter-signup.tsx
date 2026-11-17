@@ -23,6 +23,7 @@ import {
 } from "../../input-group/react/input-group";
 import { cn } from "../../lib/cn";
 import type { ImageSlotProps } from "../../lib/image";
+import { useControllable } from "../../lib/react/use-controllable";
 import { RollingDigits } from "../../rolling-digits/react/rolling-digits";
 import { Spinner } from "../../spinner/react/spinner";
 import {
@@ -101,8 +102,7 @@ export function NewsletterSignup({
 }: NewsletterSignupProps) {
 	const id = useId();
 	const s = newsletterSignup({ variant });
-	const [own, setOwn] = useState("");
-	const email = value ?? own;
+	const [email, setValue] = useControllable(value, "", onValueChange);
 	const [problem, setProblem] = useState<string | null>(null);
 	const [tried, setTried] = useState(false);
 	const [sentTo, setSentTo] = useState("");
@@ -112,8 +112,7 @@ export function NewsletterSignup({
 	const busy = status === "submitting";
 
 	const setEmail = (next: string) => {
-		if (value === undefined) setOwn(next);
-		onValueChange?.(next);
+		setValue(next);
 		if (tried) setProblem(emailProblem(next));
 	};
 	const submit = (event: FormEvent) => {

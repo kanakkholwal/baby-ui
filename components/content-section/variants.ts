@@ -10,8 +10,8 @@ export const contentSection = tv({
 		// Prose: muted paragraphs, with <strong> lifted to the foreground as the line to remember.
 		body: "grid min-w-0 content-start gap-4 text-pretty text-muted-foreground leading-relaxed [&_strong]:font-medium [&_strong]:text-foreground",
 		media: [
-			"group/content-media relative min-w-0 overflow-hidden rounded-3xl bg-foreground/[0.03] p-1.5",
-			"[&_img]:h-auto [&_img]:w-full [&_img]:rounded-[1.125rem] [&_img]:align-top",
+			"group/content-media relative min-w-0 overflow-hidden rounded-2xl bg-foreground/[0.03] p-1.5",
+			"[&_img]:h-auto [&_img]:w-full [&_img]:rounded-[0.625rem] [&_img]:align-top",
 			"[&_img]:transition-[scale] [&_img]:duration-(--duration-slow) [&_img]:ease-(--ease-ui-out) hover:[&_img]:scale-[1.015] motion-reduce:[&_img]:transition-none",
 		],
 		quote: "mt-4 grid gap-4 border-border border-l-2 pl-5 text-foreground",
