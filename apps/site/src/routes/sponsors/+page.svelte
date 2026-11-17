@@ -53,10 +53,10 @@ const SLOT_HEIGHT: Record<string, string> = { gold: "h-28", bronze: "h-16" };
 		<ul class="m-0 grid list-none gap-3 p-0 sm:grid-cols-2 lg:grid-cols-4">
 			{#each SPONSOR_TIERS as tier (tier.id)}
 				{@const featured = tier.id === FEATURED}
-				<li class="rounded-2xl border border-border bg-card p-1">
+				<li class="rounded-2xl bg-card p-1">
 					<div
 						class={[
-							"flex h-full flex-col gap-5 rounded-[11px] border p-5",
+							"flex h-full flex-col gap-5 rounded-[calc(var(--radius-2xl)-0.25rem)] border p-5",
 							featured ? "border-primary/40 bg-popover" : "border-border bg-popover",
 						]}
 					>

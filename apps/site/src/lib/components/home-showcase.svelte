@@ -36,8 +36,8 @@ const CELLS: Cell[] = [
 		<p class="m-0 max-w-md text-pretty text-muted-foreground">Every panel below is the real component, running.</p>
 	</div>
 
-	<div class="mt-8 rounded-2xl border border-border bg-card p-1 sm:mt-10">
-	<ShowcaseGrid class="overflow-hidden rounded-[11px] border border-border">
+	<div class="mt-8 rounded-2xl bg-card p-1 sm:mt-10">
+	<ShowcaseGrid class="overflow-hidden rounded-[calc(var(--radius-2xl)-0.25rem)]">
 		{#each CELLS as cell (cell.slug)}
 			<ShowcasePanel
 				slug={cell.slug}

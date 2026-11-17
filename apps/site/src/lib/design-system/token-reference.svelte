@@ -55,7 +55,7 @@ const RAMP = [
 		<span class="grid size-8 place-items-center text-foreground text-lg" style:font-family="var({t.name})">Aa</span>
 	{:else if t.kind === "length"}
 		<span
-			class="block size-8 border border-border bg-card"
+			class="block size-8 bg-card"
 			style:border-radius={t.name === "--radius" ? `var(${t.name})` : "6px"}
 			style:translate={t.name === "--radius" ? undefined : `0 calc(var(${t.name}) * -1)`}
 		></span>
@@ -79,7 +79,7 @@ const RAMP = [
 
 {#snippet specimen(id: string)}
 	{#if id === "surfaces"}
-		<div class="rounded-xl border border-border bg-background p-3">
+		<div class="rounded-xl bg-background p-3">
 			<p class="px-1 pb-2 font-mono text-muted-foreground text-xs">--background</p>
 			<div class="rounded-xl bg-card p-3">
 				<p class="pb-3 font-mono text-muted-foreground text-xs">--card</p>

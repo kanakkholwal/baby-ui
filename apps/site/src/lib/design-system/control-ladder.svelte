@@ -97,12 +97,12 @@ const off = (r: Reading, height: number) => Math.abs(r.height - height) > 0.5;
 <div class="mt-4 flex flex-col gap-3">
 	{#each LADDER as row (row.size)}
 		{@const r = (name: string) => readings[row.size]?.find((x) => x.name === name)}
-		<div class="rounded-2xl border border-border bg-card p-1">
+		<div class="rounded-2xl bg-card p-1">
 			<div class="flex items-center justify-between px-3 pt-1.5 pb-2 text-xs">
 				<span class="font-medium text-foreground">{row.size}</span>
 				<span class="font-mono text-muted-foreground tabular-nums">{row.height}px · rounded-{row.radius}</span>
 			</div>
-			<div class="overflow-x-auto rounded-[11px] border border-border bg-background">
+			<div class="overflow-x-auto rounded-[calc(var(--radius-2xl)-0.25rem)] bg-background">
 				<div
 					data-size={row.size}
 					{@attach measure}

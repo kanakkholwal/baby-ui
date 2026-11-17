@@ -71,15 +71,15 @@ let playing = $state(false);
 		<div class="mt-6 grid grid-cols-3 gap-3 sm:grid-cols-6">
 			{#each RADII as { r, cls } (r)}
 				<div class="flex flex-col items-center gap-2">
-					<div data-radius={r} class="aspect-square w-full border border-border bg-card {cls}"></div>
+					<div data-radius={r} class="aspect-square w-full bg-card {cls}"></div>
 					<p class="font-mono text-foreground text-xs">{cls}</p>
 					<p class="font-mono text-muted-foreground text-xs tabular-nums">{read[`px-${r}`] ?? ""}</p>
 				</div>
 			{/each}
 		</div>
 		<div class="mt-6 grid gap-3 sm:grid-cols-2">
-			<div class="rounded-2xl border border-border bg-card p-1">
-				<div class="rounded-[11px] border border-border bg-background px-4 py-5 text-sm">
+			<div class="rounded-2xl bg-card p-1">
+				<div class="rounded-[calc(var(--radius-2xl)-0.25rem)] bg-background px-4 py-5 text-sm">
 					<p class="font-medium text-foreground">Framed body</p>
 					<p class="mt-1 text-muted-foreground">16 outer, 4 padding, 1 border: 11 inner.</p>
 				</div>

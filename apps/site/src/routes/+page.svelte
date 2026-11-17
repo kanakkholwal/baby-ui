@@ -77,7 +77,7 @@ $effect(() => {
 				Pick a component, run its command, and it lands in your project as source.
 			</p>
 		</div>
-		<div class="rounded-2xl border border-border bg-card p-1">
+		<div class="rounded-2xl bg-card p-1">
 			<InstallCommand slug={showcaseSlug} cascade />
 		</div>
 		<p class="mt-4 text-center text-muted-foreground text-xs">

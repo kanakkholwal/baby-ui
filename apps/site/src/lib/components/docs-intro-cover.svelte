@@ -8,5 +8,5 @@ import cover from "../../../../../.github/assets/cover.png";
 	width="1280"
 	height="640"
 	fetchpriority="high"
-	class="not-prose block h-auto w-full rounded-2xl border border-border"
+	class="not-prose block h-auto w-full rounded-2xl"
 />

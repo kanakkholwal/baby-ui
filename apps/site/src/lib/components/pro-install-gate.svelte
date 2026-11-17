@@ -7,11 +7,11 @@ let { name }: { name: string } = $props();
 </script>
 
 <!-- Pro source ships from the private registry, behind sign-in. -->
-<div class="relative grid min-h-80 place-items-center overflow-hidden rounded-2xl border border-border bg-card p-6 text-center">
+<div class="relative grid min-h-80 place-items-center overflow-hidden rounded-2xl bg-card p-6 text-center">
 	<div aria-hidden="true" class="absolute inset-6 grid content-center gap-4 opacity-35 blur-[3px]">
 		<span class="h-3 w-2/3 rounded-full bg-foreground/10"></span>
 		<span class="h-3 w-5/6 rounded-full bg-foreground/10"></span>
-		<span class="h-24 rounded-xl border border-border bg-background/70"></span>
+		<span class="h-24 rounded-xl bg-background/70"></span>
 		<span class="h-3 w-1/2 rounded-full bg-foreground/10"></span>
 	</div>
 	<div class="relative z-1 flex max-w-md flex-col items-center">

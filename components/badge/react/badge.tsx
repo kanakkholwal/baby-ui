@@ -23,7 +23,9 @@ export function Badge({
 			className={cn(badge({ variant, size }), className)}
 			{...props}
 		>
-			{dot ? <span className="size-1.5 shrink-0 rounded-full bg-current" /> : null}
+			{dot ? (
+				<span data-slot="badge-dot" className="shrink-0 rounded-full bg-current" />
+			) : null}
 			{children}
 		</span>
 	);

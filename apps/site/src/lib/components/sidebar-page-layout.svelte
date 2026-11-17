@@ -107,7 +107,7 @@ function active(match: string[]) {
 	{/if}
 	<div
 		class={[
-			"min-w-0 rounded-t-3xl border border-border border-b-0 bg-background md:rounded-none md:border-b md:border-t-0",
+			"min-w-0 rounded-t-3xl border-b-0 bg-background md:rounded-none md:border-b md:border-t-0",
 			workspace ? "md:px-0" : "md:px-10 xl:px-14",
 		]}
 	>

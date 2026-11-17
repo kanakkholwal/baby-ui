@@ -9,7 +9,7 @@ export const multiSelect = tv({
 			"flex w-full min-w-0 flex-wrap items-center gap-1",
 			fieldGroup({ kind: "trigger" }),
 		],
-		chip: "pop-in max-w-40 gap-1 pr-0.5",
+		chip: "pop-in max-w-40 gap-1 bg-background pr-0.5",
 		chipLabel: "min-w-0 truncate",
 		chipRemove:
 			"relative inline-flex size-4 shrink-0 cursor-pointer items-center justify-center rounded-sm text-muted-foreground outline-none after:absolute after:-inset-1 transition-colors hover:bg-foreground/[0.08] hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring [&_svg]:size-3",

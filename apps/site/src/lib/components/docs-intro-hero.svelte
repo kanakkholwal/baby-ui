@@ -31,7 +31,7 @@ let brand = $state("#2f6fdb");
 
 <section
 	aria-label="Baby UI components"
-	class="not-prose grid gap-8 rounded-2xl border border-border bg-card p-6 md:grid-cols-3 md:p-8"
+	class="not-prose grid gap-8 rounded-2xl bg-card p-6 md:grid-cols-3 md:p-8"
 >
 	<div class="flex flex-col gap-6">
 		<div class="flex flex-col gap-1.5">
