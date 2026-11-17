@@ -1,9 +1,12 @@
 <script lang="ts">
 import { IconArrowRight } from "@baby-ui/icons";
-import { Button } from "@baby-ui/svelte";
+import { Button, DiaText } from "@baby-ui/svelte";
 import HeroFragment from "./hero-fragment.svelte";
 
 let { total = 0 }: { total?: number } = $props();
+
+// Slow on purpose: the headline is read, not watched. One line is reserved so a swap never reflows.
+const TAILS = ["React and Svelte", "agents and charts", "emails and OG images"];
 
 // Rounded down to tens with a "+", the same rule as componentCountLabel.
 const count = $derived(`${Math.floor(total / 10) * 10}+`);
@@ -31,7 +34,17 @@ const count = $derived(`${Math.floor(total / 10) * 10}+`);
 			class="hero-in mt-6 mb-0 text-balance font-display font-medium text-[2.5rem] text-foreground leading-[1.05] tracking-[-0.03em] sm:text-6xl"
 			style:--i="1"
 		>
-			UI for React and Svelte
+			UI components for
+			<span class="block h-[1.1em] whitespace-nowrap">
+				<DiaText
+					text={TAILS}
+					repeat
+					triggerOnView={false}
+					durationMs={1600}
+					repeatDelayMs={4200}
+					textColor="var(--muted-foreground)"
+				/>
+			</span>
 		</h1>
 		<p class="hero-in mt-4 max-w-md text-pretty text-base text-muted-foreground sm:text-lg" style:--i="2">
 			Components, agent UI, charts, emails and OG images, installed as source.
