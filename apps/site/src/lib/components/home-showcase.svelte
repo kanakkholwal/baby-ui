@@ -1,6 +1,5 @@
 <script lang="ts">
-import { IconArrowRight } from "@baby-ui/icons";
-import { Button, ShowcaseGrid, type ShowcaseSpan } from "@baby-ui/svelte";
+import { ShowcaseGrid, type ShowcaseSpan } from "@baby-ui/svelte";
 import type { CardItem } from "#lib/registry.js";
 import ShowcasePanel from "./showcase-panel.svelte";
 
@@ -48,14 +47,5 @@ const CELLS: Cell[] = [
 			/>
 		{/each}
 	</ShowcaseGrid>
-	</div>
-
-	<div class="mt-12 flex justify-center">
-		<Button href="/components" variant="outline" size="lg" class="group">
-			Browse all components
-			<IconArrowRight
-				class="transition-transform duration-150 group-hover:translate-x-0.5 motion-reduce:transition-none"
-			/>
-		</Button>
 	</div>
 </section>

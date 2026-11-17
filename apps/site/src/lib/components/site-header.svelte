@@ -160,7 +160,7 @@ function active(match: string[]) {
 		aria-expanded={desktopNavigationOpen}
 		aria-controls="docs-sidebar"
 		aria-label={desktopNavigationOpen ? "Close navigation" : "Open navigation"}
-		class="hidden size-7 rounded-full bg-foreground/[0.045] text-foreground/70 ring-1 ring-foreground/[0.05] hover:bg-foreground/[0.075] hover:text-foreground md:inline-flex"
+		class="hidden size-7 rounded-full bg-foreground/[0.045] text-foreground/70 hover:bg-foreground/[0.075] hover:text-foreground md:inline-flex"
 	>
 		<SidebarToggleIcon open={desktopNavigationOpen} class="size-3.5!" />
 	</Button>
@@ -354,7 +354,7 @@ function active(match: string[]) {
 					variant: "ghost",
 					size: "icon-sm",
 					class:
-						"size-8 md:size-7 rounded-full bg-foreground/[0.045] text-foreground/70 ring-1 ring-foreground/[0.05] hover:bg-foreground/[0.075] hover:text-foreground",
+						"size-8 rounded-full bg-foreground/[0.045] text-foreground/70 hover:bg-foreground/[0.075] hover:text-foreground",
 				})}
 			/>
 
@@ -363,7 +363,7 @@ function active(match: string[]) {
 				size="icon"
 				onclick={() => (prefs.open = true)}
 				aria-label="Settings"
-				class="gear size-8 md:size-7 rounded-full bg-foreground/[0.045] text-foreground/70 ring-1 ring-foreground/[0.05] hover:bg-foreground/[0.075] hover:text-foreground"
+				class="gear size-8 rounded-full bg-foreground/[0.045] text-foreground/70 hover:bg-foreground/[0.075] hover:text-foreground"
 			>
 				<IconSettings size={14} />
 			</Button>
@@ -381,7 +381,7 @@ function active(match: string[]) {
 							size="sm"
 							loadingLabel=""
 							aria-label={stars === null ? "Star on GitHub" : `Star on GitHub, ${stars} stars`}
-							class="h-8 md:h-7 gap-1 rounded-full bg-foreground/[0.045] px-2.5 font-normal text-foreground/70 tabular-nums ring-1 ring-foreground/[0.05] hover:bg-foreground/[0.075] hover:text-foreground"
+							class="h-8 gap-1 rounded-full bg-foreground/[0.045] px-2.5 font-normal text-foreground/70 tabular-nums hover:bg-foreground/[0.075] hover:text-foreground"
 						>
 							<IconBrandGithub size={14} />
 							{#if stars !== null}<span class="hidden text-xs sm:inline">{compact.format(stars)}</span>{/if}

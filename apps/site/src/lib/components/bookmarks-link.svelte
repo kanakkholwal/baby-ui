@@ -17,7 +17,7 @@ const count = $derived(ready ? bookmarks.slugs.length : 0);
 	variant="ghost"
 	size="sm"
 	aria-label={count ? `Bookmarks, ${count} saved` : "Bookmarks"}
-	class="h-8 md:h-7 gap-0 rounded-full bg-foreground/[0.045] px-2.5 font-normal text-foreground/70 tabular-nums ring-1 ring-foreground/[0.05] hover:bg-foreground/[0.075] hover:text-foreground"
+	class="h-8 gap-0 rounded-full bg-foreground/[0.045] px-2.5 font-normal text-foreground/70 tabular-nums hover:bg-foreground/[0.075] hover:text-foreground"
 >
 	<IconBookmark size={14} aria-hidden="true" />
 	<span
