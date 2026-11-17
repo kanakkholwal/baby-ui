@@ -9,7 +9,7 @@ export const table = tv({
 		footer: "font-medium text-muted-foreground",
 		row: "transition-colors",
 		head: "text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0",
-		cell: "align-middle text-foreground [&:has([role=checkbox])]:pr-0",
+		cell: "align-middle text-foreground tabular-nums [&:has([role=checkbox])]:pr-0",
 		caption: "mt-4 text-sm text-muted-foreground",
 	},
 	variants: {

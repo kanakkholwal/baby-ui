@@ -139,7 +139,7 @@ function endRecording() {
 
 	<Dialog bind:open>
 		<DialogContent
-			class="flex max-h-[90vh] w-[min(960px,92vw)] max-w-none flex-col gap-0 overflow-hidden rounded-2xl bg-card p-2 pt-0"
+			class="flex max-h-[90dvh] w-[min(960px,92vw)] max-w-none flex-col gap-0 overflow-hidden rounded-2xl bg-card p-2 pt-0"
 		>
 			<div class="flex h-11 shrink-0 items-center justify-between gap-3 px-1.5">
 				<div class="flex min-w-0 items-center gap-2">
@@ -207,18 +207,18 @@ function endRecording() {
 									loop
 									playsinline
 									class="block h-auto w-auto object-contain"
-									style="max-height: calc(100vh - 150px); max-width: min(960px, 90vw);"
+									style="max-height: calc(100dvh - 150px); max-width: min(960px, 90vw);"
 								></video>
 							{:else}
 								<img
 									src={streamSrc}
 									alt=""
 									class="block h-auto w-auto object-contain"
-									style="max-height: calc(100vh - 150px); max-width: min(960px, 90vw);"
+									style="max-height: calc(100dvh - 150px); max-width: min(960px, 90vw);"
 								/>
 							{/if}
 						{:else}
-							<div class="grid h-[40vh] w-[min(720px,90vw)] place-items-center text-muted-foreground text-sm">
+							<div class="grid h-[40dvh] w-[min(720px,90vw)] place-items-center text-muted-foreground text-sm">
 								Screen unavailable
 							</div>
 						{/if}

@@ -82,13 +82,13 @@ function Screen({ streamSrc }: { streamSrc?: string }) {
 function MediaSizer({ streamSrc }: { streamSrc?: string }) {
 	if (!streamSrc) {
 		return (
-			<div className="grid h-[40vh] w-[min(720px,90vw)] place-items-center text-muted-foreground text-sm">
+			<div className="grid h-[40dvh] w-[min(720px,90vw)] place-items-center text-muted-foreground text-sm">
 				Screen unavailable
 			</div>
 		);
 	}
 	const style: CSSProperties = {
-		maxHeight: "calc(100vh - 150px)",
+		maxHeight: "calc(100dvh - 150px)",
 		maxWidth: "min(960px, 90vw)",
 	};
 	const className = "block h-auto w-auto object-contain";
@@ -192,7 +192,7 @@ export function AgentScreen({
 			</p>
 
 			<Dialog open={isOpen} onOpenChange={setOpen}>
-				<DialogContent className="flex max-h-[90vh] w-[min(960px,92vw)] max-w-none flex-col gap-0 overflow-hidden rounded-2xl bg-card p-2 pt-0">
+				<DialogContent className="flex max-h-[90dvh] w-[min(960px,92vw)] max-w-none flex-col gap-0 overflow-hidden rounded-2xl bg-card p-2 pt-0">
 					<div className="flex h-11 shrink-0 items-center justify-between gap-3 px-1.5">
 						<div className="flex min-w-0 items-center gap-2">
 							<span className="truncate font-semibold text-sm text-foreground">

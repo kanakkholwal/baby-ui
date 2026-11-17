@@ -25,7 +25,7 @@ export const expandingSearch = tv({
 			"starting:data-[state=open]:opacity-0 starting:data-[state=open]:[clip-path:inset(0_0_100%_0_round_var(--radius-xl))] data-[state=closed]:opacity-0 data-[state=closed]:duration-(--duration-exit)",
 			"motion-reduce:transition-none",
 		],
-		list: "relative max-h-[min(22rem,60vh)] overflow-y-auto overscroll-contain p-1.5 scroll-area",
+		list: "relative max-h-[min(22rem,60dvh)] overflow-y-auto overscroll-contain p-1.5 scroll-area",
 		pill: "pointer-events-none absolute inset-x-1.5 top-0 rounded-lg bg-foreground/6 opacity-0 transition-[translate,height,opacity] duration-(--duration-spring-snappy) ease-(--ease-spring-snappy) motion-reduce:transition-none",
 		groupLabel: "px-3 pt-2 pb-1 font-medium text-muted-foreground text-xs",
 		item: "group/item relative flex min-h-12 cursor-default select-none items-center gap-3 rounded-lg px-3 py-1.5 outline-none",

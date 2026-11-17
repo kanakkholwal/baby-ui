@@ -4,7 +4,7 @@ export const commandFrame = tv({
 	slots: {
 		// Command shares Dialog's modal scale/fade contract; its top offset is the only layout difference.
 		popup: [
-			"fixed top-[14vh] left-1/2 z-50 -translate-x-1/2 outline-none",
+			"fixed top-[14dvh] left-1/2 z-50 -translate-x-1/2 outline-none",
 			"transition-[opacity,scale] duration-[var(--duration-overlay)] ease-[var(--ease-out-quad)]",
 			"data-[closed]:opacity-0 data-[closed]:scale-[var(--popover-exit-scale)] data-[closed]:duration-[var(--duration-exit)]",
 			"data-[state=closed]:opacity-0 data-[state=closed]:scale-[var(--popover-exit-scale)] data-[state=closed]:duration-[var(--duration-exit)]",
