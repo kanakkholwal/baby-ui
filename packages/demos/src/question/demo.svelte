@@ -85,7 +85,7 @@ const summary = $derived(
 	>
 		<QuestionHeader title="Got it" onDismiss={() => (status = "answered")} />
 		<QuestionContent />
-		<QuestionFooter />
+		<QuestionFooter submitLabel={typeof props.submitLabel === "string" && props.submitLabel ? props.submitLabel : undefined} />
 		<QuestionResult>{summary || "Skipped"}</QuestionResult>
 	</Question>
 </div>

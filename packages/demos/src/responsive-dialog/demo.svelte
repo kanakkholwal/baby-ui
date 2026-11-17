@@ -23,7 +23,14 @@ const BTN =
 </script>
 
 <div class="flex flex-col items-center gap-3">
-	<ResponsiveDialog bind:open {variant}>
+	<ResponsiveDialog
+		bind:open
+		{variant}
+		size={p.size}
+		dismissOnBackdrop={p.dismissOnBackdrop ?? true}
+		direction={p.direction ?? "bottom"}
+		dismissible={p.dismissible ?? true}
+	>
 		<ResponsiveDialogTrigger class={BTN}>Edit profile</ResponsiveDialogTrigger>
 		<ResponsiveDialogContent>
 			<ResponsiveDialogHeader>

@@ -85,7 +85,13 @@ export function QuestionDemo({ props }: { props: Props }) {
 			>
 				<QuestionHeader title="Got it" onDismiss={() => setStatus("answered")} />
 				<QuestionContent />
-				<QuestionFooter />
+				<QuestionFooter
+					submitLabel={
+						typeof props.submitLabel === "string" && props.submitLabel
+							? props.submitLabel
+							: undefined
+					}
+				/>
 				<QuestionResult>{summary(answers) || "Skipped"}</QuestionResult>
 			</Question>
 		</div>

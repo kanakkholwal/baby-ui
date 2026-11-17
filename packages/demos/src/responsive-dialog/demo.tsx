@@ -28,6 +28,10 @@ export function ResponsiveDialogDemo({ props }: { props: Props }) {
 				open={open}
 				onOpenChange={setOpen}
 				variant={p.variant ?? "default"}
+				size={p.size}
+				dismissOnBackdrop={p.dismissOnBackdrop ?? true}
+				direction={p.direction ?? "bottom"}
+				dismissible={p.dismissible ?? true}
 			>
 				<ResponsiveDialogTrigger className={BTN}>Edit profile</ResponsiveDialogTrigger>
 				<ResponsiveDialogContent>

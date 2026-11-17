@@ -26,6 +26,7 @@ $effect(() => {
 	class={p.variant === "row" ? "max-w-64" : undefined}
 	size={p.size ?? "default"}
 	invalid={p.invalid ?? false}
+	eyedropper={p.eyedropper ?? true}
 	{recent}
 	onOpenChange={(open) => {
 		if (!open) recent = [value, ...recent.filter((c) => c !== value)].slice(0, 6);

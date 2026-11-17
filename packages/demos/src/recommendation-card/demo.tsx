@@ -52,8 +52,15 @@ const OPTIONS: RecommendationOption[] = [
 	},
 ];
 
-export function RecommendationCardDemo({ props: _props }: { props: Props }) {
+export function RecommendationCardDemo({ props }: { props: Props }) {
 	return (
-		<RecommendationCard title="Want me to place this restock order?" options={OPTIONS} />
+		<RecommendationCard
+			title={
+				typeof props.title === "string" && props.title
+					? props.title
+					: "Want me to place this restock order?"
+			}
+			options={OPTIONS}
+		/>
 	);
 }

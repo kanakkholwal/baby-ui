@@ -56,6 +56,7 @@ export function VoiceOrbDemo({ props }: { props: Props }) {
 				activity={activity}
 				analyser={analyser}
 				variant={p.variant}
+				active={p.active ?? true}
 				size={p.size ?? "lg"}
 				label={
 					analyser

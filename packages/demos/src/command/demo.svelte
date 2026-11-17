@@ -55,7 +55,7 @@ function run(id: string) {
 	{#if last}<p class="text-muted-foreground text-xs">Ran: {last}</p>{/if}
 </div>
 
-<CommandDialog bind:open {variant}>
+<CommandDialog bind:open {variant} description={typeof props.description === "string" && props.description ? props.description : undefined}>
 	<Command>
 		{#if variant === "framed"}<CommandHeader>Command</CommandHeader>{/if}
 		{#if variant === "launcher"}

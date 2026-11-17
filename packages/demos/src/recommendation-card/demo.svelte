@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Badge, RecommendationCard, type RecommendationOption } from "@baby-ui/svelte";
 
-let { props: _props = {} }: { props?: Record<string, unknown> } = $props();
+let { props = {} }: { props?: Record<string, unknown> } = $props();
 </script>
 
 {#snippet highBody()}
@@ -18,7 +18,7 @@ let { props: _props = {} }: { props?: Record<string, unknown> } = $props();
 {/snippet}
 
 <RecommendationCard
-	title="Want me to place this restock order?"
+	title={typeof props.title === "string" && props.title ? props.title : "Want me to place this restock order?"}
 	options={[
 		{
 			key: "high",
