@@ -55,8 +55,10 @@ jobs:
           mkdir -p apps/registry apps/site/.svelte-kit
           cp -R "$out/registry/dist" apps/registry/dist
           cp -R "$out/site/.svelte-kit/cloudflare" apps/site/.svelte-kit/cloudflare
+          cp -R "$out/site/.svelte-kit/cloudflare-tmp" apps/site/.svelte-kit/cloudflare-tmp
           test -d apps/registry/dist
           test -f apps/site/.svelte-kit/cloudflare/_worker.js
+          test -f apps/site/.svelte-kit/cloudflare-tmp/server.js
 
       - name: Deploy registry to Pages
         uses: cloudflare/wrangler-action@v4
