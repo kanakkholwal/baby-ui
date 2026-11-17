@@ -26,7 +26,7 @@ component's `variants.ts`.
   sliders and progress use `track` (1.39 light, 1.49 dark) so the off state reads. Dark hover is 4.5%.
 - Fields fill with `--field`: the page colour in light, the card step in dark, so a field reads as
   an object rather than a hole.
-- Tooltips invert (`bg-foreground text-background`) so they never blend into a popover below.
+- Tooltips follow the mode (`bg-popover text-popover-foreground` with the overlay shadow), like every other floating surface; they never invert.
 - Nest by surface step, not border; a framed body adds a hairline `border-border` where the steps
   sit close. Regions inside an overlay (search, filters, list) recess into `bg-background` with a
   hairline, never a third, lighter fill.

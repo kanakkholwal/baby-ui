@@ -16,7 +16,7 @@ export const githubCalendar = tv({
 		swatch: "block bg-[var(--cell)]",
 		tip: "flex items-baseline gap-1 whitespace-nowrap",
 		tipCount: "font-semibold tabular-nums",
-		tipText: "text-background/65",
+		tipText: "text-muted-foreground",
 	},
 	variants: {
 		variant: {
