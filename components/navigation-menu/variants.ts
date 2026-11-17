@@ -40,7 +40,7 @@ export const navigationMenu = tv({
 			"p-2 has-data-[slot=navigation-menu-body]:p-0 **:data-[slot=navigation-menu-link]:focus:ring-0",
 		body: "p-2",
 		footer:
-			"flex min-h-11 items-center justify-between gap-4 border-border border-t px-3 py-2 text-xs",
+			"flex min-h-11 items-center justify-between gap-4 border-border/60 border-t px-3 py-2 text-xs",
 		// Popover's own surface, so the panel and every popover look the same.
 		viewport: [
 			popover().surface(),
@@ -65,9 +65,9 @@ export const navigationMenu = tv({
 				viewport: ["rounded-2xl bg-card [--navigation-menu-spacing:calc(0.5rem+2px)]"],
 				content: [
 					"p-1 has-data-[slot=navigation-menu-body]:p-1",
-					"not-has-data-[slot=navigation-menu-body]:*:rounded-[11px] not-has-data-[slot=navigation-menu-body]:*:border not-has-data-[slot=navigation-menu-body]:*:border-border not-has-data-[slot=navigation-menu-body]:*:bg-popover not-has-data-[slot=navigation-menu-body]:*:p-2 not-has-data-[slot=navigation-menu-body]:*:shadow-surface",
+					"not-has-data-[slot=navigation-menu-body]:*:rounded-[11px] not-has-data-[slot=navigation-menu-body]:*:bg-popover not-has-data-[slot=navigation-menu-body]:*:p-2 not-has-data-[slot=navigation-menu-body]:*:shadow-surface",
 				],
-				body: "rounded-[11px] border border-border bg-popover shadow-surface",
+				body: "rounded-[11px] bg-popover shadow-surface",
 				footer: "border-t-0 px-3 pt-2 pb-1",
 			},
 		},

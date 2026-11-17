@@ -22,6 +22,7 @@ export function CardDemo({ props }: { props: Props }) {
 		<Card
 			interactive={p.interactive !== false}
 			variant={p.variant ?? "default"}
+			bordered={p.bordered === true}
 			className="w-full max-w-md"
 		>
 			<CardHeader>

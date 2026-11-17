@@ -29,7 +29,7 @@ export const empty = tv({
 			default: {},
 			// The classic drop zone: a dashed frame that says "something goes here".
 			outline: { root: "rounded-xl border border-border border-dashed" },
-			card: { root: "rounded-xl border border-border bg-card" },
+			card: { root: "rounded-xl bg-card" },
 		},
 		layout: {
 			vertical: { root: "flex-col items-center justify-center text-center" },
@@ -71,7 +71,7 @@ export const emptyMedia = tv({
 		{
 			variant: "icon",
 			tone: "neutral",
-			class: "border border-border bg-card text-foreground",
+			class: "bg-card text-foreground",
 		},
 		{ variant: "icon", tone: "primary", class: "bg-primary/10 text-primary" },
 		{

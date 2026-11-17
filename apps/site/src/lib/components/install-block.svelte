@@ -93,7 +93,7 @@ const manual = (step: string) => ({
 			{/if}
 			{#await load(source)}
 				<li role="status" aria-label="Loading source files" class="w-full">
-					<div class="min-w-0 max-w-full rounded-xl border border-border bg-card p-4">
+					<div class="min-w-0 max-w-full rounded-xl bg-card p-4">
 						<div class="flex items-center gap-2">
 							<Skeleton width="3rem" height="1.25rem" />
 							<Skeleton width="8rem" height="1rem" />

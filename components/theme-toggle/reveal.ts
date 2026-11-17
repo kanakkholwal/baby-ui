@@ -83,7 +83,7 @@ html[data-theme-reveal="split"]::view-transition-new(root) {
 }
 html[data-theme-reveal="rise"]::view-transition-old(root) {
 	mix-blend-mode: normal;
-	animation: theme-reveal-sink 320ms ease-in both;
+	animation: theme-reveal-sink 320ms var(--ease-ui-out) both;
 }
 html[data-theme-reveal="rise"]::view-transition-new(root) {
 	mix-blend-mode: normal;

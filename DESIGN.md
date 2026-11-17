@@ -30,6 +30,14 @@ component's `variants.ts`.
 - Nest by surface step, not border; a framed body adds a hairline `border-border` where the steps
   sit close. Regions inside an overlay (search, filters, list) recess into `bg-background` with a
   hairline, never a third, lighter fill.
+- Separation order (owner direction, 2026-11-17): spacing first, then a surface step, then a soft
+  shadow (floating layers only), then a hairline as last resort. Borders stay only where they carry
+  function: fields and outline variants (3:1 boundary), table row dividers, framed rims.
+  - Cards, sections and sidebars separate by surface step and gap, no border.
+  - Never nest the same surface step twice; card in card goes one step up or down.
+  - Tables: no vertical or outer borders; row dividers at hairline alpha, header as a surface step.
+  - Every adjacent surface pair keeps 1.15:1 lightness separation in both modes (measured).
+  - Focus rings are never removed.
 - Neutral chroma stays at or under 0.004 (hue 265) so every accent theme reads true.
 - Accent: Blue. `primary` is `var(--accent)`; `ring` and `accent-ink` follow the theme ink.
 - Status: `success`, `warning`, `destructive`, `info`.

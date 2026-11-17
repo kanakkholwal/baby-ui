@@ -402,7 +402,7 @@ export function ColorPicker({
 		>
 			{area}
 
-			<div className="flex items-center gap-2.5 border-border border-b p-2">
+			<div className="flex items-center gap-2.5 border-border/60 border-b p-2">
 				<span
 					aria-hidden
 					style={{ background: preview }}
@@ -426,7 +426,7 @@ export function ColorPicker({
 				</div>
 			</div>
 
-			<div className="flex flex-col gap-1.5 border-border border-b p-2">
+			<div className="flex flex-col gap-1.5 border-border/60 border-b p-2">
 				<div className="flex items-center gap-0.5 rounded-md bg-card p-0.5">
 					{FORMATS.map((option) => (
 						<button

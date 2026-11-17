@@ -32,12 +32,12 @@ export const carousel = tv({
 			linear: {},
 			concave: {
 				viewport:
-					"h-[min(42cqw,22rem)] rounded-3xl border border-border/60 bg-muted/20 [clip-path:inset(0_round_1.5rem)]",
+					"h-[min(42cqw,22rem)] rounded-3xl bg-muted/20 [clip-path:inset(0_round_1.5rem)]",
 				track: "relative h-full px-0",
 			},
 			convex: {
 				viewport:
-					"h-[min(42cqw,22rem)] rounded-3xl border border-border/60 bg-muted/20 [clip-path:inset(0_round_1.5rem)]",
+					"h-[min(42cqw,22rem)] rounded-3xl bg-muted/20 [clip-path:inset(0_round_1.5rem)]",
 				track: "relative h-full px-0",
 			},
 		},

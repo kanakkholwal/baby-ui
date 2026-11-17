@@ -15,12 +15,13 @@ export const table = tv({
 	variants: {
 		variant: {
 			default: {
-				container: "rounded-xl border border-border",
+				// Decision (product): no outer or header border; the header is a surface step, rows keep a soft hairline.
+				container: "rounded-xl",
 				root: "border-collapse",
-				header: "bg-card [&_tr]:border-border [&_tr]:border-b",
+				header: "bg-card [&_tr]:border-0",
 				body: "[&_tr:last-child]:border-0",
-				footer: "border-border border-t bg-card [&>tr]:last:border-b-0",
-				row: "border-border border-b hover:bg-accent data-[state=selected]:bg-primary/[0.04]",
+				footer: "bg-card [&>tr]:last:border-b-0",
+				row: "border-border/60 border-b hover:bg-accent data-[state=selected]:bg-primary/[0.04]",
 			},
 			// The header sits on a card rim around a rounded inset body, and
 			// hairlines split the columns. Separate borders, so cells can round the body corners.

@@ -25,9 +25,9 @@ export const swappable = tv({
 			// Items read as cards that lift while dragged.
 			card: {
 				item: [
-					"rounded-xl border border-border bg-card shadow-sm",
+					"rounded-xl border border-transparent bg-card",
 					"transition-[box-shadow,border-color] duration-(--duration-fast) ease-[var(--ease-ui-out)] motion-reduce:transition-none",
-					"data-[swapy-dragging]:border-border-strong data-[swapy-dragging]:shadow-2xl",
+					"data-[swapy-dragging]:border-border-strong data-[swapy-dragging]:shadow-(--overlay-shadow)",
 				],
 			},
 			// No chrome: the item is whatever you put in it.

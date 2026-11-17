@@ -14,7 +14,7 @@ export const fileUpload = tv({
 			"data-[compact=true]:flex-row data-[compact=true]:py-2.5",
 		],
 		zoneIcon: [
-			"flex items-center justify-center rounded-full border border-border bg-background text-muted-foreground shadow-sm dark:bg-muted [&_svg]:size-4",
+			"flex items-center justify-center rounded-full bg-card text-muted-foreground [&_svg]:size-4",
 			"transition-[translate,color,border-color] duration-(--duration-fast) ease-(--ease-ui-out) motion-reduce:transition-none",
 			"group-data-[dragging=true]/zone:-translate-y-0.5 group-data-[dragging=true]/zone:border-primary group-data-[dragging=true]/zone:text-primary",
 			"group-data-[compact=true]/zone:size-6 group-data-[compact=true]/zone:shadow-none",
@@ -27,7 +27,7 @@ export const fileUpload = tv({
 			"grid grid-rows-[1fr] transition-[grid-template-rows,opacity] duration-(--duration-collapse) ease-(--ease-ui-out) starting:grid-rows-[0fr] starting:opacity-0",
 			"data-[leaving=true]:grid-rows-[0fr] data-[leaving=true]:opacity-0 data-[leaving=true]:duration-(--duration-fast) motion-reduce:transition-none",
 		],
-		row: "flex min-w-0 items-center gap-3 rounded-lg border border-border bg-background p-2.5 transition-[border-color] duration-(--duration-dropdown)",
+		row: "flex min-w-0 items-center gap-3 rounded-lg bg-card p-2.5",
 		thumb:
 			"flex shrink-0 items-center justify-center overflow-hidden rounded-md border border-border bg-background text-muted-foreground transition-colors duration-(--duration-dropdown) [&_svg]:size-4",
 		thumbImage: "size-full object-cover",

@@ -26,16 +26,16 @@ export function CodeBlock({
 
 	return (
 		// Inset frame: a tinted rim holds the header, the code sits on an inner surface whose
-		// radius is the outer one minus border and inset.
+		// radius is the outer one minus the inset.
 		<div
 			data-slot="code-block"
 			className={cn(
-				"min-w-0 max-w-full rounded-xl border border-border bg-card p-1 text-foreground",
+				"min-w-0 max-w-full rounded-xl bg-card p-1 text-foreground",
 				className,
 			)}
 		>
 			<div className="flex min-h-8 items-center gap-2 px-1 pb-1">
-				<span className="inline-flex h-5 shrink-0 items-center rounded border border-border bg-background px-1.5 font-mono font-semibold text-xs text-muted-foreground uppercase tracking-wider">
+				<span className="inline-flex h-5 shrink-0 items-center rounded bg-background px-1.5 font-mono font-semibold text-xs text-muted-foreground uppercase tracking-wider">
 					{language}
 				</span>
 				{filename ? (

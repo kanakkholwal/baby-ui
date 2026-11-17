@@ -21,7 +21,7 @@ export const breadcrumb = tv({
 			default: {},
 			// The trail sits in a bar, for page headers that need it to read as one control.
 			framed: {
-				list: "w-fit rounded-lg border border-border bg-card px-3 py-1",
+				list: "w-fit rounded-lg bg-card px-3 py-1",
 			},
 		},
 		size: {

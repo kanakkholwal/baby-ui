@@ -2,7 +2,7 @@ import { tv, type VariantProps } from "tailwind-variants";
 
 export const toggleGroup = tv({
 	slots: {
-		root: "inline-flex items-center gap-0.5 border border-border",
+		root: "inline-flex items-center gap-0.5",
 		// Single-select items are role=radio/aria-checked, not aria-pressed; data-pressed
 		// is the one presence attribute Base UI sets unconditionally in both modes.
 		item: [

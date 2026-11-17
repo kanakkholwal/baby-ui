@@ -25,7 +25,7 @@ export const inputOtp = tv({
 			"data-[show]:opacity-100",
 		],
 		verified: [
-			"pointer-events-none absolute top-1/2 left-1/2 z-20 inline-flex h-9 -translate-x-1/2 -translate-y-1/2 scale-90 items-center gap-1.5 whitespace-nowrap rounded-full border border-border bg-card px-3.5 font-medium text-foreground text-sm opacity-0 shadow-xs",
+			"pointer-events-none absolute top-1/2 left-1/2 z-20 inline-flex h-9 -translate-x-1/2 -translate-y-1/2 scale-90 items-center gap-1.5 whitespace-nowrap rounded-full bg-card px-3.5 font-medium text-foreground text-sm opacity-0 shadow-xs",
 			"transition-[opacity,scale] duration-(--duration-slow) ease-[var(--ease-ui-out)] motion-reduce:transition-none",
 		],
 		check:
