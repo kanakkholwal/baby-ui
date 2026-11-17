@@ -48,7 +48,7 @@ export const contextMeter = tv({
 			framed: {
 				root: "rounded-2xl bg-card p-1",
 				header: "px-4 pt-3 pb-3.5",
-				body: "rounded-[11px] bg-background",
+				body: "rounded-[calc(var(--radius-2xl)-0.25rem)] bg-background",
 			},
 			plain: {
 				header: "pb-1",

@@ -45,7 +45,7 @@ export function CodeBlock({
 					<CopyButton text={code} iconOnly />
 				</div>
 			</div>
-			<div className="overflow-hidden rounded-[calc(var(--radius-xl)-1px-0.25rem)] bg-background">
+			<div className="overflow-hidden rounded-[calc(var(--radius-xl)-0.25rem)] bg-background">
 				{html ? (
 					<div
 						style={{ maxHeight }}

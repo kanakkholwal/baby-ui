@@ -22,7 +22,7 @@ export const chatComposer = tv({
 		variant: {
 			framed: {
 				frame: "rounded-2xl bg-background p-1",
-				root: "rounded-[11px] border-0",
+				root: "rounded-[calc(var(--radius-2xl)-0.25rem)] border-0",
 			},
 			outline: { root: "rounded-2xl" },
 		},

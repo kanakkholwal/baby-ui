@@ -53,7 +53,7 @@ export const showcaseCard = tv({
 			// The framed Dialog recipe: a card-surface rim, a raised preview, the footer in the rim.
 			framed: {
 				root: [...REVEAL_ROWS, "bg-card p-1 [&>div]:rounded-none [&>div]:bg-transparent"],
-				preview: "rounded-[11px] bg-popover",
+				preview: "rounded-[calc(var(--radius-2xl)-0.25rem)] bg-popover",
 				footer: REVEAL_FOOTER,
 			},
 		},

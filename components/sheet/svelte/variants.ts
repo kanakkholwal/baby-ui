@@ -36,7 +36,7 @@ export const sheet = tv({
 			},
 			framed: {
 				panel: "bg-card p-1",
-				body: "flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto rounded-[11px] bg-popover p-5",
+				body: "flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto rounded-[calc(var(--radius-2xl)-0.25rem)] bg-popover p-5",
 			},
 		},
 		side: {

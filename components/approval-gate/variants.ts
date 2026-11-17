@@ -33,7 +33,7 @@ export const approvalGate = tv({
 		variant: {
 			framed: {
 				root: "rounded-2xl bg-card p-1",
-				body: "rounded-[11px] bg-background p-4",
+				body: "rounded-[calc(var(--radius-2xl)-0.25rem)] bg-background p-4",
 				receipt: "px-3",
 			},
 			card: {

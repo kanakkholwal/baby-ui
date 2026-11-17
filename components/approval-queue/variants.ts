@@ -38,7 +38,7 @@ export const approvalQueue = tv({
 			framed: {
 				root: "rounded-2xl bg-card p-1",
 				header: "px-3 pt-1 pb-1.5",
-				list: "overflow-hidden rounded-[11px] bg-background",
+				list: "overflow-hidden rounded-[calc(var(--radius-2xl)-0.25rem)] bg-background",
 				trigger: "px-3",
 				body: "px-3",
 			},

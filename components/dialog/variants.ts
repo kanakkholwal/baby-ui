@@ -100,7 +100,7 @@ export const dialogFrame = tv({
 			framed: {
 				panel: "bg-card p-1",
 				footer: "px-2 pt-2 pb-1",
-				body: "rounded-[11px] bg-popover p-5",
+				body: "rounded-[calc(var(--radius-2xl)-0.25rem)] bg-popover p-5",
 			},
 			default: { panel: "bg-popover p-6", footer: "pt-6", body: "" },
 		},

@@ -51,7 +51,7 @@ export const planRunner = tv({
 			framed: {
 				root: "rounded-2xl bg-card p-1",
 				header: "px-3 pt-1 pb-1.5",
-				body: "gap-4 rounded-[11px] bg-background p-4",
+				body: "gap-4 rounded-[calc(var(--radius-2xl)-0.25rem)] bg-background p-4",
 				footer: "px-3",
 			},
 			plain: {

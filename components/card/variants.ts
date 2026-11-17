@@ -15,12 +15,12 @@ export const cardFrame = tv({
 			ghost: { root: "border-transparent bg-transparent", body: "" },
 			framed: {
 				root: "border-transparent bg-card p-1",
-				body: "rounded-[11px] bg-background",
+				body: "rounded-[calc(var(--radius-2xl)-0.25rem)] bg-background",
 			},
 			// A child selector restyles the rim footer, so CardFooter needs no context (RSC-safe).
 			well: {
 				root: "border-transparent bg-card p-1 [&>[data-slot=card-footer]]:px-3 [&>[data-slot=card-footer]]:pt-2 [&>[data-slot=card-footer]]:pb-1 [&>[data-slot=card-footer]]:text-muted-foreground [&>[data-slot=card-footer]]:text-xs",
-				body: "rounded-[11px] bg-background dark:bg-popover",
+				body: "rounded-[calc(var(--radius-2xl)-0.25rem)] bg-background dark:bg-popover",
 			},
 		},
 		bordered: {

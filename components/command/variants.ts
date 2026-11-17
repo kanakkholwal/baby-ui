@@ -82,7 +82,7 @@ export const commandFrame = tv({
 			framed: {
 				panel: "rounded-2xl bg-card p-1 shadow-(--overlay-shadow)",
 				header: "pt-1.5 pb-2",
-				body: "rounded-[11px] bg-popover",
+				body: "rounded-[calc(var(--radius-2xl)-0.25rem)] bg-popover",
 				inputWrap: "border-border/60 border-b px-3",
 				input: "h-14 text-sm",
 				count:

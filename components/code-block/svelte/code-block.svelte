@@ -41,7 +41,7 @@ const lines = $derived(code.replace(/\n$/, "").split("\n"));
 		{/if}
 		<div class="ml-auto shrink-0"><CopyButton text={code} iconOnly /></div>
 	</div>
-	<div class="overflow-hidden rounded-[calc(var(--radius-xl)-1px-0.25rem)] bg-background">
+	<div class="overflow-hidden rounded-[calc(var(--radius-xl)-0.25rem)] bg-background">
 		{#if html}
 			<div
 				style:max-height={maxHeight}
