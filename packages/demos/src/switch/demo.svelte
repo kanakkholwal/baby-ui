@@ -20,7 +20,7 @@ const variant = $derived(p.variant ?? "default");
 const ROW = "flex w-full flex-row-reverse items-center justify-between gap-6";
 </script>
 
-<div class="flex w-full max-w-72 flex-col divide-y divide-border rounded-xl border border-border">
+<div class="flex w-full max-w-72 flex-col divide-y divide-border/60 rounded-xl bg-card">
 	<div class="px-4 py-3">
 		<Switch
 			bind:checked
@@ -32,9 +32,9 @@ const ROW = "flex w-full flex-row-reverse items-center justify-between gap-6";
 		/>
 	</div>
 	<div class="px-4 py-3">
-		<Switch bind:checked={digest} {variant} label="Weekly digest" class={ROW} />
+		<Switch bind:checked={digest} label="Weekly digest" class={ROW} />
 	</div>
 	<div class="px-4 py-3">
-		<Switch checked={false} {variant} disabled label="SMS alerts" class={ROW} />
+		<Switch checked={false} disabled label="SMS alerts" class={ROW} />
 	</div>
 </div>

@@ -15,6 +15,7 @@ export function ButtonDemo({ props }: { props: Props }) {
 			size={size}
 			href={p.href || undefined}
 			loading={p.loading ?? false}
+			disabled={p.disabled ?? false}
 			loadingLabel={p.loadingLabel || "Loading…"}
 		>
 			{size === "icon" ? (

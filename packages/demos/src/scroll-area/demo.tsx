@@ -28,8 +28,8 @@ const REGIONS = [
 export function ScrollAreaDemo({ props }: { props: Props }) {
 	const p = controlProps<ComponentProps<typeof ScrollArea>>(props);
 	return (
-		<div className="w-64 rounded-xl border border-border bg-card p-1">
-			<ScrollArea maxHeight={p.maxHeight || "12rem"}>
+		<div className="w-64 rounded-xl bg-card p-1">
+			<ScrollArea maxHeight={p.maxHeight || "12rem"} scrollbar={p.scrollbar ?? "auto"}>
 				<ul className="flex flex-col">
 					{REGIONS.map((region) => (
 						<li

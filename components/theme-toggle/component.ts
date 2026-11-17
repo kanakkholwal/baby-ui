@@ -39,7 +39,7 @@ export const themeToggle = defineComponent({
 			type: '"light" | "dark"',
 			description: "Uncontrolled starting theme.",
 			default: "light",
-			control: { kind: "select", options: ["light", "dark"] },
+			control: { kind: "none" },
 		},
 		{
 			name: "onThemeChange",

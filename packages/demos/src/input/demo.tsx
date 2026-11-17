@@ -20,6 +20,7 @@ export function InputDemo({ props }: { props: Props }) {
 				value={value}
 				onChange={(e) => setValue(e.currentTarget.value)}
 				size={p.size ?? "default"}
+				variant={p.variant ?? "outline"}
 				invalid={p.invalid ?? false}
 				disabled={p.disabled ?? false}
 				placeholder={p.placeholder || "Enter a value"}

@@ -27,7 +27,7 @@ const regions = [
 </script>
 
 <div class="w-64 rounded-xl border border-border bg-card p-1">
-	<ScrollArea maxHeight={p.maxHeight || "12rem"}>
+	<ScrollArea maxHeight={p.maxHeight || "12rem"} scrollbar={p.scrollbar ?? "auto"}>
 		<ul class="flex flex-col">
 			{#each regions as region (region)}
 				<li class="rounded-lg px-3 py-2 text-foreground text-sm hover:bg-foreground/[0.04]">

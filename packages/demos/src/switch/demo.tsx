@@ -15,15 +15,17 @@ export function SwitchDemo({ props }: { props: Props }) {
 	const [digest, setDigest] = useState(true);
 	useEffect(() => setChecked(Boolean(props.checked)), [props.checked]);
 	const size = p.size ?? "default";
+	const variant = p.variant ?? "default";
 
 	return (
-		<div className="flex w-full max-w-72 flex-col divide-y divide-border rounded-xl border border-border">
+		<div className="flex w-full max-w-72 flex-col divide-y divide-border/60 rounded-xl bg-card">
 			<div className="px-4 py-3">
 				<Switch
 					checked={checked}
 					onCheckedChange={setChecked}
 					disabled={p.disabled ?? false}
 					size={size}
+					variant={variant}
 					label={p.label || "Push notifications"}
 					className={SWITCH_ROW}
 				/>
