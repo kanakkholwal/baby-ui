@@ -9,7 +9,6 @@ import {
 	EmailHeading,
 	EmailKeyValue,
 	type EmailKeyValueRow,
-	EmailPanel,
 	EmailShell,
 	type EmailShellSurface,
 	EmailText,
@@ -91,7 +90,7 @@ export function EmailReceipt({
 					reason={reason}
 					brand={productName}
 					logo={logoUrl}
-					layout="bar"
+					layout="band"
 				/>
 			}
 		>
@@ -104,13 +103,11 @@ export function EmailReceipt({
 				{intro}
 			</EmailText>
 			<Section className={r.summary()}>
-				<EmailPanel>
-					<EmailText className={s.sectionTitle()}>{labels.items}</EmailText>
-					<EmailKeyValue
-						rows={[...items, ...adjustments]}
-						total={{ label: labels.total, value: total }}
-					/>
-				</EmailPanel>
+				<EmailText className={s.sectionTitle()}>{labels.items}</EmailText>
+				<EmailKeyValue
+					rows={[...items, ...adjustments]}
+					total={{ label: labels.total, value: total }}
+				/>
 			</Section>
 			<Section className={r.details()}>
 				<EmailKeyValue

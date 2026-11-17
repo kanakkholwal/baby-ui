@@ -11,7 +11,6 @@ import EmailHeading from "../../email-kit/svelte/email-heading.svelte";
 import EmailKeyValue, {
 	type EmailKeyValueRow,
 } from "../../email-kit/svelte/email-key-value.svelte";
-import EmailPanel from "../../email-kit/svelte/email-panel.svelte";
 import EmailShell from "../../email-kit/svelte/email-shell.svelte";
 import EmailText from "../../email-kit/svelte/email-text.svelte";
 import { type EmailShellSurface, emailLayout } from "../../email-kit/variants";
@@ -80,7 +79,7 @@ const labels = $derived({ ...EMAIL_RECEIPT_LABELS, ...labelOverrides });
 
 <EmailShell {preview} {surface}>
 	{#snippet cardFooter()}
-		<EmailFooter lines={companyLines} links={footerLinks} {reason} brand={productName} logo={logoUrl} layout="bar" />
+		<EmailFooter lines={companyLines} links={footerLinks} {reason} brand={productName} logo={logoUrl} layout="band" />
 	{/snippet}
 	<EmailHeader brand={productName} logo={logoUrl} />
 	<Section class={s.badge()}>
@@ -89,10 +88,8 @@ const labels = $derived({ ...EMAIL_RECEIPT_LABELS, ...labelOverrides });
 	<EmailHeading size="lg">{heading}</EmailHeading>
 	<EmailText tone="muted" class={s.intro()}>{intro}</EmailText>
 	<Section class={r.summary()}>
-		<EmailPanel>
-			<EmailText class={s.sectionTitle()}>{labels.items}</EmailText>
-			<EmailKeyValue rows={[...items, ...adjustments]} total={{ label: labels.total, value: total }} />
-		</EmailPanel>
+		<EmailText class={s.sectionTitle()}>{labels.items}</EmailText>
+		<EmailKeyValue rows={[...items, ...adjustments]} total={{ label: labels.total, value: total }} />
 	</Section>
 	<Section class={r.details()}>
 		<EmailKeyValue

@@ -89,7 +89,7 @@ export function EmailWelcome({
 	supportLabel = "Questions? Reply to this email or write to",
 	footerLinks,
 	preview = `Your ${productName} account is ready. Here is how to get started.`,
-	eyebrow = "Thanks for joining",
+	eyebrow,
 	heading = recipientName ? `Welcome, ${recipientName}` : `Welcome to ${productName}`,
 	intro = `Your ${productName} account is ready. Here is what's worth doing first.`,
 	stepsTitle = "Getting started",
@@ -131,7 +131,7 @@ export function EmailWelcome({
 						className={s.heroImage()}
 					/>
 				) : null}
-				<EmailText className={s.eyebrow()}>{eyebrow}</EmailText>
+				{eyebrow ? <EmailText className={s.eyebrow()}>{eyebrow}</EmailText> : null}
 				<EmailHeading size="lg" align="left">
 					{heading}
 				</EmailHeading>

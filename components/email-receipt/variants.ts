@@ -2,8 +2,8 @@ import { tv } from "tailwind-variants";
 
 export const emailReceipt = tv({
 	slots: {
-		summary: "mt-10",
-		details: "mt-section",
+		summary: "mt-block",
+		details: "mt-block",
 	},
 });
 

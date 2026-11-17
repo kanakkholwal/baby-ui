@@ -3,11 +3,11 @@ import { tv, type VariantProps } from "tailwind-variants";
 // Separate cards: a centred opener, numbered steps, optional resources, then a personal note.
 export const emailWelcome = tv({
 	slots: {
-		heroImage: "mb-section w-full rounded-inner",
+		heroImage: "mb-block w-full rounded-inner",
 		eyebrow:
 			"m-0 mb-3 text-left font-semibold text-[13px] text-muted-foreground leading-[20px] dark:text-muted-foreground-dark",
-		intro: "mt-3 text-left",
-		action: "mt-section text-left",
+		intro: "mt-3",
+		action: "mt-block",
 		steps: "mt-block",
 		stepIndex: "w-[40px] align-top",
 		stepBadge:
