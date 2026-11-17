@@ -18,7 +18,7 @@ import {
 	Text,
 } from "react-email";
 import { cn } from "../../lib/cn";
-import { emailTailwindConfig } from "../../lib/email-theme";
+import { createEmailTheme, type EmailBrand } from "../../lib/email-brand";
 import {
 	EMAIL_STAT_TREND_GLYPH,
 	type EmailBadgeTone,
@@ -99,7 +99,11 @@ export type {
 	EmailTextTone,
 };
 
-const tailwindConfig = { ...emailTailwindConfig, presets: [pixelBasedPreset] };
+const themeFor = (brand?: EmailBrand) => ({
+	...createEmailTheme(brand),
+	presets: [pixelBasedPreset],
+});
+const defaultTheme = themeFor();
 
 export interface EmailShellProps {
 	/** Inbox preview line shown after the subject; keep it under ~90 characters. */
@@ -111,6 +115,8 @@ export interface EmailShellProps {
 	footer?: ReactNode;
 	/** Rendered inside the card after the content, edge to edge, e.g. a `band` or `bar` footer. */
 	cardFooter?: ReactNode;
+	/** Colour, corners, density and fonts for this send; omit for the default theme. */
+	brand?: EmailBrand;
 }
 
 /** Document, theme and layout for every template: a centred card on a quiet page. */
@@ -121,11 +127,12 @@ export function EmailShell({
 	surface = "card",
 	footer,
 	cardFooter,
+	brand,
 }: EmailShellProps) {
 	const s = emailShell({ surface });
 	return (
 		<Html lang={lang}>
-			<Tailwind config={tailwindConfig}>
+			<Tailwind config={brand ? themeFor(brand) : defaultTheme}>
 				<Head>
 					<meta name="color-scheme" content="light dark" />
 					<meta name="supported-color-schemes" content="light dark" />

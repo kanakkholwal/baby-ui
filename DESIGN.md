@@ -45,6 +45,11 @@ component's `variants.ts`.
 - Status: `success`, `warning`, `destructive`, `info`.
 - Theme presets swap the accent only; neutrals never change per theme.
 
+## Emails
+
+- Email parts take spacing and corners from tokens (`gutter`, `pad`, `stack`, `section`, `block`, `gap`; `card`, `inner`, `control`, `chip`), never raw `px-6` or `rounded-lg`.
+- `createEmailTheme({ primary, radius, density })` fits a brand: soft fills and the dark twin derive from `primary`, labels hold 4.5:1, density scales spacing together.
+
 ## Type
 
 - Satoshi remains the heading face. Product headings prefer medium weight; the Baby UI brand

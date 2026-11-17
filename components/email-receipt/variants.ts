@@ -3,7 +3,7 @@ import { tv } from "tailwind-variants";
 export const emailReceipt = tv({
 	slots: {
 		summary: "mt-10",
-		details: "mt-8",
+		details: "mt-section",
 	},
 });
 
