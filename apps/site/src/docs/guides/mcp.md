@@ -32,7 +32,7 @@ claude mcp add --transport http baby-ui https://baby-ui.nexonauts.com/api/mcp
 | Tool | What it returns |
 | --- | --- |
 | `search_components` | The best matches for an intent or name, each with its markdown docs URL. |
-| `list_components` | Every component, optionally filtered by `category` or `tier`. |
+| `list_components` | Every free component. No filter returns slugs grouped by category; `category` or `tier` adds descriptions. |
 | `get_component` | One component's full reference: when to use it, what to use instead, install, usage, props, keyboard, accessibility, motion and notes for AI. |
 | `get_install_command` | The `@baby-ui/cli add` command for one or more slugs, for any package manager. |
 

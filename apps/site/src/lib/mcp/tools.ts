@@ -93,7 +93,7 @@ export const SITE_TOOLS: SiteTool[] = [
 	{
 		name: "list_components",
 		description:
-			"List Baby UI components, optionally filtered by category or tier. Categories: " +
+			"List every Baby UI component. With no filter it returns slugs grouped by category (compact, nothing left out); pass a category or tier for one-line descriptions. Categories: " +
 			`${CATEGORIES.join(", ")}.`,
 		inputSchema: {
 			type: "object",
@@ -110,6 +110,20 @@ export const SITE_TOOLS: SiteTool[] = [
 					(!category || item.category === category) && (!tier || item.tier === tier),
 			);
 			if (!items.length) return text("No components match those filters.");
+			if (!category && !tier) {
+				const groups = CATEGORIES.map((name) => {
+					const slugs = items.filter((item) => item.category === name);
+					return slugs.length
+						? `${name} (${slugs.length}): ${slugs.map((item) => item.slug).join(", ")}`
+						: null;
+				}).filter((row) => row !== null);
+				return text(
+					[
+						`${items.length} components. Pass category for descriptions, or use get_component.`,
+						...groups,
+					].join("\n"),
+				);
+			}
 			return text([`${items.length} components`, ...items.map(line)].join("\n"));
 		},
 	},
