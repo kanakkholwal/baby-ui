@@ -76,6 +76,15 @@ baby-ui repair --adopt
 Run it inside a package, or from the root with `--target <name|path>` (repeatable) or `--all`.
 shadcn's workspace layout works: ui files, their packages and CSS go to the ui package.
 
+A package that maps no import alias (no `$lib` or `@/` in tsconfig `paths` or `imports`) still
+installs: files go to `src/lib` or `src/components` and import each other by relative path, so they
+resolve when another app consumes the package. Map an alias in the package when you want aliased
+imports instead.
+
+Only `@baby-ui/cli` skips files you changed, never reinstalls packages you already have and never
+prompts without a TTY. The stock shadcn and shadcn-svelte CLIs overwrite, bump shared packages and
+prompt on conflicts; use `@baby-ui/cli` for Baby UI items.
+
 ## Files it keeps
 
 - `.baby-ui/lock.json`: what was installed and a hash of every file written. Commit it.

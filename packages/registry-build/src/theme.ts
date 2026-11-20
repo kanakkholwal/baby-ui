@@ -101,7 +101,11 @@ async function split(file: string): Promise<Split> {
 	const root = postcss.parse(await readFile(resolve(tokensDir, file), "utf8"));
 	const out: Split = { light: {}, dark: {}, theme: {}, css: {} };
 	root.each((node: ChildNode) => {
-		if (node.type === "rule" && node.selector === ":root")
+		// A shared `:root, .dark` rule must not ship as css: shadcn-svelte appends the dark vars into it.
+		if (node.type === "rule" && node.selectors.join() === ":root,.dark") {
+			Object.assign(out.light, decls(node));
+			Object.assign(out.dark, decls(node));
+		} else if (node.type === "rule" && node.selector === ":root")
 			Object.assign(out.light, decls(node));
 		else if (node.type === "rule" && node.selector === ".dark")
 			Object.assign(out.dark, decls(node));

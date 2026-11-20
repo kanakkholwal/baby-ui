@@ -11,7 +11,7 @@ import {
 } from "node:path";
 import { CliError } from "../errors.ts";
 import { toPosix } from "../project/fs.ts";
-import { type InstallConfig, resolveAlias } from "../project/paths.ts";
+import { ALIAS_KEYS, type InstallConfig, resolveAlias } from "../project/paths.ts";
 import type { ResolvedItem } from "../registry/graph.ts";
 import { registryOrigin } from "../registry/resolve.ts";
 import type { RegistryFile, RegistryItem } from "../registry/schema.ts";
@@ -143,6 +143,27 @@ function sveltePath(item: RegistryItem, file: RegistryFile, cfg: InstallConfig):
 	return resolve(aliasDirFor(type, cfg), target);
 }
 
+/** `alias/rest` as a path relative to the importing file, for aliases the project does not map. */
+function relativeSpecifier(
+	specifier: string,
+	importer: string,
+	cfg: InstallConfig,
+): string {
+	const keys = [...ALIAS_KEYS].sort(
+		(a, b) => cfg.aliases[b].length - cfg.aliases[a].length,
+	);
+	for (const key of keys) {
+		const alias = cfg.aliases[key];
+		if (specifier !== alias && !specifier.startsWith(`${alias}/`)) continue;
+		const target = join(cfg.paths[key], specifier.slice(alias.length));
+		const rel = toPosix(relative(dirname(importer), target)) || ".";
+		return rel.startsWith(".") ? rel : `./${rel}`;
+	}
+	return specifier;
+}
+
+const SVELTE_IMPORT = /(from\s+|import\s*\(\s*|import\s+)(["'])([^"']+)\2/g;
+
 function transformFile(
 	file: RegistryFile,
 	path: string,
@@ -150,12 +171,22 @@ function transformFile(
 	resolve: (original: string, rewritten: string) => string,
 ): string {
 	const content = file.content ?? "";
-	if (cfg.framework === "svelte") return replacePlaceholders(content, cfg.aliases);
+	if (cfg.framework === "svelte") {
+		const code = replacePlaceholders(content, cfg.aliases);
+		if (!cfg.relativeImports) return code;
+		return code.replace(SVELTE_IMPORT, (match, lead, quote, spec) => {
+			const next = relativeSpecifier(spec, path, cfg);
+			return next === spec ? match : `${lead}${quote}${next}${quote}`;
+		});
+	}
 	if (file.type === "registry:file" || file.type === "registry:item") return content;
 	if (!SCRIPT.has(extname(path))) return content;
 	return transformScript(content, file.path, {
 		aliases: { ...cfg.declaredAliases, components: cfg.aliases.components },
-		resolve,
+		resolve: cfg.relativeImports
+			? (original, rewritten) =>
+					relativeSpecifier(resolve(original, rewritten), path, cfg)
+			: resolve,
 	});
 }
 

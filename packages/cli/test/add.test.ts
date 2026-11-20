@@ -167,6 +167,37 @@ describe("add", () => {
 		expect(css.match(/--success: oklch\(73%/g)).toHaveLength(1);
 	});
 
+	it("writes relative imports in a package where $lib and @/ map to nothing", async () => {
+		const svelte = fixture({
+			"package.json": { devDependencies: { svelte: "^5" } },
+			"components.json": {
+				$schema: "https://shadcn-svelte.com/schema.json",
+				tailwind: { css: "src/app.css" },
+				aliases: {},
+			},
+			"src/app.css": '@import "tailwindcss";\n',
+		});
+		await add({ cwd: svelte, items: ["badge"], install: false });
+		const badge = readFileSync(
+			join(svelte, "src/lib/components/ui/badge/badge.svelte"),
+			"utf8",
+		);
+		expect(badge).toContain('from "../../../cn"');
+
+		const react = fixture({
+			"package.json": { dependencies: { react: "19.0.0", clsx: "2" } },
+			"components.json": {
+				$schema: "https://ui.shadcn.com/schema.json",
+				tailwind: { css: "src/styles.css" },
+				aliases: {},
+			},
+			"src/styles.css": '@import "tailwindcss";\n',
+		});
+		await add({ cwd: react, items: ["chip"], install: false });
+		const chip = readFileSync(join(react, "src/components/ui/chip/chip.tsx"), "utf8");
+		expect(chip).toContain('from "../badge/badge"');
+	});
+
 	it("installs shadcn-svelte items whose files have only a target", async () => {
 		const root = svelteApp();
 		writeFileSync(

@@ -177,6 +177,10 @@ describe("tokens install additively into an existing shadcn app", () => {
 			expect(tokens?.cssVars?.light?.primary).toBeUndefined();
 			expect(tokens?.cssVars?.theme?.["ease-out"]).toBeUndefined();
 			expect(JSON.stringify(tokens?.css)).not.toContain("@layer base");
+			// A shared `:root, .dark` rule gets the dark vars appended by shadcn-svelte, leaking them into light.
+			expect(Object.keys(tokens?.css ?? {})).not.toContain(":root, .dark");
+			expect(tokens?.cssVars?.light?.["primary-hover"]).toBeDefined();
+			expect(tokens?.cssVars?.dark?.["primary-hover"]).toBeDefined();
 		},
 	);
 

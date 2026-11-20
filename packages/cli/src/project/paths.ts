@@ -14,6 +14,8 @@ export interface InstallConfig {
 	/** Alias strings as written in components.json, with each CLI's defaults filled in. */
 	readonly aliases: Readonly<Record<AliasKey, string>>;
 	/** Only the aliases components.json sets; shadcn's import rewrite branches on absence. */
+	/** An alias had no tsconfig or package.json mapping, so installed files import each other relatively. */
+	readonly relativeImports: boolean;
 	readonly declaredAliases: Readonly<Partial<Record<AliasKey, string>>>;
 	readonly paths: Readonly<Record<AliasKey, string>> & {
 		readonly css: string | undefined;
@@ -30,6 +32,20 @@ export function resolveAlias(alias: string, project: Project): string | undefine
 	if (project.dollarLib && (alias === "$lib" || alias.startsWith("$lib/"))) {
 		return join(project.root, "src", "lib", alias.slice("$lib".length));
 	}
+	return undefined;
+}
+
+/**
+ * Where an alias lands when nothing maps it (a workspace ui package without tsconfig paths):
+ * `$lib` is src/lib, `@/` is src/ or the package root. Imports are then written relative.
+ */
+function fallbackAlias(alias: string, project: Project): string | undefined {
+	const src = existsSync(join(project.root, "src"))
+		? join(project.root, "src")
+		: project.root;
+	if (alias === "$lib" || alias.startsWith("$lib/"))
+		return join(src, "lib", alias.slice(4));
+	if (alias === "@" || alias.startsWith("@/")) return join(src, alias.slice(2));
 	return undefined;
 }
 
@@ -68,9 +84,12 @@ export function installConfig(project: Project): InstallConfig {
 	const aliases =
 		framework === "svelte" ? svelteAliases(config.aliases) : reactAliases(config.aliases);
 	const missing: string[] = [];
+	let relativeImports = false;
 	const need = (key: AliasKey) => {
-		const dir = resolveAlias(aliases[key], project);
+		const mapped = resolveAlias(aliases[key], project);
+		const dir = mapped ?? fallbackAlias(aliases[key], project);
 		if (!dir) missing.push(`${key} (${aliases[key]})`);
+		else if (!mapped) relativeImports = true;
 		return dir ?? "";
 	};
 	const paths = {
@@ -97,6 +116,7 @@ export function installConfig(project: Project): InstallConfig {
 		typescript,
 		srcDir: existsSync(join(project.root, "src")),
 		aliases,
+		relativeImports,
 		declaredAliases: Object.fromEntries(
 			ALIAS_KEYS.flatMap((key) => {
 				const value = config.aliases[key];
