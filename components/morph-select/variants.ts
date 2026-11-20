@@ -17,7 +17,7 @@ export const morphSelect = tv({
 		chevron:
 			"size-4 shrink-0 text-muted-foreground transition-[rotate] duration-(--duration-spring-snappy) ease-(--ease-spring-snappy) motion-reduce:transition-none",
 		popup: [
-			"group/popup static z-50 overflow-clip rounded-xl border border-border-strong bg-popover text-foreground shadow-(--overlay-shadow) outline-none",
+			"group/popup static z-50 overflow-clip rounded-xl bg-popover text-foreground shadow-(--overlay-shadow) outline-none",
 			"w-(--ms-panel) min-w-(--ms-w) [--ms-h:var(--anchor-height,var(--bits-select-anchor-height))] [--ms-w:var(--anchor-width,var(--bits-select-anchor-width))]",
 			"transition-[clip-path,box-shadow] duration-(--duration-spring-snappy) ease-(--ease-spring-snappy) [clip-path:inset(0_round_var(--radius-xl))]",
 			"data-[closed]:[clip-path:inset(0_calc(100%-var(--ms-w))_calc(100%-var(--ms-h))_0_round_var(--radius-lg))] data-[starting-style]:[clip-path:inset(0_calc(100%-var(--ms-w))_calc(100%-var(--ms-h))_0_round_var(--radius-lg))]",

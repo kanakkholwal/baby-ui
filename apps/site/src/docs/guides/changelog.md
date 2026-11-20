@@ -17,6 +17,18 @@ description: What changed, newest first.
 - `Tool` and `TaskSteps` take `labels` for every visible string; `Tool` can be controlled.
 - Collapsible content is `inert` when closed, and opens over 200ms, closes over 120ms.
 
+**Look**
+
+- Surfaces separate by a colour step and spacing, with no forced 1px rings or borders for depth:
+  popovers, menus, tabs, cards, code frames and dialogs. Tooltips follow the mode.
+- `Card` and `Table` are borderless by default and take `bordered`.
+- One control height ladder (24, 32, 36, 40, 48px), so inputs, buttons and selects line up.
+  Select-like triggers are a soft fill.
+- `Switch`, `Checkbox` and `Radio` share one size scale and one 200ms motion.
+- `ScrollArea` gains `gutter`, `orientation`, `fade` and `scrollbar` modes.
+- `MultiSelect` takes `defaultValue`, `open`, `name`, `clearable`, `max`, `loading` and `onCreate`.
+- Emails take `createEmailTheme({ primary, radius, density })` and use the same spacing tokens.
+
 **Registry**
 
 - `tokens` and `theme` items on every route. Each component ships only the CSS it uses.

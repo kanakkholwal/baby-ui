@@ -185,12 +185,12 @@ Tokens:
 
 - Hover, highlight and open fills are a 6% foreground tint (`bg-foreground/[0.06]`), never
   `bg-muted`: muted is a fixed step for chips and wells, so a muted hover merges with them.
-  Large areas (drop zones, full-width accordion rows) take a 3% tint plus a stronger border.
+  Large areas (drop zones, full-width accordion rows) take a 3% tint and no darker edge.
 - A tile or chip inside a hoverable area never shares the hover's colour: give it its own
-  step (`bg-background` with a border in light, `bg-muted` in dark).
+  step (`bg-background` in light, `bg-muted` in dark), never an outline.
 - Fields (Input, Textarea, NativeSelect, InputGroup, Select and Combobox triggers, MultiSelect,
   TagInput, NumberInput, date/time fields) share one frame:
-  - rest `border-input` on `bg-(--field)`, hover `border-border-strong`;
+  - rest `border-input` on `bg-(--field)`, hover a 3% fill shift toward the foreground (the edge never darkens);
   - text entry on focus: `border-ring` plus a `ring-3 ring-ring/20` halo;
   - triggers (Select, Combobox, NativeSelect, MultiSelect) are a soft `foreground/5%` fill, 8% on hover and 10% while open, with an edge only on keyboard focus and never a halo (`fieldFrame({ kind: "trigger" })`);
   - invalid `border-destructive`, halo `ring-destructive/20`;

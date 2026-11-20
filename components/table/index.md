@@ -18,3 +18,10 @@ through context, so nested cells never repeat the prop.
 
 Give a row `data-state="selected"` (or `aria-selected="true"`) to pick up the built-in
 selected-row background; there's no separate `selected` prop to keep in sync.
+
+## Borderless by default, bordered on request
+
+The header is a surface step and rows keep a soft divider, so a table needs no frame. Pass
+`bordered` on `<Table>` for the classic edge: a hairline around the default variant, under its
+header and above its footer. `bordered` combines with `density` and is read by every part through
+context.
