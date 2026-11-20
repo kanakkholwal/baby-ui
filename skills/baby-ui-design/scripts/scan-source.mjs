@@ -74,6 +74,13 @@ const LINE_RULES = [
 		"Floating panels use shadow-(--overlay-shadow); raised bodies shadow-(--surface-shadow).",
 	],
 	[
+		"SURF-004",
+		"high",
+		/bg-popover[^"'`]*\b(?:border border-border|ring-1)\b|\b(?:border border-border|ring-1)\b[^"'`]*bg-popover/,
+		"border or ring on a floating panel",
+		"Floating panels get depth from bg-popover and shadow-(--overlay-shadow) only; no border, no ring.",
+	],
+	[
 		"TYPE-001",
 		"medium",
 		/\btext-\[\d+(?:\.\d+)?(?:px|rem|em)\]/,

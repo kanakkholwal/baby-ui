@@ -167,7 +167,9 @@ export const SITE_TOOLS: SiteTool[] = [
 export const MCP_INSTRUCTIONS =
 	"Baby UI is a React and Svelte component library installed as source through @baby-ui/cli. " +
 	"Search or list components, read get_component before choosing one (it names what to use instead), " +
-	"then install with get_install_command. Style through variant, size and className/class; never fork a component.";
+	"then install with get_install_command. Style through variant, size and className/class; never fork a component. " +
+	"Keep the soft look: no borders or rings for depth (floating panels use bg-popover with shadow-(--overlay-shadow)), " +
+	"cards and tables are borderless unless bordered is set, and controls of one size share one height.";
 
 /** Runs a tool by name, reporting an unknown name or a thrown error as a tool error. */
 export async function runTool(

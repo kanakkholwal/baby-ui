@@ -133,8 +133,7 @@ export const commandFrame = tv({
 			},
 			spotlight: {
 				popup: "w-[min(46rem,calc(100vw-2rem))]",
-				panel:
-					"rounded-2xl border border-border bg-popover p-2 shadow-(--overlay-shadow)",
+				panel: "rounded-2xl bg-popover p-2 shadow-(--overlay-shadow)",
 				filters: "gap-1 self-start px-1 pt-1",
 				pill: "rounded-full bg-foreground/[0.08]",
 				filter:

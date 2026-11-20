@@ -53,6 +53,31 @@ Only `theme` (opt-in) changes your app: the palette, fonts, the type scale's let
 the default transition curve and `cursor: pointer` on buttons. Component CSS installs in
 `@layer baby-ui`, so your own unlayered CSS overrides it.
 
+## Soft edges
+
+The look separates surfaces by a colour step and spacing, not by borders. Floating panels use
+`bg-popover` with `--overlay-shadow` (soft shadows, no 1px ring), cards and tables are
+borderless until you pass `bordered`, and tooltips follow the mode. Fields and outline variants
+keep one soft hairline from `--input` and `--border`.
+
+Those two are shadcn variables, so `tokens` never touches them. A project that keeps shadcn's
+opaque `--border` and `--input` shows heavier edges than this site. Install `theme` to get the
+soft alpha values, or set them yourself:
+
+```css
+:root {
+	--border: oklch(16% 0.002 265 / 0.08);
+	--input: oklch(16% 0.002 265 / 0.14);
+}
+```
+
+## Keeping tokens current
+
+`@baby-ui/cli add tokens` replaces the shadow, motion and status variables with the current
+values (`--overlay-shadow`, `--surface-shadow`, `--field` and the rest). The stock shadcn CLI
+keeps a variable that already exists, so after an update delete the old `--overlay-shadow` and
+`--surface-shadow` from your CSS and add `tokens` again.
+
 ## Dark mode
 
 The `dark` class on `<html>`, as in shadcn, so `next-themes` and `mode-watcher` work unchanged.
