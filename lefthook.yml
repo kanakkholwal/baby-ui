@@ -25,6 +25,15 @@ pre-commit:
 # The CI type checks and tests, so a broken build never reaches CI. `git push --no-verify` skips.
 pre-push:
   jobs:
-    - name: verify
-      run: node scripts/verify.mjs
-      fail_text: "A CI gate failed (summary above). Fix it, or re-run the listed step on its own."
+    - name: gates (generated files, biome, comments, imports)
+      run: node scripts/verify.mjs --stage=gates
+      fail_text: "A gate failed (output above). Fix it, or re-run `pnpm verify --stage=gates`."
+    - name: tests
+      run: node scripts/verify.mjs --stage=tests
+      fail_text: "Tests failed (output above). Re-run `pnpm test`."
+    - name: type checks (packages changed since origin/main)
+      run: node scripts/verify.mjs --stage=types
+      fail_text: "A type check failed (output above). Re-run `pnpm verify --stage=types`."
+    - name: pro type checks
+      run: node scripts/verify.mjs --stage=pro
+      fail_text: "Pro type checks failed (output above). Re-run `pnpm verify --stage=pro`."

@@ -25,16 +25,27 @@ function killTree(child) {
  */
 export function runPool(
 	tasks,
-	{ cwd, jobs = defaultJobs(), failFast = true, onStart, onDone },
+	{ cwd, jobs = defaultJobs(), failFast = true, onStart, onDone, onTick, tickMs = 10000 },
 ) {
 	const queue = [...tasks];
 	const running = new Set();
 	const results = [];
 	let stopped = false;
+	const began = Date.now();
+	const heartbeat = onTick
+		? setInterval(() => {
+				if (running.size)
+					onTick(
+						[...running].map((c) => c.task.name),
+						Math.round((Date.now() - began) / 1000),
+					);
+			}, tickMs)
+		: null;
 
 	return new Promise((resolveAll) => {
 		const next = () => {
 			if ((stopped || !queue.length) && !running.size) {
+				if (heartbeat) clearInterval(heartbeat);
 				process.removeListener("SIGINT", interrupt);
 				return resolveAll(results);
 			}

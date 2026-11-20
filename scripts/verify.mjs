@@ -3,7 +3,7 @@ import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { defaultJobs, runPool } from "./lib/pool.mjs";
 
-const HELP = `Usage: pnpm verify [--quick | --full] [--all] [--keep-going] [--jobs=N] [--verbose]
+const HELP = `Usage: pnpm verify [--quick | --full] [--all] [--keep-going] [--jobs=N] [--verbose] [--stage=ID]
 
 Runs the gates CI runs. Stages run in order; the steps inside a stage run in parallel.
 
@@ -15,6 +15,7 @@ Runs the gates CI runs. Stages run in order; the steps inside a stage run in par
                  every component page (what Deploy runs, plus the sweep)
   --keep-going   don't stop at the first failure; report every failing step at the end
   --verbose      print the output of every step, not only failures
+  --stage=ID     run one stage only: gates, tests, types, pro, build, checks (the pre-push hook runs them as separate jobs)
   --jobs=N       parallel steps (default: free cores, capped by free memory; now ${defaultJobs()})
 `;
 
@@ -29,6 +30,7 @@ const failFast = !argv.includes("--keep-going");
 const verbose = argv.includes("--verbose");
 const jobsArg = Number(argv.find((a) => a.startsWith("--jobs="))?.split("=")[1]);
 const jobs = jobsArg > 0 ? jobsArg : defaultJobs();
+const onlyStage = argv.find((a) => a.startsWith("--stage="))?.split("=")[1];
 
 /** Workspace packages with a `check` script. */
 function checkTargets() {
@@ -74,6 +76,7 @@ function affectedTargets(all) {
 const hasPro = existsSync(join(ROOT, "pro/package.json"));
 const STAGES = [
 	{
+		id: "gates",
 		level: 0,
 		name: "Gates",
 		steps: [
@@ -83,21 +86,32 @@ const STAGES = [
 			{ name: "Import extensions", cmd: "node scripts/check-import-extensions.mjs" },
 		],
 	},
+	{ id: "tests", level: 1, name: "Tests", steps: [{ name: "Tests", cmd: "pnpm test" }] },
 	{
+		id: "types",
 		level: 1,
-		name: "Tests and type checks",
-		steps: [
-			{ name: "Tests", cmd: "pnpm test" },
-			...affectedTargets(checkTargets()).map((name) => ({
+		name: "Type checks",
+		get steps() {
+			return affectedTargets(checkTargets()).map((name) => ({
 				name: `Type-check ${name}`,
 				cmd: `pnpm --filter ${name} check`,
-			})),
-			// Pro's own `check` regenerates first; the Gates stage already proved that is a no-op.
-			...(hasPro ? [{ name: "Pro type checks", cmd: "pnpm --dir pro -r check" }] : []),
-		],
+			}));
+		},
 	},
-	{ level: 2, name: "Build", steps: [{ name: "Build", cmd: "pnpm build" }] },
+	// Pro's own `check` regenerates first; the Gates stage already proved that is a no-op.
+	...(hasPro
+		? [
+				{
+					id: "pro",
+					level: 1,
+					name: "Pro type checks",
+					steps: [{ name: "Pro type checks", cmd: "pnpm --dir pro -r check" }],
+				},
+			]
+		: []),
+	{ id: "build", level: 2, name: "Build", steps: [{ name: "Build", cmd: "pnpm build" }] },
 	{
+		id: "checks",
 		level: 2,
 		name: "Build checks",
 		steps: [
@@ -109,7 +123,17 @@ const STAGES = [
 			{ name: "Browser sweep", cmd: `node scripts/probe/index.mjs --all --jobs=${jobs}` },
 		],
 	},
-].filter((stage) => stage.level <= level);
+].filter((stage) => (onlyStage ? stage.id === onlyStage : stage.level <= level));
+if (!STAGES.length && onlyStage === "pro") {
+	console.log("verify: no pro/ checkout, skipping Pro type checks");
+	process.exit(0);
+}
+if (!STAGES.length) {
+	console.error(
+		`verify: no stage "${onlyStage}". Use gates, tests, types, pro, build or checks.`,
+	);
+	process.exit(2);
+}
 
 const results = [];
 const began = Date.now();
@@ -121,6 +145,8 @@ for (const stage of STAGES) {
 		jobs,
 		failFast,
 		onStart: (task) => console.log(`  run   ${task.name}`),
+		onTick: (names, seconds) =>
+			console.log(`  ...   still running after ${seconds}s: ${names.join(", ")}`),
 		onDone: (r) => {
 			const mark = r.cancelled ? "stop" : r.ok ? "pass" : "FAIL";
 			console.log(`  ${mark}  ${r.name} (${r.seconds}s)`);
