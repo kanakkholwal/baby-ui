@@ -182,7 +182,7 @@ describe("add", () => {
 			join(svelte, "src/lib/components/ui/badge/badge.svelte"),
 			"utf8",
 		);
-		expect(badge).toContain('from "../../../cn"');
+		expect(badge).toMatch(/from "\.\.\/\.\.\/\.\.\/cn\.js"/);
 
 		const react = fixture({
 			"package.json": { dependencies: { react: "19.0.0", clsx: "2" } },
