@@ -17,7 +17,7 @@ const GROUPS: { id: string; title: string; note: string; match: RegExp }[] = [
 	{
 		id: "surfaces",
 		title: "Surfaces",
-		note: "Page, card, muted and segment climb in steps; popover floats on its edge ring.",
+		note: "Page, card, muted and segment climb in steps; popover floats on a soft shadow, no ring.",
 		match:
 			/^--(background|foreground|card|popover|muted|secondary|accent|segment)(-foreground)?$/,
 	},
@@ -54,7 +54,7 @@ const GROUPS: { id: string; title: string; note: string; match: RegExp }[] = [
 	{
 		id: "elevation",
 		title: "Elevation",
-		note: "Token shadows only; an overlay's edge is its shadow ring.",
+		note: "Token shadows only, with no 1px ring: depth is a colour step plus a soft shadow.",
 		match: /-shadow$/,
 	},
 	{

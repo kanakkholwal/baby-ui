@@ -102,6 +102,9 @@ Components added this way can join the lock later with `baby-ui repair --adopt`.
 - **`@/components/ui/button` imports the wrong Button**: shadcn's `init` left
   `components/ui/button.tsx`, which shadows the folder. Delete it.
 - **Grey, unstyled controls**: `tokens` is missing; run `baby-ui add tokens`.
+- **Dropdowns, inputs or cards show heavy borders**: your project keeps shadcn's opaque
+  `--border` and `--input`. Install `theme`, or set them to the soft values in
+  [Theming](/docs/theming#soft-edges). Old `--overlay-shadow` values also linger after an update.
 - **Nothing animates**: reduced motion is on in your OS, which keeps fades and drops travel.
 - **Something else looks off**: `baby-ui doctor` checks the config, stylesheet and every
   installed file.
