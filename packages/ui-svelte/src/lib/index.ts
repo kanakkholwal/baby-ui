@@ -817,6 +817,9 @@ export { holdToConfirm, type HoldToConfirmVariant, type HoldToConfirmSize } from
 export { HoverCard } from "@baby-ui/components/svelte/hover-card";
 export { HoverCardContent } from "@baby-ui/components/svelte/hover-card";
 export { HoverCardTrigger } from "@baby-ui/components/svelte/hover-card";
+export { HoverMarquee, type HoverMarqueeProps } from "@baby-ui/components/svelte/hover-marquee";
+export { DEFAULT_PIXELS_PER_SECOND, marqueeSeconds, overflowOf } from "@baby-ui/components/svelte/hover-marquee";
+export { hoverMarquee, type HoverMarqueeVariant } from "@baby-ui/components/svelte/hover-marquee";
 export { HoverTransition } from "@baby-ui/components/svelte/hover-transition";
 export { type HoverVars, type HoverLayer, movesDefault, baseVars, hoverLayers, styleString } from "@baby-ui/components/svelte/hover-transition";
 export { hoverTransition, type HoverTransitionEffect, type HoverTransitionDirection } from "@baby-ui/components/svelte/hover-transition";

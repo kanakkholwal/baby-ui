@@ -89,6 +89,7 @@ async function loadProSpecs(): Promise<ComponentSpec[]> {
 }
 
 async function main() {
+	console.log(`registry-build: ${specs.length} specs, ${FRAMEWORKS.length} frameworks`);
 	const docs = await verifyComponentDocs([...specs]);
 	const errors = [
 		...(await Promise.all(FRAMEWORKS.map((f) => verifySprings([...specs], f)))).flat(),
@@ -102,6 +103,9 @@ async function main() {
 		...verifyPacks([...specs], PACKS),
 	];
 	if (errors.length) {
+		console.log(
+			`registry-build: ${docs.errors.length > 0 ? "has" : "has no"} doc errors, ${docs.missing.length} missing docs`,
+		);
 		console.error("registry-build failed:");
 		for (const e of errors) console.error(`  - ${e}`);
 		process.exit(1);

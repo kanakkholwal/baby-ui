@@ -65,6 +65,10 @@ html[data-theme-reveal="blinds"][data-theme-reveal-start="bottom-up"]::view-tran
 	mask-image: linear-gradient(0deg, #000 0 var(--theme-reveal-slat), transparent calc(var(--theme-reveal-slat) + 20px));
 	mask-size: 100% 72px;
 }
+html[data-theme-reveal="blinds"][data-theme-reveal-start="top-down"]::view-transition-new(root) {
+	mask-image: linear-gradient(180deg, #000 0 var(--theme-reveal-slat), transparent calc(var(--theme-reveal-slat) + 20px));
+	mask-size: 100% 72px;
+}
 html[data-theme-reveal="eclipse"]::view-transition-old(root),
 html[data-theme-reveal="split"]::view-transition-old(root) {
 	animation: none;
@@ -169,6 +173,7 @@ export const RECT_FROM: Record<ThemeToggleStart, string> = {
 	"bottom-right": "inset(100% 0 0 100%)",
 	center: "inset(50% 50% 50% 50%)",
 	"bottom-up": "inset(100% 0 0 0)",
+	"top-down": "inset(0 0 100% 0)",
 };
 
 export const CIRCLE_ORIGIN: Record<ThemeToggleStart, string> = {
@@ -178,6 +183,7 @@ export const CIRCLE_ORIGIN: Record<ThemeToggleStart, string> = {
 	"bottom-right": "100% 100%",
 	center: "50% 50%",
 	"bottom-up": "50% 100%",
+	"top-down": "50% 0%",
 };
 
 export function ensureRevealStyle() {

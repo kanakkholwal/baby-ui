@@ -25,6 +25,7 @@ export const themeToggle = tv({
 			"bottom-right": "",
 			center: "",
 			"bottom-up": "",
+			"top-down": "",
 		},
 	},
 	defaultVariants: { variant: "rectangle", start: "bottom-up" },

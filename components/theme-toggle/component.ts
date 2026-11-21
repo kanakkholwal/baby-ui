@@ -17,6 +17,7 @@ const STARTS = [
 	"bottom-right",
 	"center",
 	"bottom-up",
+	"top-down",
 ];
 
 export const themeToggle = defineComponent({

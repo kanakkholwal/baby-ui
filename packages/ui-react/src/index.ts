@@ -335,6 +335,9 @@ export { type HoldToConfirmProps, HoldToConfirm } from "@baby-ui/components/reac
 export { type HoldOptions, createHold } from "@baby-ui/components/react/hold-to-confirm";
 export { holdToConfirm, type HoldToConfirmVariant, type HoldToConfirmSize } from "@baby-ui/components/react/hold-to-confirm";
 export { HoverCard, HoverCardTrigger, HoverCardContent } from "@baby-ui/components/react/hover-card";
+export { type HoverMarqueeProps, HoverMarquee } from "@baby-ui/components/react/hover-marquee";
+export { DEFAULT_PIXELS_PER_SECOND, marqueeSeconds, overflowOf } from "@baby-ui/components/react/hover-marquee";
+export { hoverMarquee, type HoverMarqueeVariant } from "@baby-ui/components/react/hover-marquee";
 export { type HoverTransitionProps, HoverTransition } from "@baby-ui/components/react/hover-transition";
 export { type HoverVars, type HoverLayer, movesDefault, baseVars, hoverLayers, styleString } from "@baby-ui/components/react/hover-transition";
 export { hoverTransition, type HoverTransitionEffect, type HoverTransitionDirection } from "@baby-ui/components/react/hover-transition";

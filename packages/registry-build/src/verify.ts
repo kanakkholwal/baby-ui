@@ -159,7 +159,7 @@ export async function verifyComponentDocs(
 	const seen = new Set<string>();
 
 	const dirs = await readdir(COMPONENTS_DIR).catch(() => [] as string[]);
-	for (const dir of dirs) {
+	for await (const dir of dirs) {
 		const file = `components/${dir}/index.md`;
 		const raw = await readFile(resolve(COMPONENTS_DIR, dir, "index.md"), "utf8").catch(
 			() => null,
