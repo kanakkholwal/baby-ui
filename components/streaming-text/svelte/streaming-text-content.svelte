@@ -70,7 +70,7 @@ $effect(() => {
 		{#each tokens.slice(0, count) as token, i (`${i}-${token.text}`)}
 			{@const source = token.cite === undefined ? undefined : ctx.sources[token.cite]}
 			{#if token.cite === undefined}
-				<span>{token.text} </span>
+				<span>{`${token.text} `}</span>
 			{:else if source}
 				<a href={source.href} target="_blank" rel="noreferrer" class={ctx.styles.chip()}>
 					<img src={source.image} alt="" class="size-3 rounded-[3px]" />

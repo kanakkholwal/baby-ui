@@ -50,5 +50,5 @@ const direction = $derived(
 		/>
 	</svg>
 	{change.ratio === null ? newLabel : formatChange(change.ratio, locale)}
-	{#if srCompare}<span class="sr-only"> {srCompare}</span>{/if}
+	{#if srCompare}<span class="sr-only">{` ${srCompare}`}</span>{/if}
 </Badge>

@@ -30,6 +30,7 @@ export const progress = tv({
 			default: { track: "text-primary", ring: "text-primary" },
 			info: { track: "text-(--info)", ring: "text-(--info)" },
 			success: { track: "text-(--success)", ring: "text-(--success)" },
+			warning: { track: "text-(--warning)", ring: "text-(--warning)" },
 			destructive: { track: "text-(--destructive)", ring: "text-(--destructive)" },
 		},
 		variant: {

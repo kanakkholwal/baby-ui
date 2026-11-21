@@ -13,6 +13,10 @@ Any agent (Claude Code, Codex, Cursor, Copilot) should read this file first.
 - **HARD RULE:** no absolute paths in imports, globs or config (no drive paths, no root
   `"/src/..."`). Relative paths or a configured alias (`#lib` in apps/site, a package.json
   subpath import that needs the file extension; `$pro`; `@baby-ui/*`) only.
+- Inside `components/`, other components and `lib/` are imported relatively (`../../button/react/button`,
+  `../../lib/cn`), never `@/...`, `@baby-ui/*` or a root path; the registry build rewrites them to the
+  consumer's alias, or keeps them relative when aliases are unmapped (monorepos). Check the emitted
+  `apps/registry/dist/r/<slug>.json`, not just the source.
 - Never use `.js` extensions in relative imports (`scripts/check-import-extensions.mjs`).
 - Never write custom CSS when Tailwind utilities and CSS variables can do it. Custom CSS is
   for keyframes, `::backdrop`, pseudo-element thumbs, scrollbars, and nothing else.

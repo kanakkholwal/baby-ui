@@ -41,10 +41,13 @@ export const progress = defineComponent({
 		},
 		{
 			name: "tone",
-			type: '"default" | "info" | "success" | "destructive"',
+			type: '"default" | "info" | "success" | "warning" | "destructive"',
 			description: "Fill colour from the theme.",
 			default: "default",
-			control: { kind: "select", options: ["default", "info", "success", "destructive"] },
+			control: {
+				kind: "select",
+				options: ["default", "info", "success", "warning", "destructive"],
+			},
 		},
 		{
 			name: "min",
