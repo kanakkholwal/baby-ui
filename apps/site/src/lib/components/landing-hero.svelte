@@ -1,6 +1,6 @@
 <script lang="ts">
 import { IconArrowRight } from "@baby-ui/icons";
-import { Button, DiaText, LightRays } from "@baby-ui/svelte";
+import { Button, DiaText, HoverMarquee, LightRays } from "@baby-ui/svelte";
 import HeroFragment from "./hero-fragment.svelte";
 
 let { total = 0 }: { total?: number } = $props();
@@ -30,7 +30,7 @@ const count = $derived(`${Math.floor(total / 10) * 10}+`);
 			class="hero-in group inline-flex items-center gap-2 rounded-full bg-card/80 py-1 pr-3 pl-1 text-muted-foreground text-sm outline-none backdrop-blur-sm transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
 		>
 			<span class="rounded-full bg-background px-2 py-0.5 font-medium text-foreground text-xs">Free</span>
-			{count} components, emails and OG images
+			<HoverMarquee text="{count} components, emails and OG images" class="max-w-56" />
 			<IconArrowRight
 				size={14}
 				aria-hidden="true"
