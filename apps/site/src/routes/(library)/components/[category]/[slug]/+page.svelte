@@ -244,6 +244,8 @@ const outline = $derived(
 		},
 	].filter((h): h is Heading => Boolean(h)),
 );
+// A snippet passed to ContentPageHeader is named after its prop (`outline`), which would shadow the list.
+const outlineItems = $derived(outline);
 const usage = $derived(
 	dialect === "js" && port?.usage?.js ? port.usage.js : (port?.usage?.ts ?? null),
 );
@@ -299,7 +301,6 @@ const packs = $derived(packsFor(data.spec.slug));
 				{ label: data.spec.name },
 			]}
 			tags={pageTags}
-			outline={outlineBar}
 			anchorId="overview"
 		>
 			{#snippet meta()}
@@ -348,8 +349,8 @@ const packs = $derived(packsFor(data.spec.slug));
 				{/if}
 				<OutlineToggle />
 			{/snippet}
-			{#snippet outlineBar()}
-				<OutlineBar title={data.spec.name} items={outline} />
+			{#snippet outline()}
+				<OutlineBar title={data.spec.name} items={outlineItems} />
 			{/snippet}
 		</ContentPageHeader>
 
