@@ -59,10 +59,16 @@ const CONTROLS = {
 	pagination: (size) => pagination({ size }).link(),
 };
 
+// A segmented track is a pill at every size (DESIGN.md, Taste): height stays on the ladder.
+const PILL = new Set(["tabs (segment)"]);
+
 for (const [name, classes] of Object.entries(CONTROLS)) {
 	test(`${name} sits on the control ladder at every size`, () => {
-		for (const [size, expected] of Object.entries(LADDER)) {
+		for (const [size, ladder] of Object.entries(LADDER)) {
 			const tokens = classes(size).split(/\s+/);
+			const expected = PILL.has(name)
+				? ladder.map((cls) => (cls.startsWith("rounded") ? "rounded-full" : cls))
+				: ladder;
 			for (const cls of expected) {
 				const ok = cls.startsWith("h-")
 					? [cls, `min-${cls}`, cls.replace("h-", "size-")].some((c) =>
