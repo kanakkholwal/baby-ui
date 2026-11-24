@@ -118,7 +118,7 @@ export default defineConfig(({ command, mode, isPreview }) => {
 				fallbacks: {
 					Satoshi: ["Arial"],
 					"Inter Variable": ["Arial"],
-					"JetBrains Mono Variable": ["Courier New"],
+					"Geist Mono Variable": ["Courier New"],
 				},
 				resolvePath: (id) => new URL(`./static${id}`, import.meta.url),
 			}),

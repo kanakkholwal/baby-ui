@@ -8,7 +8,12 @@ let { children, value, class: classProp, ...rest }: TabsPrimitive.TriggerProps =
 
 const tabs = getTabs();
 const frame = $derived(
-	tabsFrame({ variant: tabs.variant, size: tabs.size, orientation: tabs.orientation }),
+	tabsFrame({
+		variant: tabs.variant,
+		size: tabs.size,
+		orientation: tabs.orientation,
+		divided: tabs.divided,
+	}),
 );
 </script>
 

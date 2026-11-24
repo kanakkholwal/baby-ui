@@ -16,11 +16,27 @@ export const badge = defineComponent({
 	slug: "badge",
 	name: "Badge",
 	description:
-		"Compact status label with semantic colour variants and an optional leading dot.",
+		"Compact label and indicator with semantic colours in soft, solid or ghost fills, an optional leading dot, and corner placement for counts and status dots.",
 	category: "base",
 	status: "stable",
-	variants: variantsOf(badgeVariants, ["variant", "size"]),
+	variants: variantsOf(badgeVariants, ["variant", "size", "fill", "placement"]),
 	props: [
+		{
+			name: "fill",
+			type: '"soft" | "solid" | "ghost"',
+			description:
+				"How the variant's colour is applied: `soft` tints the surface, `solid` fills it with the saturated colour, `ghost` drops the surface and keeps the coloured text.",
+			default: "soft",
+			control: { kind: "select", options: ["soft", "solid", "ghost"] },
+		},
+		{
+			name: "placement",
+			type: '"none" | "top-right" | "top-left" | "bottom-right" | "bottom-left"',
+			description:
+				"Pins the badge to a corner of a `BadgeAnchor` as a round indicator. With no content it is a status dot; with a count or icon it grows to fit.",
+			default: "none",
+			control: { kind: "none" },
+		},
 		{
 			name: "variant",
 			type: VARIANTS.map((v) => `"${v}"`).join(" | "),

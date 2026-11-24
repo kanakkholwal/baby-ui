@@ -15,6 +15,7 @@ const size = $derived(p.size ?? "default");
 		<Badge
 			variant={p.variant ?? "success"}
 			{size}
+			fill={p.fill ?? "soft"}
 			dot={p.dot !== false}
 		>
 			Healthy

@@ -15,6 +15,7 @@ let value = $state("overview");
 		variant={p.variant ?? "pill"}
 		size={p.size ?? "default"}
 		orientation={p.orientation ?? "horizontal"}
+		divided={p.divided ?? false}
 	>
 		<TabsList>
 			<TabsTrigger value="overview">Overview</TabsTrigger>

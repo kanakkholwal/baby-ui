@@ -5,23 +5,23 @@ export const empty = tv({
 	slots: {
 		root: "group/empty flex w-full min-w-0 flex-1 text-balance",
 		header: [
-			"flex max-w-sm flex-col items-center gap-2 text-center",
+			"flex max-w-sm flex-col items-center gap-1.5 text-center",
 			"group-data-[layout=horizontal]/empty:items-start group-data-[layout=horizontal]/empty:text-left",
 		],
 		title: [
-			"font-medium text-foreground text-lg tracking-tight",
+			"font-semibold text-foreground text-lg tracking-tight",
 			// Words rise out of a soft blur when the state appears; a remount (new key) replays it.
 			"transition-[translate,opacity,filter] delay-75 duration-(--duration-base) ease-(--ease-ui-out) starting:translate-y-[0.3em] starting:opacity-0 starting:blur-[2px] motion-reduce:transition-none",
 			"group-data-[size=sm]/empty:text-base group-data-[size=lg]/empty:text-xl",
 		],
 		description: [
 			"transition-[translate,opacity,filter] delay-100 duration-(--duration-base) ease-(--ease-ui-out) starting:translate-y-[0.3em] starting:opacity-0 starting:blur-[2px] motion-reduce:transition-none",
-			"text-muted-foreground text-sm/relaxed [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary",
-			"group-data-[size=sm]/empty:text-xs/relaxed",
+			"text-[0.9375rem]/relaxed text-muted-foreground [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary",
+			"group-data-[size=sm]/empty:text-sm/relaxed",
 		],
 		content: [
-			"flex w-full min-w-0 max-w-sm flex-col items-center gap-4 text-balance text-sm",
-			"group-data-[layout=horizontal]/empty:w-auto group-data-[layout=horizontal]/empty:items-end",
+			"flex w-full min-w-0 max-w-sm flex-row flex-wrap items-center justify-center gap-2 text-balance text-sm",
+			"group-data-[layout=horizontal]/empty:w-auto group-data-[layout=horizontal]/empty:justify-end",
 		],
 	},
 	variants: {
@@ -56,7 +56,7 @@ export const emptyMedia = tv({
 	variants: {
 		variant: {
 			default: "mb-2 group-data-[layout=horizontal]/empty:mb-0",
-			icon: "mb-2 size-10 rounded-xl group-data-[layout=horizontal]/empty:mb-0 [&_svg:not([class*='size-'])]:size-5",
+			icon: "mb-3 size-12 rounded-full group-data-[layout=horizontal]/empty:mb-0 [&_svg:not([class*='size-'])]:size-5",
 		},
 		tone: {
 			neutral: "",
@@ -71,7 +71,7 @@ export const emptyMedia = tv({
 		{
 			variant: "icon",
 			tone: "neutral",
-			class: "bg-card text-foreground",
+			class: "bg-muted text-foreground",
 		},
 		{ variant: "icon", tone: "primary", class: "bg-primary/10 text-primary" },
 		{

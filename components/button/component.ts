@@ -9,7 +9,7 @@ export const button = defineComponent({
 	category: "base",
 	status: "stable",
 
-	variants: variantsOf(buttonVariants, ["variant", "size"]),
+	variants: variantsOf(buttonVariants, ["variant", "size", "roundness"]),
 
 	props: [
 		{
@@ -46,6 +46,14 @@ export const button = defineComponent({
 					"raw",
 				],
 			},
+		},
+		{
+			name: "roundness",
+			type: '"default" | "soft" | "full"',
+			description:
+				"Corner radius, proportional to the size and the same for icon squares: `default` is the ladder step (about 28% of the height), `soft` about 40%, `full` a pill or circle.",
+			default: "default",
+			control: { kind: "select", options: ["default", "soft", "full"] },
 		},
 		{
 			name: "size",

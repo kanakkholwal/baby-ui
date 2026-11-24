@@ -28,8 +28,8 @@ const CELLS: Cell[] = [
 		<h2 id="home-showcase-heading" class="m-0 font-display font-medium text-3xl text-foreground tracking-[-0.03em] md:text-4xl">Live components</h2>
 	</div>
 
-	<div class="mt-8 rounded-2xl bg-card p-1 sm:mt-10">
-	<ShowcaseGrid class="overflow-hidden rounded-[calc(var(--radius-2xl)-0.25rem)]">
+	<div class="mt-8 rounded-[1.5rem] bg-card p-2 sm:mt-10">
+	<ShowcaseGrid class="overflow-hidden rounded-[calc(1.5rem-0.5rem)]">
 		{#each CELLS as cell (cell.slug)}
 			<ShowcasePanel
 				slug={cell.slug}

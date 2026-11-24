@@ -1,5 +1,5 @@
 <script lang="ts">
-import { IconCheck, IconCopy } from "@baby-ui/icons";
+import { IconCopy, IconCopyCheck } from "@baby-ui/icons";
 import { type TrackEvent, track } from "#lib/analytics.js";
 
 let {
@@ -39,10 +39,10 @@ async function copy() {
 	]}
 >
 	{#if copied}
-		<IconCheck size={13} />
+		<IconCopyCheck size={16} />
 		{#if !iconOnly}Copied{/if}
 	{:else}
-		<IconCopy size={13} />
+		<IconCopy size={16} />
 		{#if !iconOnly}Copy{/if}
 	{/if}
 </button>

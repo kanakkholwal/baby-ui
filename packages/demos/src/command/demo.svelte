@@ -68,12 +68,12 @@ function run(id: string) {
 				</CommandFilters>
 			</CommandBar>
 		{:else if variant === "spotlight"}
+			<CommandInput {placeholder} hint="esc" />
 			<CommandFilters bind:value={filter} label="Scope">
 				{#each [COMMAND_ALL, ...COMMAND_GROUPS] as group (group.id)}
 					<CommandFilter value={group.id} label={group.heading}>{group.heading}</CommandFilter>
 				{/each}
 			</CommandFilters>
-			<CommandInput {placeholder} hint="Esc" />
 		{:else}
 			<CommandInput {placeholder} />
 		{/if}
@@ -84,17 +84,24 @@ function run(id: string) {
 					{#each group.items as item (item.value)}
 						<CommandItem value={item.value} keywords={item.keywords} onclick={() => run(item.value)}>
 							{@render icon(group.icon)}
-							<span class="min-w-0 flex-1 truncate">{item.value}</span>
+							{#if "description" in item && item.description}
+								<span class="flex min-w-0 flex-1 flex-col">
+									<span class="truncate">{item.value}</span>
+									<span class="truncate text-muted-foreground text-xs">{item.description}</span>
+								</span>
+							{:else}
+								<span class="min-w-0 flex-1 truncate">{item.value}</span>
+							{/if}
 							{#if "shortcut" in item && item.shortcut}<CommandShortcut>{item.shortcut}</CommandShortcut>{/if}
 						</CommandItem>
 					{/each}
 				</CommandGroup>
 			{/each}
 		</CommandList>
-		{#if variant === "launcher" || variant === "framed"}
+		{#if variant === "launcher" || variant === "framed" || variant === "spotlight"}
 			<CommandFooter>
 				<span class="flex items-center gap-4">
-					<CommandHint keys={["↑", "↓"]}>Move</CommandHint>
+					<CommandHint keys={["↑", "↓"]}>{variant === "spotlight" ? "Navigate" : "Move"}</CommandHint>
 					<CommandHint keys={["↵"]}>Open</CommandHint>
 				</span>
 				{#if variant === "launcher"}<CommandHint keys={["Esc"]}>Close</CommandHint>{/if}

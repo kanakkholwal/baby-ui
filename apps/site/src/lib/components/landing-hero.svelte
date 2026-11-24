@@ -1,6 +1,6 @@
 <script lang="ts">
 import { IconArrowRight } from "@baby-ui/icons";
-import { Button, DiaText } from "@baby-ui/svelte";
+import { Button, DiaText, LightRays } from "@baby-ui/svelte";
 import HeroFragment from "./hero-fragment.svelte";
 
 let { total = 0 }: { total?: number } = $props();
@@ -12,15 +12,22 @@ const TAILS = ["React and Svelte", "agents and charts", "emails and OG images"];
 const count = $derived(`${Math.floor(total / 10) * 10}+`);
 </script>
 
-<!-- Centred copy with two real components fading in from the edges: the product frames the promise. -->
-<section class="relative isolate w-full overflow-x-clip px-4 pt-20 pb-16 md:pt-28 md:pb-20">
+<!-- The header is transparent over this section, so the rays run up behind it and the copy
+     clears it with its own top padding. -->
+<section
+	class="relative isolate w-full overflow-x-clip px-4 pt-[calc(var(--header-h)+4.5rem)] pb-20 md:pt-[calc(var(--header-h)+7rem)] md:pb-28"
+>
+	<LightRays
+		tone="spectrum"
+		class="pointer-events-none -z-10 h-[40rem] w-full [mask-image:linear-gradient(to_bottom,#000_60%,transparent)] md:h-[54rem]"
+	/>
 	<HeroFragment slug="chat-composer" side="left" />
 	<HeroFragment slug="agent-activity" side="right" />
 
-	<div class="relative mx-auto flex max-w-2xl flex-col items-center text-center">
+	<div class="relative mx-auto flex max-w-4xl flex-col items-center text-center">
 		<a
 			href="/components"
-			class="hero-in group inline-flex items-center gap-2 rounded-full bg-card py-1 pr-3 pl-1 text-muted-foreground text-sm outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+			class="hero-in group inline-flex items-center gap-2 rounded-full bg-card/80 py-1 pr-3 pl-1 text-muted-foreground text-sm outline-none backdrop-blur-sm transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
 		>
 			<span class="rounded-full bg-background px-2 py-0.5 font-medium text-foreground text-xs">Free</span>
 			{count} components, emails and OG images
@@ -31,10 +38,11 @@ const count = $derived(`${Math.floor(total / 10) * 10}+`);
 			/>
 		</a>
 		<h1
-			class="hero-in mt-6 mb-0 text-balance font-display font-medium text-[2.5rem] text-foreground leading-[1.05] tracking-[-0.03em] sm:text-6xl"
+			class="hero-in mt-7 mb-0 text-balance font-display font-medium text-[2.5rem] text-foreground leading-[1.04] tracking-[-0.045em] sm:text-7xl lg:text-[5.25rem]"
 			style:--i="1"
 		>
-			UI components for
+			UI components
+			for
 			<span class="block h-[1.1em] whitespace-nowrap">
 				<DiaText
 					text={TAILS}
@@ -46,12 +54,12 @@ const count = $derived(`${Math.floor(total / 10) * 10}+`);
 				/>
 			</span>
 		</h1>
-		<p class="hero-in mt-4 max-w-md text-pretty text-base text-muted-foreground sm:text-lg" style:--i="2">
+		<p class="hero-in mt-6 max-w-xl text-pretty text-lg text-muted-foreground sm:text-xl" style:--i="2">
 			Components, agent UI, charts, emails and OG images, installed as source.
 		</p>
-		<div class="hero-in mt-8 flex items-center gap-2" style:--i="3">
-			<Button href="/components" variant="dark" size="lg" class="rounded-full px-5">Browse components</Button>
-			<Button href="/docs/installation" variant="secondary" size="lg" class="rounded-full px-5">Get started</Button>
+		<div class="hero-in mt-9 flex items-center gap-2.5" style:--i="3">
+			<Button href="/components" variant="dark" size="lg" class="h-11 rounded-full px-6 text-base">Browse components</Button>
+			<Button href="/docs/installation" variant="secondary" size="lg" class="h-11 rounded-full px-6 text-base">Get started</Button>
 		</div>
 	</div>
 </section>

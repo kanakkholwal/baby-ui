@@ -10,7 +10,7 @@ import {
 
 export function Example() {
 	return (
-		<Empty variant="outline">
+		<Empty>
 			<EmptyHeader>
 				<EmptyMedia variant="icon" tone="primary">
 					<svg
@@ -27,7 +27,10 @@ export function Example() {
 				<EmptyDescription>Create a project to start inviting your team.</EmptyDescription>
 			</EmptyHeader>
 			<EmptyContent>
-				<Button size="sm">New project</Button>
+				<Button className="rounded-full px-5">New project</Button>
+				<Button variant="secondary" className="rounded-full px-5">
+					Import
+				</Button>
 			</EmptyContent>
 		</Empty>
 	);

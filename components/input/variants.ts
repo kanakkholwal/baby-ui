@@ -11,7 +11,7 @@ export const input = tv({
 			lg: [controlSize({ size: "lg" }), fieldText({ size: "lg" }), "px-3.5"],
 			xl: [controlSize({ size: "xl" }), fieldText({ size: "xl" }), "px-4"],
 		},
-		/** `outline`: focus shows as the border alone; `ring`: adds a soft halo. */
+		/** `outline`: focus shows as a crisp 2px edge; `ring`: a 1px edge plus a soft halo. */
 		variant: { outline: "", ring: fieldHalo() },
 	},
 	defaultVariants: { size: "default", variant: "outline" },

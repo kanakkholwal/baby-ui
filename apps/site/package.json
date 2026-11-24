@@ -44,6 +44,7 @@
 		"@better-svelte-email/server": "catalog:",
 		"@docvia/core": "^3.0.0",
 		"@fontsource-variable/inter": "catalog:",
+		"@fontsource-variable/geist-mono": "catalog:",
 		"@fontsource-variable/jetbrains-mono": "catalog:",
 		"@fontsource-variable/newsreader": "catalog:",
 		"@shikijs/langs": "catalog:",

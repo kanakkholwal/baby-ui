@@ -50,10 +50,13 @@ export const showcaseCard = tv({
 					"group-hover/showcase:rounded-b-none group-focus-within/showcase:rounded-b-none [@media(hover:none)]:rounded-b-none",
 				footer: REVEAL_FOOTER,
 			},
-			// The framed Dialog recipe: a card-surface rim, a raised preview, the footer in the rim.
+			// A card-surface rim around a page-coloured stage, concentric radii (24px rim, 18px stage), the footer in the rim.
 			framed: {
-				root: [...REVEAL_ROWS, "bg-card p-1 [&>div]:rounded-none [&>div]:bg-transparent"],
-				preview: "rounded-[calc(var(--radius-2xl)-0.25rem)] bg-popover",
+				root: [
+					...REVEAL_ROWS,
+					"rounded-[1.5rem] bg-card p-1.5 [&>div]:rounded-none [&>div]:bg-transparent",
+				],
+				preview: "rounded-[calc(1.5rem-0.375rem)] bg-background",
 				footer: REVEAL_FOOTER,
 			},
 		},

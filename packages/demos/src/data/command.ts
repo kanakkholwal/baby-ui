@@ -15,8 +15,16 @@ export const COMMAND_GROUPS = [
 		heading: "Pages",
 		icon: "M4.5 2.5h4.5l3 3v8h-7.5Zm4.5 0v3h3",
 		items: [
-			{ value: "Dashboards", keywords: "overview" },
-			{ value: "Documentation", keywords: "docs guide" },
+			{
+				value: "Dashboards",
+				keywords: "overview",
+				description: "Usage, spend and error rates for every project in one place.",
+			},
+			{
+				value: "Documentation",
+				keywords: "docs guide",
+				description: "Guides and the API reference, with copy-paste examples.",
+			},
 			{ value: "Changelog", keywords: "releases" },
 			{ value: "Status page", keywords: "uptime incidents" },
 		],
@@ -26,9 +34,17 @@ export const COMMAND_GROUPS = [
 		heading: "Settings",
 		icon: "M8 5.8a2.2 2.2 0 1 1 0 4.4 2.2 2.2 0 0 1 0-4.4ZM8 1.8v1.6m0 9.2v1.6M1.8 8h1.6m9.2 0h1.6",
 		items: [
-			{ value: "Billing", keywords: "plan invoices" },
+			{
+				value: "Billing",
+				keywords: "plan invoices",
+				description: "Change your plan, update the card on file and download invoices.",
+			},
 			{ value: "API keys", keywords: "token secret" },
-			{ value: "Appearance", keywords: "theme dark light" },
+			{
+				value: "Appearance",
+				keywords: "theme dark light",
+				description: "Pick a theme and a density for the whole workspace.",
+			},
 		],
 	},
 ];

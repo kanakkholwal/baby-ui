@@ -1,13 +1,15 @@
 <script lang="ts" module>
 import type { Snippet } from "svelte";
 import type { HTMLAnchorAttributes, HTMLButtonAttributes } from "svelte/elements";
-import type { ButtonSize, ButtonVariant } from "../variants";
+import type { ButtonRoundness, ButtonSize, ButtonVariant } from "../variants";
 
-export type { ButtonSize, ButtonVariant };
+export type { ButtonRoundness, ButtonSize, ButtonVariant };
 
 export type ButtonProps = {
 	variant?: ButtonVariant;
 	size?: ButtonSize;
+	/** `full` makes a pill; the default keeps the size's ladder radius. */
+	roundness?: ButtonRoundness;
 	href?: string;
 	loading?: boolean;
 	loadingLabel?: string;
@@ -28,6 +30,7 @@ let {
 	ref = $bindable(null),
 	variant,
 	size,
+	roundness,
 	href,
 	loading = false,
 	loadingLabel = "Loading…",
@@ -37,7 +40,7 @@ let {
 	...rest
 }: ButtonProps = $props();
 
-const classes = $derived(cn(button({ variant, size }), classProp));
+const classes = $derived(cn(button({ variant, size, roundness }), classProp));
 const iconOnly = $derived(isIconSize(size));
 
 function activate(event: MouseEvent) {

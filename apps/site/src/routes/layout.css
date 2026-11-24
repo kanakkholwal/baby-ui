@@ -1,5 +1,5 @@
 @import "@fontsource-variable/inter";
-@import "@fontsource-variable/jetbrains-mono";
+@import "@fontsource-variable/geist-mono";
 @import "@fontsource-variable/newsreader";
 @import "@baby-ui/tokens/theme.css";
 /* Both ports per component. Svelte's shared .ts files are generated copies and gitignored,
@@ -16,10 +16,9 @@
 /* Fontaine's metric-matched fallbacks sit behind each web font, so swapping them in keeps line
    boxes the same size. Site only: the registry theme ships the plain stacks. */
 :root {
-	--font-heading: "Satoshi", "Satoshi fallback", "Inter Variable", "Inter Variable fallback",
-		ui-sans-serif, system-ui, sans-serif;
+	--font-heading: "Inter Variable", "Inter Variable fallback", ui-sans-serif, system-ui, sans-serif;
 	--font-body: "Inter Variable", "Inter Variable fallback", ui-sans-serif, system-ui, sans-serif;
-	--font-mono: "JetBrains Mono Variable", "JetBrains Mono Variable fallback", ui-monospace,
+	--font-mono: "Geist Mono Variable", "Geist Mono Variable fallback", ui-monospace,
 		SFMono-Regular, monospace;
 }
 
@@ -42,8 +41,10 @@
 		background: var(--background);
 		color: var(--foreground);
 		font-family: var(--font-body);
-		font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+		font-synthesis: none;
+		text-rendering: optimizeLegibility;
 		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
 	}
 	h1,
 	h2,
@@ -62,16 +63,36 @@
 }
 
 @layer components {
+	/* Prose scale: 16px on phones, 15px from 48rem, 1.75 leading. Headings and code size in em from it. */
+	.prose-baby {
+		font-size: 16px;
+		line-height: 1.75;
+		@media (width >= 48rem) {
+			font-size: 15px;
+		}
+	}
 	.prose-baby :where(h2) {
-		margin: 2rem 0 0.75rem;
-		font-size: 1.05rem;
+		margin: 2.5rem 0 1rem;
+		font-size: 1.25em;
+		font-weight: 600;
+		letter-spacing: -0.015em;
+		line-height: 1.4;
+	}
+	.prose-baby :where(h3) {
+		margin: 2rem 0 0.5rem;
+		font-size: 1.125em;
 		font-weight: 600;
 		letter-spacing: -0.01em;
+		line-height: 1.45;
+	}
+	.prose-baby > :where(h2, h3):first-child {
+		margin-top: 0;
+	}
+	.prose-baby :where(p, li, td) {
+		color: color-mix(in oklab, var(--foreground) 90%, var(--background));
 	}
 	.prose-baby :where(p) {
 		margin: 0.75rem 0;
-		color: var(--muted-foreground);
-		line-height: 1.7;
 	}
 	.prose-baby :where(a) {
 		color: var(--foreground);
@@ -79,10 +100,13 @@
 		text-underline-offset: 2px;
 	}
 	.prose-baby :where(code):not(:where(pre *)) {
-		border-radius: var(--radius-sm);
+		border-radius: 0.35em;
 		background: var(--muted);
-		padding: 0.1em 0.35em;
-		font-size: 0.875em;
+		padding: 0.125em 0.3em;
+		font-size: 0.85em;
+	}
+	.prose-baby :where(h2, h3, h4) :where(code):not(:where(pre *)) {
+		font-size: 0.9em;
 	}
 	.prose-baby :where(kbd) {
 		border: 1px solid var(--border);
@@ -109,7 +133,8 @@
 		margin: 1rem 0;
 		width: 100%;
 		border-collapse: collapse;
-		font-size: 0.875rem;
+		font-size: 1em;
+		line-height: 1.5;
 	}
 	/* anywhere, not break-word: only anywhere lowers min-content, so long paths shrink the column. */
 	.prose-baby :where(th, td) {

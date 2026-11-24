@@ -27,9 +27,85 @@ export const badge = tv({
 			lg: "h-7 rounded-md px-2.5 text-sm [&>[data-slot=badge-dot]]:size-1.5 [&_svg]:size-3.5",
 			xl: "h-8 rounded-md px-3 text-sm [&>[data-slot=badge-dot]]:size-2 [&_svg]:size-4",
 		},
+		/** How the colour is applied: `soft` tints, `solid` fills, `ghost` keeps only the coloured text. */
+		fill: { soft: "", solid: "", ghost: "" },
+		/** Pins the badge to a corner of a `BadgeAnchor`; `none` leaves it inline. */
+		placement: {
+			none: "",
+			"top-right": "absolute top-0 right-0 translate-x-1/4 -translate-y-1/4",
+			"top-left": "absolute top-0 left-0 -translate-x-1/4 -translate-y-1/4",
+			"bottom-right": "absolute right-0 bottom-0 translate-x-1/4 translate-y-1/4",
+			"bottom-left": "absolute bottom-0 left-0 -translate-x-1/4 translate-y-1/4",
+		},
 	},
-	defaultVariants: { variant: "default", size: "default" },
+	compoundVariants: [
+		// Solid fills: the saturated token with its own foreground.
+		{ fill: "solid", variant: "default", class: "bg-primary text-primary-foreground" },
+		{ fill: "solid", variant: "secondary", class: "bg-muted-foreground text-background" },
+		{
+			fill: "solid",
+			variant: "outline",
+			class: "border-transparent bg-foreground text-background",
+		},
+		{ fill: "solid", variant: "success", class: "bg-success text-success-foreground" },
+		{ fill: "solid", variant: "warning", class: "bg-warning text-warning-foreground" },
+		{
+			fill: "solid",
+			variant: "destructive",
+			class: "bg-destructive text-destructive-foreground",
+		},
+		{ fill: "solid", variant: "info", class: "bg-info text-info-foreground" },
+		{ fill: "solid", variant: "gold", class: "bg-warning text-warning-foreground" },
+		// Ghost: no surface, the variant's text colour stays.
+		{ fill: "ghost", variant: "default", class: "bg-transparent" },
+		{
+			fill: "ghost",
+			variant: "secondary",
+			class: "bg-transparent text-muted-foreground",
+		},
+		{ fill: "ghost", variant: "outline", class: "border-transparent" },
+		{
+			fill: "ghost",
+			variant: ["success", "warning", "destructive", "info", "gold"],
+			class: "bg-transparent",
+		},
+		// Anchored: a round indicator that grows with its content, cut out of the host by a background ring.
+		{
+			placement: ["top-right", "top-left", "bottom-right", "bottom-left"],
+			class: "justify-center rounded-full shadow-[0_0_0_2px_var(--background)]",
+		},
+		{
+			placement: ["top-right", "top-left", "bottom-right", "bottom-left"],
+			size: "sm",
+			class: "min-w-5 px-1",
+		},
+		{
+			placement: ["top-right", "top-left", "bottom-right", "bottom-left"],
+			size: "default",
+			class: "min-w-6",
+		},
+		{
+			placement: ["top-right", "top-left", "bottom-right", "bottom-left"],
+			size: "lg",
+			class: "min-w-7",
+		},
+		{
+			placement: ["top-right", "top-left", "bottom-right", "bottom-left"],
+			size: "xl",
+			class: "min-w-8",
+		},
+	],
+	defaultVariants: {
+		variant: "default",
+		size: "default",
+		fill: "soft",
+		placement: "none",
+	},
 });
+
+export const badgeAnchor = tv({ base: "relative inline-flex shrink-0" });
 
 export type BadgeVariant = NonNullable<VariantProps<typeof badge>["variant"]>;
 export type BadgeSize = NonNullable<VariantProps<typeof badge>["size"]>;
+export type BadgeFill = NonNullable<VariantProps<typeof badge>["fill"]>;
+export type BadgePlacement = NonNullable<VariantProps<typeof badge>["placement"]>;

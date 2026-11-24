@@ -51,8 +51,8 @@ export { type AuthMode, type AuthStep, type AuthStatus, type AuthDetails, type A
 export { authForm, type AuthFormVariant } from "@baby-ui/components/react/auth-form";
 export { Avatar, AvatarImage, AvatarFallback, AvatarBadge, AvatarGroup, AvatarGroupCount } from "@baby-ui/components/react/avatar";
 export { avatar, avatarGroup, type AvatarSize, type AvatarShape } from "@baby-ui/components/react/avatar";
-export { type BadgeProps, Badge } from "@baby-ui/components/react/badge";
-export { badge, type BadgeVariant, type BadgeSize } from "@baby-ui/components/react/badge";
+export { type BadgeProps, Badge, BadgeAnchor } from "@baby-ui/components/react/badge";
+export { badge, badgeAnchor, type BadgeVariant, type BadgeSize, type BadgeFill, type BadgePlacement } from "@baby-ui/components/react/badge";
 export { type DisplayedBar, type BarContextValue, useBarChart, type BarChartProps, BarChart, useBarRegistration } from "@baby-ui/components/react/bar-chart";
 export { type BarAxisProps, BarXAxis, BarYAxis } from "@baby-ui/components/react/bar-chart";
 export { type BarTooltipProps, BarTooltip } from "@baby-ui/components/react/bar-chart";
@@ -71,7 +71,7 @@ export { boldCopy, type BoldCopySize } from "@baby-ui/components/react/bold-copy
 export { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator, BreadcrumbEllipsis } from "@baby-ui/components/react/breadcrumb";
 export { breadcrumb, type BreadcrumbVariant, type BreadcrumbSize } from "@baby-ui/components/react/breadcrumb";
 export { type ButtonProps, Button } from "@baby-ui/components/react/button";
-export { button, buttonFace, type ButtonVariant, type ButtonSize, isIconSize } from "@baby-ui/components/react/button";
+export { button, buttonFace, type ButtonVariant, type ButtonSize, type ButtonRoundness, isIconSize } from "@baby-ui/components/react/button";
 export { ButtonGroup, ButtonGroupText, ButtonGroupSeparator } from "@baby-ui/components/react/button-group";
 export { buttonGroup, type ButtonGroupOrientation } from "@baby-ui/components/react/button-group";
 export { type CalendarProps, Calendar, CalendarDayButton } from "@baby-ui/components/react/calendar";
@@ -406,6 +406,9 @@ export { licenseKey, licenseDisclosure, type LicenseKeyVariant } from "@baby-ui/
 export { type LightCausticsProps, LightCaustics } from "@baby-ui/components/react/light-caustics";
 export { type LightCausticsOptions, mountLightCaustics } from "@baby-ui/components/react/light-caustics";
 export { lightCaustics, type LightCausticsTone, type LightCausticsSpeed, type LightCausticsPosition, LIGHT_CAUSTICS_COLORS, LIGHT_CAUSTICS_SPEED } from "@baby-ui/components/react/light-caustics";
+export { type LightRaysProps, LightRays } from "@baby-ui/components/react/light-rays";
+export { type RayField, type LightRaysOptions, mountLightRays } from "@baby-ui/components/react/light-rays";
+export { lightRays, type LightRaysVariant, type LightRaysTone, type LightRaysSpeed, type LightRaysPosition, LIGHT_RAYS_COLORS, LIGHT_RAYS_SPEED, LIGHT_RAYS_FIELD, LIGHT_RAYS_COUNT } from "@baby-ui/components/react/light-rays";
 export { type LineChartProps, LineChart, type LineProps, Line, type ProfitLossLineProps, ProfitLossLine } from "@baby-ui/components/react/line-chart";
 export { line, type LineCurve, type LineVariant, LINE_CURVES, profitLoss, type ProfitLossEncoding } from "@baby-ui/components/react/line-chart";
 export { type LiquidChromeProps, LiquidChrome } from "@baby-ui/components/react/liquid-chrome";

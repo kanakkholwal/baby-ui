@@ -12,15 +12,17 @@ export const tabsFrame = tv({
 	},
 	variants: {
 		variant: {
+			// No track: unselected tabs are bare labels, the selected one is a filled pill.
 			pill: {
-				list: "gap-1 rounded-full bg-card p-1",
+				list: "gap-1",
 				trigger: "rounded-full aria-selected:text-primary-foreground",
-				indicator: "top-1 bottom-1 rounded-full bg-primary",
+				indicator: "inset-y-0 rounded-full bg-primary",
 			},
+			// A pill-shaped track with a raised white pill for the selected tab.
 			segment: {
-				list: "gap-0.5 bg-card p-0.5",
-				trigger: "aria-selected:text-foreground",
-				indicator: "top-0.5 bottom-0.5 bg-background shadow-surface",
+				list: "gap-0.5 rounded-full bg-foreground/[0.06] p-1",
+				trigger: "rounded-full aria-selected:text-foreground",
+				indicator: "top-1 bottom-1 rounded-full bg-background shadow-surface",
 			},
 			underline: {
 				list: "gap-1 border-border/60 border-b",
@@ -56,6 +58,16 @@ export const tabsFrame = tv({
 			horizontal: {},
 			vertical: { list: "h-auto w-full flex-col", trigger: "justify-start" },
 		},
+		// A short hairline between neighbours, hidden beside the selected tab and after the last.
+		divided: {
+			true: {
+				trigger: [
+					"after:pointer-events-none after:absolute after:inset-y-[28%] after:right-[-1px] after:w-px after:bg-foreground/15 after:transition-opacity after:duration-(--duration-fast)",
+					"last-of-type:after:hidden aria-selected:after:opacity-0 [&:has(+[aria-selected=true])]:after:opacity-0",
+				],
+			},
+			false: {},
+		},
 	},
 	compoundVariants: [
 		// An edge rule has no vertical form, so selection reads from the trigger text alone.
@@ -70,49 +82,16 @@ export const tabsFrame = tv({
 		{ orientation: "vertical", size: "default", class: { trigger: "h-9" } },
 		{ orientation: "vertical", size: "lg", class: { trigger: "h-10" } },
 		{ orientation: "vertical", size: "xl", class: { trigger: "h-12" } },
-		// Small pills keep a slimmer rim so the trigger still has room.
+		// Small segments keep a slimmer rim so the trigger still has room; larger ones read more airy.
 		{
-			variant: "pill",
+			variant: "segment",
 			size: ["xs", "sm"],
-			class: { list: "gap-0.5 p-0.5", indicator: "top-0.5 bottom-0.5" },
+			class: { list: "p-0.5", indicator: "top-0.5 bottom-0.5" },
 		},
-		// Segment: the list takes the ladder radius, the trigger and marker sit 2px inside it.
-		{
-			variant: "segment",
-			size: "xs",
-			class: {
-				list: "rounded-sm",
-				trigger: "rounded-[calc(var(--radius-sm)-2px)]",
-				indicator: "rounded-[calc(var(--radius-sm)-2px)]",
-			},
-		},
-		{
-			variant: "segment",
-			size: "sm",
-			class: {
-				list: "rounded-md",
-				trigger: "rounded-[calc(var(--radius-md)-2px)]",
-				indicator: "rounded-[calc(var(--radius-md)-2px)]",
-			},
-		},
-		{
-			variant: "segment",
-			size: ["default", "lg"],
-			class: {
-				list: "rounded-lg",
-				trigger: "rounded-[calc(var(--radius-lg)-2px)]",
-				indicator: "rounded-[calc(var(--radius-lg)-2px)]",
-			},
-		},
-		{
-			variant: "segment",
-			size: "xl",
-			class: {
-				list: "rounded-xl",
-				trigger: "rounded-[calc(var(--radius-xl)-2px)]",
-				indicator: "rounded-[calc(var(--radius-xl)-2px)]",
-			},
-		},
+		{ variant: ["segment", "pill"], size: ["default", "lg"], class: { trigger: "px-4" } },
+		{ variant: ["segment", "pill"], size: "xl", class: { trigger: "px-5" } },
+		// An edge between neighbours has no vertical form.
+		{ divided: true, orientation: "vertical", class: { trigger: "after:hidden" } },
 		// Soft and outline triggers are controls themselves: the ladder radius.
 		{
 			variant: ["soft", "outline"],
@@ -155,7 +134,12 @@ export const tabsFrame = tv({
 			class: { trigger: "rounded-t-xl", indicator: "rounded-t-xl" },
 		},
 	],
-	defaultVariants: { variant: "pill", size: "default", orientation: "horizontal" },
+	defaultVariants: {
+		variant: "pill",
+		size: "default",
+		orientation: "horizontal",
+		divided: false,
+	},
 });
 
 export type TabsVariant = NonNullable<VariantProps<typeof tabsFrame>["variant"]>;

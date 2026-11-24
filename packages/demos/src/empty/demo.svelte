@@ -63,7 +63,7 @@ function choose(next: string | string[]) {
 		</EmptyContent>
 	</Empty>
 {:else}
-	<Empty variant={p.variant ?? "outline"} layout={p.layout ?? "vertical"} size={p.size ?? "default"} class="max-w-xl">
+	<Empty variant={p.variant ?? "default"} layout={p.layout ?? "vertical"} size={p.size ?? "default"} class="max-w-xl">
 		<EmptyHeader>
 			<EmptyMedia variant="icon" tone={media.tone ?? scene.tone}>
 				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -74,7 +74,8 @@ function choose(next: string | string[]) {
 			<EmptyDescription>{scene.description}</EmptyDescription>
 		</EmptyHeader>
 		<EmptyContent>
-			<Button size="sm" variant={scene.tone === "primary" ? "default" : "outline"}>{scene.action}</Button>
+			<Button class="rounded-full px-5">{scene.action}</Button>
+			<Button variant="secondary" class="rounded-full px-5">{scene.secondary}</Button>
 		</EmptyContent>
 	</Empty>
 {/if}

@@ -10,7 +10,7 @@ import {
 } from "@baby-ui/svelte";
 </script>
 
-<Empty variant="outline">
+<Empty>
 	<EmptyHeader>
 		<EmptyMedia variant="icon" tone="primary">
 			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
@@ -21,6 +21,7 @@ import {
 		<EmptyDescription>Create a project to start inviting your team.</EmptyDescription>
 	</EmptyHeader>
 	<EmptyContent>
-		<Button size="sm">New project</Button>
+		<Button class="rounded-full px-5">New project</Button>
+		<Button variant="secondary" class="rounded-full px-5">Import</Button>
 	</EmptyContent>
 </Empty>

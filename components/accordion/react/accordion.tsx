@@ -113,7 +113,11 @@ export function AccordionContent({
 		<AccordionPrimitive.Panel
 			data-slot="accordion-content"
 			className="group/accordion-panel grid grid-rows-[0fr] transition-[grid-template-rows] duration-(--accordion-duration) ease-(--accordion-ease) data-[open]:grid-rows-[1fr] data-[open]:[--accordion-duration:var(--accordion-open-duration)] data-[open]:[--accordion-ease:var(--accordion-open-ease)] motion-reduce:transition-none"
-			render={(renderProps, state) => <div {...renderProps} inert={!state.open} />}
+			// The grid-rows transition owns the size, so the primitive's `hidden` and measured height are
+			// dropped: switching items would otherwise flash the closing panel at its measured height.
+			render={(renderProps, state) => (
+				<div {...renderProps} hidden={undefined} style={undefined} inert={!state.open} />
+			)}
 			{...props}
 		>
 			<div className="overflow-hidden">

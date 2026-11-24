@@ -24,6 +24,8 @@ component's `variants.ts`.
   muted 27%. The popover values are the user's pick (2026-10-03), matching their reference palette.
 - Field and divider edges stay hairlines (`border` about 1.16:1; light `input` 1.24:1 on a white field, raised 2026-11-17 after an OTP-on-card contrast report; 3:1 is unreachable without a heavy edge). Off tracks of switches,
   sliders and progress use `track` (1.39 light, 1.49 dark) so the off state reads. Dark hover is 4.5%.
+  A field's edge is `--field-edge`: the foreground at 18% alpha (user, 2026-11-25; 25% read too heavy), so it blends on any surface.
+  Field states: rest `--field-edge`, hover `--field-edge-hover` (32%), focus a 2px ring-coloured edge (border plus `ring-1`), invalid the same in destructive, disabled a 4% fill at 50% opacity.
 - Fields fill with `--field`: the page colour in light, the card step in dark, so a field reads as
   an object rather than a hole.
 - Tooltips follow the mode (`bg-popover text-popover-foreground` with the overlay shadow), like every other floating surface; they never invert.
@@ -106,7 +108,9 @@ made Input and Select 32px beside 36px Buttons in the same form. Heights come on
 in this table; never add `[height:var(...)]!` or a second scale.
 
 - Radius rides the size variant, never the base: the ladder holds radius at 25 to 29% of height,
-  so small controls don't turn into pills and large ones don't go square.
+  so small controls don't turn into pills and large ones don't go square. Button adds `roundness`:
+  `default` (the ladder), `soft` (about 40% of the height: `lg`, `xl`, `xl`, `2xl`, `3xl` by step, icon
+  squares included) and `full` (pill or circle); the default stays on the ladder (user, 2026-11-26).
 - A group (ToggleGroup, segmented Tabs) is the control height in total: rim plus items.
 - Text entry is `text-base` below `md` and the table's size from `md` up; iOS zooms under 16px.
 - Popup rows pair with their trigger's size: `xs` 24, `sm` 28, `default` 32, `lg` 36, `xl` 40.
@@ -123,12 +127,32 @@ in this table; never add `[height:var(...)]!` or a second scale.
 - Non-control boxes keep their own scales but the same radius ratio: Badge `sm` `rounded-sm`,
   then `rounded-md`; square Avatar `md`, `lg`, `xl`, `3xl`; key caps 3px to `rounded-md`.
 
+## Taste
+
+Decision (product): outside form elements we follow a soft, consistent, Figma-drawn look: pills,
+neutral fills, short dividers (user, 2026-11-26). Form fields follow the field rules above.
+
+- Buttons keep the ladder radius by default; `roundness="soft"` rounds more in proportion and
+  `roundness="full"` makes the pill, for hero, toolbar and grouped actions. Solid, soft and secondary fills have no border; `outline` is the
+  only bordered button.
+- A fill changes by one step on hover (100ms) and the press squish settles slower (250ms) at 0.97
+  scale. Never give a button icon a negative margin: the loading faces clip overflow and cut the icon's edge.
+- Grouped buttons share one fill: the outer ends are pills, inner corners are square, and a short
+  divider (half the height, 15% of the text colour) separates segments instead of a border.
+- Soft neutral fills (`foreground` at 5 to 10%) are the default for secondary actions and chips;
+  saturated fills are for the one primary action per view.
+- Headings and body are Inter (Geist Mono for code). Prose is 16px on phones and 15px from 48rem
+  at 1.75 leading; `h2` is 1.25em semibold, `h3` 1.125em.
+- Section rhythm on docs pages: 2.5rem above a heading, 1rem below, full-width content.
+- Surfaces nest by step with concentric radii (outer minus inset); depth is a surface step plus
+  the soft overlay shadow, never a ring.
+
 ## Shape
 
 - `--radius` scales `sm` to `3xl` (`-4px` to `+10px`).
-- Controls: the ladder above. Popovers and menus: `rounded-xl`. Dialogs and sheets: `rounded-2xl`.
+- Controls: the ladder above. Popovers: `rounded-xl`; menus and selects: `rounded-2xl`. Dialogs and sheets: `rounded-2xl`.
   Drawers: `rounded-3xl` on the free edge. Calendar days and range cells: `rounded-full`.
-- Concentric: a nested corner is the outer radius minus the inset. Menus are `rounded-xl p-1`, so
+- Concentric: a nested corner is the outer radius minus the inset. Menus are `rounded-2xl p-1.5`, so
   rows are `rounded-lg`; an `xs` menu is `rounded-lg p-1` with `rounded-sm` rows; framed bodies in
   a `rounded-2xl p-1` rim with a hairline are `rounded-[11px]`.
 - Checkbox and radio boxes: 14 `rounded-[4px]`, 16 `rounded-[5px]`, 20 `rounded-md`, 24 `rounded-md`.

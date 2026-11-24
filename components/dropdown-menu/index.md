@@ -10,6 +10,14 @@ Focus moves into the menu on open and returns to the trigger on close. A menu th
 without moving focus leaves a keyboard user stranded on the trigger, arrowing into
 nothing.
 
+## Rows with descriptions
+
+A row is an icon, a medium-weight title and a one-line muted description. The icon sits on the
+title's line, an external link ends in a small muted arrow, and the menu is `rounded-2xl` with
+`rounded-lg` rows, so the corners stay parallel. Pair it with a `roundness="full"` split button.
+
+::example{name="described"}
+
 ## Disabled items are skipped
 
 Arrow keys step over disabled items rather than landing on them. Focusing an item only to

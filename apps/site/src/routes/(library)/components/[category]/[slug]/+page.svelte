@@ -6,7 +6,6 @@ import {
 	IconArrowUpRight,
 	IconCode,
 	IconEye,
-	IconList,
 } from "@baby-ui/icons";
 import { packsFor } from "@baby-ui/registry-schema/packs";
 import {
@@ -41,11 +40,12 @@ import ContentPageHeader from "#lib/components/content-page-header.svelte";
 import ControlsPanel from "#lib/components/controls-panel.svelte";
 import CopyButton from "#lib/components/copy-button.svelte";
 import DemoPreview from "#lib/components/demo-preview.svelte";
+import DemoShowcase from "#lib/components/demo-showcase.svelte";
 import EmailFrame from "#lib/components/email-frame.svelte";
 import InstallBlock from "#lib/components/install-block.svelte";
 import KeyboardTable from "#lib/components/keyboard-table.svelte";
-import MobileNavDrawer from "#lib/components/mobile-nav-drawer.svelte";
 import OgPngStage from "#lib/components/og-png-stage.svelte";
+import OutlineBar from "#lib/components/outline-bar.svelte";
 import OutlineToggle from "#lib/components/outline-toggle.svelte";
 import PageMenu from "#lib/components/page-menu.svelte";
 import PreviewToolbar from "#lib/components/preview-toolbar.svelte";
@@ -115,6 +115,8 @@ let values = $state<Record<string, unknown>>({});
 
 // Extra preview views (OG PNG, email HTML/text); their fetch state lives in preview-modes.
 const views = $derived(PREVIEW_VIEWS[data.spec.category] ?? []);
+// Email and OG pages keep their view switcher; everything else gets the single stage-over-code frame.
+const showcase = $derived(!playground && !data.email && views.length === 0);
 let view = $state("");
 $effect(() => {
 	if (!views.some((v) => v.id === view)) view = views[0]?.id ?? "";
@@ -174,8 +176,9 @@ const insteadLine = ({ text, use }: { text: string; use?: string }) => {
 	const alt = use ? data.alternatives[use] : undefined;
 	return alt ? `${text} Use [${alt.name}](${alt.href}).` : text;
 };
-const SECTION = "mt-16 scroll-mt-[calc(var(--header-h)+1.5rem)]";
-const HEADING = "font-medium text-foreground text-lg tracking-tight";
+const SECTION = "mt-12 scroll-mt-[calc(var(--header-h)+1.5rem)]";
+const HEADING =
+	"font-semibold text-foreground text-xl leading-[1.4] tracking-[-0.015em] md:text-[18.75px]";
 const PAGE_SECTIONS = new Set([
 	"overview",
 	"preview",
@@ -287,7 +290,7 @@ const packs = $derived(packsFor(data.spec.slug));
 		!playground && "mx-auto max-w-5xl",
 	]}
 >
-	<div id="overview" class="scroll-mt-[calc(var(--header-h)+1.5rem)]">
+	<div class="contents">
 		<ContentPageHeader
 			title={data.spec.name}
 			description={data.spec.description}
@@ -296,6 +299,8 @@ const packs = $derived(packsFor(data.spec.slug));
 				{ label: data.spec.name },
 			]}
 			tags={pageTags}
+			outline={outlineBar}
+			anchorId="overview"
 		>
 			{#snippet meta()}
 				{#if data.spec.tier === "pro"}
@@ -311,7 +316,7 @@ const packs = $derived(packsFor(data.spec.slug));
 				{/if}
 			{/snippet}
 			{#snippet actions()}
-				<BookmarkButton slug={data.spec.slug} name={data.spec.name} class="rounded-md" />
+				<BookmarkButton slug={data.spec.slug} name={data.spec.name} class="rounded-full" />
 				<PageMenu
 					markdownUrl="{specHref(data.spec)}.md"
 					copyText={data.spec.description}
@@ -325,7 +330,7 @@ const packs = $derived(packsFor(data.spec.slug));
 						variant="secondary"
 						size="icon-sm"
 						aria-label="Previous component: {adjacent.prev.name}"
-						class="rounded-md"
+						class="rounded-full"
 					>
 						<IconArrowLeft size={15} />
 					</Button>
@@ -336,22 +341,15 @@ const packs = $derived(packsFor(data.spec.slug));
 						variant="secondary"
 						size="icon-sm"
 						aria-label="Next component: {adjacent.next.name}"
-						class="rounded-md"
+						class="rounded-full"
 					>
 						<IconArrowRight size={15} />
 					</Button>
 				{/if}
-				<MobileNavDrawer
-					label="On this page"
-					title="On this page"
-					class="xl:hidden"
-				>
-					{#snippet icon()}<IconList size={14} />{/snippet}
-					{#snippet children()}
-						<PropsRail slug={data.spec.slug} {outline} heading={false} promo={false} />
-					{/snippet}
-				</MobileNavDrawer>
 				<OutlineToggle />
+			{/snippet}
+			{#snippet outlineBar()}
+				<OutlineBar title={data.spec.name} items={outline} />
 			{/snippet}
 		</ContentPageHeader>
 
@@ -381,6 +379,17 @@ const packs = $derived(packsFor(data.spec.slug));
 		id="preview"
 		class="mt-10 scroll-mt-[calc(var(--header-h)+1.5rem)]"
 	>
+		{#if showcase}
+			<DemoShowcase
+				spec={data.spec}
+				bind:values
+				{framework}
+				demo={demos[data.spec.slug]}
+				{usage}
+				href={frameHref}
+				gate={data.spec.tier === "pro" ? proGate : undefined}
+			/>
+		{:else}
 		<Tabs
 			bind:value={
 				() => tab,
@@ -453,13 +462,14 @@ const packs = $derived(packsFor(data.spec.slug));
 				{/if}
 			</TabsContent>
 		</Tabs>
+		{/if}
 	</section>
 
 	<div class={playground ? "mx-auto w-full max-w-5xl" : undefined}>
 
 	{#if guide.when.length || guide.whenNot.length}
 		<section id="when-to-use" class={SECTION}>
-			<div class="grid max-w-3xl gap-8 @2xl:grid-cols-2">
+			<div class="grid gap-8 @2xl:grid-cols-2">
 				{#if guide.when.length}
 					<div>
 						<h2 class={HEADING}>When to use</h2>
@@ -524,7 +534,7 @@ const packs = $derived(packsFor(data.spec.slug));
 
 	{#if data.prose}
 		<section class="mt-16 scroll-mt-[calc(var(--header-h)+1.5rem)]">
-			<article class="prose-baby max-w-2xl"><Renderer nodes={data.prose} {registry} /></article>
+			<article class="prose-baby"><Renderer nodes={data.prose} {registry} /></article>
 		</section>
 	{/if}
 
@@ -538,26 +548,26 @@ const packs = $derived(packsFor(data.spec.slug));
 	{#if data.spec.a11y.keyboard.length}
 		<section id="keyboard" class={SECTION}>
 			<h2 class={HEADING}>Keyboard interactions</h2>
-			<div class="mt-4 max-w-2xl"><KeyboardTable bindings={data.spec.a11y.keyboard} /></div>
+			<div class="mt-4"><KeyboardTable bindings={data.spec.a11y.keyboard} /></div>
 		</section>
 	{/if}
 
 	{#if data.spec.a11y.notes.length}
 		<section id="accessibility" class={SECTION}>
 			<h2 class={HEADING}>Accessibility</h2>
-			<Markdown variant="muted" class="mt-4 max-w-2xl" content={bullets(data.spec.a11y.notes)} />
+			<Markdown variant="muted" class="mt-4" content={bullets(data.spec.a11y.notes)} />
 		</section>
 	{/if}
 
 	{#if data.spec.motion}
 		<section id="behaviour" class={SECTION}>
 			<h2 class={HEADING}>Motion</h2>
-			<p class="mt-2 max-w-2xl text-[0.9375rem] text-muted-foreground leading-7">
+			<p class="mt-2 text-[0.9375rem] text-muted-foreground leading-7">
 				What both implementations must observably do. Not a description of either one's code.
 			</p>
 			<Markdown
 				variant="muted"
-				class="mt-4 max-w-2xl"
+				class="mt-4"
 				content={bullets([
 					...data.spec.motion.behaviour,
 					`Reduced motion: ${data.spec.motion.reducedMotion}`,
@@ -569,24 +579,24 @@ const packs = $derived(packsFor(data.spec.slug));
 	{#if guide.responsive.length}
 		<section id="responsive" class={SECTION}>
 			<h2 class={HEADING}>Responsive behavior</h2>
-			<Markdown variant="muted" class="mt-4 max-w-2xl" content={bullets(guide.responsive)} />
+			<Markdown variant="muted" class="mt-4" content={bullets(guide.responsive)} />
 		</section>
 	{/if}
 
 	{#if guide.performance.length}
 		<section id="performance" class={SECTION}>
 			<h2 class={HEADING}>Performance</h2>
-			<Markdown variant="muted" class="mt-4 max-w-2xl" content={bullets(guide.performance)} />
+			<Markdown variant="muted" class="mt-4" content={bullets(guide.performance)} />
 		</section>
 	{/if}
 
 	{#if guide.ai.length}
 		<section id="notes-for-ai" class={SECTION}>
-			<div class="flex max-w-2xl items-center justify-between gap-3">
+			<div class="flex items-center justify-between gap-3">
 				<h2 class={HEADING}>Notes for AI</h2>
 				<CopyButton text={absoluteUrl(SITE_URL, `${specHref(data.spec)}.md`)} />
 			</div>
-			<Markdown variant="muted" class="mt-4 max-w-2xl" content={bullets(guide.ai)} />
+			<Markdown variant="muted" class="mt-4" content={bullets(guide.ai)} />
 		</section>
 	{/if}
 
@@ -636,6 +646,10 @@ const packs = $derived(packsFor(data.spec.slug));
 			/>
 		{/key}
 	</div>
+{/snippet}
+
+{#snippet proGate()}
+	<ProInstallGate name={data.spec.name} />
 {/snippet}
 
 {#snippet emailStage()}

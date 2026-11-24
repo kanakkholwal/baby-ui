@@ -14,6 +14,7 @@ let {
 	variant = "pill",
 	size = "default",
 	orientation = "horizontal",
+	divided = false,
 	class: classProp,
 	...rest
 }: Omit<TabsPrimitive.RootProps, "value"> & {
@@ -21,6 +22,8 @@ let {
 	variant?: TabsVariant;
 	size?: TabsSize;
 	orientation?: TabsOrientation;
+	/** A short hairline between tabs, hidden beside the selected one. */
+	divided?: boolean;
 } = $props();
 
 setTabs({
@@ -35,6 +38,9 @@ setTabs({
 	},
 	get orientation() {
 		return orientation;
+	},
+	get divided() {
+		return divided;
 	},
 });
 </script>

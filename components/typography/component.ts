@@ -9,12 +9,26 @@ export const typography = defineComponent({
 	props: [
 		{
 			name: "variant",
-			type: '"h1" | "h2" | "h3" | "body" | "lead" | "small" | "muted" | "code"',
+			type: '"h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "body" | "body-sm" | "body-xs" | "lead" | "small" | "muted" | "code"',
 			description: "Visual level, which also picks the default element.",
 			default: "body",
 			control: {
 				kind: "select",
-				options: ["h1", "h2", "h3", "body", "lead", "small", "muted", "code"],
+				options: [
+					"h1",
+					"h2",
+					"h3",
+					"h4",
+					"h5",
+					"h6",
+					"body",
+					"body-sm",
+					"body-xs",
+					"lead",
+					"small",
+					"muted",
+					"code",
+				],
 			},
 		},
 		{

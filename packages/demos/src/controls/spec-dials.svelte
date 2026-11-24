@@ -9,6 +9,9 @@ import {
 	SelectValue,
 	Slider,
 	Switch,
+	Tabs,
+	TabsList,
+	TabsTrigger,
 } from "@baby-ui/svelte";
 import { untrack } from "svelte";
 
@@ -64,6 +67,7 @@ function label(prop: PropSpec) {
 {#snippet dial(prop: PropSpec)}
 	{@const control = prop.control}
 	{@const row = "flex min-h-8 items-center justify-between gap-3 px-3 py-1.5"}
+	{@const stack = "flex flex-col gap-1.5 px-3 py-2"}
 	{@const text = "truncate font-medium text-muted-foreground text-xs capitalize"}
 	{#if control.kind === "boolean"}
 		<!-- The row is the label: a wrapping <label> names and toggles the bare switch. -->
@@ -75,15 +79,27 @@ function label(prop: PropSpec) {
 			/>
 		</label>
 	{:else}
-		<div class={row} data-dial={prop.name} data-dial-kind={control.kind}>
+		<div class={stack} data-dial={prop.name} data-dial-kind={control.kind}>
 			<label for="dial-{prop.name}" class={text}>{label(prop)}</label>
 
-			{#if control.kind === "select"}
+			{#if control.kind === "select" && control.options.length <= 4}
+				<Tabs
+					bind:value={() => String(state[prop.name] ?? ""), (next) => (state[prop.name] = next)}
+					variant="segment"
+					size="sm"
+				>
+					<TabsList aria-label={label(prop)} class="rounded-full [&_[data-slot=tabs-indicator]]:rounded-full">
+						{#each control.options as option (option)}
+							<TabsTrigger value={option} class="rounded-full">{option}</TabsTrigger>
+						{/each}
+					</TabsList>
+				</Tabs>
+			{:else if control.kind === "select"}
 				<Select
 					bind:value={() => String(state[prop.name] ?? ""), (next) => (state[prop.name] = next)}
 					items={control.options.map((o) => ({ value: o, label: o }))}
 				>
-					<SelectTrigger aria-label={label(prop)} size="sm" class="w-32">
+					<SelectTrigger aria-label={label(prop)} size="sm" class="w-full">
 						<SelectValue />
 					</SelectTrigger>
 					<SelectContent size="sm">
@@ -93,7 +109,7 @@ function label(prop: PropSpec) {
 					</SelectContent>
 				</Select>
 			{:else if control.kind === "number"}
-				<div class="flex w-32 items-center gap-2">
+				<div class="flex w-full items-center gap-2">
 					<Slider
 						label={label(prop)}
 						min={control.min ?? 0}
@@ -126,7 +142,7 @@ function label(prop: PropSpec) {
 					size="sm"
 					placeholder={control.placeholder}
 					bind:value={() => String(state[prop.name] ?? ""), (next) => (state[prop.name] = next)}
-					class="w-32"
+					class="w-full"
 				/>
 			{/if}
 		</div>

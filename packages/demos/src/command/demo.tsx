@@ -89,6 +89,7 @@ export function CommandDemo({ props }: { props: Props }) {
 						</CommandBar>
 					) : variant === "spotlight" ? (
 						<>
+							<CommandInput placeholder={placeholder} hint="esc" />
 							<CommandFilters value={filter} onValueChange={setFilter} label="Scope">
 								{[COMMAND_ALL, ...COMMAND_GROUPS].map((group) => (
 									<CommandFilter key={group.id} value={group.id} label={group.heading}>
@@ -96,7 +97,6 @@ export function CommandDemo({ props }: { props: Props }) {
 									</CommandFilter>
 								))}
 							</CommandFilters>
-							<CommandInput placeholder={placeholder} hint="Esc" />
 						</>
 					) : (
 						<CommandInput placeholder={placeholder} />
@@ -115,7 +115,16 @@ export function CommandDemo({ props }: { props: Props }) {
 										onClick={() => run(item.value)}
 									>
 										<CommandIcon d={group.icon} />
-										<span className="min-w-0 flex-1 truncate">{item.value}</span>
+										{"description" in item && item.description ? (
+											<span className="flex min-w-0 flex-1 flex-col">
+												<span className="truncate">{item.value}</span>
+												<span className="truncate text-muted-foreground text-xs">
+													{item.description}
+												</span>
+											</span>
+										) : (
+											<span className="min-w-0 flex-1 truncate">{item.value}</span>
+										)}
 										{"shortcut" in item && item.shortcut ? (
 											<CommandShortcut>{item.shortcut}</CommandShortcut>
 										) : null}
@@ -124,10 +133,12 @@ export function CommandDemo({ props }: { props: Props }) {
 							</CommandGroup>
 						))}
 					</CommandList>
-					{variant === "launcher" || variant === "framed" ? (
+					{variant === "launcher" || variant === "framed" || variant === "spotlight" ? (
 						<CommandFooter>
 							<span className="flex items-center gap-4">
-								<CommandHint keys={["↑", "↓"]}>Move</CommandHint>
+								<CommandHint keys={["↑", "↓"]}>
+									{variant === "spotlight" ? "Navigate" : "Move"}
+								</CommandHint>
 								<CommandHint keys={["↵"]}>Open</CommandHint>
 							</span>
 							{variant === "launcher" ? (

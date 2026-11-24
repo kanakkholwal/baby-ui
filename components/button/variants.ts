@@ -51,7 +51,7 @@ export const button = tv({
 			raw: "h-auto rounded-none border-0 p-0 active:scale-100",
 		},
 		size: {
-			// The control ladder (DESIGN.md): radius rides the size, about a quarter of the height.
+			// The control ladder (DESIGN.md): radius rides the size, about a quarter of the height. `roundness` overrides it.
 			xs: "h-6 gap-1 rounded-sm px-2 text-xs active:scale-[var(--press-scale-sm)] [&_svg]:size-3",
 			sm: "h-8 gap-1.5 rounded-md px-3 text-xs active:scale-[var(--press-scale-sm)] [&_svg]:size-3.5",
 			default: "h-9 gap-2 rounded-lg px-4 [&_svg]:size-4",
@@ -67,6 +67,9 @@ export const button = tv({
 			"icon-xl":
 				"size-12 rounded-xl p-0 active:scale-[var(--press-scale-lg)] [&_svg]:size-5",
 		},
+		/** `default` keeps the ladder radius; `full` makes a pill. */
+		/** `default` is the ladder radius (about 28% of the height), `soft` about 40% of it, `full` a pill or circle. */
+		roundness: { default: "", soft: "", full: "rounded-full" },
 	},
 	compoundVariants: [
 		{
@@ -97,10 +100,19 @@ export const button = tv({
 			class:
 				"transition-[transform,scale,translate,background-color,border-color,color,box-shadow,filter]",
 		},
+		// `soft` holds radius near 40% of the height at every step; an icon square shares its height's radius.
+		{ roundness: "soft", size: ["xs", "icon-xs"], class: "rounded-lg" },
+		{
+			roundness: "soft",
+			size: ["sm", "default", "icon-sm", "icon"],
+			class: "rounded-xl",
+		},
+		{ roundness: "soft", size: ["lg", "icon-lg"], class: "rounded-2xl" },
+		{ roundness: "soft", size: ["xl", "icon-xl"], class: "rounded-3xl" },
 		// Size classes merge after variant ones, so `raw` re-strips the box here.
 		{ variant: "raw", class: "h-auto rounded-none p-0" },
 	],
-	defaultVariants: { variant: "default", size: "default" },
+	defaultVariants: { variant: "default", size: "default", roundness: "default" },
 });
 
 /** Faces fill the button and inherit its justify, direction and gap. The hidden face leaves the
@@ -118,6 +130,7 @@ export const buttonFace = tv({
 
 export type ButtonVariant = NonNullable<VariantProps<typeof button>["variant"]>;
 export type ButtonSize = NonNullable<VariantProps<typeof button>["size"]>;
+export type ButtonRoundness = NonNullable<VariantProps<typeof button>["roundness"]>;
 
 /** Square sizes show the spinner alone while loading; the label goes to assistive tech. */
 export function isIconSize(size: ButtonSize | undefined): boolean {

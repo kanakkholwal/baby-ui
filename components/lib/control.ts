@@ -16,18 +16,20 @@ export const controlSize = tv({
 
 export type ControlSize = NonNullable<VariantProps<typeof controlSize>["size"]>;
 
-/** One frame for every field. Focus is a ring-coloured border, no halo; a trigger (Select,
- * Combobox) also takes a neutral border while its popup is open. */
+/** One frame for every field, one state ladder: rest edge, a firmer edge on hover, a 2px ring-coloured
+ * edge on focus (border plus a 1px ring, no halo), the same in destructive when invalid, a dimmed
+ * fill when disabled. A trigger (Select, Combobox) also takes a neutral fill while its popup is open. */
 export const fieldFrame = tv({
 	base: [
-		"border border-input bg-(--field) text-foreground outline-none",
+		"border border-(--field-edge) bg-(--field) text-foreground outline-none",
 		"transition-[color,border-color,box-shadow] duration-(--duration-fast) ease-(--ease-ui-out) motion-reduce:transition-none",
-		"hover:bg-[color-mix(in_oklab,var(--field)_97%,var(--foreground))] aria-invalid:border-destructive",
-		"disabled:cursor-not-allowed disabled:opacity-50",
+		"hover:border-(--field-edge-hover) aria-invalid:border-destructive aria-invalid:hover:border-destructive",
+		"disabled:cursor-not-allowed disabled:bg-foreground/[0.04] disabled:opacity-50 disabled:hover:border-(--field-edge)",
 	],
 	variants: {
 		kind: {
-			input: "focus-visible:border-ring",
+			input:
+				"focus-visible:border-ring focus-visible:ring-1 focus-visible:ring-ring aria-invalid:focus-visible:border-destructive aria-invalid:focus-visible:ring-destructive",
 			// Pickers read as a soft fill, not a second outlined field: the edge appears only on keyboard focus.
 			trigger: [
 				"border-transparent bg-foreground/[0.05] hover:border-transparent hover:bg-foreground/[0.08]",
@@ -46,16 +48,16 @@ export const fieldFrame = tv({
  */
 export const fieldGroup = tv({
 	base: [
-		"border border-input bg-[var(--field,var(--background))] text-foreground outline-none",
+		"border border-(--field-edge,var(--input)) bg-[var(--field,var(--background))] text-foreground outline-none",
 		"transition-[color,border-color,box-shadow] duration-(--duration-fast) ease-(--ease-ui-out) motion-reduce:transition-none",
-		"hover:bg-[color-mix(in_oklab,var(--field)_97%,var(--foreground))] has-[:focus-visible]:border-ring has-[[aria-invalid=true]]:border-destructive aria-invalid:border-destructive",
+		"hover:border-(--field-edge-hover,var(--input)) has-[:focus-visible]:border-ring has-[[aria-invalid=true]]:border-destructive aria-invalid:border-destructive",
 		"has-[input:disabled]:cursor-not-allowed has-[input:disabled]:opacity-50 has-[textarea:disabled]:cursor-not-allowed has-[textarea:disabled]:opacity-50",
 		"data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
 	],
 	variants: {
 		kind: {
 			input:
-				"has-[:focus-visible]:ring-3 has-[:focus-visible]:ring-ring/20 has-[[aria-invalid=true]]:ring-destructive/20 aria-invalid:ring-destructive/20",
+				"has-[:focus-visible]:ring-1 has-[:focus-visible]:ring-ring has-[[aria-invalid=true]]:has-[:focus-visible]:ring-destructive aria-invalid:has-[:focus-visible]:ring-destructive",
 			trigger:
 				"border-transparent bg-foreground/[0.05] hover:border-transparent hover:bg-foreground/[0.08] has-[[data-popup-open]]:bg-foreground/[0.1] has-[[data-state=open]]:bg-foreground/[0.1]",
 		},

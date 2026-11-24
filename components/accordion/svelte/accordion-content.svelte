@@ -14,12 +14,14 @@ const ids = accordionItem();
 </script>
 
 <AccordionPrimitive.Content {...rest} forceMount>
+	<!-- The grid-rows transition owns the size, so the primitive's `hidden` and measured height are dropped. -->
 	{#snippet child({ props, open })}
 		<div
 			{...props}
 			id={ids?.content}
 			role="region"
 			aria-labelledby={ids?.trigger}
+			hidden={undefined}
 			inert={!open}
 			data-slot="accordion-content"
 			class="group/accordion-panel grid grid-rows-[0fr] transition-[grid-template-rows] duration-(--accordion-duration) ease-(--accordion-ease) data-[state=open]:grid-rows-[1fr] data-[state=open]:[--accordion-duration:var(--accordion-open-duration)] data-[state=open]:[--accordion-ease:var(--accordion-open-ease)] motion-reduce:transition-none"

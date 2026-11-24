@@ -29,6 +29,7 @@ export function TabsDemo({ props }: { props: Props }) {
 				variant={p.variant ?? "pill"}
 				size={p.size ?? "default"}
 				orientation={p.orientation ?? "horizontal"}
+				divided={p.divided ?? false}
 			>
 				<TabsList>
 					{TABS.map((tab) => (

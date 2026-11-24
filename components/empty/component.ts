@@ -12,7 +12,7 @@ export const empty = defineComponent({
 			name: "variant",
 			type: '"default" | "outline" | "card"',
 			description: "Empty: no frame, a dashed drop-zone frame, or a card surface.",
-			default: "outline",
+			default: "default",
 			control: { kind: "select", options: ["default", "outline", "card"] },
 		},
 		{

@@ -166,7 +166,7 @@ const RAMP = [
 		<div class="flex flex-wrap items-baseline gap-x-6 gap-y-2 text-foreground">
 			<span class="font-heading text-2xl">Satoshi heading</span>
 			<span class="font-sans text-base">Inter body</span>
-			<span class="font-mono text-sm">JetBrains Mono</span>
+			<span class="font-mono text-sm">Geist Mono</span>
 			<span class="font-serif text-lg italic">Newsreader serif</span>
 		</div>
 	{:else if id === "scale"}

@@ -18,7 +18,12 @@ export function BadgeDemo({ props }: { props: Props }) {
 		<div className="flex w-full max-w-72 flex-col gap-3 text-sm">
 			<div className="flex items-center justify-between gap-4">
 				<span className="text-muted-foreground">api-gateway</span>
-				<Badge variant={p.variant ?? "success"} size={size} dot={p.dot !== false}>
+				<Badge
+					variant={p.variant ?? "success"}
+					size={size}
+					fill={p.fill ?? "soft"}
+					dot={p.dot !== false}
+				>
 					Healthy
 				</Badge>
 			</div>

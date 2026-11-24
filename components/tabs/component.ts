@@ -19,7 +19,8 @@ export const tabs = defineComponent({
 		{
 			name: "variant",
 			type: '"pill" | "underline" | "segment" | "soft" | "outline" | "enclosed"',
-			description: "Indicator treatment.",
+			description:
+				"Indicator treatment: `pill` is a filled pill with no track, `segment` a pill-shaped track with a raised white pill.",
 			default: "pill",
 			control: {
 				kind: "select",
@@ -32,6 +33,15 @@ export const tabs = defineComponent({
 			description: "Control size.",
 			default: "default",
 			control: { kind: "select", options: ["xs", "sm", "default", "lg", "xl"] },
+		},
+		{
+			name: "divided",
+			type: "boolean",
+			description:
+				"A short hairline between neighbouring tabs, hidden beside the selected tab. Horizontal lists only.",
+			default: false,
+			control: { kind: "boolean" },
+			showWhen: { orientation: ["horizontal"] },
 		},
 		{
 			name: "orientation",

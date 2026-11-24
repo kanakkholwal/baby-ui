@@ -4,7 +4,6 @@ import { ModeWatcher } from "mode-watcher";
 import { onMount } from "svelte";
 import { initAnalytics, setAnalyticsContext, track } from "#lib/analytics.js";
 import NavProgress from "#lib/components/nav-progress.svelte";
-import PreferencesPanel from "#lib/components/preferences-panel.svelte";
 import SiteHeader from "#lib/components/site-header.svelte";
 import { provideWebMcp } from "#lib/mcp/webmcp.js";
 import { prefs } from "#lib/preferences.svelte.js";
@@ -17,6 +16,8 @@ let { children } = $props();
 const bare = $derived(page.route.id === "/frame");
 // Sign-in is a full page with its own brand, so the header would repeat the logo.
 const headerless = $derived(page.route.id === "/login");
+// The landing hero runs behind the transparent header, so it owns the header offset itself.
+const overlayHeader = $derived(page.route.id === "/");
 
 $effect(() => prefs.apply());
 $effect(() => {
@@ -70,9 +71,8 @@ afterNavigate(({ from, to, type, shallow }) => {
 		Skip to content
 	</a>
 	{#if !headerless}<SiteHeader />{/if}
-	<PreferencesPanel />
 	<!-- Matches SiteHeader's single 56px row; sticky rails and anchors offset by the same value. -->
-	<div id="main-content" tabindex="-1" class={["outline-none [--header-h:3.5rem]", !headerless && "pt-(--header-h)"]}>
+	<div id="main-content" tabindex="-1" class={["outline-none [--header-h:3.5rem]", !headerless && !overlayHeader && "pt-(--header-h)"]}>
 		{@render children()}
 	</div>
 {/if}

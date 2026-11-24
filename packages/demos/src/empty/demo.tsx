@@ -82,7 +82,7 @@ export function EmptyDemo({ props }: { props: Props }) {
 	if (props.media === "illustration") return <IllustrationDemo p={p} />;
 	return (
 		<Empty
-			variant={p.variant ?? "outline"}
+			variant={p.variant ?? "default"}
 			layout={p.layout ?? "vertical"}
 			size={p.size ?? "default"}
 			className="max-w-xl"
@@ -105,8 +105,9 @@ export function EmptyDemo({ props }: { props: Props }) {
 				<EmptyDescription>{scene.description}</EmptyDescription>
 			</EmptyHeader>
 			<EmptyContent>
-				<Button size="sm" variant={scene.tone === "primary" ? "default" : "outline"}>
-					{scene.action}
+				<Button className="rounded-full px-5">{scene.action}</Button>
+				<Button variant="secondary" className="rounded-full px-5">
+					{scene.secondary}
 				</Button>
 			</EmptyContent>
 		</Empty>

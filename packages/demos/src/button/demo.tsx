@@ -13,11 +13,12 @@ export function ButtonDemo({ props }: { props: Props }) {
 		<Button
 			variant={p.variant ?? "default"}
 			size={size}
+			roundness={p.roundness ?? "default"}
 			{...(p.href ? { href: p.href } : { disabled: props.disabled === true })}
 			loading={p.loading ?? false}
 			loadingLabel={p.loadingLabel || "Loading…"}
 		>
-			{size === "icon" ? (
+			{size.startsWith("icon") ? (
 				<svg viewBox="0 0 16 16" fill="none" aria-hidden>
 					<path
 						d="M8 3.5v9M3.5 8h9"

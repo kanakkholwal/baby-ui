@@ -16,7 +16,6 @@ import {
 	IconPhoto,
 	IconPlayerPlay,
 	IconRobot,
-	IconSettings,
 	IconStack2,
 	IconTable,
 	IconTerminal2,
@@ -45,6 +44,7 @@ import { mode, setMode } from "mode-watcher";
 import AccountMenu from "#lib/components/account-menu.svelte";
 import BookmarksLink from "#lib/components/bookmarks-link.svelte";
 import Logo from "#lib/components/logo.svelte";
+import SettingsPopover from "#lib/components/settings-popover.svelte";
 import SidebarToggleIcon from "#lib/components/sidebar-toggle-icon.svelte";
 import SiteSearch from "#lib/components/site-search.svelte";
 import { docsSidebar, playgroundDocsDrawer } from "#lib/docs-sidebar.svelte.js";
@@ -344,29 +344,24 @@ function active(match: string[]) {
 		<nav aria-label="Site tools" class="flex items-center gap-1 sm:gap-2">
 			<SiteSearch />
 
-			<ThemeToggle
-				theme={mode.current === "dark" ? "dark" : "light"}
-				onThemeChange={pickMode}
-				variant="rectangle"
-				start="bottom-up"
-				icon={themeIcon}
-				class={button({
-					variant: "ghost",
-					size: "icon-sm",
-					class:
-						"size-8 rounded-full bg-foreground/[0.045] text-foreground/70 hover:bg-foreground/[0.075] hover:text-foreground",
-				})}
-			/>
-
-			<Button
-				variant="ghost"
-				size="icon"
-				onclick={() => (prefs.open = true)}
-				aria-label="Settings"
-				class="gear size-8 rounded-full bg-foreground/[0.045] text-foreground/70 hover:bg-foreground/[0.075] hover:text-foreground"
-			>
-				<IconSettings size={14} />
-			</Button>
+			<!-- Appearance controls read as one pill: mode, a hairline divider, settings. -->
+			<div role="group" aria-label="Appearance" class="flex items-center rounded-full bg-foreground/[0.045]">
+				<ThemeToggle
+					theme={mode.current === "dark" ? "dark" : "light"}
+					onThemeChange={pickMode}
+					variant="rectangle"
+					start="bottom-up"
+					icon={themeIcon}
+					class={button({
+						variant: "ghost",
+						size: "icon-sm",
+						class:
+							"size-8 rounded-full bg-transparent text-foreground/70 hover:bg-foreground/[0.06] hover:text-foreground",
+					})}
+				/>
+				<span aria-hidden="true" class="h-4 w-px bg-foreground/15"></span>
+				<SettingsPopover />
+			</div>
 
 			<TooltipProvider>
 			<Tooltip>

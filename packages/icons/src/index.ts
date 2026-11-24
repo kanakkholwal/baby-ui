@@ -44,6 +44,7 @@ export { default as IconCloud } from "./icons/cloud.svelte";
 export { default as IconCode } from "./icons/code.svelte";
 export { default as IconComponents } from "./icons/components.svelte";
 export { default as IconCopy } from "./icons/copy.svelte";
+export { default as IconCopyCheck } from "./icons/copy-check.svelte";
 export { default as IconCpu } from "./icons/cpu.svelte";
 export { default as IconCreditCard } from "./icons/credit-card.svelte";
 export { default as IconCursor } from "./icons/cursor.svelte";

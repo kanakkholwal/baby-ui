@@ -99,14 +99,14 @@ async function copyLink() {
 	flash("link");
 }
 
-const row = "justify-start gap-3 py-2";
+const row = "justify-start gap-3 px-3 py-2";
 const lead = "shrink-0 self-start mt-0.5 text-muted-foreground";
-const trail = "ml-auto shrink-0 text-muted-foreground";
+const trail = "ml-auto shrink-0 text-muted-foreground/70";
 </script>
 
 {#snippet text(title: string, hint?: string)}
 	<span class="flex min-w-0 flex-col">
-		<span class="truncate">{title}</span>
+		<span class="truncate font-medium">{title}</span>
 		{#if hint}<span class="truncate text-muted-foreground text-xs">{hint}</span>{/if}
 	</span>
 {/snippet}
@@ -136,7 +136,7 @@ const trail = "ml-auto shrink-0 text-muted-foreground";
 		>
 			<IconChevronDown size={14} />
 		</DropdownMenuTrigger>
-		<DropdownMenuContent align="end" collisionPadding={16} class="w-72">
+		<DropdownMenuContent align="end" collisionPadding={16} class="w-80">
 			<DropdownMenuItem class={row} onSelect={copyPage}>
 				<IconCopy size={16} class={lead} />
 				{@render text("Copy page as Markdown", "For LLMs and notes")}
@@ -146,7 +146,7 @@ const trail = "ml-auto shrink-0 text-muted-foreground";
 					<a {...props} href={markdownUrl} target="_blank" rel="noopener">
 						<IconFileText size={16} class={lead} />
 						{@render text("View as Markdown", "Plain text reference")}
-						<IconArrowUpRight size={14} class={trail} />
+						<IconArrowUpRight size={13} class={trail} />
 					</a>
 				{/snippet}
 			</DropdownMenuItem>
@@ -174,7 +174,7 @@ const trail = "ml-auto shrink-0 text-muted-foreground";
 								</svg>
 							{/if}
 							{@render text(`Open in ${agent.label}`)}
-							<IconArrowUpRight size={14} class={trail} />
+							<IconArrowUpRight size={13} class={trail} />
 						</a>
 					{/snippet}
 				</DropdownMenuItem>

@@ -40,7 +40,7 @@ export const command = defineComponent({
 			name: "variant",
 			type: '"default" | "framed" | "launcher" | "spotlight"',
 			description:
-				"`default` is plain shadcn: one surface, a soft input, flat rows. `framed` puts a titled rim around an inset card. `launcher` pairs a pill search with an icon filter tray (CommandFilters) and key hints (CommandFooter). `spotlight` is a large input under scope chips.",
+				"`default` is plain shadcn: one surface, a soft input, flat rows. `framed` puts a titled rim around an inset card. `launcher` pairs a pill search with an icon filter tray (CommandFilters) and key hints (CommandFooter). `spotlight` is one 24px surface: a large input with its esc key, scope chips, icon-tile rows and a tinted key-hint footer.",
 			default: "default",
 			control: {
 				kind: "select",

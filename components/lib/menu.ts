@@ -34,22 +34,23 @@ export const menu = tv({
 			sm: {
 				surface: [
 					anchoredSurface({ size: "sm" }).surface(),
-					"min-w-40 p-1 [&_[role=menuitem]]:rounded-md [&_[role=menuitem]]:px-2 [&_[role=menuitem]]:py-1.5 [&_[role=menuitem]]:text-xs [&_[role=option]]:rounded-md [&_[role=option]]:px-2 [&_[role=option]]:py-1.5 [&_[role=option]]:text-xs [&_[role=menuitem]_svg:not([class*='size-'])]:size-3.5 [&_[role=option]_svg:not([class*='size-'])]:size-3.5",
+					"min-w-40 p-1 [&_[role=menuitem]]:rounded-sm [&_[role=menuitem]]:px-2 [&_[role=menuitem]]:py-1.5 [&_[role=menuitem]]:text-xs [&_[role=option]]:rounded-sm [&_[role=option]]:px-2 [&_[role=option]]:py-1.5 [&_[role=option]]:text-xs [&_[role=menuitem]_svg:not([class*='size-'])]:size-3.5 [&_[role=option]_svg:not([class*='size-'])]:size-3.5",
 				],
 			},
 			default: {
-				surface: [anchoredSurface().surface(), "min-w-44 p-1"],
+				// 16px surface minus 6px padding leaves the 10px row radius.
+				surface: [anchoredSurface().surface(), "min-w-44 rounded-2xl p-1.5"],
 			},
 			lg: {
 				surface: [
 					anchoredSurface({ size: "lg" }).surface(),
-					"min-w-48 p-1.5 [&_[role=menuitem]]:px-3 [&_[role=menuitem]]:py-2 [&_[role=option]]:px-3 [&_[role=option]]:py-2 [&_[role=menuitem]_svg:not([class*='size-'])]:size-4 [&_[role=option]_svg:not([class*='size-'])]:size-4",
+					"min-w-48 p-1.5 [&_[role=menuitem]]:rounded-md [&_[role=option]]:rounded-md [&_[role=menuitem]]:px-3 [&_[role=menuitem]]:py-2 [&_[role=option]]:px-3 [&_[role=option]]:py-2 [&_[role=menuitem]_svg:not([class*='size-'])]:size-4 [&_[role=option]_svg:not([class*='size-'])]:size-4",
 				],
 			},
 			xl: {
 				surface: [
 					anchoredSurface({ size: "xl" }).surface(),
-					"min-w-56 p-1.5 [&_[role=menuitem]]:rounded-xl [&_[role=menuitem]]:px-3 [&_[role=menuitem]]:py-2.5 [&_[role=menuitem]]:text-base [&_[role=option]]:rounded-xl [&_[role=option]]:px-3 [&_[role=option]]:py-2.5 [&_[role=option]]:text-base [&_[role=menuitem]_svg:not([class*='size-'])]:size-4.5 [&_[role=option]_svg:not([class*='size-'])]:size-4.5",
+					"min-w-56 p-1.5 [&_[role=menuitem]]:rounded-lg [&_[role=menuitem]]:px-3 [&_[role=menuitem]]:py-2.5 [&_[role=menuitem]]:text-base [&_[role=option]]:rounded-lg [&_[role=option]]:px-3 [&_[role=option]]:py-2.5 [&_[role=option]]:text-base [&_[role=menuitem]_svg:not([class*='size-'])]:size-4.5 [&_[role=option]_svg:not([class*='size-'])]:size-4.5",
 				],
 			},
 		},

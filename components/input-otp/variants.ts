@@ -35,7 +35,7 @@ export const inputOtp = tv({
 		/** `default` is a bordered field per slot; `soft` sits empty slots on a muted fill. */
 		variant: {
 			default: {
-				slot: "border-input bg-(--field)",
+				slot: "border-(--field-edge) bg-(--field)",
 			},
 			soft: {
 				slot: "border-transparent bg-muted data-[filled]:border-border data-[filled]:bg-card",

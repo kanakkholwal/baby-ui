@@ -32,6 +32,7 @@ type Ctx = {
 	variant: TabsVariant;
 	size: TabsSize;
 	orientation: TabsOrientation;
+	divided: boolean;
 };
 
 type Rect = { left: number; top: number; width: number; height: number };
@@ -51,6 +52,7 @@ export function Tabs({
 	variant = "pill",
 	size = "default",
 	orientation = "horizontal",
+	divided = false,
 	onValueChange,
 	children,
 	...props
@@ -63,6 +65,8 @@ export function Tabs({
 	variant?: TabsVariant;
 	size?: TabsSize;
 	orientation?: TabsOrientation;
+	/** A short hairline between tabs, hidden beside the selected one. */
+	divided?: boolean;
 	onValueChange?: (value: string) => void;
 }) {
 	const [internal, setInternal] = useState(defaultValue);
@@ -77,8 +81,8 @@ export function Tabs({
 	);
 
 	const ctx = useMemo(
-		() => ({ value, variant, size, orientation }),
-		[value, variant, size, orientation],
+		() => ({ value, variant, size, orientation, divided }),
+		[value, variant, size, orientation, divided],
 	);
 
 	return (
@@ -197,8 +201,9 @@ export function TabsList({ className, children, ...props }: ComponentProps<"div"
 			className={cn(
 				"relative isolate flex w-full min-w-0 max-w-full items-center",
 				vertical && "w-auto shrink-0",
-				edges.overflow && tabs.variant === "pill" && "rounded-full bg-card",
-				edges.overflow && tabs.variant === "segment" && "rounded-lg bg-card",
+				edges.overflow &&
+					tabs.variant === "segment" &&
+					"rounded-full bg-foreground/[0.06]",
 			)}
 		>
 			{edges.overflow ? (
@@ -294,6 +299,7 @@ export function TabsTrigger({
 		variant: tabs.variant,
 		size: tabs.size,
 		orientation: tabs.orientation,
+		divided: tabs.divided,
 	});
 
 	return (

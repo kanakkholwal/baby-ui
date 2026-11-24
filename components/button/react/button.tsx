@@ -1,6 +1,7 @@
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "react";
 import { cn } from "../../lib/cn";
 import {
+	type ButtonRoundness,
 	type ButtonSize,
 	type ButtonVariant,
 	button,
@@ -13,6 +14,8 @@ const faceStyles = buttonFace();
 type Base = {
 	variant?: ButtonVariant;
 	size?: ButtonSize;
+	/** `full` makes a pill; the default keeps the size's ladder radius. */
+	roundness?: ButtonRoundness;
 	loading?: boolean;
 	loadingLabel?: string;
 	children?: ReactNode;
@@ -79,6 +82,7 @@ export function Button(props: ButtonProps) {
 	const {
 		variant,
 		size,
+		roundness,
 		loading = false,
 		loadingLabel = "Loading…",
 		children,
@@ -86,7 +90,7 @@ export function Button(props: ButtonProps) {
 		...rest
 	} = props;
 
-	const classes = cn(button({ variant, size }), className);
+	const classes = cn(button({ variant, size, roundness }), className);
 	const face = (
 		<Faces loading={loading} loadingLabel={loadingLabel} size={size}>
 			{children}

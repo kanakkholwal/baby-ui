@@ -6,6 +6,7 @@ export const EMPTY_SCENES = {
 		title: "No results for “invoice”",
 		description: "Try a shorter search, or check the spelling.",
 		action: "Clear search",
+		secondary: "Browse all",
 		icon: "M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14ZM20 20l-4-4",
 	},
 	inbox: {
@@ -13,6 +14,7 @@ export const EMPTY_SCENES = {
 		title: "You're all caught up",
 		description: "New messages land here as soon as they arrive.",
 		action: "Open archive",
+		secondary: "Settings",
 		icon: "M4 13h4l2 3h4l2-3h4M4 13l2-8h12l2 8v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z",
 	},
 	error: {
@@ -20,6 +22,7 @@ export const EMPTY_SCENES = {
 		title: "Couldn't load projects",
 		description: "The server took too long to answer. Your work is safe.",
 		action: "Try again",
+		secondary: "Contact support",
 		icon: "M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z",
 	},
 	upload: {
@@ -27,6 +30,7 @@ export const EMPTY_SCENES = {
 		title: "Upload your first file",
 		description: "Drop files here, or browse. PDFs and images up to 20 MB.",
 		action: "Browse files",
+		secondary: "Import from URL",
 		icon: "M12 16V4M7 9l5-5 5 5M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3",
 	},
 } as const;

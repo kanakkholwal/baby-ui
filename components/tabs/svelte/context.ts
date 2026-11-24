@@ -8,6 +8,7 @@ export type TabsContext = {
 	readonly variant: TabsVariant;
 	readonly size: TabsSize;
 	readonly orientation: TabsOrientation;
+	readonly divided: boolean;
 };
 
 export const [getTabs, setTabs] = createContext<TabsContext>();
