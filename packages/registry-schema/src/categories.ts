@@ -33,7 +33,7 @@ export const CATEGORY: Record<Category, CategoryInfo> = {
 	base: {
 		label: "Base",
 		title: "Base components",
-		blurb: "The controls every interface needs, with the motion already worked out.",
+		blurb: "Buttons, inputs, menus, dialogs and the other everyday controls.",
 		route: "components",
 		installDir: "ui",
 		preview: false,
@@ -41,7 +41,7 @@ export const CATEGORY: Record<Category, CategoryInfo> = {
 	blocks: {
 		label: "Blocks",
 		title: "Blocks",
-		blurb: "Whole sections you would otherwise rebuild on every project.",
+		blurb: "Ready-made page sections like heroes, pricing and footers.",
 		route: "components",
 		installDir: "blocks",
 		preview: false,
@@ -49,7 +49,7 @@ export const CATEGORY: Record<Category, CategoryInfo> = {
 	advanced: {
 		label: "Advanced",
 		title: "Advanced components",
-		blurb: "Components with real interaction models behind them.",
+		blurb: "Complex components such as date pickers, editors and file trees.",
 		route: "components",
 		installDir: "ui",
 		preview: false,
@@ -57,7 +57,7 @@ export const CATEGORY: Record<Category, CategoryInfo> = {
 	animated: {
 		label: "Animated",
 		title: "Animated components",
-		blurb: "Pieces where the motion is the point.",
+		blurb: "Components where the animation is the main feature.",
 		route: "components",
 		installDir: "animated",
 		preview: false,
@@ -65,7 +65,7 @@ export const CATEGORY: Record<Category, CategoryInfo> = {
 	agents: {
 		label: "Agents",
 		title: "Agent UI components",
-		blurb: "Interface parts for products that talk back: messages, tools, reasoning.",
+		blurb: "Chat, tool-call and reasoning UI for AI products.",
 		route: "components",
 		installDir: "agents",
 		preview: false,
@@ -73,8 +73,7 @@ export const CATEGORY: Record<Category, CategoryInfo> = {
 	text: {
 		label: "Text",
 		title: "Text effects",
-		blurb:
-			"Copy that moves: reveals, swaps, hovers and loops built for headlines and labels.",
+		blurb: "Animated text effects for headlines and labels.",
 		route: "components",
 		installDir: "text",
 		preview: false,
@@ -82,8 +81,7 @@ export const CATEGORY: Record<Category, CategoryInfo> = {
 	backgrounds: {
 		label: "Backgrounds",
 		title: "Backgrounds",
-		blurb:
-			"Full-bleed animated surfaces and canvas effects that idle when nothing moves.",
+		blurb: "Animated backgrounds and canvas effects.",
 		route: "components",
 		installDir: "backgrounds",
 		preview: false,
@@ -91,8 +89,7 @@ export const CATEGORY: Record<Category, CategoryInfo> = {
 	charts: {
 		label: "Charts",
 		title: "Charts",
-		blurb:
-			"SVG charts on d3 with keyboard, screen-reader and reduced-motion support built in.",
+		blurb: "Line, bar, area and pie charts, accessible by default.",
 		route: "top-level",
 		installDir: "charts",
 		preview: false,
@@ -100,8 +97,7 @@ export const CATEGORY: Record<Category, CategoryInfo> = {
 	"og-images": {
 		label: "OG Images",
 		title: "OG image templates",
-		blurb:
-			"1200x630 social cards built from your theme tokens, rendered to PNG with takumi.",
+		blurb: "Social share image templates, rendered to PNG.",
 		route: "top-level",
 		installDir: "og",
 		preview: false,
@@ -109,8 +105,7 @@ export const CATEGORY: Record<Category, CategoryInfo> = {
 	emails: {
 		label: "Emails",
 		title: "Email templates",
-		blurb:
-			"Transactional email templates for React Email and Svelte, themed from your tokens, tested for real inboxes.",
+		blurb: "Email templates for React Email and Svelte.",
 		route: "top-level",
 		installDir: "emails",
 		preview: false,
