@@ -29,11 +29,12 @@ import {
 	WEEK_CALENDAR_LABELS,
 	type WeekCalendarDayTone,
 	type WeekCalendarLabels,
+	type WeekCalendarSize,
 	type WeekCalendarVariant,
 	weekCalendar,
 } from "../variants";
 
-export type { WeekCalendarLabels, WeekCalendarVariant, WeekStartsOn };
+export type { WeekCalendarLabels, WeekCalendarSize, WeekCalendarVariant, WeekStartsOn };
 
 export interface WeekCalendarProps {
 	/** Controlled selected day; `null` clears it. */
@@ -56,6 +57,7 @@ export interface WeekCalendarProps {
 	today?: Date;
 	labels?: Partial<WeekCalendarLabels>;
 	variant?: WeekCalendarVariant;
+	size?: WeekCalendarSize;
 	className?: string;
 }
 
@@ -77,6 +79,7 @@ export function WeekCalendar({
 	today: todayProp,
 	labels: labelsProp,
 	variant = "card",
+	size = "default",
 	className,
 }: WeekCalendarProps) {
 	const labels = { ...WEEK_CALENDAR_LABELS, ...labelsProp };
@@ -91,7 +94,7 @@ export function WeekCalendar({
 		startOfDay(defaultMonth ?? selected ?? today),
 	);
 	const anchor = monthProp ? startOfDay(monthProp) : anchorState;
-	const styles = weekCalendar({ variant });
+	const styles = weekCalendar({ variant, size });
 
 	const format = useMemo(
 		() => ({

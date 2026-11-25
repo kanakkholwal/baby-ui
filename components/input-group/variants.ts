@@ -19,7 +19,6 @@ export const inputGroup = tv({
 	variants: {
 		// The ladder's height, radius and text; the control inherits the text size from here.
 		size: {
-			xs: { root: ["h-6 rounded-sm", fieldText({ size: "xs" })] },
 			sm: { root: ["h-8 rounded-md", fieldText({ size: "sm" })] },
 			default: { root: ["h-9 rounded-lg", fieldText({ size: "default" })] },
 			lg: { root: ["h-10 rounded-lg", fieldText({ size: "lg" })] },

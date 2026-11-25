@@ -111,6 +111,7 @@ in this table; never add `[height:var(...)]!` or a second scale.
   so small controls don't turn into pills and large ones don't go square. Button adds `roundness`:
   `default` (the ladder), `soft` (about 40% of the height: `lg`, `xl`, `xl`, `2xl`, `3xl` by step, icon
   squares included) and `full` (pill or circle); the default stays on the ladder (user, 2026-11-26).
+- Only Button, Badge and Select have the `xs` step; every other control's smallest size is `sm`.
 - A group (ToggleGroup, segmented Tabs) is the control height in total: rim plus items.
 - Text entry is `text-base` below `md` and the table's size from `md` up; iOS zooms under 16px.
 - Popup rows pair with their trigger's size: `xs` 24, `sm` 28, `default` 32, `lg` 36, `xl` 40.
@@ -118,7 +119,7 @@ in this table; never add `[height:var(...)]!` or a second scale.
   everywhere in the library, not only on controls. Other axes (`gap`, `spacing`, `radius`) keep
   their own names.
 - Chip fields (MultiSelect, TagInput) use `min-h` on the ladder; inner rows are the height minus
-  border and padding, and chips step with the field (`xs`/`sm` Badge `sm`, `default`/`lg`
+  border and padding, and chips step with the field (`sm` Badge `sm`, `default`/`lg`
   Badge `default`, `xl` Badge `lg`).
 - Tabs: the list is the ladder height in every variant; segment triggers and marker sit
   `calc(radius - 2px)` inside the list. InputOTP slots and Pagination links are ladder squares

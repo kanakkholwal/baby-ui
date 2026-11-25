@@ -6,7 +6,6 @@ export const textarea = tv({
 	variants: {
 		// No fixed height: the ladder's radius and text, with a min height that grows with the size.
 		size: {
-			xs: [fieldText({ size: "xs" }), "min-h-12 rounded-sm px-2 py-1"],
 			sm: [fieldText({ size: "sm" }), "min-h-14 rounded-md px-2.5 py-1.5"],
 			default: [fieldText({ size: "default" }), "min-h-16 rounded-lg px-3 py-2"],
 			lg: [fieldText({ size: "lg" }), "min-h-20 rounded-lg px-3.5 py-2.5"],

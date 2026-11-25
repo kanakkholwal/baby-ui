@@ -15,32 +15,30 @@ import {
 	IconTypography,
 	IconUndo,
 } from "@baby-ui/icons";
+import { Badge } from "@baby-ui/svelte/badge";
+import { Button } from "@baby-ui/svelte/button";
+import { Input } from "@baby-ui/svelte/input";
+import { NumberInput } from "@baby-ui/svelte/number-input";
 import {
-	Badge,
-	Button,
-	Input,
-	NumberInput,
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
+} from "@baby-ui/svelte/select";
+import {
 	Sheet,
 	SheetClose,
 	SheetContent,
 	SheetHeader,
 	SheetTitle,
-	Slider,
-	Spinner,
-	Switch,
-	Tabs,
-	TabsContent,
-	TabsList,
-	TabsTrigger,
-	Textarea,
-	ToggleGroup,
-	ToggleGroupItem,
-} from "@baby-ui/svelte";
+} from "@baby-ui/svelte/sheet";
+import { Slider } from "@baby-ui/svelte/slider";
+import { Spinner } from "@baby-ui/svelte/spinner";
+import { Switch } from "@baby-ui/svelte/switch";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@baby-ui/svelte/tabs";
+import { Textarea } from "@baby-ui/svelte/textarea";
+import { ToggleGroup, ToggleGroupItem } from "@baby-ui/svelte/toggle-group";
 import { onMount } from "svelte";
 import { hasProAccess } from "#lib/account.js";
 import CodeBlock from "#lib/components/code-block.svelte";

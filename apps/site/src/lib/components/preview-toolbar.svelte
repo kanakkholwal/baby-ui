@@ -11,7 +11,7 @@ import {
 	TooltipContent,
 	TooltipProvider,
 	TooltipTrigger,
-} from "@baby-ui/svelte";
+} from "@baby-ui/svelte/tooltip";
 import { track } from "#lib/analytics.js";
 import type { PreviewView } from "#lib/preview-modes.svelte.js";
 

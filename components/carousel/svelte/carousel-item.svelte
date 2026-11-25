@@ -26,7 +26,7 @@ const active = $derived(ctx.index === index);
 	aria-roledescription="slide"
 	aria-label={ctx.slideLabel(index)}
 	inert={!active}
-	class={cn(ctx.slideClass, classProp)}
+	class={cn(ctx.s.slide(), classProp)}
 >
 	{@render children?.()}
 </div>

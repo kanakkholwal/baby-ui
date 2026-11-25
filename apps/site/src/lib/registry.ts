@@ -35,6 +35,8 @@ export type NavCategory = {
 	category: Category;
 	label: string;
 	href: string;
+	/** One line on what the category holds. */
+	blurb: string;
 	count: number;
 };
 

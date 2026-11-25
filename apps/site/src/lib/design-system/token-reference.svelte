@@ -1,14 +1,12 @@
 <script lang="ts">
-import {
-	Badge,
-	Button,
-	Checkbox,
-	Input,
-	Progress,
-	Separator,
-	Slider,
-	Switch,
-} from "@baby-ui/svelte";
+import { Badge } from "@baby-ui/svelte/badge";
+import { Button } from "@baby-ui/svelte/button";
+import { Checkbox } from "@baby-ui/svelte/checkbox";
+import { Input } from "@baby-ui/svelte/input";
+import { Progress } from "@baby-ui/svelte/progress";
+import { Separator } from "@baby-ui/svelte/separator";
+import { Slider } from "@baby-ui/svelte/slider";
+import { Switch } from "@baby-ui/svelte/switch";
 import { watchLayout } from "./measure";
 import type { Token, TokenGroup } from "./tokens";
 

@@ -12,6 +12,6 @@ export type InstallSource = {
 	css: { code: string; html: string } | null;
 };
 
-/** Where the page fetches `installSource` from; the real route, so reroutes never apply. */
-export const installSourceUrl = (category: string, slug: string, framework: Framework) =>
-	`/components/${category}/${slug}/source/${framework}.json`;
+/** Highlighted install source, pre-built into static/source by scripts/build-source-json.mjs. */
+export const installSourceUrl = (slug: string, framework: Framework) =>
+	`/source/${slug}/${framework}.json`;

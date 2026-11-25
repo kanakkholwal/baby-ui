@@ -43,7 +43,6 @@ export const inputOtp = tv({
 		},
 		size: {
 			// Square slots on the control ladder, so a code field lines up with the button beside it.
-			xs: { slot: "size-6 rounded-sm text-xs", root: "gap-1", group: "gap-1" },
 			sm: { slot: "size-8 rounded-md text-sm", root: "gap-1.5", group: "gap-1.5" },
 			default: { slot: "size-9 rounded-lg text-base" },
 			lg: { slot: "size-10 rounded-lg text-lg" },

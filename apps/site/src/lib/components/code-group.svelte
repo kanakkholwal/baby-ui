@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@baby-ui/svelte";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@baby-ui/svelte/tabs";
 import type { Panel } from "#lib/docs-nodes.js";
 import { LANG_LABEL } from "#lib/highlight.js";
 import { pmCommand } from "#lib/pm.js";

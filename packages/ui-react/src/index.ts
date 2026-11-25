@@ -40,8 +40,8 @@ export { type AttachmentsProps, Attachments, type AttachmentProps, Attachment, t
 export { type AttachmentLabels, ATTACHMENT_LABELS } from "@baby-ui/components/react/attachment";
 export { attachments, attachment, type AttachmentsVariant, type AttachmentVariant, type AttachmentStatus, ATTACHMENT_ICON, fileType } from "@baby-ui/components/react/attachment";
 export { useAudioComposer, AudioComposer, AudioComposerDuration, AudioComposerStyle, AudioComposerTools } from "@baby-ui/components/react/audio-composer";
-export { stepDuration, formatLength, AUDIO_COMPOSER_ICONS, durationToRatio, ratioToDuration, dialRatio, dialArc, dialPoint } from "@baby-ui/components/react/audio-composer";
-export { audioComposer, type AudioComposerVariant, type AudioDurationShape } from "@baby-ui/components/react/audio-composer";
+export { stepDuration, formatLength, AUDIO_COMPOSER_ICONS } from "@baby-ui/components/react/audio-composer";
+export { audioComposer, type AudioComposerVariant } from "@baby-ui/components/react/audio-composer";
 export { type AuroraFlowProps, AuroraFlow } from "@baby-ui/components/react/aurora-flow";
 export { type AuroraFlowOptions, mountAuroraFlow } from "@baby-ui/components/react/aurora-flow";
 export { type SilkAuroraOptions, mountSilkAurora } from "@baby-ui/components/react/aurora-flow";
@@ -86,9 +86,9 @@ export { cardFrame, type CardVariant } from "@baby-ui/components/react/card";
 export { type CardStackProps, CardStack } from "@baby-ui/components/react/card-stack";
 export { type CardDecision, type DeckPoint, type DeckExit, type DeckReturn, type DeckCard, type DeckOptions, type DeckLayout, VISIBLE, createCardDeck } from "@baby-ui/components/react/card-stack";
 export { cardStack, type CardStackVariant, type CardStackSize } from "@baby-ui/components/react/card-stack";
-export { type CarouselProps, CarouselItem, Carousel } from "@baby-ui/components/react/carousel";
+export { type CarouselProps, Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext, CarouselDots, CarouselControls, CarouselThumbs, CarouselThumb } from "@baby-ui/components/react/carousel";
 export { type CarouselTrackOptions, createCarouselTrack } from "@baby-ui/components/react/carousel";
-export { carousel, type CarouselProjection, type CarouselVariant, type CarouselSize, type CarouselControls } from "@baby-ui/components/react/carousel";
+export { carousel, type CarouselProjection, type CarouselVariant, type CarouselSize, type CarouselLabels, CAROUSEL_LABELS } from "@baby-ui/components/react/carousel";
 export { type CaseStudyFlipStackProps, CaseStudyFlipStack } from "@baby-ui/components/react/case-study-flip-stack";
 export { type CaseStudyFlipItem, flipCardOffsets, activeFlipCard } from "@baby-ui/components/react/case-study-flip-stack";
 export { caseStudyFlipStack, type CaseStudyFlipStackSize, type CaseStudyFlipStackTone } from "@baby-ui/components/react/case-study-flip-stack";
@@ -118,9 +118,6 @@ export { type LoadingPulseProps, LoadingPulse, type LoadingSweepProps, LoadingSw
 export { type SeriesMarkersProps, SeriesMarkers, type TerminalMarkerProps, TerminalMarker } from "@baby-ui/components/react/chart-series";
 export { PULSE_CLIP_PAD, PULSE_CYCLE, PULSE_PAUSE, SWEEP_CYCLE, SWEEP_EXIT, MARKER_ENTER, REVEAL_DURATION, hashFract, pulseSkeleton, pulseClip, pulseExitPlan, sweepStops, highlightBounds, type SignedSegment, splitAtBaseline } from "@baby-ui/components/react/chart-series";
 export { seriesMarker, type SeriesMarkerAppearance, seriesLoading, type SeriesLoadingStyle } from "@baby-ui/components/react/chart-series";
-export { type ChatComposerProps, ChatComposer } from "@baby-ui/components/react/chat-composer";
-export { type ChatMessage, type ChatTopic, type ChatStatus, type ChatComposerLabels, CHAT_COMPOSER_LABELS, promptHistory, resolvingIndex } from "@baby-ui/components/react/chat-composer";
-export { chatComposer, type ChatComposerVariant, type ChatComposerSize } from "@baby-ui/components/react/chat-composer";
 export { type CheckboxProps, Checkbox } from "@baby-ui/components/react/checkbox";
 export { checkbox, type CheckboxVariant, type CheckboxSize } from "@baby-ui/components/react/checkbox";
 export { type ChoroplethLabels, type ChoroplethChartProps, ChoroplethChart } from "@baby-ui/components/react/choropleth-chart";
@@ -166,8 +163,9 @@ export { comparisonTable, type ComparisonTableVariant } from "@baby-ui/component
 export { type ComposedChartProps, ComposedChart, type SeriesBarProps, SeriesBar } from "@baby-ui/components/react/composed-chart";
 export { seriesBarWidth, seriesBarOffset, seriesBarDelay, localProgress } from "@baby-ui/components/react/composed-chart";
 export { seriesBar, type SeriesBarVariant } from "@baby-ui/components/react/composed-chart";
-export { type ComposerModel, type ComposerAction, type ComposerProps, Composer, type ComposerInputProps, ComposerInput, ComposerToolbar, type ComposerActionsProps, ComposerActions, type ComposerModelSelectProps, ComposerModelSelect, type ComposerSubmitProps, ComposerSubmit } from "@baby-ui/components/react/composer";
-export { composer, type ComposerVariant, type ComposerSize, COMPOSER_LINE_HEIGHT } from "@baby-ui/components/react/composer";
+export { type ComposerProps, Composer, type ComposerInputProps, ComposerInput, ComposerToolbar, type ComposerActionsProps, ComposerActions, ComposerMenuLabel, ComposerMenuItem, ComposerMenuIcon, ComposerMenuTitle, ComposerMenuHint, ComposerModelPicker, ComposerModelTrigger, ComposerModelContent, ComposerModelLabel, ComposerModelGroup, ComposerModelItem, type ComposerEffortProps, ComposerEffort, type ComposerSubmitProps, ComposerSubmit, ComposerTools, ComposerVoice, ComposerFiles, ComposerAttachment, ComposerFooter, ComposerChip, ComposerMode, ComposerContext } from "@baby-ui/components/react/composer";
+export { type ComposerSnapshot, settleComposer, snapshotComposer, playComposer } from "@baby-ui/components/react/composer";
+export { composer, type ComposerVariant, type ComposerSize, COMPOSER_LINE_HEIGHT, CONTEXT_RING_LENGTH, contextOffset } from "@baby-ui/components/react/composer";
 export { type ConfirmMorphProps, ConfirmMorph } from "@baby-ui/components/react/confirm-morph";
 export { type ConfirmMorphState, type ConfirmMorphMode, type ConfirmMorphFace, type ConfirmOptions, createConfirmMorph } from "@baby-ui/components/react/confirm-morph";
 export { confirmMorph, type ConfirmMorphVariant, type ConfirmMorphSize } from "@baby-ui/components/react/confirm-morph";
@@ -180,9 +178,9 @@ export { contextChunkBadge, type ContextChunkTone } from "@baby-ui/components/re
 export { ContextMenu, ContextMenuSub, ContextMenuTrigger, ContextMenuContent, ContextMenuItem, ContextMenuShortcut, ContextMenuLabel, ContextMenuSeparator, ContextMenuSubTrigger, ContextMenuSubContent, ContextMenuGroup, ContextMenuCheckboxItem, ContextMenuRadioGroup, ContextMenuRadioItem } from "@baby-ui/components/react/context-menu";
 export { type ContextMeterProps, ContextMeter, ContextMeterHeader, ContextMeterIcon, ContextMeterTitle, ContextMeterSubtitle, ContextMeterPercent, ContextMeterBody, ContextMeterSummary, ContextMeterBar, ContextMeterList, ContextMeterFooter, ContextMeterCompact } from "@baby-ui/components/react/context-meter";
 export { contextMeter, type ContextMeterVariant, type ContextSegment, formatTokens, segmentColor, CONTEXT_METER_ICONS } from "@baby-ui/components/react/context-meter";
-export { type ConversationProps, Conversation, type ConversationContentProps, ConversationContent, ConversationEmpty, type ConversationScrollButtonProps, ConversationScrollButton, type ConversationRailProps, ConversationRail } from "@baby-ui/components/react/conversation";
+export { type ConversationProps, Conversation, type ConversationContentProps, ConversationContent, ConversationFooter, ConversationEmpty, type ConversationScrollButtonProps, ConversationScrollButton, type ConversationRailProps, ConversationRail } from "@baby-ui/components/react/conversation";
 export { type RailState, createRail } from "@baby-ui/components/react/conversation";
-export { conversationRail } from "@baby-ui/components/react/conversation";
+export { conversation, type ConversationVariant, conversationRail } from "@baby-ui/components/react/conversation";
 export { type CopyButtonProps, CopyButton } from "@baby-ui/components/react/copy-button";
 export { type CountdownProps, Countdown } from "@baby-ui/components/react/countdown";
 export { type CountdownUnit, COUNTDOWN_UNITS, UNIT_NAMES, toEpoch, sortUnits, countdownParts, spokenCountdown, createCountdownClock } from "@baby-ui/components/react/countdown";
@@ -201,7 +199,7 @@ export { type DataTableWorkerColumn, initDataTableWorker } from "@baby-ui/compon
 export { type DateFieldProps, DateField } from "@baby-ui/components/react/date-field";
 export { useFieldDraft, type DateSegmentsProps, DateSegments } from "@baby-ui/components/react/date-field";
 export { type SegmentPart, type FieldLayout, type Draft, type DateParts, type DateFieldLabels, DATE_FIELD_LABELS, fieldLayout, localeHourCycle, periodText, segmentRange, stepMinute, stepSegment, typeDigit, clearSegment, segmentText, dateToDraft, draftToDate, timeToDraft, draftToTime, compareDateParts, isOutsideRange, toDateParts, fromDateParts, isoDate } from "@baby-ui/components/react/date-field";
-export { dateField, type DateFieldSize } from "@baby-ui/components/react/date-field";
+export { dateField, type DateFieldSize, popoverCalendarSize, popoverRangeSize } from "@baby-ui/components/react/date-field";
 export { type DatePickerProps, DatePicker } from "@baby-ui/components/react/date-picker";
 export { type DatePickerLabels, DATE_PICKER_LABELS } from "@baby-ui/components/react/date-picker";
 export { type DatePickerSize } from "@baby-ui/components/react/date-picker";
@@ -466,9 +464,6 @@ export { textMetrics, fitElement, copyFull, truncateMiddle } from "@baby-ui/comp
 export { middleTruncation, type MiddleTruncationVariant } from "@baby-ui/components/react/middle-truncation";
 export { type MirrorTextProps, MirrorText } from "@baby-ui/components/react/mirror-text";
 export { mirrorText, type MirrorTextDirection } from "@baby-ui/components/react/mirror-text";
-export { type MoneyInputDetails, type MoneyInputProps, MoneyInput } from "@baby-ui/components/react/money-input";
-export { type CurrencyInfo, currencyInfo, cleanAmount, groupAmount, toMinor, fromMinor, caretAfter, significantBefore, formatMoney } from "@baby-ui/components/react/money-input";
-export { moneyInput, type MoneyInputVariant } from "@baby-ui/components/react/money-input";
 export { type MorphSelectProps, MorphSelect } from "@baby-ui/components/react/morph-select";
 export { type MorphSelectOption, type MorphSelectGroup, type MorphSelectItem, type MorphSelectSection, sections, flatOptions } from "@baby-ui/components/react/morph-select";
 export { morphSelect, type MorphSelectSize, type MorphSelectVariant } from "@baby-ui/components/react/morph-select";
@@ -638,7 +633,7 @@ export { type PropertyPanelProps, PropertyPanel, type PropertyPanelGroupProps, P
 export { type PropertyPanelControlsProps, PropertyPanelControls, PropertyPanelRow } from "@baby-ui/components/react/property-panel";
 export { type PropertyOption, type PropertyControl, type PropertySchema, type PropertyValues, type PropertyValue, type PropertyField, type PropertyFolder, type PropertyNode, propertyLabel, propertyNodes, type PropertyGroup, propertyGroups, propertyDefaults, getPropertyValue, setPropertyValue } from "@baby-ui/components/react/property-panel";
 export { propertyPanel, type PropertyPanelVariant } from "@baby-ui/components/react/property-panel";
-export { type QuestionProps, Question, type QuestionHeaderProps, QuestionHeader, QuestionContent, type QuestionFooterProps, QuestionFooter, QuestionResult } from "@baby-ui/components/react/question";
+export { type QuestionProps, Question, QuestionBody, type QuestionHeaderProps, QuestionHeader, QuestionContent, type QuestionFooterProps, QuestionFooter, QuestionResult } from "@baby-ui/components/react/question";
 export { question, type QuestionVariant, type QuestionStatus, type QuestionOption, type QuestionItem, type QuestionAnswer, type QuestionAnswers, EMPTY_ANSWER, isAnswered, QUESTION_ICONS } from "@baby-ui/components/react/question";
 export { type RadarChartProps, RadarChart, type RadarGridProps, RadarGrid, RadarAxis, RadarLabels, type RadarAreaProps, RadarArea, RadarTooltip } from "@baby-ui/components/react/radar-chart";
 export { type RadarMetric, type RadarSeries, type Point, RADAR_TIMING, RADAR_SPRING, SERIES_DASH, seriesKey, seriesDash, angleAt, pointAt, polygonPath, ringPath, niceMax, markerPath } from "@baby-ui/components/react/radar-chart";
@@ -650,7 +645,7 @@ export { type RangeCalendarProps, RangeCalendar } from "@baby-ui/components/reac
 export { type ReactionBarProps, ReactionBar, ReactionBarItem, ReactionBarIcon, ReactionBarCount } from "@baby-ui/components/react/reaction-bar";
 export { REACTION_PATHS, compactCount } from "@baby-ui/components/react/reaction-bar";
 export { reactionBar, type ReactionBarVariant, type ReactionBarTone, REACTION_ICONS, type ReactionIcon } from "@baby-ui/components/react/reaction-bar";
-export { type ReasoningProps, Reasoning, ReasoningSteps, type ReasoningStepProps, ReasoningStep, type ReasoningStepDetailsProps, ReasoningStepDetails, ReasoningStepSources, type ReasoningStepSourceProps, ReasoningStepSource, type ReasoningStepImageProps, ReasoningStepImage, type ReasoningRowsProps, ReasoningRows } from "@baby-ui/components/react/reasoning";
+export { useReasoning, type ReasoningProps, Reasoning, ReasoningTrigger, ReasoningIcon, ReasoningTitle, ReasoningDuration, ReasoningPreview, ReasoningChevron, ReasoningContent, ReasoningSteps, type ReasoningStepProps, ReasoningStep, type ReasoningStepDetailsProps, ReasoningStepDetails, ReasoningStepSources, type ReasoningStepSourceProps, ReasoningStepSource, type ReasoningStepImageProps, ReasoningStepImage, type ReasoningRowsProps, ReasoningRows } from "@baby-ui/components/react/reasoning";
 export { reasoning, type ReasoningVariant, reasoningStep, type ReasoningStepStatus, reasoningExtras, reasoningRows, type ReasoningRowsKind, type ReasoningRow, SOURCE_TONES } from "@baby-ui/components/react/reasoning";
 export { type RecommendationOption, type RecommendationLabels, type RecommendationCardProps, RecommendationCard } from "@baby-ui/components/react/recommendation-card";
 export { RecordingPill, RecordingPillIcon, RecordingPillLabel, RecordingPillMeter, RecordingPillTimer, RecordingPillCancel } from "@baby-ui/components/react/recording-pill";
@@ -692,7 +687,7 @@ export { scatterPoint, type ScatterSize, type ScatterShape, SCATTER_RADIUS, SCAT
 export { type ScoreCardProps, ScoreCard, ScoreCardHeader, ScoreCardTitle, ScoreCardDescription, type ScoreCardTrendProps, ScoreCardTrend, ScoreCardContent, ScoreCardGauge } from "@baby-ui/components/react/score-card";
 export { scoreCard, type ScoreCardSize } from "@baby-ui/components/react/score-card";
 export { type ScrollAreaProps, ScrollArea } from "@baby-ui/components/react/scroll-area";
-export { scrollArea, type ScrollAreaScrollbar, type ScrollAreaGutter, type ScrollAreaOrientation, type ScrollAreaFade, SCROLL_EDGE, type ScrollEdges, readEdges } from "@baby-ui/components/react/scroll-area";
+export { scrollArea, type ScrollAreaScrollbar, type ScrollAreaGutter, type ScrollAreaOrientation, type ScrollAreaFade, SCROLL_FADE, type ScrollEdges, readEdges, writeFade } from "@baby-ui/components/react/scroll-area";
 export { type ScrollChoreographyProps, ScrollChoreography } from "@baby-ui/components/react/scroll-choreography";
 export { type ScrollChoreographyImage, type ScrollChoreographyImages, CHOREOGRAPHY_SLOTS } from "@baby-ui/components/react/scroll-choreography";
 export { scrollChoreography, type ScrollChoreographySize, type ScrollChoreographyVariant } from "@baby-ui/components/react/scroll-choreography";
@@ -739,7 +734,7 @@ export { skeleton, type SkeletonShape, skeletonReveal } from "@baby-ui/component
 export { type SlideToUnlockProps, SlideToUnlock, SlideToUnlockTrack, SlideToUnlockText, SlideToUnlockHandle } from "@baby-ui/components/react/slide-to-unlock";
 export { slideToUnlock, type SlideToUnlockVariant, type SlideToUnlockSize } from "@baby-ui/components/react/slide-to-unlock";
 export { type SliderProps, Slider } from "@baby-ui/components/react/slider";
-export { SLIDER_SINGLE_THUMB_VARIANTS, SLIDER_VERTICAL_VARIANTS, sliderLayout, SLIDER_WAVE_BARS, type SliderWaveBar, sliderWaveBars, sliderThumbCenter, sliderInlineSplit, SLIDER_RULER_GAP, SLIDER_RULER_MAJOR_EVERY, type SliderRulerTick, sliderRulerTicks, sliderRulerOffset, sliderRulerValueAt } from "@baby-ui/components/react/slider";
+export { SLIDER_SINGLE_THUMB_VARIANTS, SLIDER_VERTICAL_VARIANTS, sliderLayout, SLIDER_WAVE_BARS, type SliderWaveBar, sliderWaveBars, SLIDER_RULER_GAP, SLIDER_RULER_MAJOR_EVERY, type SliderRulerTick, sliderRulerTicks, sliderRulerOffset, sliderRulerValueAt } from "@baby-ui/components/react/slider";
 export { attachElastic } from "@baby-ui/components/react/slider";
 export { slider, type SliderSize, type SliderVariant, type SliderMark, sliderPercent } from "@baby-ui/components/react/slider";
 export { type SlopeChartProps, SlopeChart } from "@baby-ui/components/react/slope-chart";
@@ -790,7 +785,7 @@ export { streamgraphChart, type StreamgraphVariant } from "@baby-ui/components/r
 export { type StreamingTextProps, StreamingText, type StreamingTextContentProps, StreamingTextContent, StreamingTextFooter, StreamingTextCopy, StreamingTextSources, StreamingTextFollowUps } from "@baby-ui/components/react/streaming-text";
 export { streamingText, type StreamingTextSize, type StreamingTextLayout, type StreamingToken, type StreamingSource, WORD_DELAY, tokensOf, plainTextOf } from "@baby-ui/components/react/streaming-text";
 export { type SubscriptionCardProps, SubscriptionCard, SubscriptionCardHeader, SubscriptionCardTitle, SubscriptionCardPrice, SubscriptionCardSchedule, SubscriptionCardAlert, SubscriptionCardSeats, SubscriptionCardFooter, SubscriptionCardManage, SubscriptionCardChangePlan, SubscriptionCardResume, SubscriptionCardCancel } from "@baby-ui/components/react/subscription-card";
-export { type SubscriptionInterval, type SubscriptionStatus, type SubscriptionPlan, type SubscriptionSeats, type SubscriptionPending, type SubscriptionBadgeTone, type SubscriptionLabels, SUBSCRIPTION_LABELS, STATUS_TONE, toTime, daysUntil, intervalLabel, scheduleLine, availableActions } from "@baby-ui/components/react/subscription-card";
+export { type SubscriptionInterval, type SubscriptionStatus, type SubscriptionPlan, type SubscriptionSeats, type SubscriptionPending, type SubscriptionBadgeTone, type SubscriptionLabels, SUBSCRIPTION_LABELS, STATUS_TONE, toTime, daysUntil, formatMoney, intervalLabel, scheduleLine, availableActions } from "@baby-ui/components/react/subscription-card";
 export { subscriptionCard, type SubscriptionCardVariant } from "@baby-ui/components/react/subscription-card";
 export { type SunburstChartProps, SunburstChart } from "@baby-ui/components/react/sunburst-chart";
 export { type SunburstNode, type ArcDatum, type Focus, type ArcGeometry, type SunburstLayout, ID_SEP, SUNBURST_CURVE, ZOOM_MS, GROW_MS, FADE_MS, DEFAULT_HOVER_POP, sumValues, buildLayout, ringOptions, isDescendant, isOnPath, geometryFor, lerpGeometry, transitionGeometry, hubRadius, clockwiseFraction, enterDelays, relativeOpacity, maxHoverThickness, hoverGrowTargets, growPadding, applyHoverGrow, centroid, labelRotation, labelFits, visibleArcs, focusTrail, arcColor } from "@baby-ui/components/react/sunburst-chart";
@@ -802,7 +797,7 @@ export { type SwipeAction, type SwipeActionsProps, SwipeActions, type SwipeActio
 export { type SwipeSide, SWIPE_ACTION_WIDTH, createSwipeGroup, type SwipeGroup, type SwipeRowOptions, createSwipeRow } from "@baby-ui/components/react/swipe-actions";
 export { swipeActions, type SwipeActionsVariant, type SwipeActionsSize } from "@baby-ui/components/react/swipe-actions";
 export { type SwitchProps, Switch } from "@baby-ui/components/react/switch";
-export { switchTrack, switchThumb, type SwitchVariant, type SwitchSize } from "@baby-ui/components/react/switch";
+export { switchTrack, switchThumb, switchRow, type SwitchVariant, type SwitchSize } from "@baby-ui/components/react/switch";
 export { type TableProps, Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, TableCaption } from "@baby-ui/components/react/table";
 export { table, type TableVariant, type TableDensity } from "@baby-ui/components/react/table";
 export { type TableOfContentsProps, TableOfContents } from "@baby-ui/components/react/table-of-contents";
@@ -900,7 +895,7 @@ export { type WebglLiquidOptions, mountWebglLiquid } from "@baby-ui/components/r
 export { webglLiquid, type WebglLiquidTone, type WebglLiquidSpeed, type WebglLiquidPosition, WEBGL_LIQUID_COLORS, WEBGL_LIQUID_SPEED } from "@baby-ui/components/react/webgl-liquid";
 export { type WeekCalendarProps, WeekCalendar } from "@baby-ui/components/react/week-calendar";
 export { type WeekStartsOn, WEEK_LENGTH, startOfDay, addMonths, startOfWeek, sameDay, sameMonth, monthWeeks, arrowTarget } from "@baby-ui/components/react/week-calendar";
-export { weekCalendar, type WeekCalendarVariant, type WeekCalendarDayTone, type WeekCalendarLabels, WEEK_CALENDAR_LABELS, SWIPE, ROW_STAGGER_MS, HANDLE_DRAG_PX } from "@baby-ui/components/react/week-calendar";
+export { weekCalendar, type WeekCalendarVariant, type WeekCalendarSize, type WeekCalendarDayTone, type WeekCalendarLabels, WEEK_CALENDAR_LABELS, SWIPE, ROW_STAGGER_MS, HANDLE_DRAG_PX } from "@baby-ui/components/react/week-calendar";
 export { type WheelCarouselProps, WheelCarousel } from "@baby-ui/components/react/wheel-carousel";
 export { type WheelCarouselItem } from "@baby-ui/components/react/wheel-carousel";
 export { wheelCarousel, type WheelCarouselPhotoSide, type WheelCarouselAspect, type WheelCarouselSize } from "@baby-ui/components/react/wheel-carousel";

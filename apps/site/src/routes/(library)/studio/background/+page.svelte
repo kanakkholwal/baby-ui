@@ -65,26 +65,13 @@ import {
 	IconShuffle,
 	IconTypography,
 } from "@baby-ui/icons";
-import {
-	Button,
-	Input,
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-	Sheet,
-	SheetClose,
-	SheetContent,
-	SheetHeader,
-	SheetTitle,
-	Slider,
-	Switch,
-	Tabs,
-	TabsContent,
-	TabsList,
-	TabsTrigger,
-} from "@baby-ui/svelte";
+import { Button } from "@baby-ui/svelte/button";
+import { Input } from "@baby-ui/svelte/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@baby-ui/svelte/select";
+import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle } from "@baby-ui/svelte/sheet";
+import { Slider } from "@baby-ui/svelte/slider";
+import { Switch } from "@baby-ui/svelte/switch";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@baby-ui/svelte/tabs";
 import { onMount } from "svelte";
 import { hasProAccess } from "#lib/account.js";
 import CodeBlock from "#lib/components/code-block.svelte";

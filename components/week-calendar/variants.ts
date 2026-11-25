@@ -5,14 +5,14 @@ const focusRing =
 
 export const weekCalendar = tv({
 	slots: {
-		root: "w-full max-w-[21rem] select-none rounded-2xl px-4 pt-4 pb-2 text-foreground",
+		root: "w-full select-none rounded-2xl px-4 pt-4 pb-2 text-foreground",
 		header: "mb-2.5 flex items-center justify-between gap-2",
 		titleGroup: "flex min-w-0 items-center gap-2",
 		titleClip: "grid min-w-0 overflow-hidden",
 		title: "col-start-1 row-start-1 truncate font-semibold text-base tracking-tight",
 		today: `shrink-0 rounded-full bg-foreground/[0.06] px-2.5 py-1 font-semibold text-xs transition-[opacity,scale,background-color] duration-(--duration-press) ease-(--ease-ui-out) hover:bg-foreground/[0.1] active:scale-90 data-[hidden]:pointer-events-none data-[hidden]:scale-80 data-[hidden]:opacity-0 motion-reduce:transition-none ${focusRing}`,
 		nav: "flex shrink-0 items-center gap-0.5",
-		navButton: `flex size-7 items-center justify-center rounded-full text-muted-foreground transition-[background-color,color,scale] duration-(--duration-press) ease-(--ease-ui-out) hover:bg-accent hover:text-accent-foreground active:scale-[0.82] motion-reduce:transition-none ${focusRing}`,
+		navButton: `flex size-(--nav-size) items-center justify-center rounded-full text-muted-foreground transition-[background-color,color,scale] duration-(--duration-press) ease-(--ease-ui-out) hover:bg-accent hover:text-accent-foreground active:scale-[0.82] motion-reduce:transition-none ${focusRing}`,
 		weekdays: "grid grid-cols-7 px-0.5 pb-1",
 		weekday:
 			"text-center font-semibold text-xs text-muted-foreground uppercase tracking-wide",
@@ -23,18 +23,29 @@ export const weekCalendar = tv({
 		row: "grid grid-rows-[1fr] transition-[grid-template-rows,opacity] duration-(--duration-overlay) ease-(--ease-ui-out) [transition-delay:var(--row-delay,0ms)] data-[collapsed]:grid-rows-[0fr] data-[collapsed]:opacity-0 motion-reduce:transition-none",
 		rowClip: "overflow-hidden",
 		cells: "relative grid grid-cols-7 [container-type:inline-size]",
-		pill: "pop-in pointer-events-none absolute top-1.5 left-0 size-9 translate-x-[calc(var(--col)*100cqw/7+(100cqw/7-2.25rem)/2)] rounded-full bg-primary shadow-sm transition-[translate] duration-(--duration-overlay) ease-(--ease-ui-out) motion-reduce:transition-none",
-		day: `group relative flex h-12 items-center justify-center rounded-full ${focusRing}`,
+		pill: "pop-in top-[calc((var(--row)-var(--face))/2)] pointer-events-none absolute left-0 size-(--face) translate-x-[calc(var(--col)*100cqw/7+(100cqw/7-var(--face))/2)] rounded-full bg-primary shadow-sm transition-[translate] duration-(--duration-overlay) ease-(--ease-ui-out) motion-reduce:transition-none",
+		day: `group relative flex h-(--row) items-center justify-center rounded-full ${focusRing}`,
 		dayFace:
-			"relative flex size-9 items-center justify-center rounded-full font-medium text-sm tabular-nums transition-[background-color,color,scale] duration-(--duration-press) ease-(--ease-ui-out) group-hover:scale-[1.06] group-active:scale-[0.86] motion-reduce:transition-none",
+			"relative flex size-(--face) items-center justify-center rounded-full font-medium text-(length:--day-text) tabular-nums transition-[background-color,color,scale] duration-(--duration-press) ease-(--ease-ui-out) group-hover:scale-[1.06] group-active:scale-[0.86] motion-reduce:transition-none",
 		handleBar: "flex justify-center pt-1.5 pb-0.5",
-		handle: `h-[5px] w-9 cursor-grab touch-none rounded-full bg-border transition-[background-color,scale] duration-(--duration-press) ease-(--ease-ui-out) hover:scale-x-115 hover:bg-muted-foreground/40 active:scale-x-130 active:cursor-grabbing motion-reduce:transition-none ${focusRing}`,
+		handle: `h-[5px] w-(--face) cursor-grab touch-none rounded-full bg-border transition-[background-color,scale] duration-(--duration-press) ease-(--ease-ui-out) hover:scale-x-115 hover:bg-muted-foreground/40 active:scale-x-130 active:cursor-grabbing motion-reduce:transition-none ${focusRing}`,
 		srOnly: "sr-only",
 	},
 	variants: {
 		variant: {
 			card: { root: "bg-card" },
 			plain: { root: "bg-transparent" },
+		},
+		size: {
+			sm: {
+				root: "max-w-[19rem] [--day-text:var(--text-sm)] [--face:--spacing(8)] [--nav-size:--spacing(6)] [--row:--spacing(10)]",
+			},
+			default: {
+				root: "max-w-[21rem] [--day-text:var(--text-sm)] [--face:--spacing(9)] [--nav-size:--spacing(7)] [--row:--spacing(12)]",
+			},
+			lg: {
+				root: "max-w-[23rem] [--day-text:var(--text-base)] [--face:--spacing(10)] [--nav-size:--spacing(8)] [--row:--spacing(13)]",
+			},
 		},
 		tone: {
 			selected: { dayFace: "font-semibold text-primary-foreground" },
@@ -43,12 +54,13 @@ export const weekCalendar = tv({
 			outside: { dayFace: "text-muted-foreground group-hover:bg-accent" },
 		},
 	},
-	defaultVariants: { variant: "card", tone: "default" },
+	defaultVariants: { variant: "card", size: "default", tone: "default" },
 });
 
 export type WeekCalendarVariant = NonNullable<
 	VariantProps<typeof weekCalendar>["variant"]
 >;
+export type WeekCalendarSize = NonNullable<VariantProps<typeof weekCalendar>["size"]>;
 export type WeekCalendarDayTone = NonNullable<VariantProps<typeof weekCalendar>["tone"]>;
 
 /** Overridable copy; every string defaults to English. */

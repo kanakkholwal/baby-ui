@@ -18,7 +18,7 @@ const s = $derived(q.styles);
 		<div class={s.clip()} inert={!q.interactive}>
 			{#key item.id}
 				<div class={cn(s.pane(), classProp)}>
-					{#if item.description}<p class={s.description()}>{item.description}</p>{/if}
+					{#if item.description}<p id={q.descriptionId} class={s.description()}>{item.description}</p>{/if}
 					{#if item.options?.length}
 						{#if item.multiple}
 							<div class={s.options()}>
@@ -35,6 +35,7 @@ const s = $derived(q.styles);
 												})
 										}
 										disabled={q.busy || option.disabled}
+										size="lg"
 										label={option.label}
 										description={option.description}
 										class={s.option()}
@@ -50,6 +51,10 @@ const s = $derived(q.styles);
 										q.queueAdvance();
 									}
 								}
+								variant="solid"
+								size="lg"
+								aria-labelledby={q.titleId}
+								aria-describedby={item.description ? q.descriptionId : undefined}
 								class={s.options()}
 							>
 								{#each item.options as option (option.value)}
@@ -63,6 +68,7 @@ const s = $derived(q.styles);
 							value={q.answer.custom ?? ""}
 							disabled={q.busy}
 							aria-label={item.customPlaceholder ?? "Another response"}
+							aria-describedby={item.description ? q.descriptionId : undefined}
 							placeholder={item.customPlaceholder ?? "Add another response…"}
 							oninput={(event) => q.setAnswer({ selected: item.multiple ? q.answer.selected : [], custom: event.currentTarget.value })}
 							class={s.custom()}

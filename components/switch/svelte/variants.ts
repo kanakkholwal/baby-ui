@@ -16,6 +16,8 @@ export const switchTrack = tv({
 			// A 4px expander keeps the small track at a 24px target; marked uses both pseudos for its marks.
 			default: "before:absolute before:-inset-1 before:rounded-full",
 			round: "before:absolute before:-inset-1 before:rounded-full",
+			// The pill thumb at the end of a raised row; the row is `switchRow`.
+			celled: "me-4 before:absolute before:-inset-1 before:rounded-full",
 			marked: [
 				"before:pointer-events-none before:absolute before:top-1/2 before:left-1/4 before:h-[38%] before:w-0.5 before:-translate-1/2 before:rounded-full before:bg-primary-foreground",
 				"after:pointer-events-none after:absolute after:top-1/2 after:right-1/4 after:aspect-square after:h-[38%] after:translate-x-1/2 after:-translate-y-1/2 after:rounded-full after:border-[1.5px] after:border-muted-foreground",
@@ -41,28 +43,28 @@ export const switchThumb = tv({
 		"origin-left data-[state=checked]:origin-right group-active/switch:scale-x-[1.15] motion-reduce:group-active/switch:scale-x-100",
 	],
 	variants: {
-		variant: { default: "", round: "", marked: "" },
+		variant: { default: "", celled: "", round: "", marked: "" },
 		size: { sm: "", default: "", lg: "", xl: "" },
 	},
 	// Travel is the inner track width minus the thumb: 2px of border and 2px of padding go first.
 	compoundVariants: [
 		{
-			variant: "default",
+			variant: ["default", "celled"],
 			size: "sm",
 			class: "h-[14px] w-[20px] data-[state=checked]:translate-x-[8px]",
 		},
 		{
-			variant: "default",
+			variant: ["default", "celled"],
 			size: "default",
 			class: "h-4 w-[22px] data-[state=checked]:translate-x-[10px]",
 		},
 		{
-			variant: "default",
+			variant: ["default", "celled"],
 			size: "lg",
 			class: "h-5 w-[26px] data-[state=checked]:translate-x-[14px]",
 		},
 		{
-			variant: "default",
+			variant: ["default", "celled"],
 			size: "xl",
 			class: "h-6 w-[30px] data-[state=checked]:translate-x-[18px]",
 		},
@@ -88,6 +90,26 @@ export const switchThumb = tv({
 		},
 	],
 	defaultVariants: { variant: "default", size: "default" },
+});
+
+/** The labelled wrapper. `celled` is a full-width raised row: label at the start, switch at the end. */
+export const switchRow = tv({
+	slots: {
+		root: "inline-flex items-center gap-2.5",
+		label: "text-foreground text-sm",
+	},
+	variants: {
+		variant: {
+			default: {},
+			round: {},
+			marked: {},
+			celled: {
+				root: "flex w-full items-center gap-0 rounded-2xl bg-card shadow-xs transition-shadow duration-(--duration-fast) ease-(--ease-ui-out) hover:shadow-sm motion-reduce:transition-none",
+				label: "flex min-h-11 flex-1 cursor-pointer items-center ps-4 font-medium",
+			},
+		},
+	},
+	defaultVariants: { variant: "default" },
 });
 
 export type SwitchVariant = NonNullable<VariantProps<typeof switchTrack>["variant"]>;

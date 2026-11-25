@@ -1,5 +1,6 @@
 <script lang="ts">
-import { Button, Spinner } from "@baby-ui/svelte";
+import { Button } from "@baby-ui/svelte/button";
+import { Spinner } from "@baby-ui/svelte/spinner";
 import type { Component } from "svelte";
 import type { Panel } from "#lib/docs-nodes.js";
 import CodeGroup from "./code-group.svelte";

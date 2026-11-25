@@ -4,12 +4,13 @@ import type { Snippet } from "svelte";
 import { cn } from "../../lib/cn";
 import {
 	readEdges,
-	SCROLL_EDGE,
+	SCROLL_FADE,
 	type ScrollAreaFade,
 	type ScrollAreaGutter,
 	type ScrollAreaOrientation,
 	type ScrollAreaScrollbar,
 	scrollArea,
+	writeFade,
 } from "../variants";
 
 let {
@@ -19,6 +20,8 @@ let {
 	gutter = "overlay",
 	orientation = "vertical",
 	fade = "mask",
+	fadeSize = SCROLL_FADE,
+	fadeOffset = 0,
 	class: classProp,
 	viewportRef = $bindable(null),
 	viewportProps,
@@ -33,6 +36,10 @@ let {
 	orientation?: ScrollAreaOrientation;
 	/** How the clipped ends read: `mask` fades the content, `blur` softens it, `none` cuts it. */
 	fade?: ScrollAreaFade;
+	/** Length in px over which a `mask` fade ramps in as the content scrolls. */
+	fadeSize?: number;
+	/** Px the content must scroll before a fade starts. */
+	fadeOffset?: number;
 	/** Exposes the actual scrollable element, for callers that need to drive its scroll
 	 * position themselves (e.g. Conversation's auto-follow). */
 	viewportRef?: HTMLDivElement | null;
@@ -49,11 +56,14 @@ let idle: ReturnType<typeof setTimeout> | undefined;
 
 // Fades tell the reader there is more; a styled scrollbar alone does not on touch.
 function measure() {
-	if (viewportRef) edges = readEdges(viewportRef, orientation);
+	if (!viewportRef) return;
+	writeFade(viewportRef, orientation, fadeSize, fadeOffset);
+	edges = readEdges(viewportRef, orientation);
 }
 
 $effect(() => {
 	if (!viewportRef) return;
+	void [orientation, fadeSize, fadeOffset];
 	measure();
 	const observer = new ResizeObserver(measure);
 	observer.observe(viewportRef);
@@ -96,7 +106,7 @@ const showHorizontal = $derived(orientation !== "vertical");
 			viewportProps?.onscroll?.(event);
 		}}
 		data-slot="scroll-area-viewport"
-		style="max-height: {maxHeight}; --sa-start: {edges.start ? SCROLL_EDGE : '0px'}; --sa-end: {edges.end ? SCROLL_EDGE : '0px'}"
+		style="max-height: {maxHeight}"
 		class={cn(styles.viewport(), viewportProps?.class)}
 	>
 		{@render children()}

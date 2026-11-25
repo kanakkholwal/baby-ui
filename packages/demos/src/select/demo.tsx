@@ -32,7 +32,7 @@ export function SelectDemo({ props }: { props: Props }) {
 				items={RUNTIMES}
 				size={pTrigger.size}
 			>
-				<SelectTrigger aria-label="Runtime" variant={pTrigger.variant}>
+				<SelectTrigger aria-label="Runtime" variant={pTrigger.variant} label="Runtime">
 					<SelectValue placeholder={pValue.placeholder || "Select an option"} />
 				</SelectTrigger>
 				<SelectContent side={pContent.side ?? "bottom"}>

@@ -12,10 +12,10 @@ export const popover = defineComponent({
 	props: [
 		{
 			name: "size",
-			type: '"xs" | "sm" | "default" | "lg" | "xl"',
+			type: '"sm" | "default" | "lg" | "xl"',
 			description: "PopoverContent: width, padding, text size and proportional radius.",
 			default: "default",
-			control: { kind: "select", options: ["xs", "sm", "default", "lg", "xl"] },
+			control: { kind: "select", options: ["sm", "default", "lg", "xl"] },
 		},
 		{
 			name: "side",

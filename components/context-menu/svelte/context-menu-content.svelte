@@ -1,7 +1,7 @@
 <script lang="ts">
 import { ContextMenu as ContextMenuPrimitive } from "bits-ui";
 import { cn } from "../../lib/cn";
-import { type MenuSize, menu } from "../../lib/menu";
+import { type MenuContentSize, menu } from "../../lib/menu";
 import { ANCHORED, stagger } from "../../lib/svelte/anchor";
 
 let {
@@ -9,7 +9,7 @@ let {
 	size = "default",
 	ref = $bindable(null),
 	...rest
-}: ContextMenuPrimitive.ContentProps & { size?: MenuSize } = $props();
+}: ContextMenuPrimitive.ContentProps & { size?: MenuContentSize } = $props();
 
 $effect(() => {
 	if (ref) stagger(ref.querySelectorAll<HTMLElement>("[role='menuitem']"));

@@ -10,10 +10,10 @@ export const dropdownMenu = defineComponent({
 	props: [
 		{
 			name: "size",
-			type: '"xs" | "sm" | "default" | "lg" | "xl"',
+			type: '"sm" | "default" | "lg" | "xl"',
 			description: "DropdownMenuContent: surface radius, padding and row density.",
 			default: "default",
-			control: { kind: "select", options: ["xs", "sm", "default", "lg", "xl"] },
+			control: { kind: "select", options: ["sm", "default", "lg", "xl"] },
 		},
 		{
 			name: "side",

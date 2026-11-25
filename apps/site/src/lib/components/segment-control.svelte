@@ -10,7 +10,7 @@ export type SegmentOption<T extends string = string> = {
 </script>
 
 <script lang="ts" generics="T extends string">
-import { ToggleGroup, ToggleGroupItem, type ToggleGroupSize } from "@baby-ui/svelte";
+import { ToggleGroup, ToggleGroupItem, type ToggleGroupSize } from "@baby-ui/svelte/toggle-group";
 
 let {
 	options,

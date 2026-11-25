@@ -33,20 +33,11 @@ const loaded = new SvelteMap<string, Awaited<ReturnType<DemoLoader>>>();
 </script>
 
 <script lang="ts">
-import {
-	Badge,
-	Checkbox,
-	CopyButton,
-	ShowcaseCard,
-	ShowcaseCardAction,
-	ShowcaseCardCopy,
-	ShowcaseCardDescription,
-	ShowcaseCardFooter,
-	ShowcaseCardLink,
-	ShowcaseCardPreview,
-	ShowcaseCardTitle,
-	Spinner,
-} from "@baby-ui/svelte";
+import { Badge } from "@baby-ui/svelte/badge";
+import { Checkbox } from "@baby-ui/svelte/checkbox";
+import { CopyButton } from "@baby-ui/svelte/copy-button";
+import { ShowcaseCard, ShowcaseCardAction, ShowcaseCardCopy, ShowcaseCardDescription, ShowcaseCardFooter, ShowcaseCardLink, ShowcaseCardPreview, ShowcaseCardTitle } from "@baby-ui/svelte/showcase-card";
+import { Spinner } from "@baby-ui/svelte/spinner";
 import { mode } from "mode-watcher";
 import { untrack } from "svelte";
 import BookmarkButton from "#lib/components/bookmark-button.svelte";

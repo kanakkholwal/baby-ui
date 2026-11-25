@@ -27,7 +27,7 @@ const motion = {
 	springs: [],
 	reducedMotion: "Views and months cross-fade over 120ms without travel or blur.",
 	behaviour: [
-		"Every month shows six weeks (`fixedWeeks`, on by default), so the grid keeps one height as months change.",
+		"A month shows only the weeks it needs. Set `fixedWeeks` to always show six so the grid keeps one height.",
 		"Paging slides the weeks and caption 14px the way they travel, with a 2px blur-fade, 240ms.",
 		"Opening the month or year grid zooms out from the days; picking zooms back in, 260ms.",
 		"Month and year cells stagger in 14ms apart; days and cells squish on press.",

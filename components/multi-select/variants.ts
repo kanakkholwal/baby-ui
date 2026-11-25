@@ -41,15 +41,6 @@ export const multiSelect = tv({
 		// Field height on the control ladder: inner rows are the height minus the rim (border + padding),
 		// so chips never push it taller. Popup rows match Select (xs 24 to xl 40).
 		size: {
-			xs: {
-				root: "min-h-6 rounded-sm px-0.5 py-0 text-xs",
-				trigger: "h-5.5 px-1",
-				list: [
-					"max-h-56 [&_[data-slot=command-empty]]:text-xs",
-					"[&_[data-slot=command-input-wrapper]]:h-7 [&_[data-slot=command-input]]:h-full [&_[data-slot=command-input]]:text-base md:[&_[data-slot=command-input]]:text-xs",
-					"[&_[data-slot=command-item]]:py-1 [&_[data-slot=command-item]]:text-xs",
-				],
-			},
 			sm: {
 				root: "min-h-8 rounded-md px-1 py-0.5 text-xs",
 				trigger: "h-6.5 px-1.5",
@@ -147,7 +138,6 @@ export function toggleValue(
 
 /** The chip Badge size for each field size: chips fit the field's inner row. */
 export const MULTI_SELECT_CHIP: Record<MultiSelectSize, BadgeSize> = {
-	xs: "sm",
 	sm: "sm",
 	default: "default",
 	lg: "default",

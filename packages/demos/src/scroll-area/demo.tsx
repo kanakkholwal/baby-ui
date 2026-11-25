@@ -36,9 +36,19 @@ export function ScrollAreaDemo({ props }: { props: Props }) {
 				gutter={p.gutter ?? "overlay"}
 				orientation={orientation}
 				fade={p.fade ?? "mask"}
+				fadeSize={p.fadeSize ?? 32}
+				fadeOffset={p.fadeOffset ?? 0}
 				className="rounded-[calc(var(--radius-xl)-0.25rem)]"
 			>
-				<ul className={orientation === "horizontal" ? "flex w-max" : "flex flex-col"}>
+				<ul
+					className={
+						orientation === "horizontal"
+							? "flex w-max"
+							: orientation === "both"
+								? "grid w-max grid-cols-4"
+								: "flex flex-col"
+					}
+				>
 					{REGIONS.map((region) => (
 						<li
 							key={region}

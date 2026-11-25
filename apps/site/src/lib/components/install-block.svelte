@@ -1,5 +1,6 @@
 <script lang="ts">
-import { Skeleton, Tabs, TabsContent, TabsList, TabsTrigger } from "@baby-ui/svelte";
+import { Skeleton } from "@baby-ui/svelte/skeleton";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@baby-ui/svelte/tabs";
 import { track } from "#lib/analytics.js";
 import type { InstallSource } from "#lib/source.js";
 import CodeBlock from "./code-block.svelte";

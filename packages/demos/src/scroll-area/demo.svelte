@@ -34,9 +34,11 @@ const orientation = $derived(p.orientation ?? "vertical");
 		gutter={p.gutter ?? "overlay"}
 		{orientation}
 		fade={p.fade ?? "mask"}
+		fadeSize={p.fadeSize ?? 32}
+		fadeOffset={p.fadeOffset ?? 0}
 		class="rounded-[calc(var(--radius-xl)-0.25rem)]"
 	>
-		<ul class={orientation === "horizontal" ? "flex w-max" : "flex flex-col"}>
+		<ul class={orientation === "horizontal" ? "flex w-max" : orientation === "both" ? "grid w-max grid-cols-4" : "flex flex-col"}>
 			{#each regions as region (region)}
 				<li class="shrink-0 whitespace-nowrap rounded-lg px-3 py-2 text-foreground text-sm hover:bg-foreground/[0.04]">
 					{region}

@@ -37,6 +37,19 @@ export const radioGroup = tv({
 				ring: "mt-0",
 				pill: "pointer-events-none absolute top-0 left-0 block rounded-md bg-foreground/[0.06] data-[ready=true]:transition-[translate,width,height,opacity] data-[ready=true]:duration-(--duration-spring-snappy) data-[ready=true]:ease-(--ease-spring-snappy) motion-reduce:transition-none",
 			},
+			// A segmented control: one track, one pill gliding to the checked segment. The radio stays the
+			// focusable, form-native element, laid over its segment; forced colours keep a filled segment.
+			segmented: {
+				root: "relative isolate inline-flex flex-row items-center gap-0 bg-muted",
+				label: [
+					"relative z-1 flex min-w-0 flex-1 cursor-pointer select-none items-center justify-center rounded-[inherit] font-medium text-muted-foreground transition-colors duration-(--duration-fast) hover:text-foreground has-data-checked:text-foreground has-data-[state=checked]:text-foreground",
+					"has-focus-visible:outline-2 has-focus-visible:outline-ring has-focus-visible:outline-offset-2 has-data-disabled:cursor-not-allowed has-data-disabled:opacity-50 motion-reduce:transition-none pointer-coarse:min-h-11",
+					"forced-colors:has-data-checked:text-[HighlightText] forced-colors:has-data-[state=checked]:text-[HighlightText]",
+				],
+				ring: "absolute inset-0 mt-0 size-full rounded-[inherit] border-0 bg-transparent opacity-0 shadow-none before:hidden focus-visible:ring-0 focus-visible:ring-offset-0 data-checked:bg-transparent",
+				dot: "hidden",
+				pill: "pointer-events-none absolute top-0 left-0 block bg-background shadow-xs data-[ready=true]:transition-[translate,width,height,opacity] data-[ready=true]:duration-(--duration-spring-snappy) data-[ready=true]:ease-(--ease-spring-snappy) motion-reduce:transition-none forced-colors:bg-[Highlight]",
+			},
 		},
 		size: {
 			sm: { label: "text-xs", ring: "size-3.5", dot: "size-1.5" },
@@ -51,6 +64,46 @@ export const radioGroup = tv({
 			grid: { root: "grid grid-cols-[repeat(auto-fill,minmax(min(12rem,100%),1fr))]" },
 		},
 	},
+	// Segmented ignores orientation and takes the control ladder: items are the height minus the rim.
+	compoundVariants: [
+		{ variant: "segmented", class: { root: "flex-row" } },
+		{
+			variant: "segmented",
+			size: "sm",
+			class: {
+				root: "h-8 rounded-md p-0.5",
+				label: "h-6.5 rounded-[calc(var(--radius-md)-3px)] px-2 text-xs",
+				pill: "rounded-[calc(var(--radius-md)-3px)]",
+			},
+		},
+		{
+			variant: "segmented",
+			size: "default",
+			class: {
+				root: "h-9 rounded-lg p-0.5",
+				label: "h-7.5 rounded-[calc(var(--radius-lg)-3px)] px-2.5 text-sm",
+				pill: "rounded-[calc(var(--radius-lg)-3px)]",
+			},
+		},
+		{
+			variant: "segmented",
+			size: "lg",
+			class: {
+				root: "h-10 rounded-lg p-0.5",
+				label: "h-8.5 rounded-[calc(var(--radius-lg)-3px)] px-3 text-sm",
+				pill: "rounded-[calc(var(--radius-lg)-3px)]",
+			},
+		},
+		{
+			variant: "segmented",
+			size: "xl",
+			class: {
+				root: "h-12 rounded-xl p-1",
+				label: "h-9.5 rounded-[calc(var(--radius-xl)-5px)] px-3.5 text-base",
+				pill: "rounded-[calc(var(--radius-xl)-5px)]",
+			},
+		},
+	],
 	defaultVariants: { variant: "default", size: "default", orientation: "vertical" },
 });
 

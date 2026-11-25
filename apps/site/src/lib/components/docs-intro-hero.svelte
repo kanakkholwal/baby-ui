@@ -1,24 +1,21 @@
 <script lang="ts">
+import { Button } from "@baby-ui/svelte/button";
 import {
-	Button,
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-	Checkbox,
-	ColorPicker,
-	FieldSeparator,
-	Input,
-	InputOTP,
-	InputOTPGroup,
-	InputOTPSlot,
-	Label,
-	Slider,
-	Switch,
-	ToggleGroup,
-	ToggleGroupItem,
-} from "@baby-ui/svelte";
+} from "@baby-ui/svelte/card";
+import { Checkbox } from "@baby-ui/svelte/checkbox";
+import { ColorPicker } from "@baby-ui/svelte/color-picker";
+import { FieldSeparator } from "@baby-ui/svelte/field";
+import { Input } from "@baby-ui/svelte/input";
+import { InputOTP, InputOTPGroup, InputOTPSlot } from "@baby-ui/svelte/input-otp";
+import { Label } from "@baby-ui/svelte/label";
+import { Slider } from "@baby-ui/svelte/slider";
+import { Switch } from "@baby-ui/svelte/switch";
+import { ToggleGroup, ToggleGroupItem } from "@baby-ui/svelte/toggle-group";
 
 // A live collage of base components; every control works.
 let code = $state("4320");

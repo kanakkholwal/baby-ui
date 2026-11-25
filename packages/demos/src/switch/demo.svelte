@@ -20,6 +20,13 @@ const variant = $derived(p.variant ?? "default");
 const ROW = "flex w-full flex-row-reverse items-center justify-between gap-6";
 </script>
 
+{#if variant === "celled"}
+	<div class="flex w-full max-w-72 flex-col gap-2">
+		<Switch bind:checked variant="celled" {size} disabled={p.disabled ?? false} label={p.label || "Animations"} />
+		<Switch bind:checked={digest} variant="celled" {size} label="Sounds" />
+		<Switch checked={false} variant="celled" {size} disabled label="Haptics" />
+	</div>
+{:else}
 <div class="flex w-full max-w-72 flex-col divide-y divide-border/60 rounded-xl bg-card">
 	<div class="px-4 py-3">
 		<Switch
@@ -38,3 +45,4 @@ const ROW = "flex w-full flex-row-reverse items-center justify-between gap-6";
 		<Switch checked={false} disabled label="SMS alerts" class={ROW} />
 	</div>
 </div>
+{/if}

@@ -1,5 +1,15 @@
 <script lang="ts">
-import { Carousel, CarouselItem } from "@baby-ui/svelte";
+import {
+	Carousel,
+	CarouselContent,
+	CarouselControls,
+	CarouselDots,
+	CarouselItem,
+	CarouselNext,
+	CarouselPrevious,
+	CarouselThumb,
+	CarouselThumbs,
+} from "@baby-ui/svelte";
 import type { ComponentProps } from "svelte";
 import { CAROUSEL_SLIDES } from "../data/carousel";
 import { controlProps } from "../data/preview-props";
@@ -26,14 +36,14 @@ let index = $state(0);
 			{variant}
 			size={p.size ?? "default"}
 			bind:index
-			controls={p.controls ?? "full"}
 			loop={p.loop ?? cylindrical}
 			{interval}
 			autoplay={p.autoplay ?? false}
 		>
+			<CarouselContent>
 			{#each CAROUSEL_SLIDES as slide (slide.title)}
 				<CarouselItem>
-					<figure class={showcase ? cylindrical ? "dark relative aspect-[4/5] overflow-hidden rounded-[inherit] bg-muted" : "dark relative h-[clamp(24rem,55cqw,38rem)] overflow-hidden rounded-[inherit] bg-muted" : "overflow-hidden rounded-xl border border-border bg-background"}>
+					<figure class={showcase ? cylindrical ? "dark relative aspect-[4/5] overflow-hidden rounded-[inherit] bg-muted" : "dark relative h-[clamp(24rem,55cqw,38rem)] overflow-hidden rounded-[inherit] bg-muted" : "overflow-hidden rounded-xl bg-card"}>
 						<img src={slide.image} alt="" width="680" height="520" class={showcase ? "absolute inset-0 size-full object-cover" : "aspect-[4/3] w-full object-cover"} />
 						{#if showcase}<div aria-hidden="true" class="pointer-events-none absolute inset-0 bg-linear-to-t from-background/80 via-background/10 to-transparent"></div>{/if}
 						<figcaption class={showcase ? "absolute inset-x-0 bottom-0 flex items-end justify-between gap-6 p-8 text-foreground @max-[640px]:p-5" : "flex items-baseline justify-between gap-3 p-3"}>
@@ -46,6 +56,25 @@ let index = $state(0);
 					</figure>
 				</CarouselItem>
 			{/each}
+			</CarouselContent>
+			{#if showcase}
+				<CarouselControls>
+					<CarouselPrevious />
+					<CarouselDots />
+					<CarouselNext />
+				</CarouselControls>
+			{:else}
+				<CarouselPrevious />
+				<CarouselNext />
+				<CarouselDots />
+				{#if variant === "default" && !cylindrical}
+					<CarouselThumbs>
+						{#each CAROUSEL_SLIDES as slide (slide.title)}
+							<CarouselThumb><img src={slide.image} alt="" width="160" height="120" /></CarouselThumb>
+						{/each}
+					</CarouselThumbs>
+				{/if}
+			{/if}
 		</Carousel>
 	{/key}
 </div>

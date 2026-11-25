@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@baby-ui/svelte";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@baby-ui/svelte/tabs";
 import CardGallery from "#lib/components/card-gallery.svelte";
 import GalleryIntro from "#lib/components/gallery-intro.svelte";
 import Seo from "#lib/components/seo.svelte";

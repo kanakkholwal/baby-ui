@@ -20,10 +20,6 @@ export const toggleButton = tv({
 		},
 		// Icon-only toggles stay square: 2 x px + icon + border fits the height, min-w holds the rest.
 		size: {
-			xs: [
-				controlSize({ size: "xs" }),
-				"min-w-6 gap-1 px-1 active:scale-[var(--press-scale-icon)]",
-			],
 			sm: [
 				controlSize({ size: "sm" }),
 				"min-w-8 gap-1.5 px-2 active:scale-[var(--press-scale-sm)]",

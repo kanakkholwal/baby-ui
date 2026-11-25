@@ -1,5 +1,6 @@
 import {
 	Question,
+	QuestionBody,
 	QuestionContent,
 	QuestionFooter,
 	QuestionHeader,
@@ -22,10 +23,12 @@ const questions: QuestionItem[] = [
 export function Example() {
 	return (
 		<Question questions={questions} onSubmit={(answers) => console.log(answers)}>
-			<QuestionHeader />
-			<QuestionContent />
+			<QuestionBody>
+				<QuestionHeader />
+				<QuestionContent />
+				<QuestionResult />
+			</QuestionBody>
 			<QuestionFooter />
-			<QuestionResult />
 		</Question>
 	);
 }

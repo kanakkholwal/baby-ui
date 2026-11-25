@@ -110,6 +110,54 @@ export function createCarouselTrack(
 				: shown;
 	};
 
+	/** Where a slide sits on the cylinder for `visible` slides across, and how large it is. */
+	const place = (offset: number, visible: number) => {
+		const halfWidth = width / 2;
+		const edgeOffset = Math.max(2, (visible + 1) / 2);
+		const theta = clamp((offset * EDGE_ANGLE) / edgeOffset, -CLAMP_ANGLE, CLAMP_ANGLE);
+		const minScale = clamp(opts.minScale, 0.25, 0.95);
+		const camera = Math.max(0.2, (minScale - Math.cos(EDGE_ANGLE)) / (1 - minScale));
+		const projected =
+			opts.projection === "concave"
+				? (((halfWidth * (Math.cos(EDGE_ANGLE) + camera)) / Math.sin(EDGE_ANGLE)) *
+						Math.sin(theta)) /
+					(Math.cos(theta) + camera)
+				: offset * (width / (visible + 1));
+		const distance = Math.min(Math.abs(offset) / edgeOffset, CLAMP_ANGLE / EDGE_ANGLE);
+		const scale =
+			opts.projection === "convex"
+				? 1 - (1 - minScale) * distance
+				: minScale + (1 - minScale) * distance;
+		return { projected, scale, halfWidth };
+	};
+
+	/**
+	 * The most slides (odd, at most `visibleItems`) that fit across the container without any two
+	 * overlapping. One slide is always allowed, so a narrow container shows only the active one.
+	 */
+	let fitted = initial.visibleItems;
+	const refit = () => {
+		const slideWidth = slides()[0]?.offsetWidth || 0;
+		if (opts.projection === "linear" || !width || !slideWidth) {
+			fitted = opts.visibleItems;
+			return;
+		}
+		for (let v = opts.visibleItems - ((opts.visibleItems + 1) % 2); v > 1; v -= 2) {
+			let clear = true;
+			for (let k = 0; k < (v - 1) / 2; k++) {
+				const a = place(k, v);
+				const b = place(k + 1, v);
+				const gap = Math.abs(b.projected - a.projected);
+				if (gap < (slideWidth * (a.scale + b.scale)) / 2 + 8) clear = false;
+			}
+			if (clear) {
+				fitted = v;
+				return;
+			}
+		}
+		fitted = 1;
+	};
+
 	const paint = () => {
 		if (!step) return;
 		track.style.transform =
@@ -133,23 +181,7 @@ export function createCarouselTrack(
 				return;
 			}
 
-			const halfWidth = width / 2;
-			const edgeOffset = Math.max(2, (opts.visibleItems + 1) / 2);
-			const alpha = EDGE_ANGLE / edgeOffset;
-			const theta = clamp(offset * alpha, -CLAMP_ANGLE, CLAMP_ANGLE);
-			const minScale = clamp(opts.minScale, 0.25, 0.95);
-			const camera = Math.max(0.2, (minScale - Math.cos(EDGE_ANGLE)) / (1 - minScale));
-			const projected =
-				opts.projection === "concave"
-					? (((halfWidth * (Math.cos(EDGE_ANGLE) + camera)) / Math.sin(EDGE_ANGLE)) *
-							Math.sin(theta)) /
-						(Math.cos(theta) + camera)
-					: offset * (width / (opts.visibleItems + 1));
-			const distance = Math.min(Math.abs(offset) / edgeOffset, CLAMP_ANGLE / EDGE_ANGLE);
-			const scale =
-				opts.projection === "convex"
-					? 1 - (1 - minScale) * distance
-					: minScale + (1 - minScale) * distance;
+			const { projected, scale, halfWidth } = place(offset, fitted);
 			const normalizedX = projected / Math.max(1, halfWidth);
 			const curve =
 				(opts.arc ?? el.offsetWidth * 0.35) * (0.5 - normalizedX * normalizedX);
@@ -158,7 +190,10 @@ export function createCarouselTrack(
 			el.style.top = "50%";
 			el.style.translate = `calc(-50% + ${projected}px) calc(-50% + ${opts.projection === "convex" ? -curve : curve}px)`;
 			el.style.scale = String(scale);
-			el.style.opacity = Math.abs(projected) <= halfWidth + el.offsetWidth ? "1" : "0";
+			// Only `fitted` slides show; the rest fade out before they could stack on a neighbour.
+			const reach = clamp((fitted + 1) / 2 - Math.abs(offset), 0, 1);
+			el.style.opacity =
+				Math.abs(projected) <= halfWidth + el.offsetWidth ? String(reach) : "0";
 		});
 		dots().forEach((el, i) => {
 			const shownPosition = wraps()
@@ -265,6 +300,7 @@ export function createCarouselTrack(
 		const changed = next !== step;
 		step = next;
 		width = viewport.clientWidth;
+		refit();
 		// The server places the start slide with CSS; from here on the engine owns the track.
 		track.dataset.measured = "";
 		if (changed && !drag) {
@@ -441,7 +477,10 @@ export function createCarouselTrack(
 				next.minScale !== opts.minScale ||
 				next.arc !== opts.arc;
 			opts = next;
-			if (repaint) paint();
+			if (repaint) {
+				refit();
+				paint();
+			}
 			if (!restart) return;
 			if (next.running) runDrain();
 			else stopDrain();

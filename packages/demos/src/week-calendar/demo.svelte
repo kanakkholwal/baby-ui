@@ -13,5 +13,6 @@ const p = $derived(controlProps<ComponentProps<typeof WeekCalendar>>(props));
 		weekStartsOn={p.weekStartsOn ?? 0}
 		locale={p.locale ?? "en-US"}
 		variant={p.variant ?? "card"}
+		size={p.size ?? "default"}
 	/>
 {/key}

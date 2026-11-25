@@ -1,6 +1,6 @@
 <script lang="ts">
 import { IconFileCode } from "@baby-ui/icons";
-import { TabsContent } from "@baby-ui/svelte";
+import { TabsContent } from "@baby-ui/svelte/tabs";
 import type { TrackEvent } from "#lib/analytics.js";
 import { LANG_LABEL } from "#lib/highlight.js";
 import CodeFrame from "./code-frame.svelte";

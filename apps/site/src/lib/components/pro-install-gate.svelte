@@ -1,6 +1,6 @@
 <script lang="ts">
 import { IconLock } from "@baby-ui/icons";
-import { Button } from "@baby-ui/svelte";
+import { Button } from "@baby-ui/svelte/button";
 import { page } from "$app/state";
 
 let { name }: { name: string } = $props();

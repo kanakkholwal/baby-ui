@@ -56,10 +56,6 @@ export const slideToUnlock = tv({
 		},
 		// Outer heights match Button's control ladder: 24, 32, 36, 40 and 48px.
 		size: {
-			xs: {
-				root: "w-48 max-w-full p-0.5 text-xs [--slide-handle:--spacing(5)]",
-				thumb: "[&_svg]:size-3",
-			},
 			sm: {
 				root: "w-56 max-w-full p-0.5 text-xs [--slide-handle:--spacing(7)]",
 				thumb: "[&_svg]:size-3.5",

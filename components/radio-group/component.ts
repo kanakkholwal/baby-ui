@@ -24,11 +24,14 @@ export const radioGroup = defineComponent({
 		},
 		{
 			name: "variant",
-			type: '"default" | "solid" | "card" | "list"',
+			type: '"default" | "solid" | "card" | "list" | "segmented"',
 			description:
-				"Bare rows; `solid` fills the checked ring so selection reads at small sizes; `card` puts each option in a bordered tile; `list` tints the checked row.",
+				"Bare rows; `solid` fills the checked ring so selection reads at small sizes; `card` puts each option in a bordered tile; `list` tints the checked row; `segmented` is a track of segments with one pill gliding to the checked one: a form-native single choice, with arrow keys, a hidden-radio value and forced-colours support.",
 			default: "default",
-			control: { kind: "select", options: ["default", "solid", "card", "list"] },
+			control: {
+				kind: "select",
+				options: ["default", "solid", "card", "list", "segmented"],
+			},
 		},
 		{
 			name: "orientation",

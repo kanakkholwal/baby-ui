@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Button, type ButtonSize } from "@baby-ui/svelte";
+import { Button, type ButtonSize } from "@baby-ui/svelte/button";
 import { watchLayout } from "./measure";
 
 // Literal class names, so Tailwind sees each one.

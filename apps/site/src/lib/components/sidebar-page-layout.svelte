@@ -5,8 +5,8 @@ import {
 	DrawerContent,
 	DrawerHeader,
 	DrawerTitle,
-	ScrollArea,
-} from "@baby-ui/svelte";
+} from "@baby-ui/svelte/drawer";
+import { ScrollArea } from "@baby-ui/svelte/scroll-area";
 import type { Snippet } from "svelte";
 import {
 	docsSidebar,

@@ -15,6 +15,7 @@ export function WeekCalendarDemo({ props }: { props: Props }) {
 			weekStartsOn={p.weekStartsOn ?? 0}
 			locale={p.locale ?? "en-US"}
 			variant={p.variant ?? "card"}
+			size={p.size ?? "default"}
 		/>
 	);
 }

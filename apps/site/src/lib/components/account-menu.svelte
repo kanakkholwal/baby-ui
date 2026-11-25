@@ -1,11 +1,11 @@
 <script lang="ts">
 import { IconChat, IconDownload, IconHelp, IconUserCircle } from "@baby-ui/icons";
+import { Button } from "@baby-ui/svelte/button";
 import {
-	Button,
 	type ThemePreference,
 	UserMenu,
 	type UserMenuItem,
-} from "@baby-ui/svelte";
+} from "@baby-ui/svelte/user-menu";
 import { setMode, userPrefersMode } from "mode-watcher";
 import { signOut } from "#lib/account.js";
 import GetProButton from "#lib/components/get-pro-button.svelte";

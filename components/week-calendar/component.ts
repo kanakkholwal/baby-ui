@@ -10,7 +10,7 @@ export const weekCalendar = defineComponent({
 		"A week strip that swipes between weeks and pulls open into the full month.",
 	category: "advanced",
 	status: "stable",
-	variants: variantsOf(weekCalendarVariants, ["variant"]),
+	variants: variantsOf(weekCalendarVariants, ["variant", "size"]),
 	props: [
 		{
 			name: "selected",
@@ -101,6 +101,13 @@ export const weekCalendar = defineComponent({
 			description: "Bordered card, or no surface.",
 			default: "card",
 			control: { kind: "select", options: VARIANTS },
+		},
+		{
+			name: "size",
+			type: '"sm" | "default" | "lg"',
+			description: "Day face, row height and nav buttons.",
+			default: "default",
+			control: { kind: "select", options: ["sm", "default", "lg"] },
 		},
 	],
 	motion: {

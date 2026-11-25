@@ -16,11 +16,11 @@ export const combobox = defineComponent({
 		},
 		{
 			name: "size",
-			type: '"xs" | "sm" | "default" | "lg" | "xl"',
+			type: '"sm" | "default" | "lg" | "xl"',
 			description:
 				"ComboboxTrigger and ComboboxContent: height, width and padding. Pass the same size to both so the trigger and the opened list line up.",
 			default: "default",
-			control: { kind: "select", options: ["xs", "sm", "default", "lg", "xl"] },
+			control: { kind: "select", options: ["sm", "default", "lg", "xl"] },
 		},
 	],
 	motion: {

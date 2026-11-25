@@ -1,11 +1,7 @@
 <script lang="ts">
 import { IconChevronDown } from "@baby-ui/icons";
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-	TableOfContents,
-} from "@baby-ui/svelte";
+import { Popover, PopoverContent, PopoverTrigger } from "@baby-ui/svelte/popover";
+import { TableOfContents } from "@baby-ui/svelte/table-of-contents";
 import type { Heading } from "#lib/docs-nodes.js";
 
 let { title, items }: { title: string; items: Heading[] } = $props();

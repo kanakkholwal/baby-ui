@@ -33,52 +33,22 @@ import {
 	IconShuffle,
 	IconX,
 } from "@baby-ui/icons";
-import {
-	Area,
-	AreaChart,
-	Bar,
-	BarChart,
-	BarTooltip,
-	BarXAxis,
-	BarYAxis,
-	Button,
-	CartesianGrid,
-	ChartContainer,
-	ChartLegend,
-	ChartTooltip,
-	FunnelChart,
-	Input,
-	Line,
-	LineChart,
-	PieChart,
-	RadarArea,
-	RadarAxis,
-	RadarChart,
-	RadarGrid,
-	RadarLabels,
-	RadarTooltip,
-	RingChart,
-	Scatter,
-	ScatterChart,
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-	Sheet,
-	SheetClose,
-	SheetContent,
-	SheetHeader,
-	SheetTitle,
-	Spinner,
-	Tabs,
-	TabsContent,
-	TabsList,
-	TabsTrigger,
-	Textarea,
-	XAxis,
-	YAxis,
-} from "@baby-ui/svelte";
+import { Area, AreaChart } from "@baby-ui/svelte/area-chart";
+import { Bar, BarChart, BarTooltip, BarXAxis, BarYAxis } from "@baby-ui/svelte/bar-chart";
+import { Button } from "@baby-ui/svelte/button";
+import { CartesianGrid, ChartContainer, ChartLegend, ChartTooltip, XAxis, YAxis } from "@baby-ui/svelte/chart";
+import { FunnelChart } from "@baby-ui/svelte/funnel-chart";
+import { Input } from "@baby-ui/svelte/input";
+import { Line, LineChart } from "@baby-ui/svelte/line-chart";
+import { PieChart } from "@baby-ui/svelte/pie-chart";
+import { RadarArea, RadarAxis, RadarChart, RadarGrid, RadarLabels, RadarTooltip } from "@baby-ui/svelte/radar-chart";
+import { RingChart } from "@baby-ui/svelte/ring-chart";
+import { Scatter, ScatterChart } from "@baby-ui/svelte/scatter-chart";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@baby-ui/svelte/select";
+import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle } from "@baby-ui/svelte/sheet";
+import { Spinner } from "@baby-ui/svelte/spinner";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@baby-ui/svelte/tabs";
+import { Textarea } from "@baby-ui/svelte/textarea";
 import { onMount } from "svelte";
 import { hasProAccess } from "#lib/account.js";
 import CodeBlock from "#lib/components/code-block.svelte";

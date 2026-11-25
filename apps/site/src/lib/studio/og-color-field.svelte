@@ -43,7 +43,7 @@ function resolveTokens(probe: HTMLElement): Record<string, string> {
 </script>
 
 <script lang="ts">
-import { ColorPicker } from "@baby-ui/svelte";
+import { ColorPicker } from "@baby-ui/svelte/color-picker";
 import { mode } from "mode-watcher";
 
 let {
@@ -80,7 +80,7 @@ function pick(next: string) {
 </script>
 
 <div class="flex flex-col gap-1">
-	<ColorPicker variant="row" size="sm" {label} {swatches} bind:value={() => hex, pick} />
+	<ColorPicker variant="celled" size="sm" {label} {swatches} bind:value={() => hex, pick} />
 	<p class="text-muted-foreground text-xs">
 		{value.startsWith("--") ? `Theme colour: ${TOKEN_LABEL[value] ?? value}` : "Custom colour"}
 	</p>

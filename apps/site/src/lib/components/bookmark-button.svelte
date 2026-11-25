@@ -1,6 +1,6 @@
 <script lang="ts">
 import { IconBookmark, IconBookmarkFilled } from "@baby-ui/icons";
-import { Toggle } from "@baby-ui/svelte";
+import { Toggle } from "@baby-ui/svelte/toggle";
 import { bookmarks } from "#lib/bookmarks.svelte.js";
 
 let {
@@ -8,7 +8,7 @@ let {
 	name,
 	size = "sm",
 	class: classProp = "",
-}: { slug: string; name: string; size?: "xs" | "sm"; class?: string } = $props();
+}: { slug: string; name: string; size?: "sm"; class?: string } = $props();
 
 const saved = $derived(bookmarks.has(slug));
 </script>

@@ -1,14 +1,14 @@
 <script lang="ts">
 import type { KeyBinding } from "@baby-ui/registry-schema";
+import { shortcutCap } from "@baby-ui/svelte/shortcut";
 import {
-	shortcutCap,
 	Table,
 	TableBody,
 	TableCell,
 	TableHead,
 	TableHeader,
 	TableRow,
-} from "@baby-ui/svelte";
+} from "@baby-ui/svelte/table";
 
 let { bindings }: { bindings: KeyBinding[] } = $props();
 </script>

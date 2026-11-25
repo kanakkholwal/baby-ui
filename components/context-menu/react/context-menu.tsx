@@ -4,7 +4,7 @@ import { ContextMenu as ContextMenuPrimitive } from "@base-ui/react/context-menu
 import { Menu } from "@base-ui/react/menu";
 import type { ComponentProps } from "react";
 import { cn } from "../../lib/cn";
-import { type MenuItemVariant, type MenuSize, menu } from "../../lib/menu";
+import { type MenuContentSize, type MenuItemVariant, menu } from "../../lib/menu";
 import { ANCHORED } from "../../lib/react/anchor";
 
 export const ContextMenu = ContextMenuPrimitive.Root;
@@ -35,7 +35,7 @@ export function ContextMenuContent({
 	Pick<
 		ComponentProps<typeof ContextMenuPrimitive.Positioner>,
 		"align" | "alignOffset" | "side" | "sideOffset"
-	> & { size?: MenuSize }) {
+	> & { size?: MenuContentSize }) {
 	return (
 		<ContextMenuPrimitive.Portal>
 			<ContextMenuPrimitive.Positioner
@@ -168,7 +168,7 @@ export function ContextMenuSubContent({
 	Pick<
 		ComponentProps<typeof Menu.Positioner>,
 		"align" | "alignOffset" | "side" | "sideOffset"
-	> & { size?: MenuSize }) {
+	> & { size?: MenuContentSize }) {
 	return (
 		<Menu.Portal>
 			<Menu.Positioner

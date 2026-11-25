@@ -66,3 +66,5 @@ export const menu = tv({
 
 export type MenuItemVariant = NonNullable<VariantProps<typeof menu>["variant"]>;
 export type MenuSize = NonNullable<VariantProps<typeof menu>["size"]>;
+/** Menus that are not a Select start at `sm`: only Button, Badge and Select have `xs`. */
+export type MenuContentSize = Exclude<MenuSize, "xs">;

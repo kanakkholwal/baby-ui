@@ -1,6 +1,6 @@
 <script lang="ts">
 import { IconBolt } from "@baby-ui/icons";
-import { Button } from "@baby-ui/svelte";
+import { Button } from "@baby-ui/svelte/button";
 
 let { class: classProp }: { class?: string } = $props();
 </script>

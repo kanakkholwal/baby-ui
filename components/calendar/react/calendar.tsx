@@ -107,7 +107,7 @@ export function Calendar({
 	className,
 	classNames,
 	showOutsideDays = true,
-	fixedWeeks = true,
+	fixedWeeks = false,
 	captionLayout = "label",
 	buttonVariant = "ghost",
 	size = "default",

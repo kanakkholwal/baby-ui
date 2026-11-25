@@ -19,14 +19,6 @@ export const combobox = tv({
 	variants: {
 		// Rows match Select's (xs 24 to xl 40); rows keep one inline padding, so headings align.
 		size: {
-			xs: {
-				trigger: [controlSize({ size: "xs" }), "gap-1 px-2"],
-				list: [
-					"max-h-56 [&_[data-slot=command-empty]]:text-xs",
-					"[&_[data-slot=command-input-wrapper]]:h-7 md:[&_[data-slot=command-input]]:text-xs",
-					"[&_[data-slot=command-item]]:py-1 [&_[data-slot=command-item]]:text-xs",
-				],
-			},
 			sm: {
 				trigger: [controlSize({ size: "sm" }), "gap-1.5 px-2.5"],
 				list: [

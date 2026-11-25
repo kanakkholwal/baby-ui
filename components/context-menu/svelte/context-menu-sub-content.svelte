@@ -2,14 +2,14 @@
 import { ContextMenu as ContextMenuPrimitive } from "bits-ui";
 import { getContext } from "svelte";
 import { cn } from "../../lib/cn";
-import { type MenuSize, menu } from "../../lib/menu";
+import { type MenuContentSize, menu } from "../../lib/menu";
 import { ANCHORED } from "../../lib/svelte/anchor";
 
 let {
 	class: classProp,
 	size = "default",
 	...rest
-}: ContextMenuPrimitive.SubContentProps & { size?: MenuSize } = $props();
+}: ContextMenuPrimitive.SubContentProps & { size?: MenuContentSize } = $props();
 
 const sub = getContext<{ close: () => void } | undefined>("context-menu-sub");
 </script>

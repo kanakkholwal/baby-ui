@@ -20,6 +20,7 @@ import {
 	WEEK_CALENDAR_LABELS,
 	type WeekCalendarDayTone,
 	type WeekCalendarLabels,
+	type WeekCalendarSize,
 	type WeekCalendarVariant,
 	weekCalendar,
 } from "../variants";
@@ -39,6 +40,7 @@ let {
 	today: todayProp,
 	labels: labelsProp,
 	variant = "card",
+	size = "default",
 	class: classProp,
 }: {
 	/** Bindable selected day; `null` clears it. */
@@ -61,6 +63,7 @@ let {
 	today?: Date;
 	labels?: Partial<WeekCalendarLabels>;
 	variant?: WeekCalendarVariant;
+	size?: WeekCalendarSize;
 	class?: string;
 } = $props();
 
@@ -80,7 +83,7 @@ const isExpanded = $derived(expanded ?? expandedState);
 // svelte-ignore state_referenced_locally
 let anchorState = $state(startOfDay(defaultMonth ?? current ?? today));
 const anchor = $derived(month ? startOfDay(month) : anchorState);
-const styles = $derived(weekCalendar({ variant }));
+const styles = $derived(weekCalendar({ variant, size }));
 
 const format = $derived({
 	weekday: new Intl.DateTimeFormat(locale, { weekday: "narrow" }),

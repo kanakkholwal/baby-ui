@@ -11,12 +11,10 @@ import {
 } from "react";
 import { cn } from "../../lib/cn";
 import {
-	sliderInlineSplit,
 	sliderLayout,
 	sliderRulerOffset,
 	sliderRulerTicks,
 	sliderRulerValueAt,
-	sliderThumbCenter,
 	sliderWaveBars,
 } from "../core";
 import { attachElastic } from "../elastic";
@@ -45,7 +43,7 @@ export interface SliderProps
 	label?: string;
 	/** `default`, `track` and `bubble` go vertical; the other variants render horizontal. */
 	orientation?: "horizontal" | "vertical";
-	/** `inline`, `fluid`, `wave` and `ruler` are single-thumb; a range falls back to `track`. */
+	/** `celled`, `fluid`, `wave` and `ruler` are single-thumb; a range falls back to `track`. */
 	variant?: SliderVariant;
 	size?: SliderSize;
 	/** Header with the label and the live value. */
@@ -56,8 +54,6 @@ export interface SliderProps
 	/** Dragging past either end stretches the track like elastic, then it springs back. */
 	elastic?: boolean;
 }
-
-const THUMB_WIDTH = 20;
 
 export function Slider({
 	className,
@@ -118,43 +114,11 @@ export function Slider({
 
 	// Inline: the handle parts where it crosses the label or the value.
 	const controlRef = useRef<HTMLDivElement>(null);
-	const labelRef = useRef<HTMLSpanElement>(null);
-	const valueRef = useRef<HTMLSpanElement>(null);
-	const [boxes, setBoxes] = useState({ width: 0, label: [0, 0], value: [0, 0] });
 	useEffect(() => {
 		const control = controlRef.current;
 		if (!elastic || !control) return;
 		return attachElastic(control, () => control.dataset.orientation === "vertical");
 	}, [elastic]);
-	useEffect(() => {
-		if (variant !== "inline") return;
-		const control = controlRef.current;
-		if (!control) return;
-		const measure = () => {
-			const origin = control.getBoundingClientRect().left;
-			const span = (el: HTMLElement | null) => {
-				const r = el?.getBoundingClientRect();
-				return r ? [r.left - origin, r.right - origin] : [0, 0];
-			};
-			setBoxes({
-				width: control.offsetWidth,
-				label: span(labelRef.current),
-				value: span(valueRef.current),
-			});
-		};
-		measure();
-		const observer = new ResizeObserver(measure);
-		for (const el of [control, labelRef.current, valueRef.current])
-			if (el) observer.observe(el);
-		return () => observer.disconnect();
-	}, [variant]);
-	const split =
-		variant === "inline" && boxes.width
-			? sliderInlineSplit(sliderThumbCenter(percent, boxes.width, THUMB_WIDTH), [
-					{ start: boxes.label[0] ?? 0, end: boxes.label[1] ?? 0 },
-					{ start: boxes.value[0] ?? 0, end: boxes.value[1] ?? 0 },
-				])
-			: 0;
 
 	// Ruler: the strip follows the pointer in px; the value snaps to the nearest step.
 	const drag = useRef<{ id: number; x: number; offset: number } | null>(null);
@@ -192,12 +156,8 @@ export function Slider({
 
 	const overlayText = (
 		<>
-			<span ref={labelRef} className={styles.inlineLabel()}>
-				{label}
-			</span>
-			<span ref={valueRef} className={styles.inlineValue()}>
-				{formatValue(first)}
-			</span>
+			<span className={styles.inlineLabel()}>{label}</span>
+			<span className={styles.inlineValue()}>{formatValue(first)}</span>
 		</>
 	);
 
@@ -220,7 +180,7 @@ export function Slider({
 			className={cn(styles.root(), className)}
 			{...props}
 		>
-			{showValue && variant !== "inline" && variant !== "fluid" && variant !== "ruler" ? (
+			{showValue && variant !== "celled" && variant !== "fluid" && variant !== "ruler" ? (
 				<div className={styles.header()}>
 					<span className={styles.title()}>{label}</span>
 					<span className={styles.value()}>{values.map(formatValue).join(" - ")}</span>
@@ -284,7 +244,7 @@ export function Slider({
 						) : null}
 					</SliderPrimitive.Indicator>
 				</SliderPrimitive.Track>
-				{variant === "inline" ? (
+				{variant === "celled" ? (
 					<div aria-hidden="true" className={styles.overlay()}>
 						{overlayText}
 					</div>
@@ -318,11 +278,6 @@ export function Slider({
 						}
 						data-slot="slider-thumb"
 						className={styles.thumb()}
-						style={
-							variant === "inline"
-								? ({ "--slider-split": split } as CSSProperties)
-								: undefined
-						}
 					>
 						{variant === "bubble" ? (
 							<span aria-hidden="true" className={styles.bubble()}>

@@ -79,8 +79,20 @@
 			"dependsOn": ["//#gen", "//#fonts", "//#emails", "^registry"],
 			"with": ["//#gen:watch"]
 		},
+		"@baby-ui/site#source-json": {
+			"dependsOn": ["//#gen", "^registry"],
+			"inputs": ["scripts/build-source-json.mjs", "src/lib/highlight.ts"],
+			"outputs": ["static/source/**"]
+		},
 		"@baby-ui/site#build": {
-			"dependsOn": ["//#gen", "//#fonts", "//#emails", "^build", "^registry"],
+			"dependsOn": [
+				"//#gen",
+				"//#fonts",
+				"//#emails",
+				"source-json",
+				"^build",
+				"^registry"
+			],
 			"env": [
 				"VITE_POSTHOG_KEY",
 				"VITE_SHOW_PRO",
@@ -97,7 +109,7 @@
 		"@baby-ui/site#dev": {
 			"cache": false,
 			"persistent": true,
-			"dependsOn": ["//#gen", "//#fonts", "//#emails", "^registry"],
+			"dependsOn": ["//#gen", "//#fonts", "//#emails", "source-json", "^registry"],
 			"with": ["//#gen:watch", "//#registry:watch"]
 		}
 	}

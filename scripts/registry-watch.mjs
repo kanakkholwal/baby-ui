@@ -26,18 +26,20 @@ const BOOKKEEPING = /(\.generated\.json|\.gitignore|\.tmp)$/;
  * One build in a fresh process, so edited specs and build code are re-imported every time. Bun runs
  * the package script directly; a pnpm wrapper would add a ~100 MB Node process per build.
  */
-function build() {
+function run(command, cwd) {
 	return new Promise((done, fail) => {
-		const child = spawn("bun run registry:dev", {
-			cwd: join(ROOT, "packages/registry-build"),
-			shell: true,
-			stdio: "inherit",
-		});
+		const child = spawn(command, { cwd, shell: true, stdio: "inherit" });
 		child.on("error", fail);
 		child.on("exit", (code) =>
-			code === 0 ? done() : fail(new Error(`build exited with ${code}`)),
+			code === 0 ? done() : fail(new Error(`${command} exited with ${code}`)),
 		);
 	});
+}
+
+/** The registry build, then the highlighted install sources it feeds (skips unchanged ones). */
+async function build() {
+	await run("bun run registry:dev", join(ROOT, "packages/registry-build"));
+	await run("node scripts/build-source-json.mjs", join(ROOT, "apps/site"));
 }
 
 watchAndRun({

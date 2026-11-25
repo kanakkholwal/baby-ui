@@ -1,6 +1,16 @@
 "use client";
 
-import { Carousel, CarouselItem } from "@baby-ui/react";
+import {
+	Carousel,
+	CarouselContent,
+	CarouselControls,
+	CarouselDots,
+	CarouselItem,
+	CarouselNext,
+	CarouselPrevious,
+	CarouselThumb,
+	CarouselThumbs,
+} from "@baby-ui/react";
 import { type ComponentProps, useState } from "react";
 import { CAROUSEL_SLIDES } from "../data/carousel";
 import { controlProps } from "../data/preview-props";
@@ -37,79 +47,102 @@ export function CarouselDemo({ props }: { props: Props }) {
 				size={p.size ?? "default"}
 				index={index}
 				onIndexChange={setIndex}
-				controls={p.controls ?? "full"}
 				loop={p.loop ?? cylindrical}
 				interval={interval}
 				autoplay={p.autoplay ?? false}
 			>
-				{CAROUSEL_SLIDES.map((slide) => (
-					<CarouselItem key={slide.title}>
-						<figure
-							className={
-								showcase
-									? cylindrical
-										? "dark relative aspect-[4/5] overflow-hidden rounded-[inherit] bg-muted"
-										: "dark relative h-[clamp(24rem,55cqw,38rem)] overflow-hidden rounded-[inherit] bg-muted"
-									: "overflow-hidden rounded-xl border border-border bg-background"
-							}
-						>
-							<img
-								src={slide.image}
-								alt=""
-								width={680}
-								height={520}
+				<CarouselContent>
+					{CAROUSEL_SLIDES.map((slide) => (
+						<CarouselItem key={slide.title}>
+							<figure
 								className={
 									showcase
-										? "absolute inset-0 size-full object-cover"
-										: "aspect-[4/3] w-full object-cover"
-								}
-							/>
-							{showcase ? (
-								<div
-									aria-hidden
-									className="pointer-events-none absolute inset-0 bg-linear-to-t from-background/80 via-background/10 to-transparent"
-								/>
-							) : null}
-							<figcaption
-								className={
-									showcase
-										? "absolute inset-x-0 bottom-0 flex items-end justify-between gap-6 p-8 text-foreground @max-[640px]:p-5"
-										: "flex items-baseline justify-between gap-3 p-3"
+										? cylindrical
+											? "dark relative aspect-[4/5] overflow-hidden rounded-[inherit] bg-muted"
+											: "dark relative h-[clamp(24rem,55cqw,38rem)] overflow-hidden rounded-[inherit] bg-muted"
+										: "overflow-hidden rounded-xl bg-card"
 								}
 							>
-								<span className="min-w-0">
-									<span
-										className={
-											showcase
-												? "block text-balance font-semibold text-2xl tracking-tight"
-												: "block truncate font-medium text-foreground text-sm"
-										}
-									>
-										{slide.title}
-									</span>
-									<span
-										className={
-											showcase
-												? "mt-1 block max-w-lg text-pretty text-sm text-foreground/75"
-												: "block truncate text-muted-foreground text-xs"
-										}
-									>
-										{slide.detail}
-									</span>
-								</span>
-								<span
+								<img
+									src={slide.image}
+									alt=""
+									width={680}
+									height={520}
 									className={
 										showcase
-											? "shrink-0 rounded-full bg-background/75 px-3 py-1.5 font-medium text-sm tabular-nums backdrop-blur-md"
-											: "shrink-0 text-foreground text-sm tabular-nums"
+											? "absolute inset-0 size-full object-cover"
+											: "aspect-[4/3] w-full object-cover"
+									}
+								/>
+								{showcase ? (
+									<div
+										aria-hidden
+										className="pointer-events-none absolute inset-0 bg-linear-to-t from-background/80 via-background/10 to-transparent"
+									/>
+								) : null}
+								<figcaption
+									className={
+										showcase
+											? "absolute inset-x-0 bottom-0 flex items-end justify-between gap-6 p-8 text-foreground @max-[640px]:p-5"
+											: "flex items-baseline justify-between gap-3 p-3"
 									}
 								>
-									{slide.price}
-								</span>
-							</figcaption>
-						</figure>
-					</CarouselItem>
-				))}
+									<span className="min-w-0">
+										<span
+											className={
+												showcase
+													? "block text-balance font-semibold text-2xl tracking-tight"
+													: "block truncate font-medium text-foreground text-sm"
+											}
+										>
+											{slide.title}
+										</span>
+										<span
+											className={
+												showcase
+													? "mt-1 block max-w-lg text-pretty text-sm text-foreground/75"
+													: "block truncate text-muted-foreground text-xs"
+											}
+										>
+											{slide.detail}
+										</span>
+									</span>
+									<span
+										className={
+											showcase
+												? "shrink-0 rounded-full bg-background/75 px-3 py-1.5 font-medium text-sm tabular-nums backdrop-blur-md"
+												: "shrink-0 text-foreground text-sm tabular-nums"
+										}
+									>
+										{slide.price}
+									</span>
+								</figcaption>
+							</figure>
+						</CarouselItem>
+					))}
+				</CarouselContent>
+				{showcase ? (
+					<CarouselControls>
+						<CarouselPrevious />
+						<CarouselDots />
+						<CarouselNext />
+					</CarouselControls>
+				) : (
+					<>
+						<CarouselPrevious />
+						<CarouselNext />
+						<CarouselDots />
+						{variant === "default" && !cylindrical ? (
+							<CarouselThumbs>
+								{CAROUSEL_SLIDES.map((slide) => (
+									<CarouselThumb key={slide.title}>
+										<img src={slide.image} alt="" width={160} height={120} />
+									</CarouselThumb>
+								))}
+							</CarouselThumbs>
+						) : null}
+					</>
+				)}
 			</Carousel>
 		</div>
 	);

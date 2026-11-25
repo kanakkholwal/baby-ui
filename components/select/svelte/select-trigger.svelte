@@ -13,10 +13,13 @@ let {
 	children,
 	variant = "default",
 	size: sizeProp,
+	label,
 	...rest
 }: SelectPrimitive.TriggerProps & {
 	variant?: SelectTriggerVariant;
 	size?: SelectTriggerSize;
+	/** `celled` only: the row's name, shown at the start. */
+	label?: string;
 } = $props();
 
 const rootSize = getSelectSize();
@@ -30,6 +33,7 @@ const size = $derived(sizeProp ?? rootSize());
 	data-size={size}
 	class={cn(selectTrigger({ variant, size }), "group/select-trigger", classProp)}
 >
+	{#if variant === "celled"}<span class="truncate">{label}</span>{/if}
 	{@render children?.()}
 	<!-- Only the chevron turns; a leading icon passed as children stays put. -->
 	<svg
@@ -37,8 +41,12 @@ const size = $derived(sizeProp ?? rootSize());
 		fill="none"
 		aria-hidden="true"
 		data-slot="select-icon"
-		class="ms-auto size-3.5 shrink-0 text-muted-foreground transition-[rotate] duration-(--duration-exit) ease-(--ease-ui-out) group-data-[state=open]/select-trigger:rotate-180 group-data-[state=open]/select-trigger:duration-(--duration-dropdown) motion-reduce:transition-none"
+		class={cn(
+		"ms-auto size-3.5 shrink-0 text-muted-foreground transition-[rotate] duration-(--duration-exit) ease-(--ease-ui-out) motion-reduce:transition-none",
+		variant !== "celled" &&
+			"group-data-[state=open]/select-trigger:rotate-180 group-data-[state=open]/select-trigger:duration-(--duration-dropdown)",
+	)}
 	>
-		<path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+		<path d={variant === "celled" ? "m5 6.5 3-3 3 3M5 9.5l3 3 3-3" : "m4 6 4 4 4-4"} stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
 	</svg>
 </SelectPrimitive.Trigger>

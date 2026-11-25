@@ -2,12 +2,10 @@
 import { Slider as SliderPrimitive } from "bits-ui";
 import { cn } from "../../lib/cn";
 import {
-	sliderInlineSplit,
 	sliderLayout,
 	sliderRulerOffset,
 	sliderRulerTicks,
 	sliderRulerValueAt,
-	sliderThumbCenter,
 	sliderWaveBars,
 } from "../core";
 import { attachElastic } from "../elastic";
@@ -57,7 +55,7 @@ let {
 	orientation?: "horizontal" | "vertical";
 	/** Accessible name; also the header title when `showValue` is on. */
 	label?: string;
-	/** `inline`, `fluid`, `wave` and `ruler` are single-thumb; a range falls back to `track`. */
+	/** `celled`, `fluid`, `wave` and `ruler` are single-thumb; a range falls back to `track`. */
 	variant?: SliderVariant;
 	size?: SliderSize;
 	/** Header with the label and the live value. */
@@ -71,8 +69,6 @@ let {
 	/** Fires once a drag or key press settles. */
 	onValueCommit?: (value: number | number[]) => void;
 } = $props();
-
-const THUMB_WIDTH = 20;
 
 const values = $derived(Array.isArray(value) ? value : [value]);
 const layout = $derived(sliderLayout(variantProp, orientationProp, Array.isArray(value)));
@@ -124,33 +120,6 @@ $effect(() => {
 	if (!elastic || !el) return;
 	return attachElastic(el, () => el.dataset.orientation === "vertical");
 });
-let labelEl = $state<HTMLElement>();
-let valueEl = $state<HTMLElement>();
-let boxes = $state({ width: 0, label: [0, 0], value: [0, 0] });
-$effect(() => {
-	if (variant !== "inline" || !control) return;
-	const node = control;
-	const measure = () => {
-		const origin = node.getBoundingClientRect().left;
-		const span = (el?: HTMLElement) => {
-			const r = el?.getBoundingClientRect();
-			return r ? [r.left - origin, r.right - origin] : [0, 0];
-		};
-		boxes = { width: node.offsetWidth, label: span(labelEl), value: span(valueEl) };
-	};
-	measure();
-	const observer = new ResizeObserver(measure);
-	for (const el of [node, labelEl, valueEl]) if (el) observer.observe(el);
-	return () => observer.disconnect();
-});
-const split = $derived(
-	variant === "inline" && boxes.width
-		? sliderInlineSplit(sliderThumbCenter(percent, boxes.width, THUMB_WIDTH), [
-				{ start: boxes.label[0] ?? 0, end: boxes.label[1] ?? 0 },
-				{ start: boxes.value[0] ?? 0, end: boxes.value[1] ?? 0 },
-			])
-		: 0,
-);
 
 // Ruler: the strip follows the pointer in px; the value snaps to the nearest step.
 let drag: { id: number; x: number; offset: number } | null = null;
@@ -185,7 +154,7 @@ function onRulerUp(event: PointerEvent) {
 </script>
 
 {#snippet body()}
-	{#if showValue && variant !== "inline" && variant !== "fluid" && variant !== "ruler"}
+	{#if showValue && variant !== "celled" && variant !== "fluid" && variant !== "ruler"}
 		<div class={styles.header()}>
 			<span class={styles.title()}>{label}</span>
 			<span class={styles.value()}>{values.map(formatValue).join(" - ")}</span>
@@ -243,10 +212,10 @@ function onRulerUp(event: PointerEvent) {
 				{/if}
 			</SliderPrimitive.Range>
 		</span>
-		{#if variant === "inline"}
+		{#if variant === "celled"}
 			<div aria-hidden="true" class={styles.overlay()}>
-				<span bind:this={labelEl} class={styles.inlineLabel()}>{label}</span>
-				<span bind:this={valueEl} class={styles.inlineValue()}>{formatValue(first)}</span>
+				<span class={styles.inlineLabel()}>{label}</span>
+				<span class={styles.inlineValue()}>{formatValue(first)}</span>
 			</div>
 		{/if}
 		{#if variant === "wave"}
@@ -268,7 +237,6 @@ function onRulerUp(event: PointerEvent) {
 				aria-valuetext={formatValue(v)}
 				data-slot="slider-thumb"
 				class={styles.thumb()}
-				style={variant === "inline" ? `--slider-split: ${split}` : undefined}
 			>
 				{#if variant === "bubble"}
 					<span aria-hidden="true" class={styles.bubble()}>{formatValue(v)}</span>

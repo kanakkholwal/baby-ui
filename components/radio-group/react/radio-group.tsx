@@ -42,13 +42,17 @@ export function RadioGroup({
 	disabled?: boolean;
 	name?: string;
 	onValueChange?: (value: string) => void;
+	"aria-label"?: string;
+	"aria-labelledby"?: string;
+	"aria-describedby"?: string;
 	children?: ReactNode;
 }) {
 	const itemVariant = useMemo(() => ({ variant, size }), [variant, size]);
 	const root = useRef<HTMLDivElement>(null);
 	const pill = useRef<HTMLSpanElement>(null);
 	useLayoutEffect(() => {
-		if (variant !== "list" || !root.current || !pill.current) return;
+		if ((variant !== "list" && variant !== "segmented") || !root.current || !pill.current)
+			return;
 		return attachRadioPill(root.current, pill.current);
 	}, [variant]);
 	return (
@@ -61,15 +65,15 @@ export function RadioGroup({
 			data-slot="radio-group"
 			aria-orientation={orientation === "grid" ? undefined : orientation}
 			className={cn(
-				radioGroup({ orientation, variant }).root(),
+				radioGroup({ orientation, variant, size }).root(),
 				disabled && "opacity-50",
 				className,
 			)}
 			{...props}
 		>
 			<RadioGroupItemVariantCtx.Provider value={itemVariant}>
-				{variant === "list" ? (
-					<span ref={pill} aria-hidden className={radioGroup({ variant }).pill()} />
+				{variant === "list" || variant === "segmented" ? (
+					<span ref={pill} aria-hidden className={radioGroup({ variant, size }).pill()} />
 				) : null}
 				{children}
 			</RadioGroupItemVariantCtx.Provider>

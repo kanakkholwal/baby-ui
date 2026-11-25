@@ -3,7 +3,7 @@
 import { Menu } from "@base-ui/react/menu";
 import type { ComponentProps } from "react";
 import { cn } from "../../lib/cn";
-import { type MenuItemVariant, type MenuSize, menu } from "../../lib/menu";
+import { type MenuContentSize, type MenuItemVariant, menu } from "../../lib/menu";
 import { ANCHORED } from "../../lib/react/anchor";
 
 export const DropdownMenu = Menu.Root;
@@ -37,7 +37,7 @@ export function DropdownMenuContent({
 	Pick<
 		ComponentProps<typeof Menu.Positioner>,
 		"align" | "alignOffset" | "side" | "sideOffset"
-	> & { size?: MenuSize }) {
+	> & { size?: MenuContentSize }) {
 	return (
 		<Menu.Portal>
 			<Menu.Positioner
@@ -197,7 +197,7 @@ export function DropdownMenuSubContent({
 	Pick<
 		ComponentProps<typeof Menu.Positioner>,
 		"align" | "alignOffset" | "side" | "sideOffset"
-	> & { size?: MenuSize }) {
+	> & { size?: MenuContentSize }) {
 	return (
 		<Menu.Portal>
 			<Menu.Positioner

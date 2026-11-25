@@ -1,7 +1,8 @@
 <script lang="ts">
 import ReactPreview, { type PreviewStatus } from "@baby-ui/react-preview/svelte";
 import type { Framework } from "@baby-ui/registry-schema";
-import { Button, Spinner } from "@baby-ui/svelte";
+import { Button } from "@baby-ui/svelte/button";
+import { Spinner } from "@baby-ui/svelte/spinner";
 import type { Snippet } from "svelte";
 import type { DemoLoader } from "#lib/demos.js";
 import { reactDemos } from "#lib/react-demos.js";

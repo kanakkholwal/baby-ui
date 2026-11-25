@@ -7,17 +7,17 @@ export const switchComponent = defineComponent({
 	category: "base",
 	status: "stable",
 	variants: {
-		variant: ["default", "round", "marked"],
+		variant: ["default", "round", "marked", "celled"],
 		size: ["sm", "default", "lg", "xl"],
 	},
 	props: [
 		{
 			name: "variant",
-			type: '"default" | "round" | "marked"',
+			type: '"default" | "round" | "marked" | "celled"',
 			description:
-				"`default`: a pill thumb; `round`: a circular thumb; `marked`: round, with an on bar and an off ring in the free half of the track, so state never rests on colour alone.",
+				"`default`: a pill thumb; `round`: a circular thumb; `marked`: round, with an on bar and an off ring in the free half of the track, so state never rests on colour alone; `celled`: the pill thumb in a full-width raised row, label at the start, for settings and tweak panels.",
 			default: "default",
-			control: { kind: "select", options: ["default", "round", "marked"] },
+			control: { kind: "select", options: ["default", "round", "marked", "celled"] },
 		},
 		{
 			name: "checked",

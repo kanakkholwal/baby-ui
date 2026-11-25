@@ -1,6 +1,8 @@
 <script lang="ts">
 import { IconRefresh } from "@baby-ui/icons";
-import { Button, ShowcasePanel, type ShowcaseSpan, Spinner } from "@baby-ui/svelte";
+import { Button } from "@baby-ui/svelte/button";
+import { ShowcasePanel, type ShowcaseSpan } from "@baby-ui/svelte/showcase-grid";
+import { Spinner } from "@baby-ui/svelte/spinner";
 import { demos } from "#lib/demos.js";
 import { claim, type LiveSlot, watchLive } from "#lib/live-demo.js";
 import type { CardItem } from "#lib/registry.js";

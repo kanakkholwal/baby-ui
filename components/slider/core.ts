@@ -2,7 +2,7 @@ import type { SliderVariant } from "./variants";
 
 /** Variants drawn around one value; a range (array value) falls back to `track`. */
 export const SLIDER_SINGLE_THUMB_VARIANTS: readonly SliderVariant[] = [
-	"inline",
+	"celled",
 	"fluid",
 	"wave",
 	"ruler",
@@ -50,30 +50,6 @@ export function sliderWaveBars(
 			delayMs: Math.min(distance * 12, 120),
 		};
 	});
-}
-
-/** Where a contained thumb's centre sits, in px from the control's start edge. */
-export function sliderThumbCenter(
-	percent: number,
-	controlSize: number,
-	thumbSize: number,
-): number {
-	return thumbSize / 2 + ((controlSize - thumbSize) * percent) / 100;
-}
-
-/** 0 to 1: how far the inline handle has parted, easing over 6px at each text edge. */
-export function sliderInlineSplit(
-	x: number,
-	boxes: { start: number; end: number }[],
-): number {
-	return boxes.reduce(
-		(most, box) =>
-			Math.max(
-				most,
-				Math.max(0, Math.min(1, (x + 2 - box.start) / 6, (box.end + 2 - x) / 6)),
-			),
-		0,
-	);
 }
 
 export const SLIDER_RULER_GAP = 14;

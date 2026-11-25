@@ -11,17 +11,16 @@ import {
 	IconLink,
 	IconTerminal2,
 } from "@baby-ui/icons";
+import { Button, button } from "@baby-ui/svelte/button";
 import {
-	Button,
-	button,
-	cn,
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
-} from "@baby-ui/svelte";
+} from "@baby-ui/svelte/dropdown-menu";
+import { cn } from "@baby-ui/svelte/lib/cn";
 import origins from "#lib/generated/origins.json";
 import { installArgs } from "#lib/install.js";
 import { pmCommand } from "#lib/pm.js";

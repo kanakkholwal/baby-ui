@@ -16,7 +16,7 @@ import {
 	toDateParts,
 } from "../../date-field/core";
 import { DateSegments, useFieldDraft } from "../../date-field/react/segments";
-import { dateField } from "../../date-field/variants";
+import { dateField, popoverCalendarSize } from "../../date-field/variants";
 import { FieldError } from "../../field/react/field";
 import { cn } from "../../lib/cn";
 import { Popover, PopoverContent, PopoverTrigger } from "../../popover/react/popover";
@@ -104,7 +104,9 @@ export function DatePicker({
 
 	return (
 		<div data-slot="date-picker" className={cn(s.root(), className)}>
-			<fieldset
+			{/* biome-ignore lint/a11y/useSemanticElements: fieldset cannot centre flex children. */}
+			<div
+				role="group"
 				id={id}
 				aria-label={ariaLabel ?? labels.group}
 				aria-describedby={
@@ -155,6 +157,7 @@ export function DatePicker({
 					<PopoverContent align="end" className={s.content()}>
 						<Calendar
 							mode="single"
+							size={popoverCalendarSize[size]}
 							selected={value ?? undefined}
 							defaultMonth={value ?? min ?? undefined}
 							onSelect={(date) => {
@@ -169,7 +172,7 @@ export function DatePicker({
 						/>
 					</PopoverContent>
 				</Popover>
-			</fieldset>
+			</div>
 			{name ? (
 				<input type="hidden" name={name} value={parts ? isoDate(parts) : ""} />
 			) : null}

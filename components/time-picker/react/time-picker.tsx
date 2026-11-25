@@ -147,7 +147,9 @@ export function TimePicker({
 
 	return (
 		<div data-slot="time-picker" className={cn(s.root(), className)}>
-			<fieldset
+			{/* biome-ignore lint/a11y/useSemanticElements: fieldset cannot centre flex children. */}
+			<div
+				role="group"
 				id={id}
 				aria-label={ariaLabel ?? labels.group}
 				aria-describedby={
@@ -209,7 +211,7 @@ export function TimePicker({
 								aria-label={labels.clear}
 								disabled={disabled}
 								onClick={clear}
-								className={tp.clearButton()}
+								className={cn(tp.clearButton(), s.trigger())}
 							>
 								<svg
 									viewBox="0 0 24 24"
@@ -227,7 +229,7 @@ export function TimePicker({
 						) : null}
 					</div>
 				) : null}
-			</fieldset>
+			</div>
 			{name ? <input type="hidden" name={name} value={value ?? ""} /> : null}
 			<FieldError
 				id={errorId}

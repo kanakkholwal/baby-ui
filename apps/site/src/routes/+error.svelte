@@ -1,6 +1,6 @@
 <script lang="ts">
 import { IconArrowRight, IconRefresh } from "@baby-ui/icons";
-import { Button } from "@baby-ui/svelte";
+import { Button } from "@baby-ui/svelte/button";
 import { type CatalogItem, loadCatalog } from "#lib/registry.js";
 import { page } from "$app/state";
 

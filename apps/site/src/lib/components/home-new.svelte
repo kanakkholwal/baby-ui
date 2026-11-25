@@ -1,6 +1,6 @@
 <script lang="ts">
 import { IconArrowRight } from "@baby-ui/icons";
-import { Button } from "@baby-ui/svelte";
+import { Button } from "@baby-ui/svelte/button";
 import type { CardItem } from "#lib/registry.js";
 import CardGallery from "./card-gallery.svelte";
 

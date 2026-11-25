@@ -78,7 +78,7 @@ export function DateSegments({
 	const typed = useRef<{ part: SegmentPart; text: string } | null>(null);
 
 	const segments = () => {
-		const scope = ref.current?.closest("fieldset") ?? ref.current;
+		const scope = ref.current?.closest("[role=group]") ?? ref.current;
 		return [...(scope?.querySelectorAll<HTMLElement>("[role=spinbutton]") ?? [])];
 	};
 	const move = (from: HTMLElement, delta: number) => {

@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Tabs, TabsList, TabsTrigger } from "@baby-ui/svelte";
+import { Tabs, TabsList, TabsTrigger } from "@baby-ui/svelte/tabs";
 import { PMS } from "#lib/pm.js";
 import { prefs } from "#lib/preferences.svelte.js";
 

@@ -12,10 +12,10 @@ export const nativeSelect = defineComponent({
 	props: [
 		{
 			name: "size",
-			type: '"xs" | "sm" | "default" | "lg" | "xl"',
+			type: '"sm" | "default" | "lg" | "xl"',
 			description: "Height and text size.",
 			default: "default",
-			control: { kind: "select", options: ["xs", "sm", "default", "lg", "xl"] },
+			control: { kind: "select", options: ["sm", "default", "lg", "xl"] },
 		},
 		{
 			name: "disabled",

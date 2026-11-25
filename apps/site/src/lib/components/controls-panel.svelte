@@ -2,13 +2,13 @@
 import SpecDials from "@baby-ui/demos/controls";
 import { IconAdjustmentsHorizontal, IconRefresh } from "@baby-ui/icons";
 import type { ComponentSpec } from "@baby-ui/registry-schema";
+import { Button } from "@baby-ui/svelte/button";
 import {
-	Button,
 	Collapsible,
 	CollapsibleContent,
 	CollapsibleTrigger,
-	ScrollArea,
-} from "@baby-ui/svelte";
+} from "@baby-ui/svelte/collapsible";
+import { ScrollArea } from "@baby-ui/svelte/scroll-area";
 import { track } from "#lib/analytics.js";
 import { defaultProps } from "#lib/registry.js";
 

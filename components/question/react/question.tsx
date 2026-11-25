@@ -4,8 +4,10 @@ import {
 	type ComponentProps,
 	createContext,
 	type ReactNode,
+	type RefObject,
 	useContext,
 	useEffect,
+	useId,
 	useRef,
 	useState,
 } from "react";
@@ -48,6 +50,9 @@ type Ctx = {
 	setStep: (next: number) => void;
 	advance: () => void;
 	queueAdvance: () => void;
+	titleId: string;
+	descriptionId: string;
+	titleRef: RefObject<HTMLHeadingElement | null>;
 	styles: ReturnType<typeof question>;
 };
 const QuestionContext = createContext<Ctx | null>(null);
@@ -66,7 +71,7 @@ function Glyph({ d, className }: { d: string; className?: string }) {
 	);
 }
 
-export interface QuestionProps extends Omit<ComponentProps<"div">, "onSubmit"> {
+export interface QuestionProps extends Omit<ComponentProps<"fieldset">, "onSubmit"> {
 	questions: QuestionItem[];
 	/** `submitting` locks the card with a spinner; `answered` folds it to its result. */
 	status?: QuestionStatus;
@@ -80,7 +85,10 @@ export interface QuestionProps extends Omit<ComponentProps<"div">, "onSubmit"> {
 	variant?: QuestionVariant;
 }
 
-/** The root: clarifying questions an agent asks, one at a time, then a one-line result. */
+/**
+ * The root: clarifying questions an agent asks, one at a time, then a one-line result. A native
+ * fieldset named by the current title; a step change is announced and moves focus to that title.
+ */
 export function Question({
 	questions,
 	status = "pending",
@@ -91,14 +99,19 @@ export function Question({
 	defaultStep = 0,
 	onStepChange,
 	onSubmit,
-	variant = "muted",
+	variant = "framed",
 	className,
 	children,
 	...props
 }: QuestionProps) {
 	const [ownAnswers, setOwnAnswers] = useState<QuestionAnswers>(defaultAnswers);
 	const [ownStep, setOwnStep] = useState(defaultStep);
+	const [announcement, setAnnouncement] = useState("");
 	const timer = useRef<number | undefined>(undefined);
+	const titleRef = useRef<HTMLHeadingElement>(null);
+	const uid = useId();
+	const titleId = `${uid}-title`;
+	const descriptionId = `${uid}-description`;
 	const current = answers ?? ownAnswers;
 	const index = Math.min(Math.max(0, step ?? ownStep), Math.max(0, questions.length - 1));
 	const item = questions[index];
@@ -110,6 +123,19 @@ export function Question({
 		timer.current = undefined;
 	};
 	useEffect(() => () => window.clearTimeout(timer.current), []);
+
+	// A new question is spoken and takes focus; the first render and plain re-renders stay quiet.
+	const seen = useRef({ index, status });
+	useEffect(() => {
+		const before = seen.current;
+		seen.current = { index, status };
+		if (status === "pending" && index !== before.index && item) {
+			setAnnouncement(`Question ${index + 1} of ${questions.length}: ${item.title}`);
+			titleRef.current?.focus({ preventScroll: true });
+		} else if (status === "submitting" && before.status !== "submitting") {
+			setAnnouncement("Sending your answers");
+		}
+	}, [index, status, item, questions.length]);
 
 	const setStep = (next: number) => {
 		clearTimer();
@@ -145,23 +171,37 @@ export function Question({
 			clearTimer();
 			timer.current = window.setTimeout(() => setStep(index + 1), 240);
 		},
+		titleId,
+		descriptionId,
+		titleRef,
 		styles,
 	};
 
 	return (
 		<QuestionContext.Provider value={ctx}>
-			<div
+			<fieldset
 				data-slot="question"
 				data-status={status}
 				data-variant={variant}
+				aria-labelledby={titleId}
+				aria-describedby={interactive && item?.description ? descriptionId : undefined}
 				aria-busy={busy}
 				className={cn(styles.root(), className)}
 				{...props}
 			>
 				{children}
-			</div>
+				<p role="status" className="sr-only">
+					{announcement}
+				</p>
+			</fieldset>
 		</QuestionContext.Provider>
 	);
+}
+
+/** The inner panel (framed) around the header, content and result; the footer stays in the rim. */
+export function QuestionBody({ className, ...props }: ComponentProps<"div">) {
+	const { styles: s } = useQuestion("QuestionBody");
+	return <div data-slot="question-body" className={cn(s.body(), className)} {...props} />;
 }
 
 export interface QuestionHeaderProps {
@@ -169,11 +209,18 @@ export interface QuestionHeaderProps {
 	title?: ReactNode;
 	/** Shows a close button. */
 	onDismiss?: () => void;
+	/** Accessible name of the close button. */
+	dismissLabel?: string;
 	className?: string;
 }
 
-/** The icon, the current question's title, its place in the set, and an optional close. */
-export function QuestionHeader({ title, onDismiss, className }: QuestionHeaderProps) {
+/** The place in the set, the current title (the group's name) and an optional close. */
+export function QuestionHeader({
+	title,
+	onDismiss,
+	dismissLabel = "Dismiss questions",
+	className,
+}: QuestionHeaderProps) {
 	const {
 		item,
 		step,
@@ -181,45 +228,43 @@ export function QuestionHeader({ title, onDismiss, className }: QuestionHeaderPr
 		status,
 		interactive,
 		busy,
+		titleId,
+		titleRef,
 		styles: s,
 	} = useQuestion("QuestionHeader");
 	const text = interactive ? item?.title : (title ?? item?.title);
 	return (
 		<div data-slot="question-header" className={cn(s.header(), className)}>
-			<span aria-hidden data-status={status} className={s.icon()}>
-				<Glyph
-					d={
-						busy
-							? QUESTION_ICONS.spinner
-							: interactive
-								? QUESTION_ICONS.help
-								: QUESTION_ICONS.check
-					}
-					className={busy ? s.spinner() : undefined}
-				/>
-			</span>
+			{interactive && !busy ? null : (
+				<span aria-hidden data-status={status} className={s.icon()}>
+					<Glyph
+						d={busy ? QUESTION_ICONS.spinner : QUESTION_ICONS.check}
+						className={busy ? s.spinner() : undefined}
+					/>
+				</span>
+			)}
 			<div className={s.heading()}>
-				<h3 className={s.title()}>
+				{interactive && questions.length > 1 && (
+					<p className={s.eyebrow()}>
+						Question {step + 1} of {questions.length}
+					</p>
+				)}
+				<h3 id={titleId} ref={titleRef} tabIndex={-1} className={s.title()}>
 					<span key={`${status}-${item?.id}`} className={s.titleText()}>
 						{text}
 					</span>
 				</h3>
-				{interactive && questions.length > 1 && (
-					<span className={s.counter()}>
-						{step + 1}/{questions.length}
-					</span>
-				)}
-				{onDismiss && (
-					<button
-						type="button"
-						aria-label="Dismiss"
-						onClick={onDismiss}
-						className={s.dismiss()}
-					>
-						<Glyph d={QUESTION_ICONS.close} />
-					</button>
-				)}
 			</div>
+			{onDismiss && (
+				<button
+					type="button"
+					aria-label={dismissLabel}
+					onClick={onDismiss}
+					className={s.dismiss()}
+				>
+					<Glyph d={QUESTION_ICONS.close} />
+				</button>
+			)}
 		</div>
 	);
 }
@@ -233,6 +278,8 @@ export function QuestionContent({ className }: { className?: string }) {
 		busy,
 		setAnswer,
 		queueAdvance,
+		titleId,
+		descriptionId,
 		styles: s,
 	} = useQuestion("QuestionContent");
 	if (!item) return null;
@@ -245,7 +292,11 @@ export function QuestionContent({ className }: { className?: string }) {
 		>
 			<div className={s.clip()} inert={!interactive}>
 				<div key={item.id} className={cn(s.pane(), className)}>
-					{item.description && <p className={s.description()}>{item.description}</p>}
+					{item.description && (
+						<p id={descriptionId} className={s.description()}>
+							{item.description}
+						</p>
+					)}
 					{item.options?.length ? (
 						item.multiple ? (
 							<div className={s.options()}>
@@ -254,6 +305,7 @@ export function QuestionContent({ className }: { className?: string }) {
 										key={option.value}
 										checked={answer.selected.includes(option.value)}
 										disabled={busy || option.disabled}
+										size="lg"
 										label={option.label}
 										description={option.description}
 										onCheckedChange={(checked) =>
@@ -275,6 +327,10 @@ export function QuestionContent({ className }: { className?: string }) {
 									setAnswer({ selected: [value], custom: "" });
 									queueAdvance();
 								}}
+								variant="solid"
+								size="lg"
+								aria-labelledby={titleId}
+								aria-describedby={item.description ? descriptionId : undefined}
 								className={s.options()}
 							>
 								{item.options.map((option) => (
@@ -295,6 +351,7 @@ export function QuestionContent({ className }: { className?: string }) {
 							value={custom}
 							disabled={busy}
 							aria-label={item.customPlaceholder ?? "Another response"}
+							aria-describedby={item.description ? descriptionId : undefined}
 							placeholder={item.customPlaceholder ?? "Add another response…"}
 							onChange={(event) =>
 								setAnswer({
@@ -312,16 +369,24 @@ export function QuestionContent({ className }: { className?: string }) {
 }
 
 export interface QuestionFooterProps {
+	/** The last question's submit label. */
 	submitLabel?: string;
+	/** Label of the button that moves on without an answer; hidden for `required` questions. */
+	skipLabel?: string;
+	/** Label of the button that returns to the previous question. */
+	backLabel?: string;
 	className?: string;
 }
 
-/** Back, a dot per question, and next, which submits on the last question. */
+/** Progress, then Back, Skip and Next; Next submits on the last question. */
 export function QuestionFooter({
-	submitLabel = "Submit response",
+	submitLabel = "Send",
+	skipLabel = "Skip",
+	backLabel = "Back",
 	className,
 }: QuestionFooterProps) {
 	const {
+		item,
 		questions,
 		step,
 		answer,
@@ -341,63 +406,55 @@ export function QuestionFooter({
 			<div className={s.clip()} inert={!interactive}>
 				<div className={cn(s.footer(), className)}>
 					{questions.length > 1 && (
-						<>
+						<span aria-hidden className={s.steps()}>
+							{questions.map((q, i) => (
+								<span
+									key={q.id}
+									data-done={i < step || undefined}
+									data-current={i === step || undefined}
+									className={s.step()}
+								/>
+							))}
+						</span>
+					)}
+					<div className={s.actions()}>
+						{step > 0 && (
 							<Button
 								variant="ghost"
-								size="icon-sm"
-								aria-label="Previous question"
-								disabled={busy || step === 0}
+								disabled={busy}
 								onClick={() => setStep(step - 1)}
-								className="rounded-full"
+								className={s.back()}
 							>
-								<Glyph
-									d={QUESTION_ICONS.back}
-									className="fill-none stroke-current [stroke-linecap:round] [stroke-linejoin:round] [stroke-width:2]"
-								/>
+								{backLabel}
 							</Button>
-							<span className={s.dots()}>
-								<span className="sr-only">
-									Question {step + 1} of {questions.length}
-								</span>
-								{questions.map((q, i) => (
-									<span
-										key={q.id}
-										aria-hidden
-										data-done={i <= step || undefined}
-										data-current={i === step || undefined}
-										className={s.dot()}
-									/>
-								))}
-							</span>
-						</>
-					)}
-					<Button
-						size={last ? "sm" : "icon-sm"}
-						aria-label={last ? submitLabel : "Next question"}
-						disabled={busy || !isAnswered(answer)}
-						onClick={advance}
-						className={s.next()}
-					>
-						{busy ? (
-							<Glyph
-								d={QUESTION_ICONS.spinner}
-								className="spinner fill-none stroke-current [stroke-linecap:round] [stroke-width:2]"
-							/>
-						) : last ? (
-							<>
-								{submitLabel}
-								<Glyph
-									d={QUESTION_ICONS.next}
-									className="fill-none stroke-current [stroke-linecap:round] [stroke-linejoin:round] [stroke-width:2]"
-								/>
-							</>
-						) : (
-							<Glyph
-								d={QUESTION_ICONS.next}
-								className="fill-none stroke-current [stroke-linecap:round] [stroke-linejoin:round] [stroke-width:2]"
-							/>
 						)}
-					</Button>
+						{item?.required ? null : (
+							<Button
+								variant="ghost"
+								disabled={busy}
+								onClick={advance}
+								className={s.skip()}
+							>
+								{skipLabel}
+							</Button>
+						)}
+						<Button
+							disabled={busy || !isAnswered(answer)}
+							onClick={advance}
+							className={s.next()}
+						>
+							{busy ? (
+								<Glyph
+									d={QUESTION_ICONS.spinner}
+									className="spinner fill-none stroke-current [stroke-linecap:round] [stroke-width:2]"
+								/>
+							) : last ? (
+								submitLabel
+							) : (
+								"Next"
+							)}
+						</Button>
+					</div>
 				</div>
 			</div>
 		</div>

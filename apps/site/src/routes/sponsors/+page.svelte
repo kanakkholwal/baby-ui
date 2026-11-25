@@ -1,6 +1,7 @@
 <script lang="ts">
 import { IconArrowUpRight, IconCheck } from "@baby-ui/icons";
-import { Badge, Button } from "@baby-ui/svelte";
+import { Badge } from "@baby-ui/svelte/badge";
+import { Button } from "@baby-ui/svelte/button";
 import Seo from "#lib/components/seo.svelte";
 import SiteFooter from "#lib/components/site-footer.svelte";
 import { SPONSOR_TIERS, SPONSORS, SPONSORS_URL } from "#lib/sponsors.js";

@@ -43,11 +43,6 @@ export const numberInput = tv({
 		},
 		size: {
 			// Steppers are square: their width is the field height.
-			xs: {
-				group: "h-6 rounded-sm text-xs",
-				button: "w-6 [&_svg]:size-3",
-				input: fieldText({ size: "xs" }),
-			},
 			sm: {
 				group: "h-8 rounded-md text-xs",
 				button: "w-8 [&_svg]:size-3.5",
@@ -71,16 +66,6 @@ export const numberInput = tv({
 		},
 	},
 	compoundVariants: [
-		{
-			variant: "scrub",
-			size: "xs",
-			class: {
-				group: "w-24",
-				label: "px-1.5 text-xs",
-				input: "px-1.5",
-				suffix: "pe-1.5",
-			},
-		},
 		{
 			variant: "scrub",
 			size: "sm",

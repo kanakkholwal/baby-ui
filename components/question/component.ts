@@ -1,7 +1,7 @@
 import { defineComponent, variantsOf } from "@baby-ui/registry-schema";
 import { question as questionVariants } from "./variants";
 
-const VARIANTS = ["muted", "outline", "plain"];
+const VARIANTS = ["framed", "card", "plain"];
 const STATUSES = ["pending", "submitting", "answered"];
 
 export const question = defineComponent({
@@ -17,8 +17,8 @@ export const question = defineComponent({
 			name: "variant",
 			type: VARIANTS.map((v) => `"${v}"`).join(" | "),
 			description:
-				"Question: `muted` is a filled card, `outline` a bordered one, `plain` none, for a Message bubble.",
-			default: "muted",
+				"Question: `framed` holds the body in a card rim with the footer, `card` is one raised surface, `plain` has none, for a Message bubble.",
+			default: "framed",
 			control: { kind: "select", options: VARIANTS },
 		},
 		{
@@ -56,35 +56,38 @@ export const question = defineComponent({
 			control: { kind: "none" },
 		},
 		{
-			name: "title / onDismiss",
-			type: "string / () => void",
-			description: "QuestionHeader: the title once answered, and a close button.",
+			name: "title / onDismiss / dismissLabel",
+			type: "string / () => void / string",
+			description:
+				"QuestionHeader: the title once answered, a close button, and the close button's accessible name.",
 			control: { kind: "none" },
 		},
 		{
-			name: "submitLabel",
+			name: "submitLabel / skipLabel / backLabel",
 			type: "string",
-			description: "QuestionFooter: the last question's submit label.",
-			default: "Submit response",
+			description:
+				"QuestionFooter: the last question's submit label, and the Skip and Back button labels. A question with `required` has no Skip.",
+			default: "Send / Skip / Back",
 			control: { kind: "text" },
 		},
 		{
 			name: "children",
 			type: "ReactNode | Snippet",
 			description:
-				"Question: QuestionHeader, QuestionContent, QuestionFooter, QuestionResult. QuestionResult: the line shown once answered.",
+				"Question: QuestionBody wrapping QuestionHeader, QuestionContent and QuestionResult, then QuestionFooter. QuestionResult: the line shown once answered.",
 			control: { kind: "none" },
 		},
 	],
 	motion: {
 		springs: [],
 		reducedMotion:
-			"The slide-in on each question drops; the progress dots keep their instant scale/opacity change.",
+			"The slide-in on each question drops, and the title and progress segments change without easing.",
 		behaviour: [
-			"Each question slides in from the right and the title rises in as it changes.",
+			"Each question slides in from the right and the title rises in as it changes; the current progress segment widens.",
 			"A single pick moves on 240ms later, so the choice is seen before the next question.",
 			"Answering folds the options and footer away on grid rows, leaving the title and its result.",
-			"The current dot grows; earlier dots stay solid.",
+			"Each answer is a tile: hover lifts it, a press sinks it to 0.97, and a checked one tints with the primary colour.",
+			"A segment per question: finished ones fill softly, the current one widens and fills solid.",
 		],
 	},
 	a11y: {
@@ -92,9 +95,14 @@ export const question = defineComponent({
 			{ keys: ["Tab"], action: "Reaches each option" },
 			{ keys: ["Enter", "Space"], action: "Selects" },
 			{ keys: ["Arrow keys"], action: "Moves within a radio group" },
+			{ keys: ["Tab"], action: "Then reaches the free-text field, Back, Skip and Next" },
 		],
 		notes: [
 			"Options are real `RadioGroup`/`Checkbox` primitives, not styled toggle buttons: full keyboard and screen-reader semantics come from the primitive, not reimplemented here.",
+			"The root is a native fieldset named by the current title, and described by the question's description; the radio group is named by the same title.",
+			'When the question changes, the new title takes focus and a polite status line reads "Question 2 of 3: ...". Sending is announced too, and the card is aria-busy meanwhile.',
+			"Each answer tile is the label of its radio or checkbox, so the whole row is the target (at least 56px tall); buttons grow to 44px on coarse pointers and the close button has a 44px hit area.",
+			"A checked tile never relies on colour alone: the radio fills and, in forced-colours mode, the tile gets an outline.",
 			"The submit control is disabled, not hidden, until the current question has an answer, so its position never shifts.",
 		],
 	},

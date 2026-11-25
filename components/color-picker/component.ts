@@ -4,19 +4,19 @@ export const colorPicker = defineComponent({
 	slug: "color-picker",
 	name: "Color Picker",
 	description:
-		"Every colour control in one: a swatch + hex field, a labelled panel row, the full picker, a saturation area, a hue slider, a swatch and a swatch picker.",
+		"Every colour control in one: a swatch + hex field, a raised panel row (celled), the full picker, a saturation area, a hue slider, a swatch and a swatch picker.",
 	category: "base",
 	status: "stable",
 	props: [
 		{
 			name: "variant",
-			type: '"field" | "row" | "inline" | "area" | "slider" | "swatch" | "swatches"',
+			type: '"field" | "celled" | "inline" | "area" | "slider" | "swatch" | "swatches"',
 			description:
-				"field: type a hex or press its swatch for the picker. row: a full-width label, hex and swatch row for settings panels. inline: the full picker. area: the saturation square. slider: the hue strip. swatch: one colour disc. swatches: pick from `swatches`.",
+				"field: type a hex or press its swatch for the picker. celled: a raised full-width label, hex and swatch row for settings panels. inline: the full picker. area: the saturation square. slider: the hue strip. swatch: one colour disc. swatches: pick from `swatches`.",
 			default: "field",
 			control: {
 				kind: "select",
-				options: ["field", "row", "inline", "area", "slider", "swatch", "swatches"],
+				options: ["field", "celled", "inline", "area", "slider", "swatch", "swatches"],
 			},
 		},
 		{
@@ -31,7 +31,7 @@ export const colorPicker = defineComponent({
 			name: "invalid",
 			type: "boolean",
 			description:
-				"Field and row variants: mark the hex input invalid from outside, e.g. a form error.",
+				"Field and celled variants: mark the hex input invalid from outside, e.g. a form error.",
 			default: "false",
 			control: { kind: "boolean" },
 		},
@@ -108,13 +108,19 @@ export const colorPicker = defineComponent({
 				keys: ["Arrow keys"],
 				action: "Swatches: move and choose, as native radios do (one tab stop)",
 			},
-			{ keys: ["Enter"], action: "Field and row: applies a typed hex" },
-			{ keys: ["Arrow Up", "Arrow Down"], action: "Field and row: steps the value by 1" },
-			{ keys: ["Page Up", "Page Down"], action: "Field and row: steps the value by 16" },
-			{ keys: ["Escape"], action: "Field and row: reverts the edit" },
+			{ keys: ["Enter"], action: "Field and celled: applies a typed hex" },
+			{
+				keys: ["Arrow Up", "Arrow Down"],
+				action: "Field and celled: steps the value by 1",
+			},
+			{
+				keys: ["Page Up", "Page Down"],
+				action: "Field and celled: steps the value by 16",
+			},
+			{ keys: ["Escape"], action: "Field and celled: reverts the edit" },
 			{
 				keys: ["Enter", "Space"],
-				action: "Field and row: on the swatch, opens the picker",
+				action: "Field and celled: on the swatch, opens the picker",
 			},
 			{ keys: ["Escape"], action: "Closes the picker and returns focus to the swatch" },
 		],

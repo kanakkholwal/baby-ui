@@ -59,12 +59,16 @@ const CONTROLS = {
 	pagination: (size) => pagination({ size }).link(),
 };
 
+// Only these keep the `xs` step; every other control starts at `sm`.
+const HAS_XS = new Set(["button", "select"]);
+
 // A segmented track is a pill at every size (DESIGN.md, Taste): height stays on the ladder.
 const PILL = new Set(["tabs (segment)"]);
 
 for (const [name, classes] of Object.entries(CONTROLS)) {
 	test(`${name} sits on the control ladder at every size`, () => {
 		for (const [size, ladder] of Object.entries(LADDER)) {
+			if (size === "xs" && !HAS_XS.has(name)) continue;
 			const tokens = classes(size).split(/\s+/);
 			const expected = PILL.has(name)
 				? ladder.map((cls) => (cls.startsWith("rounded") ? "rounded-full" : cls))

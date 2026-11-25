@@ -14,6 +14,10 @@ export interface QuestionState {
 	setStep(next: number): void;
 	advance(): void;
 	queueAdvance(): void;
+	readonly titleId: string;
+	readonly descriptionId: string;
+	/** The title takes focus when the question changes. */
+	setTitle(el: HTMLElement | undefined): void;
 }
 
 const KEY = Symbol("question");

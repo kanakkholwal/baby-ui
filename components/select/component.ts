@@ -12,11 +12,11 @@ export const select = defineComponent({
 	props: [
 		{
 			name: "variant",
-			type: '"default" | "ghost"',
+			type: '"default" | "ghost" | "celled"',
 			description:
-				"SelectTrigger: a bordered field, or ghost (text and chevron) for a compact switch beside a heading.",
+				"SelectTrigger: a bordered field, ghost (text and chevron) for a compact switch beside a heading, or celled: a raised row with the `label` at the start and the value at the end, for settings and tweak panels.",
 			default: "default",
-			control: { kind: "select", options: ["default", "ghost"] },
+			control: { kind: "select", options: ["default", "ghost", "celled"] },
 		},
 		{
 			name: "size",

@@ -2,6 +2,7 @@ import gitDates from "virtual:component-dates";
 import { specs as publicSpecs } from "@baby-ui/components/specs";
 import {
 	CATEGORIES,
+	CATEGORY,
 	type ComponentSpec,
 	FRAMEWORKS,
 	PREVIEW_CATEGORIES,
@@ -93,6 +94,7 @@ export function navCategories(): NavCategory[] {
 						category,
 						label: CATEGORY_LABEL[category],
 						href: categoryHref(category),
+						blurb: CATEGORY[category].blurb,
 						count,
 					},
 				]

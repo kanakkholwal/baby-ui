@@ -1,15 +1,13 @@
 <script lang="ts">
 import { IconCheck, IconSettings } from "@baby-ui/icons";
+import { Popover, PopoverContent, PopoverTrigger } from "@baby-ui/svelte/popover";
 import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "@baby-ui/svelte";
+} from "@baby-ui/svelte/select";
 import { type PageLayout, prefs, THEMES } from "#lib/preferences.svelte.js";
 import { prefetchReact } from "#lib/react-demos.js";
 import { DIALECT_OPTIONS, FRAMEWORK_OPTIONS } from "#lib/technology-options.js";

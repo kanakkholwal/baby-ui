@@ -1,7 +1,7 @@
 <script lang="ts">
 import { IconChevronDown } from "@baby-ui/icons";
 import type { PropSpec } from "@baby-ui/registry-schema";
-import { Markdown } from "@baby-ui/svelte";
+import { Markdown } from "@baby-ui/svelte/markdown";
 import { prefersReducedMotion } from "svelte/motion";
 import { slide } from "svelte/transition";
 

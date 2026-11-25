@@ -13,10 +13,6 @@ export const nativeSelect = tv({
 	},
 	variants: {
 		size: {
-			xs: {
-				select: [controlSize({ size: "xs" }), fieldText({ size: "xs" }), "pr-6 pl-2"],
-				icon: "right-2 size-3",
-			},
 			sm: {
 				select: [controlSize({ size: "sm" }), fieldText({ size: "sm" }), "pr-7 pl-2.5"],
 				icon: "right-2.5 size-3.5",

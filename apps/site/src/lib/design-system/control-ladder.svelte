@@ -1,32 +1,23 @@
 <script lang="ts">
+import { Button } from "@baby-ui/svelte/button";
+import { Combobox, ComboboxTrigger } from "@baby-ui/svelte/combobox";
+import { Input, type InputSize } from "@baby-ui/svelte/input";
 import {
-	Button,
-	Combobox,
-	ComboboxTrigger,
-	Input,
 	InputGroup,
 	InputGroupAddon,
 	InputGroupInput,
-	type InputSize,
-	NativeSelect,
-	NativeSelectOption,
-	NumberInput,
-	PaginationLink,
-	Select,
-	SelectTrigger,
-	SelectValue,
-	Tabs,
-	TabsList,
-	TabsTrigger,
-	TagInput,
-	Toggle,
-	ToggleGroup,
-	ToggleGroupItem,
-} from "@baby-ui/svelte";
+} from "@baby-ui/svelte/input-group";
+import { NativeSelect, NativeSelectOption } from "@baby-ui/svelte/native-select";
+import { NumberInput } from "@baby-ui/svelte/number-input";
+import { PaginationLink } from "@baby-ui/svelte/pagination";
+import { Select, SelectTrigger, SelectValue } from "@baby-ui/svelte/select";
+import { Tabs, TabsList, TabsTrigger } from "@baby-ui/svelte/tabs";
+import { TagInput } from "@baby-ui/svelte/tag-input";
+import { Toggle } from "@baby-ui/svelte/toggle";
+import { ToggleGroup, ToggleGroupItem } from "@baby-ui/svelte/toggle-group";
 import { watchLayout } from "./measure";
 
 const LADDER: { size: InputSize; height: number; radius: string }[] = [
-	{ size: "xs", height: 24, radius: "sm" },
 	{ size: "sm", height: 32, radius: "md" },
 	{ size: "default", height: 36, radius: "lg" },
 	{ size: "lg", height: 40, radius: "lg" },
@@ -76,8 +67,8 @@ const off = (r: Reading, height: number) => Math.abs(r.height - height) > 0.5;
 					<td class="px-4 py-2.5 font-sans font-medium text-foreground text-sm">{row.size}</td>
 					<td class="px-4 py-2.5">{row.height}px</td>
 					<td class="px-4 py-2.5">rounded-{row.radius}</td>
-					<td class="hidden px-4 py-2.5 sm:table-cell">{["12", "12", "14", "14", "16"][i]}px</td>
-					<td class="hidden px-4 py-2.5 sm:table-cell">{["12", "14", "16", "18", "20"][i]}px</td>
+					<td class="hidden px-4 py-2.5 sm:table-cell">{["12", "14", "14", "16"][i]}px</td>
+					<td class="hidden px-4 py-2.5 sm:table-cell">{["14", "16", "18", "20"][i]}px</td>
 					<td class="px-4 py-2.5 text-muted-foreground">
 						{#if readings[row.size]?.[0]}
 							{Math.round((readings[row.size]?.[0]?.radius ?? 0) / row.height * 100)}%

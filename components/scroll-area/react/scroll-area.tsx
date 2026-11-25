@@ -1,17 +1,18 @@
 "use client";
 
 import { ScrollArea as ScrollAreaPrimitive } from "@base-ui/react/scroll-area";
-import type { ComponentProps, CSSProperties, ReactNode } from "react";
+import type { ComponentProps, ReactNode } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "../../lib/cn";
 import {
 	readEdges,
-	SCROLL_EDGE,
+	SCROLL_FADE,
 	type ScrollAreaFade,
 	type ScrollAreaGutter,
 	type ScrollAreaOrientation,
 	type ScrollAreaScrollbar,
 	scrollArea,
+	writeFade,
 } from "../variants";
 
 export type {
@@ -31,6 +32,10 @@ export interface ScrollAreaProps extends ComponentProps<typeof ScrollAreaPrimiti
 	orientation?: ScrollAreaOrientation;
 	/** How the clipped ends read: `mask` fades the content, `blur` softens it, `none` cuts it. */
 	fade?: ScrollAreaFade;
+	/** Length in px over which a `mask` fade ramps in as the content scrolls. */
+	fadeSize?: number;
+	/** Px the content must scroll before a fade starts. */
+	fadeOffset?: number;
 	/** Exposes the actual scrollable element, for callers that need to drive its scroll
 	 * position themselves (e.g. Conversation's auto-follow). */
 	viewportRef?: (el: HTMLDivElement | null) => void;
@@ -49,6 +54,8 @@ export function ScrollArea({
 	gutter = "overlay",
 	orientation = "vertical",
 	fade = "mask",
+	fadeSize = SCROLL_FADE,
+	fadeOffset = 0,
 	className,
 	viewportRef,
 	viewportProps,
@@ -63,8 +70,13 @@ export function ScrollArea({
 	// Fades tell the reader there is more; a styled scrollbar alone does not on touch.
 	const measure = useCallback(() => {
 		const el = viewport.current;
-		if (el) setEdges(readEdges(el, orientation));
-	}, [orientation]);
+		if (!el) return;
+		writeFade(el, orientation, fadeSize, fadeOffset);
+		const next = readEdges(el, orientation);
+		setEdges((prev) =>
+			prev.start === next.start && prev.end === next.end ? prev : next,
+		);
+	}, [orientation, fadeSize, fadeOffset]);
 
 	useEffect(() => {
 		const el = viewport.current;
@@ -77,10 +89,6 @@ export function ScrollArea({
 
 	useEffect(() => () => window.clearTimeout(idle.current), []);
 
-	const fadeStyle: CSSProperties & Record<`--${string}`, string> = {
-		"--sa-start": edges.start ? SCROLL_EDGE : "0px",
-		"--sa-end": edges.end ? SCROLL_EDGE : "0px",
-	};
 	const showVertical = orientation !== "horizontal";
 	const showHorizontal = orientation !== "vertical";
 	const bar = (direction: "vertical" | "horizontal") => (
@@ -118,7 +126,7 @@ export function ScrollArea({
 					viewportProps?.onScroll?.(event);
 				}}
 				data-slot="scroll-area-viewport"
-				style={{ maxHeight, ...fadeStyle, ...viewportProps?.style }}
+				style={{ maxHeight, ...viewportProps?.style }}
 				className={cn(styles.viewport(), viewportProps?.className)}
 			>
 				{children}

@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Tabs, TabsList, TabsTrigger } from "@baby-ui/svelte";
+import { Tabs, TabsList, TabsTrigger } from "@baby-ui/svelte/tabs";
 import type { Snippet } from "svelte";
 import type { TrackEvent } from "#lib/analytics.js";
 import CopyButton from "./copy-button.svelte";

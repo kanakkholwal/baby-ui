@@ -2,6 +2,7 @@
 import {
 	Question,
 	type QuestionAnswers,
+	QuestionBody,
 	QuestionContent,
 	QuestionFooter,
 	QuestionHeader,
@@ -83,9 +84,11 @@ const summary = $derived(
 			timer = window.setTimeout(() => (status = "answered"), 1200);
 		}}
 	>
-		<QuestionHeader title="Got it" onDismiss={() => (status = "answered")} />
-		<QuestionContent />
+		<QuestionBody>
+			<QuestionHeader title="Got it" onDismiss={() => (status = "answered")} />
+			<QuestionContent />
+			<QuestionResult>{summary || "Skipped"}</QuestionResult>
+		</QuestionBody>
 		<QuestionFooter submitLabel={typeof props.submitLabel === "string" && props.submitLabel ? props.submitLabel : undefined} />
-		<QuestionResult>{summary || "Skipped"}</QuestionResult>
 	</Question>
 </div>

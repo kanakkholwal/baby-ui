@@ -4,7 +4,7 @@ import { DateField } from "bits-ui";
 import { button } from "../../button/variants";
 import Calendar from "../../calendar/svelte/calendar.svelte";
 import type { CalendarCaptionLayout } from "../../calendar/variants";
-import { dateField } from "../../date-field/variants";
+import { dateField, popoverCalendarSize } from "../../date-field/variants";
 import FieldError from "../../field/svelte/field-error.svelte";
 import { cn } from "../../lib/cn";
 import Popover from "../../popover/svelte/popover.svelte";
@@ -129,6 +129,7 @@ function setOpen(next: boolean) {
 				<PopoverContent align="end" class={s.content()}>
 					<Calendar
 						type="single"
+						size={popoverCalendarSize[size]}
 						{value}
 						onValueChange={(next: DateValue | undefined) => {
 							set(next);

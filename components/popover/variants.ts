@@ -9,10 +9,6 @@ export const popover = tv({
 	},
 	variants: {
 		size: {
-			xs: {
-				surface: anchoredSurface({ size: "xs" }).surface(),
-				content: anchoredSurface({ size: "xs" }).content(),
-			},
 			sm: {
 				surface: anchoredSurface({ size: "sm" }).surface(),
 				content: anchoredSurface({ size: "sm" }).content(),

@@ -7,7 +7,8 @@ import {
 	IconRefresh,
 } from "@baby-ui/icons";
 import type { ComponentSpec, Framework } from "@baby-ui/registry-schema";
-import { Button, Tabs, TabsList, TabsTrigger } from "@baby-ui/svelte";
+import { Button } from "@baby-ui/svelte/button";
+import { Tabs, TabsList, TabsTrigger } from "@baby-ui/svelte/tabs";
 import type { Snippet } from "svelte";
 import { track } from "#lib/analytics.js";
 import type { DemoLoader } from "#lib/demos.js";

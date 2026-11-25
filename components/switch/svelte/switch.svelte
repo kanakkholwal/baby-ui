@@ -4,6 +4,7 @@ import { cn } from "../../lib/cn";
 import {
 	type SwitchSize,
 	type SwitchVariant,
+	switchRow,
 	switchThumb,
 	switchTrack,
 } from "./variants";
@@ -14,7 +15,7 @@ type Props = Omit<
 > & {
 	checked?: boolean;
 	disabled?: boolean;
-	/** `default` pill thumb, `round` thumb, or `marked`: round with on/off marks. */
+	/** `default` pill thumb, `round` thumb, `marked`: round with on/off marks, or `celled`: a raised row with the label at the start. */
 	variant?: SwitchVariant;
 	size?: SwitchSize;
 	label?: string;
@@ -55,11 +56,15 @@ const id = $derived(idProp ?? autoId);
 
 <!-- Bare, so this can replace a shadcn switch; the wrapper only appears with a label. -->
 {#if label}
-	<span class={cn("inline-flex items-center gap-2.5", classProp)}>
-		{@render control()}
-		<label for={id} class={cn("text-foreground text-sm", disabled && "opacity-50")}>
-			{label}
-		</label>
+	{@const row = switchRow({ variant })}
+	<span class={cn(row.root(), classProp)}>
+		{#if variant === "celled"}
+			<label for={id} class={cn(row.label(), disabled && "opacity-50")}>{label}</label>
+			{@render control()}
+		{:else}
+			{@render control()}
+			<label for={id} class={cn(row.label(), disabled && "opacity-50")}>{label}</label>
+		{/if}
 	</span>
 {:else}
 	{@render control()}

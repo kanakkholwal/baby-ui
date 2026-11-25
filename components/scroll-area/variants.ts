@@ -1,7 +1,5 @@
 import { tv, type VariantProps } from "tailwind-variants";
 
-const EDGE = "1.5rem";
-
 export const scrollArea = tv({
 	slots: {
 		root: "group/scroll relative overflow-hidden",
@@ -44,16 +42,25 @@ export const scrollArea = tv({
 		{ gutter: "reserve", orientation: "both", class: { viewport: "pr-3 pb-3" } },
 		{
 			fade: "mask",
-			orientation: ["vertical", "both"],
+			orientation: "vertical",
 			class: {
-				viewport: `[mask-image:linear-gradient(to_bottom,transparent,#000_var(--sa-start,0px),#000_calc(100%-var(--sa-end,0px)),transparent)]`,
+				viewport: `[mask-image:linear-gradient(to_bottom,transparent,#000_var(--sa-top,0px),#000_calc(100%-var(--sa-bottom,0px)),transparent)]`,
+			},
+		},
+		// Both axes: the two fades intersect, so a corner fades along each edge it is clipped at.
+		{
+			fade: "mask",
+			orientation: "both",
+			class: {
+				viewport:
+					"[-webkit-mask-composite:source-in] [mask-composite:intersect] [mask-image:linear-gradient(to_bottom,transparent,#000_var(--sa-top,0px),#000_calc(100%-var(--sa-bottom,0px)),transparent),linear-gradient(to_right,transparent,#000_var(--sa-left,0px),#000_calc(100%-var(--sa-right,0px)),transparent)]",
 			},
 		},
 		{
 			fade: "mask",
 			orientation: "horizontal",
 			class: {
-				viewport: `[mask-image:linear-gradient(to_right,transparent,#000_var(--sa-start,0px),#000_calc(100%-var(--sa-end,0px)),transparent)]`,
+				viewport: `[mask-image:linear-gradient(to_right,transparent,#000_var(--sa-left,0px),#000_calc(100%-var(--sa-right,0px)),transparent)]`,
 			},
 		},
 		{
@@ -94,8 +101,8 @@ export type ScrollAreaOrientation = NonNullable<
 >;
 export type ScrollAreaFade = NonNullable<VariantProps<typeof scrollArea>["fade"]>;
 
-/** The mask and blur size, as a CSS length for the `--sa-start` / `--sa-end` variables. */
-export const SCROLL_EDGE = EDGE;
+/** Default length, in px, over which a mask fade ramps in. */
+export const SCROLL_FADE = 32;
 
 export type ScrollEdges = { start: boolean; end: boolean };
 
@@ -106,12 +113,39 @@ export function readEdges(
 ): ScrollEdges {
 	if (orientation === "horizontal") {
 		return {
-			start: el.scrollLeft > 1,
-			end: el.scrollLeft + el.clientWidth < el.scrollWidth - 1,
+			start: Math.abs(el.scrollLeft) > 1,
+			end: Math.abs(el.scrollLeft) + el.clientWidth < el.scrollWidth - 1,
 		};
 	}
 	return {
 		start: el.scrollTop > 1,
 		end: el.scrollTop + el.clientHeight < el.scrollHeight - 1,
 	};
+}
+
+/**
+ * Writes how much of each edge to fade, in px. A fade grows from nothing over `size` px of
+ * scrolling (after `offset`), so it never pops; an edge with nothing clipped has none.
+ */
+export function writeFade(
+	el: HTMLElement,
+	orientation: ScrollAreaOrientation,
+	size: number,
+	offset: number,
+) {
+	const ramp = (hidden: number) => Math.min(size, Math.max(0, hidden - offset));
+	const maxY = el.scrollHeight - el.clientHeight;
+	const maxX = el.scrollWidth - el.clientWidth;
+	const x = Math.abs(el.scrollLeft);
+	// In a right-to-left box scrollLeft runs from 0 to negative: the hidden start is on the right.
+	const rtl = getComputedStyle(el).direction === "rtl";
+	const hiddenStart = rtl ? maxX - x : x;
+	const hiddenEnd = rtl ? x : maxX - x;
+	const vertical = orientation !== "horizontal";
+	const horizontal = orientation !== "vertical";
+	const set = (name: string, px: number) => el.style.setProperty(name, `${px}px`);
+	set("--sa-top", vertical ? ramp(el.scrollTop) : 0);
+	set("--sa-bottom", vertical ? ramp(maxY - el.scrollTop) : 0);
+	set("--sa-left", horizontal ? ramp(hiddenStart) : 0);
+	set("--sa-right", horizontal ? ramp(hiddenEnd) : 0);
 }

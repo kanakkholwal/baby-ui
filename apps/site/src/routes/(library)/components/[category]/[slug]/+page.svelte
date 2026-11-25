@@ -8,28 +8,25 @@ import {
 	IconEye,
 } from "@baby-ui/icons";
 import { packsFor } from "@baby-ui/registry-schema/packs";
+import { Alert, AlertDescription, AlertTitle } from "@baby-ui/svelte/alert";
+import { Badge } from "@baby-ui/svelte/badge";
+import { Button } from "@baby-ui/svelte/button";
 import {
-	Alert,
-	AlertDescription,
-	AlertTitle,
-	Badge,
-	Button,
 	Drawer,
 	DrawerClose,
 	DrawerContent,
 	DrawerHeader,
 	DrawerTitle,
-	Markdown,
+} from "@baby-ui/svelte/drawer";
+import { Markdown } from "@baby-ui/svelte/markdown";
+import {
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-	Tabs,
-	TabsContent,
-	TabsList,
-	TabsTrigger,
-} from "@baby-ui/svelte";
+} from "@baby-ui/svelte/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@baby-ui/svelte/tabs";
 import { Renderer } from "@docvia/core/svelte";
 import type { Snippet } from "svelte";
 import { track } from "#lib/analytics.js";
@@ -525,7 +522,7 @@ const packs = $derived(packsFor(data.spec.slug));
 				<InstallBlock
 					slug={data.spec.slug}
 					dependencies={port.dependencies}
-					source={installSourceUrl(data.spec.category, data.spec.slug, port.framework)}
+					source={installSourceUrl(data.spec.slug, port.framework)}
 					css={port.css}
 					{dialect}
 				/>

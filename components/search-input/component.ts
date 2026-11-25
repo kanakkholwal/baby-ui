@@ -1,7 +1,7 @@
 import { defineComponent } from "@baby-ui/registry-schema";
 
 const VARIANTS = ["default", "pill"];
-const SIZES = ["xs", "sm", "default", "lg", "xl"];
+const SIZES = ["sm", "default", "lg", "xl"];
 
 export const searchInput = defineComponent({
 	slug: "search-input",

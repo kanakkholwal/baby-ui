@@ -1,14 +1,14 @@
 <script lang="ts">
 import { registry } from "virtual:docvia/registry";
 import { IconArrowLeft, IconArrowRight, IconList } from "@baby-ui/icons";
+import { Button } from "@baby-ui/svelte/button";
 import {
-	Button,
 	Drawer,
 	DrawerClose,
 	DrawerContent,
 	DrawerHeader,
 	DrawerTitle,
-} from "@baby-ui/svelte";
+} from "@baby-ui/svelte/drawer";
 import { Renderer } from "@docvia/core/svelte";
 import ContentPageHeader from "#lib/components/content-page-header.svelte";
 import DocsIntroCover from "#lib/components/docs-intro-cover.svelte";

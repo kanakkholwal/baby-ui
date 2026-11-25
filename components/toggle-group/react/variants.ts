@@ -42,11 +42,6 @@ export const toggleGroup = tv({
 		// The whole group sits on the control ladder: items are the height minus the rim
 		// (border + padding), and their radius is the group's minus that same inset.
 		size: {
-			xs: {
-				root: "h-6 rounded-sm p-0.5",
-				item: "h-4.5 rounded-[calc(var(--radius-sm)-3px)] px-1.5 text-xs [&_svg]:size-3",
-				indicator: "rounded-[calc(var(--radius-sm)-3px)]",
-			},
 			sm: {
 				root: "h-8 rounded-md p-0.5",
 				item: "h-6.5 rounded-[calc(var(--radius-md)-3px)] px-2 text-xs [&_svg]:size-3.5",

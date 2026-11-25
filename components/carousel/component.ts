@@ -2,15 +2,14 @@ import { defineComponent, variantsOf } from "@baby-ui/registry-schema";
 import { carousel as carouselVariants } from "./variants";
 
 const SIZES = ["sm", "default", "lg"];
-const VARIANTS = ["default", "flat", "inset", "showcase"];
+const VARIANTS = ["default", "peek", "flat", "inset", "showcase"];
 const PROJECTIONS = ["linear", "concave", "convex"];
-const CONTROLS = ["full", "dots", "arrows", "none"];
 
 export const carousel = defineComponent({
 	slug: "carousel",
 	name: "Carousel",
 	description:
-		"Centred row of slides browsed by drag, flick, trackpad swipe or keys, with neighbours in view and an indicator that travels with them.",
+		"Slides browsed by drag, flick, trackpad swipe or keys. Compose content, arrows, dots and thumbnails; neighbours can peek in.",
 	category: "base",
 	status: "stable",
 	variants: variantsOf(carouselVariants, ["projection", "variant", "size"]),
@@ -34,7 +33,8 @@ export const carousel = defineComponent({
 		{
 			name: "visibleItems",
 			type: "number",
-			description: "Approximate number of slides across a cylindrical projection.",
+			description:
+				"Most slides shown across a cylindrical projection; fewer when the container is too narrow for them not to overlap.",
 			default: 5,
 			control: { kind: "number", min: 3, max: 9, step: 2 },
 		},
@@ -56,17 +56,9 @@ export const carousel = defineComponent({
 			name: "variant",
 			type: VARIANTS.map((v) => `"${v}"`).join(" | "),
 			description:
-				"`default` scales and dims neighbours, `flat` keeps a plain row, `inset` floats controls over the slide, and `showcase` presents large media with pill progress controls.",
+				"`default` is one full-width slide with arrows over its edges. `peek` scales and dims neighbours, `flat` keeps them at full size, `inset` floats the dots over the slide, and `showcase` presents large media with pill controls.",
 			default: "default",
 			control: { kind: "select", options: VARIANTS },
-		},
-		{
-			name: "controls",
-			type: CONTROLS.map((v) => `"${v}"`).join(" | "),
-			description:
-				"Which controls render. `full` adds the play control when `interval` is set; hidden dots stay for screen readers.",
-			default: "full",
-			control: { kind: "select", options: CONTROLS },
 		},
 		{
 			name: "loop",
@@ -79,7 +71,7 @@ export const carousel = defineComponent({
 			name: "size",
 			type: SIZES.map((v) => `"${v}"`).join(" | "),
 			description:
-				"Slide width preset: a share of the carousel width, capped at 260, 340 or 480px.",
+				"Control and thumbnail size; for `peek`, `flat` and `showcase` also the slide width, a share of the carousel capped at 260, 340 or 480px.",
 			default: "default",
 			control: { kind: "select", options: SIZES },
 		},
@@ -101,7 +93,7 @@ export const carousel = defineComponent({
 			name: "interval",
 			type: "number",
 			description:
-				"Milliseconds per slide. Adds a play control; rotation pauses on hover, keyboard focus, drag, off screen and in background tabs.",
+				"Milliseconds per slide while `autoplay` is on; rotation pauses on hover, keyboard focus, drag, off screen and in background tabs.",
 			control: { kind: "number", min: 0, max: 10000, step: 500 },
 		},
 		{
@@ -113,6 +105,13 @@ export const carousel = defineComponent({
 			control: { kind: "boolean" },
 		},
 		{
+			name: "labels",
+			type: "Partial<CarouselLabels>",
+			description:
+				"Copy for the groups and buttons: slides, chooseSlide, thumbnails, previous, next.",
+			control: { kind: "none" },
+		},
+		{
 			name: "slideLabel",
 			type: "(index: number, count: number) => string",
 			description: 'Names each slide and its indicator. Defaults to "2 of 5".',
@@ -121,15 +120,14 @@ export const carousel = defineComponent({
 	],
 	motion: {
 		springs: [],
-		reducedMotion:
-			"Slides jump instead of gliding, the play control is removed and rotation never starts.",
+		reducedMotion: "Slides jump instead of gliding and rotation never starts.",
 		behaviour: [
 			"The track follows the pointer 1:1 once a press moves 6px horizontally; a vertical move hands the gesture to the page scroll.",
 			"Release lands where the flick's momentum would carry the track; any flick faster than 360px/s moves at least one slide.",
 			"Past either end the track rubber-bands and springs back on release.",
-			"Neighbours scale to 0.9 and dim to 50% per step of distance, read every frame from the track position.",
+			"With `peek`, neighbours scale to 0.9 and dim to 50% per step of distance, read every frame from the track position.",
 			"Concave and convex projections derive x, y and scale from that same continuous, wrapping track position, so drag, keys, autoplay and controls never fork into a second state model.",
-			"The indicator under each slide widens from a 6px dot to a 22px pill as the track nears it, and drains left to right while rotation runs.",
+			"The active dot widens from 6px to a 16px pill as the track nears it, and drains left to right while rotation runs. The selected thumbnail scrolls to the centre of its strip.",
 		],
 	},
 	a11y: {
@@ -142,14 +140,14 @@ export const carousel = defineComponent({
 			{ keys: ["Home", "End"], action: "Jump to the first or last slide" },
 			{
 				keys: ["Tab"],
-				action: "Moves from the slides to the play control, indicators and arrows",
+				action: "Moves from the slides to the indicators, thumbnails and arrows",
 			},
 		],
 		notes: [
 			"The root is a region with aria-roledescription carousel; each slide is a labelled tabpanel driven by the indicator tablist.",
 			"Off-screen slides are inert, so focus and screen readers stay on the active slide.",
 			"Manual moves are announced in a polite live region; rotation stays silent.",
-			"Rotation pauses on hover, keyboard focus and drag, and the play control is always reachable.",
+			"Rotation pauses on hover, keyboard focus and drag, and only runs while `autoplay` is true.",
 		],
 	},
 	guidance: {
@@ -171,17 +169,17 @@ export const carousel = defineComponent({
 		],
 		responsive: [
 			"Slide width is a share of the carousel's own width (container query units), so it fits a sidebar as well as a full page.",
-			"Below 340px the control row tightens so play, indicators and arrows still fit beside a narrow slide.",
+			"Arrows overlay the slide edges at any width; dots keep a 24px hit area. Thumbnails scroll sideways when they overflow.",
 		],
 		performance: [
 			"Every slide stays mounted; transforms are written straight to the DOM without re-rendering slides.",
 			"Rotation stops while the carousel is off screen or the tab is hidden.",
 		],
 		ai: [
-			"Wrap each slide in CarouselItem; give the Carousel a `label` that names the set.",
+			"Compose Carousel > CarouselContent > CarouselItem, then add CarouselPrevious, CarouselNext, CarouselDots or CarouselThumbs (one CarouselThumb per slide) as siblings of the content; give the Carousel a `label` that names the set.",
 			'Use `projection="concave"` or `projection="convex"` for short visual sets; reduce `slideSize` so neighbouring choices remain legible.',
 			"Keep slides to roughly three to seven. Past that, a grid with filters serves people better.",
-			"Leave `autoplay` off unless the user asked for rotation; set `interval` to offer the play control instead.",
+			"Leave `autoplay` off unless the user asked for rotation; drive it from your own state (a toggle, a visibility rule) with `interval` set.",
 		],
 	},
 	licenseOrigin: {

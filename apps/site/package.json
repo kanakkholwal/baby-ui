@@ -4,6 +4,7 @@
 	"type": "module",
 	"scripts": {
 		"dev": "cross-env PORTLESS_HTTPS=0 portless",
+		"source-json": "node scripts/build-source-json.mjs",
 		"dev:app": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",

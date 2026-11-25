@@ -15,7 +15,11 @@ import {
 	toDateParts,
 } from "../../date-field/core";
 import { DateSegments, useFieldDraft } from "../../date-field/react/segments";
-import { dateField } from "../../date-field/variants";
+import {
+	dateField,
+	popoverCalendarSize,
+	popoverRangeSize,
+} from "../../date-field/variants";
 import { FieldError } from "../../field/react/field";
 import { cn } from "../../lib/cn";
 import { type PillBox, pillStyle, pressedBox } from "../../lib/pill";
@@ -90,7 +94,7 @@ export function DateRangePickerPresets({
 	onPick: (range: DateRangeParts) => void;
 }) {
 	const s = dateRangePicker();
-	const rail = useRef<HTMLFieldSetElement>(null);
+	const rail = useRef<HTMLDivElement>(null);
 	const today = todayParts();
 	const [box, setBox] = useState<PillBox | null>(null);
 	const [ready, setReady] = useState(false);
@@ -109,7 +113,8 @@ export function DateRangePickerPresets({
 	}, [box, ready]);
 
 	return (
-		<fieldset ref={rail} aria-label={label} className={s.rail()}>
+		// biome-ignore lint/a11y/useSemanticElements: fieldset cannot centre flex children.
+		<div role="group" ref={rail} aria-label={label} className={s.rail()}>
 			<span
 				aria-hidden
 				data-ready={ready ? "" : undefined}
@@ -127,7 +132,7 @@ export function DateRangePickerPresets({
 					{preset.label}
 				</button>
 			))}
-		</fieldset>
+		</div>
 	);
 }
 
@@ -237,7 +242,9 @@ export function DateRangePicker({
 
 	return (
 		<div data-slot="date-range-picker" className={cn(field.root(), className)}>
-			<fieldset
+			{/* biome-ignore lint/a11y/useSemanticElements: fieldset cannot centre flex children. */}
+			<div
+				role="group"
 				id={id}
 				aria-label={ariaLabel ?? labels.group}
 				aria-describedby={
@@ -293,6 +300,7 @@ export function DateRangePicker({
 						) : null}
 						<div className={s.main()}>
 							<RangeCalendar
+								size={wide ? popoverRangeSize[size] : popoverCalendarSize[size]}
 								selected={shown}
 								onSelect={pick}
 								numberOfMonths={wide ? 2 : 1}
@@ -322,7 +330,7 @@ export function DateRangePicker({
 						</div>
 					</PopoverContent>
 				</Popover>
-			</fieldset>
+			</div>
 			<FieldError id={errorId} errors={error ? [{ message: error }] : undefined} />
 		</div>
 	);

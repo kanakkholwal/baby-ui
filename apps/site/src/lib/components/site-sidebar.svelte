@@ -17,7 +17,7 @@ import {
 	IconTypography,
 } from "@baby-ui/icons";
 import type { Category } from "@baby-ui/registry-schema/categories";
-import { DocsNav, type DocsNavSection } from "@baby-ui/svelte";
+import { DocsNav, type DocsNavSection } from "@baby-ui/svelte/docs-nav";
 import { type Component, untrack } from "svelte";
 import { bookmarks } from "#lib/bookmarks.svelte.js";
 import type { SidebarGroup } from "#lib/registry.js";

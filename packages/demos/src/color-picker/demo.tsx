@@ -23,7 +23,7 @@ export function ColorPickerDemo({ props }: { props: Props }) {
 			format={format}
 			onFormatChange={setFormat}
 			variant={p.variant ?? "field"}
-			className={p.variant === "row" ? "max-w-64" : undefined}
+			className={p.variant === "celled" ? "max-w-64" : undefined}
 			size={p.size ?? "default"}
 			invalid={p.invalid ?? false}
 			eyedropper={p.eyedropper ?? true}

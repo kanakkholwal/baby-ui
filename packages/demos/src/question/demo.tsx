@@ -3,6 +3,7 @@
 import {
 	Question,
 	type QuestionAnswers,
+	QuestionBody,
 	QuestionContent,
 	QuestionFooter,
 	QuestionHeader,
@@ -83,8 +84,11 @@ export function QuestionDemo({ props }: { props: Props }) {
 					timer.current = window.setTimeout(() => setStatus("answered"), 1200);
 				}}
 			>
-				<QuestionHeader title="Got it" onDismiss={() => setStatus("answered")} />
-				<QuestionContent />
+				<QuestionBody>
+					<QuestionHeader title="Got it" onDismiss={() => setStatus("answered")} />
+					<QuestionContent />
+					<QuestionResult>{summary(answers) || "Skipped"}</QuestionResult>
+				</QuestionBody>
 				<QuestionFooter
 					submitLabel={
 						typeof props.submitLabel === "string" && props.submitLabel
@@ -92,7 +96,6 @@ export function QuestionDemo({ props }: { props: Props }) {
 							: undefined
 					}
 				/>
-				<QuestionResult>{summary(answers) || "Skipped"}</QuestionResult>
 			</Question>
 		</div>
 	);

@@ -40,7 +40,7 @@ let {
 	yearFormat = "numeric",
 	day,
 	disableDaysOutsideMonth = false,
-	fixedWeeks = true,
+	fixedWeeks = false,
 	...rest
 }: WithoutChildren<CalendarPrimitive.RootProps> & {
 	buttonVariant?: ButtonVariant;

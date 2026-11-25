@@ -1,6 +1,6 @@
 import { defineComponent } from "@baby-ui/registry-schema";
 
-const SIZES = ["xs", "sm", "default", "lg", "xl"];
+const SIZES = ["sm", "default", "lg", "xl"];
 
 export const passwordInput = defineComponent({
 	slug: "password-input",

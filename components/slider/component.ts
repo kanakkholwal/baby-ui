@@ -1,7 +1,7 @@
 import { defineComponent, variantsOf } from "@baby-ui/registry-schema";
 import { slider as sliderVariants } from "./variants";
 
-const VARIANTS = ["default", "track", "inline", "bubble", "fluid", "wave", "ruler"];
+const VARIANTS = ["default", "track", "celled", "bubble", "fluid", "wave", "ruler"];
 
 export const slider = defineComponent({
 	slug: "slider",
@@ -52,7 +52,7 @@ export const slider = defineComponent({
 			name: "variant",
 			type: VARIANTS.map((v) => `"${v}"`).join(" | "),
 			description:
-				"Look. `inline`, `fluid`, `wave` and `ruler` take one value (a range falls back to `track`); `default`, `track` and `bubble` also go vertical.",
+				"Look. `celled`, `fluid`, `wave` and `ruler` take one value (a range falls back to `track`); `default`, `track` and `bubble` also go vertical.",
 			default: "default",
 			control: { kind: "select", options: VARIANTS },
 		},
@@ -69,10 +69,10 @@ export const slider = defineComponent({
 			name: "size",
 			type: '"sm" | "default" | "lg"',
 			description:
-				"Scale of the `default`, `track`, `inline`, `bubble` and `fluid` looks.",
+				"Scale of the `default`, `track`, `celled`, `bubble` and `fluid` looks.",
 			default: "default",
 			control: { kind: "select", options: ["sm", "default", "lg"] },
-			showWhen: { variant: ["default", "track", "inline", "bubble", "fluid"] },
+			showWhen: { variant: ["default", "track", "celled", "bubble", "fluid"] },
 		},
 		{
 			name: "showValue",
@@ -85,7 +85,7 @@ export const slider = defineComponent({
 			name: "formatValue",
 			type: "(value: number) => string",
 			description:
-				"Formats the value wherever it shows: header, inline text, bubble, ruler readout, and the announced value.",
+				"Formats the value wherever it shows: header, cell text, bubble, ruler readout, and the announced value.",
 			control: { kind: "none" },
 		},
 		{
@@ -125,7 +125,7 @@ export const slider = defineComponent({
 		behaviour: [
 			"The thumb and fill glide to a clicked or keyed value on the snappy spring token (400ms); a held thumb follows the pointer within 100ms.",
 			"The thumb scales to 1.08 on hover and 1.15 while dragging; the track thickens by 2px on hover, over 140ms.",
-			"`track` and `inline` stretch their pill handle 1.35x while dragging; `inline` parts it into two dots where it crosses the label or value.",
+			"`track` stretches its pill handle 1.35x while dragging; `celled` has no handle, so the edge of the fill is the affordance and the cell lifts on hover.",
 			"`bubble` pops a value bubble out of the thumb while it's dragged; `fluid` presses to 1.03 and inverts its text under the fill.",
 			"`wave` raises 32 bars into a Gaussian crest around the value, each bar delayed by its distance; `ruler` scrolls a scale under a fixed needle and settles onto the nearest step.",
 			"Vertical orientation needs an explicit height on an ancestor (percentage sizing has nothing to resolve against otherwise); the demo sets one directly since it's a one-off layout concern, not a design token.",

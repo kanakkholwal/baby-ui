@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Badge } from "@baby-ui/svelte";
+import { Badge } from "@baby-ui/svelte/badge";
 import { contrast, tokenColor, watchLayout } from "./measure";
 
 type Pair = {

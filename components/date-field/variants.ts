@@ -1,4 +1,5 @@
 import { tv, type VariantProps } from "tailwind-variants";
+import type { CalendarSize } from "../calendar/variants";
 
 /**
  * Shared by DateField, TimePicker, DatePicker and DateRangePicker in both ports. bits-ui's
@@ -8,7 +9,7 @@ export const dateField = tv({
 	slots: {
 		root: "inline-flex w-fit min-w-0 max-w-full flex-col gap-1.5",
 		group: [
-			"inline-flex w-full min-w-0 items-center border border-(--field-edge) bg-(--field) px-1.5 text-foreground tabular-nums hover:bg-[color-mix(in_oklab,var(--field)_97%,var(--foreground))]",
+			"inline-flex w-fit max-w-full min-w-0 items-center has-[button]:pe-1 border border-(--field-edge) bg-(--field) px-1.5 text-foreground tabular-nums hover:bg-[color-mix(in_oklab,var(--field)_97%,var(--foreground))]",
 			"transition-[box-shadow,border-color] duration-[var(--duration-press)] ease-[var(--ease-ui-out)] motion-reduce:transition-none",
 			// Rings while a segment is focused, not while the calendar button is.
 			"has-[[data-segment]:focus]:border-ring has-[[data-segment]:focus]:ring-3 has-[[data-segment]:focus]:ring-ring/20",
@@ -29,19 +30,48 @@ export const dateField = tv({
 		],
 		icon: "pointer-events-none ms-1.5 flex shrink-0 items-center text-muted-foreground [&_svg]:size-4",
 		separator: "select-none text-muted-foreground",
-		trigger: "ms-auto shrink-0 aria-expanded:bg-accent aria-expanded:text-foreground",
+		trigger: "ms-1.5 shrink-0 aria-expanded:bg-accent aria-expanded:text-foreground",
 		content: "w-auto p-0",
 	},
 	variants: {
 		size: {
-			xs: { group: "h-6 rounded-sm px-1 text-xs", icon: "[&_svg]:size-3" },
-			sm: { group: "h-8 rounded-md text-xs", icon: "[&_svg]:size-3.5" },
-			default: { group: "h-9 rounded-lg text-sm" },
-			lg: { group: "h-10 rounded-lg text-sm" },
-			xl: { group: "h-12 rounded-xl px-2 text-base", icon: "[&_svg]:size-4.5" },
+			sm: {
+				group: "h-8 rounded-md text-xs",
+				icon: "[&_svg]:size-3.5",
+				trigger: "size-6 rounded-sm [&_svg]:size-3.5",
+			},
+			default: {
+				group: "h-9 rounded-lg text-sm",
+				trigger: "size-7 rounded-md [&_svg]:size-4",
+			},
+			lg: {
+				group: "h-10 rounded-lg text-sm",
+				trigger: "size-8 rounded-md [&_svg]:size-4",
+			},
+			xl: {
+				group: "h-12 rounded-xl px-2 text-base",
+				icon: "[&_svg]:size-4.5",
+				trigger: "size-9 rounded-lg [&_svg]:size-5",
+			},
 		},
 	},
 	defaultVariants: { size: "default" },
 });
 
 export type DateFieldSize = NonNullable<VariantProps<typeof dateField>["size"]>;
+
+/** The calendar in a field's popover follows the field's size. */
+export const popoverCalendarSize: Record<DateFieldSize, CalendarSize> = {
+	sm: "sm",
+	default: "default",
+	lg: "lg",
+	xl: "lg",
+};
+
+/** Two months side by side sit one step tighter than a single month. */
+export const popoverRangeSize: Record<DateFieldSize, CalendarSize> = {
+	sm: "sm",
+	default: "sm",
+	lg: "default",
+	xl: "lg",
+};

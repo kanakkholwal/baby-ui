@@ -19,10 +19,6 @@ export const tagInput = tv({
 	variants: {
 		// Same rim as MultiSelect: rows are the ladder height minus border and padding.
 		size: {
-			xs: {
-				root: "min-h-6 rounded-sm px-0.5 py-0 text-xs",
-				input: ["h-5.5 px-1", fieldText({ size: "xs" })],
-			},
 			sm: {
 				root: "min-h-8 rounded-md px-1 py-0.5 text-xs",
 				input: ["h-6.5 px-1.5", fieldText({ size: "sm" })],
@@ -48,7 +44,6 @@ export type TagInputSize = NonNullable<VariantProps<typeof tagInput>["size"]>;
 
 /** The chip Badge size for each field size: chips fit the field's inner row. */
 export const TAG_INPUT_CHIP: Record<TagInputSize, BadgeSize> = {
-	xs: "sm",
 	sm: "sm",
 	default: "default",
 	lg: "default",

@@ -47,7 +47,6 @@ export const tabsFrame = tv({
 			},
 		},
 		size: {
-			xs: { list: "h-6", trigger: "gap-1 px-2 text-xs [&_svg]:size-3" },
 			sm: { list: "h-8", trigger: "gap-1.5 px-2.5 text-xs [&_svg]:size-3.5" },
 			default: { list: "h-9", trigger: "gap-2 px-3 text-sm [&_svg]:size-4" },
 			lg: { list: "h-10", trigger: "gap-2 px-3.5 text-sm [&_svg]:size-4" },
@@ -77,7 +76,6 @@ export const tabsFrame = tv({
 			class: { list: "border-b-0", indicator: "hidden" },
 		},
 		// Stacked triggers take the ladder height the horizontal list gives them by stretching.
-		{ orientation: "vertical", size: "xs", class: { trigger: "h-6" } },
 		{ orientation: "vertical", size: "sm", class: { trigger: "h-8" } },
 		{ orientation: "vertical", size: "default", class: { trigger: "h-9" } },
 		{ orientation: "vertical", size: "lg", class: { trigger: "h-10" } },
@@ -85,7 +83,7 @@ export const tabsFrame = tv({
 		// Small segments keep a slimmer rim so the trigger still has room; larger ones read more airy.
 		{
 			variant: "segment",
-			size: ["xs", "sm"],
+			size: "sm",
 			class: { list: "p-0.5", indicator: "top-0.5 bottom-0.5" },
 		},
 		{ variant: ["segment", "pill"], size: ["default", "lg"], class: { trigger: "px-4" } },
@@ -93,11 +91,6 @@ export const tabsFrame = tv({
 		// An edge between neighbours has no vertical form.
 		{ divided: true, orientation: "vertical", class: { trigger: "after:hidden" } },
 		// Soft and outline triggers are controls themselves: the ladder radius.
-		{
-			variant: ["soft", "outline"],
-			size: "xs",
-			class: { trigger: "rounded-sm", indicator: "rounded-sm" },
-		},
 		{
 			variant: ["soft", "outline"],
 			size: "sm",
@@ -112,11 +105,6 @@ export const tabsFrame = tv({
 			variant: ["soft", "outline"],
 			size: "xl",
 			class: { trigger: "rounded-xl", indicator: "rounded-xl" },
-		},
-		{
-			variant: "enclosed",
-			size: "xs",
-			class: { trigger: "rounded-t-sm", indicator: "rounded-t-sm" },
 		},
 		{
 			variant: "enclosed",

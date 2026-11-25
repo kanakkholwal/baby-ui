@@ -1,6 +1,6 @@
 <script lang="ts">
 import { IconArrowLeft } from "@baby-ui/icons";
-import { Button } from "@baby-ui/svelte";
+import { Button } from "@baby-ui/svelte/button";
 import CardGallery from "#lib/components/card-gallery.svelte";
 import PmCommand from "#lib/components/pm-command.svelte";
 import Seo from "#lib/components/seo.svelte";

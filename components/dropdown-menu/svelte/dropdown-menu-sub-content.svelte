@@ -1,14 +1,14 @@
 <script lang="ts">
 import { DropdownMenu as DropdownMenuPrimitive } from "bits-ui";
 import { cn } from "../../lib/cn";
-import { type MenuSize, menu } from "../../lib/menu";
+import { type MenuContentSize, menu } from "../../lib/menu";
 import { ANCHORED } from "../../lib/svelte/anchor";
 
 let {
 	class: classProp,
 	size = "default",
 	...rest
-}: DropdownMenuPrimitive.SubContentProps & { size?: MenuSize } = $props();
+}: DropdownMenuPrimitive.SubContentProps & { size?: MenuContentSize } = $props();
 </script>
 
 <DropdownMenuPrimitive.Portal>

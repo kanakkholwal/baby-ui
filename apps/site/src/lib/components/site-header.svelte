@@ -21,10 +21,9 @@ import {
 	IconTerminal2,
 	IconTypography,
 } from "@baby-ui/icons";
+import { Button, button } from "@baby-ui/svelte/button";
+import { IconMorph } from "@baby-ui/svelte/icon-morph";
 import {
-	Button,
-	button,
-	IconMorph,
 	NavigationMenu,
 	NavigationMenuBody,
 	NavigationMenuContent,
@@ -34,12 +33,14 @@ import {
 	NavigationMenuList,
 	NavigationMenuTrigger,
 	navigationMenuTriggerStyle,
-	ThemeToggle,
+} from "@baby-ui/svelte/navigation-menu";
+import { ThemeToggle } from "@baby-ui/svelte/theme-toggle";
+import {
 	Tooltip,
 	TooltipContent,
 	TooltipProvider,
 	TooltipTrigger,
-} from "@baby-ui/svelte";
+} from "@baby-ui/svelte/tooltip";
 import { mode, setMode } from "mode-watcher";
 import AccountMenu from "#lib/components/account-menu.svelte";
 import BookmarksLink from "#lib/components/bookmarks-link.svelte";

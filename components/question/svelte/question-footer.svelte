@@ -5,41 +5,52 @@ import { isAnswered, QUESTION_ICONS } from "../variants";
 import { questionState } from "./context";
 
 let {
-	submitLabel = "Submit response",
+	submitLabel = "Send",
+	skipLabel = "Skip",
+	backLabel = "Back",
 	class: classProp,
-}: { submitLabel?: string; class?: string } = $props();
+}: {
+	/** The last question's submit label. */
+	submitLabel?: string;
+	/** Label of the button that moves on without an answer; hidden for `required` questions. */
+	skipLabel?: string;
+	/** Label of the button that returns to the previous question. */
+	backLabel?: string;
+	class?: string;
+} = $props();
 const q = questionState("QuestionFooter");
 const s = $derived(q.styles);
 const last = $derived(q.step === q.questions.length - 1);
-const glyph =
-	"fill-none stroke-current [stroke-linecap:round] [stroke-linejoin:round] [stroke-width:2]";
 </script>
 
-<!-- Back, a dot per question, and next, which submits on the last question. -->
+<!-- Progress, then Back, Skip and Next; Next submits on the last question. -->
 <div data-slot="question-footer" data-open={q.interactive || undefined} class={s.fold()}>
 	<div class={s.clip()} inert={!q.interactive}>
 		<div class={cn(s.footer(), classProp)}>
 			{#if q.questions.length > 1}
-				<Button variant="ghost" size="icon-sm" aria-label="Previous question" disabled={q.busy || q.step === 0} onclick={() => q.setStep(q.step - 1)} class="rounded-full">
-					<svg viewBox="0 0 24 24" aria-hidden="true" class={glyph}><path d={QUESTION_ICONS.back} /></svg>
-				</Button>
-				<span class={s.dots()}>
-					<span class="sr-only">Question {q.step + 1} of {q.questions.length}</span>
+				<span aria-hidden="true" class={s.steps()}>
 					{#each q.questions as item, i (item.id)}
-						<span aria-hidden="true" data-done={i <= q.step || undefined} data-current={i === q.step || undefined} class={s.dot()}></span>
+						<span data-done={i < q.step || undefined} data-current={i === q.step || undefined} class={s.step()}></span>
 					{/each}
 				</span>
 			{/if}
-			<Button size={last ? "sm" : "icon-sm"} aria-label={last ? submitLabel : "Next question"} disabled={q.busy || !isAnswered(q.answer)} onclick={q.advance} class={s.next()}>
-				{#if q.busy}
-					<svg viewBox="0 0 24 24" aria-hidden="true" class="spinner {glyph}"><path d={QUESTION_ICONS.spinner} /></svg>
-				{:else if last}
-					{submitLabel}
-					<svg viewBox="0 0 24 24" aria-hidden="true" class={glyph}><path d={QUESTION_ICONS.next} /></svg>
-				{:else}
-					<svg viewBox="0 0 24 24" aria-hidden="true" class={glyph}><path d={QUESTION_ICONS.next} /></svg>
+			<div class={s.actions()}>
+				{#if q.step > 0}
+					<Button variant="ghost" disabled={q.busy} onclick={() => q.setStep(q.step - 1)} class={s.back()}>{backLabel}</Button>
 				{/if}
-			</Button>
+				{#if !q.item?.required}
+					<Button variant="ghost" disabled={q.busy} onclick={q.advance} class={s.skip()}>{skipLabel}</Button>
+				{/if}
+				<Button disabled={q.busy || !isAnswered(q.answer)} onclick={q.advance} class={s.next()}>
+					{#if q.busy}
+						<svg viewBox="0 0 24 24" aria-hidden="true" class="spinner fill-none stroke-current [stroke-linecap:round] [stroke-width:2]"><path d={QUESTION_ICONS.spinner} /></svg>
+					{:else if last}
+						{submitLabel}
+					{:else}
+						Next
+					{/if}
+				</Button>
+			</div>
 		</div>
 	</div>
 </div>

@@ -4,19 +4,19 @@ const thumb =
 	"-translate-x-1/2 -translate-y-1/2 pointer-events-none absolute size-3.5 rounded-full border-2 border-white shadow-[0_1px_4px_rgb(0_0_0/0.5)]";
 
 /**
- * One colour component, many shapes: `field` (default) a swatch + hex field, `row` a labelled
+ * One colour component, many shapes: `field` (default) a swatch + hex field, `celled` a labelled
  * panel row, `inline` the full picker, `area`, `slider`, `swatch` and `swatches` its parts.
  */
 export const colorPicker = tv({
 	slots: {
 		// Sized to its content, a swatch plus "#RRGGBB", not the InputGroup's full width.
 		field: "w-fit",
-		// A full-width property row: label, then the hex and the swatch that opens the picker.
-		row: "flex w-full items-center gap-2 rounded-lg border border-(--field-edge) bg-(--field) px-2.5 transition-[border-color,box-shadow] duration-(--duration-fast) ease-[var(--ease-ui-out)] hover:bg-[color-mix(in_oklab,var(--field)_97%,var(--foreground))] focus-within:border-ring focus-within:ring-2 focus-within:ring-ring motion-reduce:transition-none has-disabled:pointer-events-none has-disabled:opacity-50",
-		rowLabel: "min-w-0 flex-1 truncate text-muted-foreground",
+		// The celled variant: a raised full-width row with the label, then the hex and the swatch that opens the picker.
+		row: "flex w-full items-center gap-2 rounded-2xl bg-card px-4 shadow-xs transition-shadow duration-(--duration-fast) ease-[var(--ease-ui-out)] hover:shadow-sm focus-within:ring-2 focus-within:ring-ring motion-reduce:transition-none has-disabled:pointer-events-none has-disabled:opacity-50",
+		rowLabel: "min-w-0 flex-1 truncate font-medium text-foreground",
 		// Reads as text until pointed at or focused; typing a hex commits on Enter or blur.
 		rowHex:
-			"w-[9ch] rounded-sm bg-transparent px-1 text-right font-mono text-foreground uppercase tabular-nums outline-none transition-colors hover:bg-accent focus:bg-accent aria-invalid:text-destructive-strong",
+			"w-[9ch] rounded-sm bg-transparent px-1 text-right text-muted-foreground uppercase tabular-nums outline-none transition-colors hover:bg-accent focus:bg-accent aria-invalid:text-destructive-strong",
 		trigger:
 			"grid place-items-center rounded-md outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none",
 		swatch: [
@@ -54,7 +54,7 @@ export const colorPicker = tv({
 		variant: {
 			inline: {},
 			field: {},
-			row: {},
+			celled: {},
 			area: { area: "overflow-hidden rounded-xl" },
 			slider: {},
 			swatch: {},
@@ -62,7 +62,7 @@ export const colorPicker = tv({
 		},
 		size: {
 			sm: {
-				row: "h-8 text-xs",
+				row: "h-10 text-sm",
 				hexInput: "text-xs",
 				swatch: "size-4",
 				area: "size-36",
@@ -71,7 +71,7 @@ export const colorPicker = tv({
 				discOption: "size-6",
 			},
 			default: {
-				row: "h-9 text-sm",
+				row: "h-11 text-sm",
 				swatch: "size-5",
 				area: "size-48",
 				slider: "w-48",
@@ -79,7 +79,7 @@ export const colorPicker = tv({
 				discOption: "size-8",
 			},
 			lg: {
-				row: "h-10 text-sm",
+				row: "h-12 text-sm",
 				swatch: "size-6",
 				area: "size-60",
 				slider: "w-60",
@@ -90,7 +90,10 @@ export const colorPicker = tv({
 	},
 	compoundVariants: [
 		// Inside the full picker the square spans the panel and sits flush with its top.
-		{ variant: ["inline", "field", "row"], class: { area: "h-36 w-full rounded-none" } },
+		{
+			variant: ["inline", "field", "celled"],
+			class: { area: "h-36 w-full rounded-none" },
+		},
 	],
 	defaultVariants: { variant: "field", size: "default" },
 });

@@ -2,7 +2,7 @@ import { defineComponent, variantsOf } from "@baby-ui/registry-schema";
 import { slideToUnlock as slideToUnlockVariants } from "./variants";
 
 const VARIANTS = ["default", "secondary", "destructive", "success", "warning", "info"];
-const SIZES = ["xs", "sm", "default", "lg", "xl"];
+const SIZES = ["sm", "default", "lg", "xl"];
 
 export const slideToUnlock = defineComponent({
 	slug: "slide-to-unlock",

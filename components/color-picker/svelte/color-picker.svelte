@@ -59,7 +59,7 @@ let {
 	swatches?: string[];
 	label?: string;
 	/**
-	 * `field` (default) swatch + hex field, `row` labelled panel row, `inline` full picker,
+	 * `field` (default) swatch + hex field, `celled` raised panel row, `inline` full picker,
 	 * `area` saturation square, `slider` hue strip, `swatch` one disc, `swatches` discs to pick.
 	 */
 	variant?: ColorPickerVariant;
@@ -500,14 +500,14 @@ const FORMATS: ColorFormat[] = ["hsv", "hsl", "rgb"];
 	{#snippet swatchPicker(align: "start" | "end")}
 		<Popover bind:open onOpenChange={(next) => onOpenChange?.(next)}>
 			<PopoverTrigger {disabled} aria-label="Pick {label.toLowerCase()}" class={s.trigger()}>
-				<span aria-hidden="true" class={s.swatch()} style:background-color={parsed ?? preview}></span>
+				<span aria-hidden="true" class={cn(s.swatch(), variant === "celled" && "rounded-full ring-0")} style:background-color={parsed ?? preview}></span>
 			</PopoverTrigger>
 			<PopoverContent {align} class={s.content()}>
 				{@render picker()}
 			</PopoverContent>
 		</Popover>
 	{/snippet}
-	{#if variant === "row"}
+	{#if variant === "celled"}
 		<!-- The row variant: label, then the hex you can type into, then the swatch for the picker. -->
 		<div data-slot="color-picker-row" class={cn(s.row(), classProp)}>
 			<label for={id ?? `${uid}-hex`} class={s.rowLabel()}>{label}</label>

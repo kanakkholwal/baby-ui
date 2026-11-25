@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Spinner } from "@baby-ui/svelte";
+import { Spinner } from "@baby-ui/svelte/spinner";
 import { type AnyProps, loadComponent } from "#lib/component-module.js";
 
 let { slug, entry, props }: { slug: string; entry: string; props: AnyProps } = $props();

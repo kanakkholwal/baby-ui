@@ -1,11 +1,6 @@
 <script lang="ts">
-import {
-	Button,
-	Drawer,
-	DrawerContent,
-	DrawerHeader,
-	DrawerTitle,
-} from "@baby-ui/svelte";
+import { Button } from "@baby-ui/svelte/button";
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@baby-ui/svelte/drawer";
 import type { Snippet } from "svelte";
 
 let {

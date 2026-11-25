@@ -10,7 +10,7 @@ export const contextMenu = defineComponent({
 	props: [
 		{
 			name: "size",
-			type: '"xs" | "sm" | "default" | "lg" | "xl"',
+			type: '"sm" | "default" | "lg" | "xl"',
 			description: "ContextMenuContent: surface radius, padding and row density.",
 			default: "default",
 			control: { kind: "none" },

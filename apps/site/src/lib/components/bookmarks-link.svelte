@@ -1,6 +1,7 @@
 <script lang="ts">
 import { IconBookmark } from "@baby-ui/icons";
-import { Button, RollingDigits } from "@baby-ui/svelte";
+import { Button } from "@baby-ui/svelte/button";
+import { RollingDigits } from "@baby-ui/svelte/rolling-digits";
 import { bookmarks } from "#lib/bookmarks.svelte.js";
 
 // The store reads browser storage, so the count waits for the client to avoid a server mismatch.

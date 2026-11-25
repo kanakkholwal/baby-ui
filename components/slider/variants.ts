@@ -59,24 +59,20 @@ export const slider = tv({
 					"group-data-[orientation=horizontal]/slider:data-[active]:before:scale-y-[1.35] group-data-[orientation=horizontal]/slider:data-[dragging]:before:scale-y-[1.35] group-data-[orientation=vertical]/slider:data-[active]:before:scale-x-[1.35] group-data-[orientation=vertical]/slider:data-[dragging]:before:scale-x-[1.35]",
 				],
 			},
-			// The track variant with its label and value inside; the handle parts around the text.
-			inline: {
+			// A tweak-panel row: a raised cell whose fill is the value, label on the left and value on the right.
+			celled: {
 				control:
-					"overflow-hidden rounded-lg bg-muted has-focus-visible:ring-2 has-focus-visible:ring-ring has-focus-visible:ring-inset",
+					"cursor-grab overflow-hidden rounded-2xl bg-card shadow-xs transition-[box-shadow] duration-(--duration-fast) ease-(--ease-ui-out) hover:shadow-sm has-focus-visible:ring-2 has-focus-visible:ring-ring has-focus-visible:ring-inset active:cursor-grabbing motion-reduce:transition-none",
 				track: "absolute inset-0 h-full rounded-none bg-transparent",
-				range:
-					"rounded-none rounded-l-lg bg-foreground/15 after:absolute after:inset-y-0 after:left-full after:w-1.5 after:rounded-r-lg after:bg-inherit",
+				range: "rounded-none bg-muted",
 				overlay: "block text-foreground",
 				inlineLabel:
-					"absolute top-1/2 left-5 block max-w-[40%] -translate-y-1/2 truncate font-medium text-sm leading-5",
+					"absolute top-1/2 left-4 block max-w-[55%] -translate-y-1/2 truncate font-medium text-sm leading-5",
 				inlineValue:
-					"absolute top-1/2 right-5 block max-w-[40%] -translate-y-1/2 truncate font-semibold text-sm tabular-nums",
-				thumb: [
+					"absolute top-1/2 right-4 block max-w-[40%] -translate-y-1/2 truncate text-muted-foreground text-sm tabular-nums",
+				// No visible handle: the fill's edge is the affordance; the thumb stays for focus and keys.
+				thumb:
 					"h-full w-5 cursor-grab border-0 bg-transparent shadow-none hover:scale-100 focus-visible:shadow-none active:scale-100 data-[active]:scale-100 data-[dragging]:scale-100 active:cursor-grabbing",
-					"before:absolute before:top-1/2 before:left-1/2 before:h-6 before:w-1 before:-translate-1/2 before:rounded-full before:bg-foreground before:opacity-[calc(1-var(--slider-split,0))]",
-					"after:absolute after:top-1/2 after:left-1/2 after:h-[calc(1.5rem+var(--slider-split,0)*0.5rem)] after:w-1 after:-translate-1/2 after:[background:radial-gradient(circle_at_50%_2px,var(--foreground)_2px,transparent_2.5px),radial-gradient(circle_at_50%_calc(100%-2px),var(--foreground)_2px,transparent_2.5px)]",
-					"before:transition-[opacity,scale] after:transition-[height] before:duration-(--duration-press) after:duration-(--duration-press) before:ease-(--ease-ui-out) after:ease-(--ease-ui-out) data-[active]:before:scale-y-[1.35] data-[dragging]:before:scale-y-[1.35] motion-reduce:before:transition-none motion-reduce:after:transition-none",
-				],
 			},
 			// A value bubble pops out of the thumb while it is dragged: above it, or right of it when vertical.
 			bubble: {
@@ -224,9 +220,9 @@ export const slider = tv({
 				control: "data-[orientation=horizontal]:h-12 data-[orientation=vertical]:w-12",
 			},
 		},
-		{ variant: "inline", size: "sm", class: { control: "h-8" } },
-		{ variant: "inline", size: "default", class: { control: "h-10" } },
-		{ variant: "inline", size: "lg", class: { control: "h-12" } },
+		{ variant: "celled", size: "sm", class: { control: "h-10" } },
+		{ variant: "celled", size: "default", class: { control: "h-11" } },
+		{ variant: "celled", size: "lg", class: { control: "h-12" } },
 		{ variant: "fluid", size: "sm", class: { control: "h-10" } },
 		{ variant: "fluid", size: "default", class: { control: "h-12" } },
 		{ variant: "fluid", size: "lg", class: { control: "h-14" } },

@@ -65,10 +65,13 @@ export function SelectTrigger({
 	children,
 	variant = "default",
 	size: sizeProp,
+	label,
 	...props
 }: ComponentProps<typeof SelectPrimitive.Trigger> & {
 	variant?: SelectTriggerVariant;
 	size?: SelectTriggerSize;
+	/** `celled` only: the row's name, shown at the start. */
+	label?: ReactNode;
 }) {
 	const rootSize = useContext(SelectSizeContext);
 	const size = sizeProp ?? rootSize;
@@ -80,8 +83,16 @@ export function SelectTrigger({
 			className={cn(selectTrigger({ variant, size }), className)}
 			{...props}
 		>
+			{variant === "celled" ? <span className="truncate">{label}</span> : null}
 			{children}
-			<SelectPrimitive.Icon className="ms-auto [&>svg]:transition-[transform,scale,translate,rotate] [&>svg]:duration-[var(--duration-exit)] [&>svg]:ease-[var(--ease-ui-out)] data-[popup-open]:[&>svg]:rotate-180 data-[popup-open]:[&>svg]:duration-[var(--duration-dropdown)] motion-reduce:[&>svg]:transition-none">
+			<SelectPrimitive.Icon
+				data-slot="select-icon"
+				className={cn(
+					"ms-auto [&>svg]:transition-[transform,scale,translate,rotate] [&>svg]:duration-[var(--duration-exit)] [&>svg]:ease-[var(--ease-ui-out)] motion-reduce:[&>svg]:transition-none",
+					variant !== "celled" &&
+						"data-[popup-open]:[&>svg]:rotate-180 data-[popup-open]:[&>svg]:duration-[var(--duration-dropdown)]",
+				)}
+			>
 				<svg
 					viewBox="0 0 16 16"
 					fill="none"
@@ -89,7 +100,7 @@ export function SelectTrigger({
 					className="size-3.5 shrink-0 text-muted-foreground"
 				>
 					<path
-						d="m4 6 4 4 4-4"
+						d={variant === "celled" ? "m5 6.5 3-3 3 3M5 9.5l3 3 3-3" : "m4 6 4 4 4-4"}
 						stroke="currentColor"
 						strokeWidth="1.4"
 						strokeLinecap="round"

@@ -15,8 +15,8 @@ import {
 	IconTypography,
 } from "@baby-ui/icons";
 import type { Category } from "@baby-ui/registry-schema";
+import { Button } from "@baby-ui/svelte/button";
 import {
-	Button,
 	Command,
 	CommandBar,
 	CommandDialog,
@@ -29,8 +29,8 @@ import {
 	CommandInput,
 	CommandItem,
 	CommandList,
-	Shortcut,
-} from "@baby-ui/svelte";
+} from "@baby-ui/svelte/command";
+import { Shortcut } from "@baby-ui/svelte/shortcut";
 import type { Component } from "svelte";
 import { track } from "#lib/analytics.js";
 import { CATEGORY_LABEL, type CatalogItem, loadCatalog } from "#lib/registry.js";

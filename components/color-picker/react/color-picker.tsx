@@ -48,7 +48,7 @@ export interface ColorPickerProps {
 	onValueChange: (value: string) => void;
 	onFormatChange?: (format: ColorFormat) => void;
 	/**
-	 * `field` (default) swatch + hex field, `row` labelled panel row, `inline` full picker,
+	 * `field` (default) swatch + hex field, `celled` raised panel row, `inline` full picker,
 	 * `area` saturation square, `slider` hue strip, `swatch` one disc, `swatches` discs to pick.
 	 */
 	variant?: ColorPickerVariant;
@@ -543,7 +543,7 @@ export function ColorPicker({
 
 	return (
 		<HexField
-			row={variant === "row"}
+			row={variant === "celled"}
 			value={preview}
 			onValueChange={apply}
 			size={size}
@@ -633,7 +633,7 @@ function HexField({
 			>
 				<span
 					aria-hidden
-					className={s.swatch()}
+					className={cn(s.swatch(), row && "rounded-full ring-0")}
 					style={{ backgroundColor: parsed ?? value }}
 				/>
 			</PopoverTrigger>

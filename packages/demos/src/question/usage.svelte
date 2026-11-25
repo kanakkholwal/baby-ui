@@ -1,6 +1,7 @@
 <script lang="ts">
 import {
 	Question,
+	QuestionBody,
 	QuestionContent,
 	QuestionFooter,
 	QuestionHeader,
@@ -22,8 +23,10 @@ const questions: QuestionItem[] = [
 </script>
 
 <Question {questions} onSubmit={(answers) => console.log(answers)}>
-	<QuestionHeader />
-	<QuestionContent />
+	<QuestionBody>
+		<QuestionHeader />
+		<QuestionContent />
+		<QuestionResult />
+	</QuestionBody>
 	<QuestionFooter />
-	<QuestionResult />
 </Question>

@@ -1,7 +1,7 @@
 <script lang="ts">
 import { DropdownMenu as DropdownMenuPrimitive } from "bits-ui";
 import { cn } from "../../lib/cn";
-import { type MenuSize, menu } from "../../lib/menu";
+import { type MenuContentSize, menu } from "../../lib/menu";
 import { ANCHORED, stagger } from "../../lib/svelte/anchor";
 import { dropdownMenuTrigger } from "./context";
 
@@ -12,7 +12,7 @@ let {
 	size = "default",
 	ref = $bindable(null),
 	...rest
-}: DropdownMenuPrimitive.ContentProps & { size?: MenuSize } = $props();
+}: DropdownMenuPrimitive.ContentProps & { size?: MenuContentSize } = $props();
 
 $effect(() => {
 	if (ref) stagger(ref.querySelectorAll<HTMLElement>("[role='menuitem']"));

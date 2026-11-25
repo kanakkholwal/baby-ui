@@ -17,6 +17,29 @@ export function SwitchDemo({ props }: { props: Props }) {
 	const size = p.size ?? "default";
 	const variant = p.variant ?? "default";
 
+	if (variant === "celled") {
+		return (
+			<div className="flex w-full max-w-72 flex-col gap-2">
+				<Switch
+					variant="celled"
+					size={size}
+					checked={checked}
+					onCheckedChange={setChecked}
+					disabled={p.disabled ?? false}
+					label={p.label || "Animations"}
+				/>
+				<Switch
+					variant="celled"
+					size={size}
+					checked={digest}
+					onCheckedChange={setDigest}
+					label="Sounds"
+				/>
+				<Switch variant="celled" size={size} checked={false} disabled label="Haptics" />
+			</div>
+		);
+	}
+
 	return (
 		<div className="flex w-full max-w-72 flex-col divide-y divide-border/60 rounded-xl bg-card">
 			<div className="px-4 py-3">

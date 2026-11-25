@@ -23,7 +23,7 @@ $effect(() => {
 	bind:value
 	bind:format
 	variant={p.variant ?? "field"}
-	class={p.variant === "row" ? "max-w-64" : undefined}
+	class={p.variant === "celled" ? "max-w-64" : undefined}
 	size={p.size ?? "default"}
 	invalid={p.invalid ?? false}
 	eyedropper={p.eyedropper ?? true}

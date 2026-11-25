@@ -56,6 +56,23 @@
 	},
 	"overrides": [
 		{
+			"includes": ["apps/site/src/**"],
+			"linter": {
+				"rules": {
+					"style": {
+						"noRestrictedImports": {
+							"level": "error",
+							"options": {
+								"paths": {
+									"@baby-ui/svelte": "Dev SSR does not tree-shake the barrel and loads every component. Import @baby-ui/svelte/<component> or @baby-ui/svelte/lib/<file>."
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		{
 			"includes": ["**/*.svelte"],
 			"linter": {
 				"rules": {

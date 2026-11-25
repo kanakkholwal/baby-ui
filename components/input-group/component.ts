@@ -8,16 +8,16 @@ export const inputGroup = defineComponent({
 	category: "base",
 	status: "stable",
 	variants: {
-		size: ["xs", "sm", "default", "lg", "xl"],
+		size: ["sm", "default", "lg", "xl"],
 		align: ["inline-start", "inline-end", "block-start", "block-end"],
 	},
 	props: [
 		{
 			name: "size",
-			type: '"xs" | "sm" | "default" | "lg" | "xl"',
+			type: '"sm" | "default" | "lg" | "xl"',
 			description: "InputGroup height.",
 			default: "default",
-			control: { kind: "select", options: ["xs", "sm", "default", "lg", "xl"] },
+			control: { kind: "select", options: ["sm", "default", "lg", "xl"] },
 		},
 		{
 			name: "align",

@@ -29,6 +29,9 @@ let {
 	size?: RadioSize;
 	disabled?: boolean;
 	name?: string;
+	"aria-label"?: string;
+	"aria-labelledby"?: string;
+	"aria-describedby"?: string;
 	class?: string;
 } = $props();
 
@@ -44,7 +47,7 @@ setRadioGroupItemContext({
 let root = $state<HTMLElement | null>(null);
 let pill = $state<HTMLSpanElement | null>(null);
 $effect(() => {
-	if (variant !== "list" || !root || !pill) return;
+	if ((variant !== "list" && variant !== "segmented") || !root || !pill) return;
 	return attachRadioPill(root, pill);
 });
 </script>
@@ -57,8 +60,8 @@ $effect(() => {
 	{disabled}
 	{name}
 	data-slot="radio-group"
-	class={cn(radioGroup({ orientation, variant }).root(), disabled && "opacity-50", classProp)}
+	class={cn(radioGroup({ orientation, variant, size }).root(), disabled && "opacity-50", classProp)}
 >
-	{#if variant === "list"}<span bind:this={pill} aria-hidden="true" class={radioGroup({ variant }).pill()}></span>{/if}
+	{#if variant === "list" || variant === "segmented"}<span bind:this={pill} aria-hidden="true" class={radioGroup({ variant, size }).pill()}></span>{/if}
 	{@render children?.()}
 </RadioGroupPrimitive.Root>

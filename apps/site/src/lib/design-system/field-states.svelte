@@ -1,11 +1,8 @@
 <script lang="ts">
-import {
-	Button,
-	Input,
-	NativeSelect,
-	NativeSelectOption,
-	Textarea,
-} from "@baby-ui/svelte";
+import { Button } from "@baby-ui/svelte/button";
+import { Input } from "@baby-ui/svelte/input";
+import { NativeSelect, NativeSelectOption } from "@baby-ui/svelte/native-select";
+import { Textarea } from "@baby-ui/svelte/textarea";
 
 // Hover and focus can't be forced from markup, so the row says what each one does instead.
 const STATES = [

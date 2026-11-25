@@ -26,7 +26,7 @@ const RUNTIMES = [
 
 <div class="w-64">
 	<Select bind:value items={RUNTIMES} size={pTrigger.size}>
-		<SelectTrigger aria-label="Runtime" variant={pTrigger.variant} size={pTrigger.size}>
+		<SelectTrigger aria-label="Runtime" variant={pTrigger.variant} size={pTrigger.size} label="Runtime">
 			<SelectValue placeholder={pValue.placeholder || "Select an option"} />
 		</SelectTrigger>
 		<SelectContent side={pContent.side ?? "bottom"}>

@@ -10,22 +10,24 @@ import {
 	IconShuffle,
 	IconSparkles,
 } from "@baby-ui/icons";
+import { Button } from "@baby-ui/svelte/button";
+import { Input } from "@baby-ui/svelte/input";
 import {
-	Button,
-	Input,
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
+} from "@baby-ui/svelte/select";
+import {
 	Sheet,
 	SheetClose,
 	SheetContent,
 	SheetHeader,
 	SheetTitle,
-	Spinner,
-	Switch,
-} from "@baby-ui/svelte";
+} from "@baby-ui/svelte/sheet";
+import { Spinner } from "@baby-ui/svelte/spinner";
+import { Switch } from "@baby-ui/svelte/switch";
 import { onMount } from "svelte";
 import { hasProAccess } from "#lib/account.js";
 import CodeBlock from "#lib/components/code-block.svelte";

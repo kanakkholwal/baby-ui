@@ -3,7 +3,11 @@ import { CalendarDate, type DateValue } from "@internationalized/date";
 import { type DateRange, DateRangeField } from "bits-ui";
 import Button from "../../button/svelte/button.svelte";
 import { button } from "../../button/variants";
-import { dateField } from "../../date-field/variants";
+import {
+	dateField,
+	popoverCalendarSize,
+	popoverRangeSize,
+} from "../../date-field/variants";
 import FieldError from "../../field/svelte/field-error.svelte";
 import { cn } from "../../lib/cn";
 import Popover from "../../popover/svelte/popover.svelte";
@@ -195,6 +199,7 @@ function pick(next: DateRange | undefined) {
 				{/if}
 				<div class={s.main()}>
 					<RangeCalendar
+						size={wide ? popoverRangeSize[size] : popoverCalendarSize[size]}
 						value={shown}
 						onValueChange={(next: DateRange) => pick(next)}
 						bind:placeholder={month}

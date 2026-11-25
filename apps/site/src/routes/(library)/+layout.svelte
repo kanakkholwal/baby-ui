@@ -1,6 +1,6 @@
 <script lang="ts">
 import { IconRefresh } from "@baby-ui/icons";
-import { Button } from "@baby-ui/svelte";
+import { Button } from "@baby-ui/svelte/button";
 import SidebarPageLayout from "#lib/components/sidebar-page-layout.svelte";
 import { page } from "$app/state";
 import type { LayoutProps } from "./$types";

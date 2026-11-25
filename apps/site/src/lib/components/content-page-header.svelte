@@ -1,6 +1,6 @@
 <script lang="ts">
 import { IconChevronRight } from "@baby-ui/icons";
-import { Badge } from "@baby-ui/svelte";
+import { Badge } from "@baby-ui/svelte/badge";
 import type { Snippet } from "svelte";
 
 let {

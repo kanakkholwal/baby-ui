@@ -1,15 +1,15 @@
 <script lang="ts">
 import { IconBookmark, IconSearch, IconTerminal2 } from "@baby-ui/icons";
+import { Button } from "@baby-ui/svelte/button";
 import {
-	Button,
 	Empty,
 	EmptyContent,
 	EmptyDescription,
 	EmptyHeader,
 	EmptyMedia,
 	EmptyTitle,
-	Input,
-} from "@baby-ui/svelte";
+} from "@baby-ui/svelte/empty";
+import { Input } from "@baby-ui/svelte/input";
 import { SvelteSet } from "svelte/reactivity";
 import { bookmarks } from "#lib/bookmarks.svelte.js";
 import CardGallery from "#lib/components/card-gallery.svelte";

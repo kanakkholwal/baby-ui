@@ -40,6 +40,21 @@ export const scrollArea = defineComponent({
 			control: { kind: "select", options: ["vertical", "horizontal", "both"] },
 		},
 		{
+			name: "fadeSize",
+			type: "number",
+			description:
+				"Length in px over which a `mask` fade ramps in while the content scrolls toward that edge.",
+			default: 32,
+			control: { kind: "number", min: 8, max: 80, step: 4 },
+		},
+		{
+			name: "fadeOffset",
+			type: "number",
+			description: "Px the content must scroll before a fade starts.",
+			default: 0,
+			control: { kind: "number", min: 0, max: 80, step: 4 },
+		},
+		{
 			name: "fade",
 			type: '"mask" | "blur" | "none"',
 			description:
@@ -52,8 +67,8 @@ export const scrollArea = defineComponent({
 		springs: [],
 		reducedMotion: "Unchanged; the fades are not motion.",
 		behaviour: [
-			"The start and end fades (top and bottom, or left and right when horizontal) appear only when content is clipped there, so a short list has no false edge.",
-			"They fade over 150ms, which is below the threshold where the change itself draws attention.",
+			"Each edge fades only while content is clipped there, so a short list has no false edge. With `both`, all four edges fade and intersect at the corners.",
+			"A fade grows with the scroll position over `fadeSize` px instead of switching on, so it is already right at first scroll and reverses with it. Right-to-left boxes swap the horizontal edges.",
 			"Nested regions contain overscroll, so a wheel or trackpad gesture does not move the page behind a sidebar or panel.",
 		],
 	},

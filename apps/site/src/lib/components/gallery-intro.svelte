@@ -1,6 +1,7 @@
 <script lang="ts">
 import { IconArrowLeft, IconShuffle, IconTerminal2 } from "@baby-ui/icons";
-import { Badge, Button } from "@baby-ui/svelte";
+import { Badge } from "@baby-ui/svelte/badge";
+import { Button } from "@baby-ui/svelte/button";
 import type { CardItem } from "#lib/registry.js";
 import { goto } from "$app/navigation";
 

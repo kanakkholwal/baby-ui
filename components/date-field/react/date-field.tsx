@@ -93,7 +93,9 @@ export function DateField({
 
 	return (
 		<div data-slot="date-field" className={cn(s.root(), className)}>
-			<fieldset
+			{/* biome-ignore lint/a11y/useSemanticElements: fieldset cannot centre flex children. */}
+			<div
+				role="group"
 				id={id}
 				aria-label={ariaLabel ?? labels.group}
 				aria-describedby={
@@ -120,7 +122,7 @@ export function DateField({
 					className={s.input()}
 					segmentClassName={s.segment()}
 				/>
-			</fieldset>
+			</div>
 			{name ? (
 				<input type="hidden" name={name} value={parts ? isoDate(parts) : ""} />
 			) : null}
