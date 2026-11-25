@@ -20,7 +20,6 @@ export const PACKS: readonly Pack[] = [
 			"conversation",
 			"message",
 			"message-actions",
-			"chat-composer",
 			"attachment",
 			"reasoning",
 			"tool",
@@ -69,7 +68,6 @@ export const PACKS: readonly Pack[] = [
 		label: "Fintech",
 		blurb: "A wallet or trading screen: balances, prices, transfers and confirmations.",
 		slugs: [
-			"money-input",
 			"candlestick-chart",
 			"area-chart",
 			"sparkline",

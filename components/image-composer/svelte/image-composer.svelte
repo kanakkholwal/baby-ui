@@ -58,7 +58,7 @@ const root = $derived(imageComposer({ variant }).root());
 	<Composer
 		{...rest}
 		bind:value
-		variant="filled"
+		variant="bare"
 		{loading}
 		onSubmit={(prompt) => onSubmit?.(prompt, current)}
 	>

@@ -2,6 +2,7 @@
 
 import { Collapsible as CollapsiblePrimitive } from "@base-ui/react/collapsible";
 import {
+	type ComponentProps,
 	type CSSProperties,
 	createContext,
 	type ReactNode,
@@ -35,13 +36,27 @@ export type { ReasoningRow, ReasoningRowsKind, ReasoningStepStatus, ReasoningVar
 
 type ActiveStep = { id: string; label: string };
 
-const ReasoningContext = createContext<{
+type Ctx = {
+	thinking: boolean;
+	duration: number;
+	open: boolean;
+	active: ActiveStep | null;
+	styles: ReturnType<typeof reasoning>;
 	setActive: (step: ActiveStep | null, id: string) => void;
-} | null>(null);
+};
+
+const ReasoningContext = createContext<Ctx | null>(null);
+
+/** What the parts of a Reasoning share: whether it is thinking, for how long, and whether it is open. */
+export function useReasoning() {
+	const ctx = useContext(ReasoningContext);
+	if (!ctx) throw new Error("Reasoning parts must be used inside <Reasoning>");
+	return ctx;
+}
 
 export interface ReasoningProps {
 	children?: ReactNode;
-	/** Model is still reasoning: the title shimmers and the panel auto-opens. */
+	/** Model is still reasoning: the title shimmers, the icon pulses and the panel auto-opens. */
 	thinking?: boolean;
 	/** Seconds spent reasoning, passed in by the caller. */
 	duration?: number;
@@ -50,13 +65,10 @@ export interface ReasoningProps {
 	defaultOpen?: boolean;
 	onOpenChange?: (open: boolean) => void;
 	variant?: ReasoningVariant;
-	/** Title while thinking. */
-	thinkingLabel?: string;
-	/** Title once done, from the duration in seconds. */
-	formatDuration?: (seconds: number) => string;
 	className?: string;
 }
 
+/** The state of one reasoning block. Compose ReasoningTrigger and ReasoningContent inside it. */
 export function Reasoning({
 	children,
 	thinking = false,
@@ -64,9 +76,7 @@ export function Reasoning({
 	open: openProp,
 	defaultOpen = false,
 	onOpenChange,
-	variant = "outline",
-	thinkingLabel = "Thinking",
-	formatDuration = (seconds) => `Thought for ${seconds}s`,
+	variant = "default",
 	className,
 }: ReasoningProps) {
 	const [touched, setTouched] = useState(false);
@@ -79,13 +89,16 @@ export function Reasoning({
 	const setActive = useCallback((step: ActiveStep | null, id: string) => {
 		setActiveStep((current) => (step ? step : current?.id === id ? null : current));
 	}, []);
-	const context = useMemo(() => ({ setActive }), [setActive]);
-	const preview = thinking && !open ? active : null;
+	const context = useMemo(
+		() => ({ thinking, duration, open, active, styles, setActive }),
+		[thinking, duration, open, active, styles, setActive],
+	);
 
 	return (
 		<ReasoningContext.Provider value={context}>
 			<CollapsiblePrimitive.Root
 				data-slot="reasoning"
+				data-variant={variant}
 				open={open}
 				onOpenChange={(next) => {
 					setTouched(true);
@@ -94,72 +107,154 @@ export function Reasoning({
 				}}
 				className={cn(styles.root(), className)}
 			>
-				<CollapsiblePrimitive.Trigger
-					data-slot="reasoning-trigger"
-					className={styles.trigger()}
-				>
-					<svg viewBox="0 0 16 16" fill="none" aria-hidden className={styles.icon()}>
-						<path
-							d="M8 1.8a4.2 4.2 0 0 0-2.4 7.6c.4.3.6.7.6 1.2v.3h3.6v-.3c0-.5.2-.9.6-1.2A4.2 4.2 0 0 0 8 1.8Z"
-							stroke="currentColor"
-							strokeWidth="1.2"
-						/>
-						<path
-							d="M6.4 13.4h3.2"
-							stroke="currentColor"
-							strokeWidth="1.2"
-							strokeLinecap="round"
-						/>
-					</svg>
-					<span className={styles.heading()}>
-						<span className={styles.titleRow()}>
-							<span className={thinking ? styles.titleThinking() : styles.title()}>
-								{thinking ? thinkingLabel : formatDuration(duration)}
-							</span>
-							{thinking && duration > 0 ? (
-								<span className={styles.duration()}>{duration}s</span>
-							) : null}
-						</span>
-						{preview ? (
-							<span
-								key={preview.id}
-								className={cn(styles.preview(), "text-transition-unit")}
-								style={
-									{
-										"--tt-duration": "220ms",
-										"--tt-from-opacity": 0,
-										"--tt-from-y": "8px",
-										"--tt-from-blur": "3px",
-									} as CSSProperties
-								}
-							>
-								{preview.label}
-							</span>
-						) : null}
-					</span>
-					<svg viewBox="0 0 16 16" fill="none" aria-hidden className={styles.chevron()}>
-						<path
-							d="m4 6 4 4 4-4"
-							stroke="currentColor"
-							strokeWidth="1.4"
-							strokeLinecap="round"
-							strokeLinejoin="round"
-						/>
-					</svg>
-				</CollapsiblePrimitive.Trigger>
-				{/* keepMounted still sets `hidden`; force it off so the rows transition has a frame. */}
-				<CollapsiblePrimitive.Panel
-					keepMounted
-					hidden={false}
-					data-slot="reasoning-content"
-					className={styles.panel()}
-				>
-					<div className={styles.clip()}>
-						<div className={styles.content()}>{children}</div>
-					</div>
-				</CollapsiblePrimitive.Panel>
+				{children}
 			</CollapsiblePrimitive.Root>
 		</ReasoningContext.Provider>
+	);
+}
+
+/** The header row that toggles the panel. Holds the icon, title, duration, preview and chevron. */
+export function ReasoningTrigger({
+	className,
+	...props
+}: ComponentProps<typeof CollapsiblePrimitive.Trigger>) {
+	const { styles } = useReasoning();
+	return (
+		<CollapsiblePrimitive.Trigger
+			data-slot="reasoning-trigger"
+			className={cn(styles.trigger(), className)}
+			{...props}
+		/>
+	);
+}
+
+const PIXELS = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+
+/** A 3 x 3 pixel loader: it pulses while thinking and rests when done. */
+export function ReasoningIcon({ className, ...props }: ComponentProps<"span">) {
+	const { thinking, styles } = useReasoning();
+	return (
+		<span
+			aria-hidden
+			data-slot="reasoning-icon"
+			data-thinking={thinking ? "" : undefined}
+			className={cn(styles.icon(), className)}
+			{...props}
+		>
+			{PIXELS.map((i) => (
+				<span key={i} className={styles.pixel()} style={{ "--i": i } as CSSProperties} />
+			))}
+		</span>
+	);
+}
+
+/** The label: `thinkingLabel` while thinking, otherwise its children (for example "Thought for 4s"). */
+export function ReasoningTitle({
+	thinkingLabel = "Thinking",
+	className,
+	children,
+	...props
+}: ComponentProps<"span"> & { thinkingLabel?: ReactNode }) {
+	const { thinking, styles } = useReasoning();
+	return (
+		<span
+			data-slot="reasoning-title"
+			className={cn(thinking ? styles.titleThinking() : styles.title(), className)}
+			{...props}
+		>
+			{thinking ? thinkingLabel : children}
+		</span>
+	);
+}
+
+/** The seconds so far, in the mono face; it only shows while thinking. */
+export function ReasoningDuration({
+	format = (seconds) => `${seconds}s`,
+	className,
+	...props
+}: Omit<ComponentProps<"span">, "children"> & { format?: (seconds: number) => string }) {
+	const { thinking, duration, styles } = useReasoning();
+	if (!thinking || duration <= 0) return null;
+	return (
+		<span
+			data-slot="reasoning-duration"
+			className={cn(styles.duration(), className)}
+			{...props}
+		>
+			{format(duration)}
+		</span>
+	);
+}
+
+/** The label of the step in progress, while the panel is closed and the model is thinking. */
+export function ReasoningPreview({
+	className,
+	...props
+}: Omit<ComponentProps<"span">, "children">) {
+	const { thinking, open, active, styles } = useReasoning();
+	const preview = thinking && !open ? active : null;
+	if (!preview) return null;
+	return (
+		<span
+			key={preview.id}
+			data-slot="reasoning-preview"
+			className={cn(styles.preview(), "text-transition-unit", className)}
+			style={
+				{
+					"--tt-duration": "220ms",
+					"--tt-from-opacity": 0,
+					"--tt-from-y": "8px",
+					"--tt-from-blur": "3px",
+				} as CSSProperties
+			}
+			{...props}
+		>
+			{preview.label}
+		</span>
+	);
+}
+
+export function ReasoningChevron({ className, ...props }: ComponentProps<"svg">) {
+	const { styles } = useReasoning();
+	return (
+		<svg
+			viewBox="0 0 16 16"
+			fill="none"
+			aria-hidden
+			className={cn(styles.chevron(), className)}
+			{...props}
+		>
+			<path
+				d="m4 6 4 4 4-4"
+				stroke="currentColor"
+				strokeWidth="1.4"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+			/>
+		</svg>
+	);
+}
+
+/** The panel: text, ReasoningSteps or ReasoningRows. Height animates with grid rows, so nothing is measured. */
+export function ReasoningContent({
+	className,
+	children,
+	...props
+}: ComponentProps<typeof CollapsiblePrimitive.Panel>) {
+	const { styles } = useReasoning();
+	return (
+		// keepMounted still sets `hidden`; force it off so the rows transition has a frame.
+		<CollapsiblePrimitive.Panel
+			keepMounted
+			hidden={false}
+			data-slot="reasoning-content"
+			className={styles.panel()}
+			{...props}
+		>
+			<div className={styles.clip()}>
+				<div className={cn(styles.content(), className)}>{children}</div>
+			</div>
+		</CollapsiblePrimitive.Panel>
 	);
 }
 
@@ -194,8 +289,7 @@ export function ReasoningStep({
 	className,
 }: ReasoningStepProps) {
 	const id = useId();
-	const context = useContext(ReasoningContext);
-	const setActive = context?.setActive;
+	const setActive = useContext(ReasoningContext)?.setActive;
 	useEffect(() => {
 		if (!setActive) return;
 		setActive(status === "active" ? { id, label } : null, id);

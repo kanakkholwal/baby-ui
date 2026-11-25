@@ -61,7 +61,7 @@ export function ImageComposer({
 				className={cn(imageComposer({ variant }).root(), className)}
 			>
 				<Composer
-					variant="filled"
+					variant="bare"
 					loading={loading}
 					onSubmit={(prompt) => onSubmit?.(prompt, shape)}
 					{...props}

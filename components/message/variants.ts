@@ -26,8 +26,8 @@ export const messageBubble = tv({
 	variants: {
 		variant: {
 			default: "bg-muted text-foreground",
-			primary: "bg-primary text-primary-foreground",
-			tint: "bg-primary/10 text-foreground",
+			// Neutral surface for a muted transcript: the card colour with a hairline lift.
+			card: "bg-card text-foreground shadow-xs",
 			outline: "border border-border bg-background text-foreground",
 			destructive: "bg-destructive/10 text-destructive-strong",
 			ghost: "rounded-none bg-transparent px-0 py-0",

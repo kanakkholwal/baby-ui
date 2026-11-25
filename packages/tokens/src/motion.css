@@ -377,6 +377,22 @@
 	}
 }
 
+/* Reasoning: the 3 x 3 pixel loader. Each cell swells on a diagonal wave while the model thinks. */
+.reasoning-pixel {
+	opacity: 0.35;
+}
+
+[data-thinking] .reasoning-pixel {
+	animation: reasoning-pixel 1200ms ease-in-out infinite;
+	animation-delay: calc(var(--i) * 90ms);
+}
+
+@keyframes reasoning-pixel {
+	50% {
+		opacity: 1;
+	}
+}
+
 .step-spinner {
 	animation: step-spinner 850ms linear infinite;
 }
@@ -420,6 +436,7 @@
 	.typing-dot,
 	.stream-caret,
 	.reasoning-shimmer,
+	[data-thinking] .reasoning-pixel,
 	.step-spinner,
 	.footer-wordmark {
 		animation: none;

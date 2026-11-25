@@ -79,7 +79,7 @@ const root = $derived(audioComposer({ variant }).root());
 	<Composer
 		{...rest}
 		bind:value
-		variant="filled"
+		variant="bare"
 		{loading}
 		onSubmit={(prompt) => onSubmit?.(prompt, { duration, preset: chosen })}
 	>

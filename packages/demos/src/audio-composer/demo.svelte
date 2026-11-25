@@ -23,6 +23,7 @@ let making = $state(false);
 		variant={p.variant}
 		min={p.min}
 		max={p.max}
+		step={p.step}
 		loading={p.loading ?? making}
 		onStop={() => (making = false)}
 		onSubmit={() => {
@@ -33,7 +34,7 @@ let making = $state(false);
 	>
 		<ComposerInput placeholder="Describe the sound you want" minRows={2} />
 		<ComposerToolbar>
-			<AudioComposerDuration shape="dial" />
+			<AudioComposerDuration />
 			<AudioComposerStyle />
 			<AudioComposerTools>
 				<ComposerSubmit />

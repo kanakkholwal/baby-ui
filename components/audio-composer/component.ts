@@ -49,6 +49,13 @@ export const audioComposer = defineComponent({
 			control: { kind: "number", min: 10, max: 300, step: 5 },
 		},
 		{
+			name: "step",
+			type: "number",
+			description: "Seconds each press of Shorter or Longer.",
+			default: "2",
+			control: { kind: "number", min: 1, max: 10, step: 1 },
+		},
+		{
 			name: "variant",
 			type: VARIANTS.map((value) => `"${value}"`).join(" | "),
 			description: "A card that docks at the bottom of a page, or no surface of its own.",
@@ -80,8 +87,10 @@ export const audioComposer = defineComponent({
 	},
 	a11y: {
 		notes: [
-			"The length control is a group named Length; its value is a polite live region.",
-			"Shorter and Longer disable at the limits; the style is a select with full keyboard support.",
+			"The stepper is a group named Length. The value is a polite live region.",
+			"Shorter and Longer disable at the limits.",
+			"While loading, the length and style lock.",
+			"The style is a select with full keyboard support.",
 			"Enter sends, Shift+Enter adds a line, as in Composer.",
 		],
 	},

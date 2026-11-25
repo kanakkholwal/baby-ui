@@ -26,6 +26,7 @@ export function AudioComposerDemo({ props }: { props: Props }) {
 				variant={p.variant}
 				min={p.min}
 				max={p.max}
+				step={p.step}
 				loading={p.loading ?? making}
 				onStop={() => setMaking(false)}
 				onSubmit={() => {
@@ -36,7 +37,7 @@ export function AudioComposerDemo({ props }: { props: Props }) {
 			>
 				<ComposerInput placeholder="Describe the sound you want" minRows={2} />
 				<ComposerToolbar>
-					<AudioComposerDuration shape="dial" />
+					<AudioComposerDuration />
 					<AudioComposerStyle />
 					<AudioComposerTools>
 						<ComposerSubmit />

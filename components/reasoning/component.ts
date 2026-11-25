@@ -1,7 +1,7 @@
 import { defineComponent, variantsOf } from "@baby-ui/registry-schema";
 import { reasoning as reasoningVariants } from "./variants";
 
-const VARIANTS = ["outline", "card", "inline"];
+const VARIANTS = ["default", "framed"];
 
 export const reasoning = defineComponent({
 	slug: "reasoning",
@@ -50,21 +50,23 @@ export const reasoning = defineComponent({
 			name: "variant",
 			type: VARIANTS.map((v) => `"${v}"`).join(" | "),
 			description:
-				"Bordered panel, a filled card with no border, or `inline`: no chrome, a compact header over a thread line.",
-			default: "outline",
+				"Reasoning: `default` has no chrome, just a header row over an indented body. `framed` puts it on a card surface.",
+			default: "default",
 			control: { kind: "select", options: VARIANTS },
 		},
 		{
 			name: "thinkingLabel",
 			type: "string",
-			description: "Title while thinking.",
+			description:
+				'ReasoningTitle: shown while thinking; its children show once done, e.g. "Thought for 4s".',
 			default: "Thinking",
-			control: { kind: "text" },
+			control: { kind: "none" },
 		},
 		{
-			name: "formatDuration",
+			name: "format",
 			type: "(seconds: number) => string",
-			description: 'Title once done. Defaults to "Thought for Ns".',
+			description:
+				"ReasoningDuration: how the seconds so far read. It only shows while thinking.",
 			control: { kind: "none" },
 		},
 	],
@@ -73,7 +75,7 @@ export const reasoning = defineComponent({
 		reducedMotion:
 			"The panel opens and closes without the height animation; the shimmer stops.",
 		behaviour: [
-			"The header label shimmers while `thinking` and settles to a duration when it flips false.",
+			"The title shimmers and the 3 x 3 pixel icon pulses while `thinking`; both settle when it flips false.",
 			"The panel auto-opens when thinking starts and auto-closes when it ends, unless the reader has touched it, in which case their choice wins.",
 			"Height animates with grid-template-rows, so no JS measures the content.",
 			"Collapsed while thinking, the active step's label slides up under the title, fading in from an 8px drop and 3px blur over 220ms.",
@@ -90,12 +92,6 @@ export const reasoning = defineComponent({
 			"The trigger is a button with aria-expanded pointing at the panel region.",
 			"Reasoning is supplementary, so the panel is not a live region; announcing it would talk over the answer.",
 		],
-	},
-	licenseOrigin: {
-		source: "sivir-ui",
-		url: "https://github.com/aidan-neel/sivir-ui",
-		license: "MIT",
-		copyright: "Copyright (c) 2026 Aidan Neel",
 	},
 	impl: {
 		react: {

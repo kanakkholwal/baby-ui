@@ -16,7 +16,7 @@ export function Example() {
 		>
 			<ComposerInput placeholder="Describe the sound you want" />
 			<ComposerToolbar>
-				<AudioComposerDuration shape="dial" />
+				<AudioComposerDuration />
 				<AudioComposerStyle />
 				<AudioComposerTools>
 					<ComposerSubmit />

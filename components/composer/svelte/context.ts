@@ -1,5 +1,5 @@
 import { getContext, hasContext, setContext } from "svelte";
-import type { ComposerSize, composer } from "../variants";
+import type { ComposerSize, ComposerVariant, composer } from "../variants";
 
 export interface ComposerState {
 	value: string;
@@ -8,6 +8,11 @@ export interface ComposerState {
 	readonly loading: boolean;
 	readonly onStop: (() => void) | undefined;
 	readonly size: ComposerSize;
+	readonly variant: ComposerVariant;
+	/** Default design only: the card is open, for attachments or text. */
+	readonly expanded: boolean;
+	/** Called by an attachment tile on mount; the returned function removes it. */
+	registerAttachment(): () => void;
 	readonly styles: ReturnType<typeof composer>;
 	submit(): void;
 	registerInput(element: HTMLTextAreaElement | undefined): void;

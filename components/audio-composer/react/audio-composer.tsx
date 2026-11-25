@@ -1,16 +1,11 @@
 "use client";
 
-import {
-	type ComponentProps,
-	createContext,
-	type ReactNode,
-	type PointerEvent as ReactPointerEvent,
-	useContext,
-} from "react";
+import { type ComponentProps, createContext, type ReactNode, useContext } from "react";
 import { Button } from "../../button/react/button";
 import { Composer } from "../../composer/react/composer";
 import { cn } from "../../lib/cn";
 import { useControllable } from "../../lib/react/use-controllable";
+import { RollingDigits } from "../../rolling-digits/react/rolling-digits";
 import {
 	Select,
 	SelectContent,
@@ -18,23 +13,10 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "../../select/react/select";
-import {
-	AUDIO_COMPOSER_ICONS,
-	dialArc,
-	dialPoint,
-	dialRatio,
-	durationToRatio,
-	formatLength,
-	ratioToDuration,
-	stepDuration,
-} from "../duration";
-import {
-	type AudioComposerVariant,
-	type AudioDurationShape,
-	audioComposer,
-} from "../variants";
+import { AUDIO_COMPOSER_ICONS, formatLength, stepDuration } from "../duration";
+import { type AudioComposerVariant, audioComposer } from "../variants";
 
-export type { AudioComposerVariant, AudioDurationShape };
+export type { AudioComposerVariant };
 
 type Ctx = {
 	duration: number;
@@ -122,7 +104,7 @@ export function AudioComposer({
 				className={cn(audioComposer({ variant }).root(), className)}
 			>
 				<Composer
-					variant="filled"
+					variant="bare"
 					loading={loading}
 					onSubmit={(prompt) => onSubmit?.(prompt, { duration, preset })}
 					{...props}
@@ -149,83 +131,10 @@ function Glyph({ name }: { name: keyof typeof AUDIO_COMPOSER_ICONS }) {
 	);
 }
 
-function DurationDial({ className }: { className?: string }) {
+/** How long the clip will be: minus and plus buttons around the value. */
+export function AudioComposerDuration({ className }: { className?: string }) {
 	const { duration, setDuration, min, max, step, loading } = useAudioComposer();
 	const styles = audioComposer();
-	const ratio = durationToRatio(duration, min, max);
-	const [kx, ky] = dialPoint(ratio, 15, 20);
-
-	function turn(event: ReactPointerEvent<HTMLDivElement>) {
-		const box = event.currentTarget.getBoundingClientRect();
-		const dx = event.clientX - (box.left + box.width / 2);
-		const dy = event.clientY - (box.top + box.height / 2);
-		setDuration(ratioToDuration(dialRatio(dx, dy), step, min, max));
-	}
-
-	return (
-		<div
-			data-slot="audio-composer-duration"
-			className={cn(styles.dialGroup(), className)}
-		>
-			<div
-				role="slider"
-				data-disabled={loading ? "" : undefined}
-				tabIndex={loading ? -1 : 0}
-				aria-label="Length"
-				aria-valuemin={min}
-				aria-valuemax={max}
-				aria-valuenow={duration}
-				aria-valuetext={formatLength(duration)}
-				className={styles.dial()}
-				onPointerDown={(event) => {
-					event.currentTarget.setPointerCapture(event.pointerId);
-					turn(event);
-				}}
-				onPointerMove={(event) => {
-					if (event.currentTarget.hasPointerCapture(event.pointerId)) turn(event);
-				}}
-				onKeyDown={(event) => {
-					const dir =
-						event.key === "ArrowLeft" || event.key === "ArrowDown"
-							? -1
-							: event.key === "ArrowRight" || event.key === "ArrowUp"
-								? 1
-								: 0;
-					if (!dir) return;
-					event.preventDefault();
-					setDuration(stepDuration(duration, dir, step, min, max));
-				}}
-			>
-				<svg
-					viewBox="0 0 40 40"
-					aria-hidden
-					className="size-full"
-					strokeWidth="3"
-					strokeLinecap="round"
-				>
-					<path d={dialArc(1, 15, 20)} className={styles.dialTrack()} />
-					<path d={dialArc(ratio, 15, 20)} className={styles.dialArc()} />
-					<circle cx={kx} cy={ky} r="3.2" className={styles.dialKnob()} stroke="none" />
-				</svg>
-			</div>
-			<span aria-live="polite" className={styles.dialValue()}>
-				{formatLength(duration)}
-			</span>
-		</div>
-	);
-}
-
-/** How long the clip will be: minus and plus buttons, or with `shape="dial"` a knob you turn. */
-export function AudioComposerDuration({
-	shape = "stepper",
-	className,
-}: {
-	shape?: AudioDurationShape;
-	className?: string;
-}) {
-	const { duration, setDuration, min, max, step, loading } = useAudioComposer();
-	const styles = audioComposer();
-	if (shape === "dial") return <DurationDial className={className} />;
 	return (
 		// biome-ignore lint/a11y/useSemanticElements: a fieldset brings default borders and layout into the toolbar.
 		<div
@@ -244,7 +153,7 @@ export function AudioComposerDuration({
 				<Glyph name="minus" />
 			</Button>
 			<span aria-live="polite" className={styles.value()}>
-				{formatLength(duration)}
+				<RollingDigits value={duration} format={formatLength} startOnView={false} />
 			</span>
 			<Button
 				variant="ghost"

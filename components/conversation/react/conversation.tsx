@@ -15,7 +15,9 @@ import { Empty } from "../../empty/react/empty";
 import { cn } from "../../lib/cn";
 import { ScrollArea } from "../../scroll-area/react/scroll-area";
 import { createRail, type RailState } from "../rail";
-import { conversationRail } from "../variants";
+import { type ConversationVariant, conversation, conversationRail } from "../variants";
+
+export type { ConversationVariant };
 
 type ConversationCtx = {
 	follow: boolean;
@@ -26,6 +28,7 @@ type ConversationCtx = {
 	viewportRef: React.MutableRefObject<HTMLDivElement | null>;
 	scrollingToBottomRef: React.MutableRefObject<boolean>;
 	scrollToBottom: (behavior?: ScrollBehavior) => void;
+	variant: ConversationVariant;
 	viewport: HTMLDivElement | null;
 	setViewport: (el: HTMLDivElement | null) => void;
 };
@@ -44,6 +47,8 @@ export interface ConversationProps extends Omit<ComponentProps<"div">, "children
 	threshold?: number;
 	/** Fires when the reader leaves the newest message (false) or returns to it (true). */
 	onFollowChange?: (following: boolean) => void;
+	/** `framed` is a muted card around the transcript and footer; `plain` has no surface. */
+	variant?: ConversationVariant;
 }
 
 /** Follows new turns while the reader is already at the bottom, and stops the moment
@@ -52,6 +57,7 @@ export function Conversation({
 	children,
 	threshold = 80,
 	onFollowChange,
+	variant = "framed",
 	className,
 	...props
 }: ConversationProps) {
@@ -90,10 +96,11 @@ export function Conversation({
 			viewportRef,
 			scrollingToBottomRef,
 			scrollToBottom,
+			variant,
 			viewport,
 			setViewport,
 		}),
-		[follow, atBottom, threshold, scrollToBottom, viewport],
+		[follow, atBottom, threshold, scrollToBottom, variant, viewport],
 	);
 
 	return (
@@ -101,7 +108,8 @@ export function Conversation({
 			<div
 				data-slot="conversation"
 				data-state={follow ? "following" : "paused"}
-				className={cn("relative min-h-0 overflow-hidden", className)}
+				data-variant={variant}
+				className={cn(conversation({ variant }).root(), className)}
 				{...props}
 			>
 				{children}
@@ -211,7 +219,7 @@ export function ConversationContent({
 			data-slot="conversation-content"
 			data-state={follow ? "following" : "paused"}
 			maxHeight="none"
-			className={cn("h-full min-h-0", className)}
+			className={cn("min-h-0 flex-1", className)}
 			viewportRef={(el) => {
 				viewportRef.current = el;
 				setViewport(el);
@@ -247,6 +255,18 @@ export function ConversationContent({
 				{children}
 			</div>
 		</ScrollArea>
+	);
+}
+
+/** The strip under the transcript, for a Composer. It stays put while the transcript scrolls. */
+export function ConversationFooter({ className, ...props }: ComponentProps<"div">) {
+	const variant = useConversation().variant;
+	return (
+		<div
+			data-slot="conversation-footer"
+			className={cn(conversation({ variant }).footer(), className)}
+			{...props}
+		/>
 	);
 }
 

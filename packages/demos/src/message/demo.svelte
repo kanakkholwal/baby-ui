@@ -26,7 +26,7 @@ const animated = $derived(props.animated !== false);
 	<MessageMarker>Today</MessageMarker>
 	<Message align="end" animated={false}>
 		<MessageContent>
-			<MessageBubble variant="primary">
+			<MessageBubble variant="card">
 				Why is the dock magnifying from the wrong centre?
 			</MessageBubble>
 		</MessageContent>

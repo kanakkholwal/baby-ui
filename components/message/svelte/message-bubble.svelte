@@ -12,8 +12,8 @@ let {
 }: {
 	children?: Snippet;
 	class?: string;
-	/** `default` is a muted pill for received messages, `primary` a filled pill for sent
-	 * ones, `ghost` drops the pill for bare text like a streamed reply. */
+	/** `default` is a muted pill, `card` sits on the card surface, `ghost` drops the pill for
+	 * bare text like a streamed reply. Never the brand colour. */
 	variant?: MessageBubbleVariant;
 } & HTMLAttributes<HTMLDivElement> = $props();
 </script>

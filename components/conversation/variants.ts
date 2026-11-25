@@ -1,4 +1,26 @@
-import { tv } from "tailwind-variants";
+import { tv, type VariantProps } from "tailwind-variants";
+
+export const conversation = tv({
+	slots: {
+		root: "relative flex min-h-0 flex-col overflow-hidden",
+		footer: "shrink-0",
+	},
+	variants: {
+		// `framed` is a muted card around the transcript and a footer for the composer; `plain` has no surface.
+		variant: {
+			framed: {
+				root: "rounded-3xl bg-muted p-2.5 [&_[data-slot=conversation-transcript]]:max-w-none [&_[data-slot=conversation-transcript]]:px-2 [&_[data-slot=conversation-transcript]]:py-3",
+				footer: "pt-2",
+			},
+			plain: { footer: "pt-3" },
+		},
+	},
+	defaultVariants: { variant: "framed" },
+});
+
+export type ConversationVariant = NonNullable<
+	VariantProps<typeof conversation>["variant"]
+>;
 
 export const conversationRail = tv({
 	slots: {

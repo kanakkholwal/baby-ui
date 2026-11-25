@@ -92,8 +92,8 @@ export function MessageContent({ className, ...props }: ComponentProps<"div">) {
 }
 
 export interface MessageBubbleProps extends ComponentProps<"div"> {
-	/** `default` muted, `primary` filled for sent, `tint` and `outline` quieter, `destructive` for
-	 * a failed send; `ghost` drops the pill for bare text like a streamed reply. */
+	/** `default` muted, `card` on the card surface, `outline` quieter, `destructive` for a failed
+	 * send; `ghost` drops the pill for bare text like a streamed reply. Never the brand colour. */
 	variant?: MessageBubbleVariant;
 }
 

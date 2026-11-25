@@ -92,7 +92,7 @@ $effect(() => {
 	data-slot="conversation-content"
 	data-state={conversation.follow ? "following" : "paused"}
 	maxHeight="none"
-	class={cn("h-full min-h-0", classProp)}
+	class={cn("min-h-0 flex-1", classProp)}
 	bind:viewportRef
 	viewportProps={{
 		role: "log",

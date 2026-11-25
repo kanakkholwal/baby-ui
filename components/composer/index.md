@@ -18,14 +18,16 @@ grow lags the caret.
 
 ## Parts
 
+Every part is optional and takes its own handlers; leave one out and it is not there.
+
+- `ComposerFooter` is the strip above the card (branch, folder, agent, `ComposerContext`). Open, it becomes a tab behind the card's top edge.
+- `ComposerFiles` holds `ComposerAttachment` tiles and folds shut when empty.
 - `ComposerInput` is the field; `minRows` and `maxRows` bound its height.
-- `ComposerToolbar` holds `ComposerActions` (a plus button on the real DropdownMenu),
-  `ComposerModelSelect` (on the real Select, locked while `loading`) and `ComposerSubmit`.
-- Leave a part out and it is not there; there are no fictional default lists.
+- `ComposerToolbar` is the bottom row: `ComposerActions`, `ComposerMode` and `ComposerTools`.
+- `ComposerActions` is the plus button and its menu. Fill it with `ComposerMenuLabel` and `ComposerMenuItem` rows, each built from `ComposerMenuIcon`, `ComposerMenuTitle` and `ComposerMenuHint`.
+- `ComposerModelPicker` is a popover: `ComposerModelTrigger`, then `ComposerModelContent` with a `ComposerModelLabel`, a `ComposerModelGroup` of `ComposerModelItem` radios and a `ComposerEffort` slider.
+- `ComposerVoice` and `ComposerSubmit` finish the row.
 
-## Migrating
+## Open and closed
 
-Before parts, `Composer` took `placeholder`, `minRows`, `maxRows`, `models` and `actions`
-itself, and `onSubmit` received the model too. Move the field props to `ComposerInput`, the
-lists to `ComposerActions` and `ComposerModelSelect`, add `ComposerSubmit`, and read the
-model from your own state.
+At rest it is one pill. Focusing the field, typing, or adding an attachment opens it into a card: the footer slides up behind the card into a tab, the mode chip reveals beside the plus, and the tools settle into the bottom row. Clicking the plus, a chip or anywhere else does not open it. Set `expanded` to force either state. Reduced motion skips the slide.

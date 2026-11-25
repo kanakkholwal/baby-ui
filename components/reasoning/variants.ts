@@ -2,41 +2,37 @@ import { tv, type VariantProps } from "tailwind-variants";
 
 export const reasoning = tv({
 	slots: {
-		root: "w-full overflow-hidden rounded-xl",
+		root: "w-full",
+		// 32px tall, so it sits on the control ladder; the tint on hover is the only chrome.
 		trigger:
-			"group/trigger flex w-full items-start gap-2 px-3 py-2.5 text-left text-sm transition-[background-color,scale] duration-(--duration-press) ease-(--ease-ui-out) hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-(--press-scale) motion-reduce:transition-none",
-		icon: "mt-0.5 size-3.5 shrink-0 text-muted-foreground",
-		heading: "min-w-0 flex-1",
-		titleRow: "flex items-baseline gap-1.5",
-		title: "font-medium text-muted-foreground",
+			"group/trigger -mx-1.5 inline-flex h-8 max-w-full items-center gap-2 rounded-lg px-1.5 text-left text-muted-foreground text-sm outline-none transition-[background-color,color,scale] duration-(--duration-fast) ease-(--ease-ui-out) hover:bg-foreground/[0.06] hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring active:scale-(--press-scale) motion-reduce:transition-none",
+		// A 3 x 3 grid of 4px cells with 2px gaps is exactly 16px.
+		icon: "grid size-4 shrink-0 grid-cols-3 grid-rows-3 gap-0.5",
+		pixel: "reasoning-pixel size-1 rounded-[1px] bg-current",
+		title: "font-medium",
 		titleThinking: "reasoning-shimmer font-medium",
-		duration: "text-muted-foreground text-xs tabular-nums",
-		preview: "mt-0.5 block truncate text-muted-foreground text-xs",
+		duration: "font-mono text-xs tabular-nums",
+		preview: "block min-w-0 truncate text-xs",
 		chevron:
-			"mt-0.5 size-3.5 shrink-0 text-muted-foreground transition-transform duration-(--duration-dropdown) ease-(--ease-ui-out) group-data-[panel-open]/trigger:rotate-180 group-data-[state=open]/trigger:rotate-180 motion-reduce:transition-none",
+			"size-4 shrink-0 transition-transform duration-(--duration-dropdown) ease-(--ease-ui-out) group-data-[panel-open]/trigger:rotate-180 group-data-[state=open]/trigger:rotate-180 motion-reduce:transition-none",
 		panel:
 			"grid grid-rows-[0fr] transition-[grid-template-rows] duration-(--duration-dropdown) ease-(--ease-ui-out) data-[open]:grid-rows-[1fr] data-[state=open]:grid-rows-[1fr] motion-reduce:transition-none",
 		clip: "overflow-hidden",
-		content: "px-3 pt-1 pb-2.5 text-muted-foreground text-xs leading-relaxed",
+		// 24px in lines the text up under the title: a 16px icon and an 8px gap.
+		content: "ps-6 pt-1 pb-2 text-muted-foreground text-sm leading-6",
 	},
 	variants: {
 		variant: {
-			outline: {
-				root: "border border-border bg-card/40",
-				content: "border-border/60 border-t pt-2.5",
-			},
-			card: { root: "rounded-2xl bg-card" },
-			// No chrome: a compact header over a thread line, for inline chat transcripts.
-			inline: {
-				root: "max-w-sm overflow-visible rounded-none",
-				trigger: "-mx-1.5 w-fit items-center rounded-md px-1.5 py-1",
-				icon: "mt-0",
-				chevron: "mt-0",
-				content: "mt-1 ml-[5px] border-border/60 border-l px-0 pt-1 pb-1 pl-4",
+			default: {},
+			// A card surface for a transcript that has none; rounded-2xl less the 4px padding is rounded-xl.
+			framed: {
+				root: "rounded-2xl bg-card p-1 shadow-xs",
+				trigger: "mx-0 w-full rounded-xl px-2.5",
+				content: "ps-9 pe-2.5",
 			},
 		},
 	},
-	defaultVariants: { variant: "outline" },
+	defaultVariants: { variant: "default" },
 });
 
 export type ReasoningVariant = NonNullable<VariantProps<typeof reasoning>["variant"]>;
@@ -50,7 +46,8 @@ export const reasoningStep = tv({
 		rail: "flex flex-col items-center",
 		glyphBox: "flex h-5 items-center justify-center",
 		glyph: "pop-in flex size-3 items-center justify-center",
-		connector: "my-1 w-px flex-1 rounded-full transition-colors duration-500",
+		connector:
+			"my-1 w-px flex-1 rounded-full transition-colors duration-(--duration-slow)",
 		body: "min-w-0 flex-1",
 		label: "text-sm leading-5 transition-colors duration-(--duration-slow)",
 		description: "mt-0.5 text-muted-foreground text-xs leading-5",

@@ -1,7 +1,7 @@
 import { defineComponent, variantsOf } from "@baby-ui/registry-schema";
 import { composer as composerVariants } from "./variants";
 
-const VARIANTS = ["outline", "filled"];
+const VARIANTS = ["default"];
 const SIZES = ["sm", "default", "lg"];
 
 export const composer = defineComponent({
@@ -30,8 +30,8 @@ export const composer = defineComponent({
 			name: "variant",
 			type: VARIANTS.map((v) => `"${v}"`).join(" | "),
 			description:
-				"Composer: `outline` is the bordered field; `filled` sits on a muted surface.",
-			default: "outline",
+				"Composer: one row at rest that grows into a card once the text box is focused, or there is text or an attachment.",
+			default: "default",
 			control: { kind: "select", options: VARIANTS },
 		},
 		{
@@ -77,22 +77,37 @@ export const composer = defineComponent({
 			control: { kind: "number", min: 2, max: 16, step: 1 },
 		},
 		{
-			name: "actions / onAction",
-			type: "ComposerAction[] / (value: string) => void",
-			description: "ComposerActions: the menu behind the plus button.",
+			name: "value / onValueChange",
+			type: "string / (value: string) => void",
+			description:
+				"ComposerModelGroup: the chosen model. ComposerEffort: the chosen notch, 0 to levels - 1.",
 			control: { kind: "none" },
 		},
 		{
-			name: "models / model / onModelChange",
-			type: "ComposerModel[] / string / (model: string) => void",
-			description: "ComposerModelSelect: the model picker; bindable `model` in Svelte.",
+			name: "levels / format / lowLabel / highLabel",
+			type: "number / (value: number) => string / string / string",
+			description:
+				"ComposerEffort: how many notches, how a notch is named, and the labels at the two ends.",
+			control: { kind: "none" },
+		},
+		{
+			name: "expanded",
+			type: "boolean",
+			description:
+				"Composer: force the card (true) or the single row (false). By default it opens for attachments or text.",
+			control: { kind: "none" },
+		},
+		{
+			name: "percent",
+			type: "number",
+			description: "ComposerContext: how full the context window is, 0 to 100.",
 			control: { kind: "none" },
 		},
 		{
 			name: "children",
 			type: "ReactNode | Snippet",
 			description:
-				"Composer: ComposerInput, then ComposerToolbar with ComposerActions, ComposerModelSelect and ComposerSubmit.",
+				"Composer: ComposerFooter, ComposerFiles, ComposerInput, then ComposerToolbar with ComposerActions, ComposerMode, and ComposerTools holding the model picker, ComposerVoice and ComposerSubmit.",
 			control: { kind: "none" },
 		},
 	],
@@ -115,12 +130,6 @@ export const composer = defineComponent({
 			"A composing Enter (committing an IME conversion) never submits, only a plain Enter does.",
 			"The send button is disabled while empty, disabled, or loading rather than hidden, so its position never shifts.",
 		],
-	},
-	licenseOrigin: {
-		source: "beUI",
-		url: "https://beui.dev",
-		license: "MIT",
-		copyright: "Copyright (c) 2026 beUI",
 	},
 	impl: {
 		react: {

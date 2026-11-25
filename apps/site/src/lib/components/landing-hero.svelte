@@ -1,6 +1,9 @@
 <script lang="ts">
 import { IconArrowRight } from "@baby-ui/icons";
-import { Button, DiaText, HoverMarquee, LightRays } from "@baby-ui/svelte";
+import { Button } from "@baby-ui/svelte/button";
+import { DiaText } from "@baby-ui/svelte/dia-text";
+import { HoverMarquee } from "@baby-ui/svelte/hover-marquee";
+import { LightRays } from "@baby-ui/svelte/light-rays";
 import HeroFragment from "./hero-fragment.svelte";
 
 let { total = 0 }: { total?: number } = $props();
@@ -21,7 +24,7 @@ const count = $derived(`${Math.floor(total / 10) * 10}+`);
 		tone="spectrum"
 		class="pointer-events-none -z-10 h-[40rem] w-full [mask-image:linear-gradient(to_bottom,#000_60%,transparent)] md:h-[54rem]"
 	/>
-	<HeroFragment slug="chat-composer" side="left" />
+	<HeroFragment slug="composer" side="left" />
 	<HeroFragment slug="agent-activity" side="right" />
 
 	<div class="relative mx-auto flex max-w-4xl flex-col items-center text-center">

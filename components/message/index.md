@@ -24,7 +24,7 @@ selectors, the same way shadcn's own primitives compose.
 ```tsx
 <Message align="end">
   <MessageContent>
-    <MessageBubble variant="primary">What does the registry emit?</MessageBubble>
+    <MessageBubble variant="card">What does the registry emit?</MessageBubble>
   </MessageContent>
 </Message>
 ```
@@ -32,10 +32,10 @@ selectors, the same way shadcn's own primitives compose.
 ## Colour and alignment are independent
 
 `align` (`start`/`end`) only decides which side the row sits on and which way it enters from.
-`MessageBubble`'s `variant` picks the pill's colour on its own: `default` (muted, the
-received-style look), `primary` (filled, for sent turns), `ghost` (drops the pill entirely,
-for bare text like a streamed reply). Nothing ties a colour to a side, so a `start`-aligned
-turn can use `primary` and an `end`-aligned one can use `ghost`.
+`MessageBubble`'s `variant` picks the pill's surface on its own: `default` (muted), `card` (the card
+colour, for a muted transcript), `outline`, `destructive` for a failed send, and `ghost` (no pill, for
+bare text like a streamed reply). Messages never use the brand colour. Nothing ties a surface to a
+side, so a `start` turn can use `card` and an `end` one can use `ghost`.
 
 ## Motion
 

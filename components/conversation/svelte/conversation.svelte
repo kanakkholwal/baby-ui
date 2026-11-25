@@ -2,12 +2,14 @@
 import type { Snippet } from "svelte";
 import type { HTMLAttributes } from "svelte/elements";
 import { cn } from "../../lib/cn";
+import { type ConversationVariant, conversation } from "../variants";
 import { type ConversationContext, setConversation } from "./context";
 
 let {
 	children,
 	threshold = 80,
 	onFollowChange,
+	variant = "framed",
 	class: classProp,
 	...rest
 }: {
@@ -16,6 +18,8 @@ let {
 	threshold?: number;
 	/** Fires when the reader leaves the newest message (false) or returns to it (true). */
 	onFollowChange?: (following: boolean) => void;
+	/** `framed` is a muted card around the transcript and footer; `plain` has no surface. */
+	variant?: ConversationVariant;
 } & HTMLAttributes<HTMLDivElement> = $props();
 
 let follow = $state(true);
@@ -23,7 +27,10 @@ let atBottom = $state(true);
 let viewport = $state<HTMLDivElement | null>(null);
 let scrollingToBottom = $state(false);
 
-const conversation: ConversationContext = {
+const context: ConversationContext = {
+	get variant() {
+		return variant;
+	},
 	get follow() {
 		return follow;
 	},
@@ -62,7 +69,7 @@ const conversation: ConversationContext = {
 	},
 };
 
-setConversation(conversation);
+setConversation(context);
 
 let reported = true;
 $effect(() => {
@@ -78,7 +85,8 @@ bottom, and stops the moment they scroll up. -->
 	{...rest}
 	data-slot="conversation"
 	data-state={follow ? "following" : "paused"}
-	class={cn("relative min-h-0 overflow-hidden", classProp)}
+	data-variant={variant}
+	class={cn(conversation({ variant }).root(), classProp)}
 >
 	{@render children?.()}
 </div>
