@@ -217,7 +217,7 @@ export function LightboxTrigger({
 		<DialogPrimitive.Trigger
 			data-slot="lightbox-trigger"
 			data-current={viewer.open && index === viewer.index ? "" : undefined}
-			ref={(el) => {
+			ref={(el: HTMLElement | null) => {
 				if (index === undefined) return;
 				viewer.registerThumb(index, el);
 				return () => viewer.registerThumb(index, null);
