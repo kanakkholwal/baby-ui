@@ -46,8 +46,9 @@ const count = $derived(`${Math.floor(total / 10) * 10}+`);
 		>
 			UI components
 			for
-			<span class="block h-[1.1em] whitespace-nowrap">
+			<span class="block h-[1.24em] whitespace-nowrap">
 				<DiaText
+					class="pb-[0.18em]"
 					text={TAILS}
 					repeat
 					triggerOnView={false}
