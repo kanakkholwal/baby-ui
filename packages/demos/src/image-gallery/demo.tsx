@@ -9,20 +9,20 @@ import {
 	ImageGallery,
 	ImageGalleryEmpty,
 	ImageGalleryGrid,
-	ImageViewer,
-	ImageViewerBody,
-	ImageViewerClose,
-	ImageViewerContent,
-	ImageViewerCounter,
-	ImageViewerFilmstrip,
-	ImageViewerNext,
-	ImageViewerPrevious,
-	ImageViewerStage,
-	ImageViewerToolbar,
-	ImageViewerZoom,
+	Lightbox,
+	LightboxBody,
+	LightboxClose,
+	LightboxContent,
+	LightboxCounter,
+	LightboxFilmstrip,
+	LightboxNext,
+	LightboxPrevious,
+	LightboxStage,
+	LightboxToolbar,
+	LightboxZoom,
 } from "@baby-ui/react";
 import { type ComponentProps, useState } from "react";
-import { IMAGE_GALLERY_SAMPLES } from "../data/image-viewer";
+import { IMAGE_GALLERY_SAMPLES } from "../data/lightbox";
 import { controlProps } from "../data/preview-props";
 
 type Props = Record<string, unknown>;
@@ -65,27 +65,30 @@ export function ImageGalleryDemo({ props }: { props: Props }) {
 					</EmptyContent>
 				</ImageGalleryEmpty>
 			</ImageGallery>
-			<ImageViewer
+			<Lightbox
 				images={images}
 				open={open}
 				onOpenChange={setOpen}
 				index={index}
 				onIndexChange={setIndex}
+				origin={(index) =>
+					document.querySelector(`[data-slot=image-gallery-item][data-index="${index}"]`)
+				}
 			>
-				<ImageViewerContent>
-					<ImageViewerToolbar>
-						<ImageViewerPrevious />
-						<ImageViewerCounter />
-						<ImageViewerNext />
-						<ImageViewerZoom className="mx-auto" />
-						<ImageViewerClose />
-					</ImageViewerToolbar>
-					<ImageViewerBody>
-						<ImageViewerStage />
-					</ImageViewerBody>
-					<ImageViewerFilmstrip />
-				</ImageViewerContent>
-			</ImageViewer>
+				<LightboxContent>
+					<LightboxToolbar>
+						<LightboxPrevious />
+						<LightboxCounter />
+						<LightboxNext />
+						<LightboxZoom className="mx-auto" />
+						<LightboxClose />
+					</LightboxToolbar>
+					<LightboxBody>
+						<LightboxStage />
+					</LightboxBody>
+					<LightboxFilmstrip />
+				</LightboxContent>
+			</Lightbox>
 		</div>
 	);
 }

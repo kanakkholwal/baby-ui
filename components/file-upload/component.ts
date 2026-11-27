@@ -106,10 +106,10 @@ export const fileUpload = defineComponent({
 		reducedMotion:
 			"Rows appear and leave without folding, bars jump to each value, and a refused drop does not shake.",
 		behaviour: [
-			"Drag-over tints the zone in the primary colour and lifts its icon 2px over 150ms.",
+			"Drag-over firms the zone's edge and lifts its icon 2px over 150ms.",
 			"A refused drop shakes the zone for 240ms beside its error.",
-			"New rows open from 0fr over 200ms; a removed row folds shut over 150ms before onRemove runs.",
-			"The bar fills by scale over 250ms; its row opens when uploading starts and folds once done or failed.",
+			"New rows open from 0fr and rise from 8px below over 200ms; a removed row lifts 6px and folds shut over 150ms before onRemove runs.",
+			"The bar fills by scale over 250ms and stays, in the success colour, once the upload is done; a changed status icon rises in from 4px below over 150ms.",
 			"With compactAt or the inline variant, the zone folds to a slim bar; a drag opens it again.",
 		],
 	},

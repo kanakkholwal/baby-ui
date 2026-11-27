@@ -314,7 +314,7 @@ const packs = $derived(packsFor(data.spec.slug));
 				{/if}
 			{/snippet}
 			{#snippet actions()}
-				<BookmarkButton slug={data.spec.slug} name={data.spec.name} class="rounded-full" />
+				<BookmarkButton slug={data.spec.slug} name={data.spec.name} class="size-8 min-w-8 rounded-full border-transparent bg-secondary px-0" />
 				<PageMenu
 					markdownUrl="{specHref(data.spec)}.md"
 					copyText={data.spec.description}
@@ -678,7 +678,7 @@ const packs = $derived(packsFor(data.spec.slug));
 			inert={!outlineSidebar.current}
 			class="scrollbar-hide sticky top-[calc(var(--header-h)+2.5rem)] max-h-[calc(100dvh-var(--header-h)-4.5rem)] w-(--right-sidebar-width) overflow-y-auto pb-1 pl-8"
 		>
-			<PropsRail slug={data.spec.slug} {outline} promo={false} />
+			<PropsRail slug={data.spec.slug} {outline} />
 		</div>
 	</aside>
 {:else if wide}

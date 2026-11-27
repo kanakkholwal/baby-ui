@@ -8,20 +8,20 @@ import {
 	ImageGallery,
 	ImageGalleryEmpty,
 	ImageGalleryGrid,
-	ImageViewer,
-	ImageViewerBody,
-	ImageViewerClose,
-	ImageViewerContent,
-	ImageViewerCounter,
-	ImageViewerFilmstrip,
-	ImageViewerNext,
-	ImageViewerPrevious,
-	ImageViewerStage,
-	ImageViewerToolbar,
-	ImageViewerZoom,
+	Lightbox,
+	LightboxBody,
+	LightboxClose,
+	LightboxContent,
+	LightboxCounter,
+	LightboxFilmstrip,
+	LightboxNext,
+	LightboxPrevious,
+	LightboxStage,
+	LightboxToolbar,
+	LightboxZoom,
 } from "@baby-ui/svelte";
 import type { ComponentProps } from "svelte";
-import { IMAGE_GALLERY_SAMPLES } from "../data/image-viewer";
+import { IMAGE_GALLERY_SAMPLES } from "../data/lightbox";
 import { controlProps } from "../data/preview-props";
 
 let { props = {} }: { props?: Record<string, unknown> } = $props();
@@ -58,19 +58,24 @@ let index = $state(0);
 			</EmptyContent>
 		</ImageGalleryEmpty>
 	</ImageGallery>
-	<ImageViewer {images} bind:open bind:index>
-		<ImageViewerContent>
-			<ImageViewerToolbar>
-				<ImageViewerPrevious />
-				<ImageViewerCounter />
-				<ImageViewerNext />
-				<ImageViewerZoom class="mx-auto" />
-				<ImageViewerClose />
-			</ImageViewerToolbar>
-			<ImageViewerBody>
-				<ImageViewerStage />
-			</ImageViewerBody>
-			<ImageViewerFilmstrip />
-		</ImageViewerContent>
-	</ImageViewer>
+	<Lightbox
+		{images}
+		bind:open
+		bind:index
+		origin={(at) => document.querySelector(`[data-slot=image-gallery-item][data-index="${at}"]`)}
+	>
+		<LightboxContent>
+			<LightboxToolbar>
+				<LightboxPrevious />
+				<LightboxCounter />
+				<LightboxNext />
+				<LightboxZoom class="mx-auto" />
+				<LightboxClose />
+			</LightboxToolbar>
+			<LightboxBody>
+				<LightboxStage />
+			</LightboxBody>
+			<LightboxFilmstrip />
+		</LightboxContent>
+	</Lightbox>
 </div>

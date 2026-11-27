@@ -30,17 +30,17 @@ the way.
 
 - **Drop zone:**
   - rest, hover and keyboard focus;
-  - drag-over (a primary tint, the icon lifts);
+  - drag-over (the edge firms to the text colour, the icon lifts);
   - a refused drop (it shakes beside FileUploadError's reasons);
   - disabled;
   - compact (a slim bar once `compactAt` files are listed, or always with `variant="inline"`).
 - **Row:**
-  - `queued` says Waiting;
-  - `uploading` shows the bar and the percent;
-  - `done` folds the bar away and shows the size;
-  - `error` shows the reason, a warning icon and Retry.
+  - the round icon shows the file kind, or the picture for an image;
+  - the line under the name reads `KIND · size`, with the reason after it on an error;
+  - the status icon swaps between a file, a spinner, a check and a warning;
+  - `uploading` and `done` show the bar (green once done); `error` shows Retry.
 - Remove folds the row shut before `onRemove` runs.
-- Image files get a thumbnail. Its object URL is released when the file leaves `files`.
+- Image files show a picture in the round icon. Its object URL is released when the file leaves `files`.
 
 Pass children to `FileUploadDropzone` to replace its icon, title and hint.
 

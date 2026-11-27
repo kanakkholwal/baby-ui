@@ -51,8 +51,6 @@ import {
 	IconAlignLeft,
 	IconArrowUpRight,
 	IconArrowsMaximize,
-	IconCheck,
-	IconCopy,
 	IconDeviceDesktop,
 	IconDeviceMobile,
 	IconEye,
@@ -72,6 +70,7 @@ import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle } from "@baby-
 import { Slider } from "@baby-ui/svelte/slider";
 import { Switch } from "@baby-ui/svelte/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@baby-ui/svelte/tabs";
+import { IconMorph } from "@baby-ui/svelte/icon-morph";
 import { onMount } from "svelte";
 import { hasProAccess } from "#lib/account.js";
 import CodeBlock from "#lib/components/code-block.svelte";
@@ -361,7 +360,7 @@ const code = new LiveCode(() => ({
 							<IconShuffle />
 						</Button>
 						<Button size="sm" variant="ghost" aria-label={linkCopied ? "Link copied" : "Copy link"} onclick={copyLink}>
-							{#if linkCopied}<IconCheck />{:else}<IconCopy />{/if}
+							<IconMorph name="copy" state={linkCopied} size="sm" />
 							<span class="hidden sm:inline">{linkCopied ? "Link copied" : "Copy link"}</span>
 						</Button>
 						<Button size="sm" onclick={openCode}>

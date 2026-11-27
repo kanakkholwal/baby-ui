@@ -4,6 +4,7 @@ import { TableOfContents } from "@baby-ui/svelte/table-of-contents";
 import type { Heading } from "#lib/docs-nodes.js";
 import { productFor } from "#lib/products.js";
 import PromoCard from "./promo-card.svelte";
+import SponsorsCard from "./sponsors-card.svelte";
 
 let {
 	slug,
@@ -32,5 +33,8 @@ let {
 			<TableOfContents items={outline} />
 		</div>
 	{/if}
-	{#if promo}<PromoCard product={productFor(slug)} />{/if}
+	{#if promo}
+		<PromoCard product={productFor(slug)} />
+		<SponsorsCard />
+	{/if}
 </div>

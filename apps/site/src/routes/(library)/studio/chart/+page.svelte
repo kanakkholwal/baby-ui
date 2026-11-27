@@ -22,8 +22,6 @@ type Frame = NonNullable<VariantProps<typeof stage>["frame"]>;
 <script lang="ts">
 import SpecDials from "@baby-ui/demos/controls";
 import {
-	IconCheck,
-	IconCopy,
 	IconDeviceDesktop,
 	IconDeviceMobile,
 	IconFileCode,
@@ -49,6 +47,7 @@ import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle } from "@baby-
 import { Spinner } from "@baby-ui/svelte/spinner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@baby-ui/svelte/tabs";
 import { Textarea } from "@baby-ui/svelte/textarea";
+import { IconMorph } from "@baby-ui/svelte/icon-morph";
 import { onMount } from "svelte";
 import { hasProAccess } from "#lib/account.js";
 import CodeBlock from "#lib/components/code-block.svelte";
@@ -419,7 +418,7 @@ const allCharts = $derived([...data.kinds, ...data.samples]);
 					</div>
 					<div class="flex items-center gap-1">
 						<Button size="sm" variant="ghost" aria-label={linkCopied ? "Link copied" : "Copy link"} onclick={copyLink}>
-							{#if linkCopied}<IconCheck />{:else}<IconCopy />{/if}
+							<IconMorph name="copy" state={linkCopied} size="sm" />
 							<span class="hidden sm:inline">{linkCopied ? "Link copied" : "Copy link"}</span>
 						</Button>
 						<Button size="sm" onclick={openCode}>

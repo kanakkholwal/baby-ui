@@ -4,9 +4,7 @@ import {
 	IconBrandClaude,
 	IconBrandCursor,
 	IconBrandV0,
-	IconCheck,
 	IconChevronDown,
-	IconCopy,
 	IconFileText,
 	IconLink,
 	IconTerminal2,
@@ -16,10 +14,10 @@ import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
-	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@baby-ui/svelte/dropdown-menu";
+import { IconMorph } from "@baby-ui/svelte/icon-morph";
 import { cn } from "@baby-ui/svelte/lib/cn";
 import origins from "#lib/generated/origins.json";
 import { installArgs } from "#lib/install.js";
@@ -98,69 +96,51 @@ async function copyLink() {
 	flash("link");
 }
 
+// Rows are one line: an icon, a title and, for links out, an arrow.
 const row = "justify-start gap-3 px-3 py-2";
-const lead = "shrink-0 self-start mt-0.5 text-muted-foreground";
-const trail = "ml-auto shrink-0 text-muted-foreground/70";
+const lead = "shrink-0 text-muted-foreground";
+const trail = "ms-auto shrink-0 text-muted-foreground/70";
 </script>
 
-{#snippet text(title: string, hint?: string)}
-	<span class="flex min-w-0 flex-col">
-		<span class="truncate font-medium">{title}</span>
-		{#if hint}<span class="truncate text-muted-foreground text-xs">{hint}</span>{/if}
-	</span>
-{/snippet}
-
-<div role="group" aria-label="Page actions" class="inline-flex shrink-0 self-start">
-	<Button variant="outline" size="sm" class="rounded-r-none" onclick={copyPage}>
-		<span class="grid *:col-start-1 *:row-start-1">
-			<IconCopy
-				size={14}
-				class="transition-[opacity,scale] duration-(--duration-fast) ease-(--ease-ui-out) motion-reduce:transition-none {copied ? 'scale-50 opacity-0' : ''}"
-			/>
-			<IconCheck
-				size={14}
-				class="transition-[opacity,scale] duration-(--duration-fast) ease-(--ease-ui-out) motion-reduce:transition-none {copied ? '' : 'scale-50 opacity-0'}"
-			/>
-		</span>
+<!-- A split pill: copy on the left, the menu on the right, one soft fill and no border. -->
+<div role="group" aria-label="Page actions" class="inline-flex shrink-0 items-center self-start rounded-full bg-secondary">
+	<Button variant="ghost" size="sm" class="rounded-full rounded-e-none ps-3 pe-2.5 hover:bg-foreground/[0.06]" onclick={copyPage}>
+		<IconMorph name="copy" state={copied !== null} size="sm" class="size-3.5 {copied ? 'text-success-strong' : ''}" />
 		<span aria-live="polite">{copied ? LABEL[copied] : "Copy page"}</span>
 	</Button>
+	<span aria-hidden="true" class="h-4 w-px bg-foreground/15"></span>
 	<DropdownMenu>
 		<DropdownMenuTrigger
 			aria-label="More page actions"
 			class={cn(
-				button({ variant: "outline", size: "icon-sm" }),
-				"-ml-px rounded-l-none text-muted-foreground hover:text-foreground",
+				button({ variant: "ghost", size: "icon-sm" }),
+				"rounded-full rounded-s-none text-muted-foreground hover:bg-foreground/[0.06] hover:text-foreground",
 				"[&>svg]:transition-[rotate] [&>svg]:duration-(--duration-exit) [&>svg]:ease-(--ease-ui-out) data-[state=open]:[&>svg]:rotate-180 data-[state=open]:[&>svg]:duration-(--duration-dropdown) motion-reduce:[&>svg]:transition-none",
 			)}
 		>
 			<IconChevronDown size={14} />
 		</DropdownMenuTrigger>
-		<DropdownMenuContent align="end" collisionPadding={16} class="w-80">
-			<DropdownMenuItem class={row} onSelect={copyPage}>
-				<IconCopy size={16} class={lead} />
-				{@render text("Copy page as Markdown", "For LLMs and notes")}
-			</DropdownMenuItem>
+		<DropdownMenuContent align="end" collisionPadding={16} class="w-64">
 			<DropdownMenuItem class={row}>
 				{#snippet child({ props })}
 					<a {...props} href={markdownUrl} target="_blank" rel="noopener">
 						<IconFileText size={16} class={lead} />
-						{@render text("View as Markdown", "Plain text reference")}
+						<span class="font-medium">View as Markdown</span>
 						<IconArrowUpRight size={13} class={trail} />
 					</a>
 				{/snippet}
 			</DropdownMenuItem>
 			<DropdownMenuItem class={row} onSelect={copyLink}>
 				<IconLink size={16} class={lead} />
-				{@render text("Copy page link")}
+				<span class="font-medium">Copy page link</span>
 			</DropdownMenuItem>
 			{#if installSlug}
 				<DropdownMenuItem class={row} onSelect={copyInstall}>
 					<IconTerminal2 size={16} class={lead} />
-					{@render text("Copy install command", prefs.pm)}
+					<span class="font-medium">Copy install command</span>
 				</DropdownMenuItem>
 			{/if}
 			<DropdownMenuSeparator />
-			<DropdownMenuLabel class="font-normal text-muted-foreground">Ask about this {subject}</DropdownMenuLabel>
 			{#each agents as agent (agent.label)}
 				<DropdownMenuItem class={row}>
 					{#snippet child({ props })}
@@ -172,7 +152,7 @@ const trail = "ml-auto shrink-0 text-muted-foreground/70";
 									<path d={CHATGPT} />
 								</svg>
 							{/if}
-							{@render text(`Open in ${agent.label}`)}
+							<span class="font-medium">Open in {agent.label}</span>
 							<IconArrowUpRight size={13} class={trail} />
 						</a>
 					{/snippet}

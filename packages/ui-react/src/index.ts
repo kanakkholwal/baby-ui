@@ -285,7 +285,7 @@ export { type FileTreeNode, type FlatRow, flatten } from "@baby-ui/components/re
 export { fileTree, type FileTreeSize, ROW_INSET } from "@baby-ui/components/react/file-tree";
 export { type FileUploadProps, FileUpload, type FileUploadDropzoneProps, FileUploadDropzone, FileUploadError, FileUploadList, type FileUploadItemProps, FileUploadItem } from "@baby-ui/components/react/file-upload";
 export { type UploadFile, type FileRejectionReason, type FileRejection, type FileUploadLabels, FILE_UPLOAD_LABELS, acceptsFile, splitFiles, rejectionMessage, uploadHint, uploadSummary, isImage, statusLabel } from "@baby-ui/components/react/file-upload";
-export { fileUpload, type FileUploadVariant, type FileUploadSize, type FileUploadStatus } from "@baby-ui/components/react/file-upload";
+export { fileUpload, type FileUploadVariant, type FileUploadSize, type FileUploadStatus, type FileKind, fileKind, fileLabel, FILE_GLYPHS, FILE_SHEET } from "@baby-ui/components/react/file-upload";
 export { type FillButtonProps, FillButton } from "@baby-ui/components/react/fill-button";
 export { fillButton, type FillButtonTone, type FillButtonSize } from "@baby-ui/components/react/fill-button";
 export { type FilterMenuProps, FilterMenu, FilterMenuHeader, FilterMenuTitle, FilterMenuClear, FilterMenuChips, FilterMenuGroups } from "@baby-ui/components/react/filter-menu";
@@ -363,10 +363,6 @@ export { type DitherField, createDitherField } from "@baby-ui/components/react/i
 export { imageGeneration, type ImageGenerationVariant, type ImageGenerationPhase, IMAGE_GENERATION_STATUS_TEXT, isGenerating, IMAGE_GENERATION_ICONS } from "@baby-ui/components/react/image-generation";
 export { type ImageTrailProps, ImageTrail } from "@baby-ui/components/react/image-trail";
 export { imageTrail, type ImageTrailVariant, type ImageTrailSize, type ImageTrailOptions, mountImageTrail } from "@baby-ui/components/react/image-trail";
-export { type ImageViewerImage, useImageViewer, ImageViewer, ImageViewerTrigger, ImageViewerContent, ImageViewerToolbar, ImageViewerCounter, ImageViewerPrevious, ImageViewerNext, ImageViewerZoom, ImageViewerDetailsToggle, ImageViewerClose, ImageViewerBody, ImageViewerStage, ImageViewerDetails, ImageViewerFilmstrip, ImageViewerTitle, ImageViewerMinimap } from "@baby-ui/components/react/image-viewer";
-export { IMAGE_VIEWER_ICONS, type ImageViewerIcon } from "@baby-ui/components/react/image-viewer";
-export { imageViewer, type ImageViewerVariant } from "@baby-ui/components/react/image-viewer";
-export { type Size, type View, MIN_SCALE, MAX_SCALE, ZOOM_STEP, FIT, containSize, clampView, actualPixelsScale, wheelFactor, type ViewportRect, viewportRect, viewForCentre } from "@baby-ui/components/react/image-viewer";
 export { type InfiniteImageFieldProps, InfiniteImageField } from "@baby-ui/components/react/infinite-image-field";
 export { type FieldOptions, mountField } from "@baby-ui/components/react/infinite-image-field";
 export { type FisheyeOptions, mountFisheye } from "@baby-ui/components/react/infinite-image-field";
@@ -407,6 +403,11 @@ export { lightCaustics, type LightCausticsTone, type LightCausticsSpeed, type Li
 export { type LightRaysProps, LightRays } from "@baby-ui/components/react/light-rays";
 export { type RayField, type LightRaysOptions, mountLightRays } from "@baby-ui/components/react/light-rays";
 export { lightRays, type LightRaysVariant, type LightRaysTone, type LightRaysSpeed, type LightRaysPosition, LIGHT_RAYS_COLORS, LIGHT_RAYS_SPEED, LIGHT_RAYS_FIELD, LIGHT_RAYS_COUNT } from "@baby-ui/components/react/light-rays";
+export { type LightboxImage, useLightbox, Lightbox, LightboxTrigger, LightboxContent, LightboxToolbar, LightboxCounter, LightboxPrevious, LightboxNext, LightboxZoom, LightboxDetailsToggle, LightboxClose, LightboxBody, LightboxStage, LightboxDetails, LightboxFilmstrip, LightboxTitle, LightboxMinimap } from "@baby-ui/components/react/lightbox";
+export { LIGHTBOX_ICONS, type LightboxIcon } from "@baby-ui/components/react/lightbox";
+export { type Origin, readOrigin, playMorph, playSlide } from "@baby-ui/components/react/lightbox";
+export { lightbox, type LightboxVariant } from "@baby-ui/components/react/lightbox";
+export { type Size, type View, MIN_SCALE, MAX_SCALE, ZOOM_STEP, FIT, containSize, clampView, actualPixelsScale, wheelFactor, type ViewportRect, viewportRect, viewForCentre } from "@baby-ui/components/react/lightbox";
 export { type LineChartProps, LineChart, type LineProps, Line, type ProfitLossLineProps, ProfitLossLine } from "@baby-ui/components/react/line-chart";
 export { line, type LineCurve, type LineVariant, LINE_CURVES, profitLoss, type ProfitLossEncoding } from "@baby-ui/components/react/line-chart";
 export { type LiquidChromeProps, LiquidChrome } from "@baby-ui/components/react/liquid-chrome";
@@ -605,6 +606,9 @@ export { type PixelImageTrailProps, PixelImageTrail } from "@baby-ui/components/
 export { pixelImageTrail, type PixelImageTrailVariant, type PixelImageTrailSize, type PixelTrailOptions, mountPixelTrail } from "@baby-ui/components/react/pixel-image-trail";
 export { type PlanRunnerProps, PlanRunner, PlanRunnerHeader, PlanRunnerTitle, PlanRunnerMeta, PlanRunnerBody, PlanRunnerProgress, PlanRunnerSteps, PlanRunnerStep, PlanRunnerStepHead, PlanRunnerStepTitle, PlanRunnerTool, PlanRunnerTimer, PlanRunnerOutput, PlanRunnerSteer, PlanRunnerFooter, PlanRunnerSummary, PlanRunnerStop } from "@baby-ui/components/react/plan-runner";
 export { planRunner, planTool, planStep, type PlanRunnerVariant, type PlanToolKind, type PlanStepStatus, type PlanSegment, PLAN_STATUS_TEXT, PLAN_TOOL_TEXT, PLAN_ICONS, formatStepTime } from "@baby-ui/components/react/plan-runner";
+export { type PollVoteProps, PollVote } from "@baby-ui/components/react/poll-vote";
+export { tweenCount, countDuration } from "@baby-ui/components/react/poll-vote";
+export { pollVote, type PollVoteSize, type PollOption, type PollVoteLabels, POLL_VOTE_LABELS, fillLabel, pollShare } from "@baby-ui/components/react/poll-vote";
 export { Popover, PopoverTrigger, PopoverContent } from "@baby-ui/components/react/popover";
 export { popover, type PopoverSize } from "@baby-ui/components/react/popover";
 export { type Pricing01Props, Pricing01, Pricing01Header, Pricing01Heading, Pricing01Eyebrow, Pricing01Title, Pricing01Aside, Pricing01Description, Pricing01Periods, Pricing01Plans, type Pricing01PlanProps, Pricing01Plan, Pricing01PlanHeader, Pricing01PlanName, Pricing01PlanBadge, Pricing01PlanPrice, Pricing01PlanContent, Pricing01PlanDescription, Pricing01PlanFeatures, Pricing01PlanFeature, Pricing01PlanFooter, type Pricing01PlanActionProps, Pricing01PlanAction } from "@baby-ui/components/react/pricing-01";
@@ -866,6 +870,8 @@ export { type TypographyProps, Typography } from "@baby-ui/components/react/typo
 export { typography, type TypographyVariant, TYPOGRAPHY_TAG } from "@baby-ui/components/react/typography";
 export { type UnderlineHoverTextProps, UnderlineHoverText } from "@baby-ui/components/react/underline-hover-text";
 export { underlineHoverText, type UnderlineHoverTextVariant, type UnderlineHoverTextTone, type UnderlineHoverTextTrigger } from "@baby-ui/components/react/underline-hover-text";
+export { type UpvoteButtonProps, UpvoteButton } from "@baby-ui/components/react/upvote-button";
+export { upvoteButton, type UpvoteVariant, type UpvoteOrientation } from "@baby-ui/components/react/upvote-button";
 export { type UsageCardProps, UsageCard } from "@baby-ui/components/react/usage-card";
 export { type UsageMeterProps, UsageMeter } from "@baby-ui/components/react/usage-card";
 export { type MeterStatus, type MeterBar, meterLayout, meterTone, meterNumber, meterKeyStep } from "@baby-ui/components/react/usage-card";

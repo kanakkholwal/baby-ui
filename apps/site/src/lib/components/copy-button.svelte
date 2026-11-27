@@ -1,5 +1,5 @@
 <script lang="ts">
-import { IconCopy, IconCopyCheck } from "@baby-ui/icons";
+import { IconMorph } from "@baby-ui/svelte/icon-morph";
 import { type TrackEvent, track } from "#lib/analytics.js";
 
 let {
@@ -38,11 +38,6 @@ async function copy() {
 		classProp,
 	]}
 >
-	{#if copied}
-		<IconCopyCheck size={16} />
-		{#if !iconOnly}Copied{/if}
-	{:else}
-		<IconCopy size={16} />
-		{#if !iconOnly}Copy{/if}
-	{/if}
+	<IconMorph name="copy" state={copied} size="sm" class="size-3.5 {copied ? 'text-success-strong' : ''}" />
+	{#if !iconOnly}{copied ? "Copied" : "Copy"}{/if}
 </button>

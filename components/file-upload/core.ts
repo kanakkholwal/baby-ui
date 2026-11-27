@@ -21,6 +21,8 @@ export interface FileUploadLabels {
 	/** `{accept}` and `{size}` are filled from the props; unset parts are dropped. */
 	hint: string;
 	dropping: string;
+	/** The pill on the drop zone. */
+	browse: string;
 	remove: string;
 	retry: string;
 	queued: string;
@@ -38,6 +40,7 @@ export const FILE_UPLOAD_LABELS: FileUploadLabels = {
 	title: "Drop files or click to browse",
 	hint: "{accept} up to {size}",
 	dropping: "Release to add",
+	browse: "Browse",
 	remove: "Remove",
 	retry: "Retry",
 	queued: "Waiting",

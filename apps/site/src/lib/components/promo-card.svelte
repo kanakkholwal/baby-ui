@@ -12,7 +12,7 @@ let { product }: { product: Product } = $props();
 		<span class="flex items-center gap-2">
 			<span class="font-semibold text-lg tracking-tight">{product.name}</span>
 			<span
-				class="rounded-md border border-border px-1.5 py-0.5 font-medium text-[10px] text-muted-foreground"
+				class="rounded-md bg-muted px-1.5 py-0.5 font-medium text-[10px] text-muted-foreground"
 			>
 				{product.tag}
 			</span>

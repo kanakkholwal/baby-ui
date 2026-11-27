@@ -55,7 +55,7 @@ export const imageGallery = defineComponent({
 			name: "onOpen",
 			type: "(index: number) => void",
 			description:
-				"Called with the picture's index outside selection mode; pair it with Image Viewer.",
+				"Called with the picture's index outside selection mode; pair it with Lightbox.",
 			control: { kind: "none" },
 		},
 	],
@@ -75,17 +75,17 @@ export const imageGallery = defineComponent({
 		],
 	},
 	guidance: {
-		when: ["A set of pictures to browse, then open one in the Image Viewer."],
+		when: ["A set of pictures to browse, then open one in the Lightbox."],
 		whenNot: [
 			{ text: "A swipeable strip.", use: "carousel" },
-			{ text: "One picture in a lightbox.", use: "image-viewer" },
+			{ text: "One picture in a lightbox.", use: "lightbox" },
 		],
 		responsive: [
 			"The column count follows the width through CSS column-width; no breakpoints.",
 		],
 		performance: ["Pictures load lazily; give width and height to avoid layout shift."],
 		ai: [
-			"Wire onOpen to ImageViewer's index and open. Put EmptyHeader and a button inside ImageGalleryEmpty.",
+			"Wire onOpen to Lightbox's index and open. Put EmptyHeader and a button inside ImageGalleryEmpty.",
 		],
 	},
 	impl: {

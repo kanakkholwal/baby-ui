@@ -27,6 +27,7 @@ const styles = $derived(imageGallery({ variant: gallery.variant, selected }));
 	<button
 		type="button"
 		data-slot="image-gallery-item"
+		data-index={index}
 		data-selected={selected ? "" : undefined}
 		data-feature={gallery.variant === "bento" && index % 5 === 0 ? "" : undefined}
 		aria-pressed={gallery.selectable ? selected : undefined}

@@ -26,9 +26,9 @@ const SHOWN = 5;
 			<li class="contents">
 				<a
 					href="/packs/{pack.id}"
-					class="group flex flex-col rounded-2xl border border-border bg-card p-1 text-foreground no-underline transition-[border-color] duration-(--duration-fast) hover:border-foreground/20 motion-reduce:transition-none"
+					class="group flex flex-col rounded-[1.5rem] bg-card p-1.5 text-foreground no-underline outline-none transition-[background-color] duration-(--duration-fast) ease-(--ease-ui-out) hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none"
 				>
-					<div class="flex flex-1 flex-col gap-3 rounded-[calc(var(--radius-2xl)-0.25rem)] bg-background p-4">
+					<div class="flex flex-1 flex-col gap-3 rounded-[calc(1.5rem-0.375rem)] bg-background p-4">
 						<div class="flex flex-col gap-1">
 							<h2 class="m-0 font-medium text-base tracking-tight">{pack.label}</h2>
 							<p class="m-0 line-clamp-2 text-pretty text-muted-foreground text-sm">{pack.blurb}</p>

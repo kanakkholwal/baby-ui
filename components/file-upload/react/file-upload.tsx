@@ -12,7 +12,6 @@ import {
 	useRef,
 	useState,
 } from "react";
-import { Button } from "../../button/react/button";
 import { FieldError } from "../../field/react/field";
 import { cn } from "../../lib/cn";
 import { transitionMs } from "../../lib/motion";
@@ -30,9 +29,14 @@ import {
 	uploadSummary,
 } from "../core";
 import {
+	FILE_GLYPHS,
+	FILE_SHEET,
+	type FileKind,
 	type FileUploadSize,
 	type FileUploadStatus,
 	type FileUploadVariant,
+	fileKind,
+	fileLabel,
 	fileUpload,
 } from "../variants";
 
@@ -244,14 +248,19 @@ export function FileUploadDropzone({
 					<span aria-hidden className={s.zoneIcon()}>
 						<UploadIcon />
 					</span>
-					<span className={s.zoneTitle()}>
-						{ctx.dragging ? ctx.labels.dropping : ctx.labels.title}
-					</span>
-					{ctx.hint ? (
-						<span id={ctx.hintId} className={s.zoneHint()}>
-							{ctx.hint}
+					<span className={s.zoneCopy()}>
+						<span className={s.zoneTitle()}>
+							{ctx.dragging ? ctx.labels.dropping : ctx.labels.title}
 						</span>
-					) : null}
+						{ctx.hint ? (
+							<span id={ctx.hintId} className={s.zoneHint()}>
+								{ctx.hint}
+							</span>
+						) : null}
+					</span>
+					<span aria-hidden className={s.zoneBrowse()}>
+						{ctx.labels.browse}
+					</span>
 				</>
 			)}
 		</button>
@@ -311,15 +320,13 @@ export function FileUploadItem({
 	const name = item.file.name;
 	const preview = ctx.previews[item.id];
 	const clamped = Math.min(100, Math.max(0, item.progress));
-	const uploading = status === "uploading";
-	const meta =
-		status === "error"
-			? (item.error ?? labels.failed)
-			: uploading
-				? `${Math.round(clamped)}%`
-				: status === "done"
-					? formatBytes(item.file.size)
-					: labels.queued;
+	const done = status === "done";
+	const kind = fileLabel(name, item.file.type);
+	const meta = [
+		kind,
+		formatBytes(item.file.size),
+		...(status === "error" ? [item.error ?? labels.failed] : []),
+	].join(" · ");
 
 	// A ref, so parent re-renders during the fold (progress ticks) don't restart the timer.
 	const remove = useRef(onRemove);
@@ -347,61 +354,61 @@ export function FileUploadItem({
 			<div className="min-h-0 overflow-hidden">
 				<div className={s.row()}>
 					<span aria-hidden className={s.thumb()}>
-						{preview && status !== "error" ? (
+						{preview ? (
 							<img src={preview} alt="" className={s.thumbImage()} />
-						) : status === "error" ? (
-							<AlertIcon />
 						) : (
-							<FileIcon />
+							<KindIcon kind={fileKind(name, item.file.type)} />
 						)}
 					</span>
 					<span className={s.body()}>
 						<span className={s.line()}>
-							<span className={s.name()} title={name}>
-								{name}
-							</span>
-							<span className={s.meta()}>{meta}</span>
-						</span>
-						<span className={s.progress()} inert={!uploading}>
-							<span className="min-h-0 overflow-hidden">
-								<span
-									role="progressbar"
-									aria-label={`${name}, ${labels[statusLabel(status)]}`}
-									aria-valuemin={0}
-									aria-valuemax={100}
-									aria-valuenow={Math.round(clamped)}
-									className={cn(s.track(), "block")}
-								>
-									<span
-										className={cn(s.bar(), "block")}
-										style={{ scale: `${clamped / 100} 1` }}
-									/>
+							<span className={s.copy()}>
+								<span className={s.name()} title={name}>
+									{name}
 								</span>
+								<span className={s.meta()}>{meta}</span>
+							</span>
+							<span className={s.actions()}>
+								<span className={s.status()}>
+									<StatusIcon key={status} status={status} />
+									<span className="sr-only">{labels[statusLabel(status)]}</span>
+								</span>
+								{status === "error" && onRetry ? (
+									<button
+										type="button"
+										aria-label={`${labels.retry} ${name}`}
+										className={s.action()}
+										onClick={onRetry}
+									>
+										<RetryIcon />
+									</button>
+								) : null}
+								{onRemove ? (
+									<button
+										type="button"
+										aria-label={`${labels.remove} ${name}`}
+										className={s.action()}
+										disabled={leaving}
+										onClick={() => setLeaving(true)}
+									>
+										<CloseIcon />
+									</button>
+								) : null}
 							</span>
 						</span>
-					</span>
-					<span className={s.actions()}>
-						{status === "error" && onRetry ? (
-							<Button
-								size="icon-xs"
-								variant="ghost"
-								aria-label={`${labels.retry} ${name}`}
-								onClick={onRetry}
-							>
-								<RetryIcon />
-							</Button>
-						) : null}
-						{onRemove ? (
-							<Button
-								size="icon-xs"
-								variant="ghost"
-								aria-label={`${labels.remove} ${name}`}
-								disabled={leaving}
-								onClick={() => setLeaving(true)}
-							>
-								<CloseIcon />
-							</Button>
-						) : null}
+						<span
+							role="progressbar"
+							aria-label={`${name}, ${labels[statusLabel(status)]}`}
+							aria-valuemin={0}
+							aria-valuemax={100}
+							aria-valuenow={Math.round(done ? 100 : clamped)}
+							className={s.progress()}
+						>
+							<span
+								className={s.bar()}
+								style={{ scale: `${(done ? 100 : clamped) / 100} 1` }}
+							/>
+						</span>
 					</span>
 				</div>
 			</div>
@@ -446,14 +453,15 @@ function UploadIcon() {
 			strokeLinecap="round"
 			strokeLinejoin="round"
 		>
-			<path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" />
-			<path d="M7 9l5-5 5 5" />
-			<path d="M12 4v12" />
+			<path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242" />
+			<path d="M12 12v9" />
+			<path d="m16 16-4-4-4 4" />
 		</svg>
 	);
 }
 
-function FileIcon() {
+/** The sheet outline with a glyph for what is inside. */
+function KindIcon({ kind }: { kind: FileKind }) {
 	return (
 		<svg
 			aria-hidden
@@ -464,25 +472,45 @@ function FileIcon() {
 			strokeLinecap="round"
 			strokeLinejoin="round"
 		>
-			<path d="M14 3v4a1 1 0 0 0 1 1h4" />
-			<path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z" />
+			<path d={FILE_SHEET} />
+			{FILE_GLYPHS[kind] ? <path d={FILE_GLYPHS[kind]} /> : null}
 		</svg>
 	);
 }
 
-function AlertIcon() {
+/** A swapped-in glyph for the state: a file, a spinner, a check or a warning. */
+function StatusIcon({ status }: { status: FileUploadStatus }) {
 	return (
 		<svg
 			aria-hidden
 			viewBox="0 0 24 24"
 			fill="none"
 			stroke="currentColor"
-			strokeWidth="1.8"
+			strokeWidth="2"
 			strokeLinecap="round"
 			strokeLinejoin="round"
+			className={cn(
+				"file-status-in",
+				status === "uploading" && "animate-spin motion-reduce:animate-none",
+			)}
 		>
-			<path d="M12 8v5M12 16.5h.01" />
-			<path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" />
+			{status === "done" ? (
+				<>
+					<circle cx="12" cy="12" r="10" />
+					<path d="m9 12 2 2 4-4" />
+				</>
+			) : status === "error" ? (
+				<>
+					<circle cx="12" cy="12" r="10" />
+					<path d="M12 8v4M12 16h.01" />
+				</>
+			) : status === "uploading" ? (
+				<path d="M21 12a9 9 0 1 1-6.219-8.56" />
+			) : (
+				<>
+					<path d={FILE_SHEET} />
+				</>
+			)}
 		</svg>
 	);
 }

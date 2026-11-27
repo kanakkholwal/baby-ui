@@ -341,7 +341,7 @@
 }
 
 @keyframes typing-dot {
-	30% {
+	50% {
 		opacity: 1;
 		transform: translateY(-2px);
 	}
@@ -374,6 +374,37 @@
 @keyframes reasoning-shimmer {
 	to {
 		background-position: -200% 0;
+	}
+}
+
+/* FileUpload: a new status glyph rises in from 4px below as the old one is replaced. */
+.file-status-in {
+	animation: file-status-in var(--duration-fast) var(--ease-ui-out) both;
+}
+
+@keyframes file-status-in {
+	from {
+		opacity: 0;
+		transform: translateY(4px);
+	}
+}
+
+/* UpvoteButton: the +1 rises out of the button and fades. */
+.upvote-float {
+	animation: upvote-float var(--duration-spring-bouncy) var(--ease-ui-out) both;
+}
+
+@keyframes upvote-float {
+	from {
+		opacity: 0;
+		transform: translateY(4px);
+	}
+	50% {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+		transform: translateY(-18px);
 	}
 }
 
@@ -437,6 +468,8 @@
 	.stream-caret,
 	.reasoning-shimmer,
 	[data-thinking] .reasoning-pixel,
+	.upvote-float,
+	.file-status-in,
 	.step-spinner,
 	.footer-wordmark {
 		animation: none;
@@ -975,7 +1008,7 @@
 	100% {
 		transform: translate3d(0, 0, 0) rotate(0deg);
 	}
-	30% {
+	50% {
 		transform: translate3d(-1.2cqi, -1cqi, 0) rotate(-5deg);
 	}
 	60% {
@@ -1476,7 +1509,7 @@
 		opacity: 1;
 		transform: translateY(calc(var(--rd-from) * -0.225)) scale(1.036);
 	}
-	30% {
+	50% {
 		opacity: 1;
 		transform: translateY(calc(var(--rd-from) * -0.098)) scale(1.016);
 	}
@@ -1555,7 +1588,7 @@
 		opacity: 0;
 		transform: translateY(calc(var(--rd-to) * 1.003)) scale(0.839);
 	}
-	30% {
+	50% {
 		opacity: 0;
 		transform: translateY(calc(var(--rd-to) * 1.084)) scale(0.827);
 	}
@@ -1785,7 +1818,7 @@
 		transform: translateY(calc(var(--wheel-h) * -0.047)) rotateX(-32.4deg);
 		color: color-mix(in oklab, var(--foreground) 10%, var(--muted-foreground));
 	}
-	30% {
+	50% {
 		opacity: 0.859;
 		transform: translateY(calc(var(--wheel-h) * -0.033)) rotateX(-28.8deg);
 		color: color-mix(in oklab, var(--foreground) 20%, var(--muted-foreground));
@@ -1993,7 +2026,7 @@
 		transform: translateY(calc(var(--wheel-h) * -0.081)) rotateX(-34.71deg);
 		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
 	}
-	30% {
+	50% {
 		opacity: 0.839;
 		transform: translateY(calc(var(--wheel-h) * -0.057)) rotateX(-30.86deg);
 		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
@@ -2201,7 +2234,7 @@
 		transform: translateY(calc(var(--wheel-h) * -0.116)) rotateX(-36deg);
 		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
 	}
-	30% {
+	50% {
 		opacity: 0.827;
 		transform: translateY(calc(var(--wheel-h) * -0.082)) rotateX(-32deg);
 		color: color-mix(in oklab, var(--foreground) 0%, var(--muted-foreground));
@@ -3111,7 +3144,7 @@
 			skewX(calc(var(--scroll-tilted-side) * 4.2deg));
 		filter: blur(calc(var(--scroll-tilted-blur) * 0.648px)) brightness(0.676) saturate(0.676);
 	}
-	30% {
+	50% {
 		transform: translate3d(calc(var(--scroll-tilted-side) * 6.336%), 3.379%, 63.36px)
 			rotateX(calc(var(--scroll-tilted-tilt) * 0.4deg)) rotateZ(calc(var(--scroll-tilted-side) * -1.2deg))
 			skewX(calc(var(--scroll-tilted-side) * 2.8deg));
@@ -3171,7 +3204,7 @@
 	20% {
 		scale: 1.127;
 	}
-	30% {
+	50% {
 		scale: 1.083;
 	}
 	40% {
